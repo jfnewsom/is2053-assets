@@ -587,6 +587,117 @@ Flipping to see if Texas cooperates...</pre>
 
             <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
 
+            <!-- ==================== ARCHITECTURE GUIDE ==================== -->
+            <!-- Mentor Callout (Danny Cavanaugh) -->
+            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
+                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
+                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Danny-Cavanaugh.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Danny Cavanaugh">
+                </div>
+                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
+                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"Before you start this checkpoint, take a breath and look at the big picture. You&rsquo;re about to add a SECOND loop to your program. The travel loop from 2.2&mdash;the one with D20 rolls and hazards&mdash;isn&rsquo;t going away. It&rsquo;s going INSIDE a bigger loop. Think of it like this: the outer loop controls the whole road trip. The inner loop controls one leg of the trip. Once you see how they nest, the rest clicks into place."</p>
+                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/danny-cavanaugh.svg" alt="Danny Cavanaugh" style="height: 18px; display: block; margin-bottom: 4px;">
+                    <div style="color: #666; font-size: 12px;">Lead Developer, Bat City Collective</div>
+                </div>
+            </div>
+
+            <!-- Architecture Overview -->
+            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
+                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
+            </div>
+            <p style="color: #B0B8C4; margin: 0 0 10px 0;">
+                <strong style="color: #fff;">Your program now has TWO loops that work together.</strong> Understanding how they nest is the key to this checkpoint.
+            </p>
+            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
+                The <strong style="color: #fff;">OUTER loop</strong> (game loop) controls the overall journey&mdash;each pass through it is one &ldquo;leg&rdquo; of the trip. The <strong style="color: #fff;">INNER loop</strong> (travel loop) is the same D20 travel loop from Lab 2.2. It runs <em>inside</em> the game loop, once for each leg.
+            </p>
+
+            <!-- Pseudocode Nesting Diagram -->
+            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
+                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #B0B8C4; margin: 0; padding: 15px 20px; white-space: pre; overflow-x: auto;"><span style="color: #666;"># ---- BEFORE YOU LOOP ----</span>
+Welcome message
+Get player name
+Set up tracking variables (current_city, totals, etc.)
+<span style="color: #39ff14;">keep_playing = True</span>
+
+<span style="color: #FFCC00;">OUTER LOOP</span> <span style="color: #666;">(game loop &mdash; repeats for each LEG of the trip):</span>
+<span style="color: #FFCC00;">&boxv;</span>
+<span style="color: #FFCC00;">&boxv;&mdash;&mdash;</span> Where am I? Show the right menu for this city.
+<span style="color: #FFCC00;">&boxv;&mdash;&mdash;</span> Get player&rsquo;s choice (now using <span style="color: #39ff14;">get_valid_int</span>!)
+<span style="color: #FFCC00;">&boxv;&mdash;&mdash;</span> Destination Gate (coin flip &mdash; did Texas cooperate?)
+<span style="color: #FFCC00;">&boxv;&mdash;&mdash;</span> Print where you&rsquo;re headed and how far
+<span style="color: #FFCC00;">&boxv;</span>
+<span style="color: #FFCC00;">&boxv;</span>   <span style="color: #0055FF;">INNER LOOP</span> <span style="color: #666;">(travel loop &mdash; repeats for each TURN):</span>
+<span style="color: #FFCC00;">&boxv;</span>   <span style="color: #0055FF;">&boxv;</span>
+<span style="color: #FFCC00;">&boxv;</span>   <span style="color: #0055FF;">&boxv;&mdash;&mdash;</span> Show miles remaining
+<span style="color: #FFCC00;">&boxv;</span>   <span style="color: #0055FF;">&boxv;&mdash;&mdash;</span> Roll D20, calculate miles traveled
+<span style="color: #FFCC00;">&boxv;</span>   <span style="color: #0055FF;">&boxv;&mdash;&mdash;</span> Did you arrive? If yes, break out.
+<span style="color: #FFCC00;">&boxv;</span>   <span style="color: #0055FF;">&boxv;&mdash;&mdash;</span> If not: check for hazard (30% chance)
+<span style="color: #FFCC00;">&boxv;</span>   <span style="color: #0055FF;">&boxv;</span>        If hazard triggers: pick one, flip coin, show result
+<span style="color: #FFCC00;">&boxv;</span>   <span style="color: #0055FF;">&boxv;&mdash;&mdash;</span> Next turn
+<span style="color: #FFCC00;">&boxv;</span>   <span style="color: #666;">(end of inner loop &mdash; you&rsquo;ve arrived at the city)</span>
+<span style="color: #FFCC00;">&boxv;</span>
+<span style="color: #FFCC00;">&boxv;&mdash;&mdash;</span> Update your trip totals
+<span style="color: #FFCC00;">&boxv;&mdash;&mdash;</span> Now check: WHERE did you end up?
+<span style="color: #FFCC00;">&boxv;</span>      Beach city? &rarr; <span style="color: #39ff14;">YOU WIN</span>, stop playing
+<span style="color: #FFCC00;">&boxv;</span>      Dead end (Laredo/El Paso)? &rarr; Try again or quit?
+<span style="color: #FFCC00;">&boxv;</span>      Other city (Houston/Austin)? &rarr; Keep going?
+<span style="color: #666;">(end of outer loop &mdash; either play another leg or we&rsquo;re done)</span>
+
+<span style="color: #666;"># ---- AFTER THE LOOP ----</span>
+Print the final trip report with ALL your accumulated stats</pre>
+            </div>
+
+            <!-- Architecture Table -->
+            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                        <tr>
+                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 35%;">Section</th>
+                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 40%;">What Happens</th>
+                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">How Often</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="background: #000; color: #fff; padding: 12px 15px; border-bottom: 2px solid #222;">Welcome + Setup</td>
+                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Print title, get player name, initialize totals, set <span style="font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">keep_playing = True</span></td>
+                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Once (before any loop)</td>
+                        </tr>
+                        <tr>
+                            <td style="background: #000; color: #fff; padding: 12px 15px; border-bottom: 2px solid #222;">Show menu + get choice</td>
+                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Display destination options, use <span style="font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">get_valid_int()</span> for selection</td>
+                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Once per leg (outer loop)</td>
+                        </tr>
+                        <tr>
+                            <td style="background: #000; color: #fff; padding: 12px 15px; border-bottom: 2px solid #222;">Destination Gate</td>
+                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Coin flip&mdash;did Texas cooperate?</td>
+                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Once per leg (outer loop)</td>
+                        </tr>
+                        <tr>
+                            <td style="background: #000; color: #fff; padding: 12px 15px; border-bottom: 2px solid #222;">Travel loop (D20 + hazards)</td>
+                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Roll D20, move miles, check for hazards&mdash;same loop from Lab 2.2</td>
+                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Every turn within each leg (inner loop)</td>
+                        </tr>
+                        <tr>
+                            <td style="background: #000; color: #fff; padding: 12px 15px; border-bottom: 2px solid #222;">Check outcome</td>
+                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Beach? You win. Dead end? Try again or quit. Other city? Keep going?</td>
+                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Once per leg (outer loop)</td>
+                        </tr>
+                        <tr>
+                            <td style="background: #000; color: #fff; padding: 12px 15px;">Final trip report</td>
+                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Print accumulated stats from ALL legs</td>
+                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Once (after game loop ends)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p style="color: #B0B8C4; margin: 0 0 5px 0;">
+                <strong style="color: #fff;">Key insight:</strong> The travel loop from Lab 2.2 is <em>unchanged</em>&mdash;it just moves inside the game loop. Dice rolls and hazards happen every turn, on every leg. You are not replacing anything&mdash;you are wrapping it.
+            </p>
+
+            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
+
             <!-- ==================== CHECKPOINT 4 ==================== -->
             <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
                 <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-4.svg" alt="Checkpoint 4" style="width: 100px; height: 100px; flex-shrink: 0;">
@@ -1005,7 +1116,7 @@ Thanks for playing, Maria!
                 <div>
                     <div style="color: #fff; font-weight: 700;">Email</div>
                     <div style="color: #B0B8C4; font-size: 14px;">For private questions or concerns</div>
-                    <a href="mailto:john.newsom@utsa.edu" style="color: #BF40FF; font-size: 13px;">john.newsom@utsa.edu</a>
+                    <a href="/cdn-cgi/l/email-protection#016b6e696f2f6f6476726e6c41747572602f646574" style="color: #BF40FF; font-size: 13px;"><span class="__cf_email__" data-cfemail="b8d2d7d0d696d6ddcfcbd7d5f8cdcccbd996dddccd">[email&#160;protected]</span></a>
                 </div>
             </div>
             
@@ -1030,8 +1141,4 @@ Thanks for playing, Maria!
 <div style="text-align: center; color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
     <img style="height: 50px; margin-bottom: 15px;" src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
     <div style="color: #b0b8c4; font-size: 13px;">IS2053 Programming I &mdash; UT San Antonio &mdash; Spring 2026</div>
-    <div style="color: #666; font-size: 11px; margin-top: 5px;">Lab 2.3 &mdash; Road Trip Ready &mdash; MASTER Week</div>
-</div>
-
-</body>
-</html>
+    <div 
