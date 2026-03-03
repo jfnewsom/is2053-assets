@@ -208,7 +208,72 @@
             
             
             
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
+            
+            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
+                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
+                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Tyler-Nguyen.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Tyler Nguyen">
+                </div>
+                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
+                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">&ldquo;This is the big one. Trivia replaces the coin flip, sets handle your unique tracking, and sorted() makes your report look clean. The game loop barely changes&mdash;you&rsquo;re mostly adding smarter pieces around it.&rdquo;</p>
+                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/tyler-nguyen.svg" alt="Tyler Nguyen" style="height: 18px; display: block; margin-bottom: 4px;">
+                    <div style="color: #666; font-size: 12px;">Junior Developer, Bat City Collective</div>
+                </div>
+            </div>
+
+            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
+                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
+            </div>
+            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
+                <strong style="color: #fff;">Here&rsquo;s how your finished program fits together.</strong> The <span style="color: #FF6B1A;">[NEW]</span> tags show what you&rsquo;re adding. <span style="color: #FF6B1A;">[REPLACED]</span> tags show what changes from your 4.2 code. The <span style="color: #BF40FF;">purple section</span> runs after the game loop ends.
+            </p>
+
+            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0 25px 0;">
+                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #B0B8C4; margin: 0; padding: 15px 20px; white-space: pre; overflow-x: auto;"><span style="color: #666;"># ---- DATA LOADING FUNCTIONS ----</span>
+<span style="color: #39ff14;">load_city_distances()</span>   reads city_distances.txt &rarr; nested dict
+<span style="color: #39ff14;">load_city_info()</span>        reads city_info.txt &rarr; dict of dicts
+<span style="color: #39ff14;">load_hazards()</span>          reads hazards.txt &rarr; list of dicts
+<span style="color: #39ff14;">load_trivia()</span>           reads trivia.txt &rarr; dict of lists  <span style="color: #FF6B1A;">[NEW]</span>
+
+<span style="color: #666;"># ---- GAME FUNCTIONS ----</span>
+<span style="color: #39ff14;">display_destinations()</span>  shows menu from dict
+<span style="color: #39ff14;">get_destination_choice()</span>  validates user pick
+<span style="color: #39ff14;">trivia_gate(destination, trivia)</span>  TRUE/FALSE question  <span style="color: #FF6B1A;">[NEW]</span>
+<span style="color: #39ff14;">handle_hazard(hazards)</span>  random hazard + coin flip
+<span style="color: #39ff14;">travel_to(distance)</span>    D20 travel + hazard checks
+
+<span style="color: #666;"># ---- MAIN PROGRAM ----</span>
+Load ALL data files (distances, info, hazards, trivia)
+Get player name
+current_city = 'San Antonio'
+<span style="color: #39ff14;">unique_cities = set()</span>  <span style="color: #FF6B1A;">[NEW]</span>
+<span style="color: #39ff14;">unique_hazards = set()</span>  <span style="color: #FF6B1A;">[NEW]</span>
+
+<span style="color: #FFCC00;">GAME LOOP</span> <span style="color: #666;">(each pass is one leg):</span>
+<span style="color: #FFCC00;">&#9474;</span>
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> <span style="color: #39ff14;">unique_cities.add(current_city)</span>  <span style="color: #FF6B1A;">[NEW]</span>
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Display city info, show destinations
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Get choice with .strip().upper()
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> <span style="color: #39ff14;">trivia_gate()</span>  <span style="color: #FF6B1A;">[REPLACED]</span> <span style="color: #666;">was coin flip</span>
+<span style="color: #FFCC00;">&#9474;</span>
+<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">TRAVEL LOOP</span> <span style="color: #666;">(D20 rolls):</span>
+<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Roll D20, move miles
+<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> 30% chance: handle_hazard() &rarr; <span style="color: #39ff14;">unique_hazards.add()</span>  <span style="color: #FF6B1A;">[NEW]</span>
+<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Repeat until you arrive
+<span style="color: #FFCC00;">&#9474;</span>
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Update trip totals + trivia stats  <span style="color: #FF6B1A;">[NEW]</span>
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Check outcome: beach / dead end / continue
+
+<span style="color: #BF40FF;">&#9474;&#9474;&#9474; FINAL TRIP REPORT &#9474;&#9474;&#9474;</span>  <span style="color: #FF6B1A;">[NEW]</span>
+<span style="color: #BF40FF;">&#9474;</span> Route: city &rarr; city &rarr; city (from visited list)
+<span style="color: #BF40FF;">&#9474;</span> Unique cities: <span style="color: #39ff14;">sorted(unique_cities)</span>
+<span style="color: #BF40FF;">&#9474;</span> Unique hazards: <span style="color: #39ff14;">sorted(unique_hazards)</span>
+<span style="color: #BF40FF;">&#9474;</span> Trivia: correct / total
+<span style="color: #BF40FF;">&#9474;</span> Trip stats: miles, turns, hazards</pre>
+            </div>
+
+            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
+
+<div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
                 <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-1.svg" alt="Checkpoint 1" style="width: 100px; height: 100px; flex-shrink: 0;">
                 <div style="flex-grow: 1;">
                     <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Load Trivia</h3>
@@ -878,7 +943,7 @@ STATS:
                 <div>
                     <div style="color: #fff; font-weight: 700;">Email</div>
                     <div style="color: #B0B8C4; font-size: 14px;">For private questions or concerns</div>
-                    <a href="mailto:john.newsom@utsa.edu" style="color: #BF40FF; font-size: 13px;">john.newsom@utsa.edu</a>
+                    <a href="/cdn-cgi/l/email-protection#452f2a2d2b6b2b2032362a2805303136246b202130" style="color: #BF40FF; font-size: 13px;"><span class="__cf_email__" data-cfemail="741e1b1c1a5a1a1103071b1934010007155a111001">[email&#160;protected]</span></a>
                 </div>
             </div>
             
@@ -900,8 +965,4 @@ STATS:
 <div style="text-align: center; color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
     <img style="height: 50px; margin-bottom: 15px;" src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
     <div style="color: #b0b8c4; font-size: 13px;">IS2053 Programming I &mdash; UT San Antonio &mdash; Spring 2026</div>
-    <div style="color: #666; font-size: 11px; margin-top: 5px;">Lab 4.3 &mdash; Data-Driven Texas &mdash; MASTER Week</div>
-</div>
-
-</body>
-</html>
+    <div st
