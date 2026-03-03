@@ -187,6 +187,65 @@
         <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
 
             <!-- ============================================================ -->
+
+            <!-- ==================== ARCHITECTURE GUIDE ==================== -->
+            <!-- Mentor Callout (Sasha Mireles) -->
+            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
+                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
+                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Sasha-Mireles.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Sasha Mireles">
+                </div>
+                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
+                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"Before you start coding, look at the big picture. You&rsquo;re adding three things to your 2.3 game: two functions that handle files, a menu at the start, and a save option during play. Your game loop from 2.3? It&rsquo;s still there, untouched. You&rsquo;re just building around it."</p>
+                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/sasha-mireles.svg" alt="Sasha Mireles" style="height: 18px; display: block; margin-bottom: 4px;">
+                    <div style="color: #666; font-size: 12px;">QA Lead, Bat City Collective</div>
+                </div>
+            </div>
+
+            <!-- Architecture Overview -->
+            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
+                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
+            </div>
+            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
+                <strong style="color: #fff;">Here&rsquo;s how your finished program fits together.</strong> The <span style="color: #FF6B1A;">[NEW]</span> tags show what you&rsquo;re adding&mdash;everything else is your 2.3 code.
+            </p>
+
+            <!-- Pseudocode Nesting Diagram -->
+            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0 25px 0;">
+                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #B0B8C4; margin: 0; padding: 15px 20px; white-space: pre; overflow-x: auto;"><span style="color: #666;"># ---- DEFINE YOUR FUNCTIONS ----</span>  <span style="color: #FF6B1A;">[NEW]</span>
+<span style="color: #39ff14;">save_game()</span>   writes 6 values to savegame.txt
+<span style="color: #39ff14;">load_game()</span>   reads 6 values back (or returns None)
+
+<span style="color: #666;"># ---- MAIN MENU ----</span>  <span style="color: #FF6B1A;">[NEW]</span>
+Show menu: 1. New Game  2. Load Saved Game  3. Quit
+&#9474;  If Quit &rarr; exit program
+&#9474;  If Load &rarr; call <span style="color: #39ff14;">load_game()</span>, restore all 6 variables
+&#9474;  If New  &rarr; get player name, set starting values
+
+<span style="color: #666;"># ---- YOUR 2.3 GAME (unchanged structure) ----</span>
+
+<span style="color: #FFCC00;">GAME LOOP</span> <span style="color: #666;">(outer loop &mdash; each pass is one leg):</span>
+<span style="color: #FFCC00;">&#9474;</span>
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Show destination menu, get validated choice
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Destination Gate (coin flip)
+<span style="color: #FFCC00;">&#9474;</span>
+<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">TRAVEL LOOP</span> <span style="color: #666;">(inner loop &mdash; each pass is one turn):</span>
+<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Roll D20, move miles, check for hazard
+<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Repeat until you arrive
+<span style="color: #FFCC00;">&#9474;</span>
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Update trip totals
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Check outcome: beach / dead end / continue
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> At a non-beach city:
+<span style="color: #FFCC00;">&#9474;</span>      1. Continue journey
+<span style="color: #FFCC00;">&#9474;</span>      2. <span style="color: #39ff14;">Save and quit</span> &rarr; call <span style="color: #39ff14;">save_game()</span>, stop playing  <span style="color: #FF6B1A;">[NEW]</span>
+
+<span style="color: #666;"># ---- AFTER THE LOOP ----</span>
+Print trip summary
+"Thanks for playing!"</pre>
+            </div>
+
+            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
+
+
             <!-- CHECKPOINT 1 -->
             <!-- ============================================================ -->
             <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
@@ -794,7 +853,7 @@ Miles so far: 350</pre>
                 <div>
                     <div style="color: #fff; font-weight: 700;">Email</div>
                     <div style="color: #B0B8C4; font-size: 14px;">For private questions or concerns</div>
-                    <a href="mailto:john.newsom@utsa.edu" style="color: #BF40FF; font-size: 13px;">john.newsom@utsa.edu</a>
+                    <a href="/cdn-cgi/l/email-protection#2a4045424404444f5d5945476a5f5e594b044f4e5f" style="color: #BF40FF; font-size: 13px;"><span class="__cf_email__" data-cfemail="e08a8f888ece8e8597938f8da095949381ce858495">[email&#160;protected]</span></a>
                 </div>
             </div>
             
@@ -819,8 +878,4 @@ Miles so far: 350</pre>
 <div style="text-align: center; color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
     <img style="height: 50px; margin-bottom: 15px;" src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
     <div style="color: #b0b8c4; font-size: 13px;">IS2053 Programming I &mdash; UT San Antonio &mdash; Spring 2026</div>
-    <div style="color: #666; font-size: 11px; margin-top: 5px;">Lab 3.1 &mdash; Where Have We Been? &mdash; BUILD Week</div>
-</div>
-
-</body>
-</html>
+    <div sty

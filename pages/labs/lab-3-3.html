@@ -210,6 +210,74 @@
                 <li><strong style="color: #fff;">Test your Lab 3.2 code</strong> &mdash; Make sure save/load still works before adding features</li>
             </ol>
 
+
+            <!-- ==================== ARCHITECTURE GUIDE ==================== -->
+            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
+                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
+                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Terrence-Booker.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Priya Venkatesh">
+                </div>
+                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
+                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"This is polish week. The game loop barely changes&mdash;most of what you&rsquo;re building lives in the trip report at the end. The one change inside the loop is swapping that old hazard if/elif for a clean list lookup. Everything else is about making the FINAL output shine: sorted hazards, unique cities, and saving it all to a file."</p>
+                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/terrence-t-bone-booker.svg" alt="Priya Venkatesh" style="height: 18px; display: block; margin-bottom: 4px;">
+                    <div style="color: #666; font-size: 12px;">Senior Developer, Bat City Collective</div>
+                </div>
+            </div>
+            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
+                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
+            </div>
+            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
+                <strong style="color: #fff;">Most of this week&rsquo;s work lives AFTER the game loop.</strong> Here&rsquo;s the full picture&mdash;<span style="color: #FF6B1A;">[NEW]</span> tags show what you&rsquo;re adding.
+            </p>
+            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0 25px 0;">
+                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #B0B8C4; margin: 0; padding: 15px 20px; white-space: pre; overflow-x: auto;"><span style="color: #666;"># ---- CONSTANTS ----</span>
+<span style="color: #39ff14;">HAZARD_NAMES</span> = ["Buc-ees appears!", "Armadillo crossing!", ...]  <span style="color: #FF6B1A;">[NEW &mdash; replaces if/elif]</span>
+<span style="color: #39ff14;">REPORT_FILE</span>  = 'trip_report.txt'                                  <span style="color: #FF6B1A;">[NEW]</span>
+
+<span style="color: #666;"># ---- FUNCTION LIBRARY ----</span>
+<span style="color: #39ff14;">display_numbered_list(items, title)</span>   <span style="color: #FF6B1A;">[NEW in function_library.py]</span>
+
+<span style="color: #666;"># ---- HELPER FUNCTIONS ----</span>
+<span style="color: #39ff14;">get_random_hazard()</span>   uses HAZARD_NAMES[random index]  <span style="color: #FF6B1A;">[NEW &mdash; replaces if/elif]</span>
+
+<span style="color: #666;"># ---- GAME LOOP (mostly unchanged from 3.2) ----</span>
+
+<span style="color: #FFCC00;">GAME LOOP:</span>
+<span style="color: #FFCC00;">&#9474;</span>
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Display menu, get choice, Destination Gate
+<span style="color: #FFCC00;">&#9474;</span>
+<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">TRAVEL LOOP:</span>
+<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Roll D20, move miles
+<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Check for hazard
+<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;</span>      If hazard: <span style="color: #39ff14;">get_random_hazard()</span>  <span style="color: #FF6B1A;">[REPLACED]</span>
+<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Repeat until arrival
+<span style="color: #FFCC00;">&#9474;</span>
+<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Append city, update totals, check outcome
+
+<span style="color: #666;"># ---- AFTER THE LOOP (this is where the action is) ----</span>
+
+<span style="color: #BF40FF;">FINAL TRIP REPORT:</span>
+<span style="color: #BF40FF;">&#9474;</span>
+<span style="color: #BF40FF;">&#9474;&mdash;&mdash;</span> Show visited cities (<span style="color: #39ff14;">display_numbered_list</span>)
+<span style="color: #BF40FF;">&#9474;</span>
+<span style="color: #BF40FF;">&#9474;&mdash;&mdash;</span> Build <span style="color: #39ff14;">unique_cities</span> list:                        <span style="color: #FF6B1A;">[NEW]</span>
+<span style="color: #BF40FF;">&#9474;</span>      for city in visited_cities:
+<span style="color: #BF40FF;">&#9474;</span>          if city not in unique_cities: append it
+<span style="color: #BF40FF;">&#9474;</span>
+<span style="color: #BF40FF;">&#9474;&mdash;&mdash;</span> Sort hazards:                                      <span style="color: #FF6B1A;">[NEW]</span>
+<span style="color: #BF40FF;">&#9474;</span>      <span style="color: #39ff14;">sorted_hazards</span> = hazards_encountered.<span style="color: #39ff14;">copy()</span>
+<span style="color: #BF40FF;">&#9474;</span>      sorted_hazards.<span style="color: #39ff14;">sort()</span>
+<span style="color: #BF40FF;">&#9474;</span>      Display with <span style="color: #39ff14;">display_numbered_list</span>
+<span style="color: #BF40FF;">&#9474;</span>
+<span style="color: #BF40FF;">&#9474;&mdash;&mdash;</span> Show trip stats (miles, turns, escape rate)
+<span style="color: #BF40FF;">&#9474;</span>
+<span style="color: #BF40FF;">&#9474;&mdash;&mdash;</span> Ask: Save report to file?                          <span style="color: #FF6B1A;">[NEW]</span>
+<span style="color: #BF40FF;">&#9474;</span>      If yes: write everything to <span style="color: #39ff14;">trip_report.txt</span>
+
+"Thanks for playing!"</pre>
+            </div>
+            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
+
+
             <!-- ==================== CHECKPOINT 1 ==================== -->
             <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
                 <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-1.svg" alt="Checkpoint 1" style="width: 100px; height: 100px; flex-shrink: 0;">
@@ -1013,7 +1081,7 @@ HAZARDS (A-Z):
                 <div>
                     <div style="color: #fff; font-weight: 700;">Email</div>
                     <div style="color: #B0B8C4; font-size: 14px;">For private questions or concerns</div>
-                    <a href="mailto:john.newsom@utsa.edu" style="color: #BF40FF; font-size: 13px;">john.newsom@utsa.edu</a>
+                    <a href="/cdn-cgi/l/email-protection#eb81848385c5858e9c988486ab9e9f988ac58e8f9e" style="color: #BF40FF; font-size: 13px;"><span class="__cf_email__" data-cfemail="365c595e581858534145595b764342455718535243">[email&#160;protected]</span></a>
                 </div>
             </div>
             
@@ -1038,8 +1106,4 @@ HAZARDS (A-Z):
 <div style="text-align: center; color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
     <img style="height: 50px; margin-bottom: 15px;" src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
     <div style="color: #b0b8c4; font-size: 13px;">IS2053 Programming I &mdash; UT San Antonio &mdash; Spring 2026</div>
-    <div style="color: #666; font-size: 11px; margin-top: 5px;">Lab 3.3 &mdash; Trip Report &mdash; MASTER Week</div>
-</div>
-
-</body>
-</html>
+    <
