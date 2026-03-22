@@ -206,7 +206,7 @@
 
 <span style="color: #666;"># ---- TRACKING LISTS ----</span>
 <span style="color: #39ff14;">visited_cities</span> = ['San Antonio']   <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #39ff14;">hazards_encountered</span> = []           <span style="color: #FF6B1A;">[NEW]</span>
+<span style="color: #39ff14;">hazards_list</span> = []                   <span style="color: #FF6B1A;">[NEW]</span>
 
 <span style="color: #666;"># ---- MAIN MENU (same as 3.1) ----</span>
 <span style="color: #666;">(Load now restores tracking lists too)</span>
@@ -509,8 +509,8 @@ Returned count: 4
 
 Testing Houston:
   1. Galveston - 50 miles (BEACH!)
-  2. Dallas - 240 miles (Big D)
-  3. San Antonio - 200 miles (Back Home)
+  2. San Antonio - 200 miles (Back West)
+  3. Dallas - 240 miles (Wrong Way)
 Returned count: 3</pre>
             </div>
 
@@ -821,6 +821,54 @@ Armadillo crossing!</pre>
                 </table>
             </div>
 
+            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Part D: Add File Functions to function_library.py</strong></p>
+
+            <p style="color: #B0B8C4; margin: 0 0 15px 0;">These three utility functions live in <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span>, not in your main game file. Add them under a new <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;"># FILE FUNCTIONS</span> comment block after your existing validation functions.</p>
+
+            <p style="color: #B0B8C4; margin: 0 0 8px 0;"><strong style="color: #fff;">save_list_to_file(filename, data_list)</strong></p>
+            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
+                <li style="margin-bottom: 8px;">Define the function with two parameters: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">filename</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">data_list</span></li>
+                <li style="margin-bottom: 8px;">Open the file for writing: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">with open(filename, 'w') as outfile:</span></li>
+                <li style="margin-bottom: 8px;">Loop through <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">data_list</span> and write each item: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">outfile.write(str(item) + '\n')</span></li>
+                <li>No return value needed</li>
+            </ol>
+
+            <p style="color: #B0B8C4; margin: 0 0 8px 0;"><strong style="color: #fff;">load_list_from_file(filename)</strong></p>
+            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
+                <li style="margin-bottom: 8px;">Define the function with one parameter: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">filename</span></li>
+                <li style="margin-bottom: 8px;">Create an empty result list: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">result = []</span></li>
+                <li style="margin-bottom: 8px;">Open the file inside a <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">try</span> block: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">with open(filename, 'r') as infile:</span></li>
+                <li style="margin-bottom: 8px;">Use a <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">readline()</span> while loop &mdash; same pattern as your <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_game()</span></li>
+                <li style="margin-bottom: 8px;">Append each line stripped of <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">\n</span> to <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">result</span></li>
+                <li style="margin-bottom: 8px;">In the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">except FileNotFoundError</span> block: leave <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">result</span> as empty list</li>
+                <li>Return <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">result</span></li>
+            </ol>
+
+            <p style="color: #B0B8C4; margin: 0 0 8px 0;"><strong style="color: #fff;">file_exists(filename)</strong></p>
+            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
+                <li style="margin-bottom: 8px;">Define the function with one parameter: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">filename</span></li>
+                <li style="margin-bottom: 8px;">In a <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">try</span> block: attempt to open the file for reading</li>
+                <li style="margin-bottom: 8px;">If it opens successfully: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">return True</span></li>
+                <li>In the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">except FileNotFoundError</span> block: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">return False</span></li>
+            </ol>
+
+            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
+                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                </div>
+                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
+                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
+                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
+                    </div>
+                    <p style="color: #B0B8C4; margin: 0 0 10px 0; font-size: 14px;">
+                        <strong style="color: #BF40FF;">BookEx 7.7.2:</strong> Writing a list to a file one item per line &mdash; exactly what <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">save_list_to_file()</span> does.
+                    </p>
+                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
+                        <strong style="color: #BF40FF;">BookEx 7.7.3:</strong> Reading a file back into a list &mdash; that's <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_list_from_file()</span>. The <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">readline()</span> while loop pattern is identical to your <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_game()</span> from Lab 3.1.
+                    </p>
+                </div>
+            </div>
+
                         <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
                 <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
             </div>
@@ -828,6 +876,7 @@ Armadillo crossing!</pre>
                 <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">visited_cities</span> grows each time you arrive somewhere</li>
                 <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards_list</span> grows each time a hazard occurs</li>
                 <li style="margin-bottom: 8px;">Save/load preserves both lists using the separator marker</li>
+                <li style="margin-bottom: 8px;">Three new functions added to <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span>: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">save_list_to_file()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_list_from_file()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">file_exists()</span></li>
                 <li>Test: Save mid-game, reload, verify lists are restored correctly</li>
             </ul>
 
