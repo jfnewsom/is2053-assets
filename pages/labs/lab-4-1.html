@@ -3,912 +3,628 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab 4.1: City Data</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Slab:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>City Data — IS2053</title>
+    <link rel="stylesheet" href="../../labs.css">
 </head>
-<body style="background: #0a0a0a; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; color: #f5f5f5; line-height: 1.6;">
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #0055FF 0%, #001a4d 100%); padding: 8px 12px 12px 12px;">
-        
-        
-        <div style="display: flex; align-items: flex-end; gap: 8px;">
-            <img src="https://jfnewsom.github.io/is2053-assets/lab-icons/lab-badge-4-1.svg" alt="LAB 4.1" style="height: 90px;">
-            <div style="flex-grow: 1;">
-                <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-city-data.svg" alt="City Data" style="display: block; height: 70px; margin-bottom: 2px; margin-left: -8px;">
-                
-                <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-                    Module 4 &bull; BUILD Week &bull; Chapters 8-9: Strings &amp; Dictionaries
-                </div>
-            </div>
-        </div>
-        
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-overview.svg" alt="Overview" style="height: 18px; display: block;">
-            </div>
-            
-            
-            <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px;">
-                <p style="color: #B0B8C4; margin: 0; flex: 1;">
-                    Remember all those distance constants? <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">SAT_TO_CORPUS = 150</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">SAT_TO_HOUSTON = 200</span>, on and on? And those long if-elif chains for hazards? This week, all that hardcoded data moves into <strong style="color: #fff;">external files</strong> and gets loaded into <strong style="color: #fff;">dictionaries</strong>. One data file, one function to load it, and suddenly adding 50 more cities is just adding 50 lines to a text file. <em>This</em> is how real programs work.
-                </p>
-                <img src="https://jfnewsom.github.io/is2053-assets/branding/AllMyEggses-logo.svg" alt="All My Eggses Live in Texas" style="width: 210px; flex-shrink: 0;">
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Priya-Venkatesh.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Priya Venkatesh">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"If I asked you to add 20 new cities to the game using constants, how long would it take? Now imagine it's just adding 20 lines to a text file. <em>That's</em> why we use data files. Dictionaries let your code work with data that doesn't exist when you write it."</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/priya-venkatesh.svg" alt="Priya Venkatesh" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Project Manager, Bat City Collective</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-filename.svg" alt="Filename" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; color: #39ff14; font-size: 14px;">lab-4-1.py</span>
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A complete road trip game that loads ALL city data from external text files into dictionaries:
-            </p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">load_city_distances()</strong> &mdash; Parse <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city_distances.txt</span> into a nested dictionary</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">load_city_info()</strong> &mdash; Parse <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city_info.txt</span> into a dictionary with nested data</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Data-driven navigation</strong> &mdash; Display destinations and distances from dictionaries</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Clean input handling</strong> &mdash; Use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip()</span> to clean whitespace from user input</li>
-                <li>Complete game with win detection and coin flip gate</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-key-concepts.svg" alt="Key Concepts" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Chapter 8:</strong> String methods (<span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.split()</span>) for parsing CSV data<br>
-                <strong style="color: #fff;">Chapter 9:</strong> Dictionaries and nested dictionaries for structured data
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-program-requirements.svg" alt="Program Requirements" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Your program <strong style="color: #fff;">MUST</strong> load city data from external files (not hardcoded)</li>
-                <li style="margin-bottom: 8px;">Your program <strong style="color: #fff;">MUST</strong> use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip()</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.split(',')</span> to parse file data</li>
-                <li style="margin-bottom: 8px;">Your program <strong style="color: #fff;">MUST</strong> use dictionaries to store city distances and city info</li>
-                <li style="margin-bottom: 8px;">Your program <strong style="color: #fff;">MUST</strong> use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span> for random functions and input validation</li>
-                <li>Your program <strong style="color: #fff;">MUST</strong> include your docstring with name, ID, section, and description</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Data Files" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">
-                <strong style="color: #fff;">Required Data Files</strong> (download from Canvas):
-            </p>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #0055ff; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #0055FF; width: 35%;">File</th>
-                            <th style="background: #1a1a1a; color: #0055ff; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #0055FF;">Format</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city_distances.txt</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">city1,city2,distance (e.g., San Antonio,Houston,200)</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city_info.txt</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">city,type,tagline (e.g., Houston,GATEWAY,Space City)</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Your shared function library (same as Module 3)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-        </div>
+<body>
+<div class="lc-wrapper">
+<div class="lc-card lc-card--blue">
+  <div class="lc-topper">
+    <div class="lc-card-header">
+      <div class="lc-lab-badge">
+        <div class="lc-lab-badge__word">LAB</div>
+        <div class="lc-lab-badge__num">4.1</div>
+      </div>
+      <div class="lc-topper-title">City Data</div>
     </div>
+    <div class="lc-sub-banner">Module 4 &mdash; Week 1 &mdash; BUILD Week</div>
+  </div>
+  <div class="lc-panel">
+    <p><strong>Chapters:</strong> 8–9
+        &mdash; More About Strings, Dictionaries and Sets</p>
+    <p>Your Module 3 code is functional, but it has a problem that every working developer eventually hits: hardcoded data. You have 20+ individual distance constants, city-type checks baked into if/elif chains, and no easy way to add a new city without touching five different places in the file. This week, you fix all of that in one move. <code>CITY_DISTANCES</code> and <code>CITY_INFO</code> are two dictionaries that replace every one of those constants. Adding a new city goes from a multi-file, multi-section change to a single dictionary entry. That's what data-driven design looks like in practice.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"If you had to add 20 more cities, how long would that take with your current code? Now look at a dictionary. That&#x27;s your answer."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Priya Venkatesh</div>
+        <div class="lc-mentor__role">Lead Architect, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Learning Objectives</div>
+    <ul class="lc-objectives">
+      <li>Create a nested dictionary to store city-to-city distances</li>
+      <li>Create a second dictionary to store city type, tagline, and win status</li>
+      <li>Refactor helper functions to use dictionary lookups instead of hardcoded constants</li>
+      <li>Use the &lt;code&gt;.get()&lt;/code&gt; method for safe key access with a fallback value</li>
+      <li>Understand why dictionaries scale better than parallel constants</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
+    <p>Chapter 9: Program 9-1 (card_dealer.py) shows dictionary creation, key access, and looping with random.choice(). The same patterns apply directly to CITY_DISTANCES.</p>
+    <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 8 &amp; 9</p>
+    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
+    <ul>
+      <li>CITY_DISTANCES is a nested dictionary replacing all individual distance constants</li>
+      <li>CITY_INFO is a dictionary with city type, tagline, and win status for each city</li>
+      <li>display_destinations() reads destinations from CITY_DISTANCES, not hardcoded values</li>
+      <li>get_destination_by_number() returns a city name and distance from the dictionary</li>
+      <li>is_win_city() and is_dead_end() use CITY_INFO lookups, not hardcoded city names</li>
+      <li>Top-of-file comment block includes name, abc123, section, and description</li>
+      <li>All functions have docstrings</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Named Constants</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table lc-named-constants__table">
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>CITY_DISTANCES</code></td>
+        <td>Nested dict — city name → {destination: miles}. Replaces all individual distance constants from Module 3.</td>
+      </tr>
+      <tr>
+        <td><code>CITY_INFO</code></td>
+        <td>Dict — city name → {type, tagline}. Stores city classification and display text.</td>
+      </tr>
+      <tr>
+        <td><code>STARTING_CITY</code></td>
+        <td>String constant — always &#x27;San Antonio&#x27;. Still a named constant, not hardcoded.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Filename</div>
+    <p>Submit lab-4-1.py this week. Your function_library.py from Module 3 does not change this week — no need to resubmit it.</p>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>Keep lab-4-1.py — Module 4.2 adds string method input handling directly on top of this dictionary foundation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--orange">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Time Guide</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 60–75 Minutes</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Time</th>
+            <th>Task</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><strong>CP1: CITY_DISTANCES</strong></td>
+        <td>20 min</td>
+        <td>Build the nested distances dictionary, replacing all constants</td>
+      </tr>
+      <tr>
+        <td><strong>CP2: CITY_INFO</strong></td>
+        <td>15 min</td>
+        <td>Build the city info dictionary with type and tagline</td>
+      </tr>
+      <tr>
+        <td><strong>CP3: Helper Functions</strong></td>
+        <td>20 min</td>
+        <td>Refactor display_destinations, get_destination_by_number, is_win_city, is_dead_end</td>
+      </tr>
+      <tr>
+        <td><strong>CP4: Final Checklist</strong></td>
+        <td>10 min</td>
+        <td>Test every city, clean up, and submit</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--green">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Before You Begin</div>
+    <div class="lc-sub-banner">Program Architecture</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <p class="lc-arch-intro">Here is how your program changes this week. Every [NEW] item is something you are adding. Every [REPLACED] item is something that changes from your 3.3 code. Everything else in your game loop stays the same.</p>
+    <div class="lc-arch">
+      <pre># ---- CONSTANTS ---- (top of file)
+STARTING_CITY   = &#x27;San Antonio&#x27;          (unchanged)
+CITY_DISTANCES  = { ... }                <span class="lc-arch-new">[NEW -- replaces 20+ distance constants]</span>
+CITY_INFO       = { ... }                <span class="lc-arch-new">[NEW -- replaces city-type if/elif chains]</span>
+
+# ---- HELPER FUNCTIONS ----
+display_destinations(current_city)       <span class="lc-arch-replaced">[REPLACED -- now reads from CITY_DISTANCES]</span>
+get_destination_by_number(city, num)     <span class="lc-arch-new">[NEW -- returns name + distance from dict]</span>
+is_win_city(city_name)                   <span class="lc-arch-new">[NEW -- checks CITY_INFO[&#x27;type&#x27;]</span> == &#x27;WIN&#x27;]
+is_dead_end(city_name)                   <span class="lc-arch-new">[NEW -- checks CITY_INFO[&#x27;type&#x27;]</span> in dead ends]
+
+# (all your Module 3 functions stay unchanged)
+roll_d20(), flip_coin(), etc.            (from function_library -- no changes this week)
+
+GAME LOOP:  (structure unchanged -- only the data source changes)
+|
+|-- Display city tagline from CITY_INFO   <span class="lc-arch-replaced">[REPLACED]</span>
+|-- Call display_destinations()           <span class="lc-arch-replaced">[REPLACED -- uses dict now]</span>
+|-- Get player choice (get_valid_int)     (unchanged)
+|-- Call get_destination_by_number()      <span class="lc-arch-replaced">[REPLACED -- was hardcoded]</span>
+|
+|   DESTINATION GATE: (coin flip -- unchanged until 4.3)
+|
+|   TRAVEL LOOP: (unchanged)
+|   |-- Roll D20, accumulate miles
+|   |-- 30% hazard check
+|   |-- Repeat until arrival
+|
+|-- Call is_win_city()                    <span class="lc-arch-replaced">[REPLACED]</span>
+|-- Call is_dead_end()                    <span class="lc-arch-replaced">[REPLACED]</span>
+|-- Update stats, check keep_playing</pre>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--green">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Checkpoints</div>
+    <div class="lc-sub-banner">4 Checkpoints</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">1</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Build CITY_DISTANCES</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>You are creating a nested dictionary that maps every city to its available destinations and the driving distance in miles. Once this is in place, <code>CITY_DISTANCES['San Antonio']['Austin']</code> returns <code>80</code> — no constant required.</p>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Textbook Reference</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-1</strong>
+            — <code>card_dealer.py</code>
+            
+            — Shows dictionary creation, key access with bracket notation, and looping through keys. The same patterns apply directly to CITY_DISTANCES.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Delete (or comment out) all of your individual distance constants from Module 3 — the lines like <code>SAT_AUS = 80</code>, <code>SAT_HOU = 200</code>, and so on.</li>
+      <li>Near the top of your file, create <code>CITY_DISTANCES</code> as an empty dictionary: <code>CITY_DISTANCES = {}</code>.</li>
+      <li>Add San Antonio as the first outer key. Its value is another dictionary with each destination city as a key and the mileage as an integer value.</li>
+      <li>Add the remaining nine cities as outer keys, each with their own inner destination dictionary. Use the city and mileage data provided in the code plan.</li>
+      <li>Test a few lookups in isolation before continuing: <code>print(CITY_DISTANCES['San Antonio']['Austin'])</code> should print <code>80</code>.</li>
+    </ol>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
+                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="19" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Build It in Pieces</div>
+        <div class="lc-callout__body">
+        <p>Don't try to write all ten cities at once. Add San Antonio, test it, then add Houston, test again. A working two-city dictionary is better than a broken ten-city one.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--pitfall">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="22.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Keys Are Case-Sensitive</div>
+        <div class="lc-callout__body">
+        <p>Dictionary keys must match exactly — capitalization, spaces, and all. <code>'San Antonio'</code> and <code>'san antonio'</code> are different keys. Pick one convention and stick to it throughout the entire file.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Build CITY_INFO</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>You are creating a second dictionary that stores each city's type (WIN, HUB, GATEWAY, etc.) and its tagline. This replaces every hardcoded city-type check in your game loop with a clean dictionary lookup.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Below your <code>CITY_DISTANCES</code> constant, create <code>CITY_INFO = {}</code>.</li>
+      <li>For each of the ten cities, add an entry where the key is the city name (spelled exactly as in CITY_DISTANCES) and the value is a dictionary with two keys: <code>'type'</code> and <code>'tagline'</code>.</li>
+      <li>Use these city types and taglines from the code plan: San Antonio (START, 'Home of the Alamo'), Houston (GATEWAY, 'Space City'), Austin (CORRIDOR, 'Keep it weird'), Corpus Christi (WIN, 'The Sparkling City by the Sea'), Galveston (WIN, 'The Playground of the South'), Laredo (DEAD_END, 'Gateway to Mexico'), El Paso (WRONG_WAY, 'Closer to California than Houston'), Dallas (HUB, 'Where everything is bigger'), Fort Worth (HUB, 'Where the West begins'), Texarkana (DEAD_END, 'Two states at once').</li>
+      <li>Test a lookup: <code>print(CITY_INFO['Austin']['tagline'])</code> should print <code>Keep it weird</code>.</li>
+    </ol>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Why a Nested Dict Instead of Two Separate Ones?</div>
+        <div class="lc-callout__body">
+        <p>You could have separate <code>CITY_TYPES</code> and <code>CITY_TAGLINES</code> dictionaries, but grouping all city data under one outer key keeps related information together. When you add a new city, you add one entry — not two.</p>
+        <ul>
+          <li>Easier to maintain — one place to update</li>
+          <li>Easier to extend — add a new field without touching existing code</li>
+          <li>Clearer intent — <code>CITY_INFO['Austin']</code> returns everything about Austin</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <p>After this checkpoint, you have two dictionaries defined near the top of your file. Neither is connected to the game loop yet — that happens in CP3. Run the file to confirm it loads without errors, then move on.</p>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">3</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Refactor the Helper Functions</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Now you wire the dictionaries into the game by rewriting four helper functions. Three of them (<code>display_destinations</code>, <code>is_win_city</code>, <code>is_dead_end</code>) already exist in your code from Module 3. You are replacing their implementations. One (<code>get_destination_by_number</code>) is new.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li><strong>display_destinations(current_city):</strong> Use <code>CITY_DISTANCES[current_city]</code> to get the destination dictionary. Loop through it with a counter to display each option as a numbered menu. Return <code>list(CITY_DISTANCES[current_city].keys())</code> so the game loop knows what options are available.</li>
+      <li><strong>get_destination_by_number(current_city, choice_num):</strong> Get <code>list(CITY_DISTANCES[current_city].keys())</code>, then index into it with <code>choice_num - 1</code>. Return the destination city name and its mileage as two separate values.</li>
+      <li><strong>is_win_city(city_name):</strong> Use <code>CITY_INFO.get(city_name, {})</code> to safely fetch the city's data, then check if <code>city_data.get('type', '')</code> equals <code>'WIN'</code>. Return True or False.</li>
+      <li><strong>is_dead_end(city_name):</strong> Same pattern as is_win_city, but check if the type is in <code>['DEAD_END', 'WRONG_WAY']</code>.</li>
+      <li>Update your game loop to display the city tagline from CITY_INFO at the start of each turn: <code>tagline = CITY_INFO.get(current_city, {}).get('tagline', '')</code>.</li>
+      <li>Run the game and play through at least one full turn. Confirm the destination menu appears correctly and distances match the dictionary values.</li>
+    </ol>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
+                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="19" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Use .get() for Safe Lookups</div>
+        <div class="lc-callout__body">
+        <p>When looking up a city in <code>CITY_INFO</code>, use <code>.get(city_name, {})</code> instead of direct bracket access. If a city somehow isn't in the dictionary, you get an empty dict back instead of a KeyError that crashes the program.</p>
+        <ul>
+          <li><code>CITY_INFO['Atlantis']</code> — raises KeyError, program crashes</li>
+          <li><code>CITY_INFO.get('Atlantis', {})</code> — returns empty dict, program continues</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"I just replaced like fifteen lines of elif chains with four lines of dictionary lookups. I know this is obvious to everyone else but I&#x27;m having a moment over here."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Tyler Nguyen</div>
+        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #FF1744;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Mistake</th>
+        <th>What Goes Wrong</th>
+        <th>Fix</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Using the old constants alongside the new dict</td>
+        <td>Confusing source of truth — distance from where?</td>
+        <td>Delete or comment out all old constants before testing</td>
+      </tr>
+      <tr>
+        <td><code>CITY_DISTANCES[current_city]</code> raises KeyError</td>
+        <td>City name in game state doesn't match dict key exactly</td>
+        <td>Print <code>current_city</code> and compare to dict keys character by character</td>
+      </tr>
+      <tr>
+        <td><code>get_destination_by_number</code> returns wrong city</td>
+        <td>Off-by-one error — player enters 1, index is 0</td>
+        <td>Use <code>choice_num - 1</code> when indexing into the keys list</td>
+      </tr>
+      <tr>
+        <td><code>display_destinations</code> shows no options</td>
+        <td>Returned list is empty or function isn't being called</td>
+        <td>Check that <code>current_city</code> is spelled exactly as a key in CITY_DISTANCES</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">4</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Test Every City and Submit</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Before submitting, run through a complete test of your dictionary integration. The game should behave identically to your Module 3 version from a player's perspective — the only thing that changed is where the data lives.</p>
+    <ol>
+      <li>Start the game and confirm that San Antonio's tagline ('Home of the Alamo') displays correctly.</li>
+      <li>Confirm that the destination menu for San Antonio shows all five options with the correct mileage values pulled from <code>CITY_DISTANCES</code>.</li>
+      <li>Travel to Austin and confirm that Austin's tagline and available destinations appear correctly.</li>
+      <li>Travel to Corpus Christi and confirm that <code>is_win_city()</code> triggers the win condition.</li>
+      <li>Travel to Laredo and confirm that <code>is_dead_end()</code> triggers correctly.</li>
+      <li>Confirm that no hardcoded distance constants appear anywhere in your code. Search for any numeric literals that look like mileage values.</li>
+    </ol>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">You're Done When...</div>
+        <div class="lc-callout__body">
+        <p>Every city lookup goes through <code>CITY_DISTANCES</code> or <code>CITY_INFO</code>. There are no hardcoded distances anywhere in your game loop or helper functions. The game plays exactly like your Module 3 version — the dictionaries are invisible to the player.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--red">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Final Checklist</div>
+    <div class="lc-sub-banner">Check It Before You Wreck It</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3 lc-h3--yellow">Before You Submit</div>
+    <ul class="lc-checklist">
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">CITY_DISTANCES is defined with all ten cities and correct mileage values</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">CITY_INFO is defined with all ten cities, each with &#x27;type&#x27; and &#x27;tagline&#x27; keys</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All old individual distance constants have been removed or commented out</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">display_destinations() reads from CITY_DISTANCES, not hardcoded values</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">get_destination_by_number() returns city name and distance from CITY_DISTANCES</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">is_win_city() checks CITY_INFO[&#x27;type&#x27;] == &#x27;WIN&#x27;</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">is_dead_end() checks CITY_INFO[&#x27;type&#x27;] in dead-end types</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">City tagline displays at the start of each turn using CITY_INFO</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Top-of-file comment block includes name, abc123, section, and description</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All functions have docstrings</span>
+      </li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
+    <p>You may use any technique from Chapters 2 through 9 that has been introduced so far. This week&#x27;s focus is Chapter 9 dictionaries. String methods like .upper() and .strip() are technically in Chapter 8 but are being saved for Module 4.2 — do not use them yet.</p>
+    <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
+    <div class="lc-permitted">
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–9 (Chapters 2–7 fully permitted from previous modules; Chapter 9 dictionaries as introduced this week; Chapter 8 string methods arrive in Module 4.2)</p>
+      <ul class="lc-permitted__list">
+      <li>Dictionary creation: &lt;code&gt;CITY_DISTANCES = {&#x27;San Antonio&#x27;: {&#x27;Austin&#x27;: 80}}&lt;/code&gt;</li>
+      <li>Key access: &lt;code&gt;CITY_DISTANCES[&#x27;San Antonio&#x27;][&#x27;Austin&#x27;]&lt;/code&gt;</li>
+      <li>Safe access: &lt;code&gt;CITY_INFO.get(&#x27;Austin&#x27;, {})&lt;/code&gt;</li>
+      <li>Dict methods: &lt;code&gt;.keys()&lt;/code&gt;, &lt;code&gt;.values()&lt;/code&gt;, &lt;code&gt;.items()&lt;/code&gt;</li>
+      <li>Membership test: &lt;code&gt;if city in CITY_DISTANCES:&lt;/code&gt;</li>
+      </ul>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> .upper(), .lower(), .strip() (Module 4.2), sets (Module 4.3), list comprehensions, try/except, classes, inheritance</p>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Do not use .upper() or .strip() yet — those are the Module 4.2 reveal. CodeGrade&#x27;s scope check will flag premature use of string methods.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>Keep lab-4-1.py — Module 4.2 adds string method input handling directly on top of this dictionary foundation. You will copy this file and build on it.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
+    <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
+  </div>
+</div>
+<div class="lc-card lc-card--purple">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Need Help</div>
+    <div class="lc-sub-banner">Look No Further!</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
+    <ul>
+      <li>Open your textbook to Program 9-1 (card_dealer.py) and trace through how the deck dictionary is built and accessed — it&#x27;s the same pattern as CITY_DISTANCES</li>
+      <li>If you&#x27;re getting a KeyError, print your current_city variable right before the lookup and compare it character by character to your dictionary keys</li>
+      <li>Build and test one dictionary before starting the other — confirm CITY_DISTANCES works completely before writing CITY_INFO</li>
+      <li>Submit to CodeGrade early — the test output shows exactly which lookup is failing and what value it expected</li>
+    </ul>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Reference Guides</div>
+        <div class="lc-callout__body">
+          <p>Chapter 9 BookEx Reference Guide (bookex-ch09.py) — step-by-step breakdown of Program 9-1. The card deck dictionary is structurally identical to CITY_DISTANCES.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
+    <div class="lc-contact-grid">
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Zoom Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br>
+          <a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Schedule a Meeting</div>
+        <div class="lc-contact-card__value">
+          <a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Email</div>
+        <div class="lc-contact-card__value">
+          <a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>
+          Include your section number and abc123
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">CodeGrade</div>
+        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF6B1A 0%, #8B3A00 100%); padding: 8px 12px 12px 12px;">
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-time-guide.svg" alt="Time Guide" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Plan Your Session &mdash; 90-120 Minutes
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A; width: 25%;">Checkpoint</th>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A; width: 35%;">What You'll Build</th>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A;">Est. Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">1. Load City Distances</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Parse file into nested dictionary</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">25-30 min</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">2. Load City Info</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Parse file into dictionary with nested data</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">20-25 min</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">3. Data-Driven Display</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Display destinations from dictionary</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">20-25 min</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">4. Complete Game Loop</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Integrate all functions, clean input</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">25-30 min</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 20px 0 0 0; font-size: 14px;">
-                <strong style="color: #ff6b1a;">Strategy:</strong> This lab has more moving parts than previous ones. Build and test each loading function BEFORE trying to use them in the game loop. Get the data structures right first!
-            </p>
-        </div>
-    </div>
+    <footer class="lc-footer">
+        <img src="../../branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
+        <p class="lc-footer__course">IS2053: Programming I (Python) — The University of Texas at San Antonio</p>
+        <p class="lc-footer__detail">Starting Out with Python, 6th Edition — Tony Gaddis — Pearson</p>
+    </footer>
+
 </div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #39FF14 0%, #0D4D00 100%); padding: 8px 12px 12px 12px;">
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-checkpoints.svg" alt="Checkpoints" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            4 Checkpoints
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-
-            
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Terrence-Booker.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Terrence Booker">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">&ldquo;Your 3.3 game works, but all that city data is baked into the code. This week you&rsquo;re pulling it OUT into text files and loading it INTO dictionaries. Two new functions, one big refactor of your menu&mdash;and suddenly your game can handle any number of cities.&rdquo;</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/terrence-t-bone-booker.svg" alt="Terrence T-Bone Booker" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Senior Developer, Bat City Collective</div>
-                </div>
-            </div>
-
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Here&rsquo;s how your finished program fits together.</strong> The <span style="color: #FF6B1A;">[NEW]</span> tags show what you&rsquo;re adding. <span style="color: #FF6B1A;">[REPLACED]</span> tags show what changes from your 3.3 code.
-            </p>
-
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0 25px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #B0B8C4; margin: 0; padding: 15px 20px; white-space: pre; overflow-x: auto;"><span style="color: #666;"># ---- DATA LOADING FUNCTIONS ----</span>  <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #39ff14;">load_city_distances()</span>   reads city_distances.txt &rarr; nested dict
-<span style="color: #39ff14;">load_city_info()</span>        reads city_info.txt &rarr; dict of dicts
-
-<span style="color: #666;"># ---- NAVIGATION FUNCTIONS ----</span>  <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #39ff14;">display_destinations(city, distances)</span>   shows menu from dict
-<span style="color: #39ff14;">get_destination_choice(city, distances)</span>  validates user pick
-
-<span style="color: #666;"># ---- MAIN PROGRAM ----</span>
-Load data files into dictionaries  <span style="color: #FF6B1A;">[NEW]</span>
-Get player name
-current_city = 'San Antonio'
-
-<span style="color: #FFCC00;">GAME LOOP</span> <span style="color: #666;">(each pass is one leg):</span>
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Display city info from <span style="color: #39ff14;">city_info dict</span>  <span style="color: #FF6B1A;">[REPLACED]</span> <span style="color: #666;">was hardcoded</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Show destinations from <span style="color: #39ff14;">distances dict</span>  <span style="color: #FF6B1A;">[REPLACED]</span> <span style="color: #666;">was if/elif menu</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Destination Gate (coin flip)
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">TRAVEL LOOP</span> <span style="color: #666;">(each pass is one turn):</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Fixed 50-mile travel, check for hazard
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Repeat until you arrive
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Update trip totals
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Check outcome: beach / dead end / continue
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Save and quit option
-
-<span style="color: #666;"># ---- AFTER THE LOOP ----</span>
-Print trip summary
-"Thanks for playing!"</pre>
-            </div>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-<div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-1.svg" alt="Checkpoint 1" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Load City Distances</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Parse the city_distances.txt file and build a nested dictionary structure.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A function that reads <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city_distances.txt</span> and creates a nested dictionary where you can look up distances like <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">distances['San Antonio']['Houston']</span> &rarr; <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #bf40ff; font-size: 13px;">200</span>
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                In Modules 1-3, you had 20+ constants like <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">SAT_TO_HOUSTON = 200</span>. Adding a new city meant adding 5+ new constants AND updating multiple if-elif chains. With a nested dictionary loaded from a file, adding a city is just adding lines to the data file. Your code doesn't change at all!
-            </p>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Terrence-Booker.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Terrence Booker">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"When testing file-loaded data, I always check three things: Does the file load correctly? Is the data structured right? What happens if the file is malformed? Print your dictionary right after loading it&mdash;if the keys and values look right, your parsing worked. If not, you found the bug early."</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/terrence-t-bone-booker.svg" alt="Terrence Booker" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">QA Lead, Bat City Collective</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" style="width: 28px; height: 28px;" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #da92ff;">Program 8-10 (split_date.py):</strong> You used <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.split('/')</span> to break a date string into parts. Now use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.split(',')</span> to break each CSV line into city1, city2, and distance!<br><br>
-                        <strong style="color: #da92ff;">Program 9-1 (card_dealer.py):</strong> You created a dictionary with key-value pairs. Now you're building a <em>nested</em> dictionary where each city maps to another dictionary of destinations.
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Create a new file</strong> called <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">lab-4-1.py</span> with your standard docstring</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Add imports:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">import random</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">import function_library</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Define</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_city_distances(filename)</span> that takes a filename parameter</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Create an empty dictionary:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">distances = {}</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Open the file</strong> and loop through each line</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">For each line:</strong> use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">line.strip().split(',')</span> to get parts</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Extract:</strong> city1 = parts[0], city2 = parts[1], distance = int(parts[2])</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Check if city1 is already a key;</strong> if not, create an empty dictionary for it</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Add the destination:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">distances[city1][city2] = distance</span></li>
-                <li><strong style="color: #fff;">Close the file and return</strong> the distances dictionary</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 50%;">&#10007; Common Mistake</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Fix</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Forgetting <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">.strip()</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Lines have <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">\n</span> at the end. Use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">line.strip()</span> first!</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">KeyError when adding to nested dict</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Check if city1 exists first: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">if city1 not in distances:</span></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Forgetting to convert distance to int</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">int(parts[2])</span> &mdash; split() returns strings!</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this test harness at the bottom of your file:</p>
-            <div style="border: 2px solid #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;"><span style="color: #6a737d; font-style: italic;"># DEBUG - DELETE BEFORE CHECKPOINT 2</span>
-distances = load_city_distances(<span style="color: #39ff14;">'city_distances.txt'</span>)
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Loaded cities:'</span>, <span style="color: #ffcc00;">list</span>(distances.keys()))
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'San Antonio to Houston:'</span>, distances[<span style="color: #39ff14;">'San Antonio'</span>][<span style="color: #39ff14;">'Houston'</span>])
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Houston destinations:'</span>, distances[<span style="color: #39ff14;">'Houston'</span>])</pre>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run and verify this output:</p>
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.5; color: #f5f5f5; margin: 0; padding: 15px 20px;">Loaded cities: ['San Antonio', 'Houston', 'Austin', 'Dallas', ...]
-San Antonio to Houston: 200
-Houston destinations: {'Galveston': 50, 'Dallas': 240, 'San Antonio': 200}</pre>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 3:</strong> Verify the distance is an <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">int</span> (200) not a <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">string</span> ('200').</p>
-            
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #fff;">Step 4:</strong> <span style="color: #ff6b1a;">DELETE the DEBUG lines</span> before moving to Checkpoint 2.</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 30px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">Docstring with your name, ID, section, and description</li>
-                <li style="margin-bottom: 5px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_city_distances()</span> function that returns a nested dictionary</li>
-                <li style="margin-bottom: 5px;">Uses <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip()</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.split(',')</span> to parse each line</li>
-                <li>Can access any distance with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">distances[city1][city2]</span></li>
-            </ul>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-2.svg" alt="Checkpoint 2" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Load City Info</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Parse the city_info.txt file and build a dictionary with nested city data.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A function that reads <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city_info.txt</span> and creates a dictionary where each city maps to <em>another dictionary</em> containing its type and tagline. Like this: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city_info['Houston']['tagline']</span> &rarr; <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">'Space City'</span>
-            </p>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" style="width: 28px; height: 28px;" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #da92ff;">Program 9-1 (card_dealer.py):</strong> You built a dictionary where card names map to values. Now build a dictionary where city names map to <em>dictionaries</em> of attributes!
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Define</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_city_info(filename)</span> that takes a filename parameter</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Create an empty dictionary:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">info = {}</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Open the file</strong> and loop through each line</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">For each line:</strong> use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">line.strip().split(',')</span> to get parts</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Extract:</strong> city = parts[0], city_type = parts[1], tagline = parts[2]</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Create nested dict:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">info[city] = {'type': city_type, 'tagline': tagline}</span></li>
-                <li><strong style="color: #fff;">Close the file and return</strong> the info dictionary</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this test harness:</p>
-            <div style="border: 2px solid #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;"><span style="color: #6a737d; font-style: italic;"># DEBUG - DELETE BEFORE CHECKPOINT 3</span>
-city_info = load_city_info(<span style="color: #39ff14;">'city_info.txt'</span>)
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Houston type:'</span>, city_info[<span style="color: #39ff14;">'Houston'</span>][<span style="color: #39ff14;">'type'</span>])
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Houston tagline:'</span>, city_info[<span style="color: #39ff14;">'Houston'</span>][<span style="color: #39ff14;">'tagline'</span>])
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Corpus Christi type:'</span>, city_info[<span style="color: #39ff14;">'Corpus Christi'</span>][<span style="color: #39ff14;">'type'</span>])</pre>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run and verify this output:</p>
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.5; color: #f5f5f5; margin: 0; padding: 15px 20px;">Houston type: GATEWAY
-Houston tagline: Space City
-Corpus Christi type: WIN</pre>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #fff;">Step 3:</strong> <span style="color: #ff6b1a;">DELETE the DEBUG lines</span> before moving to Checkpoint 3.</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">city_info['type']</code> directly</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Need TWO keys: <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">city_info[city_name]['type']</code></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Inconsistent key names</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Use exact keys: 'type' and 'tagline' (lowercase)</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting to return the dictionary</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Function must <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">return city_info</code> at the end</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 30px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_city_info()</span> function that returns a dictionary of dictionaries</li>
-                <li style="margin-bottom: 5px;">Each city maps to <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">{'type': ..., 'tagline': ...}</span></li>
-                <li>Can access city attributes with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city_info[city]['type']</span></li>
-            </ul>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-3.svg" alt="Checkpoint 3" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Data-Driven Display</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Create helper functions that use dictionaries to display destinations and look up information.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Functions that display available destinations from a city and help with navigation&mdash;all driven by your dictionaries, not hardcoded values!
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Create</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_destinations(city, distances)</span> that takes current city and distances dict</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Loop through destinations:</strong> use a counter variable to number options (1, 2, 3...)</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Print each:</strong> option number, destination name, and distance</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Create</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">get_destination_by_number(city, distances, choice)</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Convert dict keys to list:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">destinations = list(distances[city].keys())</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Return the destination</strong> at index <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">choice - 1</span> (user picks 1, but index is 0)</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Create</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">is_win_city(city, city_info)</span> that checks if type is 'WIN'</li>
-                <li><strong style="color: #fff;">Create</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">is_dead_end(city, city_info)</span> that checks if type is 'DEAD_END' or 'WRONG_WAY'</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this test harness:</p>
-            <div style="border: 2px solid #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;"><span style="color: #6a737d; font-style: italic;"># DEBUG - DELETE BEFORE CHECKPOINT 4</span>
-distances = load_city_distances(<span style="color: #39ff14;">'city_distances.txt'</span>)
-city_info = load_city_info(<span style="color: #39ff14;">'city_info.txt'</span>)
-
-display_destinations(<span style="color: #39ff14;">'San Antonio'</span>, distances)
-dest = get_destination_by_number(<span style="color: #39ff14;">'San Antonio'</span>, distances, <span style="color: #bf40ff;">2</span>)
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Choice 2 is:'</span>, dest)
-
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Corpus Christi is win?'</span>, is_win_city(<span style="color: #39ff14;">'Corpus Christi'</span>, city_info))
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Laredo is dead end?'</span>, is_dead_end(<span style="color: #39ff14;">'Laredo'</span>, city_info))</pre>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run and verify this output:</p>
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.5; color: #f5f5f5; margin: 0; padding: 15px 20px;">From San Antonio, you can travel to:
-
-  1. Corpus Christi - 150 miles
-  2. Houston - 200 miles
-  3. Austin - 80 miles
-  4. Laredo - 160 miles
-  5. El Paso - 550 miles
-
-Choice 2 is: Houston
-Corpus Christi is win? True
-Laredo is dead end? True</pre>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #fff;">Step 3:</strong> <span style="color: #ff6b1a;">DELETE the DEBUG lines</span> before moving to Checkpoint 4.</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">choice</code> as index directly</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">User enters 1 for first item, but <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">list(dict.keys())[0]</code> is index 0</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Checking type with <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">== 'win'</code> (lowercase)</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Types are uppercase: 'WIN', 'DEAD_END', 'GATEWAY'</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting WRONG_WAY in is_dead_end()</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Both 'DEAD_END' and 'WRONG_WAY' end the game</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 30px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_destinations()</span> shows numbered menu from dictionary</li>
-                <li style="margin-bottom: 5px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">get_destination_by_number()</span> converts user choice to destination name</li>
-                <li style="margin-bottom: 5px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">is_win_city()</span> returns True for WIN cities</li>
-                <li><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">is_dead_end()</span> returns True for DEAD_END or WRONG_WAY cities</li>
-            </ul>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-4.svg" alt="Checkpoint 4" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Complete Game Loop</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Wire everything together into a complete road trip game with the main() function.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A complete game that loads data, gets player name, displays current city info, lets player choose destinations, uses coin flip gate, and tracks the route until they reach the beach or a dead end.
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Create</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">main()</span> function with welcome banner</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Load both data files</strong> using your functions</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Get player name:</strong> use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">input().strip()</span> to clean whitespace</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Initialize game state:</strong> current_city = 'San Antonio', total_miles = 0, visited = [current_city]</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Start game loop:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">while playing:</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Show current city</strong> with tagline from city_info</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Check for win</strong> (is_win_city) or dead end (is_dead_end)</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Display destinations</strong> and get player choice using function_library.get_valid_int()</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Use coin flip gate:</strong> HEADS = go to choice, TAILS = random redirect</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Update state:</strong> current_city, total_miles, visited list</li>
-                <li><strong style="color: #fff;">Show final trip report</strong> after loop ends</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.get_valid_int(prompt, min, max)</span> for getting the player's destination choice. The number of choices is <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">len(distances[current_city])</span>&mdash;it's data-driven!
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add the main guard at the bottom of your file:</p>
-            <div style="border: 2px solid #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;"><span style="color: #ff6b1a;">if</span> __name__ == <span style="color: #39ff14;">'__main__'</span>:
-    main()</pre>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Play through the game! Verify:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">Data loads correctly (shows number of cities)</li>
-                <li style="margin-bottom: 5px;">Current city shows tagline from data</li>
-                <li style="margin-bottom: 5px;">Destination menu shows all options from dictionary</li>
-                <li style="margin-bottom: 5px;">Coin flip works (HEADS = choice, TAILS = random)</li>
-                <li style="margin-bottom: 5px;">Reaching Corpus Christi or Galveston shows win</li>
-                <li>Final report shows route and total miles</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Data files not in same directory</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Python looks for files relative to where script runs&mdash;keep .txt files with .py</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Not calling functions before using data</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Call <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">load_city_distances()</code> and <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">load_city_info()</code> at start of main()</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Missing <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">if __name__ == '__main__':</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">This guard prevents main() from running when module is imported</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">Complete <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">main()</span> function with game loop</li>
-                <li style="margin-bottom: 5px;">All data comes from files (no hardcoded constants for cities)</li>
-                <li style="margin-bottom: 5px;">Clean input with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip()</span></li>
-                <li style="margin-bottom: 5px;">Uses function_library for coin flip and input validation</li>
-                <li>Complete trip report at the end</li>
-            </ul>
-            
-        </div>
-    </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF1744 0%, #4A0A0A 100%); padding: 8px 12px 12px 12px;">
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-final-checklist.svg" alt="Final Checklist" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Check It Before You Wreck It
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-before-you-submit.svg" alt="Before You Submit" style="height: 18px; display: block;">
-            </div>
-            
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">File is named exactly <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">lab-4-1.py</span></li>
-                <li style="margin-bottom: 8px;">Docstring includes your name, abc123, section, and description</li>
-                <li style="margin-bottom: 8px;">Uses <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip()</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.split(',')</span> to parse file data</li>
-                <li style="margin-bottom: 8px;">Uses dictionaries (not constants) to store city data</li>
-                <li style="margin-bottom: 8px;">Uses <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library</span> for flip_coin and get_valid_int</li>
-                <li style="margin-bottom: 8px;">All DEBUG/test code has been removed</li>
-                <li>No syntax errors when you run the program</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-permitted-techniques.svg" alt="Permitted Techniques" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">
-                <strong style="color: #fff;">Chapters 2-9 ONLY.</strong> CodeGrade will flag code using techniques from later chapters.
-            </p>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #ff1744; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF1744; width: 50%;">Allowed</th>
-                            <th style="background: #1a1a1a; color: #ff1744; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF1744;">&#10007; Not Yet</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Dictionaries, nested dictionaries</td>
-                            <td style="background: #000; color: #666; padding: 12px 15px; border-bottom: 2px solid #222;">Classes (Chapter 10)</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">.strip(), .split(), string methods</td>
-                            <td style="background: #000; color: #666; padding: 12px 15px; border-bottom: 2px solid #222;">Inheritance (Chapter 11)</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Lists, file I/O, functions</td>
-                            <td style="background: #000; color: #666; padding: 12px 15px; border-bottom: 2px solid #222;">Sets (saved for Lab 4.3)</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">import random, import function_library</td>
-                            <td style="background: #000; color: #666; padding: 12px 15px; border-bottom: 2px solid #222;">.upper(), .lower() (saved for Lab 4.2)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-codegrade-tip.svg" alt="CodeGrade Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Submit early and often!</strong> CodeGrade provides unlimited submissions. Upload your lab-4-1.py and the data files together. CodeGrade will run your program with the same data files to verify your dictionary loading works correctly.
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-academic-integrity.svg" alt="Academic Integrity" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                This is individual work. You may discuss concepts with classmates, but your code must be your own. Using AI assistants to write your code violates the academic integrity policy&mdash;and CodeGrade's scope checker can often detect AI-generated code that uses techniques from later chapters.
-            </p>
-            
-        </div>
-    </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #BF40FF 0%, #2E0854 100%); padding: 8px 12px 12px 12px;">
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-need-help.svg" alt="Need Help?" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Look No Further! We've Got You
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-if-you-get-stuck.svg" alt="If You Get Stuck" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 25px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Re-read Program 8-10 (split_date.py)</strong> &mdash; the pattern for splitting CSV data is exactly what you need</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Re-read Program 9-1 (card_dealer.py)</strong> &mdash; creating and accessing dictionaries</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Test each function independently</strong> &mdash; get load_city_distances working before load_city_info</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Use DEBUG prints</strong> &mdash; print what you're parsing from each line to verify it's correct</li>
-                <li><strong style="color: #fff;">Submit to CodeGrade early</strong> &mdash; it shows exactly which tests pass or fail</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-contact-and-resources.svg" alt="Contact & Resources" style="height: 18px; display: block;">
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Webcam-Video-Square.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Weekly Zoom Session</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Tuesdays at 6:00 PM CT &mdash; Live coding help and Q&amp;A</div>
-                    <a href="https://utsa.zoom.us/j/97617245124" style="color: #BF40FF; font-size: 13px;">https://utsa.zoom.us/j/97617245124</a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Calendar-Mark.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Office Hours (by Appointment)</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Book a 15-minute slot for one-on-one help</div>
-                    <a href="https://calendly.com/john-newsom-utsa/student-meeting" style="color: #BF40FF; font-size: 13px;">https://calendly.com/john-newsom-utsa/student-meeting</a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Customer-Support.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Discord Community</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Get help from classmates and share tips (optional but recommended)</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Mail-Send-Envelope.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Email</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">For private questions or concerns</div>
-                    <a href="/cdn-cgi/l/email-protection#1a7075727434747f6d6975775a6f6e697b347f7e6f" style="color: #BF40FF; font-size: 13px;"><span class="__cf_email__" data-cfemail="adc7c2c5c383c3c8dadec2c0edd8d9decc83c8c9d8">[email&#160;protected]</span></a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Chapter 8-9 BookEx Reference Guides</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Step-by-step breakdowns of every textbook example &mdash; your primary reference</div>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
-<div style="text-align: center; color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
-    <img style="height: 50px; margin-bottom: 15px;" src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
-    <div style="color: #b0b8c4; font-size: 13px;">IS2053 Programming I &mdash; UT San Antonio &mdash; Spring 2026</div>
-  
+</body>
+</html>
