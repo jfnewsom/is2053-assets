@@ -240,11 +240,10 @@ def render_text(item: dict) -> str:
 
 
 def render_h3(item: dict, card_color: str = "green") -> str:
-    """Render a named section header using the h3 label map."""
+    """Render a named section header — Roboto Slab, color inherited from card accent."""
     label = item.get("label", "")
     display = H3_LABELS.get(label, label.replace("_", " ").title())
-    color_class = H3_COLOR_FOR_CARD.get(card_color, "lc-h3--yellow")
-    return f'    <div class="lc-h3 {color_class}">{display}</div>\n'
+    return f'    <div class="lc-h3">{display}</div>\n'
 
 
 def render_callout(item: dict) -> str:
@@ -528,13 +527,18 @@ def render_before_you_begin(byb: dict) -> str:
 
     intro_html = f'    <p class="lc-arch-intro">{html_lib.escape(intro)}</p>\n' if intro else ""
 
-    return f"""{card_open("green")}
-{topper("Before You Begin", "Program Architecture")}
-{panel_open()}
-{intro_html}    <div class="lc-arch">
+    return (
+        card_open("cyan")
+        + topper("Before You Begin", "Program Architecture")
+        + panel_open()
+        + intro_html
+        + f"""    <div class="lc-arch">
       <pre>{escaped}</pre>
     </div>
-{panel_close()}{card_close()}"""
+"""
+        + panel_close()
+        + card_close()
+    )
 
 
 # ============================================================
@@ -621,13 +625,13 @@ def render_final_checklist(checklist: dict) -> str:
       </li>
 """
 
-    submit_block = f"""    <div class="lc-h3 lc-h3--yellow">Before You Submit</div>
+    submit_block = f"""    <div class="lc-h3">Before You Submit</div>
     <ul class="lc-checklist">
 {checklist_items}    </ul>
 """ if checklist_items else ""
 
     # Scope reminder
-    scope_block = f"""    <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
+    scope_block = f"""    <div class="lc-h3">Scope Reminder</div>
     <p>{html_lib.escape(scope_reminder)}</p>
 """ if scope_reminder else ""
 
@@ -646,7 +650,7 @@ def render_final_checklist(checklist: dict) -> str:
             f'<strong>Not permitted:</strong> {html_lib.escape(not_permitted)}</p>\n'
         ) if not_permitted else ""
 
-        permitted_block = f"""    <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
+        permitted_block = f"""    <div class="lc-h3">Permitted Techniques</div>
     <div class="lc-permitted">
       <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> {html_lib.escape(chapters)}</p>
       <ul class="lc-permitted__list">
@@ -684,7 +688,7 @@ def render_final_checklist(checklist: dict) -> str:
 """ if save_your_code else ""
 
     # Academic Integrity
-    integrity_block = f"""    <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
+    integrity_block = f"""    <div class="lc-h3">Academic Integrity</div>
     <p>{html_lib.escape(academic_integrity)}</p>
 """
 
@@ -739,7 +743,7 @@ def render_need_help(need_help: dict) -> str:
         f'      <li>{html_lib.escape(item)}</li>\n'
         for item in if_you_get_stuck
     )
-    stuck_block = f"""    <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
+    stuck_block = f"""    <div class="lc-h3">If You Get Stuck</div>
     <ul>
 {stuck_items}    </ul>
 """ if stuck_items else ""
@@ -760,5 +764,5 @@ def render_need_help(need_help: dict) -> str:
     return f"""{card_open("purple")}
 {topper("Need Help", "Look No Further!")}
 {panel_open()}
-{stuck_block}{bookex_block}    <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
+{stuck_block}{bookex_block}    <div class="lc-h3">Contact &amp; Resources</div>
 {CONTACT_GRID_HTML}{panel_close()}{card_close()}"""
