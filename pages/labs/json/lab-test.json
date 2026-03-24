@@ -1,0 +1,196 @@
+{
+    "meta": {
+        "labId":         "lab-test",
+        "title":         "Pipeline Test",
+        "module":        4,
+        "week":          1,
+        "weekType":      "BUILD",
+        "chapters":      "8\u20139",
+        "chapterTopics": "More About Strings, Dictionaries",
+        "filename":      "lab-test.py"
+    },
+    "overview": {
+        "body": "This is a test lab used to verify that every component type renders correctly. It is not a real assignment.",
+        "mentorQuote": {
+            "character": "Danny Cavanaugh",
+            "role":      "Senior Developer, Bat City Collective",
+            "headshot":  "Danny-Cavanaugh.png",
+            "quote":     "If it renders clean, ship it. That's the whole job."
+        },
+        "objectives": [
+            "Verify that every component type renders without errors",
+            "Confirm CSS classes are correct end-to-end",
+            "Establish a baseline for the full pipeline"
+        ],
+        "keyConceptsText": "Chapter 8: Program 8-3 (string methods). Chapter 9: Programs 9-1 through 9-4 (dictionaries).",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis \u2014 Chapters 8 & 9",
+        "programRequirements": [
+            "All component types render without errors",
+            "Output HTML validates cleanly"
+        ],
+        "namedConstants": [
+            { "name": "CITY_DISTANCES", "description": "Nested dict \u2014 city \u2192 destination \u2192 miles" },
+            { "name": "STARTING_CITY",  "description": "String constant \u2014 always 'San Antonio'" }
+        ],
+        "filenameNote": "Submit lab-test.py this week.",
+        "saveYourCode": "Keep this file \u2014 the next lab builds on it."
+    },
+    "timeGuide": {
+        "totalTime": "60\u201375 Minutes",
+        "rows": [
+            { "checkpoint": "CP1: Dictionaries",   "time": "15 min", "task": "Build the CITY_DISTANCES dict" },
+            { "checkpoint": "CP2: Lookups",         "time": "15 min", "task": "Replace hardcoded constants" },
+            { "checkpoint": "CP3: String Methods",  "time": "15 min", "task": "Add input normalization" },
+            { "checkpoint": "CP4: Final Checklist", "time": "15 min", "task": "Test, clean up, and submit" }
+        ]
+    },
+    "beforeYouBegin": {
+        "intro": "Here's how your finished program fits together. The [NEW] tags show what you're adding this week. The [REPLACED] tags show what changes from your previous code.",
+        "architecture": "# ---- CONSTANTS ----\nCITY_DISTANCES = { ... }   [NEW \u2014 replaces 20+ distance constants]\nCITY_INFO      = { ... }   [NEW \u2014 city names and taglines]\n\n# ---- HELPER FUNCTIONS ----\ndisplay_destinations()     shows menu from dict    [REPLACED]\nget_city_info(city)        dict lookup             [NEW]\n\nGAME LOOP:\n\u2502\n\u251c\u2500\u2500 Display city info (CITY_INFO lookup)           [REPLACED]\n\u251c\u2500\u2500 Get destination choice\n\u2502\n\u2502   TRAVEL LOOP:\n\u2502   \u251c\u2500\u2500 Roll D20, move miles\n\u2502   \u251c\u2500\u2500 30% chance: hazard check\n\u2502   \u2514\u2500\u2500 Repeat until arrival\n\u2502\n\u2514\u2500\u2500 Update totals, check outcome"
+    },
+    "checkpoints": [
+        {
+            "number": 1,
+            "title":  "Build the CITY_DISTANCES Dictionary",
+            "content": [
+                { "type": "h3",   "label": "what_youre_building" },
+                { "type": "text", "body": "You're replacing 20+ individual distance constants with a single nested dictionary. This is the core data structure upgrade for Module 4." },
+                { "type": "h3",   "label": "step_by_step" },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Create a constant <code>CITY_DISTANCES</code> near the top of your file.",
+                        "Add San Antonio as the first key: <code>CITY_DISTANCES = {'San Antonio': {...}}</code>",
+                        "Add all five destination cities as nested keys with integer mile values."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId":   "9-1",
+                            "filename":    "dictionary1.py",
+                            "step":        1,
+                            "description": "Shows basic dictionary creation with string keys and integer values."
+                        },
+                        {
+                            "programId":   "9-2",
+                            "filename":    "dictionary2.py",
+                            "step":        2,
+                            "description": "Demonstrates key access and iteration."
+                        }
+                    ]
+                },
+                {
+                    "type": "code_block",
+                    "code": "CITY_DISTANCES = {\n    'San Antonio': {\n        'Austin':   80,\n        'Houston':  197,\n        'Dallas':   275\n    }\n}"
+                },
+                { "type": "h3",   "label": "expected_output" },
+                {
+                    "type": "output_block",
+                    "output": "Where would you like to travel?\n  A) Austin     (80 miles)\n  B) Houston    (197 miles)\n  C) Dallas     (275 miles)"
+                },
+                { "type": "h3",   "label": "why_this_matters" },
+                { "type": "text", "body": "One lookup replaces ten branches. This is the moment your code stops being a long if/elif chain and starts being data-driven." }
+            ]
+        },
+        {
+            "number": 2,
+            "title":  "Tips and Pitfalls",
+            "content": [
+                { "type": "h3", "label": "tips_and_pitfalls" },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Using <code>CITY_DISTANCES['austin']</code>", "Dictionary keys are case-sensitive \u2014 use exact capitalization"],
+                        ["Using an if/elif chain instead of dict access", "Defeats the purpose of a dictionary; CodeGrade will flag it"]
+                    ],
+                    "accent": "red"
+                },
+                {
+                    "type": "callout",
+                    "variant": "pitfall",
+                    "title": "Key Case Matters",
+                    "body": "Dictionary keys are case-sensitive. <code>'austin'</code> and <code>'Austin'</code> are different keys."
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "You're Done When...",
+                    "body": "Your program looks up distances using <code>CITY_DISTANCES[city][destination]</code> with no hardcoded numbers in the game loop."
+                },
+                {
+                    "type": "callout",
+                    "variant": "tip",
+                    "title": "Test in Isolation",
+                    "body": "Before wiring the dictionary into the game, test it by itself.",
+                    "items": [
+                        "Open a new file and create just the dictionary",
+                        "Print a few lookups to confirm the values are right",
+                        "Then copy it into your main file"
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "info",
+                    "title": "Why Nested Dicts?",
+                    "body": "A nested dictionary models a two-dimensional lookup: from city \u2192 to destination \u2192 miles. It's the same concept as a table with row and column headers."
+                },
+                {
+                    "type": "callout",
+                    "variant": "warning",
+                    "title": "Scope Violation",
+                    "body": "Do not use list comprehensions or try/except \u2014 those are Module 4.2 and 4.3 topics. CodeGrade's AST check will flag them."
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title":  "Mentor Check-In",
+            "content": [
+                { "type": "h3", "label": "test_your_code" },
+                { "type": "text", "body": "Run your program and confirm the destination menu shows correct distances pulled from the dictionary." },
+                {
+                    "type": "mentor_quote",
+                    "character": "Priya Venkatesh",
+                    "role":      "Lead Architect, Bat City Collective",
+                    "headshot":  "Priya-Venkatesh.png",
+                    "quote":     "Data structures exist to make the impossible feel obvious. One dictionary lookup instead of twenty constants \u2014 that's not just cleaner code, it's a better model of reality."
+                }
+            ]
+        }
+    ],
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "lab-test.py uses CITY_DISTANCES \u2014 no hardcoded distance constants",
+            "All city lookups use dictionary key access, not if/elif chains",
+            "Code has top-of-file comment block with name, abc123, section, and description",
+            "All functions have docstrings"
+        ],
+        "scopeReminder": "You may use dictionaries, .keys(), .values(), .items(), and string methods from Chapter 8. Do NOT use list comprehensions, try/except, classes, or inheritance.",
+        "permittedTechniques": {
+            "chapters": "2\u20139 (Chapters 2\u20138 fully permitted; Chapter 9 dictionaries as introduced this module)",
+            "specific": [
+                "dict key access: city_info['Austin']",
+                "dict methods: .keys(), .values(), .items()",
+                "String methods: .upper(), .lower(), .strip()"
+            ],
+            "notPermitted": "list comprehensions, try/except, classes, inheritance"
+        },
+        "warnings": [
+            "Do not use parallel lists in place of a dictionary \u2014 CodeGrade's scope check will flag it."
+        ],
+        "saveYourCode": "Keep this file \u2014 Module 4.2 adds string method input handling on top of your dictionary work."
+    },
+    "needHelp": {
+        "ifYouGetStuck": [
+            "Re-read Programs 9-1 through 9-4 \u2014 dictionary creation, access, and iteration",
+            "Test your dictionary in isolation before wiring it into the game",
+            "Submit to CodeGrade early \u2014 it shows exactly which tests pass or fail",
+            "Come to Zoom or office hours \u2014 screen share and debug together"
+        ],
+        "bookexResourceNote": "Chapter 8 & 9 BookEx Reference Guides \u2014 step-by-step breakdowns of every textbook example"
+    }
+}

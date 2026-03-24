@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline Test — IS2053</title>
+    <link rel="stylesheet" href="../../labs.css">
+</head>
+<body>
+<div class="lc-wrapper">
+<div class="lc-card lc-card--blue">
+  <div class="lc-topper">
+    <div class="lc-card-header">
+      <div class="lc-lab-badge">
+        <div class="lc-lab-badge__word">LAB</div>
+        <div class="lc-lab-badge__num">4.1</div>
+      </div>
+      <div class="lc-topper-title">Pipeline Test</div>
+    </div>
+    <div class="lc-sub-banner">Module 4 &mdash; Week 1 &mdash; BUILD Week</div>
+  </div>
+  <div class="lc-panel">
+    <p><strong>Chapters:</strong> 8–9
+        &mdash; More About Strings, Dictionaries</p>
+    <p>This is a test lab used to verify that every component type renders correctly. It is not a real assignment.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"If it renders clean, ship it. That&#x27;s the whole job."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Senior Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Learning Objectives</div>
+    <ul class="lc-objectives">
+      <li>Verify that every component type renders without errors</li>
+      <li>Confirm CSS classes are correct end-to-end</li>
+      <li>Establish a baseline for the full pipeline</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
+    <p>Chapter 8: Program 8-3 (string methods). Chapter 9: Programs 9-1 through 9-4 (dictionaries).</p>
+    <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 8 &amp; 9</p>
+    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
+    <ul>
+      <li>All component types render without errors</li>
+      <li>Output HTML validates cleanly</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Named Constants</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table lc-named-constants__table">
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>CITY_DISTANCES</code></td>
+        <td>Nested dict — city → destination → miles</td>
+      </tr>
+      <tr>
+        <td><code>STARTING_CITY</code></td>
+        <td>String constant — always &#x27;San Antonio&#x27;</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Filename</div>
+    <p>Submit lab-test.py this week.</p>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>Keep this file — the next lab builds on it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--orange">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Time Guide</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 60–75 Minutes</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Time</th>
+            <th>Task</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><strong>CP1: Dictionaries</strong></td>
+        <td>15 min</td>
+        <td>Build the CITY_DISTANCES dict</td>
+      </tr>
+      <tr>
+        <td><strong>CP2: Lookups</strong></td>
+        <td>15 min</td>
+        <td>Replace hardcoded constants</td>
+      </tr>
+      <tr>
+        <td><strong>CP3: String Methods</strong></td>
+        <td>15 min</td>
+        <td>Add input normalization</td>
+      </tr>
+      <tr>
+        <td><strong>CP4: Final Checklist</strong></td>
+        <td>15 min</td>
+        <td>Test, clean up, and submit</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--green">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Before You Begin</div>
+    <div class="lc-sub-banner">Program Architecture</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <p class="lc-arch-intro">Here&#x27;s how your finished program fits together. The [NEW] tags show what you&#x27;re adding this week. The [REPLACED] tags show what changes from your previous code.</p>
+    <div class="lc-arch">
+      <pre># ---- CONSTANTS ----
+CITY_DISTANCES = { ... }   <span class="lc-arch-new">[NEW — replaces 20+ distance constants]</span>
+CITY_INFO      = { ... }   <span class="lc-arch-new">[NEW — city names and taglines]</span>
+
+# ---- HELPER FUNCTIONS ----
+display_destinations()     shows menu from dict    <span class="lc-arch-replaced">[REPLACED]</span>
+get_city_info(city)        dict lookup             <span class="lc-arch-new">[NEW]</span>
+
+GAME LOOP:
+│
+├── Display city info (CITY_INFO lookup)           <span class="lc-arch-replaced">[REPLACED]</span>
+├── Get destination choice
+│
+│   TRAVEL LOOP:
+│   ├── Roll D20, move miles
+│   ├── 30% chance: hazard check
+│   └── Repeat until arrival
+│
+└── Update totals, check outcome</pre>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--green">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Checkpoints</div>
+    <div class="lc-sub-banner">3 Checkpoints</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">1</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Build the CITY_DISTANCES Dictionary</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>You're replacing 20+ individual distance constants with a single nested dictionary. This is the core data structure upgrade for Module 4.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Create a constant <code>CITY_DISTANCES</code> near the top of your file.</li>
+      <li>Add San Antonio as the first key: <code>CITY_DISTANCES = {'San Antonio': {...}}</code></li>
+      <li>Add all five destination cities as nested keys with integer mile values.</li>
+    </ol>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Textbook Reference</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-1</strong>
+            — <code>dictionary1.py</code>
+            (Step 1)
+            — Shows basic dictionary creation with string keys and integer values.
+          </li>
+          <li>
+            <strong>Program 9-2</strong>
+            — <code>dictionary2.py</code>
+            (Step 2)
+            — Demonstrates key access and iteration.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-code-block">
+      <pre><code>CITY_DISTANCES = {
+    &#x27;San Antonio&#x27;: {
+        &#x27;Austin&#x27;:   80,
+        &#x27;Houston&#x27;:  197,
+        &#x27;Dallas&#x27;:   275
+    }
+}</code></pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Expected Output</div>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Where would you like to travel?
+  A) Austin     (80 miles)
+  B) Houston    (197 miles)
+  C) Dallas     (275 miles)</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>One lookup replaces ten branches. This is the moment your code stops being a long if/elif chain and starts being data-driven.</p>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Tips and Pitfalls</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #FF1744;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Using <code>CITY_DISTANCES['austin']</code></td>
+        <td>Dictionary keys are case-sensitive — use exact capitalization</td>
+      </tr>
+      <tr>
+        <td>Using an if/elif chain instead of dict access</td>
+        <td>Defeats the purpose of a dictionary; CodeGrade will flag it</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-callout lc-callout--pitfall">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="22.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Key Case Matters</div>
+        <div class="lc-callout__body">
+        <p>Dictionary keys are case-sensitive. <code>'austin'</code> and <code>'Austin'</code> are different keys.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">You're Done When...</div>
+        <div class="lc-callout__body">
+        <p>Your program looks up distances using <code>CITY_DISTANCES[city][destination]</code> with no hardcoded numbers in the game loop.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
+                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="19" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Test in Isolation</div>
+        <div class="lc-callout__body">
+        <p>Before wiring the dictionary into the game, test it by itself.</p>
+        <ul>
+          <li>Open a new file and create just the dictionary</li>
+          <li>Print a few lookups to confirm the values are right</li>
+          <li>Then copy it into your main file</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Why Nested Dicts?</div>
+        <div class="lc-callout__body">
+        <p>A nested dictionary models a two-dimensional lookup: from city → to destination → miles. It's the same concept as a table with row and column headers.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Scope Violation</div>
+        <div class="lc-callout__body">
+        <p>Do not use list comprehensions or try/except — those are Module 4.2 and 4.3 topics. CodeGrade's AST check will flag them.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">3</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Mentor Check-In</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Run your program and confirm the destination menu shows correct distances pulled from the dictionary.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Data structures exist to make the impossible feel obvious. One dictionary lookup instead of twenty constants — that&#x27;s not just cleaner code, it&#x27;s a better model of reality."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Priya Venkatesh</div>
+        <div class="lc-mentor__role">Lead Architect, Bat City Collective</div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--red">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Final Checklist</div>
+    <div class="lc-sub-banner">Check It Before You Wreck It</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3 lc-h3--yellow">Before You Submit</div>
+    <ul class="lc-checklist">
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">lab-test.py uses CITY_DISTANCES — no hardcoded distance constants</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All city lookups use dictionary key access, not if/elif chains</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Code has top-of-file comment block with name, abc123, section, and description</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All functions have docstrings</span>
+      </li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
+    <p>You may use dictionaries, .keys(), .values(), .items(), and string methods from Chapter 8. Do NOT use list comprehensions, try/except, classes, or inheritance.</p>
+    <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
+    <div class="lc-permitted">
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–9 (Chapters 2–8 fully permitted; Chapter 9 dictionaries as introduced this module)</p>
+      <ul class="lc-permitted__list">
+      <li>dict key access: city_info[&#x27;Austin&#x27;]</li>
+      <li>dict methods: .keys(), .values(), .items()</li>
+      <li>String methods: .upper(), .lower(), .strip()</li>
+      </ul>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> list comprehensions, try/except, classes, inheritance</p>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Do not use parallel lists in place of a dictionary — CodeGrade&#x27;s scope check will flag it.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>Keep this file — Module 4.2 adds string method input handling on top of your dictionary work.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
+    <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
+  </div>
+</div>
+<div class="lc-card lc-card--purple">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Need Help</div>
+    <div class="lc-sub-banner">Look No Further!</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
+    <ul>
+      <li>Re-read Programs 9-1 through 9-4 — dictionary creation, access, and iteration</li>
+      <li>Test your dictionary in isolation before wiring it into the game</li>
+      <li>Submit to CodeGrade early — it shows exactly which tests pass or fail</li>
+      <li>Come to Zoom or office hours — screen share and debug together</li>
+    </ul>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Reference Guides</div>
+        <div class="lc-callout__body">
+          <p>Chapter 8 &amp; 9 BookEx Reference Guides — step-by-step breakdowns of every textbook example</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
+    <div class="lc-contact-grid">
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Zoom Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br>
+          <a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Schedule a Meeting</div>
+        <div class="lc-contact-card__value">
+          <a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Email</div>
+        <div class="lc-contact-card__value">
+          <a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>
+          Include your section number and abc123
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">CodeGrade</div>
+        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer class="lc-footer">
+        <img src="../../branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
+        <p class="lc-footer__course">IS2053: Programming I (Python) — The University of Texas at San Antonio</p>
+        <p class="lc-footer__detail">Starting Out with Python, 6th Edition — Tony Gaddis — Pearson</p>
+    </footer>
+
+</div>
+</body>
+</html>
