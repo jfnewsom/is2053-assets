@@ -3,883 +3,710 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab 4.2: Flexible Input</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Slab:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>Flexible Input — IS2053</title>
+    <link rel="stylesheet" href="../../labs.css">
 </head>
-<body style="background: #0a0a0a; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; color: #f5f5f5; line-height: 1.6;">
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #0055FF 0%, #001a4d 100%); padding: 8px 12px 12px 12px;">
-        
-        
-        <div style="display: flex; align-items: flex-end; gap: 8px;">
-            <img src="https://jfnewsom.github.io/is2053-assets/lab-icons/lab-badge-4-2.svg" alt="LAB 4.2" style="height: 90px;">
-            <div style="flex-grow: 1;">
-                <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-flexible-input.svg" alt="Flexible Input" style="display: block; height: 70px; margin-bottom: 2px; margin-left: -8px;">
-                
-                <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-                    Module 4 &bull; ENHANCE Week &bull; Chapters 8-9: String Methods &amp; More Dictionaries
-                </div>
-            </div>
-        </div>
-        
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-overview.svg" alt="Overview" style="height: 18px; display: block;">
-            </div>
-            
-            
-            <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px;">
-                <p style="color: #B0B8C4; margin: 0; flex: 1;">
-                    Remember writing <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">if choice == 'y' or choice == 'Y':</span> over and over? Those days are <strong style="color: #fff;">OVER</strong>. This week you'll discover <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.upper()</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip()</span>&mdash;string methods that clean and normalize input in one line. You'll also add <strong style="color: #fff;">hazards</strong> loaded from a data file and a <strong style="color: #fff;">D20 travel system</strong> where dice rolls determine how far you go each turn!
-                </p>
-                <img src="https://jfnewsom.github.io/is2053-assets/branding/AllMyEggses-logo.svg" alt="All My Eggses Live in Texas" style="width: 210px; flex-shrink: 0;">
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Tyler-Nguyen.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Tyler Nguyen">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"I spent SO much time writing <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">if choice == 'y' or choice == 'Y'</code> everywhere. When someone showed me <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">choice.upper() == 'Y'</code>, I was like... wait, that's IT? One method fixes ALL my case problems? Now I <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">.upper()</code> or <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">.lower()</code> every string comparison!"</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/tyler-nguyen.svg" alt="Tyler Nguyen" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Junior Developer, Bat City Collective</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-filename.svg" alt="Filename" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; color: #39ff14; font-size: 14px;">lab-4-2.py</span>
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Building on Lab 4.1, you'll add hazards and a D20-based travel system:
-            </p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">load_hazards()</strong> &mdash; Parse <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards.txt</span> into a list of dictionaries</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">.strip().upper()</strong> &mdash; Clean input: remove whitespace AND normalize to uppercase</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">handle_hazard()</strong> &mdash; Pick random hazard, flip coin for outcome</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">travel_to()</strong> &mdash; D20 rolls determine miles per turn, 30% hazard chance</li>
-                <li>Track hazards faced and escaped in final report</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-key-concepts.svg" alt="Key Concepts" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Chapter 8:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.upper()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.lower()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip()</span>, method chaining<br>
-                <strong style="color: #fff;">Chapter 9:</strong> List of dictionaries, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">random.choice()</span> with dictionaries
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-program-requirements.svg" alt="Program Requirements" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Your program <strong style="color: #fff;">MUST</strong> use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip().upper()</span> for yes/no input handling</li>
-                <li style="margin-bottom: 8px;">Your program <strong style="color: #fff;">MUST</strong> load hazards from <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards.txt</span> into a list of dictionaries</li>
-                <li style="margin-bottom: 8px;">Your program <strong style="color: #fff;">MUST</strong> use D20 rolls for travel distance (roll 10 miles)</li>
-                <li style="margin-bottom: 8px;">Your program <strong style="color: #fff;">MUST</strong> use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span> for roll_d20, flip_coin, check_percentage</li>
-                <li>Your program <strong style="color: #fff;">MUST</strong> track and display hazards faced/escaped in final report</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Data Files" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">
-                <strong style="color: #fff;">Required Data Files</strong> (same as 4.1, plus one new):
-            </p>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #0055ff; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #0055FF; width: 35%;">File</th>
-                            <th style="background: #1a1a1a; color: #0055ff; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #0055FF;">Format</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city_distances.txt</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Same as 4.1</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city_info.txt</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Same as 4.1</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #FFCC00; font-size: 13px;">hazards.txt</span> <span style="color: #FFCC00; font-size: 11px;">NEW!</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">name,heads_message,tails_message</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-        </div>
+<body>
+<div class="lc-wrapper">
+<div class="lc-card lc-card--blue">
+  <div class="lc-topper">
+    <div class="lc-card-header">
+      <div class="lc-lab-badge">
+        <div class="lc-lab-badge__word">LAB</div>
+        <div class="lc-lab-badge__num">4.2</div>
+      </div>
+      <div class="lc-topper-title">Flexible Input</div>
     </div>
+    <div class="lc-sub-banner">Module 4 &mdash; Week 2 &mdash; ENHANCE Week</div>
+  </div>
+  <div class="lc-panel">
+    <p><strong>Chapters:</strong> 8–9
+        &mdash; String methods, input normalization, method chaining</p>
+    <p>You felt the friction. For three weeks, every yes/no prompt in your game required four comparisons: <code>answer == 'y' or answer == 'Y' or answer == 'n' or answer == 'N'</code>. Every menu choice needed two branches just to handle case. Today that ends.<br><br>Chapter 8 introduces string methods: small but powerful tools that transform how you handle user input. <code>.upper()</code>, <code>.lower()</code>, and <code>.strip()</code> let you normalize what the player types before you ever compare it. You will refactor <code>function_library.py</code> with two new helper functions, update <code>get_yes_no()</code>, and apply consistent input cleaning across your entire game loop. When you are done, your code will be shorter, more readable, and far more forgiving of sloppy typing.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Three weeks ago, get_yes_no() had to handle &#x27;y&#x27; AND &#x27;Y&#x27; AND &#x27;n&#x27; AND &#x27;N&#x27;. That is four comparisons to do one job. .upper() collapses all of that into one. When a function shrinks and still does everything it did before, that is a sign you found the right tool."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Senior Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Learning Objectives</div>
+    <ul class="lc-objectives">
+      <li>Apply .upper() and .strip() to normalize user input before comparison</li>
+      <li>Chain string methods to clean input in a single expression</li>
+      <li>Refactor get_yes_no() using .upper() to eliminate redundant OR conditions</li>
+      <li>Add clean_input() and clean_input_lower() to function_library.py</li>
+      <li>Update all user input in lab-4-2.py to use the new helper functions</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
+    <p>Chapter 8: Programs 8-1 (iterating over strings), 8-5 (string testing methods), and 8-9 and 8-10 (splitting strings). String modification methods (.upper(), .lower(), and .strip()) are covered in the Chapter 8 methods reference table.</p>
+    <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis, Chapters 8 and 9</p>
+    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
+    <ul>
+      <li>function_library.py contains clean_input() and clean_input_lower() functions</li>
+      <li>get_yes_no() uses .upper() with no OR chains comparing both uppercase and lowercase variants</li>
+      <li>lab-4-2.py applies .strip() or clean_input() to every user input before comparison</li>
+      <li>All functions have docstrings; file has top-of-file documentation header</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Filename</div>
+    <p>Submit lab-4-2.py and function_library.py this week.</p>
+    <p>This lab updates both lab-4-2.py and function_library.py. Submit both files. CodeGrade will test your library functions independently.</p>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>Keep both files. Module 4.3 adds sets and a trivia gate on top of the input handling you build here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--orange">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Time Guide</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 45–60 Minutes</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Time</th>
+            <th>Task</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><strong>CP1: New Library Functions</strong></td>
+        <td>10 min</td>
+        <td>Add clean_input() and clean_input_lower() to function_library.py</td>
+      </tr>
+      <tr>
+        <td><strong>CP2: Refactor get_yes_no()</strong></td>
+        <td>15 min</td>
+        <td>Replace OR chains with .strip().upper() (the pain-before-magic payoff)</td>
+      </tr>
+      <tr>
+        <td><strong>CP3: Clean All Input in lab-4-2.py</strong></td>
+        <td>15 min</td>
+        <td>Apply input normalization across the entire game loop</td>
+      </tr>
+      <tr>
+        <td><strong>CP4: Test and Submit</strong></td>
+        <td>10 min</td>
+        <td>Test edge cases, verify CodeGrade, clean up and submit</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--cyan">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Before You Begin</div>
+    <div class="lc-sub-banner">Program Architecture</div>
+  </div>
+  <div class="lc-panel">
+    <p class="lc-arch-intro">Here is how your finished program fits together. The [NEW] tags show what you are adding to function_library.py. The [REPLACED] tags show what changes in lab-4-2.py from your 4.1 code. Everything else carries forward unchanged.</p>
+    <div class="lc-arch">
+      <pre># ---- CONSTANTS (lab-4-2.py) ----
+CITY_DISTANCES = { ... }              (from 4.1, unchanged)
+CITY_INFO      = { ... }              (from 4.1, unchanged)
+STARTING_CITY  = &#x27;San Antonio&#x27;        (unchanged)
+
+# ---- FUNCTION LIBRARY (function_library.py) ----
+clean_input(prompt)                   <span class="lc-arch-new">[NEW]</span> strip + upper
+clean_input_lower(prompt)             <span class="lc-arch-new">[NEW]</span> strip + lower
+get_yes_no(prompt)                    <span class="lc-arch-replaced">[REPLACED]</span> now uses .upper()
+get_valid_int(prompt, min, max)       (unchanged)
+flip_coin()                           (unchanged)
+roll_d20()                            (unchanged)
+display_numbered_list(items, title)   (unchanged)
+save_list_to_file(filename, data)     (unchanged)
+load_list_from_file(filename)         (unchanged)
+file_exists(filename)                 (unchanged)
+
+# ---- MAIN GAME (lab-4-2.py) ----
+GAME LOOP:
+│
+│── Player name input         .strip()           <span class="lc-arch-replaced">[REPLACED]</span>
+│── Main menu choice          .strip().upper()   <span class="lc-arch-replaced">[REPLACED]</span>
+│
+│   DESTINATION SELECTION:
+│   │── Destination input     .strip().upper()   <span class="lc-arch-replaced">[REPLACED]</span>
+│   │── Hazard prompt        get_yes_no()        (now cleaner)
+│   │
+│   TRAVEL LOOP:
+│   │── All prompts normalized before comparison <span class="lc-arch-replaced">[REPLACED]</span>
+│
+│── Play again?               get_yes_no()       (now cleaner)
+│
+All user input normalized before any comparison.
+No more &#x27;y&#x27; vs &#x27;Y&#x27; failures.</pre>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--green">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Checkpoints</div>
+    <div class="lc-sub-banner">4 Checkpoints</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">1</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add String Functions to function_library.py</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>Open <code>function_library.py</code> from your 4.1 submission. You will add two new functions at the bottom of the STRING FUNCTIONS section. These functions wrap Python's built-in string methods so the rest of your code can call one clean function instead of chaining methods inline every time.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Add a <code># STRING FUNCTIONS (Added in 4.2)</code> comment block at the bottom of your function library to separate the new additions.</li>
+      <li>Write a function named <code>clean_input</code> that accepts one parameter: <code>prompt</code>. It should get input from the user, strip leading and trailing whitespace, convert the result to uppercase, and return that cleaned string. Include a docstring that describes what it does, the parameter, and the return value.</li>
+      <li>Write a second function named <code>clean_input_lower</code> that works the same way but converts to lowercase instead of uppercase. It should also accept a <code>prompt</code> parameter and include a docstring.</li>
+      <li>In your Python shell, test both functions manually: call <code>clean_input('Test: ')</code> and type <code>&nbsp; hello &nbsp;</code> with spaces. Verify the return value is <code>'HELLO'</code> with no spaces.</li>
+      <li>Repeat the test with <code>clean_input_lower</code> and verify the return value is <code>'hello'</code>.</li>
+    </ol>
+    <div class="lc-h3">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Textbook Reference</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 8-1</strong>
+            — <code>count_Ts.py</code>
+            (Step 4)
+            — Shows how individual characters behave when tested with ==, which is the same logic that makes case comparison fragile without normalization.
+          </li>
+          <li>
+            <strong>Program 8-5</strong>
+            — <code>string_test.py</code>
+            (Step 3)
+            — Demonstrates string testing methods (.isdigit(), .isalpha(), .isupper(), and .islower()) , useful for input validation beyond case normalization.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">Why This Matters</div>
+    <p>Method chaining is the key idea here. When you write <code>input(prompt).strip().upper()</code>, Python executes left to right: <code>input()</code> gets a string from the user, <code>.strip()</code> removes whitespace from both ends of that string, and <code>.upper()</code> converts the result to uppercase. Each method returns a new string, and the next method is called on that result. Strings are immutable in Python, so nothing is modified in place. You are building a pipeline.</p>
+    <div class="lc-h3">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Mistake</th>
+        <th>What Goes Wrong</th>
+        <th>Fix</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Writing `input.strip().upper(prompt)`</td>
+        <td>input is a function; the prompt goes inside the parentheses</td>
+        <td>Write `input(prompt).strip().upper()` because call order matters</td>
+      </tr>
+      <tr>
+        <td>Forgetting to return the result</td>
+        <td>Function runs but the caller gets None back</td>
+        <td>Make sure the last expression in your function is a return statement</td>
+      </tr>
+      <tr>
+        <td>Using `string.upper` without parentheses</td>
+        <td>You get a reference to the method object, not the result</td>
+        <td>Always include the parentheses: `string.upper()`</td>
+      </tr>
+      <tr>
+        <td>Assigning back unnecessarily</td>
+        <td>Writing `text = text.strip()` when you just want the cleaned value once</td>
+        <td>If you only use it once, chain directly: `input(prompt).strip().upper()`</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CP1 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>function_library.py has a STRING FUNCTIONS section with clean_input() and clean_input_lower()</li>
+          <li>Both functions have docstrings with parameter and return descriptions</li>
+          <li>Manual testing confirms clean_input('Test: ') with '  hello  ' returns 'HELLO'</li>
+          <li>Manual testing confirms clean_input_lower('Test: ') with '  HELLO  ' returns 'hello'</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Refactor get_yes_no()</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>This is the payoff checkpoint. Open <code>function_library.py</code> and find your existing <code>get_yes_no()</code> function. You are going to rewrite it using <code>.strip().upper()</code> and watch it get shorter, cleaner, and more capable all at once.</p>
+    <div class="lc-h3">Why This Matters</div>
+    <p>Here is what your current function has to do to handle both cases:</p>
+    <div class="lc-code-block">
+      <pre><code># BEFORE: get_yes_no() the painful way
+# Four comparisons just to check two possible answers
+while answer != &#x27;y&#x27; and answer != &#x27;Y&#x27; and answer != &#x27;n&#x27; and answer != &#x27;N&#x27;:
+    print(&quot;ERROR: Enter &#x27;y&#x27; or &#x27;n&#x27;.&quot;)
+    answer = input(prompt)
+if answer == &#x27;y&#x27; or answer == &#x27;Y&#x27;:
+    return True
+else:
+    return False</code></pre>
+    </div>
+    <p>After normalizing with <code>.upper()</code>, the logic collapses. There are only two valid uppercase answers to check, and the return statement becomes a single comparison.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Find <code>get_yes_no()</code> in your function library. Read through its current logic and count how many comparisons it makes.</li>
+      <li>Rewrite the first <code>input()</code> call inside the function so it chains <code>.strip()</code> and <code>.upper()</code> before assigning to <code>answer</code>.</li>
+      <li>Update the <code>while</code> loop condition. After normalizing, you only need to compare against <code>'Y'</code> and <code>'N'</code>. No need to check both cases.</li>
+      <li>Update the <code>input()</code> call inside the loop to also use <code>.strip().upper()</code>.</li>
+      <li>Simplify the return statement. Hint: after normalization, returning whether <code>answer</code> equals <code>'Y'</code> is all you need. No <code>if/else</code> required.</li>
+      <li>Update the docstring to note that the function now uses <code>.upper()</code> for case-insensitive input handling.</li>
+    </ol>
+    <div class="lc-h3">Test Your Code</div>
+    <ol>
+      <li>Import your library in a Python shell: <code>import function_library</code></li>
+      <li>Call <code>function_library.get_yes_no('Continue? (y/n): ')</code> and type lowercase <code>y</code>. Verify it returns <code>True</code>.</li>
+      <li>Call it again and type uppercase <code>Y</code>. Verify it also returns <code>True</code>.</li>
+      <li>Call it again and type <code>&nbsp; y &nbsp;</code> with leading and trailing spaces. Verify it still returns <code>True</code>.</li>
+      <li>Verify that <code>n</code>, <code>N</code>, and <code>&nbsp;n&nbsp;</code> all return <code>False</code>.</li>
+      <li>Verify that typing something invalid (like <code>yes</code>) triggers the error message and re-prompts.</li>
+    </ol>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Count the comparisons in your old get_yes_no(), then count the comparisons in the new one. If that number went down and the function still works, you did it right. Fewer moving parts means fewer places to break."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Senior Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CP2 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>get_yes_no() no longer uses OR chains to handle both 'y' and 'Y'</li>
+          <li>Both the initial input and the loop's re-prompt use .strip().upper()</li>
+          <li>The return statement is a single comparison with no if/else needed</li>
+          <li>Docstring updated to describe the .upper() normalization</li>
+          <li>Manual testing confirms 'y', 'Y', and '  y  ' all return True</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">3</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Clean All Input in lab-4-2.py</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>Open <code>lab-4-2.py</code> from your 4.1 submission and save a copy as <code>lab-4-2.py</code>. Work through the entire file and apply input normalization everywhere a player types something. This is a refactor pass, not glamorous work. But it is the kind of pass that separates code that works for the developer from code that works for the player.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Start at the top of your game loop. Find every <code>input()</code> call that reads a player choice: destination selection, menu options, hazard responses, and any other prompt that leads to a comparison.</li>
+      <li>For any input that gets compared against letter strings (like <code>'A'</code>, <code>'B'</code>, <code>'Y'</code>, <code>'N'</code>), replace the bare <code>input(prompt)</code> call with <code>input(prompt).strip().upper()</code>. You may also use your new <code>clean_input(prompt)</code> function from the library. Both are acceptable.</li>
+      <li>For the player's name input (which is not compared against a fixed set of values), apply only <code>.strip()</code>. Do not convert names to uppercase.</li>
+      <li>Find every <code>while</code> loop condition that currently checks both lowercase and uppercase (like <code>answer != 'a' and answer != 'A'</code>) and simplify it to check only the uppercase version.</li>
+      <li>Find every <code>if/elif</code> chain that currently checks both cases (like <code>if choice == 'a' or choice == 'A':</code>) and simplify each condition to check only the uppercase version.</li>
+      <li>After all replacements, do a quick scan for any remaining lowercase letter literals in conditions. If you see <code>== 'a'</code>, <code>== 'b'</code>, or similar, those are candidates for cleanup. Verify they still make sense after normalization.</li>
+    </ol>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
+                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="19" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Use VS Code's Find to Catch Everything</div>
+        <div class="lc-callout__body">
+        <p>In VS Code, use <strong>Ctrl+F</strong> (or Cmd+F on Mac) and search for <code>input(</code> to jump to every input call in your file. Work through them one at a time. It takes five minutes and ensures you do not miss any.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"I typed &#x27; y &#x27; with spaces on both sides. Your program crashed. Then I typed &#x27;Y&#x27; and it worked fine. Those should behave identically. If your input handling works for some inputs but not others, it does not work. It just works for you."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
+        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3">Test Your Code</div>
+    <ol>
+      <li>Run your game from the terminal. At the first yes/no prompt, type a lowercase letter. Verify it is accepted..</li>
+      <li>At the first menu choice prompt, type a lowercase letter. Verify it selects the correct option..</li>
+      <li>At any prompt, type a valid answer with a leading space (like <code>&nbsp;a</code>). Verify it still works..</li>
+      <li>Try typing all-caps where the game expects a single letter. Verify it works..</li>
+      <li>Play through at least one complete trip to confirm the game runs without errors before moving to CP4.</li>
+    </ol>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CP3 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>Every player choice input in lab-4-2.py uses .strip() at minimum</li>
+          <li>Every input compared against letter constants uses .strip().upper() or clean_input()</li>
+          <li>Player name input uses .strip() only; name is not uppercased</li>
+          <li>All if/elif conditions check only uppercase literals; no more 'a' or 'A' patterns</li>
+          <li>The game plays through a complete trip without input errors</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">4</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Test, Clean Up, and Submit</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">Test Your Code</div>
+    <p>Before submitting, run your game through the following test scenarios. Each one targets a specific thing the refactor was supposed to fix.</p>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Test Input</th>
+        <th>Where to Type It</th>
+        <th>Expected Result</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Lowercase 'y'</td>
+        <td>Any yes/no prompt</td>
+        <td>Accepted (same as 'Y')</td>
+      </tr>
+      <tr>
+        <td>Uppercase 'N'</td>
+        <td>Any yes/no prompt</td>
+        <td>Accepted (same as 'n')</td>
+      </tr>
+      <tr>
+        <td>'  y  ' with spaces</td>
+        <td>Any yes/no prompt</td>
+        <td>Spaces stripped and accepted</td>
+      </tr>
+      <tr>
+        <td>Lowercase destination letter</td>
+        <td>Destination selection menu</td>
+        <td>Correct destination selected</td>
+      </tr>
+      <tr>
+        <td>Invalid character like '?'</td>
+        <td>Any menu prompt</td>
+        <td>Error message shown, re-prompted</td>
+      </tr>
+      <tr>
+        <td>Player name with leading space</td>
+        <td>Name prompt at game start</td>
+        <td>Name stored without the leading space</td>
+      </tr>
+      <tr>
+        <td>All caps name like 'ALEX'</td>
+        <td>Name prompt at game start</td>
+        <td>Stored as 'ALEX' without conversion</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Run each test case from the table above. Note any failures. If something does not behave as expected, trace back to the input call that handles that prompt.</li>
+      <li>Verify your top-of-file documentation header is present in both <code>lab-4-2.py</code> and <code>function_library.py</code>. Required fields: Name, abc123, Section, and a one-sentence description of what the file does.</li>
+      <li>Verify every function in both files has a docstring. Quick check: open each file and scan for <code>def </code>. Every one should be followed by a docstring on the next indented line.</li>
+      <li>Run Flake8 on both files and fix any warnings before submitting.</li>
+      <li>Submit both <code>lab-4-2.py</code> and <code>function_library.py</code> to CodeGrade. Review the automated feedback. If any correctness tests fail, read the error output carefully and trace it back to the specific input that is not being cleaned.</li>
+    </ol>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CodeGrade Tests Your Library Separately</div>
+        <div class="lc-callout__body">
+        <p>CodeGrade imports your <code>function_library.py</code> directly and calls <code>clean_input()</code> and <code>get_yes_no()</code> in isolation. Make sure those functions work correctly on their own, not just when the full game is running.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Lab 4.2 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>Both lab-4-2.py and function_library.py submitted to CodeGrade</li>
+          <li>All test cases from the table above pass</li>
+          <li>Documentation headers present in both files</li>
+          <li>All functions have docstrings</li>
+          <li>Flake8 returns no warnings on either file</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--red">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Final Checklist</div>
+    <div class="lc-sub-banner">Check It Before You Wreck It</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3">Before You Submit</div>
+    <ul class="lc-checklist">
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">function_library.py contains clean_input() and clean_input_lower() with docstrings</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">get_yes_no() uses .strip().upper() with no OR chains comparing both &#x27;y&#x27; and &#x27;Y&#x27;</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Every player input in lab-4-2.py uses .strip() at minimum before comparison</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Player name uses .strip() only, not converted to uppercase</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All if/elif and while conditions compare against uppercase literals only</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Top-of-file documentation header in both files: Name, abc123, Section, Description</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All functions in both files have docstrings</span>
+      </li>
+    </ul>
+    <div class="lc-h3">Scope Reminder</div>
+    <p>You may use .upper(), .lower(), .strip(), .lstrip(), .rstrip(), .isdigit(), .isalpha(), method chaining, and all dictionary techniques from Chapter 9 that you used in 4.1. Do NOT use list comprehensions, try/except blocks, classes, or inheritance.</p>
+    <div class="lc-h3">Permitted Techniques</div>
+    <div class="lc-permitted">
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–9 (all techniques from Chapters 2–8 fully permitted; Chapter 9 dictionaries as introduced in 4.1)</p>
+      <ul class="lc-permitted__list">
+      <li>String normalization: .upper(), .lower(), .strip(), .lstrip(), .rstrip()</li>
+      <li>String testing: .isdigit(), .isalpha(), .isalnum()</li>
+      <li>Method chaining: input(prompt).strip().upper()</li>
+      <li>Dictionary access and methods from 4.1: key access, .get(), .keys(), .values(), .items()</li>
+      </ul>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> list comprehensions, try/except, sets (coming in 4.3), classes, inheritance</p>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Do not use try/except for input validation in this lab. That pattern is out of scope. Use while loops and the string testing methods from Chapter 8.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>CodeGrade imports function_library.py directly. A syntax error in your library file will cause all library tests to fail, even if your game runs fine.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>Keep both files. Module 4.3 adds a sets-based unique city tracker and a trivia gate. both build on the cleaned-up input handling you just wrote.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">Academic Integrity</div>
+    <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
+  </div>
+</div>
+<div class="lc-card lc-card--purple">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Need Help?</div>
+    <div class="lc-sub-banner">Look No Further!</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3">Contact &amp; Resources</div>
+    <div class="lc-contact-grid">
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Zoom Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br>
+          <a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Schedule a Meeting</div>
+        <div class="lc-contact-card__value">
+          <a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Email</div>
+        <div class="lc-contact-card__value">
+          <a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>
+          Include your section number and abc123
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">CodeGrade</div>
+        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF6B1A 0%, #8B3A00 100%); padding: 8px 12px 12px 12px;">
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-time-guide.svg" alt="Time Guide" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Plan Your Session &mdash; 90-120 Minutes
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A; width: 25%;">Checkpoint</th>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A; width: 35%;">What You'll Build</th>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A;">Est. Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">1. Copy &amp; Load Hazards</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Copy 4.1, add load_hazards()</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">20-25 min</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">2. The .upper() Relief</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Clean input with string methods</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">15-20 min</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">3. Handle Hazards</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Random hazard selection &amp; outcomes</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">20-25 min</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">4. D20 Travel System</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Roll-based travel with hazards</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">30-35 min</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 20px 0 0 0; font-size: 14px;">
-                <strong style="color: #ff6b1a;">Strategy:</strong> Start by copying your working lab-4-1.py. The checkpoint order is designed so you can test each new feature independently before combining them.
-            </p>
-        </div>
-    </div>
+    <footer class="lc-footer">
+        <img src="../../branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
+        <p class="lc-footer__course">IS2053: Programming I (Python) — The University of Texas at San Antonio</p>
+        <p class="lc-footer__detail">Starting Out with Python, 6th Edition — Tony Gaddis — Pearson</p>
+    </footer>
+
 </div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #39FF14 0%, #0D4D00 100%); padding: 8px 12px 12px 12px;">
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-checkpoints.svg" alt="Checkpoints" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            4 Checkpoints
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-
-            
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Sasha-Mireles.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Sasha Mireles">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">&ldquo;You&rsquo;ve been writing <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">if x == 'y' or x == 'Y':</code> for weeks. Today that pain ends. You&rsquo;re also loading hazards from a file and building a real travel system with D20 rolls. Three new functions, one massive quality-of-life upgrade.&rdquo;</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/sasha-mireles.svg" alt="Sasha Mireles" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">QA Lead, Bat City Collective</div>
-                </div>
-            </div>
-
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Here&rsquo;s how your finished program fits together.</strong> The <span style="color: #FF6B1A;">[NEW]</span> tags show what you&rsquo;re adding. <span style="color: #FF6B1A;">[REPLACED]</span> tags show what changes from your 4.1 code.
-            </p>
-
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0 25px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #B0B8C4; margin: 0; padding: 15px 20px; white-space: pre; overflow-x: auto;"><span style="color: #666;"># ---- DATA LOADING FUNCTIONS ----</span>
-<span style="color: #39ff14;">load_city_distances()</span>   reads city_distances.txt &rarr; nested dict
-<span style="color: #39ff14;">load_city_info()</span>        reads city_info.txt &rarr; dict of dicts
-<span style="color: #39ff14;">load_hazards()</span>          reads hazards.txt &rarr; list of dicts  <span style="color: #FF6B1A;">[NEW]</span>
-
-<span style="color: #666;"># ---- GAME FUNCTIONS ----</span>
-<span style="color: #39ff14;">display_destinations()</span>  shows menu from dict
-<span style="color: #39ff14;">get_destination_choice()</span>  validates user pick
-<span style="color: #39ff14;">handle_hazard(hazards)</span>  random hazard + coin flip  <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #39ff14;">travel_to(distance)</span>    D20 travel + hazard checks  <span style="color: #FF6B1A;">[NEW]</span>
-
-<span style="color: #666;"># ---- MAIN PROGRAM ----</span>
-Load data files (distances, info, hazards)
-Get player name
-current_city = 'San Antonio'
-
-<span style="color: #FFCC00;">GAME LOOP</span> <span style="color: #666;">(each pass is one leg):</span>
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Display city info, show destinations
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Get choice with <span style="color: #39ff14;">.strip().upper()</span>  <span style="color: #FF6B1A;">[REPLACED]</span> <span style="color: #666;">was or chains</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Destination Gate (coin flip)
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">TRAVEL LOOP</span> <span style="color: #666;">(D20 rolls!):</span>  <span style="color: #FF6B1A;">[REPLACED]</span> <span style="color: #666;">was fixed 50-mile</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Roll D20, move (roll &times; 10) miles
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> 30% chance: <span style="color: #39ff14;">handle_hazard()</span>  <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Repeat until you arrive
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Update trip totals (+ hazards_faced, hazards_escaped)
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Check outcome: beach / dead end / continue
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Save and quit option
-
-<span style="color: #666;"># ---- AFTER THE LOOP ----</span>
-Print trip summary with hazard stats  <span style="color: #FF6B1A;">[NEW]</span>
-"Thanks for playing!"</pre>
-            </div>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-<div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-1.svg" alt="Checkpoint 1" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Copy &amp; Load Hazards</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Start from your Lab 4.1 code and add a new file-loading function for hazards.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A function that reads <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards.txt</span> and returns a <strong style="color: #fff;">list of dictionaries</strong>. Each hazard dictionary has keys for name, heads message, and tails message.
-            </p>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                This pattern&mdash;loading structured data from files into a list of dictionaries&mdash;is everywhere in professional development. JSON APIs return lists of objects, database queries return lists of records, and configuration files store lists of settings. Master this pattern and you've unlocked how real applications manage data.
-            </p>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" style="width: 28px; height: 28px;" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #da92ff;">Your load_city_info() from 4.1</strong> already creates dictionaries from CSV lines. This is the same pattern, but you'll <strong style="color: #fff;">append</strong> each hazard dict to a <strong style="color: #fff;">list</strong> instead of adding to a parent dict.
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Copy your lab-4-1.py</strong> and rename it to <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">lab-4-2.py</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Update your docstring</strong> to say "Lab 4.2: Hazards on the Highway"</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Define</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_hazards(filename)</span> that takes a filename parameter</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Create an empty list:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards = []</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Open the file</strong> and loop through each line</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">For each line:</strong> use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">line.strip().split(',')</span> to get parts</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Create a hazard dict:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">{'name': parts[0], 'heads': parts[1], 'tails': parts[2]}</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Append to list:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards.append(hazard)</span></li>
-                <li><strong style="color: #fff;">Close the file and return</strong> the hazards list</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this test harness:</p>
-            <div style="border: 2px solid #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;"><span style="color: #6a737d; font-style: italic;"># DEBUG - DELETE BEFORE CHECKPOINT 2</span>
-hazards = load_hazards(<span style="color: #39ff14;">'hazards.txt'</span>)
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">f'Loaded </span><span style="color: #00ffff;">{len(hazards)}</span><span style="color: #39ff14;"> hazards'</span>)
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'First hazard:'</span>, hazards[<span style="color: #bf40ff;">0</span>])
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'First hazard name:'</span>, hazards[<span style="color: #bf40ff;">0</span>][<span style="color: #39ff14;">'name'</span>])</pre>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run and verify this output:</p>
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.5; color: #f5f5f5; margin: 0; padding: 15px 20px;">Loaded 8 hazards
-First hazard: {'name': "Buc-ee's appears!", 'heads': 'You resist...', 'tails': 'Lost 2 hours...'}
-First hazard name: Buc-ee's appears!</pre>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #fff;">Step 3:</strong> <span style="color: #ff6b1a;">DELETE the DEBUG lines</span> before moving to Checkpoint 2.</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using wrong index: <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">parts[3]</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Only 3 parts per line (0, 1, 2)&mdash;check your CSV structure</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">.strip()</code> on the line</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Trailing newlines corrupt your data and comparisons fail</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Creating dict outside loop</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Each line needs a NEW dict&mdash;create inside the loop</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 30px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">lab-4-2.py with updated docstring</li>
-                <li style="margin-bottom: 5px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_hazards()</span> returns a list of dictionaries</li>
-                <li style="margin-bottom: 5px;">Each dict has 'name', 'heads', and 'tails' keys</li>
-                <li>Can access hazards with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards[0]['name']</span></li>
-            </ul>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-2.svg" alt="Checkpoint 2" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">The .upper() Relief</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Replace those painful <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">or</code> statements with clean string methods!</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Clean, normalized input handling using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip().upper()</span>. No more <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">if x == 'y' or x == 'Y':</span>!
-            </p>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Sasha-Mireles.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Sasha Mireles">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"Players will do exactly what you didn't expect. They'll type 'Y', 'y', 'YES', '  y  ' with extra spaces... <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">.strip().upper()</code> handles ALL of that in one line. Design for chaos!"</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/sasha-mireles.svg" alt="Sasha Mireles" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Creative Director, Bat City Collective</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Find the dead-end handling</strong> in your game loop (the "Return to San Antonio?" input)</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Change the input line</strong> to use method chaining:</li>
-            </ol>
-            
-            <div style="border: 2px solid #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;"><span style="color: #6a737d; font-style: italic;"># OLD WAY (painful!)</span>
-choice = <span style="color: #ffcc00;">input</span>(<span style="color: #39ff14;">'Return to San Antonio? (y/n): '</span>)
-<span style="color: #ff6b1a;">if</span> choice == <span style="color: #39ff14;">'y'</span> <span style="color: #ff6b1a;">or</span> choice == <span style="color: #39ff14;">'Y'</span>:
-
-<span style="color: #6a737d; font-style: italic;"># NEW WAY (clean!)</span>
-choice = <span style="color: #ffcc00;">input</span>(<span style="color: #39ff14;">'Return to San Antonio? (y/n): '</span>).strip().upper()
-<span style="color: #ff6b1a;">if</span> choice == <span style="color: #39ff14;">'Y'</span>:</pre>
-            </div>
-            
-            <ol start="3" style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Update player name input</strong> to use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip()</span> (removes accidental spaces)</li>
-                <li><strong style="color: #fff;">Search for any other</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">or</span> patterns in your input handling and fix them</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 50%;">&#10007; Common Mistake</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Fix</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Still checking lowercase after .upper()</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Only check <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">'Y'</span> not <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">'y'</span></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Forgetting the parentheses: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">.upper</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Methods need (): <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.upper()</span></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Reversed order: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">.upper().strip()</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Won't crash, but <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip().upper()</span> is the standard pattern&mdash;strip the junk first, then transform</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Run your game and navigate to a dead end (Laredo or El Paso)</p>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> When asked "Return to San Antonio?", try these inputs:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #00ffff; font-size: 13px;">y</span> &rarr; Should work</li>
-                <li style="margin-bottom: 5px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #00ffff; font-size: 13px;">Y</span> &rarr; Should work</li>
-                <li style="margin-bottom: 5px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #00ffff; font-size: 13px;">  y  </span> (with spaces) &rarr; Should work!</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 30px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">All yes/no inputs use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip().upper()</span></li>
-                <li style="margin-bottom: 5px;">No more <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">or</span> patterns for case handling</li>
-                <li>Player name input uses <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip()</span></li>
-            </ul>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-3.svg" alt="Checkpoint 3" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Handle Hazards</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Create a function that picks a random hazard and determines the outcome with a coin flip.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A function that selects a random hazard from your list, displays it, flips a coin, and shows the appropriate outcome message. Returns True if escaped (HEADS), False if not (TAILS).
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Define</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">handle_hazard(hazards)</span> that takes the hazards list</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Pick a random hazard:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazard = random.choice(hazards)</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Display the hazard name:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">*** HAZARD: {hazard['name']} ***</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Flip a coin:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">result = function_library.flip_coin()</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Display the flip result</strong></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">If HEADS:</strong> print the heads message, return True</li>
-                <li><strong style="color: #fff;">If TAILS:</strong> print the tails message, return False</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this test harness:</p>
-            <div style="border: 2px solid #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;"><span style="color: #6a737d; font-style: italic;"># DEBUG - DELETE BEFORE CHECKPOINT 4</span>
-hazards = load_hazards(<span style="color: #39ff14;">'hazards.txt'</span>)
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Testing hazard handling...'</span>)
-<span style="color: #ff6b1a;">for</span> i <span style="color: #ff6b1a;">in</span> <span style="color: #ffcc00;">range</span>(<span style="color: #bf40ff;">3</span>):
-    escaped = handle_hazard(hazards)
-    <span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">f'Escaped: </span><span style="color: #00ffff;">{escaped}</span><span style="color: #39ff14;">'</span>)
-    <span style="color: #ffcc00;">print</span>()</pre>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run several times. Verify you see different hazards and both HEADS/TAILS outcomes.</p>
-            
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #fff;">Step 3:</strong> <span style="color: #ff6b1a;">DELETE the DEBUG lines</span> before moving to Checkpoint 4.</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">hazard['HEADS']</code> (uppercase)</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Keys are lowercase: <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">'heads'</code> and <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">'tails'</code></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting to return True/False</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Caller needs to know if player escaped&mdash;must return boolean</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">random.choice(hazards)</code> without import</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Make sure <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">import random</code> is at top of file</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 30px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">A working <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">handle_hazard(hazards)</span> function that returns True or False</li>
-                <li style="margin-bottom: 5px;">Random hazard selection using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">random.choice()</span></li>
-                <li style="margin-bottom: 5px;">Correct dictionary keys: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">'heads'</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">'tails'</span> (lowercase)</li>
-                <li>DEBUG test lines deleted</li>
-            </ul>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-4.svg" alt="Checkpoint 4" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">D20 Travel System</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Replace instant travel with dice-roll-based progression and random hazard encounters.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">travel_to()</span> function where you roll a D20 each turn, travel (roll 10) miles, and have a 30% chance of encountering a hazard. The journey continues until you've covered the full distance.
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Define</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">travel_to(destination, distance, hazards)</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Initialize:</strong> remaining = distance, miles_traveled = 0, hazards_faced = 0, hazards_escaped = 0</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Create while loop:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">while remaining > 0:</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Roll D20:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">roll = function_library.roll_d20()</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Calculate miles:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">miles = roll * 10</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Cap miles</strong> if it would overshoot: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">if miles > remaining: miles = remaining</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Update accumulators:</strong> miles_traveled, remaining</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Print progress:</strong> show roll, miles gained, remaining</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Check for hazard</strong> (30% chance, only if not done): <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.check_percentage(30)</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">If hazard triggered:</strong> call handle_hazard(), update counters</li>
-                <li><strong style="color: #fff;">Return tuple:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">(miles_traveled, hazards_faced, hazards_escaped)</span></li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Only check for hazards when <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">remaining > 0</span>. You don't want a hazard on your last turn when you've already arrived!
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Integration" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Update main() to use the new system:</strong></p>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Load hazards along with city data</li>
-                <li style="margin-bottom: 8px;">Remove the coin flip gate (travel_to replaces it)</li>
-                <li style="margin-bottom: 8px;">Call travel_to() after player chooses destination</li>
-                <li style="margin-bottom: 8px;">Track total hazards faced and escaped</li>
-                <li>Update final report to show hazard stats</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Play through the complete game and verify:</strong></p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">D20 rolls determine progress (roll 10 miles)</li>
-                <li style="margin-bottom: 5px;">Hazards appear randomly (~30% of turns)</li>
-                <li style="margin-bottom: 5px;">Hazard outcomes depend on coin flip</li>
-                <li style="margin-bottom: 5px;">Final report shows hazards escaped/faced</li>
-                <li>Total miles matches sum of all journeys</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">check_percentage(0.3)</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Function expects whole number: <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">check_percentage(30)</code></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">D20 range wrong: <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">randint(0, 20)</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">D20 is 1-20, not 0-20! Use library function to be safe</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting to return the tuple</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Caller needs <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">(miles, faced, escaped)</code> for final report</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">travel_to()</span> with D20-based progression</li>
-                <li style="margin-bottom: 5px;">30% hazard chance using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">check_percentage(30)</span></li>
-                <li style="margin-bottom: 5px;">Returns tuple of (miles, faced, escaped)</li>
-                <li style="margin-bottom: 5px;">Updated main() integrates all new features</li>
-                <li>Final report includes hazard statistics</li>
-            </ul>
-            
-        </div>
-    </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF1744 0%, #4A0A0A 100%); padding: 8px 12px 12px 12px;">
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-final-checklist.svg" alt="Final Checklist" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Check It Before You Wreck It
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-before-you-submit.svg" alt="Before You Submit" style="height: 18px; display: block;">
-            </div>
-            
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">File is named exactly <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">lab-4-2.py</span></li>
-                <li style="margin-bottom: 8px;">Docstring updated to "Lab 4.2: Hazards on the Highway"</li>
-                <li style="margin-bottom: 8px;">Uses <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip().upper()</span> for yes/no input (NO <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">or</span> patterns)</li>
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_hazards()</span> returns list of dictionaries</li>
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">travel_to()</span> uses D20 rolls and 30% hazard chance</li>
-                <li style="margin-bottom: 8px;">Final report includes hazards faced/escaped</li>
-                <li>All DEBUG/test code has been removed</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-permitted-techniques.svg" alt="Permitted Techniques" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">
-                <strong style="color: #fff;">Chapters 2-9 ONLY.</strong> CodeGrade will flag code using techniques from later chapters.
-            </p>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #ff1744; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF1744; width: 50%;">Allowed</th>
-                            <th style="background: #1a1a1a; color: #ff1744; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF1744;">&#10007; Not Yet</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">.strip(), .upper(), .lower(), .split()</td>
-                            <td style="background: #000; color: #666; padding: 12px 15px; border-bottom: 2px solid #222;">Classes (Chapter 10)</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Dictionaries, list of dictionaries</td>
-                            <td style="background: #000; color: #666; padding: 12px 15px; border-bottom: 2px solid #222;">Inheritance (Chapter 11)</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">random.choice() with lists</td>
-                            <td style="background: #000; color: #666; padding: 12px 15px; border-bottom: 2px solid #222;">Sets (saved for Lab 4.3)</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Returning tuples from functions</td>
-                            <td style="background: #000; color: #666; padding: 12px 15px; border-bottom: 2px solid #222;"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-codegrade-tip.svg" alt="CodeGrade Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Submit early and often!</strong> CodeGrade will test your hazard loading, string method usage, and travel system. Make sure to upload all data files with your submission.
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-academic-integrity.svg" alt="Academic Integrity" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                This is individual work. You may discuss concepts with classmates, but your code must be your own. Using AI assistants to write your code violates the academic integrity policy.
-            </p>
-            
-        </div>
-    </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #BF40FF 0%, #2E0854 100%); padding: 8px 12px 12px 12px;">
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-need-help.svg" alt="Need Help?" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Look No Further! We've Got You
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-if-you-get-stuck.svg" alt="If You Get Stuck" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 25px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Review Chapter 8 String Methods table</strong> &mdash; .strip(), .upper(), .lower() are your new friends</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Test functions independently</strong> &mdash; get load_hazards() working before handle_hazard()</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Check method chaining order</strong> &mdash; <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip().upper()</span> not <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">.strip.upper()</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Print your variables</strong> &mdash; DEBUG prints help you see what's happening</li>
-                <li><strong style="color: #fff;">Submit to CodeGrade early</strong> &mdash; it shows exactly which tests pass or fail</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-contact-and-resources.svg" alt="Contact & Resources" style="height: 18px; display: block;">
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Webcam-Video-Square.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Weekly Zoom Session</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Tuesdays at 6:00 PM CT &mdash; Live coding help and Q&amp;A</div>
-                    <a href="https://utsa.zoom.us/j/97617245124" style="color: #BF40FF; font-size: 13px;">https://utsa.zoom.us/j/97617245124</a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Calendar-Mark.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Office Hours (by Appointment)</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Book a 15-minute slot for one-on-one help</div>
-                    <a href="https://calendly.com/john-newsom-utsa/student-meeting" style="color: #BF40FF; font-size: 13px;">https://calendly.com/john-newsom-utsa/student-meeting</a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Customer-Support.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Discord Community</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Get help from classmates and share tips (optional but recommended)</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Mail-Send-Envelope.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Email</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">For private questions or concerns</div>
-                    <a href="/cdn-cgi/l/email-protection#543e3b3c3a7a3a3123273b3914212027357a313021" style="color: #BF40FF; font-size: 13px;"><span class="__cf_email__" data-cfemail="dab0b5b2b4f4b4bfada9b5b79aafaea9bbf4bfbeaf">[email&#160;protected]</span></a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Chapter 8-9 BookEx Reference Guides</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Step-by-step breakdowns of every textbook example &mdash; your primary reference</div>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
-<div style="text-align: center; color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
-    <img style="height: 50px; margin-bottom: 15px;" src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
-    <div style="color: #b0b8c4; font-size: 13px;">IS2053 Programming I &mdash; UT San Antonio &mdash; Spring 2026</div>
-    <div 
+</body>
+</html>

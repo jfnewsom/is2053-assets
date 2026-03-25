@@ -1,0 +1,399 @@
+{
+    "labId": "lab-4-2",
+    "title": "Flexible Input",
+    "module": 4,
+    "week": 2,
+    "weekType": "ENHANCE",
+    "chapters": "8–9",
+    "chapterTopics": "String methods, input normalization, method chaining",
+    "filename": "lab-4-2.py",
+    "additionalFiles": ["function_library.py"],
+
+    "overview": {
+        "body": "You felt the friction. For three weeks, every yes/no prompt in your game required four comparisons: <code>answer == 'y' or answer == 'Y' or answer == 'n' or answer == 'N'</code>. Every menu choice needed two branches just to handle case. Today that ends.<br><br>Chapter 8 introduces string methods: small but powerful tools that transform how you handle user input. <code>.upper()</code>, <code>.lower()</code>, and <code>.strip()</code> let you normalize what the player types before you ever compare it. You will refactor <code>function_library.py</code> with two new helper functions, update <code>get_yes_no()</code>, and apply consistent input cleaning across your entire game loop. When you are done, your code will be shorter, more readable, and far more forgiving of sloppy typing.",
+        "mentorQuote": {
+            "character": "Danny Cavanaugh",
+            "role": "Senior Developer, Bat City Collective",
+            "headshot": "Danny-Cavanaugh.png",
+            "quote": "Three weeks ago, get_yes_no() had to handle 'y' AND 'Y' AND 'n' AND 'N'. That is four comparisons to do one job. .upper() collapses all of that into one. When a function shrinks and still does everything it did before, that is a sign you found the right tool."
+        },
+        "objectives": [
+            "Apply .upper() and .strip() to normalize user input before comparison",
+            "Chain string methods to clean input in a single expression",
+            "Refactor get_yes_no() using .upper() to eliminate redundant OR conditions",
+            "Add clean_input() and clean_input_lower() to function_library.py",
+            "Update all user input in lab-4-2.py to use the new helper functions"
+        ],
+        "keyConceptsText": "Chapter 8: Programs 8-1 (iterating over strings), 8-5 (string testing methods), and 8-9 and 8-10 (splitting strings). String modification methods (.upper(), .lower(), and .strip()) are covered in the Chapter 8 methods reference table.",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis, Chapters 8 and 9",
+        "programRequirements": [
+            "function_library.py contains clean_input() and clean_input_lower() functions",
+            "get_yes_no() uses .upper() with no OR chains comparing both uppercase and lowercase variants",
+            "lab-4-2.py applies .strip() or clean_input() to every user input before comparison",
+            "All functions have docstrings; file has top-of-file documentation header"
+        ],
+        "additionalFilesNote": "This lab updates both lab-4-2.py and function_library.py. Submit both files. CodeGrade will test your library functions independently.",
+        "filenameNote": "Submit lab-4-2.py and function_library.py this week.",
+        "saveYourCode": "Keep both files. Module 4.3 adds sets and a trivia gate on top of the input handling you build here."
+    },
+
+    "timeGuide": {
+        "totalTime": "45–60 Minutes",
+        "rows": [
+            { "checkpoint": "CP1: New Library Functions", "time": "10 min", "task": "Add clean_input() and clean_input_lower() to function_library.py" },
+            { "checkpoint": "CP2: Refactor get_yes_no()", "time": "15 min", "task": "Replace OR chains with .strip().upper() (the pain-before-magic payoff)" },
+            { "checkpoint": "CP3: Clean All Input in lab-4-2.py", "time": "15 min", "task": "Apply input normalization across the entire game loop" },
+            { "checkpoint": "CP4: Test and Submit", "time": "10 min", "task": "Test edge cases, verify CodeGrade, clean up and submit" }
+        ]
+    },
+
+    "beforeYouBegin": {
+        "intro": "Here is how your finished program fits together. The [NEW] tags show what you are adding to function_library.py. The [REPLACED] tags show what changes in lab-4-2.py from your 4.1 code. Everything else carries forward unchanged.",
+        "architecture": "# ---- CONSTANTS (lab-4-2.py) ----\nCITY_DISTANCES = { ... }              (from 4.1, unchanged)\nCITY_INFO      = { ... }              (from 4.1, unchanged)\nSTARTING_CITY  = 'San Antonio'        (unchanged)\n\n# ---- FUNCTION LIBRARY (function_library.py) ----\nclean_input(prompt)                   [NEW] strip + upper\nclean_input_lower(prompt)             [NEW] strip + lower\nget_yes_no(prompt)                    [REPLACED] now uses .upper()\nget_valid_int(prompt, min, max)       (unchanged)\nflip_coin()                           (unchanged)\nroll_d20()                            (unchanged)\ndisplay_numbered_list(items, title)   (unchanged)\nsave_list_to_file(filename, data)     (unchanged)\nload_list_from_file(filename)         (unchanged)\nfile_exists(filename)                 (unchanged)\n\n# ---- MAIN GAME (lab-4-2.py) ----\nGAME LOOP:\n│\n│── Player name input         .strip()           [REPLACED]\n│── Main menu choice          .strip().upper()   [REPLACED]\n│\n│   DESTINATION SELECTION:\n│   │── Destination input     .strip().upper()   [REPLACED]\n│   │── Hazard prompt        get_yes_no()        (now cleaner)\n│   │\n│   TRAVEL LOOP:\n│   │── All prompts normalized before comparison [REPLACED]\n│\n│── Play again?               get_yes_no()       (now cleaner)\n│\nAll user input normalized before any comparison.\nNo more 'y' vs 'Y' failures."
+    },
+
+    "checkpoints": [
+        {
+            "number": 1,
+            "title": "Add String Functions to function_library.py",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Open <code>function_library.py</code> from your 4.1 submission. You will add two new functions at the bottom of the STRING FUNCTIONS section. These functions wrap Python's built-in string methods so the rest of your code can call one clean function instead of chaining methods inline every time."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Add a <code># STRING FUNCTIONS (Added in 4.2)</code> comment block at the bottom of your function library to separate the new additions.",
+                        "Write a function named <code>clean_input</code> that accepts one parameter: <code>prompt</code>. It should get input from the user, strip leading and trailing whitespace, convert the result to uppercase, and return that cleaned string. Include a docstring that describes what it does, the parameter, and the return value.",
+                        "Write a second function named <code>clean_input_lower</code> that works the same way but converts to lowercase instead of uppercase. It should also accept a <code>prompt</code> parameter and include a docstring.",
+                        "In your Python shell, test both functions manually: call <code>clean_input('Test: ')</code> and type <code>&nbsp; hello &nbsp;</code> with spaces. Verify the return value is <code>'HELLO'</code> with no spaces.",
+                        "Repeat the test with <code>clean_input_lower</code> and verify the return value is <code>'hello'</code>."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "8-1",
+                            "filename": "count_Ts.py",
+                            "step": 4,
+                            "description": "Shows how individual characters behave when tested with ==, which is the same logic that makes case comparison fragile without normalization."
+                        },
+                        {
+                            "programId": "8-5",
+                            "filename": "string_test.py",
+                            "step": 3,
+                            "description": "Demonstrates string testing methods (.isdigit(), .isalpha(), .isupper(), and .islower()) , useful for input validation beyond case normalization."
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Method chaining is the key idea here. When you write <code>input(prompt).strip().upper()</code>, Python executes left to right: <code>input()</code> gets a string from the user, <code>.strip()</code> removes whitespace from both ends of that string, and <code>.upper()</code> converts the result to uppercase. Each method returns a new string, and the next method is called on that result. Strings are immutable in Python, so nothing is modified in place. You are building a pipeline."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "What Goes Wrong", "Fix"],
+                    "rows": [
+                        ["Writing `input.strip().upper(prompt)`", "input is a function; the prompt goes inside the parentheses", "Write `input(prompt).strip().upper()` because call order matters"],
+                        ["Forgetting to return the result", "Function runs but the caller gets None back", "Make sure the last expression in your function is a return statement"],
+                        ["Using `string.upper` without parentheses", "You get a reference to the method object, not the result", "Always include the parentheses: `string.upper()`"],
+                        ["Assigning back unnecessarily", "Writing `text = text.strip()` when you just want the cleaned value once", "If you only use it once, chain directly: `input(prompt).strip().upper()`"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "CP1 Complete",
+                    "items": [
+                        "function_library.py has a STRING FUNCTIONS section with clean_input() and clean_input_lower()",
+                        "Both functions have docstrings with parameter and return descriptions",
+                        "Manual testing confirms clean_input('Test: ') with '  hello  ' returns 'HELLO'",
+                        "Manual testing confirms clean_input_lower('Test: ') with '  HELLO  ' returns 'hello'"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "title": "Refactor get_yes_no()",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "This is the payoff checkpoint. Open <code>function_library.py</code> and find your existing <code>get_yes_no()</code> function. You are going to rewrite it using <code>.strip().upper()</code> and watch it get shorter, cleaner, and more capable all at once."
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Here is what your current function has to do to handle both cases:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# BEFORE: get_yes_no() the painful way\n# Four comparisons just to check two possible answers\nwhile answer != 'y' and answer != 'Y' and answer != 'n' and answer != 'N':\n    print(\"ERROR: Enter 'y' or 'n'.\")\n    answer = input(prompt)\nif answer == 'y' or answer == 'Y':\n    return True\nelse:\n    return False"
+                },
+                {
+                    "type": "text",
+                    "body": "After normalizing with <code>.upper()</code>, the logic collapses. There are only two valid uppercase answers to check, and the return statement becomes a single comparison."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Find <code>get_yes_no()</code> in your function library. Read through its current logic and count how many comparisons it makes.",
+                        "Rewrite the first <code>input()</code> call inside the function so it chains <code>.strip()</code> and <code>.upper()</code> before assigning to <code>answer</code>.",
+                        "Update the <code>while</code> loop condition. After normalizing, you only need to compare against <code>'Y'</code> and <code>'N'</code>. No need to check both cases.",
+                        "Update the <code>input()</code> call inside the loop to also use <code>.strip().upper()</code>.",
+                        "Simplify the return statement. Hint: after normalization, returning whether <code>answer</code> equals <code>'Y'</code> is all you need. No <code>if/else</code> required.",
+                        "Update the docstring to note that the function now uses <code>.upper()</code> for case-insensitive input handling."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Import your library in a Python shell: <code>import function_library</code>",
+                        "Call <code>function_library.get_yes_no('Continue? (y/n): ')</code> and type lowercase <code>y</code>. Verify it returns <code>True</code>.",
+                        "Call it again and type uppercase <code>Y</code>. Verify it also returns <code>True</code>.",
+                        "Call it again and type <code>&nbsp; y &nbsp;</code> with leading and trailing spaces. Verify it still returns <code>True</code>.",
+                        "Verify that <code>n</code>, <code>N</code>, and <code>&nbsp;n&nbsp;</code> all return <code>False</code>.",
+                        "Verify that typing something invalid (like <code>yes</code>) triggers the error message and re-prompts."
+                    ]
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Danny Cavanaugh",
+                    "role": "Senior Developer, Bat City Collective",
+                    "headshot": "Danny-Cavanaugh.png",
+                    "quote": "Count the comparisons in your old get_yes_no(), then count the comparisons in the new one. If that number went down and the function still works, you did it right. Fewer moving parts means fewer places to break."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "CP2 Complete",
+                    "items": [
+                        "get_yes_no() no longer uses OR chains to handle both 'y' and 'Y'",
+                        "Both the initial input and the loop's re-prompt use .strip().upper()",
+                        "The return statement is a single comparison with no if/else needed",
+                        "Docstring updated to describe the .upper() normalization",
+                        "Manual testing confirms 'y', 'Y', and '  y  ' all return True"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title": "Clean All Input in lab-4-2.py",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Open <code>lab-4-2.py</code> from your 4.1 submission and save a copy as <code>lab-4-2.py</code>. Work through the entire file and apply input normalization everywhere a player types something. This is a refactor pass, not glamorous work. But it is the kind of pass that separates code that works for the developer from code that works for the player."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Start at the top of your game loop. Find every <code>input()</code> call that reads a player choice: destination selection, menu options, hazard responses, and any other prompt that leads to a comparison.",
+                        "For any input that gets compared against letter strings (like <code>'A'</code>, <code>'B'</code>, <code>'Y'</code>, <code>'N'</code>), replace the bare <code>input(prompt)</code> call with <code>input(prompt).strip().upper()</code>. You may also use your new <code>clean_input(prompt)</code> function from the library. Both are acceptable.",
+                        "For the player's name input (which is not compared against a fixed set of values), apply only <code>.strip()</code>. Do not convert names to uppercase.",
+                        "Find every <code>while</code> loop condition that currently checks both lowercase and uppercase (like <code>answer != 'a' and answer != 'A'</code>) and simplify it to check only the uppercase version.",
+                        "Find every <code>if/elif</code> chain that currently checks both cases (like <code>if choice == 'a' or choice == 'A':</code>) and simplify each condition to check only the uppercase version.",
+                        "After all replacements, do a quick scan for any remaining lowercase letter literals in conditions. If you see <code>== 'a'</code>, <code>== 'b'</code>, or similar, those are candidates for cleanup. Verify they still make sense after normalization."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "tip",
+                    "title": "Use VS Code's Find to Catch Everything",
+                    "body": "In VS Code, use <strong>Ctrl+F</strong> (or Cmd+F on Mac) and search for <code>input(</code> to jump to every input call in your file. Work through them one at a time. It takes five minutes and ensures you do not miss any."
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Terrence \"T-Bone\" Booker",
+                    "role": "QA Lead, Bat City Collective",
+                    "headshot": "Terrence-Booker.png",
+                    "quote": "I typed ' y ' with spaces on both sides. Your program crashed. Then I typed 'Y' and it worked fine. Those should behave identically. If your input handling works for some inputs but not others, it does not work. It just works for you."
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Run your game from the terminal. At the first yes/no prompt, type a lowercase letter. Verify it is accepted..",
+                        "At the first menu choice prompt, type a lowercase letter. Verify it selects the correct option..",
+                        "At any prompt, type a valid answer with a leading space (like <code>&nbsp;a</code>). Verify it still works..",
+                        "Try typing all-caps where the game expects a single letter. Verify it works..",
+                        "Play through at least one complete trip to confirm the game runs without errors before moving to CP4."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "CP3 Complete",
+                    "items": [
+                        "Every player choice input in lab-4-2.py uses .strip() at minimum",
+                        "Every input compared against letter constants uses .strip().upper() or clean_input()",
+                        "Player name input uses .strip() only; name is not uppercased",
+                        "All if/elif conditions check only uppercase literals; no more 'a' or 'A' patterns",
+                        "The game plays through a complete trip without input errors"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "title": "Test, Clean Up, and Submit",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "Before submitting, run your game through the following test scenarios. Each one targets a specific thing the refactor was supposed to fix."
+                },
+                {
+                    "type": "table",
+                    "headers": ["Test Input", "Where to Type It", "Expected Result"],
+                    "rows": [
+                        ["Lowercase 'y'", "Any yes/no prompt", "Accepted (same as 'Y')"],
+                        ["Uppercase 'N'", "Any yes/no prompt", "Accepted (same as 'n')"],
+                        ["'  y  ' with spaces", "Any yes/no prompt", "Spaces stripped and accepted"],
+                        ["Lowercase destination letter", "Destination selection menu", "Correct destination selected"],
+                        ["Invalid character like '?'", "Any menu prompt", "Error message shown, re-prompted"],
+                        ["Player name with leading space", "Name prompt at game start", "Name stored without the leading space"],
+                        ["All caps name like 'ALEX'", "Name prompt at game start", "Stored as 'ALEX' without conversion"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Run each test case from the table above. Note any failures. If something does not behave as expected, trace back to the input call that handles that prompt.",
+                        "Verify your top-of-file documentation header is present in both <code>lab-4-2.py</code> and <code>function_library.py</code>. Required fields: Name, abc123, Section, and a one-sentence description of what the file does.",
+                        "Verify every function in both files has a docstring. Quick check: open each file and scan for <code>def </code>. Every one should be followed by a docstring on the next indented line.",
+                        "Run Flake8 on both files and fix any warnings before submitting.",
+                        "Submit both <code>lab-4-2.py</code> and <code>function_library.py</code> to CodeGrade. Review the automated feedback. If any correctness tests fail, read the error output carefully and trace it back to the specific input that is not being cleaned."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "info",
+                    "title": "CodeGrade Tests Your Library Separately",
+                    "body": "CodeGrade imports your <code>function_library.py</code> directly and calls <code>clean_input()</code> and <code>get_yes_no()</code> in isolation. Make sure those functions work correctly on their own, not just when the full game is running."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "Lab 4.2 Complete",
+                    "items": [
+                        "Both lab-4-2.py and function_library.py submitted to CodeGrade",
+                        "All test cases from the table above pass",
+                        "Documentation headers present in both files",
+                        "All functions have docstrings",
+                        "Flake8 returns no warnings on either file"
+                    ]
+                }
+            ]
+        }
+    ],
+
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "function_library.py contains clean_input() and clean_input_lower() with docstrings",
+            "get_yes_no() uses .strip().upper() with no OR chains comparing both 'y' and 'Y'",
+            "Every player input in lab-4-2.py uses .strip() at minimum before comparison",
+            "Player name uses .strip() only, not converted to uppercase",
+            "All if/elif and while conditions compare against uppercase literals only",
+            "Top-of-file documentation header in both files: Name, abc123, Section, Description",
+            "All functions in both files have docstrings"
+        ],
+        "scopeReminder": "You may use .upper(), .lower(), .strip(), .lstrip(), .rstrip(), .isdigit(), .isalpha(), method chaining, and all dictionary techniques from Chapter 9 that you used in 4.1. Do NOT use list comprehensions, try/except blocks, classes, or inheritance.",
+        "permittedTechniques": {
+            "chapters": "2–9 (all techniques from Chapters 2–8 fully permitted; Chapter 9 dictionaries as introduced in 4.1)",
+            "specific": [
+                "String normalization: .upper(), .lower(), .strip(), .lstrip(), .rstrip()",
+                "String testing: .isdigit(), .isalpha(), .isalnum()",
+                "Method chaining: input(prompt).strip().upper()",
+                "Dictionary access and methods from 4.1: key access, .get(), .keys(), .values(), .items()"
+            ],
+            "notPermitted": "list comprehensions, try/except, sets (coming in 4.3), classes, inheritance"
+        },
+        "warnings": [
+            "Do not use try/except for input validation in this lab. That pattern is out of scope. Use while loops and the string testing methods from Chapter 8.",
+            "CodeGrade imports function_library.py directly. A syntax error in your library file will cause all library tests to fail, even if your game runs fine."
+        ],
+        "saveYourCode": "Keep both files. Module 4.3 adds a sets-based unique city tracker and a trivia gate. both build on the cleaned-up input handling you just wrote."
+    },
+
+    "needHelp": {
+        "chapterResource": "Chapter 8 (More About Strings) in Gaddis covers string methods starting in Section 8.3. The methods reference table at the end of your Chapter 8 BookEx is a quick lookup for .upper(), .lower(), .strip(), and related methods.",
+        "zoomLink": "https://utsa.zoom.us/j/97617245124",
+        "calendlyLink": "https://calendly.com/john-newsom-utsa/student-meeting",
+        "discordNote": "Post your question in the course Discord. Include which checkpoint you are on and what behavior you expected versus what actually happened."
+    }
+}
