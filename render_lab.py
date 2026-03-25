@@ -42,11 +42,6 @@ from components import (
 # Week type badge text
 # ============================================================
 
-WEEK_TYPE_LABEL = {
-    "BUILD":   "Module {module} &mdash; Week {week} &mdash; BUILD Week",
-    "ENHANCE": "Module {module} &mdash; Week {week} &mdash; ENHANCE Week",
-    "MASTER":  "Module {module} &mdash; Week {week} &mdash; MASTER Week",
-}
 
 
 # ============================================================
@@ -80,20 +75,29 @@ def render_overview_card(overview: dict, meta: dict) -> str:
     # Badge number: "1.1", "4.2", etc.
     badge_num = f"{module}.{week}"
 
-    # Sub-banner: week type label
-    sub_banner_text = WEEK_TYPE_LABEL.get(week_type, "").format(
-        module=module, week=week
-    )
-
-    # Chapter info line
-    chapter_line = ""
+    # Sub-banner: MODULE X • BUILD WEEK • CHAPTERS 8–9: TOPICS
+    week_type_label = week_type.replace("_", " ") + " WEEK"
+    sub_banner_text = f"MODULE {module} &bull; {week_type_label}"
     if chapters:
-        chapter_line = f"""    <p><strong>Chapters:</strong> {html_lib.escape(chapters)}
-        {f"&mdash; {html_lib.escape(chapter_topics)}" if chapter_topics else ""}</p>
-"""
+        chapter_part = html_lib.escape(chapters)
+        if chapter_topics:
+            chapter_part += f": {html_lib.escape(chapter_topics).upper()}"
+        sub_banner_text += f" &bull; CHAPTERS {chapter_part}"
 
-    # Body narrative
-    body_html = f"    <p>{body}</p>\n" if body else ""
+    # Body narrative — preceded by Overview H3, logo floated right
+    body_html = ""
+    if body:
+        logo_html = (
+            '<img src="../../branding/AllMyEggses.png" '
+            'alt="All My Eggses Live in Texas" '
+            'style="float: right; height: 110px; margin: 0 0 12px 20px;">\n'
+        )
+        body_html = (
+            '    <div class="lc-h3">Overview</div>\n'
+            f"    {logo_html}"
+            f"    <p>{body}</p>\n"
+            '    <div style="clear: both;"></div>\n'
+        )
 
     # Mentor quote
     mentor_html = render_mentor_quote(mentor) if mentor else ""
@@ -172,7 +176,6 @@ def render_overview_card(overview: dict, meta: dict) -> str:
         card_open("blue")
         + topper_with_badge("LAB", badge_num, title, sub_banner_text)
         + panel_open()
-        + chapter_line
         + body_html
         + mentor_html
         + objectives_html
