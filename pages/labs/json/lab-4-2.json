@@ -1,14 +1,17 @@
 {
-    "labId": "lab-4-2",
-    "title": "Flexible Input",
-    "module": 4,
-    "week": 2,
-    "weekType": "ENHANCE",
-    "chapters": "8–9",
-    "chapterTopics": "String methods, input normalization, method chaining",
-    "filename": "lab-4-2.py",
-    "additionalFiles": ["function_library.py"],
-
+    "meta": {
+        "labId": "lab-4-2",
+        "title": "Flexible Input",
+        "module": 4,
+        "week": 2,
+        "weekType": "ENHANCE",
+        "chapters": "8–9",
+        "chapterTopics": "String methods, input normalization, method chaining",
+        "filename": "lab-4-2.py",
+        "additionalFiles": [
+            "function_library.py"
+        ]
+    },
     "overview": {
         "body": "You felt the friction. For three weeks, every yes/no prompt in your game required four comparisons: <code>answer == 'y' or answer == 'Y' or answer == 'n' or answer == 'N'</code>. Every menu choice needed two branches just to handle case. Today that ends.<br><br>Chapter 8 introduces string methods: small but powerful tools that transform how you handle user input. <code>.upper()</code>, <code>.lower()</code>, and <code>.strip()</code> let you normalize what the player types before you ever compare it. You will refactor <code>function_library.py</code> with two new helper functions, update <code>get_yes_no()</code>, and apply consistent input cleaning across your entire game loop. When you are done, your code will be shorter, more readable, and far more forgiving of sloppy typing.",
         "mentorQuote": {
@@ -36,22 +39,35 @@
         "filenameNote": "Submit lab-4-2.py and function_library.py this week.",
         "saveYourCode": "Keep both files. Module 4.3 adds sets and a trivia gate on top of the input handling you build here."
     },
-
     "timeGuide": {
         "totalTime": "45–60 Minutes",
         "rows": [
-            { "checkpoint": "CP1: New Library Functions", "time": "10 min", "task": "Add clean_input() and clean_input_lower() to function_library.py" },
-            { "checkpoint": "CP2: Refactor get_yes_no()", "time": "15 min", "task": "Replace OR chains with .strip().upper() (the pain-before-magic payoff)" },
-            { "checkpoint": "CP3: Clean All Input in lab-4-2.py", "time": "15 min", "task": "Apply input normalization across the entire game loop" },
-            { "checkpoint": "CP4: Test and Submit", "time": "10 min", "task": "Test edge cases, verify CodeGrade, clean up and submit" }
+            {
+                "checkpoint": "CP1: New Library Functions",
+                "time": "10 min",
+                "task": "Add clean_input() and clean_input_lower() to function_library.py"
+            },
+            {
+                "checkpoint": "CP2: Refactor get_yes_no()",
+                "time": "15 min",
+                "task": "Replace OR chains with .strip().upper() (the pain-before-magic payoff)"
+            },
+            {
+                "checkpoint": "CP3: Clean All Input in lab-4-2.py",
+                "time": "15 min",
+                "task": "Apply input normalization across the entire game loop"
+            },
+            {
+                "checkpoint": "CP4: Test and Submit",
+                "time": "10 min",
+                "task": "Test edge cases, verify CodeGrade, clean up and submit"
+            }
         ]
     },
-
     "beforeYouBegin": {
         "intro": "Here is how your finished program fits together. The [NEW] tags show what you are adding to function_library.py. The [REPLACED] tags show what changes in lab-4-2.py from your 4.1 code. Everything else carries forward unchanged.",
         "architecture": "# ---- CONSTANTS (lab-4-2.py) ----\nCITY_DISTANCES = { ... }              (from 4.1, unchanged)\nCITY_INFO      = { ... }              (from 4.1, unchanged)\nSTARTING_CITY  = 'San Antonio'        (unchanged)\n\n# ---- FUNCTION LIBRARY (function_library.py) ----\nclean_input(prompt)                   [NEW] strip + upper\nclean_input_lower(prompt)             [NEW] strip + lower\nget_yes_no(prompt)                    [REPLACED] now uses .upper()\nget_valid_int(prompt, min, max)       (unchanged)\nflip_coin()                           (unchanged)\nroll_d20()                            (unchanged)\ndisplay_numbered_list(items, title)   (unchanged)\nsave_list_to_file(filename, data)     (unchanged)\nload_list_from_file(filename)         (unchanged)\nfile_exists(filename)                 (unchanged)\n\n# ---- MAIN GAME (lab-4-2.py) ----\nGAME LOOP:\n│\n│── Player name input         .strip()           [REPLACED]\n│── Main menu choice          .strip().upper()   [REPLACED]\n│\n│   DESTINATION SELECTION:\n│   │── Destination input     .strip().upper()   [REPLACED]\n│   │── Hazard prompt        get_yes_no()        (now cleaner)\n│   │\n│   TRAVEL LOOP:\n│   │── All prompts normalized before comparison [REPLACED]\n│\n│── Play again?               get_yes_no()       (now cleaner)\n│\nAll user input normalized before any comparison.\nNo more 'y' vs 'Y' failures."
     },
-
     "checkpoints": [
         {
             "number": 1,
@@ -115,12 +131,32 @@
                 },
                 {
                     "type": "table",
-                    "headers": ["Mistake", "What Goes Wrong", "Fix"],
+                    "headers": [
+                        "Mistake",
+                        "What Goes Wrong",
+                        "Fix"
+                    ],
                     "rows": [
-                        ["Writing `input.strip().upper(prompt)`", "input is a function; the prompt goes inside the parentheses", "Write `input(prompt).strip().upper()` because call order matters"],
-                        ["Forgetting to return the result", "Function runs but the caller gets None back", "Make sure the last expression in your function is a return statement"],
-                        ["Using `string.upper` without parentheses", "You get a reference to the method object, not the result", "Always include the parentheses: `string.upper()`"],
-                        ["Assigning back unnecessarily", "Writing `text = text.strip()` when you just want the cleaned value once", "If you only use it once, chain directly: `input(prompt).strip().upper()`"]
+                        [
+                            "Writing `input.strip().upper(prompt)`",
+                            "input is a function; the prompt goes inside the parentheses",
+                            "Write `input(prompt).strip().upper()` because call order matters"
+                        ],
+                        [
+                            "Forgetting to return the result",
+                            "Function runs but the caller gets None back",
+                            "Make sure the last expression in your function is a return statement"
+                        ],
+                        [
+                            "Using `string.upper` without parentheses",
+                            "You get a reference to the method object, not the result",
+                            "Always include the parentheses: `string.upper()`"
+                        ],
+                        [
+                            "Assigning back unnecessarily",
+                            "Writing `text = text.strip()` when you just want the cleaned value once",
+                            "If you only use it once, chain directly: `input(prompt).strip().upper()`"
+                        ]
                     ],
                     "accent": "green"
                 },
@@ -310,15 +346,47 @@
                 },
                 {
                     "type": "table",
-                    "headers": ["Test Input", "Where to Type It", "Expected Result"],
+                    "headers": [
+                        "Test Input",
+                        "Where to Type It",
+                        "Expected Result"
+                    ],
                     "rows": [
-                        ["Lowercase 'y'", "Any yes/no prompt", "Accepted (same as 'Y')"],
-                        ["Uppercase 'N'", "Any yes/no prompt", "Accepted (same as 'n')"],
-                        ["'  y  ' with spaces", "Any yes/no prompt", "Spaces stripped and accepted"],
-                        ["Lowercase destination letter", "Destination selection menu", "Correct destination selected"],
-                        ["Invalid character like '?'", "Any menu prompt", "Error message shown, re-prompted"],
-                        ["Player name with leading space", "Name prompt at game start", "Name stored without the leading space"],
-                        ["All caps name like 'ALEX'", "Name prompt at game start", "Stored as 'ALEX' without conversion"]
+                        [
+                            "Lowercase 'y'",
+                            "Any yes/no prompt",
+                            "Accepted (same as 'Y')"
+                        ],
+                        [
+                            "Uppercase 'N'",
+                            "Any yes/no prompt",
+                            "Accepted (same as 'n')"
+                        ],
+                        [
+                            "'  y  ' with spaces",
+                            "Any yes/no prompt",
+                            "Spaces stripped and accepted"
+                        ],
+                        [
+                            "Lowercase destination letter",
+                            "Destination selection menu",
+                            "Correct destination selected"
+                        ],
+                        [
+                            "Invalid character like '?'",
+                            "Any menu prompt",
+                            "Error message shown, re-prompted"
+                        ],
+                        [
+                            "Player name with leading space",
+                            "Name prompt at game start",
+                            "Name stored without the leading space"
+                        ],
+                        [
+                            "All caps name like 'ALEX'",
+                            "Name prompt at game start",
+                            "Stored as 'ALEX' without conversion"
+                        ]
                     ],
                     "accent": "green"
                 },
@@ -361,7 +429,6 @@
             ]
         }
     ],
-
     "finalChecklist": {
         "beforeYouSubmit": [
             "function_library.py contains clean_input() and clean_input_lower() with docstrings",
@@ -389,7 +456,6 @@
         ],
         "saveYourCode": "Keep both files. Module 4.3 adds a sets-based unique city tracker and a trivia gate. both build on the cleaned-up input handling you just wrote."
     },
-
     "needHelp": {
         "chapterResource": "Chapter 8 (More About Strings) in Gaddis covers string methods starting in Section 8.3. The methods reference table at the end of your Chapter 8 BookEx is a quick lookup for .upper(), .lower(), .strip(), and related methods.",
         "zoomLink": "https://utsa.zoom.us/j/97617245124",

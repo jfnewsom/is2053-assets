@@ -1,0 +1,267 @@
+{
+    "meta": {
+        "chapterId": "bookex-ch08",
+        "chapter": 8,
+        "title": "More About Strings",
+        "programCount": 5,
+        "filename": "bookex-ch08.py"
+    },
+
+    "overview": {
+        "body": "Chapter 8 is where Python's string tools finally show up. You have been working around case sensitivity and whitespace since Module 1. Instead of typing <code>if answer == 'y' or answer == 'Y':</code> instead of just comparing one thing. These five programs introduce the methods that change that. Work through them in order. By Program 8-5 you will have the vocabulary to understand why <code>.upper()</code> collapses four comparisons into one.",
+        "objectives": [
+            "Iterate through a string character by character using a for loop",
+            "Concatenate strings and reassign string variables",
+            "Apply testing methods (.isdigit(), .isalpha(), .islower(), .isupper()) to validate input",
+            "Split a string into a list using .split() with no arguments",
+            "Split a string on a specific delimiter using .split(',')"
+        ],
+        "keyConceptsText": "Chapter 8 covers string iteration (Section 8.1), string testing and manipulation methods (Section 8.3), and the split() method (Section 8.4). Programs 8-1 through 8-10 demonstrate these techniques progressively.",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis, Chapter 8",
+        "programRequirements": [
+            "All five programs are implemented and run without errors",
+            "Each program is in its own clearly commented section with a header comment",
+            "File has a top-of-file documentation header: Name, abc123, Section, Description"
+        ],
+        "filenameNote": "Submit bookex-ch08.py with all five programs combined into one file."
+    },
+
+    "timeGuide": {
+        "totalTime": "45–60 Minutes",
+        "rows": [
+            { "checkpoint": "Program 8-1", "time": "8 min", "task": "Iterate through string characters, count specific letters" },
+            { "checkpoint": "Program 8-2", "time": "7 min", "task": "String concatenation and variable reassignment" },
+            { "checkpoint": "Program 8-5", "time": "12 min", "task": "String testing methods — isdigit, isalpha, islower, isupper" },
+            { "checkpoint": "Program 8-9", "time": "8 min", "task": "Split on whitespace, result is a list" },
+            { "checkpoint": "Program 8-10", "time": "10 min", "task": "Split on delimiter character, parse a date string" }
+        ]
+    },
+
+    "checkpoints": [
+        {
+            "number": 1,
+            "title": "Program 8-1: count_Ts.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Program 8-1</strong> — Iterating Through String Characters<br>This program counts how many times the letter T appears in a string. The key pattern: a <code>for</code> loop over a string gives you one character per iteration."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Initialize a counter variable <code>count = 0</code> before the loop.",
+                        "Get a string from the user with <code>input()</code>.",
+                        "Write a <code>for</code> loop that iterates through each character in the string. The loop variable takes one character at a time.",
+                        "Inside the loop, check if the character equals <code>'T'</code> or <code>'t'</code>. If it does, increment the counter.",
+                        "After the loop, print the total count using an f-string."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Strings behave like sequences in Python. The same <code>for</code> loop that walks a list walks a string. This is the foundation for understanding why <code>.upper()</code> and testing methods work on every character, doing exactly this iteration internally."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "What Goes Wrong", "Fix"],
+                    "rows": [
+                        ["Only checking for 'T' uppercase", "Misses lowercase 't'", "Use 'or' to check both: if ch == 'T' or ch == 't'"],
+                        ["Initializing count inside the loop", "Counter resets to 0 on every iteration", "Initialize count = 0 before the loop starts"]
+                    ],
+                    "accent": "green"
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "title": "Program 8-2: concatenate.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Program 8-2</strong> — String Concatenation<br>This short program demonstrates that strings can be joined with <code>+</code> and that reassigning a string variable creates a new string, not a modified version of the original."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Create a variable <code>name = 'Carmen'</code> and print it.",
+                        "Concatenate <code>' Brown'</code> to the name using <code>+</code> and assign the result back to <code>name</code>.",
+                        "Print <code>name</code> again to show the updated value."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Strings are immutable in Python. When you write <code>name = name + ' Brown'</code>, Python creates a brand new string and assigns it to <code>name</code>. Nothing about the original <code>'Carmen'</code> string changes. This is why string methods like <code>.upper()</code> must be assigned back: <code>text = text.upper()</code>. Otherwise the result is discarded."
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title": "Program 8-5: string_test.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Program 8-5</strong> — String Testing Methods<br>This program demonstrates six methods that test the contents of a string and return <code>True</code> or <code>False</code>. These are the building blocks of input validation."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Get a string from the user.",
+                        "Test it with <code>.isalnum()</code> and print a message if True.",
+                        "Test it with <code>.isdigit()</code> and print a message if True.",
+                        "Test it with <code>.isalpha()</code> and print a message if True.",
+                        "Test it with <code>.isspace()</code> and print a message if True.",
+                        "Test it with <code>.islower()</code> and print a message if True.",
+                        "Test it with <code>.isupper()</code> and print a message if True.",
+                        "Run the program several times with different inputs: try a number, a word, all caps, all spaces, and a mix."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "These testing methods are what make robust input validation possible without try/except. If you need to know whether a user typed a number before calling <code>int()</code>, <code>.isdigit()</code> is your first check. Note that multiple tests can be True at once. For example, <code>'HELLO'</code> passes both <code>.isalpha()</code> and <code>.isupper()</code>."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Method", "True when", "Watch out for"],
+                    "rows": [
+                        [".isdigit()", "All characters are digits (0–9)", "Fails on '3.14' because the dot is not a digit"],
+                        [".isalpha()", "All characters are letters", "Fails on 'hello world' because the space is not a letter"],
+                        [".islower()", "All cased characters are lowercase", "True for 'hello123' since digits do not count as cased"],
+                        [".isupper()", "All cased characters are uppercase", "True for 'HELLO123' for the same reason"]
+                    ],
+                    "accent": "green"
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "title": "Program 8-9: string_split.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Program 8-9</strong> — Basic String Splitting<br>This program demonstrates <code>.split()</code> with no arguments, which splits a string on any whitespace and returns a list of words."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Create a string variable: <code>my_string = 'One two three four'</code>.",
+                        "Call <code>my_string.split()</code> and store the result in <code>word_list</code>.",
+                        "Print <code>word_list</code> to see the resulting list."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "<code>.split()</code> turns a string into a list. Once you have a list, you can loop through it, index into it, or pass it to <code>set()</code> to remove duplicates. This is the pattern behind reading CSV files. Each line is a string, <code>.split(',')</code> gives you individual values."
+                }
+            ]
+        },
+        {
+            "number": 5,
+            "title": "Program 8-10: split_date.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Program 8-10</strong> — Split with a Delimiter<br>This program demonstrates <code>.split('/')</code> to parse a date string in MM/DD/YYYY format into its three components."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Create a date string: <code>date_string = '11/26/2019'</code>.",
+                        "Call <code>date_string.split('/')</code> and store the result in <code>date_list</code>.",
+                        "Access the month, day, and year by index: <code>date_list[0]</code>, <code>date_list[1]</code>, <code>date_list[2]</code>.",
+                        "Print the three components in a labeled format."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Passing a delimiter character to <code>.split()</code> gives you precise control over where the string breaks. The delimiter itself is consumed and does not appear in the resulting list. This is the standard pattern for parsing any structured string: dates, file paths, CSV records, or user input formatted with separators."
+                },
+                {
+                    "type": "h3",
+                    "label": "pro_tip"
+                },
+                {
+                    "type": "text",
+                    "body": "Try chaining strip and split together: <code>line.strip().split(',')</code>. When reading lines from a file, <code>.strip()</code> removes the trailing newline before <code>.split(',')</code> parses the values. Without the strip, the last value in each line will have a hidden <code>\\n</code> attached."
+                }
+            ]
+        }
+    ],
+
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "bookex-ch08.py contains all five programs in order: count_Ts.py, concatenate.py, string_test.py, string_split.py, split_date.py",
+            "Each program is in its own section with a header comment: # Program 8-1: count_Ts.py",
+            "All five programs run without errors",
+            "File has a top-of-file documentation header: Name, abc123, Section, Description"
+        ],
+        "scopeReminder": "Chapter 8 techniques: string iteration with for loops, concatenation with +, testing methods (.isdigit(), .isalpha(), .islower(), .isupper(), .isspace(), .isalnum()), and .split() with and without a delimiter. These are the techniques introduced this chapter.",
+        "permittedTechniques": {
+            "chapters": "2–8",
+            "specific": [
+                "for loop over a string: for ch in my_string:",
+                "String testing: .isdigit(), .isalpha(), .islower(), .isupper(), .isspace(), .isalnum()",
+                "String concatenation: str1 + str2",
+                "Splitting: .split() and .split(delimiter)"
+            ],
+            "notPermitted": "list comprehensions, dictionaries, sets, classes"
+        },
+        "warnings": []
+    },
+
+    "needHelp": {
+        "ifYouGetStuck": [
+            "Re-read the program's step-by-step breakdown in your Chapter 8 BookEx Reference Guide before looking at the code",
+            "Run the program with several different inputs. Some methods only return True for very specific input types",
+            "Submit to CodeGrade early to see which programs pass and which need more work",
+            "Come to Zoom or office hours with your specific question"
+        ],
+        "bookexResourceNote": "Chapter 8 BookEx Reference Guide: step-by-step breakdown of all five programs with key concept explanations"
+    }
+}

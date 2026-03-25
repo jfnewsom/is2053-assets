@@ -1,0 +1,411 @@
+{
+    "meta": {
+        "labId": "lab-4-3",
+        "title": "Data-Driven Texas",
+        "module": 4,
+        "week": 3,
+        "weekType": "MASTER",
+        "chapters": "8–9",
+        "chapterTopics": "Sets, trivia gate, full data-driven architecture",
+        "filename": "lab-4-3.py",
+        "additionalFiles": ["function_library.py"]
+    },
+
+    "overview": {
+        "body": "This is the week everything snaps into place. Your game has been running on hardcoded constants, coin flips, and manual duplicate checking since Module 1. That ends today.<br><br>In this MASTER week you will add three things that transform your game. First, a <code>TRIVIA</code> dictionary that stores city questions and answers. Second, a <code>trivia_gate()</code> function that replaces the coin flip. Players now earn their destination by answering correctly. Third, sets for <code>unique_cities_visited</code> and <code>unique_hazards_faced</code>, replacing the manual duplicate-checking loops from Module 3. The final trip report gets upgraded to display all three.<br><br>Copy your <code>lab-4-2.py</code> and <code>function_library.py</code> into new files named <code>lab-4-3.py</code> and <code>function_library.py</code> before you start. Everything from 4.2 carries forward.",
+        "mentorQuote": {
+            "character": "Sasha Mireles",
+            "role": "Creative Director, Bat City Collective",
+            "headshot": "Sasha-Mireles.png",
+            "quote": "The coin flip was always the weakest moment in the game. Pure random chance with no player agency. Trivia changes that. Now the player has a reason to pay attention to where they are going. That is the difference between a game and a slot machine."
+        },
+        "objectives": [
+            "Create a TRIVIA dictionary with city-specific true/false questions and answers",
+            "Write a trivia_gate() function that presents a question and returns True or False",
+            "Replace the Destination Gate coin flip with trivia_gate() in the main game loop",
+            "Use sets to track unique_cities_visited and unique_hazards_faced automatically",
+            "Update the final trip report to display trivia stats and unique set data"
+        ],
+        "keyConceptsText": "Chapter 9: Program 9-1 (card_dealer.py, dictionary creation and lookup with .get()) and Program 9-3 (sets.py, set creation, .add(), and set operations). Sets and dictionaries are covered in Sections 9.1 and 9.2 respectively.",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis, Chapters 8 and 9",
+        "programRequirements": [
+            "TRIVIA dictionary contains at least 3 cities with at least 2 questions each",
+            "trivia_gate(destination) returns True if player answers correctly, False otherwise",
+            "Destination Gate uses trivia_gate() with the coin flip fully removed",
+            "unique_cities_visited and unique_hazards_faced are sets, not lists",
+            "Final trip report displays unique city count, unique hazard count, and trivia accuracy"
+        ],
+        "namedConstants": [
+            { "name": "TRIVIA", "description": "Dict: city name mapped to a list of question/answer dicts, each with 'question' and 'answer' keys" }
+        ],
+        "additionalFilesNote": "Submit both lab-4-3.py and function_library.py. CodeGrade tests trivia_gate() in isolation using a mock TRIVIA dictionary, so your function must read from the constant correctly.",
+        "filenameNote": "Submit lab-4-3.py and function_library.py this week.",
+        "saveYourCode": "This is the Module 4 capstone. Module 5 starts fresh with classes. Save lab-4-3.py as your personal reference for the data-driven architecture."
+    },
+
+    "timeGuide": {
+        "totalTime": "75–90 Minutes",
+        "rows": [
+            { "checkpoint": "CP1: TRIVIA Dictionary", "time": "20 min", "task": "Build the TRIVIA constant with city questions and answers" },
+            { "checkpoint": "CP2: trivia_gate() Function", "time": "20 min", "task": "Write, test, and tune the trivia gate logic" },
+            { "checkpoint": "CP3: Wire It In", "time": "25 min", "task": "Replace coin flip, add sets, upgrade final report" },
+            { "checkpoint": "CP4: Master Week QA Pass", "time": "15 min", "task": "Full playthrough, edge cases, CodeGrade, solution quality" }
+        ]
+    },
+
+    "beforeYouBegin": {
+        "intro": "Here is how your finished program fits together. The [NEW] tags show what you are adding this week. The [REPLACED] tags show what changes from your 4.2 code.",
+        "architecture": "# ---- CONSTANTS (lab-4-3.py) ----\nCITY_DISTANCES = { ... }              (from 4.1, unchanged)\nCITY_INFO      = { ... }              (from 4.1, unchanged)\nHAZARDS        = { ... }              (from 4.1, unchanged)\nTRIVIA         = { ... }              [NEW — city questions and answers]\nSTARTING_CITY  = 'San Antonio'        (unchanged)\n\n# ---- TRACKING VARIABLES ----\nvisited_cities          = []          (unchanged — allows duplicates, shows path)\nunique_cities_visited   = set()       [NEW — set, no duplicates]\nunique_hazards_faced    = set()       [NEW — set, no duplicates]\ntrivia_asked            = 0           [NEW — counter]\ntrivia_correct          = 0           [NEW — counter]\n\n# ---- FUNCTION LIBRARY (function_library.py) ----\ntrivia_gate(destination, trivia_dict) [NEW — presents question, returns True/False]\n(all 4.2 functions unchanged)\n\n# ---- MAIN GAME (lab-4-3.py) ----\nGAME LOOP:\n│\n│── DESTINATION GATE:\n│   │── trivia_gate(destination, TRIVIA)   [REPLACED — was coin flip]\n│   │── if correct: use chosen destination\n│   │── if wrong: random redirect\n│   │── update trivia_asked, trivia_correct\n│\n│── TRAVEL LOOP:\n│   │── unique_cities_visited.add(city)    [NEW]\n│\n│── HAZARD:\n│   │── unique_hazards_faced.add(hazard)   [NEW]\n│\nFINAL REPORT:\n│── Unique cities from set              [REPLACED — was manual dedup]\n│── Unique hazards from set             [REPLACED — was manual dedup]\n│── Trivia accuracy calculation         [NEW]"
+    },
+
+    "checkpoints": [
+        {
+            "number": 1,
+            "title": "Build the TRIVIA Dictionary",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Open <code>lab-4-3.py</code>. Near the top of the file, after your other constants, add a <code>TRIVIA</code> dictionary. This is the data source your <code>trivia_gate()</code> function will read from. Each key is a city name. Each value is a list of question dictionaries. Each question dictionary has two keys: <code>'question'</code> (the text shown to the player) and <code>'answer'</code> (either <code>'TRUE'</code> or <code>'FALSE'</code>)."
+                },
+                {
+                    "type": "h3",
+                    "label": "named_constants"
+                },
+                {
+                    "type": "text",
+                    "body": "Your <code>TRIVIA</code> dictionary must cover at least 3 cities and include at least 2 questions per city. San Antonio should always be included as a fallback for cities that are not explicitly covered. The structure looks like this:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "TRIVIA = {\n    'San Antonio': [\n        {\n            'question': 'The Alamo was originally a Spanish mission.',\n            'answer': 'TRUE'\n        },\n        {\n            'question': 'San Antonio is the largest city in Texas by population.',\n            'answer': 'FALSE'\n        }\n    ],\n    'Austin': [\n        {\n            'question': 'Austin is the capital of Texas.',\n            'answer': 'TRUE'\n        },\n        {\n            'question': 'The University of Texas at Austin is located in East Austin.',\n            'answer': 'FALSE'\n        }\n    ]\n    # Add at least one more city...\n}"
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Add the <code>TRIVIA</code> dictionary to your constants section. Use the structure shown above as your starting point.",
+                        "Add entries for at least 3 cities total, including San Antonio. Cover cities your game actually visits. Check your <code>CITY_DISTANCES</code> dictionary for the exact city names.",
+                        "Write 2 questions per city at minimum. Keep questions as true/false statements about the city. Make sure every <code>'answer'</code> value is exactly <code>'TRUE'</code> or <code>'FALSE'</code> in all caps. Your <code>trivia_gate()</code> function will compare against these exact strings.",
+                        "Add a comment above the constant: <code># TRIVIA (Added in 4.3): city trivia questions and answers</code>",
+                        "Do a quick sanity check: for each city entry, count the items in its list and verify each has both a <code>'question'</code> key and an <code>'answer'</code> key."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "9-1",
+                            "filename": "card_dealer.py",
+                            "step": 1,
+                            "description": "Shows a dictionary whose values are lists, which is the same nested structure your TRIVIA constant uses. The pattern for accessing and iterating over values is identical."
+                        }
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "pitfall",
+                    "title": "Answer Values Must Be Exact",
+                    "body": "Every <code>'answer'</code> value in your TRIVIA dictionary must be exactly <code>'TRUE'</code> or <code>'FALSE'</code> in all caps, no exceptions. Your trivia_gate() function will compare player input against these strings after calling <code>.upper()</code>. If your dictionary has <code>'True'</code> or <code>'true'</code> or <code>True</code> (the boolean), the comparison will silently fail."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "CP1 Complete",
+                    "items": [
+                        "TRIVIA constant added to the constants section of lab-4-3.py",
+                        "At least 3 cities covered, including San Antonio",
+                        "At least 2 questions per city, each with 'question' and 'answer' keys",
+                        "All 'answer' values are exactly 'TRUE' or 'FALSE' in all caps"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "title": "Write trivia_gate()",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Open <code>function_library.py</code>. You will add one new function: <code>trivia_gate()</code>. This function takes a destination city name and the TRIVIA dictionary, picks a random question for that city, presents it to the player, and returns <code>True</code> if they answer correctly, <code>False</code> if they do not. It replaces the coin flip that has been running the Destination Gate since Module 2."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Add a <code># TRIVIA FUNCTIONS (Added in 4.3)</code> comment block at the bottom of your function library.",
+                        "Define a function named <code>trivia_gate</code> that accepts two parameters: <code>destination</code> (a string) and <code>trivia_dict</code> (the dictionary). Write a docstring that describes the parameters and return value.",
+                        "Use <code>trivia_dict.get(destination, trivia_dict['San Antonio'])</code> to look up the city's question list. This uses San Antonio as a fallback for any city that does not have its own entry.",
+                        "Use <code>random.choice()</code> to pick one question dictionary from the city's list. Extract the <code>'question'</code> and <code>'answer'</code> values into local variables.",
+                        "Print the trivia prompt. Show the destination city name, then the question text, then a prompt asking for TRUE or FALSE.",
+                        "Get the player's answer using <code>clean_input()</code>. The player can type <code>T</code>, <code>TRUE</code>, <code>F</code>, or <code>FALSE</code>. Normalize to <code>'TRUE'</code> or <code>'FALSE'</code> before comparing: if the input starts with <code>'T'</code>, treat it as TRUE; if it starts with <code>'F'</code>, treat it as FALSE. Anything else should print an error message and default to FALSE.",
+                        "Compare the normalized player answer to the correct answer. Print a result message: something different for correct versus incorrect. Return <code>True</code> if correct, <code>False</code> if not."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "What Goes Wrong", "Fix"],
+                    "rows": [
+                        ["Passing TRIVIA by name directly inside the function", "Function is tightly coupled to one global variable, which makes it harder to test", "Accept trivia_dict as a parameter; call trivia_gate(destination, TRIVIA) from main"],
+                        ["Using random.randint() to pick a question", "Index math, off-by-one risks, breaks if list length changes", "Use random.choice(question_list), which is cleaner and length-independent"],
+                        ["Comparing player input without normalization", "Player types 'true' and it fails; 'TRUE' works but 'True' does not", "Use clean_input() which already calls .strip().upper(), then compare only 'T' or 'TRUE'"],
+                        ["Accepting only 'TRUE' or 'FALSE' with no flexibility", "Player types 'T' and gets penalized even though intent is clear", "Accept 'T' and 'TRUE' as true, 'F' and 'FALSE' as false"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Import your function library and your TRIVIA constant in a Python shell.",
+                        "Call <code>function_library.trivia_gate('Austin', TRIVIA)</code> and type <code>TRUE</code> when prompted. Verify it returns <code>True</code> when the answer is correct.",
+                        "Call it again and type <code>FALSE</code>. Verify it returns <code>False</code> when the answer is wrong.",
+                        "Call it with a city that is NOT in your TRIVIA dictionary (like <code>'El Paso'</code> if you did not include it). Verify it falls back to San Antonio's questions without crashing.",
+                        "Type <code>T</code> instead of <code>TRUE</code>. Verify it is accepted. Then type <code>F</code>. Verify it is also accepted.",
+                        "Type something invalid like <code>MAYBE</code>. Verify the function handles it gracefully without crashing"
+                    ]
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Terrence \"T-Bone\" Booker",
+                    "role": "QA Lead, Bat City Collective",
+                    "headshot": "Terrence-Booker.png",
+                    "quote": "I typed a city that was not in your TRIVIA dictionary. Your function crashed. Then I typed a city that WAS in it and it worked fine. The .get() fallback exists for exactly this reason. If it can receive input, it needs to handle every possible input, including the ones you did not plan for."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "CP2 Complete",
+                    "items": [
+                        "trivia_gate(destination, trivia_dict) added to function_library.py with docstring",
+                        "Uses .get() with San Antonio fallback for cities not in the dictionary",
+                        "Uses random.choice() to select one question from the city's list",
+                        "Accepts T/TRUE and F/FALSE as valid answers",
+                        "Returns True for correct answers, False for incorrect or invalid answers",
+                        "Manual testing confirms fallback works for unlisted cities"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title": "Wire It In",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "This checkpoint has three distinct parts: replace the coin flip in the Destination Gate, add sets for unique tracking, and upgrade the final trip report. Work through them in order."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "<strong>Part 1: Replace the Destination Gate.</strong> Find the section of your game loop where the coin flip currently runs. Remove the <code>flip_coin()</code> call and its if/else block. Replace it with a call to <code>function_library.trivia_gate(destination, TRIVIA)</code>. If it returns <code>True</code>, the player gets their chosen destination. If it returns <code>False</code>, redirect them to a random alternative destination. Use <code>random.choice()</code> on the list of other available destinations.",
+                        "<strong>Part 1 continued:</strong> Add two new tracking variables near the top of your game loop (outside any inner loops): <code>trivia_asked = 0</code> and <code>trivia_correct = 0</code>. Each time the trivia gate runs, increment <code>trivia_asked</code>. If the player answered correctly (the gate returned True), increment <code>trivia_correct</code>.",
+                        "<strong>Part 2: Add sets for unique tracking.</strong> Near the top of your game loop, initialize two new sets: <code>unique_cities_visited = set()</code> and <code>unique_hazards_faced = set()</code>.",
+                        "<strong>Part 2 continued:</strong> Find where your game loop updates <code>visited_cities</code> (the list that tracks every city including duplicates). Right after that line, add: <code>unique_cities_visited.add(current_city)</code>. Find where your hazard code records a hazard name. Right after that, add: <code>unique_hazards_faced.add(hazard_name)</code>. Keep the original list-based tracking. The set tracking is additive, not a replacement",
+                        "<strong>Part 3: Upgrade the final trip report.</strong> In your trip report output section, replace any manual unique-city or unique-hazard deduplication logic with the set data. Display <code>len(unique_cities_visited)</code> for unique city count and iterate over <code>sorted(unique_cities_visited)</code> to list them alphabetically. Do the same for unique hazards. Add a trivia performance block that shows questions asked, correct answers, and accuracy as a percentage. Guard the division with an <code>if trivia_asked > 0</code> check."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "tip",
+                    "title": "sorted() Works on Sets",
+                    "body": "Sets have no guaranteed order, so iterating directly can produce inconsistent output. Wrapping the set in <code>sorted()</code> gives you alphabetical order and makes CodeGrade's output comparison reliable: <code>for city in sorted(unique_cities_visited):</code>"
+                },
+                {
+                    "type": "callout",
+                    "variant": "info",
+                    "title": "Keep the Original Lists",
+                    "body": "<code>visited_cities</code> (the list) intentionally keeps duplicates; it shows the player's complete path, including revisits. <code>unique_cities_visited</code> (the set) strips duplicates for the count. Both serve different purposes. Do not remove the list."
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Run your game and play through a complete trip. Verify the Destination Gate now shows a trivia question instead of a coin flip.",
+                        "When redirected after a wrong answer, verify the new destination is different from the one you chose.",
+                        "Visit the same city twice during one trip (if your map allows it) and verify the unique city count in the report is lower than the total visit count.",
+                        "Trigger at least two different hazard types and verify the unique hazard count reflects only distinct hazards.",
+                        "Check the trivia accuracy percentage in the final report. If you answered 2 out of 3 correctly, it should show 66.7%."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "CP3 Complete",
+                    "items": [
+                        "Destination Gate calls trivia_gate() with no coin flip remaining",
+                        "trivia_asked and trivia_correct track correctly across the game loop",
+                        "unique_cities_visited and unique_hazards_faced are sets initialized before the game loop",
+                        ".add() called at the correct points in the game loop for both sets",
+                        "Final report uses sorted() on both sets for alphabetical display",
+                        "Trivia accuracy percentage is guarded against division by zero"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "title": "Master Week QA Pass",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "MASTER week means a full QA pass before submitting. Work through the test table below. Each row targets a specific behavior this week's changes were supposed to produce."
+                },
+                {
+                    "type": "table",
+                    "headers": ["Test", "What to Do", "Expected Result"],
+                    "rows": [
+                        ["Trivia gate fires", "Play to a destination choice", "A trivia question appears, no coin flip"],
+                        ["Correct answer accepted", "Answer the trivia question correctly", "Player travels to their chosen destination"],
+                        ["Wrong answer redirects", "Answer the trivia question incorrectly", "Player is sent to a different destination with a message"],
+                        ["T accepted as TRUE", "Type 'T' at the trivia prompt", "Treated as TRUE with no error"],
+                        ["F accepted as FALSE", "Type 'F' at the trivia prompt", "Treated as FALSE with no error"],
+                        ["Invalid trivia input handled", "Type 'MAYBE' at the trivia prompt", "Error message shown, defaults to FALSE gracefully"],
+                        ["Sets deduplicate", "Visit a city more than once", "Unique city count is lower than total visit count"],
+                        ["sorted() on sets", "Check the final report city and hazard lists", "Cities and hazards appear in alphabetical order"],
+                        ["Accuracy math", "Answer 1 of 2 trivia questions correctly", "Report shows 50.0% accuracy"],
+                        ["Zero division guard", "End the game without any trivia prompts firing", "Report skips accuracy line or shows 0 with no crash"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Run through all ten test cases above. Note any failures before moving on.",
+                        "Verify your top-of-file documentation header is present in both <code>lab-4-3.py</code> and <code>function_library.py</code>. Required: Name, abc123, Section, and description.",
+                        "Scan every <code>def</code> in both files and verify each has a docstring.",
+                        "Run Flake8 on both files and fix any warnings.",
+                        "Submit both files to CodeGrade. Review automated feedback carefully. The trivia gate test uses a mock TRIVIA dictionary, so any hardcoded city name inside <code>trivia_gate()</code> will cause those tests to fail.",
+                        "This is a MASTER week. Anjali will review your submission for Solution Quality. Clean, readable code with well-named variables and consistent style matters here."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "warning",
+                    "title": "CodeGrade Uses a Mock TRIVIA Dictionary",
+                    "body": "CodeGrade calls <code>trivia_gate(destination, trivia_dict)</code> with its own test dictionary, not your TRIVIA constant. This is why the function must accept <code>trivia_dict</code> as a parameter rather than referencing <code>TRIVIA</code> directly inside the function body. If your function looks up <code>TRIVIA</code> by name internally, the CodeGrade tests will fail."
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Sasha Mireles",
+                    "role": "Creative Director, Bat City Collective",
+                    "headshot": "Sasha-Mireles.png",
+                    "quote": "Play your game all the way through before you submit. Not just a few turns. Play the whole trip. You would be surprised how many bugs only appear when all the pieces are running together. If you would not ship it, do not submit it."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "Lab 4.3 Complete",
+                    "items": [
+                        "All ten test cases from the table above pass",
+                        "Both lab-4-3.py and function_library.py submitted to CodeGrade",
+                        "Documentation headers in both files",
+                        "All functions have docstrings",
+                        "Flake8 returns no warnings on either file",
+                        "trivia_gate() accepts trivia_dict as a parameter with no internal TRIVIA reference"
+                    ]
+                }
+            ]
+        }
+    ],
+
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "TRIVIA dictionary has at least 3 cities with at least 2 questions each",
+            "All 'answer' values in TRIVIA are exactly 'TRUE' or 'FALSE' in all caps",
+            "trivia_gate(destination, trivia_dict) is in function_library.py with a docstring",
+            "trivia_gate() accepts trivia_dict as a parameter and does not reference TRIVIA internally",
+            "Destination Gate uses trivia_gate() with no flip_coin() call remaining in that section",
+            "unique_cities_visited and unique_hazards_faced are sets initialized before the game loop",
+            "sorted() used when iterating over sets in the final report",
+            "Trivia accuracy is guarded against division by zero",
+            "Top-of-file documentation headers in both files: Name, abc123, Section, Description",
+            "All functions in both files have docstrings"
+        ],
+        "scopeReminder": "You may use sets, set .add(), set membership testing with in, sorted() on sets, dictionaries and all dictionary methods from 4.1, string methods from 4.2, and all techniques from Chapters 2 through 8. Do NOT use list comprehensions, classes, inheritance, or any Chapter 10+ features.",
+        "permittedTechniques": {
+            "chapters": "2–9 (all techniques from Chapters 2–8 fully permitted; Chapter 9 dictionaries and sets as introduced this module)",
+            "specific": [
+                "Set creation: unique_cities = set()",
+                "Set membership: city in unique_cities_visited",
+                "Set addition: unique_cities_visited.add(city)",
+                "sorted() on a set: sorted(unique_cities_visited)",
+                "Dictionary .get() with fallback: trivia_dict.get(destination, trivia_dict['San Antonio'])",
+                "random.choice() on a list"
+            ],
+            "notPermitted": "list comprehensions, try/except, classes, inheritance"
+        },
+        "warnings": [
+            "MASTER Week: Anjali will review your submission for Solution Quality. This is worth 15% of the lab grade and covers code readability, naming, and overall structure.",
+            "CodeGrade imports function_library.py directly. A syntax error in your library will cause all library tests to fail, even if your game runs fine locally."
+        ],
+        "saveYourCode": "This is the Module 4 capstone. Save lab-4-3.py as a reference. The data-driven architecture, trivia gate pattern, and set-based tracking are patterns you will see again in real projects."
+    },
+
+    "needHelp": {
+        "chapterResource": "Chapter 9 (Dictionaries and Sets) in Gaddis covers sets in Section 9.2. Program 9-3 (sets.py) is the key BookEx for set creation and .add(). Program 9-1 (card_dealer.py) shows the dictionary-of-lists pattern your TRIVIA constant uses.",
+        "zoomLink": "https://utsa.zoom.us/j/97617245124",
+        "calendlyLink": "https://calendly.com/john-newsom-utsa/student-meeting",
+        "discordNote": "Post in the course Discord with your checkpoint number, what you expected to happen, and what actually happened. Include the specific error message if you have one."
+    }
+}

@@ -1,0 +1,229 @@
+{
+    "meta": {
+        "chapterId": "bookex-ch11",
+        "chapter": 11,
+        "title": "Inheritance",
+        "programCount": 4,
+        "filename": "bookex-ch11.py"
+    },
+
+    "overview": {
+        "body": "Chapter 11 extends what you built in Chapter 10. If classes are blueprints, inheritance lets you build a new blueprint by extending an existing one. A <code>Car</code> is an <code>Automobile</code> with extra attributes. A <code>Dog</code> is a <code>Mammal</code> that makes a specific sound. Programs 11-1 and 11-2 build a vehicle hierarchy and are merged into one file. Program 11-3 demonstrates how to use those classes. Programs 11-9 and 11-10 demonstrate method overriding: the ability of a subclass to replace a superclass method with its own version. This is what makes polymorphism work.",
+        "objectives": [
+            "Define a superclass with private attributes, a constructor, and getter/setter methods",
+            "Define subclasses using class SubClass(SuperClass): syntax",
+            "Call the superclass constructor from a subclass using SuperClass.__init__(self, args)",
+            "Override a superclass method in a subclass",
+            "Create objects from both superclasses and subclasses and call their methods"
+        ],
+        "keyConceptsText": "Chapter 11 covers inheritance (Section 11.1), calling the superclass constructor (Section 11.1), and method overriding (Section 11.2). Programs 11-1 through 11-3 demonstrate a vehicle hierarchy. Programs 11-9 and 11-10 demonstrate overriding with animals.",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis, Chapter 11",
+        "programRequirements": [
+            "All four checkpoints are implemented and run without errors",
+            "Checkpoint 1 (vehicles.py) merges Programs 11-1 and 11-2 into a single class definition file",
+            "Each section is clearly commented",
+            "File has a top-of-file documentation header: Name, abc123, Section, Description"
+        ],
+        "filenameNote": "Submit bookex-ch11.py with all four checkpoints combined into one file."
+    },
+
+    "timeGuide": {
+        "totalTime": "60–75 Minutes",
+        "rows": [
+            { "checkpoint": "Programs 11-1 and 11-2 (vehicles.py)", "time": "25 min", "task": "Automobile superclass + Car, Truck, and SUV subclasses — merged into one file" },
+            { "checkpoint": "Program 11-3 (car_demo.py)", "time": "10 min", "task": "Create Car objects and call inherited and subclass-specific methods" },
+            { "checkpoint": "Program 11-9 (animals.py)", "time": "15 min", "task": "Mammal superclass + Dog and Cat subclasses with method overriding" },
+            { "checkpoint": "Program 11-10 (polymorphism_demo.py)", "time": "10 min", "task": "Call make_sound() on objects of different types — same method, different behavior" }
+        ]
+    },
+
+    "checkpoints": [
+        {
+            "number": 1,
+            "title": "Programs 11-1 and 11-2: vehicles.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Programs 11-1 and 11-2 merged</strong> — Vehicle Hierarchy<br>These two Gaddis programs are combined into one file. Program 11-1 defines the <code>Automobile</code> superclass. Program 11-2 defines <code>Car</code>, <code>Truck</code>, and <code>SUV</code> as subclasses. This file contains class definitions only, with no <code>main()</code>."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Define the <code>Automobile</code> superclass with an <code>__init__</code> that accepts make, model, mileage, and price. Store all four in private attributes (<code>self.__make</code>, etc.). Write getter and setter methods for all four attributes.",
+                        "Define the <code>Car</code> subclass: <code>class Car(Automobile):</code>. Its <code>__init__</code> accepts all Automobile parameters plus <code>doors</code>. Call the superclass constructor: <code>Automobile.__init__(self, make, model, mileage, price)</code>. Store <code>self.__doors = doors</code>. Add getter and setter for doors.",
+                        "Define the <code>Truck</code> subclass the same way, but with a <code>drive_type</code> attribute (e.g., 'Two Wheel Drive') instead of doors.",
+                        "Define the <code>SUV</code> subclass with a <code>pass_cap</code> (passenger capacity) attribute."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "The subclass constructor calls <code>Automobile.__init__(self, make, model, mileage, price)</code> to initialize the inherited attributes. Without this call, the private attributes defined in <code>Automobile.__init__</code> would never be created. The subclass would have no <code>__make</code>, <code>__model</code>, etc. Every subclass constructor must call the superclass constructor when the superclass uses <code>__init__</code> to set up private attributes."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "What Goes Wrong", "Fix"],
+                    "rows": [
+                        ["Forgetting to call Automobile.__init__() in Car.__init__()", "Inherited attributes never created. AttributeError when getters are called", "Always call superclass __init__ first thing in the subclass constructor"],
+                        ["Calling super().__init__() instead of Automobile.__init__(self, ...)", "Works in Python 3 but Gaddis uses the explicit form. Match the textbook", "Use Automobile.__init__(self, make, model, mileage, price)"],
+                        ["Redefining inherited getter/setter methods in the subclass", "Redundant and creates confusion about which version runs", "Only define what is new or overridden in the subclass"]
+                    ],
+                    "accent": "green"
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "title": "Program 11-3: car_demo.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Program 11-3</strong> — Using the Vehicle Classes<br>This program imports <code>vehicles</code> and creates a <code>Car</code> object, demonstrating that inherited methods and subclass-specific methods both work through the same object."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Import <code>vehicles</code>.",
+                        "Write <code>main()</code>. Get make, model, mileage, price, and number of doors from the user.",
+                        "Create a <code>Car</code> object: <code>car = vehicles.Car(make, model, mileage, price, doors)</code>.",
+                        "Display the car's data by calling all five getter methods: the four inherited from <code>Automobile</code> and <code>get_doors()</code> from <code>Car</code>.",
+                        "Add the <code>if __name__ == '__main__':</code> guard and call <code>main()</code>."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "The <code>Car</code> object has access to both <code>get_make()</code> (inherited from <code>Automobile</code>) and <code>get_doors()</code> (defined in <code>Car</code>). You call both using the same dot notation — the inheritance is invisible to the caller. This is the design goal: a <code>Car</code> object behaves like an <code>Automobile</code> and can also do car-specific things."
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title": "Program 11-9: animals.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Program 11-9</strong> — Method Overriding<br>Define a <code>Mammal</code> superclass and two subclasses (<code>Dog</code> and <code>Cat</code>) that override the <code>make_sound()</code> method. This file contains class definitions only."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Define <code>class Mammal:</code>. Its <code>__init__</code> accepts a <code>species</code> parameter and stores it in <code>self.__species</code>. Write <code>show_species(self)</code> that prints the species. Write <code>make_sound(self)</code> that prints <code>'Grrrrr'</code>.",
+                        "Define <code>class Dog(Mammal):</code>. Its <code>__init__</code> takes no parameters other than self. Call <code>Mammal.__init__(self, 'Dog')</code>. Override <code>make_sound(self)</code> to print <code>'Woof! Woof!'</code>.",
+                        "Define <code>class Cat(Mammal):</code> the same way, with <code>'Cat'</code> as the species and <code>'Meow'</code> as the sound.",
+                        "This file has no main() and no if __name__ guard. It is a class definition file."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Method overriding is the core of polymorphism. Both <code>Dog</code> and <code>Cat</code> inherit <code>show_species()</code> from <code>Mammal</code> and use it without change. But each provides its own <code>make_sound()</code>. When you call <code>dog.make_sound()</code>, Python looks at the <code>Dog</code> class first and finds the override. The superclass version is never reached. This means you can write one loop that calls <code>make_sound()</code> on a list of mixed animals and get the right sound for each one automatically."
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "title": "Program 11-10: polymorphism_demo.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Program 11-10</strong> — Polymorphism in Action<br>This program imports <code>animals</code> and creates a list of animal objects. It then loops through the list calling <code>make_sound()</code> on each one, demonstrating that the same method call produces different behavior depending on the object type."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Import <code>animals</code>.",
+                        "Write <code>main()</code>. Create a list containing one <code>Mammal</code> object, one <code>Dog</code> object, and one <code>Cat</code> object.",
+                        "Write a <code>for</code> loop that iterates through the list. For each object, call <code>show_species()</code> and then <code>make_sound()</code>.",
+                        "Add the <code>if __name__ == '__main__':</code> guard and call <code>main()</code>.",
+                        "Run it and observe: the same <code>make_sound()</code> call produces three different outputs depending on the object."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "This is polymorphism: one interface, multiple behaviors. The loop does not know or care what type each animal is. It calls <code>make_sound()</code> and gets the right result. This is the same principle behind your game's <code>City</code> class in Module 5. When you call a method on a city object, the object itself knows what to do. You do not need a separate if/elif chain for each city type."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "What Goes Wrong", "Fix"],
+                    "rows": [
+                        ["Creating a Mammal object with animals.Mammal() with no arguments", "TypeError: Mammal.__init__() requires a species argument", "Pass a species string: animals.Mammal('Generic Mammal')"],
+                        ["Calling animals.Dog('Dog') with an argument", "TypeError: Dog.__init__() takes only self", "Dog handles the species internally: just use animals.Dog()"],
+                        ["Expecting consistent output order from the list", "List order is predictable. This is not a set issue", "The order matches the order you added objects to the list"]
+                    ],
+                    "accent": "green"
+                }
+            ]
+        }
+    ],
+
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "bookex-ch11.py contains all four checkpoints in order",
+            "Checkpoint 1 (vehicles.py) merges Programs 11-1 and 11-2: Automobile, Car, Truck, and SUV all in one class definition section",
+            "Checkpoint 3 (animals.py) is a class definition file only, with no main() inside it",
+            "Checkpoints 2 and 4 import their respective modules and include a main() with the __name__ guard",
+            "All four checkpoints run without errors",
+            "File has a top-of-file documentation header: Name, abc123, Section, Description"
+        ],
+        "scopeReminder": "Chapter 11 techniques: inheritance with class SubClass(SuperClass):, calling the superclass constructor with SuperClass.__init__(self, args), method overriding, and polymorphism through a list of mixed object types.",
+        "permittedTechniques": {
+            "chapters": "2–11",
+            "specific": [
+                "class SubClass(SuperClass): (inheritance syntax)",
+                "SuperClass.__init__(self, args) (superclass constructor call)",
+                "Method overriding: redefining a superclass method in a subclass",
+                "isinstance() if needed for type checking"
+            ],
+            "notPermitted": "list comprehensions, multiple inheritance, abstract base classes"
+        },
+        "warnings": []
+    },
+
+    "needHelp": {
+        "ifYouGetStuck": [
+            "Re-read the step-by-step breakdown in your Chapter 11 BookEx Reference Guide before looking at the code",
+            "If you get AttributeError when calling an inherited getter, the superclass __init__ was probably not called in the subclass constructor",
+            "If Dog() or Cat() require an argument, check that you called Mammal.__init__(self, 'Dog'), not Mammal.__init__('Dog')",
+            "Submit to CodeGrade early to isolate which checkpoint is failing"
+        ],
+        "bookexResourceNote": "Chapter 11 BookEx Reference Guide, which includes annotated code showing the superclass constructor call pattern and method override syntax"
+    }
+}

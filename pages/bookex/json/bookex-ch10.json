@@ -1,0 +1,223 @@
+{
+    "meta": {
+        "chapterId": "bookex-ch10",
+        "chapter": 10,
+        "title": "Classes and Object-Oriented Programming",
+        "programCount": 4,
+        "filename": "bookex-ch10.py"
+    },
+
+    "overview": {
+        "body": "Chapter 10 introduces the biggest shift in thinking you will encounter in this course. Until now, your programs have been collections of functions and variables. Classes change that. They let you bundle data and the functions that work on that data into a single unit called an object. Programs 10-9 and 10-10 build a BankAccount class with a special <code>__str__</code> method. Programs 10-12 and 10-13 build a CellPhone class that demonstrates encapsulation through private attributes and getter/setter methods. Type each one carefully. The indentation and double-underscore naming conventions are not optional.",
+        "objectives": [
+            "Define a class with private attributes using the double-underscore naming convention",
+            "Write an __init__ constructor method that initializes object attributes",
+            "Write getter and setter methods to access and modify private attributes",
+            "Implement the __str__ special method for custom string representation",
+            "Create object instances and call methods using dot notation"
+        ],
+        "keyConceptsText": "Chapter 10 covers class definition (Section 10.2), constructors and instance methods (Section 10.2), encapsulation with private attributes (Section 10.3), and the __str__ special method (Section 10.3). Programs 10-9, 10-10, 10-12, and 10-13 demonstrate these techniques.",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis, Chapter 10",
+        "programRequirements": [
+            "All four programs are implemented and run without errors",
+            "Programs 10-9 and 10-12 define the class only and contain no main() function",
+            "Programs 10-10 and 10-13 import their respective class module and test it",
+            "Each program is in its own clearly commented section",
+            "File has a top-of-file documentation header: Name, abc123, Section, Description"
+        ],
+        "filenameNote": "Submit bookex-ch10.py with all four programs combined into one file."
+    },
+
+    "timeGuide": {
+        "totalTime": "60–75 Minutes",
+        "rows": [
+            { "checkpoint": "Program 10-9", "time": "20 min", "task": "BankAccount class — __init__, deposit, withdraw, get_balance, __str__" },
+            { "checkpoint": "Program 10-10", "time": "10 min", "task": "Test BankAccount objects — import, create, call methods, print object" },
+            { "checkpoint": "Program 10-12", "time": "20 min", "task": "CellPhone class — private attributes, getters, setters" },
+            { "checkpoint": "Program 10-13", "time": "10 min", "task": "Test CellPhone objects — import, create, call getters" }
+        ]
+    },
+
+    "checkpoints": [
+        {
+            "number": 1,
+            "title": "Program 10-9: bankaccount2.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Program 10-9</strong> — BankAccount Class with __str__<br>Define a <code>BankAccount</code> class that manages a balance. This file contains only the class definition, with no <code>main()</code> function and no input() calls."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Define <code>class BankAccount:</code>. All the methods below go inside this class, indented one level.",
+                        "Write <code>__init__(self, bal)</code>: store the balance in a private attribute <code>self.__balance = bal</code>.",
+                        "Write <code>deposit(self, amount)</code>: add the amount to <code>self.__balance</code> using <code>+=</code>.",
+                        "Write <code>withdraw(self, amount)</code>: check if <code>self.__balance >= amount</code>. If so, subtract it. If not, print an insufficient funds error message.",
+                        "Write <code>get_balance(self)</code>: return <code>self.__balance</code>.",
+                        "Write <code>__str__(self)</code>: return an f-string formatted as <code>'The balance is $X,XXX.XX'</code> using the <code>:,.2f</code> format spec on <code>self.__balance</code>."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "The double underscore prefix (<code>__balance</code>) makes the attribute private and it cannot be accessed directly from outside the class. This is encapsulation: the class controls how its data is read and modified. The <code>__str__</code> method is Python's convention for defining what an object looks like when printed. When you write <code>print(savings)</code>, Python calls <code>savings.__str__()</code> automatically."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "What Goes Wrong", "Fix"],
+                    "rows": [
+                        ["Using single underscore _balance instead of __balance", "Attribute is still technically accessible from outside the class", "Use double underscore __balance for true name mangling"],
+                        ["Forgetting self in method signatures", "TypeError: missing positional argument", "Every method must have self as its first parameter"],
+                        ["Writing balance += amount instead of self.__balance += amount", "Local variable: balance disappears when method ends", "Always use self.__ to reference instance attributes"]
+                    ],
+                    "accent": "green"
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "title": "Program 10-10: account_test2.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Program 10-10</strong> — Testing the BankAccount Class<br>This program imports <code>bankaccount2</code> and creates a <code>BankAccount</code> object. It demonstrates how to call methods and how <code>print(object)</code> triggers <code>__str__</code> automatically."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Import <code>bankaccount2</code>.",
+                        "Write a <code>main()</code> function. Get a starting balance from the user with <code>float(input(...))</code>.",
+                        "Create an object: <code>savings = bankaccount2.BankAccount(start_bal)</code>.",
+                        "Get a deposit amount and call <code>savings.deposit(pay)</code>.",
+                        "Print the object directly with <code>print(savings)</code>, which calls <code>__str__</code> automatically.",
+                        "Get a withdrawal amount and call <code>savings.withdraw(cash)</code>.",
+                        "Print the object again to show the updated balance.",
+                        "Add the <code>if __name__ == '__main__':</code> guard and call <code>main()</code>."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Notice that <code>print(savings)</code> produces a formatted output without calling <code>savings.get_balance()</code> explicitly. The <code>__str__</code> method handles the formatting. This is the benefit of defining <code>__str__</code>. Any code that prints your object gets clean output automatically."
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title": "Program 10-12: cellphone.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Program 10-12</strong> — CellPhone Class with Getters and Setters<br>Define a <code>CellPhone</code> class with three private attributes and a full set of getter and setter methods. This file contains only the class definition."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Define <code>class CellPhone:</code>.",
+                        "Write <code>__init__(self, manufact, model, price)</code>: store the three parameters in private attributes <code>self.__manufact</code>, <code>self.__model</code>, and <code>self.__retail_price</code>.",
+                        "Write setter methods: <code>set_manufact(self, manufact)</code>, <code>set_model(self, model)</code>, and <code>set_retail_price(self, price)</code>. Each one assigns its parameter to the corresponding private attribute.",
+                        "Write getter methods: <code>get_manufact(self)</code>, <code>get_model(self)</code>, and <code>get_retail_price(self)</code>. Each one returns its corresponding private attribute."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Getters and setters are the standard pattern for controlled attribute access. The class decides what validation (if any) happens when you set a value. In this program they are simple pass-throughs, but in a real system <code>set_retail_price()</code> might reject negative values. The class can enforce that rule in one place instead of everywhere the price is used."
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "title": "Program 10-13: cell_phone_test.py",
+            "content": [
+                {
+                    "type": "text",
+                    "body": "<strong>Program 10-13</strong> — Testing the CellPhone Class<br>This program imports <code>cellphone</code>, creates a <code>CellPhone</code> object, and reads its attributes back using getter methods."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Import <code>cellphone</code>.",
+                        "Write a <code>main()</code> function. Get manufacturer, model, and retail price from the user.",
+                        "Create an object: <code>phone = cellphone.CellPhone(man, mod, retail)</code>.",
+                        "Display the stored data by calling the three getter methods: <code>phone.get_manufact()</code>, <code>phone.get_model()</code>, and <code>phone.get_retail_price()</code>. Format the price with <code>$</code> and two decimal places.",
+                        "Add the <code>if __name__ == '__main__':</code> guard and call <code>main()</code>.",
+                        "Test it: try accessing <code>phone.__retail_price</code> directly and observe the AttributeError. This is encapsulation working as intended."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "The last test step is the point. When you try <code>phone.__retail_price</code> directly, Python raises an <code>AttributeError</code>. The double-underscore prefix triggers name mangling. Python renames the attribute internally to <code>_CellPhone__retail_price</code> so it cannot be accessed from outside the class with its original name. This is the enforcement mechanism behind encapsulation."
+                }
+            ]
+        }
+    ],
+
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "bookex-ch10.py contains all four programs in order",
+            "Programs 10-9 and 10-12 are class definitions only, with no main() inside them",
+            "Programs 10-10 and 10-13 import their class module and include a main() function with the __name__ guard",
+            "All four programs run without errors",
+            "File has a top-of-file documentation header: Name, abc123, Section, Description"
+        ],
+        "scopeReminder": "Chapter 10 techniques: class definition, __init__ constructor, private attributes with double underscore, getter and setter methods, __str__ special method, object instantiation, and dot notation method calls.",
+        "permittedTechniques": {
+            "chapters": "2–10",
+            "specific": [
+                "class ClassName: (class definition)",
+                "def __init__(self, param): (constructor)",
+                "self.__attribute (private attribute)",
+                "def __str__(self): (string representation)",
+                "ClassName(args) to create an object",
+                "object.method() dot notation"
+            ],
+            "notPermitted": "list comprehensions, inheritance (Chapter 11 topic)"
+        },
+        "warnings": []
+    },
+
+    "needHelp": {
+        "ifYouGetStuck": [
+            "Re-read the step-by-step breakdown in your Chapter 10 BookEx Reference Guide. Class syntax errors are often indentation issues",
+            "If you get AttributeError on a method call, check that self is the first parameter in every method definition",
+            "If your class program file has a main() in it, remove it. Programs 10-9 and 10-12 are class-only files",
+            "Submit to CodeGrade early and read the test output carefully"
+        ],
+        "bookexResourceNote": "Chapter 10 BookEx Reference Guide, which includes annotated code for all four programs with explanations of __init__, private attributes, and the __str__ method"
+    }
+}
