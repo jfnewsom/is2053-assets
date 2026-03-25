@@ -3,1111 +3,726 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab 5.1: The City Class</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Slab:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>The City Class — IS2053</title>
+    <link rel="stylesheet" href="../../labs.css">
 </head>
-<body style="background: #0a0a0a; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; color: #f5f5f5; line-height: 1.6;">
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #0055FF 0%, #001a4d 100%); padding: 8px 12px 12px 12px;">
-        
-        
-        <div style="display: flex; align-items: flex-end; gap: 8px;">
-            <img src="https://jfnewsom.github.io/is2053-assets/lab-icons/lab-badge-5-1.svg" alt="LAB 5.1" style="height: 90px;">
-            <div style="flex-grow: 1;">
-                <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-the-city-class.svg" alt="The City Class" style="height: 70px; margin-bottom: 2px; margin-left: -8px; display: block;">
-                
-                <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-                    Module 5 &bull; BUILD Week &bull; Chapter 10 Classes and OOP
-                </div>
-            </div>
-        </div>
-        
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-overview.svg" alt="Overview" style="height: 18px; display: block;">
-            </div>
-            
-            
-            <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px;">
-                <p style="color: #B0B8C4; margin: 0; flex: 1;">
-                    All semester, you've been building <em>Deep in the Heart: A Lone Star Journey</em> with dictionaries, functions, and files. It works&mdash;but the code is scattered. City data lives in one place, distance lookups in another, and game logic somewhere else. This week, everything changes. You'll create a <strong style="color: #fff;">City class</strong> that bundles data and behavior together. A City object will <em>know</em> its own name, connections, and how to display itself. Welcome to <strong style="color: #fff;">Object-Oriented Programming</strong>.
-                </p>
-                <img src="https://jfnewsom.github.io/is2053-assets/branding/AllMyEggses-logo.svg" alt="All My Eggses Live in Texas" style="width: 210px; flex-shrink: 0;">
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Terrence-Booker.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Terrence Booker">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"Testing classes is straightforward: create an object, call every method, check every attribute. If <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">city.name</code> returns the right name and <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">city.is_dead_end()</code> correctly identifies dead ends, your class works. Build the test before you build the class!"</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/terrence-t-bone-booker.svg" alt="Terrence Booker" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">QA Lead, Bat City Collective</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-filename.svg" alt="Filename" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 8px 0;">
-                <strong style="color: #fff;">This week you'll create TWO files:</strong>
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 8px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; color: #39ff14; font-size: 14px;">city.py</span> &mdash; The City class definition
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; color: #39ff14; font-size: 14px;">lab-5-1.py</span> &mdash; The test program that imports and uses City
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A complete City class with:
-            </p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">An <strong style="color: #fff;"><span style="font-family: 'Roboto Mono', monospace;">__init__</span> constructor</strong> that initializes private attributes</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Getter methods</strong> to safely access private data</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Connection methods</strong> to add routes and check distances</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Status methods</strong> like <span style="font-family: 'Roboto Mono', monospace;">is_win_city()</span> and <span style="font-family: 'Roboto Mono', monospace;">is_dead_end()</span></li>
-                <li>A <strong style="color: #fff;"><span style="font-family: 'Roboto Mono', monospace;">__str__</span> method</strong> for nice printing</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-key-concepts.svg" alt="Key Concepts" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Chapter 10 Sections:</strong> 10.1 (Procedural vs OOP), 10.2 (Classes), 10.3 (Working with Instances)
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-program-requirements.svg" alt="Program Requirements" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">city.py</span> <strong style="color: #fff;">MUST</strong> define a class named <span style="font-family: 'Roboto Mono', monospace;">City</span></li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">City</span> <strong style="color: #fff;">MUST</strong> use private attributes (double underscore prefix)</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">City</span> <strong style="color: #fff;">MUST</strong> have getter methods for name, type, and tagline</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">City</span> <strong style="color: #fff;">MUST</strong> have <span style="font-family: 'Roboto Mono', monospace;">add_connection()</span>, <span style="font-family: 'Roboto Mono', monospace;">get_distance_to()</span>, and <span style="font-family: 'Roboto Mono', monospace;">get_destination_names()</span> methods</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">City</span> <strong style="color: #fff;">MUST</strong> have <span style="font-family: 'Roboto Mono', monospace;">is_win_city()</span> and <span style="font-family: 'Roboto Mono', monospace;">is_dead_end()</span> methods</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">City</span> <strong style="color: #fff;">MUST</strong> have a <span style="font-family: 'Roboto Mono', monospace;">__str__</span> method</li>
-                <li><span style="font-family: 'Roboto Mono', monospace;">lab-5-1.py</span> <strong style="color: #fff;">MUST</strong> import and test the City class</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                <strong style="color: #fff;">Starting Out with Python, 6th Edition</strong> by Tony Gaddis &mdash; Chapter 10: Classes and Object-Oriented Programming
-            </p>
-            
-        </div>
+<body>
+<div class="lc-wrapper">
+<div class="lc-card lc-card--blue">
+  <div class="lc-topper">
+    <div class="lc-card-header">
+      <div class="lc-lab-badge">
+        <div class="lc-lab-badge__word">LAB</div>
+        <div class="lc-lab-badge__num">5.1</div>
+      </div>
+      <div class="lc-topper-title">The City Class</div>
     </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF6B1A 0%, #8B3A00 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-time-guide.svg" alt="Time Guide" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
+    <div class="lc-sub-banner">MODULE 5 &bull; WEEK 1 &bull; BUILD &bull; CHAPTERS 10: CLASSES, OBJECTS, ENCAPSULATION, CONSTRUCTORS</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-h3">Overview</div>
+    <img src="../../branding/AllMyEggses.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
+    <p>Module 5 begins with a question: what if a city knew things about itself? Right now, city data lives in a dictionary. The city name is a key. Its connections are a nested dict. Its trivia is another dict. The functions that work on that data are scattered across your file. A class changes that. A <code>City</code> object holds its own name, type, tagline, connections, and trivia. The methods that work on that data live right next to it. This week you define the <code>City</code> class and write a test program that puts it through its paces. Nothing about the game changes yet. You are just building a better container for what already exists.</p>
+    <div style="clear: both;"></div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
         </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Plan Your Session &mdash; 90-120 Minutes
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"A dictionary can hold city data. A class holds city data AND knows what to do with it. That is the difference between a filing cabinet and a coworker. Both have the information. Only one can act on it."</div>
         </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A; width: 35%;">Task</th>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A; width: 15%;">Time</th>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A;">Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 1</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">20 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Create city.py, define class with __init__</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 2</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">15 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Add getter methods</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 3</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">25 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Add connection methods</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 4</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">20 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Add status methods and __str__</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 5</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">20 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Complete test program in lab-5-1.py</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px;">Submit</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px;">10 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Final check and CodeGrade submission</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF6B1A;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                OOP is a new way of thinking. If it feels weird at first, that's normal! Build one method at a time, test it, then move on. By the end of this lab, the pattern will start clicking.
-            </p>
-            
-        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Priya Venkatesh</div>
+        <div class="lc-mentor__role">Lead Architect, Bat City Collective</div>
+      </div>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Learning Objectives</div>
+    <ul class="lc-objectives">
+      <li>Define a class using the class keyword with an __init__ constructor</li>
+      <li>Store data in private attributes using the double-underscore naming convention</li>
+      <li>Write getter methods to safely expose private attribute values</li>
+      <li>Write functional methods that operate on the object&#x27;s own data</li>
+      <li>Create City objects and call methods using dot notation</li>
+      <li>Implement the __str__ special method for clean printed output</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
+    <p>Chapter 10: Program 10-12 (cellphone.py, class definition, private attributes, getters and setters) and Program 10-9 (bankaccount2.py, __str__ method and methods with logic).</p>
+    <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis, Chapter 10</p>
+    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
+    <ul>
+      <li>city.py defines the City class with __init__, private attributes, getter methods, connection methods, trivia methods, status methods, and __str__</li>
+      <li>city_test.py imports City, creates at least 4 City objects, adds connections and trivia, and tests all major methods</li>
+      <li>Both files have top-of-file documentation headers: Name, abc123, Section, Description</li>
+      <li>All methods have docstrings</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Filename</div>
+    <p>Submit city.py and city_test.py this week.</p>
+    <p>Submit both city.py (the class) and city_test.py (the test program). CodeGrade imports city.py directly and tests the class methods in isolation.</p>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>Keep city.py. Module 5.2 adds the Player class alongside it, and 5.3 extends it with WinCity and DeadEndCity subclasses.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<div class="lc-card lc-card--orange">
 
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #39FF14 0%, #0D4D00 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-checkpoints.svg" alt="Checkpoints" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Time Guide</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 60–75 Minutes</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Time</th>
+            <th>Task</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><strong>CP1: Class Skeleton</strong></td>
+        <td>10 min</td>
+        <td>Define City class, __init__, and private attributes</td>
+      </tr>
+      <tr>
+        <td><strong>CP2: Getters and __str__</strong></td>
+        <td>10 min</td>
+        <td>Add getter methods and __str__ for clean printing</td>
+      </tr>
+      <tr>
+        <td><strong>CP3: Connection Methods</strong></td>
+        <td>15 min</td>
+        <td>add_connection(), get_distance_to(), get_destination_names()</td>
+      </tr>
+      <tr>
+        <td><strong>CP4: Trivia and Status Methods</strong></td>
+        <td>10 min</td>
+        <td>add_trivia(), get_random_trivia(), is_win_city(), is_dead_end()</td>
+      </tr>
+      <tr>
+        <td><strong>CP5: Write city_test.py</strong></td>
+        <td>20 min</td>
+        <td>Create objects, add data, test every method, verify output</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--cyan">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Before You Begin</div>
+    <div class="lc-sub-banner">Program Architecture</div>
+  </div>
+  <div class="lc-panel">
+    <p class="lc-arch-intro">Here is how your finished program fits together. This week you are building two new files from scratch. Nothing carries forward from Module 4 directly. The City class is the foundation everything else in Module 5 builds on.</p>
+    <div class="lc-arch">
+      <pre># ---- city.py ----
+class City:
+│
+│── __init__(name, city_type, tagline)    <span class="lc-arch-new">[NEW]</span> sets up private attrs
+│   self.__name          string
+│   self.__city_type     &#x27;START&#x27;,&#x27;HUB&#x27;,&#x27;WIN&#x27;,&#x27;DEAD_END&#x27;,&#x27;WRONG_WAY&#x27;
+│   self.__tagline       string
+│   self.__connections   {}   dict: city_name -&gt; distance
+│   self.__trivia        []   list of {question, answer} dicts
+│
+│── GETTERS
+│   get_name()           returns self.__name
+│   get_type()           returns self.__city_type
+│   get_tagline()        returns self.__tagline
+│   get_connection_count() returns len of connections dict
+│   get_trivia_count()   returns len of trivia list
+│
+│── CONNECTION METHODS
+│   add_connection(city_name, distance)  adds to __connections
+│   get_distance_to(city_name)          dict .get(), returns -1 if missing
+│   get_destination_names()             list(__connections.keys())
+│
+│── TRIVIA METHODS
+│   add_trivia(question, answer)        appends to __trivia list
+│   get_random_trivia()                 random.choice, returns None if empty
+│
+│── STATUS METHODS
+│   is_win_city()        returns city_type == &#x27;WIN&#x27;
+│   is_dead_end()        returns city_type in [&#x27;DEAD_END&#x27;,&#x27;WRONG_WAY&#x27;]
+│
+│── DISPLAY
+│   display_info()       prints name, type, tagline, counts
+│   display_destinations() prints numbered connection list
+│   __str__()            returns &#x27;Name (TYPE)&#x27;
+
+# ---- city_test.py ----
+from city import City
+
+main():
+│── Create 4 City objects (START, HUB, WIN, DEAD_END)
+│── Test __str__ on each
+│── Add connections, test get_distance_to()
+│── Add trivia, test get_random_trivia()
+│── Test display_info() and display_destinations()
+│── Test is_win_city() and is_dead_end()</pre>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--green">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Checkpoints</div>
+    <div class="lc-sub-banner">5 Checkpoints</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">1</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Define the City Class Skeleton</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>Create a new file called <code>city.py</code>. This file will contain only the City class definition, with no <code>main()</code> function and no <code>if __name__</code> guard. The class is a module; the test program you write in CP5 is what runs it.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Add your top-of-file documentation header: Name, abc123, Section, and a one-sentence description of what city.py contains.</li>
+      <li>Define the class: <code>class City:</code>. Everything else in this file is indented inside this class.</li>
+      <li>Write the class docstring immediately after the class line: a one-line description of what a City object represents.</li>
+      <li>Write the <code>__init__</code> method. It takes <code>self</code> plus three parameters: <code>name</code>, <code>city_type</code>, and <code>tagline</code>. Write a docstring that documents all three parameters. Store all three as private attributes using the double-underscore prefix: <code>self.__name</code>, <code>self.__city_type</code>, <code>self.__tagline</code>.</li>
+      <li>In the same <code>__init__</code>, initialize two more private attributes: <code>self.__connections = {}</code> (an empty dict for city connections) and <code>self.__trivia = []</code> (an empty list for trivia questions). These are not parameters; they always start empty.</li>
+    </ol>
+    <div class="lc-h3">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Textbook Reference</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 10-12</strong>
+            — <code>cellphone.py</code>
+            (Step 1)
+            — Shows exactly this pattern: class definition, __init__ constructor, and three private attributes stored with double-underscore prefix. The City class follows the same structure.
+          </li>
+          </ul>
         </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            5 Checkpoints
+      </div>
+    </div>
+    <div class="lc-h3">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Mistake</th>
+        <th>What Goes Wrong</th>
+        <th>Fix</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Using single underscore _name instead of double __name</td>
+        <td>Attribute is still accessible from outside; encapsulation is not enforced</td>
+        <td>Use self.__name (two underscores) for private attributes</td>
+      </tr>
+      <tr>
+        <td>Forgetting self as the first parameter in __init__</td>
+        <td>TypeError: __init__ missing positional argument</td>
+        <td>Every method in a class must have self as its first parameter</td>
+      </tr>
+      <tr>
+        <td>Putting __init__ outside the class indentation</td>
+        <td>IndentationError or __init__ becomes a standalone function</td>
+        <td>Every method must be indented one level inside the class</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CP1 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>city.py exists with a top-of-file documentation header</li>
+          <li>class City: is defined with a class docstring</li>
+          <li>__init__(self, name, city_type, tagline) is defined with a docstring</li>
+          <li>Five private attributes initialized: __name, __city_type, __tagline, __connections, __trivia</li>
+          <li>File imports nothing yet and has no main(). That is correct</li>
+        </ul>
         </div>
-        
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-1.svg" alt="Checkpoint 1" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">File Setup &amp; Constructor</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Create city.py and define the City class with its <span style="font-family: 'Roboto Mono', monospace;">__init__</span> constructor.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                The foundation of your City class: a properly documented file, the class definition, and an <span style="font-family: 'Roboto Mono', monospace;">__init__</span> method that initializes four private attributes.
-            </p>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                This is the moment everything changes. Instead of juggling separate dictionaries for city names, distances, and info, a City object <strong style="color: #fff;">owns its own data</strong>. Every game, app, and system you'll build professionally uses objects to bundle related data and behavior together. Master this pattern and you're thinking like a software engineer.
-            </p>
-
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Bobby-Hernandez.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Bobby Hernandez">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"In Module 4, you had CITY_INFO dictionaries and CITY_DISTANCES dictionaries and functions scattered everywhere. Now? A City object <em>knows</em> its own data. The constructor is the birth certificate&mdash;it says exactly what a City needs to exist."</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/bobby-hernandez.svg" alt="Bobby Hernandez" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Director of Technology, Bat City Collective</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" style="width: 28px; height: 28px;" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 10-12 (cellphone.py):</strong> You typed a CellPhone class with <span style="font-family: 'Roboto Mono', monospace;">__init__</span> that accepted parameters and stored them in private attributes like <span style="font-family: 'Roboto Mono', monospace;">self.__manufact</span>. Your City class follows the same pattern&mdash;accept <span style="font-family: 'Roboto Mono', monospace;">name</span>, <span style="font-family: 'Roboto Mono', monospace;">city_type</span>, and <span style="font-family: 'Roboto Mono', monospace;">tagline</span>, then store them with double-underscore prefixes.
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Create a new file called <span style="font-family: 'Roboto Mono', monospace;">city.py</span></li>
-                <li style="margin-bottom: 10px;">Add the module docstring at the top:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">"""
-city.py
-City class for the road trip game.
-
-Chapter 10 Concepts:
-- Class definition with class keyword
-- __init__ constructor
-- Private attributes with __ prefix
-- Getter methods
-- __str__ method
-"""</pre>
-                    </div>
-                </li>
-                <li style="margin-bottom: 10px;">Define the class and its docstring:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">class City:
-    """
-    Represents a city in the Texas road trip game.
-
-    Attributes (private):
-        __name (str): City name
-        __city_type (str): Type of city
-        __tagline (str): City motto
-        __connections (dict): Connected cities and distances
-    """</pre>
-                    </div>
-                </li>
-                <li style="margin-bottom: 10px;">Write the <span style="font-family: 'Roboto Mono', monospace;">__init__</span> method that accepts <span style="font-family: 'Roboto Mono', monospace;">name</span>, <span style="font-family: 'Roboto Mono', monospace;">city_type</span>, and <span style="font-family: 'Roboto Mono', monospace;">tagline</span> parameters</li>
-                <li style="margin-bottom: 10px;">Inside <span style="font-family: 'Roboto Mono', monospace;">__init__</span>, store each parameter in a private attribute:
-                    <ul style="margin-top: 8px;">
-                        <li><span style="font-family: 'Roboto Mono', monospace;">self.__name = name</span></li>
-                        <li><span style="font-family: 'Roboto Mono', monospace;">self.__city_type = city_type</span></li>
-                        <li><span style="font-family: 'Roboto Mono', monospace;">self.__tagline = tagline</span></li>
-                    </ul>
-                </li>
-                <li style="margin-bottom: 10px;">Also initialize an empty dictionary for connections: <span style="font-family: 'Roboto Mono', monospace;">self.__connections = {}</span></li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this test code at the bottom of city.py (temporarily):</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;"># DEBUG - DELETE BEFORE CHECKPOINT 2
-san_antonio = City('San Antonio', 'START', 'Home of the Alamo')
-print('City object created successfully!')
-print(type(san_antonio))</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run city.py. You should see:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">City object created successfully!
-&lt;class '__main__.City'&gt;</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #fff;">Step 3:</strong> Delete the debug code before continuing.</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="flex-grow: 1; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">self</code> as first parameter</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Every method needs <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">self</code> first&mdash;it's how Python knows which object to work with</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">name</code> instead of <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">self.__name</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Attributes need <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">self.</code> prefix to belong to the object</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Naming the method <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">_init_</code> (single underscores)</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Must be <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">__init__</code> with DOUBLE underscores on both sides</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">city.py</span> file with module docstring</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">City</span> class with class docstring</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">__init__</span> method accepting 3 parameters</li>
-                <li>Four private attributes initialized (<span style="font-family: 'Roboto Mono', monospace;">__name</span>, <span style="font-family: 'Roboto Mono', monospace;">__city_type</span>, <span style="font-family: 'Roboto Mono', monospace;">__tagline</span>, <span style="font-family: 'Roboto Mono', monospace;">__connections</span>)</li>
-            </ul>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-2.svg" alt="Checkpoint 2" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Getter Methods</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Add methods that return the values of private attributes.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                Three getter methods that provide controlled access to your City's private data. Outside code can <em>read</em> the city's name but can't accidentally change it.
-            </p>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" style="width: 28px; height: 28px;" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 10-12 (cellphone.py):</strong> Remember <span style="font-family: 'Roboto Mono', monospace;">get_manufact()</span>, <span style="font-family: 'Roboto Mono', monospace;">get_model()</span>, and <span style="font-family: 'Roboto Mono', monospace;">get_retail_price()</span>? Each just returned <span style="font-family: 'Roboto Mono', monospace;">self.__attribute</span>. Your getters work the same way.
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Add a comment <span style="font-family: 'Roboto Mono', monospace;"># --- Getter Methods ---</span> below <span style="font-family: 'Roboto Mono', monospace;">__init__</span></li>
-                <li style="margin-bottom: 10px;">Define <span style="font-family: 'Roboto Mono', monospace;">get_name(self)</span> that returns <span style="font-family: 'Roboto Mono', monospace;">self.__name</span></li>
-                <li style="margin-bottom: 10px;">Define <span style="font-family: 'Roboto Mono', monospace;">get_type(self)</span> that returns <span style="font-family: 'Roboto Mono', monospace;">self.__city_type</span></li>
-                <li style="margin-bottom: 10px;">Define <span style="font-family: 'Roboto Mono', monospace;">get_tagline(self)</span> that returns <span style="font-family: 'Roboto Mono', monospace;">self.__tagline</span></li>
-                <li style="margin-bottom: 10px;">Add a docstring to each method (e.g., <span style="font-family: 'Roboto Mono', monospace;">"""Return the city's name."""</span>)</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this test code at the bottom of city.py:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;"># DEBUG - DELETE BEFORE CHECKPOINT 3
-san_antonio = City('San Antonio', 'START', 'Home of the Alamo')
-print('Testing getter methods:')
-print(f'  Name: {san_antonio.get_name()}')
-print(f'  Type: {san_antonio.get_type()}')
-print(f'  Tagline: {san_antonio.get_tagline()}')</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run city.py. You should see:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">Testing getter methods:
-  Name: San Antonio
-  Type: START
-  Tagline: Home of the Alamo</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #fff;">Step 3:</strong> Delete the debug code before continuing.</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="flex-grow: 1; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Accessing <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">self.name</code> instead of <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">self.__name</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">The attribute is private (double underscore)&mdash;must match exactly</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">print()</code> instead of <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">return</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Getters should return the value, not print it&mdash;caller decides what to do with it</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting parentheses when calling: <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">city.get_name</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Without <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">()</code> you get the method object, not its return value</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">get_name()</span> method with docstring</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">get_type()</span> method with docstring</li>
-                <li><span style="font-family: 'Roboto Mono', monospace;">get_tagline()</span> method with docstring</li>
-            </ul>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-3.svg" alt="Checkpoint 3" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Connection Methods</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Add methods to manage city connections&mdash;adding routes and checking distances.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                Three methods that let cities know about their road connections. This replaces the old <span style="font-family: 'Roboto Mono', monospace;">CITY_DISTANCES</span> dictionary&mdash;now each city manages its own connections!
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Add a comment <span style="font-family: 'Roboto Mono', monospace;"># --- Connection Methods ---</span></li>
-                <li style="margin-bottom: 10px;">Define <span style="font-family: 'Roboto Mono', monospace;">add_connection(self, city_name, distance)</span> that stores the connection:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">def add_connection(self, city_name, distance):
-    """Add a connection to another city."""
-    self.__connections[city_name] = distance</pre>
-                    </div>
-                </li>
-                <li style="margin-bottom: 10px;">Define <span style="font-family: 'Roboto Mono', monospace;">get_distance_to(self, city_name)</span> that returns the distance to a city, or <span style="font-family: 'Roboto Mono', monospace;">-1</span> if not connected:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">def get_distance_to(self, city_name):
-    """Get distance to a connected city. Returns -1 if not connected."""
-    return self.__connections.get(city_name, -1)</pre>
-                    </div>
-                </li>
-                <li style="margin-bottom: 10px;">Define <span style="font-family: 'Roboto Mono', monospace;">get_destination_names(self)</span> that returns a list of connected city names:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">def get_destination_names(self):
-    """Return list of connected city names."""
-    return list(self.__connections.keys())</pre>
-                    </div>
-                </li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this test code:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;"># DEBUG - DELETE BEFORE CHECKPOINT 4
-san_antonio = City('San Antonio', 'START', 'Home of the Alamo')
-san_antonio.add_connection('Houston', 200)
-san_antonio.add_connection('Corpus Christi', 150)
-san_antonio.add_connection('Laredo', 160)
-
-print('Testing connection methods:')
-print(f'  Distance to Houston: {san_antonio.get_distance_to("Houston")} miles')
-print(f'  Distance to Dallas: {san_antonio.get_distance_to("Dallas")} miles')
-print(f'  Destinations: {san_antonio.get_destination_names()}')</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run city.py. You should see:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">Testing connection methods:
-  Distance to Houston: 200 miles
-  Distance to Dallas: -1 miles
-  Destinations: ['Houston', 'Corpus Christi', 'Laredo']</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #fff;">Step 3:</strong> Delete the debug code before continuing.</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="flex-grow: 1; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">self.__connections[city_name]</code> for get_distance_to</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">KeyError if city not connected&mdash;use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">.get(city_name, -1)</code> for safe access</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Returning <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">self.__connections.keys()</code> directly</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Returns a dict_keys object, not a list&mdash;wrap with <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">list()</code></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting to add docstrings to methods</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">CodeGrade checks for documentation&mdash;every method needs a docstring</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">add_connection()</span> method</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">get_distance_to()</span> returning distance or -1</li>
-                <li><span style="font-family: 'Roboto Mono', monospace;">get_destination_names()</span> returning a list</li>
-            </ul>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-4.svg" alt="Checkpoint 4" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Status Methods &amp; __str__</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Add methods to check city type and a <span style="font-family: 'Roboto Mono', monospace;">__str__</span> method for nice printing.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                Methods that let you ask a city about itself: "Are you a win city?" "Are you a dead end?" Plus a display method and the special <span style="font-family: 'Roboto Mono', monospace;">__str__</span> method that Python calls when you <span style="font-family: 'Roboto Mono', monospace;">print()</span> a City object.
-            </p>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" style="width: 28px; height: 28px;" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 10-9 (bankaccount2.py):</strong> You typed a <span style="font-family: 'Roboto Mono', monospace;">__str__</span> method that returned a formatted string. Python automatically calls this when you <span style="font-family: 'Roboto Mono', monospace;">print()</span> an object. Your City's <span style="font-family: 'Roboto Mono', monospace;">__str__</span> should return something like <span style="font-family: 'Roboto Mono', monospace;">'San Antonio (START)'</span>.
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Add a comment <span style="font-family: 'Roboto Mono', monospace;"># --- Status Methods ---</span></li>
-                <li style="margin-bottom: 10px;">Define <span style="font-family: 'Roboto Mono', monospace;">is_win_city(self)</span> that returns <span style="font-family: 'Roboto Mono', monospace;">True</span> if <span style="font-family: 'Roboto Mono', monospace;">self.__city_type == 'WIN'</span></li>
-                <li style="margin-bottom: 10px;">Define <span style="font-family: 'Roboto Mono', monospace;">is_dead_end(self)</span> that returns <span style="font-family: 'Roboto Mono', monospace;">True</span> if <span style="font-family: 'Roboto Mono', monospace;">self.__city_type == 'DEAD_END'</span></li>
-                <li style="margin-bottom: 10px;">Add a comment <span style="font-family: 'Roboto Mono', monospace;"># --- Display Methods ---</span></li>
-                <li style="margin-bottom: 10px;">Define <span style="font-family: 'Roboto Mono', monospace;">display_destinations(self)</span> that prints the menu of destinations:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">def display_destinations(self):
-    """Display available destinations from this city."""
-    print(f'From {self.__name}, you can travel to:')
-    option_num = 1
-    for dest_name, distance in self.__connections.items():
-        print(f'  {option_num}. {dest_name} - {distance} miles')
-        option_num = option_num + 1</pre>
-                    </div>
-                </li>
-                <li style="margin-bottom: 10px;">Define <span style="font-family: 'Roboto Mono', monospace;">__str__(self)</span> that returns a string like <span style="font-family: 'Roboto Mono', monospace;">'San Antonio (START)'</span>:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">def __str__(self):
-    """Return string representation of the city."""
-    return f'{self.__name} ({self.__city_type})'</pre>
-                    </div>
-                </li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this test code:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;"># DEBUG - DELETE BEFORE CHECKPOINT 5
-corpus = City('Corpus Christi', 'WIN', 'Sparkling City by the Sea')
-laredo = City('Laredo', 'DEAD_END', 'Gateway to Mexico')
-san_antonio = City('San Antonio', 'START', 'Home of the Alamo')
-
-san_antonio.add_connection('Houston', 200)
-san_antonio.add_connection('Corpus Christi', 150)
-
-print('Testing __str__:')
-print(f'  {san_antonio}')
-print(f'  {corpus}')
-print(f'  {laredo}')
-print()
-print('Testing status methods:')
-print(f'  Corpus is_win_city: {corpus.is_win_city()}')
-print(f'  Laredo is_dead_end: {laredo.is_dead_end()}')
-print()
-print('Testing display_destinations:')
-san_antonio.display_destinations()</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run city.py. You should see:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">Testing __str__:
-  San Antonio (START)
-  Corpus Christi (WIN)
-  Laredo (DEAD_END)
-
-Testing status methods:
-  Corpus is_win_city: True
-  Laredo is_dead_end: True
-
-Testing display_destinations:
-From San Antonio, you can travel to:
-  1. Houston - 200 miles
-  2. Corpus Christi - 150 miles</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #fff;">Step 3:</strong> Delete the debug code before continuing.</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="flex-grow: 1; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">print()</code> inside <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">__str__</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;"><code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">__str__</code> must <em>return</em> a string&mdash;Python calls it when you print the object</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Comparing type with <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">==</code> 'win' (lowercase)</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">City types are uppercase ('WIN', 'DEAD_END')&mdash;case must match exactly</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Naming method <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">_str_</code> (single underscores)</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Must be <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">__str__</code> with DOUBLE underscores&mdash;that's how Python recognizes it</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">is_win_city()</span> method returning True/False</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">is_dead_end()</span> method returning True/False</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">display_destinations()</span> method printing menu</li>
-                <li><span style="font-family: 'Roboto Mono', monospace;">__str__()</span> method returning formatted string</li>
-            </ul>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-5.svg" alt="Checkpoint 5" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Complete Test Program</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Create lab-5-1.py that imports City and runs a comprehensive test.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                A separate test program that imports your City class and demonstrates all its capabilities. This is the file you'll submit to CodeGrade along with city.py.
-            </p>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" style="width: 28px; height: 28px;" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 10-13 (cell_phone_test.py):</strong> You typed <span style="font-family: 'Roboto Mono', monospace;">import cellphone</span> then created objects with <span style="font-family: 'Roboto Mono', monospace;">cellphone.CellPhone(...)</span>. Your test program uses <span style="font-family: 'Roboto Mono', monospace;">from city import City</span> so you can write <span style="font-family: 'Roboto Mono', monospace;">City(...)</span> directly.
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Priya-Venkatesh.png" alt="Priya Venkatesh" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"Think about what you've built: city.py contains the City class, and lab-5-1.py tests it. Two separate files, two separate concerns. When we add the full game in Lab 5.2, we import the same City class. That's code reuse&mdash;you write it once, use it everywhere. This is how professional projects stay organized!"</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/priya-venkatesh.svg" alt="Priya Venkatesh" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Project Manager, Bat City Collective</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Create a new file called <span style="font-family: 'Roboto Mono', monospace;">lab-5-1.py</span></li>
-                <li style="margin-bottom: 10px;">Add the standard header docstring with your info</li>
-                <li style="margin-bottom: 10px;">Import the City class: <span style="font-family: 'Roboto Mono', monospace;">from city import City</span></li>
-                <li style="margin-bottom: 10px;">Define a <span style="font-family: 'Roboto Mono', monospace;">main()</span> function that:
-                    <ul style="margin-top: 8px;">
-                        <li>Creates 4 City objects (San Antonio, Houston, Corpus Christi, Laredo)</li>
-                        <li>Adds connections between them</li>
-                        <li>Tests all getter methods</li>
-                        <li>Tests <span style="font-family: 'Roboto Mono', monospace;">__str__</span> by printing cities</li>
-                        <li>Tests connection methods</li>
-                        <li>Tests status methods</li>
-                        <li>Calls <span style="font-family: 'Roboto Mono', monospace;">display_destinations()</span></li>
-                    </ul>
-                </li>
-                <li style="margin-bottom: 10px;">Add the <span style="font-family: 'Roboto Mono', monospace;">if __name__ == '__main__':</span> block to call main()</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-expected-output.svg" alt="Expected Output" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">Your test program should produce output similar to:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 20px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">==================================================
-LAB 5.1: MEET THE CITIES
-Testing the City Class
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add Getters and __str__</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>Private attributes cannot be read from outside the class directly. Getter methods are the controlled access points. Add the getters now, then add <code>__str__</code> so that printing a City object gives clean readable output.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Add a comment <code># --- GETTER METHODS ---</code> after the <code>__init__</code> to organize the class.</li>
+      <li>Write <code>get_name(self)</code>: docstring, return <code>self.__name</code>.</li>
+      <li>Write <code>get_type(self)</code>: docstring, return <code>self.__city_type</code>.</li>
+      <li>Write <code>get_tagline(self)</code>: docstring, return <code>self.__tagline</code>.</li>
+      <li>Write <code>get_connection_count(self)</code>: docstring, return <code>len(self.__connections)</code>.</li>
+      <li>Write <code>get_trivia_count(self)</code>: docstring, return <code>len(self.__trivia)</code>.</li>
+      <li>Write the <code>__str__(self)</code> method: return an f-string in the format <code>'CityName (CITY_TYPE)'</code>. For example, a San Antonio object should print as <code>'San Antonio (START)'</code>.</li>
+    </ol>
+    <div class="lc-h3">Why This Matters</div>
+    <p>The <code>__str__</code> method is what Python calls when you use <code>print(city_object)</code> or embed the object in an f-string with <code>f'{city_object}'</code>. Without it, printing a City gives you something like <code>&lt;city.City object at 0x7f4a...&gt;</code>. With it, you get <code>San Antonio (START)</code>. It costs one method and pays back every time you debug or display an object.</p>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CP2 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>Five getter methods added, each with a docstring</li>
+          <li>__str__ returns 'CityName (CITY_TYPE)' format</li>
+          <li>Quick test: open a Python shell, import City, create one object, and print it. Verify the output matches the format</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">3</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add Connection Methods</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>The <code>__connections</code> dictionary maps destination city names to distances. These three methods let outside code add connections and query them without touching the dictionary directly.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Add a comment <code># --- CONNECTION METHODS ---</code> to organize this section.</li>
+      <li>Write <code>add_connection(self, city_name, distance)</code>: docstring describing both parameters. Body: <code>self.__connections[city_name] = distance</code>.</li>
+      <li>Write <code>get_distance_to(self, city_name)</code>: docstring noting it returns -1 if the city is not connected. Body: use <code>self.__connections.get(city_name, -1)</code>.</li>
+      <li>Write <code>get_destination_names(self)</code>: docstring. Body: return <code>list(self.__connections.keys())</code>.</li>
+      <li>Write <code>display_destinations(self)</code>: print <code>'From [city_name], you can travel to:'</code>, then loop through <code>self.__connections.items()</code> with a numbered counter and print each destination and distance.</li>
+    </ol>
+    <div class="lc-h3">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Textbook Reference</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-1</strong>
+            — <code>card_dealer.py</code>
+            (Step 3)
+            — The __connections dictionary follows the same key-value pattern as the card deck. Adding a connection is the same as adding a card. get_distance_to() uses the same .get(key, default) pattern.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CP3 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>add_connection(), get_distance_to(), get_destination_names(), and display_destinations() all defined with docstrings</li>
+          <li>get_distance_to() returns -1 for a city that is not connected</li>
+          <li>display_destinations() prints a numbered list</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">4</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add Trivia, Status, and Display Methods</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>Four more methods finish the class: trivia storage and retrieval, win/dead-end status checks, and a full city info display.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Add <code># --- TRIVIA METHODS ---</code>. Write <code>add_trivia(self, question, answer)</code>: append a dictionary <code>{'question': question, 'answer': answer}</code> to <code>self.__trivia</code>.</li>
+      <li>Write <code>get_random_trivia(self)</code>: add <code>import random</code> at the top of the method (or at the top of the file). If <code>self.__trivia</code> is empty, return <code>None</code>. Otherwise return <code>random.choice(self.__trivia)</code>.</li>
+      <li>Add <code># --- STATUS METHODS ---</code>. Write <code>is_win_city(self)</code>: return <code>self.__city_type == 'WIN'</code>.</li>
+      <li>Write <code>is_dead_end(self)</code>: return <code>True</code> if <code>self.__city_type</code> is <code>'DEAD_END'</code> or <code>'WRONG_WAY'</code>.</li>
+      <li>Write <code>display_info(self)</code>: print the city name, type, tagline, connection count, and trivia count. Use the getter methods rather than accessing the private attributes directly.</li>
+    </ol>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
+                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="19" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Use Your Own Getters Inside the Class</div>
+        <div class="lc-callout__body">
+        <p>Inside <code>display_info()</code>, call <code>self.get_connection_count()</code> rather than <code>len(self.__connections)</code> directly. Using your own methods internally is good practice. If the implementation of connection storage ever changes, only <code>get_connection_count()</code> needs updating.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CP4 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>add_trivia() appends a dict with 'question' and 'answer' keys</li>
+          <li>get_random_trivia() returns None for empty list, random dict otherwise</li>
+          <li>is_win_city() and is_dead_end() return the correct boolean for each city type</li>
+          <li>display_info() prints all five city attributes using getter methods</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">5</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Write city_test.py</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>Create a second file called <code>city_test.py</code>. This is your test harness. It imports the City class and methodically exercises every method you just wrote. A class is only as good as its tests.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Add your documentation header, then <code>from city import City</code>.</li>
+      <li>Write a <code>main()</code> function. Start with a header line: <code>print('=' * 50)</code>, <code>print('CITY CLASS TEST')</code>, <code>print('=' * 50)</code>.</li>
+      <li>Create four City objects: San Antonio (<code>'START'</code>, <code>'Home of the Alamo'</code>), Houston (<code>'GATEWAY'</code>, <code>'Space City'</code>), Corpus Christi (<code>'WIN'</code>, <code>'Sparkling City by the Sea'</code>), and Laredo (<code>'DEAD_END'</code>, <code>'Gateway to Mexico'</code>).</li>
+      <li>Test <code>__str__</code>: print all four objects using f-strings and verify the output format.</li>
+      <li>Add connections: San Antonio to Houston (200), Corpus Christi (150), and Laredo (160). Houston to San Antonio (200). Test <code>get_distance_to()</code> for a connected city and for a city that is not connected. Verify you get -1 for the missing one.</li>
+      <li>Add two trivia questions to San Antonio. Call <code>get_random_trivia()</code> and print the question and answer.</li>
+      <li>Call <code>display_info()</code> and <code>display_destinations()</code> on San Antonio.</li>
+      <li>Test <code>is_win_city()</code> and <code>is_dead_end()</code> on all four cities and print the results.</li>
+      <li>Add <code>if __name__ == '__main__': main()</code> at the bottom. Run the file and verify every section produces the expected output.</li>
+    </ol>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"I used to skip writing test programs and just submit. Then I started failing CodeGrade tests for methods I was sure worked. Now I test every method manually before I submit anything. It takes ten minutes and saves an hour."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Tyler Nguyen</div>
+        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3">Expected Output</div>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>==================================================
+CITY CLASS TEST
 ==================================================
 
-Creating cities...
-
-Testing getter methods:
-  Name: San Antonio
-  Type: START
-  Tagline: Home of the Alamo
-
-Testing __str__ method (just print the object):
+Testing __str__:
   San Antonio (START)
-  Houston (HUB)
+  Houston (GATEWAY)
   Corpus Christi (WIN)
   Laredo (DEAD_END)
 
-Adding connections...
-Done!
+Testing distances:
+  SA to Houston: 200 miles
+  SA to Dallas: -1 miles
 
-Testing connection methods:
-  San Antonio to Houston: 200 miles
-  San Antonio to Dallas: -1 miles
+Testing display_info:
+City: San Antonio
+Type: START
+Tagline: &quot;Home of the Alamo&quot;
+Connections: 3
+Trivia Questions: 2
 
-Destinations from San Antonio:
-  - Houston
-  - Corpus Christi
-  - Laredo
-
-Testing display_destinations():
+Testing display_destinations:
 From San Antonio, you can travel to:
   1. Houston - 200 miles
   2. Corpus Christi - 150 miles
   3. Laredo - 160 miles
 
-Testing is_win_city() and is_dead_end():
-  Corpus Christi is_win_city: True
-  Houston is_win_city: False
-  Laredo is_dead_end: True
-  Houston is_dead_end: False
+Testing status methods:
+  Corpus is win city: True
+  Laredo is dead end: True
+  Houston is win city: False
 
-==================================================
-SUCCESS! City class works correctly.
-==================================================
-
-Key OOP concepts demonstrated:
-  - Created a class with private attributes
-  - Used __init__ to initialize objects
-  - Created getter methods for data access
-  - Used __str__ for printing objects</pre>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="flex-grow: 1; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Importing <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">city.py</code> instead of <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">from city import City</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Need to import the class itself, not the filename</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Missing <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">if __name__ == '__main__':</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Test code runs when imported by other files&mdash;guard prevents this</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Files not in same directory</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;"><code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">city.py</code> and <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">lab-5-1.py</code> must be in the same folder</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">lab-5-1.py</span> with proper docstring</li>
-                <li style="margin-bottom: 8px;">Import statement for City class</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">main()</span> function that tests all City methods</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">if __name__ == '__main__':</span> block</li>
-                <li>Output demonstrates all class functionality</li>
-            </ul>
-            
-        </div>
+All tests complete!</pre>
     </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF1744 0%, #4A0A0A 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-final-checklist.svg" alt="Final Checklist" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Lab 5.1 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>city.py defines the City class with all methods and docstrings</li>
+          <li>city_test.py imports City, creates 4 objects, and tests every method</li>
+          <li>Output matches the expected output block above</li>
+          <li>Both files have documentation headers</li>
+          <li>Both files submitted to CodeGrade</li>
+        </ul>
         </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Check It Before You Wreck It
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-before-you-submit.svg" alt="Before You Submit" style="height: 18px; display: block;">
-            </div>
-            
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #FF1744; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF1744; width: 5%;"></th>
-                            <th style="background: #1a1a1a; color: #FF1744; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF1744;">Requirement</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;"><strong style="color: #fff;">city.py</strong> has module docstring at top</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;"><strong style="color: #fff;">City</strong> class has class docstring</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">All attributes use <strong style="color: #fff;">double underscore</strong> prefix (private)</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">All methods have <strong style="color: #fff;">docstrings</strong></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;"><strong style="color: #fff;">lab-5-1.py</strong> has header docstring with your name/ID/section</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;"><strong style="color: #fff;">lab-5-1.py</strong> imports City with <span style="font-family: 'Roboto Mono', monospace;">from city import City</span></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">No debug/test code left in <strong style="color: #fff;">city.py</strong></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Both files run <strong style="color: #fff;">without errors</strong></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Submitted <strong style="color: #fff;">BOTH</strong> files to CodeGrade</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-permitted-techniques.svg" alt="Permitted Techniques" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #39ff14;">You MAY use:</strong></p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">Class definition with <span style="font-family: 'Roboto Mono', monospace;">class</span> keyword</li>
-                <li style="margin-bottom: 5px;"><span style="font-family: 'Roboto Mono', monospace;">__init__</span> constructor with <span style="font-family: 'Roboto Mono', monospace;">self</span></li>
-                <li style="margin-bottom: 5px;">Private attributes with <span style="font-family: 'Roboto Mono', monospace;">__</span> prefix</li>
-                <li style="margin-bottom: 5px;">Getter methods</li>
-                <li style="margin-bottom: 5px;"><span style="font-family: 'Roboto Mono', monospace;">__str__</span> special method</li>
-                <li style="margin-bottom: 5px;">All techniques from Modules 1-4</li>
-            </ul>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #FF1744;">&#10007; NOT YET:</strong></p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">Inheritance (that's Lab 5.3!)</li>
-                <li style="margin-bottom: 5px;">Multiple classes working together (that's Lab 5.2!)</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-academic-integrity.svg" alt="Academic Integrity" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                This assignment must be <strong style="color: #fff;">your own work</strong>. You may reference the textbook and BookEx examples. You may NOT copy code from others, use AI, or share your code.
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-codegrade-tip.svg" alt="CodeGrade Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                <strong style="color: #fff;">Submit BOTH files:</strong> CodeGrade will test that <span style="font-family: 'Roboto Mono', monospace;">lab-5-1.py</span> can import your <span style="font-family: 'Roboto Mono', monospace;">City</span> class from <span style="font-family: 'Roboto Mono', monospace;">city.py</span>. If you only submit one file, the import will fail. Make sure <span style="font-family: 'Roboto Mono', monospace;">city.py</span> has no test code at the bottom&mdash;it should only contain the class definition.
-            </p>
-            
-        </div>
+      </div>
     </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #BF40FF 0%, #2E0854 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-need-help.svg" alt="Need Help?" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Look No Further! We've Got You
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-if-you-get-stuck.svg" alt="If You Get Stuck" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 25px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Re-read the BookEx exercises</strong> &mdash; CellPhone and BankAccount are your templates</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Check your indentation</strong> &mdash; Methods must be indented inside the class</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Remember <span style="font-family: 'Roboto Mono', monospace;">self</span></strong> &mdash; Every method's first parameter is <span style="font-family: 'Roboto Mono', monospace;">self</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Submit to CodeGrade early</strong> &mdash; It shows exactly which tests pass or fail</li>
-                <li><strong style="color: #fff;">Come to Zoom or office hours</strong> &mdash; OOP is tricky at first; we can help!</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-contact-and-resources.svg" alt="Contact & Resources" style="height: 18px; display: block;">
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Webcam-Video-Square.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Weekly Zoom Session</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Tuesdays at 6:00 PM CT &mdash; Live coding help and Q&amp;A</div>
-                    <a href="https://utsa.zoom.us/j/97617245124" style="color: #BF40FF; font-size: 13px;">https://utsa.zoom.us/j/97617245124</a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Calendar-Mark.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Office Hours (by Appointment)</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Book a 15-minute slot for one-on-one help</div>
-                    <a href="https://calendly.com/john-newsom-utsa/student-meeting" style="color: #BF40FF; font-size: 13px;">https://calendly.com/john-newsom-utsa/student-meeting</a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Customer-Support.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Discord Community</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Get help from classmates and share tips (optional but recommended)</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Mail-Send-Envelope.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Email</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">For private questions or concerns</div>
-                    <a href="mailto:john.newsom@utsa.edu" style="color: #BF40FF; font-size: 13px;">john.newsom@utsa.edu</a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Chapter 10 BookEx Reference Guide</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Step-by-step breakdowns of every textbook example &mdash; your primary reference</div>
-                </div>
-            </div>
-            
-        </div>
     </div>
+  </div>
+</div>
+<div class="lc-card lc-card--red">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Final Checklist</div>
+    <div class="lc-sub-banner">Check It Before You Wreck It</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3">Before You Submit</div>
+    <ul class="lc-checklist">
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">city.py contains the City class only, with no main() and no if __name__ guard</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All five private attributes initialized in __init__: __name, __city_type, __tagline, __connections, __trivia</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All getter methods present: get_name(), get_type(), get_tagline(), get_connection_count(), get_trivia_count()</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Connection methods present: add_connection(), get_distance_to(), get_destination_names(), display_destinations()</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Trivia methods present: add_trivia(), get_random_trivia()</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Status methods present: is_win_city(), is_dead_end()</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">__str__ returns &#x27;CityName (CITY_TYPE)&#x27; format</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">city_test.py tests every method and matches expected output</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Top-of-file documentation headers in both files</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All methods have docstrings</span>
+      </li>
+    </ul>
+    <div class="lc-h3">Scope Reminder</div>
+    <p>Chapter 10 techniques: class definition, __init__ constructor, private attributes with double underscore, getter methods, __str__ special method, dot notation method calls, and creating objects. All Module 1–4 techniques also permitted.</p>
+    <div class="lc-h3">Permitted Techniques</div>
+    <div class="lc-permitted">
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–10</p>
+      <ul class="lc-permitted__list">
+      <li>class ClassName: (class definition)</li>
+      <li>def __init__(self, param): (constructor)</li>
+      <li>self.__attribute (private attribute with name mangling)</li>
+      <li>def __str__(self): (string representation)</li>
+      <li>ClassName(args) to create an object</li>
+      <li>object.method() dot notation</li>
+      <li>from city import City (module import)</li>
+      </ul>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> list comprehensions, inheritance (Module 5.3 topic), multiple inheritance</p>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>CodeGrade imports city.py directly and tests each method in isolation. A syntax error in city.py will fail all tests.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">Academic Integrity</div>
+    <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
+  </div>
+</div>
+<div class="lc-card lc-card--purple">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Need Help?</div>
+    <div class="lc-sub-banner">Look No Further!</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3">If You Get Stuck</div>
+    <ul>
+      <li>Re-read Program 10-12 (cellphone.py) in your BookEx. It is the same pattern as the City class with different data</li>
+      <li>If you get AttributeError when calling a method, check that self is the first parameter in that method&#x27;s definition</li>
+      <li>If print(city_object) shows a memory address instead of a name, __str__ is either missing or has a typo in the method name</li>
+      <li>Submit to CodeGrade early. It tells you exactly which methods pass and which do not</li>
+    </ul>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Reference Guides</div>
+        <div class="lc-callout__body">
+          <p>Chapter 10 BookEx Reference Guide, which covers Programs 10-12 and 10-9 showing the class definition pattern this lab uses</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">Contact &amp; Resources</div>
+    <div class="lc-contact-grid">
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Zoom Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br>
+          <a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Schedule a Meeting</div>
+        <div class="lc-contact-card__value">
+          <a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Email</div>
+        <div class="lc-contact-card__value">
+          <a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>
+          Include your section number and abc123
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">CodeGrade</div>
+        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div style="text-align: center; color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
-    <img style="height: 50px; margin-bottom: 15px;" src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
-    <div style="color: #b0b8c4; font-size: 13px;">IS2053 Programming I &mdash; UT San Antonio &mdash; Spring 2026</div>
-    <div style="color: #666; font-size: 11px; margin-top: 10px;">Lab 5.1 &mdash; The City Class &mdash; BUILD Week</div>
-</div>
+    <footer class="lc-footer">
+        <img src="../../branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
+        <p class="lc-footer__course">IS2053: Programming I (Python) — The University of Texas at San Antonio</p>
+        <p class="lc-footer__detail">Starting Out with Python, 6th Edition — Tony Gaddis — Pearson</p>
+    </footer>
 
+</div>
 </body>
 </html>

@@ -3,854 +3,557 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab 5.3: Deep in the Heart</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Slab:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>Deep in the Heart — IS2053</title>
+    <link rel="stylesheet" href="../../labs.css">
 </head>
-<body style="background: #0a0a0a; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; color: #f5f5f5; line-height: 1.6;">
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #0055FF 0%, #001a4d 100%); padding: 8px 12px 12px 12px;">
-        
-        
-        <div style="display: flex; align-items: flex-end; gap: 8px;">
-            <img src="https://jfnewsom.github.io/is2053-assets/lab-icons/lab-badge-5-3.svg" alt="LAB 5.3" style="height: 90px;">
-            <div style="flex-grow: 1;">
-                <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-deep-in-the-heart.svg" alt="Deep in the Heart" style="height: 70px; margin-bottom: 2px; margin-left: -8px; display: block;">
-                
-                <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-                    Module 5 &bull; MASTER Week &bull; Chapter 11 Inheritance
-                </div>
-            </div>
-        </div>
-        
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-overview.svg" alt="Overview" style="height: 18px; display: block;">
-            </div>
-            
-            
-            <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px;">
-                <p style="color: #B0B8C4; margin: 0; flex: 1;">
-                    You've built City and Game classes. They work beautifully together. But Corpus Christi isn't just <em>any</em> city&mdash;it's the <strong style="color: #fff;">beach</strong>. It should have beach activities, a special arrival message, maybe even confetti. This week, you'll create <strong style="color: #fff;">WinCity</strong>, a specialized version of City that <em>inherits</em> everything City can do, then adds beach-specific features. Welcome to <strong style="color: #fff;">inheritance</strong>&mdash;the crown jewel of OOP.
-                </p>
-                <img src="https://jfnewsom.github.io/is2053-assets/branding/AllMyEggses-logo.svg" alt="All My Eggses Live in Texas" style="width: 210px; flex-shrink: 0;">
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Danny-Cavanaugh.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Danny Cavanaugh">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"You wrote the same game five different ways this semester. Each time it got better. That's what growth looks like. And now? WinCity <em>is a</em> City. One line of code, and you get all of City's powers for free. That's inheritance."</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/danny-cavanaugh.svg" alt="Danny Cavanaugh" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Lead Developer, Bat City Collective</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-filename.svg" alt="Filename" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 8px 0;">
-                <strong style="color: #fff;">Same four files as 5.2&mdash;you'll modify city.py:</strong>
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 4px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; color: #39ff14; font-size: 14px;">city.py</span> &mdash; City class + NEW WinCity subclass
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 4px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; color: #39ff14; font-size: 14px;">game.py</span> &mdash; Your Game class from 5.2 (no changes needed)
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 4px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; color: #39ff14; font-size: 14px;">function_library.py</span> &mdash; Your utility functions (no changes needed)
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; color: #39ff14; font-size: 14px;">lab-5-3.py</span> &mdash; Updated game using WinCity
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A WinCity subclass that inherits from City and adds beach features:
-            </p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Inheritance</strong> &mdash; <span style="font-family: 'Roboto Mono', monospace;">class WinCity(City):</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Superclass constructor call</strong> &mdash; <span style="font-family: 'Roboto Mono', monospace;">City.__init__(self, ...)</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">New attribute</strong> &mdash; <span style="font-family: 'Roboto Mono', monospace;">__beach_activities</span> list</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Method override</strong> &mdash; <span style="font-family: 'Roboto Mono', monospace;">get_arrival_message()</span> with beach celebration</li>
-                <li><strong style="color: #fff;">Polymorphism</strong> &mdash; same code works with City or WinCity</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-key-concepts.svg" alt="Key Concepts" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Chapter 11 Sections:</strong> 11.1 (Introduction to Inheritance), 11.2 (Polymorphism)
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-program-requirements.svg" alt="Program Requirements" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">city.py</span> <strong style="color: #fff;">MUST</strong> contain both City and WinCity classes</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">WinCity</span> <strong style="color: #fff;">MUST</strong> inherit from City using <span style="font-family: 'Roboto Mono', monospace;">class WinCity(City):</span></li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">WinCity.__init__</span> <strong style="color: #fff;">MUST</strong> call <span style="font-family: 'Roboto Mono', monospace;">City.__init__(self, ...)</span></li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">WinCity</span> <strong style="color: #fff;">MUST</strong> override <span style="font-family: 'Roboto Mono', monospace;">get_arrival_message()</span></li>
-                <li><span style="font-family: 'Roboto Mono', monospace;">lab-5-3.py</span> <strong style="color: #fff;">MUST</strong> use <span style="font-family: 'Roboto Mono', monospace;">WinCity</span> for Corpus Christi</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                <strong style="color: #fff;">Starting Out with Python, 6th Edition</strong> by Tony Gaddis &mdash; Chapter 11: Inheritance
-            </p>
-            
-        </div>
+<body>
+<div class="lc-wrapper">
+<div class="lc-card lc-card--blue">
+  <div class="lc-topper">
+    <div class="lc-card-header">
+      <div class="lc-lab-badge">
+        <div class="lc-lab-badge__word">LAB</div>
+        <div class="lc-lab-badge__num">5.3</div>
+      </div>
+      <div class="lc-topper-title">Deep in the Heart</div>
     </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF6B1A 0%, #8B3A00 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-time-guide.svg" alt="Time Guide" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
+    <div class="lc-sub-banner">MODULE 5 &bull; WEEK 3 &bull; MASTER &bull; CHAPTERS 10–11: INHERITANCE, POLYMORPHISM, FULL OOP ARCHITECTURE</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-h3">Overview</div>
+    <img src="../../branding/AllMyEggses.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
+    <p>This is the capstone. You have built the same road trip game five times across this semester, once in each module, each time with better tools. This week you finish the transformation. Two things happen: First, you extend <code>city.py</code> with <code>WinCity</code> and <code>DeadEndCity</code> subclasses that override <code>get_arrival_message()</code>, so each city type announces itself differently. Second, you complete <code>game.py</code> with the full game loop: trivia gate, travel, hazards, and the final report. Then you write <code>main.py</code>, which is now four lines. The game is the same. The architecture is unrecognizable from where you started.</p>
+    <div style="clear: both;"></div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
         </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Plan Your Session &mdash; 75-90 Minutes
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"The player has no idea you refactored. They still type a city name and roll a D20. But look at main.py: four lines. The whole game is four lines. That is what good architecture feels like from the outside. Invisible."</div>
         </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A; width: 35%;">Task</th>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A; width: 15%;">Time</th>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A;">Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 1</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">20 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Create WinCity subclass with inheritance</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 2</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">20 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Add beach methods and override get_arrival_message()</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 3</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">25 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Update lab-5-3.py to use WinCity</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px;">Submit</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px;">10 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Final check and CodeGrade submission</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF6B1A;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                This is the shortest lab in Module 5 because you're building <em>on top of</em> working code. If your 5.1 and 5.2 are solid, inheritance is just adding a few lines. That's the power!
-            </p>
-            
-        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
+      </div>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Learning Objectives</div>
+    <ul class="lc-objectives">
+      <li>Define WinCity and DeadEndCity as subclasses of City using inheritance</li>
+      <li>Call the superclass constructor from a subclass using City.__init__(self, ...)</li>
+      <li>Override get_arrival_message() in each subclass for type-specific behavior</li>
+      <li>Complete the Game class with play_turn(), trivia gate, hazard handling, and final report</li>
+      <li>Write main.py that runs the entire game in four lines</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
+    <p>Chapter 11: Programs 11-1 and 11-2 (vehicles.py, superclass with subclasses, calling superclass constructor) and Program 11-9 (animals.py, method overriding). Chapter 10: Game class completes the pattern from Program 10-9.</p>
+    <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis, Chapters 10 and 11</p>
+    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
+    <ul>
+      <li>city.py contains City base class plus WinCity and DeadEndCity subclasses</li>
+      <li>WinCity and DeadEndCity call City.__init__(self, ...) and override get_arrival_message()</li>
+      <li>game.py is complete: play_turn(), __trivia_gate(), __travel(), __handle_hazard(), display_final_report()</li>
+      <li>main.py creates a Game, prints a title, runs the game loop, and displays the final report</li>
+      <li>All files have documentation headers and all methods have docstrings</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Filename</div>
+    <p>Submit main.py, city.py, player.py, game.py, and function_library.py this week.</p>
+    <p>Submit city.py, player.py, game.py, main.py, and function_library.py. The full game must run from main.py without errors.</p>
+  </div>
 </div>
+<div class="lc-card lc-card--orange">
 
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #39FF14 0%, #0D4D00 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-checkpoints.svg" alt="Checkpoints" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            3 Checkpoints
-        </div>
-        
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Time Guide</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 90–105 Minutes</div>
+  </div>
 
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-1.svg" alt="Checkpoint 1" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Create the WinCity Subclass</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Add a WinCity class to city.py that inherits from City.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                A WinCity class that <em>is a</em> City but with an extra attribute for beach activities. One line&mdash;<span style="font-family: 'Roboto Mono', monospace;">class WinCity(City):</span>&mdash;gives you all of City's powers instantly.
-            </p>
+  <div class="lc-panel">
 
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                Inheritance is how professional codebases stay maintainable. Instead of duplicating code, you build hierarchies where specialized classes <strong style="color: #fff;">extend</strong> base classes. Every game engine, web framework, and mobile app uses this pattern. Master it here and you're ready for software engineering.
-            </p>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Time</th>
+            <th>Task</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><strong>CP1: Add City Subclasses</strong></td>
+        <td>25 min</td>
+        <td>WinCity and DeadEndCity in city.py: inheritance, constructor calls, method overrides</td>
+      </tr>
+      <tr>
+        <td><strong>CP2: Complete game.py</strong></td>
+        <td>40 min</td>
+        <td>play_turn(), trivia gate, travel loop, hazard handler, final report</td>
+      </tr>
+      <tr>
+        <td><strong>CP3: Write main.py and Full QA</strong></td>
+        <td>25 min</td>
+        <td>Four-line main.py, full playthrough, edge cases, CodeGrade</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--cyan">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Before You Begin</div>
+    <div class="lc-sub-banner">Program Architecture</div>
+  </div>
+  <div class="lc-panel">
+    <p class="lc-arch-intro">Here is the complete final architecture. The [NEW] tags show what you are adding this week. The [REPLACED] tags show what changes from 5.2. Everything else carries forward.</p>
+    <div class="lc-arch">
+      <pre># ---- city.py [EXTENDED] ----
+class City:                     (from 5.1, add get_arrival_message)
+│   get_arrival_message()       <span class="lc-arch-new">[NEW]</span> base version: &#x27;Welcome to Name&#x27;
+│
+class WinCity(City):            <span class="lc-arch-new">[NEW]</span> subclass for beach cities
+│   __init__(name, tagline)     calls City.__init__(self,name,&#x27;WIN&#x27;,tagline)
+│   get_arrival_message()       <span class="lc-arch-new">[NEW-override]</span> beach winner message
+│
+class DeadEndCity(City):        <span class="lc-arch-new">[NEW]</span> subclass for dead ends
+│   __init__(name, tagline, warning)
+│   get_arrival_message()       <span class="lc-arch-new">[NEW-override]</span> warning message
 
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Bobby-Hernandez.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Bobby Hernandez">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"Without inheritance, you'd have to copy the entire City class, paste it, rename it WinCity, then add your beach stuff. Every time you fix a bug in City, you'd fix it again in WinCity. Nightmare. Inheritance means WinCity <em>automatically</em> gets City's code. Fix City once, WinCity gets the fix for free."</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/bobby-hernandez.svg" alt="Bobby Hernandez" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Director of Technology, Bat City Collective</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" style="width: 28px; height: 28px;" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 11-9 (animals.py):</strong> You typed <span style="font-family: 'Roboto Mono', monospace;">class Dog(Mammal):</span> to make Dog inherit from Mammal. Then you called <span style="font-family: 'Roboto Mono', monospace;">Mammal.__init__(self, species)</span> inside Dog's <span style="font-family: 'Roboto Mono', monospace;">__init__</span>. WinCity follows the exact same pattern&mdash;inherit from City, call City's constructor.
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Copy your <span style="font-family: 'Roboto Mono', monospace;">city.py</span> from Lab 5.2 (or use your working 5.1 version)</li>
-                <li style="margin-bottom: 10px;">At the BOTTOM of city.py (after the City class), add the WinCity class:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">class WinCity(City):
-    """
-    A winning destination city (beach!) that inherits from City.
-    
-    Adds beach-specific features while keeping all City functionality.
-    """
-    
-    def __init__(self, name, tagline, beach_activities):
-        """
-        Initialize a WinCity.
-        
-        Args:
-            name (str): City name
-            tagline (str): City motto
-            beach_activities (list): List of things to do at the beach
-        """
-        # Call the PARENT class constructor
-        City.__init__(self, name, 'WIN', tagline)
-        
-        # Add WinCity-specific attribute
-        self.__beach_activities = beach_activities</pre>
-                    </div>
-                </li>
-                <li style="margin-bottom: 10px;">Notice: We pass <span style="font-family: 'Roboto Mono', monospace;">'WIN'</span> as the city_type to City&mdash;WinCity is ALWAYS a WIN type!</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 40%;">Mistake</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222; font-family: 'Roboto Mono', monospace; font-size: 13px;">class WinCity:</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">No inheritance! WinCity won't have City's methods</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222; font-family: 'Roboto Mono', monospace; font-size: 13px;">City.__init__(name, ...)</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Forgot <span style="font-family: 'Roboto Mono', monospace;">self</span>! Must pass self as first argument</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #39ff14; padding: 12px 15px; font-family: 'Roboto Mono', monospace; font-size: 13px;">City.__init__(self, name, ...)</td>
-                            <td style="background: #000; color: #39ff14; padding: 12px 15px;">Correct! Passes self to parent constructor</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this test code at the bottom of city.py:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;"># DEBUG - DELETE BEFORE CHECKPOINT 2
-activities = ['Swimming', 'Building sandcastles', 'Eating seafood']
-corpus = WinCity('Corpus Christi', 'Sparkling City by the Sea', activities)
+# ---- player.py (UNCHANGED) ----
+# ---- function_library.py (UNCHANGED) ----
 
-print('Testing WinCity inheritance:')
-print(f'  Name: {corpus.get_name()}')           # Inherited from City!
-print(f'  Type: {corpus.get_type()}')           # Should be WIN
-print(f'  Tagline: {corpus.get_tagline()}')     # Inherited from City!
-print(f'  is_win_city: {corpus.is_win_city()}') # Inherited method!</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run city.py. You should see:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">Testing WinCity inheritance:
-  Name: Corpus Christi
-  Type: WIN
-  Tagline: Sparkling City by the Sea
-  is_win_city: True</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #39ff14;">The magic:</strong> We never wrote <span style="font-family: 'Roboto Mono', monospace;">get_name()</span> or <span style="font-family: 'Roboto Mono', monospace;">is_win_city()</span> in WinCity&mdash;they're inherited from City!</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">WinCity</span> class defined after City class</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">class WinCity(City):</span> syntax for inheritance</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">City.__init__(self, name, 'WIN', tagline)</span> called in constructor</li>
-                <li><span style="font-family: 'Roboto Mono', monospace;">__beach_activities</span> attribute initialized</li>
-            </ul>
+# ---- game.py [COMPLETED] ----
+class Game:
+│── __init__()              (uses WinCity/DeadEndCity now)
+│── __setup_cities()        <span class="lc-arch-replaced">[REPLACED]</span> creates typed subclass objects
+│── start_new_game()        (unchanged)
+│── get_current_city()      (unchanged)
+│── get_player()            (unchanged)
+│── play_turn()             <span class="lc-arch-new">[NEW]</span> one full turn of the game loop
+│── __trivia_gate()         <span class="lc-arch-new">[NEW]</span> private: ask trivia, return destination
+│── __travel()              <span class="lc-arch-new">[NEW]</span> private: D20 loop to destination
+│── __handle_hazard()       <span class="lc-arch-new">[NEW]</span> private: random hazard from dict
+│── is_game_over()          <span class="lc-arch-new">[NEW]</span> returns self.__game_over
+│── did_win()               <span class="lc-arch-new">[NEW]</span> returns self.__won
+│── display_final_report()  <span class="lc-arch-new">[NEW]</span> prints full trip summary
 
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-2.svg" alt="Checkpoint 2" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Beach Methods &amp; Method Override</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Add beach-specific methods and override <span style="font-family: 'Roboto Mono', monospace;">get_arrival_message()</span>.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                A getter for beach activities and an <em>overridden</em> <span style="font-family: 'Roboto Mono', monospace;">get_arrival_message()</span> that returns a special beach celebration message instead of the generic City message.
-            </p>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" style="width: 28px; height: 28px;" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 11-9 (animals.py):</strong> Remember how Dog had <span style="font-family: 'Roboto Mono', monospace;">make_sound()</span> that returned <span style="font-family: 'Roboto Mono', monospace;">'Woof!'</span> while Cat returned <span style="font-family: 'Roboto Mono', monospace;">'Meow!'</span>? Same method name, different behavior. That's <strong style="color: #fff;">method overriding</strong>. WinCity will override <span style="font-family: 'Roboto Mono', monospace;">get_arrival_message()</span> to return a beach celebration!
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">First, add <span style="font-family: 'Roboto Mono', monospace;">get_arrival_message()</span> to your City class (if not already there):
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;"># In the City class:
-def get_arrival_message(self):
-    """Return arrival message for this city."""
-    return f'Welcome to {self.get_name()}!'</pre>
-                    </div>
-                </li>
-                <li style="margin-bottom: 10px;">Add <span style="font-family: 'Roboto Mono', monospace;">get_beach_activities()</span> to WinCity:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">def get_beach_activities(self):
-    """Return list of beach activities."""
-    return self.__beach_activities.copy()</pre>
-                    </div>
-                </li>
-                <li style="margin-bottom: 10px;">Add <span style="font-family: 'Roboto Mono', monospace;">display_beach_activities()</span> to WinCity:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">def display_beach_activities(self):
-    """Display available beach activities."""
-    print('Things to do at the beach:')
-    for activity in self.__beach_activities:
-        print(f'  - {activity}')</pre>
-                    </div>
-                </li>
-                <li style="margin-bottom: 10px;"><strong style="color: #fff;">Override</strong> <span style="font-family: 'Roboto Mono', monospace;">get_arrival_message()</span> in WinCity:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">def get_arrival_message(self):
-    """Override: Special beach celebration message!"""
-    return f'YOU MADE IT TO {self.get_name().upper()}! THE BEACH AWAITS!'</pre>
-                    </div>
-                </li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Update your test code:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;"># DEBUG - DELETE BEFORE CHECKPOINT 3
-activities = ['Swimming', 'Building sandcastles', 'Eating seafood']
-corpus = WinCity('Corpus Christi', 'Sparkling City by the Sea', activities)
-houston = City('Houston', 'HUB', 'Space City')
-
-print('Testing method override (POLYMORPHISM!):')
-print()
-print('Regular City arrival message:')
-print(f'  {houston.get_arrival_message()}')
-print()
-print('WinCity arrival message (overridden):')
-print(f'  {corpus.get_arrival_message()}')
-print()
-corpus.display_beach_activities()</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run city.py. You should see:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">Testing method override (POLYMORPHISM!):
-
-Regular City arrival message:
-  Welcome to Houston!
-
-WinCity arrival message (overridden):
-  YOU MADE IT TO CORPUS CHRISTI! THE BEACH AWAITS!
-
-Things to do at the beach:
-  - Swimming
-  - Building sandcastles
-  - Eating seafood</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #39ff14;">The magic:</strong> Same method name <span style="font-family: 'Roboto Mono', monospace;">get_arrival_message()</span>, different behavior based on the object type!</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="flex-grow: 1; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Returning the actual <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">__beach_activities</code> list</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Return a copy with <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">list(self.__beach_activities)</code></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Overriding method with wrong signature</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Override must have same parameters: <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">get_arrival_message(self)</code></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Adding <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">get_arrival_message()</code> only to WinCity</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Base City class needs it too&mdash;regular cities also need arrival messages</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">get_arrival_message()</span> in City class (base version)</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">get_beach_activities()</span> in WinCity (returns copy)</li>
-                <li style="margin-bottom: 8px;"><span style="font-family: 'Roboto Mono', monospace;">display_beach_activities()</span> in WinCity</li>
-                <li><span style="font-family: 'Roboto Mono', monospace;">get_arrival_message()</span> overridden in WinCity</li>
-            </ul>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-3.svg" alt="Checkpoint 3" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Update the Game</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Modify lab-5-3.py to use WinCity and display beach activities when you win.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                An updated game that creates Corpus Christi as a WinCity object. When you reach it, the overridden arrival message displays automatically&mdash;that's polymorphism in action!
-            </p>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Sasha-Mireles.png" alt="Sasha Mireles" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"This is the moment we've been building toward! When players finally reach Corpus Christi, they should feel like they've <em>achieved</em> something. The beach activities list makes the destination feel real and rewarding. Inheritance lets you create that special moment without changing how the rest of the game works. That's elegant design!"</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/sasha-mireles.svg" alt="Sasha Mireles" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Creative Director, Bat City Collective</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Copy your <span style="font-family: 'Roboto Mono', monospace;">lab-5-2.py</span> and rename it to <span style="font-family: 'Roboto Mono', monospace;">lab-5-3.py</span></li>
-                <li style="margin-bottom: 10px;">Update the imports to include WinCity:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">from city import City, WinCity
+# ---- main.py <span class="lc-arch-new">[NEW]</span> ----
 from game import Game
-from function_library import get_valid_int</pre>
-                    </div>
-                </li>
-                <li style="margin-bottom: 10px;">In <span style="font-family: 'Roboto Mono', monospace;">create_cities()</span>, change Corpus Christi from City to WinCity:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;"># OLD (regular City):
-# corpus = City('Corpus Christi', 'WIN', 'Sparkling City by the Sea')
-
-# NEW (WinCity with beach activities!):
-beach_activities = [
-    'Swimming in the Gulf',
-    'Building sandcastles',
-    'Eating fresh seafood',
-    'Watching the sunset'
-]
-corpus = WinCity('Corpus Christi', 'Sparkling City by the Sea', beach_activities)</pre>
-                    </div>
-                </li>
-                <li style="margin-bottom: 10px;">In your win condition, use the arrival message and display activities:
-                    <div style="background: #000; border: 2px dashed #39ff14; border-radius: 8px; padding: 15px; margin-top: 10px; overflow-x: auto;">
-                        <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">if current_city.is_win_city():
-    print()
-    print(current_city.get_arrival_message())  # Polymorphism!
-    print()
-    current_city.display_beach_activities()     # WinCity-only method
-    playing = False</pre>
-                    </div>
-                </li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-expected-output.svg" alt="Expected Output" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">When you reach Corpus Christi, you should see:</p>
-            <div style="background: #000; border: 2px dashed #FFCC00; border-radius: 8px; padding: 15px; margin-bottom: 20px; overflow-x: auto;">
-                <pre style="margin: 0; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; color: #f5f5f5; white-space: pre; background: #000; background-color: #000;">----------------------------------------
-You are in: Corpus Christi (WIN)
-"Sparkling City by the Sea"
-----------------------------------------
-
-YOU MADE IT TO CORPUS CHRISTI! THE BEACH AWAITS!
-
-Things to do at the beach:
-  - Swimming in the Gulf
-  - Building sandcastles
-  - Eating fresh seafood
-  - Watching the sunset
-
-==================================================
-TRIP COMPLETE!
-==================================================
-
-Team: Maria
-Current City: Corpus Christi
-Total Miles: 150
-Cities Visited: 2
-
-Route taken:
-  San Antonio -> Corpus Christi
-
-Thanks for playing DEEP IN THE HEART!
-Built with classes, objects, and inheritance.</pre>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="flex-grow: 1; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Importing City but not WinCity</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Update import: <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">from city import City, WinCity</code></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Creating Corpus Christi as regular City</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Must use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">WinCity(..., beach_activities)</code> to get beach features</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Checking <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">isinstance(city, WinCity)</code> for win</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Keep using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">is_win_city()</code>&mdash;WinCity inherits the method</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Import includes <span style="font-family: 'Roboto Mono', monospace;">WinCity</span></li>
-                <li style="margin-bottom: 8px;">Corpus Christi created as <span style="font-family: 'Roboto Mono', monospace;">WinCity</span> with activities list</li>
-                <li style="margin-bottom: 8px;">Win condition uses <span style="font-family: 'Roboto Mono', monospace;">get_arrival_message()</span> (polymorphism!)</li>
-                <li>Beach activities displayed when you win</li>
-            </ul>
-            
-        </div>
+def main():
+    game = Game()
+    game.start_new_game()
+    while not game.is_game_over():
+        game.play_turn()
+    game.display_final_report()
+if __name__ == &#x27;__main__&#x27;: main()</pre>
     </div>
+  </div>
 </div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF1744 0%, #4A0A0A 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-final-checklist.svg" alt="Final Checklist" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Check It Before You Wreck It
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-before-you-submit.svg" alt="Before You Submit" style="height: 18px; display: block;">
-            </div>
-            
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #FF1744; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF1744; width: 5%;"></th>
-                            <th style="background: #1a1a1a; color: #FF1744; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF1744;">Requirement</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;"><strong style="color: #fff;">city.py</strong> contains BOTH City and WinCity classes</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;"><strong style="color: #fff;">WinCity</strong> inherits from City: <span style="font-family: 'Roboto Mono', monospace;">class WinCity(City):</span></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;"><strong style="color: #fff;">WinCity.__init__</strong> calls <span style="font-family: 'Roboto Mono', monospace;">City.__init__(self, ...)</span></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;"><span style="font-family: 'Roboto Mono', monospace;">get_arrival_message()</span> is <strong style="color: #fff;">overridden</strong> in WinCity</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;"><strong style="color: #fff;">lab-5-3.py</strong> imports WinCity and uses it for Corpus Christi</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Beach activities display when reaching Corpus Christi</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">No debug/test code left in any file</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; text-align: center;"></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Submitted <strong style="color: #fff;">ALL FOUR</strong> files to CodeGrade</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-permitted-techniques.svg" alt="Permitted Techniques" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #39ff14;">You MAY use:</strong></p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">Inheritance: <span style="font-family: 'Roboto Mono', monospace;">class SubClass(SuperClass):</span></li>
-                <li style="margin-bottom: 5px;">Calling superclass constructor: <span style="font-family: 'Roboto Mono', monospace;">SuperClass.__init__(self, ...)</span></li>
-                <li style="margin-bottom: 5px;">Method overriding (same method name in subclass)</li>
-                <li style="margin-bottom: 5px;">Polymorphism (same method call, different behavior)</li>
-                <li style="margin-bottom: 5px;">All techniques from Modules 1-5</li>
-            </ul>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #39ff14;">&#127881; CONGRATULATIONS:</strong></p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">You've learned every major technique in the course!</li>
-                <li style="margin-bottom: 5px;">You built the same game FIVE different ways</li>
-                <li>You're now writing OOP code like a professional developer</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-academic-integrity.svg" alt="Academic Integrity" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                This assignment must be <strong style="color: #fff;">your own work</strong>. You may reference the textbook and BookEx examples. You may NOT copy code from others, use AI, or share your code.
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-codegrade-tip.svg" alt="CodeGrade Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                <strong style="color: #fff;">Submit ALL FOUR files:</strong> <span style="font-family: 'Roboto Mono', monospace;">city.py</span> (with WinCity), <span style="font-family: 'Roboto Mono', monospace;">game.py</span>, <span style="font-family: 'Roboto Mono', monospace;">function_library.py</span>, and <span style="font-family: 'Roboto Mono', monospace;">lab-5-3.py</span>. CodeGrade will test that WinCity properly inherits from City and overrides methods correctly.
-            </p>
-            
-        </div>
+<div class="lc-card lc-card--green">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Checkpoints</div>
+    <div class="lc-sub-banner">3 Checkpoints</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">1</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add WinCity and DeadEndCity to city.py</div>
+      </div>
     </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #BF40FF 0%, #2E0854 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-need-help.svg" alt="Need Help?" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>Open <code>city.py</code>. First, add a <code>get_arrival_message()</code> method to the base <code>City</code> class. This is a default version that returns a generic welcome. Then add two subclasses below it: <code>WinCity</code> for beach destinations and <code>DeadEndCity</code> for dead ends. Both inherit from <code>City</code> and override <code>get_arrival_message()</code> with their own version.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>In the base <code>City</code> class, add <code>get_arrival_message(self)</code> at the end: return <code>f'Welcome to {self.get_name()}! "{self.get_tagline()}"'</code>. Use getter methods rather than <code>self.__name</code> directly, because subclasses cannot access the superclass's private attributes.</li>
+      <li>After the closing of the <code>City</code> class, define <code>class WinCity(City):</code>. Write its <code>__init__(self, name, tagline)</code>: the first line must be <code>City.__init__(self, name, 'WIN', tagline)</code> to initialize all the inherited attributes. Add any WinCity-specific attributes after that if desired.</li>
+      <li>Override <code>get_arrival_message(self)</code> in <code>WinCity</code>: return a multi-line string announcing that the player has won and reached the beach. Include the city name and tagline.</li>
+      <li>Define <code>class DeadEndCity(City):</code>. Its <code>__init__(self, name, tagline, warning)</code> calls <code>City.__init__(self, name, 'DEAD_END', tagline)</code> and stores <code>self.__warning = warning</code> as a private attribute.</li>
+      <li>Override <code>get_arrival_message(self)</code> in <code>DeadEndCity</code>: return a string that includes the city name and the warning message.</li>
+      <li>Open a Python shell and test: create a <code>WinCity('Corpus Christi', 'Sparkling City')</code> and a <code>DeadEndCity('Laredo', 'Gateway', 'No beach this way!')</code>. Call <code>is_win_city()</code>, <code>is_dead_end()</code>, and <code>get_arrival_message()</code> on each. Verify the right message appears for each type.</li>
+    </ol>
+    <div class="lc-h3">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Textbook Reference</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 11-9</strong>
+            — <code>animals.py</code>
+            (Step 2)
+            — Dog.__init__ calls Mammal.__init__(self, 'Dog'). This is exactly the pattern WinCity uses. City.__init__(self, name, 'WIN', tagline) initializes all the inherited private attributes that WinCity cannot set directly.
+          </li>
+          <li>
+            <strong>Program 11-1</strong>
+            — <code>vehicles.py</code>
+            (Step 4)
+            — Car inherits from Automobile and adds its own attribute (doors) after calling the superclass constructor. DeadEndCity does the same: it inherits from City and adds __warning after calling City.__init__.
+          </li>
+          </ul>
         </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Look No Further! We've Got You
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-if-you-get-stuck.svg" alt="If You Get Stuck" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 25px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Re-read Program 11-9 (animals.py)</strong> &mdash; The Dog/Cat inheritance is exactly like WinCity/City</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Don't forget <span style="font-family: 'Roboto Mono', monospace;">self</span></strong> &mdash; <span style="font-family: 'Roboto Mono', monospace;">City.__init__(self, ...)</span> needs self!</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Put WinCity AFTER City</strong> &mdash; Python reads top to bottom; City must exist first</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Test inheritance first</strong> &mdash; Make sure inherited methods work before adding new ones</li>
-                <li><strong style="color: #fff;">Submit to CodeGrade early</strong> &mdash; It tests inheritance specifically</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-contact-and-resources.svg" alt="Contact & Resources" style="height: 18px; display: block;">
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Webcam-Video-Square.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Weekly Zoom Session</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Tuesdays at 6:00 PM CT &mdash; Live coding help and Q&amp;A</div>
-                    <a href="https://utsa.zoom.us/j/97617245124" style="color: #BF40FF; font-size: 13px;">https://utsa.zoom.us/j/97617245124</a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Calendar-Mark.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Office Hours (by Appointment)</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Book a 15-minute slot for one-on-one help</div>
-                    <a href="https://calendly.com/john-newsom-utsa/student-meeting" style="color: #BF40FF; font-size: 13px;">https://calendly.com/john-newsom-utsa/student-meeting</a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Customer-Support.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Discord Community</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Get help from classmates and share tips (optional but recommended)</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Mail-Send-Envelope.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Email</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">For private questions or concerns</div>
-                    <a href="mailto:john.newsom@utsa.edu" style="color: #BF40FF; font-size: 13px;">john.newsom@utsa.edu</a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Chapter 11 BookEx Reference Guide</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Step-by-step breakdowns of every inheritance example &mdash; your primary reference</div>
-                </div>
-            </div>
-            
-        </div>
+      </div>
     </div>
+    <div class="lc-callout lc-callout--pitfall">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="22.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Use Getters in get_arrival_message()</div>
+        <div class="lc-callout__body">
+        <p>In the base City class, <code>get_arrival_message()</code> can use <code>self.__name</code> directly. But in <code>WinCity</code> and <code>DeadEndCity</code>, you cannot use <code>self.__name</code>. That attribute belongs to <code>City</code> and is name-mangled to <code>_City__name</code>. Use <code>self.get_name()</code> and <code>self.get_tagline()</code> in all three override versions to be safe.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CP1 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>City base class has get_arrival_message() returning a generic welcome</li>
+          <li>WinCity(City) calls City.__init__(self, name, 'WIN', tagline) and overrides get_arrival_message()</li>
+          <li>DeadEndCity(City) calls City.__init__(self, name, 'DEAD_END', tagline) and stores __warning</li>
+          <li>DeadEndCity overrides get_arrival_message() to include the warning</li>
+          <li>Manual test confirms is_win_city() and is_dead_end() return correct values for each subclass</li>
+          <li>Manual test confirms each subclass returns its own arrival message</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Complete game.py</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>Open <code>game.py</code>. Add two state attributes to <code>__init__</code>, update <code>__setup_cities()</code> to use the new subclasses, then add the remaining methods that complete the game loop. This is the biggest checkpoint of the week. Work through it in the order listed.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Update the imports in game.py: add <code>from city import City, WinCity, DeadEndCity</code>.</li>
+      <li>In <code>__init__</code>, add two new state attributes after the existing ones: <code>self.__game_over = False</code> and <code>self.__won = False</code>. Also add <code>self.__hazards = {}</code> and call <code>self.__setup_hazards()</code> after <code>self.__setup_cities()</code>.</li>
+      <li>Update <code>__setup_cities()</code>: change <code>corpus = City('Corpus Christi', 'WIN', ...)</code> to <code>corpus = WinCity('Corpus Christi', ...)</code>. Change Laredo and El Paso to <code>DeadEndCity</code> objects. The hub cities (Houston, Austin, Dallas) remain plain <code>City</code> objects.</li>
+      <li>Write <code>__setup_hazards(self)</code>: populate <code>self.__hazards</code> with the same hazard dictionary from your Module 4 game (Buc-ee's, engine light, armadillo, speed trap, etc.).</li>
+      <li>Write <code>is_game_over(self)</code>: return <code>self.__game_over</code>. Write <code>did_win(self)</code>: return <code>self.__won</code>.</li>
+      <li>Write <code>play_turn(self)</code>: get the current City object, display it, show destinations, get the player's numeric choice using <code>function_library.get_valid_int()</code>, call <code>self.__trivia_gate()</code> with the chosen destination, call <code>self.__travel()</code> with the result, then call <code>dest_city.get_arrival_message()</code> and print it. Check <code>dest_city.is_win_city()</code> and <code>dest_city.is_dead_end()</code> to update <code>self.__game_over</code> and <code>self.__won</code> accordingly.</li>
+      <li>Write <code>__trivia_gate(self, chosen_dest, distance, all_destinations)</code>: call <code>dest_city.get_random_trivia()</code>. If None, auto-pass. Otherwise present the question, get the player's answer using <code>function_library.clean_input()</code>, compare, record the result on the player with <code>self.__player.record_trivia(correct)</code>, and return <code>(final_destination, final_distance)</code>.</li>
+      <li>Write <code>__travel(self, destination, distance)</code>: run the D20 loop using <code>function_library.roll_d20()</code>, call <code>self.__player.add_turn()</code> and <code>self.__player.add_miles()</code> each iteration, check for hazards with <code>function_library.check_percentage(30)</code>, and when the remaining distance hits zero call <code>self.__player.travel_to(destination, distance)</code>.</li>
+      <li>Write <code>__handle_hazard(self)</code>: pick a random hazard key, flip a coin with <code>function_library.flip_coin()</code>, print the result, and call <code>self.__player.record_hazard(hazard_name, escaped)</code>.</li>
+      <li>Write <code>display_final_report(self)</code>: print the player's name, route string, unique cities (sorted), trivia stats with accuracy percentage, hazard stats, total miles and turns, and win/loss status.</li>
+    </ol>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Polymorphism in play_turn()</div>
+        <div class="lc-callout__body">
+        <p>When you call <code>dest_city.get_arrival_message()</code> in <code>play_turn()</code>, Python automatically calls the right version. If <code>dest_city</code> is a <code>WinCity</code>, it calls <code>WinCity.get_arrival_message()</code>. If it is a plain <code>City</code>, it calls <code>City.get_arrival_message()</code>. The Game class does not need to check the type. The objects handle it themselves.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"I tried to reach a dead end city. play_turn() crashed. The game_over flag never got set. I tried to go to a win city. Same issue. Then I found a city with no trivia. auto-pass was not implemented. I found six bugs in ten minutes. Test every branch."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
+        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CP2 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>game.py imports WinCity and DeadEndCity from city</li>
+          <li>__setup_cities() creates WinCity and DeadEndCity objects for the appropriate cities</li>
+          <li>play_turn() runs one full turn including trivia, travel, hazards, and arrival check</li>
+          <li>is_game_over() returns True after reaching a win city or dead end with no return</li>
+          <li>display_final_report() prints route, unique cities, trivia accuracy, hazard stats, and miles</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">3</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Write main.py and Full QA</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>Create <code>main.py</code>. Then play your game from start to finish before submitting.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Create <code>main.py</code> with a documentation header. Import <code>from game import Game</code>.</li>
+      <li>Write <code>main()</code>: create a <code>Game</code> object, print a title block, call <code>game.start_new_game()</code>, run <code>while not game.is_game_over(): game.play_turn()</code>, then call <code>game.display_final_report()</code>.</li>
+      <li>Add the <code>if __name__ == '__main__':</code> guard and call <code>main()</code>.</li>
+      <li>Run the game end to end. Play until you reach a beach city. Verify the WinCity arrival message appears. Verify the final report shows accurate trivia stats, unique cities, and hazard counts.</li>
+      <li>Run again and try to reach a dead end city. Verify the DeadEndCity message appears and the game handles it correctly.</li>
+      <li>Trigger at least one hazard and verify it is recorded in the final report.</li>
+      <li>Submit all five files to CodeGrade: main.py, city.py, player.py, game.py, and function_library.py.</li>
+    </ol>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">MASTER Week: Solution Quality Review</div>
+        <div class="lc-callout__body">
+        <p>Anjali will review your submission for Solution Quality this week. Clean variable names, consistent method naming, no unused variables, and well-structured methods all matter. If a method is longer than about 20 lines, consider whether part of it belongs in a helper method.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Lab 5.3 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>main.py runs the full game cleanly from a single call</li>
+          <li>WinCity and DeadEndCity produce distinct arrival messages</li>
+          <li>Trivia accuracy, unique cities, and hazard stats are accurate in the final report</li>
+          <li>All five files submitted to CodeGrade</li>
+          <li>Documentation headers and docstrings present in all files</li>
+          <li>Flake8 returns no warnings on any file</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--red">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Final Checklist</div>
+    <div class="lc-sub-banner">Check It Before You Wreck It</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3">Before You Submit</div>
+    <ul class="lc-checklist">
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">city.py contains City base class plus WinCity and DeadEndCity subclasses</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">WinCity and DeadEndCity call City.__init__(self, ...) as the first line of their __init__</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All three versions of get_arrival_message() use getter methods (get_name(), get_tagline()) not private attributes</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">game.py is complete: play_turn(), trivia gate, travel loop, hazard handler, final report, is_game_over(), did_win()</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">main.py creates a Game and runs the game loop (fewer than 15 lines total)</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All five files have documentation headers and all methods have docstrings</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Game runs from start to finish without errors</span>
+      </li>
+    </ul>
+    <div class="lc-h3">Scope Reminder</div>
+    <p>Full Chapter 10 and 11 technique set: inheritance, calling superclass constructors, method overriding, and polymorphism. All Module 1–4 techniques also permitted.</p>
+    <div class="lc-h3">Permitted Techniques</div>
+    <div class="lc-permitted">
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–11</p>
+      <ul class="lc-permitted__list">
+      <li>class SubClass(SuperClass): (inheritance)</li>
+      <li>SuperClass.__init__(self, args) (superclass constructor call)</li>
+      <li>Method overriding: redefining get_arrival_message() in each subclass</li>
+      <li>Polymorphism: calling city.get_arrival_message() on any City subclass</li>
+      <li>isinstance() if needed for type checking</li>
+      </ul>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> list comprehensions, multiple inheritance, abstract base classes</p>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>MASTER Week: Anjali will review for Solution Quality. Methods should be focused and well-named.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>CodeGrade tests each class file in isolation. A syntax error in city.py will fail all city-related tests even if game.py works fine.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">Academic Integrity</div>
+    <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
+  </div>
+</div>
+<div class="lc-card lc-card--purple">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Need Help?</div>
+    <div class="lc-sub-banner">Look No Further!</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3">If You Get Stuck</div>
+    <ul>
+      <li>If WinCity.get_arrival_message() crashes with AttributeError, you are trying to access self.__name directly. Use self.get_name() instead</li>
+      <li>If the game loop runs forever, check that play_turn() sets self.__game_over = True when the player reaches a win or dead end city</li>
+      <li>Re-read Program 11-9 (animals.py) if the inheritance syntax is not clicking. WinCity(City) is structurally identical to Dog(Mammal)</li>
+      <li>Come to Zoom or office hours with your specific error message. This is the hardest week of the semester and the most worth getting help on</li>
+    </ul>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Reference Guides</div>
+        <div class="lc-callout__body">
+          <p>Chapter 11 BookEx Reference Guide (Programs 11-9 and 11-1 through 11-3) and Chapter 10 BookEx Reference Guide (Programs 10-9 and 10-10)</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">Contact &amp; Resources</div>
+    <div class="lc-contact-grid">
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Zoom Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br>
+          <a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Schedule a Meeting</div>
+        <div class="lc-contact-card__value">
+          <a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Email</div>
+        <div class="lc-contact-card__value">
+          <a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>
+          Include your section number and abc123
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">CodeGrade</div>
+        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div style="text-align: center; color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
-    <img style="height: 50px; margin-bottom: 15px;" src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
-    <div style="color: #b0b8c4; font-size: 13px;">IS2053 Programming I &mdash; UT San Antonio &mdash; Spring 2026</div>
-    <div style="color: #666; font-size: 11px; margin-top: 10px;">Lab 5.3 &mdash; Deep in the Heart &mdash; MASTER Week</div>
-</div>
+    <footer class="lc-footer">
+        <img src="../../branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
+        <p class="lc-footer__course">IS2053: Programming I (Python) — The University of Texas at San Antonio</p>
+        <p class="lc-footer__detail">Starting Out with Python, 6th Edition — Tony Gaddis — Pearson</p>
+    </footer>
 
+</div>
 </body>
 </html>

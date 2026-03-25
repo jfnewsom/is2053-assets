@@ -1,0 +1,285 @@
+{
+    "meta": {
+        "labId": "lab-5-3",
+        "title": "Deep in the Heart",
+        "module": 5,
+        "week": 3,
+        "weekType": "MASTER",
+        "chapters": "10–11",
+        "chapterTopics": "Inheritance, polymorphism, full OOP architecture",
+        "filename": "main.py",
+        "additionalFiles": ["city.py", "player.py", "game.py", "function_library.py"]
+    },
+
+    "overview": {
+        "body": "This is the capstone. You have built the same road trip game five times across this semester, once in each module, each time with better tools. This week you finish the transformation. Two things happen: First, you extend <code>city.py</code> with <code>WinCity</code> and <code>DeadEndCity</code> subclasses that override <code>get_arrival_message()</code>, so each city type announces itself differently. Second, you complete <code>game.py</code> with the full game loop: trivia gate, travel, hazards, and the final report. Then you write <code>main.py</code>, which is now four lines. The game is the same. The architecture is unrecognizable from where you started.",
+        "mentorQuote": {
+            "character": "Sasha Mireles",
+            "role": "Creative Director, Bat City Collective",
+            "headshot": "Sasha-Mireles.png",
+            "quote": "The player has no idea you refactored. They still type a city name and roll a D20. But look at main.py: four lines. The whole game is four lines. That is what good architecture feels like from the outside. Invisible."
+        },
+        "objectives": [
+            "Define WinCity and DeadEndCity as subclasses of City using inheritance",
+            "Call the superclass constructor from a subclass using City.__init__(self, ...)",
+            "Override get_arrival_message() in each subclass for type-specific behavior",
+            "Complete the Game class with play_turn(), trivia gate, hazard handling, and final report",
+            "Write main.py that runs the entire game in four lines"
+        ],
+        "keyConceptsText": "Chapter 11: Programs 11-1 and 11-2 (vehicles.py, superclass with subclasses, calling superclass constructor) and Program 11-9 (animals.py, method overriding). Chapter 10: Game class completes the pattern from Program 10-9.",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis, Chapters 10 and 11",
+        "programRequirements": [
+            "city.py contains City base class plus WinCity and DeadEndCity subclasses",
+            "WinCity and DeadEndCity call City.__init__(self, ...) and override get_arrival_message()",
+            "game.py is complete: play_turn(), __trivia_gate(), __travel(), __handle_hazard(), display_final_report()",
+            "main.py creates a Game, prints a title, runs the game loop, and displays the final report",
+            "All files have documentation headers and all methods have docstrings"
+        ],
+        "additionalFilesNote": "Submit city.py, player.py, game.py, main.py, and function_library.py. The full game must run from main.py without errors.",
+        "filenameNote": "Submit main.py, city.py, player.py, game.py, and function_library.py this week."
+    },
+
+    "timeGuide": {
+        "totalTime": "90–105 Minutes",
+        "rows": [
+            { "checkpoint": "CP1: Add City Subclasses", "time": "25 min", "task": "WinCity and DeadEndCity in city.py: inheritance, constructor calls, method overrides" },
+            { "checkpoint": "CP2: Complete game.py", "time": "40 min", "task": "play_turn(), trivia gate, travel loop, hazard handler, final report" },
+            { "checkpoint": "CP3: Write main.py and Full QA", "time": "25 min", "task": "Four-line main.py, full playthrough, edge cases, CodeGrade" }
+        ]
+    },
+
+    "beforeYouBegin": {
+        "intro": "Here is the complete final architecture. The [NEW] tags show what you are adding this week. The [REPLACED] tags show what changes from 5.2. Everything else carries forward.",
+        "architecture": "# ---- city.py [EXTENDED] ----\nclass City:                     (from 5.1, add get_arrival_message)\n│   get_arrival_message()       [NEW] base version: 'Welcome to Name'\n│\nclass WinCity(City):            [NEW] subclass for beach cities\n│   __init__(name, tagline)     calls City.__init__(self,name,'WIN',tagline)\n│   get_arrival_message()       [NEW-override] beach winner message\n│\nclass DeadEndCity(City):        [NEW] subclass for dead ends\n│   __init__(name, tagline, warning)\n│   get_arrival_message()       [NEW-override] warning message\n\n# ---- player.py (UNCHANGED) ----\n# ---- function_library.py (UNCHANGED) ----\n\n# ---- game.py [COMPLETED] ----\nclass Game:\n│── __init__()              (uses WinCity/DeadEndCity now)\n│── __setup_cities()        [REPLACED] creates typed subclass objects\n│── start_new_game()        (unchanged)\n│── get_current_city()      (unchanged)\n│── get_player()            (unchanged)\n│── play_turn()             [NEW] one full turn of the game loop\n│── __trivia_gate()         [NEW] private: ask trivia, return destination\n│── __travel()              [NEW] private: D20 loop to destination\n│── __handle_hazard()       [NEW] private: random hazard from dict\n│── is_game_over()          [NEW] returns self.__game_over\n│── did_win()               [NEW] returns self.__won\n│── display_final_report()  [NEW] prints full trip summary\n\n# ---- main.py [NEW] ----\nfrom game import Game\ndef main():\n    game = Game()\n    game.start_new_game()\n    while not game.is_game_over():\n        game.play_turn()\n    game.display_final_report()\nif __name__ == '__main__': main()"
+    },
+
+    "checkpoints": [
+        {
+            "number": 1,
+            "title": "Add WinCity and DeadEndCity to city.py",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Open <code>city.py</code>. First, add a <code>get_arrival_message()</code> method to the base <code>City</code> class. This is a default version that returns a generic welcome. Then add two subclasses below it: <code>WinCity</code> for beach destinations and <code>DeadEndCity</code> for dead ends. Both inherit from <code>City</code> and override <code>get_arrival_message()</code> with their own version."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "In the base <code>City</code> class, add <code>get_arrival_message(self)</code> at the end: return <code>f'Welcome to {self.get_name()}! \"{self.get_tagline()}\"'</code>. Use getter methods rather than <code>self.__name</code> directly, because subclasses cannot access the superclass's private attributes.",
+                        "After the closing of the <code>City</code> class, define <code>class WinCity(City):</code>. Write its <code>__init__(self, name, tagline)</code>: the first line must be <code>City.__init__(self, name, 'WIN', tagline)</code> to initialize all the inherited attributes. Add any WinCity-specific attributes after that if desired.",
+                        "Override <code>get_arrival_message(self)</code> in <code>WinCity</code>: return a multi-line string announcing that the player has won and reached the beach. Include the city name and tagline.",
+                        "Define <code>class DeadEndCity(City):</code>. Its <code>__init__(self, name, tagline, warning)</code> calls <code>City.__init__(self, name, 'DEAD_END', tagline)</code> and stores <code>self.__warning = warning</code> as a private attribute.",
+                        "Override <code>get_arrival_message(self)</code> in <code>DeadEndCity</code>: return a string that includes the city name and the warning message.",
+                        "Open a Python shell and test: create a <code>WinCity('Corpus Christi', 'Sparkling City')</code> and a <code>DeadEndCity('Laredo', 'Gateway', 'No beach this way!')</code>. Call <code>is_win_city()</code>, <code>is_dead_end()</code>, and <code>get_arrival_message()</code> on each. Verify the right message appears for each type."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "11-9",
+                            "filename": "animals.py",
+                            "step": 2,
+                            "description": "Dog.__init__ calls Mammal.__init__(self, 'Dog'). This is exactly the pattern WinCity uses. City.__init__(self, name, 'WIN', tagline) initializes all the inherited private attributes that WinCity cannot set directly."
+                        },
+                        {
+                            "programId": "11-1",
+                            "filename": "vehicles.py",
+                            "step": 4,
+                            "description": "Car inherits from Automobile and adds its own attribute (doors) after calling the superclass constructor. DeadEndCity does the same: it inherits from City and adds __warning after calling City.__init__."
+                        }
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "pitfall",
+                    "title": "Use Getters in get_arrival_message()",
+                    "body": "In the base City class, <code>get_arrival_message()</code> can use <code>self.__name</code> directly. But in <code>WinCity</code> and <code>DeadEndCity</code>, you cannot use <code>self.__name</code>. That attribute belongs to <code>City</code> and is name-mangled to <code>_City__name</code>. Use <code>self.get_name()</code> and <code>self.get_tagline()</code> in all three override versions to be safe."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "CP1 Complete",
+                    "items": [
+                        "City base class has get_arrival_message() returning a generic welcome",
+                        "WinCity(City) calls City.__init__(self, name, 'WIN', tagline) and overrides get_arrival_message()",
+                        "DeadEndCity(City) calls City.__init__(self, name, 'DEAD_END', tagline) and stores __warning",
+                        "DeadEndCity overrides get_arrival_message() to include the warning",
+                        "Manual test confirms is_win_city() and is_dead_end() return correct values for each subclass",
+                        "Manual test confirms each subclass returns its own arrival message"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "title": "Complete game.py",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Open <code>game.py</code>. Add two state attributes to <code>__init__</code>, update <code>__setup_cities()</code> to use the new subclasses, then add the remaining methods that complete the game loop. This is the biggest checkpoint of the week. Work through it in the order listed."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Update the imports in game.py: add <code>from city import City, WinCity, DeadEndCity</code>.",
+                        "In <code>__init__</code>, add two new state attributes after the existing ones: <code>self.__game_over = False</code> and <code>self.__won = False</code>. Also add <code>self.__hazards = {}</code> and call <code>self.__setup_hazards()</code> after <code>self.__setup_cities()</code>.",
+                        "Update <code>__setup_cities()</code>: change <code>corpus = City('Corpus Christi', 'WIN', ...)</code> to <code>corpus = WinCity('Corpus Christi', ...)</code>. Change Laredo and El Paso to <code>DeadEndCity</code> objects. The hub cities (Houston, Austin, Dallas) remain plain <code>City</code> objects.",
+                        "Write <code>__setup_hazards(self)</code>: populate <code>self.__hazards</code> with the same hazard dictionary from your Module 4 game (Buc-ee's, engine light, armadillo, speed trap, etc.).",
+                        "Write <code>is_game_over(self)</code>: return <code>self.__game_over</code>. Write <code>did_win(self)</code>: return <code>self.__won</code>.",
+                        "Write <code>play_turn(self)</code>: get the current City object, display it, show destinations, get the player's numeric choice using <code>function_library.get_valid_int()</code>, call <code>self.__trivia_gate()</code> with the chosen destination, call <code>self.__travel()</code> with the result, then call <code>dest_city.get_arrival_message()</code> and print it. Check <code>dest_city.is_win_city()</code> and <code>dest_city.is_dead_end()</code> to update <code>self.__game_over</code> and <code>self.__won</code> accordingly.",
+                        "Write <code>__trivia_gate(self, chosen_dest, distance, all_destinations)</code>: call <code>dest_city.get_random_trivia()</code>. If None, auto-pass. Otherwise present the question, get the player's answer using <code>function_library.clean_input()</code>, compare, record the result on the player with <code>self.__player.record_trivia(correct)</code>, and return <code>(final_destination, final_distance)</code>.",
+                        "Write <code>__travel(self, destination, distance)</code>: run the D20 loop using <code>function_library.roll_d20()</code>, call <code>self.__player.add_turn()</code> and <code>self.__player.add_miles()</code> each iteration, check for hazards with <code>function_library.check_percentage(30)</code>, and when the remaining distance hits zero call <code>self.__player.travel_to(destination, distance)</code>.",
+                        "Write <code>__handle_hazard(self)</code>: pick a random hazard key, flip a coin with <code>function_library.flip_coin()</code>, print the result, and call <code>self.__player.record_hazard(hazard_name, escaped)</code>.",
+                        "Write <code>display_final_report(self)</code>: print the player's name, route string, unique cities (sorted), trivia stats with accuracy percentage, hazard stats, total miles and turns, and win/loss status."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "info",
+                    "title": "Polymorphism in play_turn()",
+                    "body": "When you call <code>dest_city.get_arrival_message()</code> in <code>play_turn()</code>, Python automatically calls the right version. If <code>dest_city</code> is a <code>WinCity</code>, it calls <code>WinCity.get_arrival_message()</code>. If it is a plain <code>City</code>, it calls <code>City.get_arrival_message()</code>. The Game class does not need to check the type. The objects handle it themselves."
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Terrence \"T-Bone\" Booker",
+                    "role": "QA Lead, Bat City Collective",
+                    "headshot": "Terrence-Booker.png",
+                    "quote": "I tried to reach a dead end city. play_turn() crashed. The game_over flag never got set. I tried to go to a win city. Same issue. Then I found a city with no trivia. auto-pass was not implemented. I found six bugs in ten minutes. Test every branch."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "CP2 Complete",
+                    "items": [
+                        "game.py imports WinCity and DeadEndCity from city",
+                        "__setup_cities() creates WinCity and DeadEndCity objects for the appropriate cities",
+                        "play_turn() runs one full turn including trivia, travel, hazards, and arrival check",
+                        "is_game_over() returns True after reaching a win city or dead end with no return",
+                        "display_final_report() prints route, unique cities, trivia accuracy, hazard stats, and miles"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title": "Write main.py and Full QA",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Create <code>main.py</code>. Then play your game from start to finish before submitting."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Create <code>main.py</code> with a documentation header. Import <code>from game import Game</code>.",
+                        "Write <code>main()</code>: create a <code>Game</code> object, print a title block, call <code>game.start_new_game()</code>, run <code>while not game.is_game_over(): game.play_turn()</code>, then call <code>game.display_final_report()</code>.",
+                        "Add the <code>if __name__ == '__main__':</code> guard and call <code>main()</code>.",
+                        "Run the game end to end. Play until you reach a beach city. Verify the WinCity arrival message appears. Verify the final report shows accurate trivia stats, unique cities, and hazard counts.",
+                        "Run again and try to reach a dead end city. Verify the DeadEndCity message appears and the game handles it correctly.",
+                        "Trigger at least one hazard and verify it is recorded in the final report.",
+                        "Submit all five files to CodeGrade: main.py, city.py, player.py, game.py, and function_library.py."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "warning",
+                    "title": "MASTER Week: Solution Quality Review",
+                    "body": "Anjali will review your submission for Solution Quality this week. Clean variable names, consistent method naming, no unused variables, and well-structured methods all matter. If a method is longer than about 20 lines, consider whether part of it belongs in a helper method."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "Lab 5.3 Complete",
+                    "items": [
+                        "main.py runs the full game cleanly from a single call",
+                        "WinCity and DeadEndCity produce distinct arrival messages",
+                        "Trivia accuracy, unique cities, and hazard stats are accurate in the final report",
+                        "All five files submitted to CodeGrade",
+                        "Documentation headers and docstrings present in all files",
+                        "Flake8 returns no warnings on any file"
+                    ]
+                }
+            ]
+        }
+    ],
+
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "city.py contains City base class plus WinCity and DeadEndCity subclasses",
+            "WinCity and DeadEndCity call City.__init__(self, ...) as the first line of their __init__",
+            "All three versions of get_arrival_message() use getter methods (get_name(), get_tagline()) not private attributes",
+            "game.py is complete: play_turn(), trivia gate, travel loop, hazard handler, final report, is_game_over(), did_win()",
+            "main.py creates a Game and runs the game loop (fewer than 15 lines total)",
+            "All five files have documentation headers and all methods have docstrings",
+            "Game runs from start to finish without errors"
+        ],
+        "scopeReminder": "Full Chapter 10 and 11 technique set: inheritance, calling superclass constructors, method overriding, and polymorphism. All Module 1–4 techniques also permitted.",
+        "permittedTechniques": {
+            "chapters": "2–11",
+            "specific": [
+                "class SubClass(SuperClass): (inheritance)",
+                "SuperClass.__init__(self, args) (superclass constructor call)",
+                "Method overriding: redefining get_arrival_message() in each subclass",
+                "Polymorphism: calling city.get_arrival_message() on any City subclass",
+                "isinstance() if needed for type checking"
+            ],
+            "notPermitted": "list comprehensions, multiple inheritance, abstract base classes"
+        },
+        "warnings": [
+            "MASTER Week: Anjali will review for Solution Quality. Methods should be focused and well-named.",
+            "CodeGrade tests each class file in isolation. A syntax error in city.py will fail all city-related tests even if game.py works fine."
+        ]
+    },
+
+    "needHelp": {
+        "ifYouGetStuck": [
+            "If WinCity.get_arrival_message() crashes with AttributeError, you are trying to access self.__name directly. Use self.get_name() instead",
+            "If the game loop runs forever, check that play_turn() sets self.__game_over = True when the player reaches a win or dead end city",
+            "Re-read Program 11-9 (animals.py) if the inheritance syntax is not clicking. WinCity(City) is structurally identical to Dog(Mammal)",
+            "Come to Zoom or office hours with your specific error message. This is the hardest week of the semester and the most worth getting help on"
+        ],
+        "bookexResourceNote": "Chapter 11 BookEx Reference Guide (Programs 11-9 and 11-1 through 11-3) and Chapter 10 BookEx Reference Guide (Programs 10-9 and 10-10)"
+    }
+}
