@@ -75,9 +75,8 @@ def render_overview_card(overview: dict, meta: dict) -> str:
     # Badge number: "1.1", "4.2", etc.
     badge_num = f"{module}.{week}"
 
-    # Sub-banner: MODULE X • BUILD WEEK • CHAPTERS 8–9: TOPICS
-    week_type_label = week_type.replace("_", " ") + " WEEK"
-    sub_banner_text = f"MODULE {module} &bull; {week_type_label}"
+    # Sub-banner: MODULE X • WEEK Y • TYPE • CHAPTERS 8–9: TOPICS
+    sub_banner_text = f"MODULE {module} &bull; WEEK {week} &bull; {week_type}"
     if chapters:
         chapter_part = html_lib.escape(chapters)
         if chapter_topics:
