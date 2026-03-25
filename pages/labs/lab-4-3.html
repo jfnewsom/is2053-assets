@@ -3,966 +3,800 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab 4.3: Data-Driven Texas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Slab:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>Data-Driven Texas — IS2053</title>
+    <link rel="stylesheet" href="../../labs.css">
 </head>
-<body style="background: #0a0a0a; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; color: #f5f5f5; line-height: 1.6;">
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #0055FF 0%, #001a4d 100%); padding: 8px 12px 12px 12px;">
-        
-        
-        <div style="display: flex; align-items: flex-end; gap: 8px;">
-            <img src="https://jfnewsom.github.io/is2053-assets/lab-icons/lab-badge-4-3.svg" alt="LAB 4.3" style="height: 90px;">
-            <div style="flex-grow: 1;">
-                <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-data-driven-texas.svg" alt="Data-Driven Texas" style="display: block; height: 70px; margin-bottom: 2px; margin-left: -8px;">
-                
-                <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-                    Module 4 &bull; MASTER Week &bull; Chapter 9: Sets &amp; Advanced Dictionaries
-                </div>
-            </div>
-        </div>
-        
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-overview.svg" alt="Overview" style="height: 18px; display: block;">
-            </div>
-            
-            
-            <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px;">
-                <p style="color: #B0B8C4; margin: 0; flex: 1;">
-                    Time to put it all together! This MASTER week introduces <strong style="color: #fff;">sets</strong>&mdash;collections that automatically remove duplicates. You'll replace the coin flip gate with a <strong style="color: #fff;">trivia system</strong>, track unique cities and hazards with sets, and produce a comprehensive final report. This is Module 4's capstone: data from files, dictionaries, sets, and polished output.
-                </p>
-                <img src="https://jfnewsom.github.io/is2053-assets/branding/AllMyEggses-logo.svg" alt="All My Eggses Live in Texas" style="width: 210px; flex-shrink: 0;">
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Danny-Cavanaugh.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Danny Cavanaugh">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"Lists remember everything. Sets remember everything <em>once</em>. If you visited Houston three times, a list says Houston, Houston, Houston. A set just says Houston. That's not a limitation&mdash;it's a superpower for tracking unique things."</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/danny-cavanaugh.svg" alt="Danny Cavanaugh" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Lead Developer, Bat City Collective</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-filename.svg" alt="Filename" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; color: #39ff14; font-size: 14px;">lab-4-3.py</span>
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Building on Lab 4.2, you'll add trivia and sets:
-            </p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">load_trivia()</strong> &mdash; Parse <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trivia.txt</span> into dict with list values</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">trivia_gate()</strong> &mdash; TRUE/FALSE questions replace coin flip</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Sets</strong> &mdash; Track unique cities visited and unique hazards encountered</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">sorted()</strong> &mdash; Display set contents in alphabetical order</li>
-                <li><strong style="color: #fff;">Comprehensive report</strong> &mdash; Route, unique cities, trivia stats, hazard stats</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-key-concepts.svg" alt="Key Concepts" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Chapter 9:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">set()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.add()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">len()</span> on sets, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">sorted()</span> for display, dict with list values
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-program-requirements.svg" alt="Program Requirements" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Your program <strong style="color: #fff;">MUST</strong> use sets to track unique cities and hazards</li>
-                <li style="margin-bottom: 8px;">Your program <strong style="color: #fff;">MUST</strong> load trivia from <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trivia.txt</span></li>
-                <li style="margin-bottom: 8px;">Your program <strong style="color: #fff;">MUST</strong> use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">sorted()</span> when displaying set contents</li>
-                <li style="margin-bottom: 8px;">Your program <strong style="color: #fff;">MUST</strong> include trivia statistics in final report</li>
-                <li>Your program <strong style="color: #fff;">MUST</strong> track and display unique hazard types encountered</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Data Files" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">
-                <strong style="color: #fff;">Required Data Files</strong> (same as 4.2, plus one new):
-            </p>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #0055ff; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #0055FF; width: 35%;">File</th>
-                            <th style="background: #1a1a1a; color: #0055ff; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #0055FF;">Format</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city_distances.txt</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Same as 4.1/4.2</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city_info.txt</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Same as 4.1/4.2</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards.txt</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Same as 4.2</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #FFCC00; font-size: 13px;">trivia.txt</span> <span style="color: #FFCC00; font-size: 11px;">NEW!</span></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">city,question,TRUE/FALSE</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-        </div>
+<body>
+<div class="lc-wrapper">
+<div class="lc-card lc-card--blue">
+  <div class="lc-topper">
+    <div class="lc-card-header">
+      <div class="lc-lab-badge">
+        <div class="lc-lab-badge__word">LAB</div>
+        <div class="lc-lab-badge__num">4.3</div>
+      </div>
+      <div class="lc-topper-title">Data-Driven Texas</div>
     </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF6B1A 0%, #8B3A00 100%); padding: 8px 12px 12px 12px;">
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-time-guide.svg" alt="Time Guide" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
+    <div class="lc-sub-banner">Module 4 &mdash; Week 3 &mdash; MASTER Week</div>
+  </div>
+  <div class="lc-panel">
+    <p><strong>Chapters:</strong> 8–9
+        &mdash; Sets, trivia gate, full data-driven architecture</p>
+    <p>This is the week everything snaps into place. Your game has been running on hardcoded constants, coin flips, and manual duplicate checking since Module 1. That ends today.<br><br>In this MASTER week you will add three things that transform your game. First, a <code>TRIVIA</code> dictionary that stores city questions and answers. Second, a <code>trivia_gate()</code> function that replaces the coin flip. Players now earn their destination by answering correctly. Third, sets for <code>unique_cities_visited</code> and <code>unique_hazards_faced</code>, replacing the manual duplicate-checking loops from Module 3. The final trip report gets upgraded to display all three.<br><br>Copy your <code>lab-4-2.py</code> and <code>function_library.py</code> into new files named <code>lab-4-3.py</code> and <code>function_library.py</code> before you start. Everything from 4.2 carries forward.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
         </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Plan Your Session &mdash; 120-150 Minutes
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"The coin flip was always the weakest moment in the game. Pure random chance with no player agency. Trivia changes that. Now the player has a reason to pay attention to where they are going. That is the difference between a game and a slot machine."</div>
         </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A; width: 25%;">Checkpoint</th>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A; width: 35%;">What You'll Build</th>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A;">Est. Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">1. Load Trivia</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Dict with list values structure</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">25-30 min</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">2. Trivia Gate</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">TRUE/FALSE question system</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">30-35 min</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">3. Add Sets</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Unique cities and hazards tracking</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">25-30 min</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">4. Final Report</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Comprehensive stats display</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">30-35 min</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 20px 0 0 0; font-size: 14px;">
-                <strong style="color: #ff6b1a;">Strategy:</strong> This is the MASTER week&mdash;take your time! Start by copying lab-4-2.py and work through each checkpoint carefully. The trivia gate is the most complex new feature.
-            </p>
-        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
+      </div>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Learning Objectives</div>
+    <ul class="lc-objectives">
+      <li>Create a TRIVIA dictionary with city-specific true/false questions and answers</li>
+      <li>Write a trivia_gate() function that presents a question and returns True or False</li>
+      <li>Replace the Destination Gate coin flip with trivia_gate() in the main game loop</li>
+      <li>Use sets to track unique_cities_visited and unique_hazards_faced automatically</li>
+      <li>Update the final trip report to display trivia stats and unique set data</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
+    <p>Chapter 9: Program 9-1 (card_dealer.py, dictionary creation and lookup with .get()) and Program 9-3 (sets.py, set creation, .add(), and set operations). Sets and dictionaries are covered in Sections 9.1 and 9.2 respectively.</p>
+    <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis, Chapters 8 and 9</p>
+    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
+    <ul>
+      <li>TRIVIA dictionary contains at least 3 cities with at least 2 questions each</li>
+      <li>trivia_gate(destination) returns True if player answers correctly, False otherwise</li>
+      <li>Destination Gate uses trivia_gate() with the coin flip fully removed</li>
+      <li>unique_cities_visited and unique_hazards_faced are sets, not lists</li>
+      <li>Final trip report displays unique city count, unique hazard count, and trivia accuracy</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Named Constants</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table lc-named-constants__table">
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>TRIVIA</code></td>
+        <td>Dict: city name mapped to a list of question/answer dicts, each with &#x27;question&#x27; and &#x27;answer&#x27; keys</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Filename</div>
+    <p>Submit lab-4-3.py and function_library.py this week.</p>
+    <p>Submit both lab-4-3.py and function_library.py. CodeGrade tests trivia_gate() in isolation using a mock TRIVIA dictionary, so your function must read from the constant correctly.</p>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>This is the Module 4 capstone. Module 5 starts fresh with classes. Save lab-4-3.py as your personal reference for the data-driven architecture.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<div class="lc-card lc-card--orange">
 
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #39FF14 0%, #0D4D00 100%); padding: 8px 12px 12px 12px;">
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-checkpoints.svg" alt="Checkpoints" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            4 Checkpoints
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Time Guide</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 75–90 Minutes</div>
+  </div>
 
-            
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Tyler-Nguyen.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Tyler Nguyen">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">&ldquo;This is the big one. Trivia replaces the coin flip, sets handle your unique tracking, and sorted() makes your report look clean. The game loop barely changes&mdash;you&rsquo;re mostly adding smarter pieces around it.&rdquo;</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/tyler-nguyen.svg" alt="Tyler Nguyen" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Junior Developer, Bat City Collective</div>
-                </div>
-            </div>
+  <div class="lc-panel">
 
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Here&rsquo;s how your finished program fits together.</strong> The <span style="color: #FF6B1A;">[NEW]</span> tags show what you&rsquo;re adding. <span style="color: #FF6B1A;">[REPLACED]</span> tags show what changes from your 4.2 code. The <span style="color: #BF40FF;">purple section</span> runs after the game loop ends.
-            </p>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Time</th>
+            <th>Task</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><strong>CP1: TRIVIA Dictionary</strong></td>
+        <td>20 min</td>
+        <td>Build the TRIVIA constant with city questions and answers</td>
+      </tr>
+      <tr>
+        <td><strong>CP2: trivia_gate() Function</strong></td>
+        <td>20 min</td>
+        <td>Write, test, and tune the trivia gate logic</td>
+      </tr>
+      <tr>
+        <td><strong>CP3: Wire It In</strong></td>
+        <td>25 min</td>
+        <td>Replace coin flip, add sets, upgrade final report</td>
+      </tr>
+      <tr>
+        <td><strong>CP4: Master Week QA Pass</strong></td>
+        <td>15 min</td>
+        <td>Full playthrough, edge cases, CodeGrade, solution quality</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--cyan">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Before You Begin</div>
+    <div class="lc-sub-banner">Program Architecture</div>
+  </div>
+  <div class="lc-panel">
+    <p class="lc-arch-intro">Here is how your finished program fits together. The [NEW] tags show what you are adding this week. The [REPLACED] tags show what changes from your 4.2 code.</p>
+    <div class="lc-arch">
+      <pre># ---- CONSTANTS (lab-4-3.py) ----
+CITY_DISTANCES = { ... }              (from 4.1, unchanged)
+CITY_INFO      = { ... }              (from 4.1, unchanged)
+HAZARDS        = { ... }              (from 4.1, unchanged)
+TRIVIA         = { ... }              <span class="lc-arch-new">[NEW — city questions and answers]</span>
+STARTING_CITY  = &#x27;San Antonio&#x27;        (unchanged)
 
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0 25px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #B0B8C4; margin: 0; padding: 15px 20px; white-space: pre; overflow-x: auto;"><span style="color: #666;"># ---- DATA LOADING FUNCTIONS ----</span>
-<span style="color: #39ff14;">load_city_distances()</span>   reads city_distances.txt &rarr; nested dict
-<span style="color: #39ff14;">load_city_info()</span>        reads city_info.txt &rarr; dict of dicts
-<span style="color: #39ff14;">load_hazards()</span>          reads hazards.txt &rarr; list of dicts
-<span style="color: #39ff14;">load_trivia()</span>           reads trivia.txt &rarr; dict of lists  <span style="color: #FF6B1A;">[NEW]</span>
+# ---- TRACKING VARIABLES ----
+visited_cities          = []          (unchanged — allows duplicates, shows path)
+unique_cities_visited   = set()       <span class="lc-arch-new">[NEW — set, no duplicates]</span>
+unique_hazards_faced    = set()       <span class="lc-arch-new">[NEW — set, no duplicates]</span>
+trivia_asked            = 0           <span class="lc-arch-new">[NEW — counter]</span>
+trivia_correct          = 0           <span class="lc-arch-new">[NEW — counter]</span>
 
-<span style="color: #666;"># ---- GAME FUNCTIONS ----</span>
-<span style="color: #39ff14;">display_destinations()</span>  shows menu from dict
-<span style="color: #39ff14;">get_destination_choice()</span>  validates user pick
-<span style="color: #39ff14;">trivia_gate(destination, trivia)</span>  TRUE/FALSE question  <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #39ff14;">handle_hazard(hazards)</span>  random hazard + coin flip
-<span style="color: #39ff14;">travel_to(distance)</span>    D20 travel + hazard checks
+# ---- FUNCTION LIBRARY (function_library.py) ----
+trivia_gate(destination, trivia_dict) <span class="lc-arch-new">[NEW — presents question, returns True/False]</span>
+(all 4.2 functions unchanged)
 
-<span style="color: #666;"># ---- MAIN PROGRAM ----</span>
-Load ALL data files (distances, info, hazards, trivia)
-Get player name
-current_city = 'San Antonio'
-<span style="color: #39ff14;">unique_cities = set()</span>  <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #39ff14;">unique_hazards = set()</span>  <span style="color: #FF6B1A;">[NEW]</span>
-
-<span style="color: #FFCC00;">GAME LOOP</span> <span style="color: #666;">(each pass is one leg):</span>
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> <span style="color: #39ff14;">unique_cities.add(current_city)</span>  <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Display city info, show destinations
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Get choice with .strip().upper()
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> <span style="color: #39ff14;">trivia_gate()</span>  <span style="color: #FF6B1A;">[REPLACED]</span> <span style="color: #666;">was coin flip</span>
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">TRAVEL LOOP</span> <span style="color: #666;">(D20 rolls):</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Roll D20, move miles
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> 30% chance: handle_hazard() &rarr; <span style="color: #39ff14;">unique_hazards.add()</span>  <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Repeat until you arrive
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Update trip totals + trivia stats  <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Check outcome: beach / dead end / continue
-
-<span style="color: #BF40FF;">&#9474;&#9474;&#9474; FINAL TRIP REPORT &#9474;&#9474;&#9474;</span>  <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #BF40FF;">&#9474;</span> Route: city &rarr; city &rarr; city (from visited list)
-<span style="color: #BF40FF;">&#9474;</span> Unique cities: <span style="color: #39ff14;">sorted(unique_cities)</span>
-<span style="color: #BF40FF;">&#9474;</span> Unique hazards: <span style="color: #39ff14;">sorted(unique_hazards)</span>
-<span style="color: #BF40FF;">&#9474;</span> Trivia: correct / total
-<span style="color: #BF40FF;">&#9474;</span> Trip stats: miles, turns, hazards</pre>
-            </div>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-<div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-1.svg" alt="Checkpoint 1" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Load Trivia</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Build a loader for the most complex data structure yet: a dictionary where each value is a <em>list</em> of dictionaries.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A function that reads <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trivia.txt</span> where each city can have <strong style="color: #fff;">multiple</strong> trivia questions. Structure: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trivia['Houston']</span> returns a <strong style="color: #fff;">list</strong> of question dicts.
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                This is the most sophisticated data structure you've built yet: a <strong style="color: #fff;">dictionary of lists of dictionaries</strong>. Real applications use nested structures like this constantly&mdash;think of a playlist app where each artist maps to a list of album objects. Mastering this pattern unlocks serious programming power.
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Data Structure" style="height: 18px; display: block;">
-            </div>
-            <div style="border: 2px solid #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;"><span style="color: #6a737d; font-style: italic;"># The structure you're building:</span>
-trivia = {
-    <span style="color: #39ff14;">'Houston'</span>: [
-        {<span style="color: #39ff14;">'question'</span>: <span style="color: #39ff14;">'NASA is in Houston'</span>, <span style="color: #39ff14;">'answer'</span>: <span style="color: #39ff14;">'TRUE'</span>},
-        {<span style="color: #39ff14;">'question'</span>: <span style="color: #39ff14;">'Houston is the capital'</span>, <span style="color: #39ff14;">'answer'</span>: <span style="color: #39ff14;">'FALSE'</span>}
+# ---- MAIN GAME (lab-4-3.py) ----
+GAME LOOP:
+│
+│── DESTINATION GATE:
+│   │── trivia_gate(destination, TRIVIA)   <span class="lc-arch-replaced">[REPLACED — was coin flip]</span>
+│   │── if correct: use chosen destination
+│   │── if wrong: random redirect
+│   │── update trivia_asked, trivia_correct
+│
+│── TRAVEL LOOP:
+│   │── unique_cities_visited.add(city)    <span class="lc-arch-new">[NEW]</span>
+│
+│── HAZARD:
+│   │── unique_hazards_faced.add(hazard)   <span class="lc-arch-new">[NEW]</span>
+│
+FINAL REPORT:
+│── Unique cities from set              <span class="lc-arch-replaced">[REPLACED — was manual dedup]</span>
+│── Unique hazards from set             <span class="lc-arch-replaced">[REPLACED — was manual dedup]</span>
+│── Trivia accuracy calculation         <span class="lc-arch-new">[NEW]</span></pre>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--green">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Checkpoints</div>
+    <div class="lc-sub-banner">4 Checkpoints</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">1</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Build the TRIVIA Dictionary</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>Open <code>lab-4-3.py</code>. Near the top of the file, after your other constants, add a <code>TRIVIA</code> dictionary. This is the data source your <code>trivia_gate()</code> function will read from. Each key is a city name. Each value is a list of question dictionaries. Each question dictionary has two keys: <code>'question'</code> (the text shown to the player) and <code>'answer'</code> (either <code>'TRUE'</code> or <code>'FALSE'</code>).</p>
+    <div class="lc-h3">Named Constants</div>
+    <p>Your <code>TRIVIA</code> dictionary must cover at least 3 cities and include at least 2 questions per city. San Antonio should always be included as a fallback for cities that are not explicitly covered. The structure looks like this:</p>
+    <div class="lc-code-block">
+      <pre><code>TRIVIA = {
+    &#x27;San Antonio&#x27;: [
+        {
+            &#x27;question&#x27;: &#x27;The Alamo was originally a Spanish mission.&#x27;,
+            &#x27;answer&#x27;: &#x27;TRUE&#x27;
+        },
+        {
+            &#x27;question&#x27;: &#x27;San Antonio is the largest city in Texas by population.&#x27;,
+            &#x27;answer&#x27;: &#x27;FALSE&#x27;
+        }
     ],
-    <span style="color: #39ff14;">'Austin'</span>: [
-        {<span style="color: #39ff14;">'question'</span>: <span style="color: #39ff14;">'Austin has bats'</span>, <span style="color: #39ff14;">'answer'</span>: <span style="color: #39ff14;">'TRUE'</span>}
+    &#x27;Austin&#x27;: [
+        {
+            &#x27;question&#x27;: &#x27;Austin is the capital of Texas.&#x27;,
+            &#x27;answer&#x27;: &#x27;TRUE&#x27;
+        },
+        {
+            &#x27;question&#x27;: &#x27;The University of Texas at Austin is located in East Austin.&#x27;,
+            &#x27;answer&#x27;: &#x27;FALSE&#x27;
+        }
     ]
-}</pre>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Copy lab-4-2.py</strong> and rename to <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">lab-4-3.py</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Update docstring</strong> to "Lab 4.3: Trivia Challenge"</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Define</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_trivia(filename)</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Create empty dict:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trivia = {}</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Open file and loop lines:</strong> use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">line.strip().split(',')</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Extract parts:</strong> city = parts[0], question = parts[1], answer = parts[2]</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Check if city exists:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">if city not in trivia: trivia[city] = []</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Append question dict:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trivia[city].append({'question': question, 'answer': answer})</span></li>
-                <li><strong style="color: #fff;">Close file and return</strong> the trivia dict</li>
-            </ol>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img style="width: 30px; height: 30px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #da92ff;">Lab 4.1:</strong> Your load_city_distances() pattern works here&mdash;same file-reading loop, but now you're <em>appending to lists</em> instead of storing single values.<br><br>
-                        <strong style="color: #da92ff;">Program 9-1 (card_dealer.py):</strong> Shows dictionary creation with key-value pairs. Your trivia dict adds a twist: each value is a <em>list</em> that can hold multiple items.
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <div style="border: 2px solid #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;"><span style="color: #6a737d; font-style: italic;"># DEBUG - DELETE BEFORE CHECKPOINT 2</span>
-trivia = load_trivia(<span style="color: #39ff14;">'trivia.txt'</span>)
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">f'Cities with trivia: </span><span style="color: #00ffff;">{len(trivia)}</span><span style="color: #39ff14;">'</span>)
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Houston questions:'</span>, <span style="color: #ffcc00;">len</span>(trivia[<span style="color: #39ff14;">'Houston'</span>]))
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'First Houston Q:'</span>, trivia[<span style="color: #39ff14;">'Houston'</span>][<span style="color: #bf40ff;">0</span>])</pre>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #fff;">Verify:</strong> Houston has multiple questions, each is a dict with 'question' and 'answer' keys.</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting to check if city exists before appending</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">KeyError&mdash;you can't append to a list that doesn't exist yet</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">trivia[city] = question_dict</code> instead of append</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Each new question overwrites the previous one instead of adding to the list</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Splitting on wrong delimiter</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Check trivia.txt&mdash;what character separates city, question, answer?</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 30px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_trivia()</span> function defined</li>
-                <li style="margin-bottom: 5px;">Returns a dictionary where values are lists</li>
-                <li style="margin-bottom: 5px;">Each city can have multiple questions</li>
-                <li style="margin-bottom: 5px;">Debug print shows correct city count</li>
-            </ul>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-2.svg" alt="Checkpoint 2" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Trivia Gate</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Replace the coin flip with TRUE/FALSE trivia questions. Get it right to go where you want; get it wrong and take a detour!</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A function that presents a trivia question, accepts TRUE/FALSE input (using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.strip().upper()</span>), and returns the final destination, distance, and whether they got it correct.
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Define</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trivia_gate(dest, trivia, all_dests, distances, current)</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Print header:</strong> "--- TRIVIA TIME! ---" and announce the destination</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Get a question:</strong> If dest has trivia, use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">random.choice(trivia[dest])</span>. Otherwise pick from any city.</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Display the question</strong> and prompt for answer</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Get input:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">answer = input('TRUE or FALSE? ').strip().upper()</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Normalize answer:</strong> Accept T/TRUE &rarr; 'TRUE', F/FALSE &rarr; 'FALSE', else invalid</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">If correct:</strong> Return (dest, distance, True)</li>
-                <li><strong style="color: #fff;">If wrong:</strong> Pick random other destination, return (redirect, new_distance, False)</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                To get "other" destinations for redirect, loop through <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">all_dests</span> and build a new list that skips the chosen destination. The pattern is the same one you used in Module 3&mdash;loop, check a condition, and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.append()</span> if it passes.
-            </p>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img style="width: 30px; height: 30px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #da92ff;">Lab 4.2:</strong> Your <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">.strip().upper()</code> pattern for input cleaning is perfect here for TRUE/FALSE answers.<br><br>
-                        <strong style="color: #da92ff;">Program 9-1:</strong> Accessing <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">trivia[city]</code> gives you a list, then <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">random.choice()</code> picks one question from it.
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Integration" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Update main() to use trivia_gate:</strong></p>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Load trivia data with other files</li>
-                <li style="margin-bottom: 8px;">After player chooses destination, call trivia_gate()</li>
-                <li style="margin-bottom: 8px;">Use the returned values (final_dest, dist, correct)</li>
-                <li>Track trivia_asked and trivia_correct counters</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Play the game and verify:</strong></p>
-            <ul style="color: #B0B8C4; margin: 0 0 30px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">Trivia question appears after choosing destination</li>
-                <li style="margin-bottom: 5px;">Correct answer &rarr; go to chosen city</li>
-                <li style="margin-bottom: 5px;">Wrong answer &rarr; redirected to different city</li>
-                <li>T, TRUE, t, true all work (thanks to .upper()!)</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Comparing to lowercase 'true' instead of 'TRUE'</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">If you use .upper(), compare to uppercase strings!</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Returning just True/False instead of (dest, dist, correct)</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">main() needs all three values to update game state properly</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting to handle cities with no trivia</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">if dest in trivia</code> before accessing</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 30px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trivia_gate()</span> function defined with correct parameters</li>
-                <li style="margin-bottom: 5px;">Displays trivia question from loaded data</li>
-                <li style="margin-bottom: 5px;">Accepts T/TRUE/F/FALSE (case-insensitive)</li>
-                <li style="margin-bottom: 5px;">Returns tuple: (destination, distance, was_correct)</li>
-                <li style="margin-bottom: 5px;">Wrong answer redirects to different city</li>
-            </ul>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-3.svg" alt="Checkpoint 3" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Add Sets</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Track unique cities and hazards using sets&mdash;duplicates are automatically ignored!</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Two sets: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">unique_cities</span> for tracking which cities the player has visited (no repeats) and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">unique_hazards</span> for tracking which hazard types they've encountered.
-            </p>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Tyler-Nguyen.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Tyler Nguyen">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"With a list, you'd have to check <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">if city not in visited</code> before adding. With a set? Just <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">.add()</code> it. Duplicates vanish automatically. Less code, fewer bugs&mdash;that's the kind of shortcut I wish I'd known sooner!"</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/tyler-nguyen.svg" alt="Tyler Nguyen" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Junior Developer, Bat City Collective</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">In main(), create two empty sets</strong> using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">set()</span>: one for unique cities, one for unique hazards</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Add the starting city</strong> to your unique cities set right after creating it</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">After each city visit:</strong> use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.add()</span> to include the destination in your unique cities set</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Update handle_hazard()</strong> to accept the unique hazards set as a parameter, then add the hazard's name to it</li>
-                <li><strong style="color: #fff;">Update travel_to()</strong> to pass the unique hazards set to handle_hazard()</li>
-            </ol>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img style="width: 30px; height: 30px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #da92ff;">Program 9-3 (sets.py):</strong> Shows set creation with <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">set()</code> and the <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">.add()</code> method. Same pattern here&mdash;create empty set, add items as you encounter them.
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <div style="border: 2px solid #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;"><span style="color: #6a737d; font-style: italic;"># DEBUG - Add at end of game loop iteration</span>
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">f'Unique cities: </span><span style="color: #00ffff;">{len(unique_cities)}</span><span style="color: #39ff14;">'</span>)
-<span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">f'Unique hazards: </span><span style="color: #00ffff;">{len(unique_hazards)}</span><span style="color: #39ff14;">'</span>)</pre>
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;"><strong style="color: #fff;">Verify:</strong> Visiting Houston twice still shows 1 in unique_cities (not 2).</p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Creating set with <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">{}</code> instead of <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">set()</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;"><code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">{}</code> creates an empty dictionary, not a set!</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">.append()</code> instead of <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">.add()</code></td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Sets use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">.add()</code>, lists use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">.append()</code>&mdash;don't mix them up!</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting to pass unique_hazards to handle_hazard()</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">The set won't track hazards if the function can't access it</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 30px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">Two sets created: unique_cities and unique_hazards</li>
-                <li style="margin-bottom: 5px;">Starting city added to unique_cities</li>
-                <li style="margin-bottom: 5px;">Each destination added with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.add()</span></li>
-                <li style="margin-bottom: 5px;">handle_hazard() tracks unique hazard names</li>
-                <li style="margin-bottom: 5px;">Debug shows set counts staying unique (no duplicates)</li>
-            </ul>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            
-            
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-4.svg" alt="Checkpoint 4" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', 'Helvetica Neue', Arial, sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Final Report</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Build a comprehensive trip report with route, unique cities, trivia stats, hazard stats, and totals.</p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A polished final report showing: route traveled (with arrows), unique cities visited (sorted alphabetically using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">sorted()</span>), trivia performance, hazard statistics, and total miles.
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Key Technique" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">
-                <strong style="color: #fff;">Important:</strong> Sets are unordered! To display them in a predictable way, use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">sorted()</span>:
-            </p>
-            <div style="border: 2px solid #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;"><span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">f'UNIQUE CITIES (</span><span style="color: #00ffff;">{len(unique_cities)}</span><span style="color: #39ff14;">):'</span>)
-<span style="color: #ff6b1a;">for</span> city <span style="color: #ff6b1a;">in</span> <span style="color: #ffcc00;">sorted</span>(unique_cities):
-    <span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">f'  - </span><span style="color: #00ffff;">{city}</span><span style="color: #39ff14;">'</span>)</pre>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Report Sections" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Your final report should include:</strong></p>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Header:</strong> "FINAL TRIP REPORT" with driver name and final city</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">ROUTE:</strong> The visited list joined with " -> "</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">UNIQUE CITIES:</strong> Count and sorted list from set</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">TRIVIA:</strong> Asked, Correct, Accuracy percentage</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">HAZARDS:</strong> Faced, Escaped, Unique types count</li>
-                <li><strong style="color: #fff;">STATS:</strong> Total Miles</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-expected-output.svg" alt="Expected Output" style="height: 18px; display: block;">
-            </div>
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace; font-size: 13px; line-height: 1.5; color: #f5f5f5; margin: 0; padding: 15px 20px;">==================================================
-FINAL TRIP REPORT
-==================================================
-Driver: Alex
-Final City: Corpus Christi
-
-ROUTE:
-  San Antonio -> Houston -> Houston -> Corpus Christi
-
-UNIQUE CITIES (3):
-  - Corpus Christi
-  - Houston
-  - San Antonio
-
-TRIVIA:
-  Asked: 3
-  Correct: 2
-  Accuracy: 66.7%
-
-HAZARDS:
-  Faced: 4
-  Escaped: 2
-  Unique types: 3
-
-STATS:
-  Total Miles: 410</pre>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img style="width: 30px; height: 30px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #da92ff;">Program 9-3:</strong> The <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">sorted()</code> function works on sets, returning a sorted list you can iterate through.<br><br>
-                        <strong style="color: #da92ff;">Lab 3.3:</strong> Your trip report pattern returns&mdash;now with sets for unique tracking and trivia statistics added.
-                    </p>
-                </div>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Printing set directly without sorted()</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Output order is unpredictable&mdash;CodeGrade expects alphabetical!</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Dividing by trivia_asked when it might be 0</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">ZeroDivisionError if player quit before any trivia&mdash;check first!</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Missing report sections</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">CodeGrade checks for all required sections&mdash;match the expected output format</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 30px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">Report header with driver name and final city</li>
-                <li style="margin-bottom: 5px;">Route showing all cities visited with arrows</li>
-                <li style="margin-bottom: 5px;">Unique cities displayed alphabetically using sorted()</li>
-                <li style="margin-bottom: 5px;">Trivia stats: asked, correct, accuracy percentage</li>
-                <li style="margin-bottom: 5px;">Hazard stats including unique types count</li>
-                <li style="margin-bottom: 5px;">Total miles displayed</li>
-            </ul>
-            
-        </div>
+    # Add at least one more city...
+}</code></pre>
     </div>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Add the <code>TRIVIA</code> dictionary to your constants section. Use the structure shown above as your starting point.</li>
+      <li>Add entries for at least 3 cities total, including San Antonio. Cover cities your game actually visits. Check your <code>CITY_DISTANCES</code> dictionary for the exact city names.</li>
+      <li>Write 2 questions per city at minimum. Keep questions as true/false statements about the city. Make sure every <code>'answer'</code> value is exactly <code>'TRUE'</code> or <code>'FALSE'</code> in all caps. Your <code>trivia_gate()</code> function will compare against these exact strings.</li>
+      <li>Add a comment above the constant: <code># TRIVIA (Added in 4.3): city trivia questions and answers</code></li>
+      <li>Do a quick sanity check: for each city entry, count the items in its list and verify each has both a <code>'question'</code> key and an <code>'answer'</code> key.</li>
+    </ol>
+    <div class="lc-h3">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Textbook Reference</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-1</strong>
+            — <code>card_dealer.py</code>
+            (Step 1)
+            — Shows a dictionary whose values are lists, which is the same nested structure your TRIVIA constant uses. The pattern for accessing and iterating over values is identical.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--pitfall">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="22.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Answer Values Must Be Exact</div>
+        <div class="lc-callout__body">
+        <p>Every <code>'answer'</code> value in your TRIVIA dictionary must be exactly <code>'TRUE'</code> or <code>'FALSE'</code> in all caps, no exceptions. Your trivia_gate() function will compare player input against these strings after calling <code>.upper()</code>. If your dictionary has <code>'True'</code> or <code>'true'</code> or <code>True</code> (the boolean), the comparison will silently fail.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CP1 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>TRIVIA constant added to the constants section of lab-4-3.py</li>
+          <li>At least 3 cities covered, including San Antonio</li>
+          <li>At least 2 questions per city, each with 'question' and 'answer' keys</li>
+          <li>All 'answer' values are exactly 'TRUE' or 'FALSE' in all caps</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Write trivia_gate()</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>Open <code>function_library.py</code>. You will add one new function: <code>trivia_gate()</code>. This function takes a destination city name and the TRIVIA dictionary, picks a random question for that city, presents it to the player, and returns <code>True</code> if they answer correctly, <code>False</code> if they do not. It replaces the coin flip that has been running the Destination Gate since Module 2.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Add a <code># TRIVIA FUNCTIONS (Added in 4.3)</code> comment block at the bottom of your function library.</li>
+      <li>Define a function named <code>trivia_gate</code> that accepts two parameters: <code>destination</code> (a string) and <code>trivia_dict</code> (the dictionary). Write a docstring that describes the parameters and return value.</li>
+      <li>Use <code>trivia_dict.get(destination, trivia_dict['San Antonio'])</code> to look up the city's question list. This uses San Antonio as a fallback for any city that does not have its own entry.</li>
+      <li>Use <code>random.choice()</code> to pick one question dictionary from the city's list. Extract the <code>'question'</code> and <code>'answer'</code> values into local variables.</li>
+      <li>Print the trivia prompt. Show the destination city name, then the question text, then a prompt asking for TRUE or FALSE.</li>
+      <li>Get the player's answer using <code>clean_input()</code>. The player can type <code>T</code>, <code>TRUE</code>, <code>F</code>, or <code>FALSE</code>. Normalize to <code>'TRUE'</code> or <code>'FALSE'</code> before comparing: if the input starts with <code>'T'</code>, treat it as TRUE; if it starts with <code>'F'</code>, treat it as FALSE. Anything else should print an error message and default to FALSE.</li>
+      <li>Compare the normalized player answer to the correct answer. Print a result message: something different for correct versus incorrect. Return <code>True</code> if correct, <code>False</code> if not.</li>
+    </ol>
+    <div class="lc-h3">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Mistake</th>
+        <th>What Goes Wrong</th>
+        <th>Fix</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Passing TRIVIA by name directly inside the function</td>
+        <td>Function is tightly coupled to one global variable, which makes it harder to test</td>
+        <td>Accept trivia_dict as a parameter; call trivia_gate(destination, TRIVIA) from main</td>
+      </tr>
+      <tr>
+        <td>Using random.randint() to pick a question</td>
+        <td>Index math, off-by-one risks, breaks if list length changes</td>
+        <td>Use random.choice(question_list), which is cleaner and length-independent</td>
+      </tr>
+      <tr>
+        <td>Comparing player input without normalization</td>
+        <td>Player types 'true' and it fails; 'TRUE' works but 'True' does not</td>
+        <td>Use clean_input() which already calls .strip().upper(), then compare only 'T' or 'TRUE'</td>
+      </tr>
+      <tr>
+        <td>Accepting only 'TRUE' or 'FALSE' with no flexibility</td>
+        <td>Player types 'T' and gets penalized even though intent is clear</td>
+        <td>Accept 'T' and 'TRUE' as true, 'F' and 'FALSE' as false</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3">Test Your Code</div>
+    <ol>
+      <li>Import your function library and your TRIVIA constant in a Python shell.</li>
+      <li>Call <code>function_library.trivia_gate('Austin', TRIVIA)</code> and type <code>TRUE</code> when prompted. Verify it returns <code>True</code> when the answer is correct.</li>
+      <li>Call it again and type <code>FALSE</code>. Verify it returns <code>False</code> when the answer is wrong.</li>
+      <li>Call it with a city that is NOT in your TRIVIA dictionary (like <code>'El Paso'</code> if you did not include it). Verify it falls back to San Antonio's questions without crashing.</li>
+      <li>Type <code>T</code> instead of <code>TRUE</code>. Verify it is accepted. Then type <code>F</code>. Verify it is also accepted.</li>
+      <li>Type something invalid like <code>MAYBE</code>. Verify the function handles it gracefully without crashing</li>
+    </ol>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"I typed a city that was not in your TRIVIA dictionary. Your function crashed. Then I typed a city that WAS in it and it worked fine. The .get() fallback exists for exactly this reason. If it can receive input, it needs to handle every possible input, including the ones you did not plan for."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
+        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CP2 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>trivia_gate(destination, trivia_dict) added to function_library.py with docstring</li>
+          <li>Uses .get() with San Antonio fallback for cities not in the dictionary</li>
+          <li>Uses random.choice() to select one question from the city's list</li>
+          <li>Accepts T/TRUE and F/FALSE as valid answers</li>
+          <li>Returns True for correct answers, False for incorrect or invalid answers</li>
+          <li>Manual testing confirms fallback works for unlisted cities</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">3</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Wire It In</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>This checkpoint has three distinct parts: replace the coin flip in the Destination Gate, add sets for unique tracking, and upgrade the final trip report. Work through them in order.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li><strong>Part 1: Replace the Destination Gate.</strong> Find the section of your game loop where the coin flip currently runs. Remove the <code>flip_coin()</code> call and its if/else block. Replace it with a call to <code>function_library.trivia_gate(destination, TRIVIA)</code>. If it returns <code>True</code>, the player gets their chosen destination. If it returns <code>False</code>, redirect them to a random alternative destination. Use <code>random.choice()</code> on the list of other available destinations.</li>
+      <li><strong>Part 1 continued:</strong> Add two new tracking variables near the top of your game loop (outside any inner loops): <code>trivia_asked = 0</code> and <code>trivia_correct = 0</code>. Each time the trivia gate runs, increment <code>trivia_asked</code>. If the player answered correctly (the gate returned True), increment <code>trivia_correct</code>.</li>
+      <li><strong>Part 2: Add sets for unique tracking.</strong> Near the top of your game loop, initialize two new sets: <code>unique_cities_visited = set()</code> and <code>unique_hazards_faced = set()</code>.</li>
+      <li><strong>Part 2 continued:</strong> Find where your game loop updates <code>visited_cities</code> (the list that tracks every city including duplicates). Right after that line, add: <code>unique_cities_visited.add(current_city)</code>. Find where your hazard code records a hazard name. Right after that, add: <code>unique_hazards_faced.add(hazard_name)</code>. Keep the original list-based tracking. The set tracking is additive, not a replacement</li>
+      <li><strong>Part 3: Upgrade the final trip report.</strong> In your trip report output section, replace any manual unique-city or unique-hazard deduplication logic with the set data. Display <code>len(unique_cities_visited)</code> for unique city count and iterate over <code>sorted(unique_cities_visited)</code> to list them alphabetically. Do the same for unique hazards. Add a trivia performance block that shows questions asked, correct answers, and accuracy as a percentage. Guard the division with an <code>if trivia_asked > 0</code> check.</li>
+    </ol>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
+                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="19" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">sorted() Works on Sets</div>
+        <div class="lc-callout__body">
+        <p>Sets have no guaranteed order, so iterating directly can produce inconsistent output. Wrapping the set in <code>sorted()</code> gives you alphabetical order and makes CodeGrade's output comparison reliable: <code>for city in sorted(unique_cities_visited):</code></p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Keep the Original Lists</div>
+        <div class="lc-callout__body">
+        <p><code>visited_cities</code> (the list) intentionally keeps duplicates; it shows the player's complete path, including revisits. <code>unique_cities_visited</code> (the set) strips duplicates for the count. Both serve different purposes. Do not remove the list.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">Test Your Code</div>
+    <ol>
+      <li>Run your game and play through a complete trip. Verify the Destination Gate now shows a trivia question instead of a coin flip.</li>
+      <li>When redirected after a wrong answer, verify the new destination is different from the one you chose.</li>
+      <li>Visit the same city twice during one trip (if your map allows it) and verify the unique city count in the report is lower than the total visit count.</li>
+      <li>Trigger at least two different hazard types and verify the unique hazard count reflects only distinct hazards.</li>
+      <li>Check the trivia accuracy percentage in the final report. If you answered 2 out of 3 correctly, it should show 66.7%.</li>
+    </ol>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CP3 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>Destination Gate calls trivia_gate() with no coin flip remaining</li>
+          <li>trivia_asked and trivia_correct track correctly across the game loop</li>
+          <li>unique_cities_visited and unique_hazards_faced are sets initialized before the game loop</li>
+          <li>.add() called at the correct points in the game loop for both sets</li>
+          <li>Final report uses sorted() on both sets for alphabetical display</li>
+          <li>Trivia accuracy percentage is guarded against division by zero</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">4</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Master Week QA Pass</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">Test Your Code</div>
+    <p>MASTER week means a full QA pass before submitting. Work through the test table below. Each row targets a specific behavior this week's changes were supposed to produce.</p>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Test</th>
+        <th>What to Do</th>
+        <th>Expected Result</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Trivia gate fires</td>
+        <td>Play to a destination choice</td>
+        <td>A trivia question appears, no coin flip</td>
+      </tr>
+      <tr>
+        <td>Correct answer accepted</td>
+        <td>Answer the trivia question correctly</td>
+        <td>Player travels to their chosen destination</td>
+      </tr>
+      <tr>
+        <td>Wrong answer redirects</td>
+        <td>Answer the trivia question incorrectly</td>
+        <td>Player is sent to a different destination with a message</td>
+      </tr>
+      <tr>
+        <td>T accepted as TRUE</td>
+        <td>Type 'T' at the trivia prompt</td>
+        <td>Treated as TRUE with no error</td>
+      </tr>
+      <tr>
+        <td>F accepted as FALSE</td>
+        <td>Type 'F' at the trivia prompt</td>
+        <td>Treated as FALSE with no error</td>
+      </tr>
+      <tr>
+        <td>Invalid trivia input handled</td>
+        <td>Type 'MAYBE' at the trivia prompt</td>
+        <td>Error message shown, defaults to FALSE gracefully</td>
+      </tr>
+      <tr>
+        <td>Sets deduplicate</td>
+        <td>Visit a city more than once</td>
+        <td>Unique city count is lower than total visit count</td>
+      </tr>
+      <tr>
+        <td>sorted() on sets</td>
+        <td>Check the final report city and hazard lists</td>
+        <td>Cities and hazards appear in alphabetical order</td>
+      </tr>
+      <tr>
+        <td>Accuracy math</td>
+        <td>Answer 1 of 2 trivia questions correctly</td>
+        <td>Report shows 50.0% accuracy</td>
+      </tr>
+      <tr>
+        <td>Zero division guard</td>
+        <td>End the game without any trivia prompts firing</td>
+        <td>Report skips accuracy line or shows 0 with no crash</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Run through all ten test cases above. Note any failures before moving on.</li>
+      <li>Verify your top-of-file documentation header is present in both <code>lab-4-3.py</code> and <code>function_library.py</code>. Required: Name, abc123, Section, and description.</li>
+      <li>Scan every <code>def</code> in both files and verify each has a docstring.</li>
+      <li>Run Flake8 on both files and fix any warnings.</li>
+      <li>Submit both files to CodeGrade. Review automated feedback carefully. The trivia gate test uses a mock TRIVIA dictionary, so any hardcoded city name inside <code>trivia_gate()</code> will cause those tests to fail.</li>
+      <li>This is a MASTER week. Anjali will review your submission for Solution Quality. Clean, readable code with well-named variables and consistent style matters here.</li>
+    </ol>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">CodeGrade Uses a Mock TRIVIA Dictionary</div>
+        <div class="lc-callout__body">
+        <p>CodeGrade calls <code>trivia_gate(destination, trivia_dict)</code> with its own test dictionary, not your TRIVIA constant. This is why the function must accept <code>trivia_dict</code> as a parameter rather than referencing <code>TRIVIA</code> directly inside the function body. If your function looks up <code>TRIVIA</code> by name internally, the CodeGrade tests will fail.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Play your game all the way through before you submit. Not just a few turns. Play the whole trip. You would be surprised how many bugs only appear when all the pieces are running together. If you would not ship it, do not submit it."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Lab 4.3 Complete</div>
+        <div class="lc-callout__body">
+        <ul>
+          <li>All ten test cases from the table above pass</li>
+          <li>Both lab-4-3.py and function_library.py submitted to CodeGrade</li>
+          <li>Documentation headers in both files</li>
+          <li>All functions have docstrings</li>
+          <li>Flake8 returns no warnings on either file</li>
+          <li>trivia_gate() accepts trivia_dict as a parameter with no internal TRIVIA reference</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--red">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Final Checklist</div>
+    <div class="lc-sub-banner">Check It Before You Wreck It</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3">Before You Submit</div>
+    <ul class="lc-checklist">
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">TRIVIA dictionary has at least 3 cities with at least 2 questions each</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All &#x27;answer&#x27; values in TRIVIA are exactly &#x27;TRUE&#x27; or &#x27;FALSE&#x27; in all caps</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">trivia_gate(destination, trivia_dict) is in function_library.py with a docstring</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">trivia_gate() accepts trivia_dict as a parameter and does not reference TRIVIA internally</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Destination Gate uses trivia_gate() with no flip_coin() call remaining in that section</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">unique_cities_visited and unique_hazards_faced are sets initialized before the game loop</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">sorted() used when iterating over sets in the final report</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Trivia accuracy is guarded against division by zero</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Top-of-file documentation headers in both files: Name, abc123, Section, Description</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All functions in both files have docstrings</span>
+      </li>
+    </ul>
+    <div class="lc-h3">Scope Reminder</div>
+    <p>You may use sets, set .add(), set membership testing with in, sorted() on sets, dictionaries and all dictionary methods from 4.1, string methods from 4.2, and all techniques from Chapters 2 through 8. Do NOT use list comprehensions, classes, inheritance, or any Chapter 10+ features.</p>
+    <div class="lc-h3">Permitted Techniques</div>
+    <div class="lc-permitted">
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–9 (all techniques from Chapters 2–8 fully permitted; Chapter 9 dictionaries and sets as introduced this module)</p>
+      <ul class="lc-permitted__list">
+      <li>Set creation: unique_cities = set()</li>
+      <li>Set membership: city in unique_cities_visited</li>
+      <li>Set addition: unique_cities_visited.add(city)</li>
+      <li>sorted() on a set: sorted(unique_cities_visited)</li>
+      <li>Dictionary .get() with fallback: trivia_dict.get(destination, trivia_dict[&#x27;San Antonio&#x27;])</li>
+      <li>random.choice() on a list</li>
+      </ul>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> list comprehensions, try/except, classes, inheritance</p>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>MASTER Week: Anjali will review your submission for Solution Quality. This is worth 15% of the lab grade and covers code readability, naming, and overall structure.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>CodeGrade imports function_library.py directly. A syntax error in your library will cause all library tests to fail, even if your game runs fine locally.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>This is the Module 4 capstone. Save lab-4-3.py as a reference. The data-driven architecture, trivia gate pattern, and set-based tracking are patterns you will see again in real projects.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">Academic Integrity</div>
+    <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
+  </div>
+</div>
+<div class="lc-card lc-card--purple">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Need Help?</div>
+    <div class="lc-sub-banner">Look No Further!</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3">Contact &amp; Resources</div>
+    <div class="lc-contact-grid">
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Zoom Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br>
+          <a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Schedule a Meeting</div>
+        <div class="lc-contact-card__value">
+          <a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Email</div>
+        <div class="lc-contact-card__value">
+          <a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>
+          Include your section number and abc123
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">CodeGrade</div>
+        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF1744 0%, #4A0A0A 100%); padding: 8px 12px 12px 12px;">
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-final-checklist.svg" alt="Final Checklist" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Check It Before You Wreck It
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-before-you-submit.svg" alt="Before You Submit" style="height: 18px; display: block;">
-            </div>
-            
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">File is named exactly <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">lab-4-3.py</span></li>
-                <li style="margin-bottom: 8px;">Docstring updated to "Lab 4.3: Trivia Challenge"</li>
-                <li style="margin-bottom: 8px;">Uses <strong style="color: #fff;">sets</strong> for unique_cities AND unique_hazards</li>
-                <li style="margin-bottom: 8px;">Uses <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">sorted()</span> when displaying set contents</li>
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_trivia()</span> returns dict with list values</li>
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trivia_gate()</span> handles TRUE/FALSE with .strip().upper()</li>
-                <li style="margin-bottom: 8px;">Final report includes all required sections</li>
-                <li>All DEBUG/test code has been removed</li>
-            </ul>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-permitted-techniques.svg" alt="Permitted Techniques" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">
-                <strong style="color: #fff;">Chapters 2-9 ONLY.</strong> This is the capstone&mdash;use everything you've learned!
-            </p>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #ff1744; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF1744; width: 50%;">Allowed</th>
-                            <th style="background: #1a1a1a; color: #ff1744; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF1744;">&#10007; Not Yet</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Sets: set(), .add(), len(), sorted()</td>
-                            <td style="background: #000; color: #666; padding: 12px 15px; border-bottom: 2px solid #222;">Classes (Chapter 10)</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Dictionaries with list values</td>
-                            <td style="background: #000; color: #666; padding: 12px 15px; border-bottom: 2px solid #222;">Inheritance (Chapter 11)</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">try/except (learned in Chapter 6)</td>
-                            <td style="background: #000; color: #666; padding: 12px 15px; border-bottom: 2px solid #222;">List comprehensions</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">All string methods, file I/O, functions</td>
-                            <td style="background: #000; color: #666; padding: 12px 15px; border-bottom: 2px solid #222;"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-codegrade-tip.svg" alt="CodeGrade Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">MASTER week grading:</strong> CodeGrade tests sets, sorted output, trivia logic, and report format. Make sure to upload all FOUR data files with your submission!
-            </p>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-academic-integrity.svg" alt="Academic Integrity" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                This is individual work. You may discuss concepts with classmates, but your code must be your own. Using AI assistants to write your code violates the academic integrity policy.
-            </p>
-            
-        </div>
-    </div>
-</div>
+    <footer class="lc-footer">
+        <img src="../../branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
+        <p class="lc-footer__course">IS2053: Programming I (Python) — The University of Texas at San Antonio</p>
+        <p class="lc-footer__detail">Starting Out with Python, 6th Edition — Tony Gaddis — Pearson</p>
+    </footer>
 
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #BF40FF 0%, #2E0854 100%); padding: 8px 12px 12px 12px;">
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-need-help.svg" alt="Need Help?" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Look No Further! We've Got You
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-if-you-get-stuck.svg" alt="If You Get Stuck" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 25px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Review Chapter 9 Sets section</strong> &mdash; set(), .add(), sorted()</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Test load_trivia() first</strong> &mdash; verify the structure before building trivia_gate()</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Remember: sets ignore duplicates</strong> &mdash; just .add() and let the set handle it</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Print intermediate values</strong> &mdash; DEBUG prints are your friend</li>
-                <li><strong style="color: #fff;">Submit to CodeGrade early</strong> &mdash; it shows exactly which tests pass or fail</li>
-            </ol>
-            
-            
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-contact-and-resources.svg" alt="Contact & Resources" style="height: 18px; display: block;">
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Webcam-Video-Square.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Weekly Zoom Session</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Tuesdays at 6:00 PM CT &mdash; Live coding help and Q&amp;A</div>
-                    <a href="https://utsa.zoom.us/j/97617245124" style="color: #BF40FF; font-size: 13px;">https://utsa.zoom.us/j/97617245124</a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Calendar-Mark.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Office Hours (by Appointment)</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Book a 15-minute slot for one-on-one help</div>
-                    <a href="https://calendly.com/john-newsom-utsa/student-meeting" style="color: #BF40FF; font-size: 13px;">https://calendly.com/john-newsom-utsa/student-meeting</a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Customer-Support.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Discord Community</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Get help from classmates and share tips (optional but recommended)</div>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Mail-Send-Envelope.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Email</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">For private questions or concerns</div>
-                    <a href="/cdn-cgi/l/email-protection#452f2a2d2b6b2b2032362a2805303136246b202130" style="color: #BF40FF; font-size: 13px;"><span class="__cf_email__" data-cfemail="741e1b1c1a5a1a1103071b1934010007155a111001">[email&#160;protected]</span></a>
-                </div>
-            </div>
-            
-            
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Chapter 8-9 BookEx Reference Guides</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Step-by-step breakdowns of every textbook example &mdash; your primary reference</div>
-                </div>
-            </div>
-            
-        </div>
-    </div>
 </div>
-
-<div style="text-align: center; color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
-    <img style="height: 50px; margin-bottom: 15px;" src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
-    <div style="color: #b0b8c4; font-size: 13px;">IS2053 Programming I &mdash; UT San Antonio &mdash; Spring 2026</div>
-    <div st
+</body>
+</html>
