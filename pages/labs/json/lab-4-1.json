@@ -6,77 +6,92 @@
         "week":          1,
         "weekType":      "BUILD",
         "chapters":      "8\u20139",
-        "chapterTopics": "More About Strings, Dictionaries and Sets",
-        "filename":      "lab-4-1.py"
+        "chapterTopics": "More About Strings, Dictionaries",
+        "filename":      "lab-4-1.py",
+        "additionalFiles": ["city_distances.txt", "city_info.txt", "function_library.py"]
     },
     "overview": {
-        "body": "Your Module 3 code is functional, but it has a problem that every working developer eventually hits: hardcoded data. You have 20+ individual distance constants, city-type checks baked into if/elif chains, and no easy way to add a new city without touching five different places in the file. This week, you fix all of that in one move. <code>CITY_DISTANCES</code> and <code>CITY_INFO</code> are two dictionaries that replace every one of those constants. Adding a new city goes from a multi-file, multi-section change to a single dictionary entry. That's what data-driven design looks like in practice.",
+        "body": "Remember all those distance constants? <code>SAT_TO_CORPUS = 150</code>, <code>SAT_TO_HOUSTON = 200</code>, on and on? And those long if-elif chains for hazards? This week, all that hardcoded data moves into <strong>external files</strong> and gets loaded into <strong>dictionaries</strong>. One data file, one function to load it, and suddenly adding 50 more cities is just adding 50 lines to a text file. <em>This</em> is how real programs work.",
         "mentorQuote": {
             "character": "Priya Venkatesh",
             "role":      "Lead Architect, Bat City Collective",
             "headshot":  "Priya-Venkatesh.png",
-            "quote":     "If you had to add 20 more cities, how long would that take with your current code? Now look at a dictionary. That's your answer."
+            "quote":     "If I asked you to add 20 new cities to the game using constants, how long would it take? Now imagine it's just adding 20 lines to a text file. That's why we use data files. Dictionaries let your code work with data that doesn't exist when you write it."
         },
         "objectives": [
-            "Create a nested dictionary to store city-to-city distances",
-            "Create a second dictionary to store city type, tagline, and win status",
-            "Refactor helper functions to use dictionary lookups instead of hardcoded constants",
-            "Use the <code>.get()</code> method for safe key access with a fallback value",
-            "Understand why dictionaries scale better than parallel constants"
+            "Write <code>load_city_distances()</code> to parse <code>city_distances.txt</code> into a nested dictionary",
+            "Write <code>load_city_info()</code> to parse <code>city_info.txt</code> into a dictionary with nested data",
+            "Display destinations and distances from dictionaries, not hardcoded values",
+            "Use <code>.strip()</code> and <code>.split(',')</code> to clean and parse file input",
+            "Wire all functions into a complete game loop with win detection and a coin flip gate"
         ],
-        "keyConceptsText": "Chapter 9: Program 9-1 (card_dealer.py) shows dictionary creation, key access, and looping with random.choice(). The same patterns apply directly to CITY_DISTANCES.",
+        "keyConceptsText": "Chapter 8: String methods (.strip(), .split()) for parsing CSV data. Chapter 9: Dictionaries and nested dictionaries for structured data.",
         "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis \u2014 Chapters 8 & 9",
         "programRequirements": [
-            "CITY_DISTANCES is a nested dictionary replacing all individual distance constants",
-            "CITY_INFO is a dictionary with city type, tagline, and win status for each city",
-            "display_destinations() reads destinations from CITY_DISTANCES, not hardcoded values",
-            "get_destination_by_number() returns a city name and distance from the dictionary",
-            "is_win_city() and is_dead_end() use CITY_INFO lookups, not hardcoded city names",
-            "Top-of-file comment block includes name, abc123, section, and description",
-            "All functions have docstrings"
+            "Your program MUST load city data from external files, not hardcoded constants",
+            "Your program MUST use <code>.strip()</code> and <code>.split(',')</code> to parse file data",
+            "Your program MUST use dictionaries to store city distances and city info",
+            "Your program MUST use <code>function_library.py</code> for random functions and input validation",
+            "Your program MUST include a top-of-file docstring with name, abc123, section, and description"
         ],
-        "namedConstants": [
-            { "name": "CITY_DISTANCES", "description": "Nested dict \u2014 city name \u2192 {destination: miles}. Replaces all individual distance constants from Module 3." },
-            { "name": "CITY_INFO",      "description": "Dict \u2014 city name \u2192 {type, tagline}. Stores city classification and display text." },
-            { "name": "STARTING_CITY",  "description": "String constant \u2014 always 'San Antonio'. Still a named constant, not hardcoded." }
-        ],
-        "filenameNote": "Submit lab-4-1.py this week. Your function_library.py from Module 3 does not change this week \u2014 no need to resubmit it.",
-        "saveYourCode": "Keep lab-4-1.py \u2014 Module 4.2 adds string method input handling directly on top of this dictionary foundation."
+        "additionalFilesNote": "This lab requires three additional files from Canvas: <code>city_distances.txt</code> (CSV format: city1,city2,distance), <code>city_info.txt</code> (CSV format: city,type,tagline), and your <code>function_library.py</code> from Module 3. Keep all four files in the same folder.",
+        "filenameNote": "Submit <code>lab-4-1.py</code> this week.",
+        "saveYourCode": "Keep <code>lab-4-1.py</code> \u2014 Module 4.2 adds string method input handling directly on top of your file-loading foundation."
     },
     "timeGuide": {
-        "totalTime": "60\u201375 Minutes",
+        "totalTime": "90\u2013120 Minutes",
         "rows": [
-            { "checkpoint": "CP1: CITY_DISTANCES",    "time": "20 min", "task": "Build the nested distances dictionary, replacing all constants" },
-            { "checkpoint": "CP2: CITY_INFO",         "time": "15 min", "task": "Build the city info dictionary with type and tagline" },
-            { "checkpoint": "CP3: Helper Functions",  "time": "20 min", "task": "Refactor display_destinations, get_destination_by_number, is_win_city, is_dead_end" },
-            { "checkpoint": "CP4: Final Checklist",   "time": "10 min", "task": "Test every city, clean up, and submit" }
+            { "checkpoint": "CP1: Load City Distances", "time": "25\u201330 min", "task": "Parse file into nested dictionary" },
+            { "checkpoint": "CP2: Load City Info",      "time": "20\u201325 min", "task": "Parse file into dictionary with nested data" },
+            { "checkpoint": "CP3: Data-Driven Display", "time": "20\u201325 min", "task": "Display destinations from dictionary" },
+            { "checkpoint": "CP4: Complete Game Loop",  "time": "25\u201330 min", "task": "Integrate all functions, clean input" }
         ]
     },
     "beforeYouBegin": {
-        "intro": "Here is how your program changes this week. Every [NEW] item is something you are adding. Every [REPLACED] item is something that changes from your 3.3 code. Everything else in your game loop stays the same.",
-        "architecture": "# ---- CONSTANTS ---- (top of file)\nSTARTING_CITY   = 'San Antonio'          (unchanged)\nCITY_DISTANCES  = { ... }                [NEW -- replaces 20+ distance constants]\nCITY_INFO       = { ... }                [NEW -- replaces city-type if/elif chains]\n\n# ---- HELPER FUNCTIONS ----\ndisplay_destinations(current_city)       [REPLACED -- now reads from CITY_DISTANCES]\nget_destination_by_number(city, num)     [NEW -- returns name + distance from dict]\nis_win_city(city_name)                   [NEW -- checks CITY_INFO['type'] == 'WIN']\nis_dead_end(city_name)                   [NEW -- checks CITY_INFO['type'] in dead ends]\n\n# (all your Module 3 functions stay unchanged)\nroll_d20(), flip_coin(), etc.            (from function_library -- no changes this week)\n\nGAME LOOP:  (structure unchanged -- only the data source changes)\n|\n|-- Display city tagline from CITY_INFO   [REPLACED]\n|-- Call display_destinations()           [REPLACED -- uses dict now]\n|-- Get player choice (get_valid_int)     (unchanged)\n|-- Call get_destination_by_number()      [REPLACED -- was hardcoded]\n|\n|   DESTINATION GATE: (coin flip -- unchanged until 4.3)\n|\n|   TRAVEL LOOP: (unchanged)\n|   |-- Roll D20, accumulate miles\n|   |-- 30% hazard check\n|   |-- Repeat until arrival\n|\n|-- Call is_win_city()                    [REPLACED]\n|-- Call is_dead_end()                    [REPLACED]\n|-- Update stats, check keep_playing"
+        "intro": "Here's how your finished program fits together. The [NEW] tags show what you're adding. [REPLACED] tags show what changes from your 3.3 code.",
+        "architecture": "# ---- DATA LOADING FUNCTIONS ----  [NEW]\nload_city_distances()   reads city_distances.txt \u2192 nested dict\nload_city_info()        reads city_info.txt \u2192 dict of dicts\n\n# ---- NAVIGATION FUNCTIONS ----  [NEW]\ndisplay_destinations(city, distances)      shows menu from dict\nget_destination_by_number(city, distances) validates user pick\n\n# ---- MAIN PROGRAM ----\nLoad data files into dictionaries  [NEW]\nGet player name\ncurrent_city = 'San Antonio'\n\nGAME LOOP (each pass is one leg):\n\u2502\n\u2502\u2500\u2500 Display city info from city_info dict  [REPLACED] was hardcoded\n\u2502\u2500\u2500 Show destinations from distances dict  [REPLACED] was if/elif menu\n\u2502\u2500\u2500 Destination Gate (coin flip)\n\u2502\n\u2502   TRAVEL LOOP (each pass is one turn):\n\u2502   \u2502\u2500\u2500 Fixed 50-mile travel, check for hazard\n\u2502   \u2502\u2500\u2500 Repeat until you arrive\n\u2502\n\u2502\u2500\u2500 Update trip totals\n\u2502\u2500\u2500 Check outcome: beach / dead end / continue\n\u2502\u2500\u2500 Save and quit option\n\n# ---- AFTER THE LOOP ----\nPrint trip summary\n\"Thanks for playing!\""
     },
     "checkpoints": [
         {
             "number": 1,
-            "title":  "Build CITY_DISTANCES",
+            "title":  "Load City Distances",
             "content": [
+                {
+                    "type": "mentor_quote",
+                    "character": "Terrence \"T-Bone\" Booker",
+                    "role":      "Senior Developer, Bat City Collective",
+                    "headshot":  "Terrence-Booker.png",
+                    "quote":     "Your 3.3 game works, but all that city data is baked into the code. This week you're pulling it OUT into text files and loading it INTO dictionaries. Two new functions, one big refactor of your menu \u2014 and suddenly your game can handle any number of cities."
+                },
                 {
                     "type": "h3",
                     "label": "what_youre_building"
                 },
                 {
                     "type": "text",
-                    "body": "You are creating a nested dictionary that maps every city to its available destinations and the driving distance in miles. Once this is in place, <code>CITY_DISTANCES['San Antonio']['Austin']</code> returns <code>80</code> \u2014 no constant required."
+                    "body": "A function that reads <code>city_distances.txt</code> and creates a nested dictionary where you can look up distances like <code>distances['San Antonio']['Houston']</code> \u2192 <code>200</code>."
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "In Modules 1\u20133, you had 20+ constants like <code>SAT_TO_HOUSTON = 200</code>. Adding a new city meant adding 5+ new constants AND updating multiple if-elif chains. With a nested dictionary loaded from a file, adding a city is just adding lines to the data file. Your code doesn't change at all."
                 },
                 {
                     "type": "callout",
                     "variant": "bookex",
                     "references": [
                         {
+                            "programId":   "8-10",
+                            "filename":    "split_date.py",
+                            "description": "You used .split('/') to break a date string into parts. Now use .split(',') to break each CSV line into city1, city2, and distance."
+                        },
+                        {
                             "programId":   "9-1",
                             "filename":    "card_dealer.py",
-                            "description": "Shows dictionary creation, key access with bracket notation, and looping through keys. The same patterns apply directly to CITY_DISTANCES."
+                            "description": "You created a dictionary with key-value pairs. Now you're building a nested dictionary where each city maps to another dictionary of destinations."
                         }
                     ]
                 },
@@ -87,116 +102,24 @@
                 {
                     "type": "instructions",
                     "items": [
-                        "Delete (or comment out) all of your individual distance constants from Module 3 \u2014 the lines like <code>SAT_AUS = 80</code>, <code>SAT_HOU = 200</code>, and so on.",
-                        "Near the top of your file, create <code>CITY_DISTANCES</code> as an empty dictionary: <code>CITY_DISTANCES = {}</code>.",
-                        "Add San Antonio as the first outer key. Its value is another dictionary with each destination city as a key and the mileage as an integer value.",
-                        "Add the remaining nine cities as outer keys, each with their own inner destination dictionary. Use the city and mileage data provided in the code plan.",
-                        "Test a few lookups in isolation before continuing: <code>print(CITY_DISTANCES['San Antonio']['Austin'])</code> should print <code>80</code>."
-                    ]
-                },
-                {
-                    "type": "callout",
-                    "variant": "tip",
-                    "title": "Build It in Pieces",
-                    "body": "Don't try to write all ten cities at once. Add San Antonio, test it, then add Houston, test again. A working two-city dictionary is better than a broken ten-city one."
-                },
-                {
-                    "type": "callout",
-                    "variant": "pitfall",
-                    "title": "Keys Are Case-Sensitive",
-                    "body": "Dictionary keys must match exactly \u2014 capitalization, spaces, and all. <code>'San Antonio'</code> and <code>'san antonio'</code> are different keys. Pick one convention and stick to it throughout the entire file."
-                }
-            ]
-        },
-        {
-            "number": 2,
-            "title":  "Build CITY_INFO",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "You are creating a second dictionary that stores each city's type (WIN, HUB, GATEWAY, etc.) and its tagline. This replaces every hardcoded city-type check in your game loop with a clean dictionary lookup."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Below your <code>CITY_DISTANCES</code> constant, create <code>CITY_INFO = {}</code>.",
-                        "For each of the ten cities, add an entry where the key is the city name (spelled exactly as in CITY_DISTANCES) and the value is a dictionary with two keys: <code>'type'</code> and <code>'tagline'</code>.",
-                        "Use these city types and taglines from the code plan: San Antonio (START, 'Home of the Alamo'), Houston (GATEWAY, 'Space City'), Austin (CORRIDOR, 'Keep it weird'), Corpus Christi (WIN, 'The Sparkling City by the Sea'), Galveston (WIN, 'The Playground of the South'), Laredo (DEAD_END, 'Gateway to Mexico'), El Paso (WRONG_WAY, 'Closer to California than Houston'), Dallas (HUB, 'Where everything is bigger'), Fort Worth (HUB, 'Where the West begins'), Texarkana (DEAD_END, 'Two states at once').",
-                        "Test a lookup: <code>print(CITY_INFO['Austin']['tagline'])</code> should print <code>Keep it weird</code>."
-                    ]
-                },
-                {
-                    "type": "callout",
-                    "variant": "info",
-                    "title": "Why a Nested Dict Instead of Two Separate Ones?",
-                    "body": "You could have separate <code>CITY_TYPES</code> and <code>CITY_TAGLINES</code> dictionaries, but grouping all city data under one outer key keeps related information together. When you add a new city, you add one entry \u2014 not two.",
-                    "items": [
-                        "Easier to maintain \u2014 one place to update",
-                        "Easier to extend \u2014 add a new field without touching existing code",
-                        "Clearer intent \u2014 <code>CITY_INFO['Austin']</code> returns everything about Austin"
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "text",
-                    "body": "After this checkpoint, you have two dictionaries defined near the top of your file. Neither is connected to the game loop yet \u2014 that happens in CP3. Run the file to confirm it loads without errors, then move on."
-                }
-            ]
-        },
-        {
-            "number": 3,
-            "title":  "Refactor the Helper Functions",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "Now you wire the dictionaries into the game by rewriting four helper functions. Three of them (<code>display_destinations</code>, <code>is_win_city</code>, <code>is_dead_end</code>) already exist in your code from Module 3. You are replacing their implementations. One (<code>get_destination_by_number</code>) is new."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<strong>display_destinations(current_city):</strong> Use <code>CITY_DISTANCES[current_city]</code> to get the destination dictionary. Loop through it with a counter to display each option as a numbered menu. Return <code>list(CITY_DISTANCES[current_city].keys())</code> so the game loop knows what options are available.",
-                        "<strong>get_destination_by_number(current_city, choice_num):</strong> Get <code>list(CITY_DISTANCES[current_city].keys())</code>, then index into it with <code>choice_num - 1</code>. Return the destination city name and its mileage as two separate values.",
-                        "<strong>is_win_city(city_name):</strong> Use <code>CITY_INFO.get(city_name, {})</code> to safely fetch the city's data, then check if <code>city_data.get('type', '')</code> equals <code>'WIN'</code>. Return True or False.",
-                        "<strong>is_dead_end(city_name):</strong> Same pattern as is_win_city, but check if the type is in <code>['DEAD_END', 'WRONG_WAY']</code>.",
-                        "Update your game loop to display the city tagline from CITY_INFO at the start of each turn: <code>tagline = CITY_INFO.get(current_city, {}).get('tagline', '')</code>.",
-                        "Run the game and play through at least one full turn. Confirm the destination menu appears correctly and distances match the dictionary values."
-                    ]
-                },
-                {
-                    "type": "callout",
-                    "variant": "tip",
-                    "title": "Use .get() for Safe Lookups",
-                    "body": "When looking up a city in <code>CITY_INFO</code>, use <code>.get(city_name, {})</code> instead of direct bracket access. If a city somehow isn't in the dictionary, you get an empty dict back instead of a KeyError that crashes the program.",
-                    "items": [
-                        "<code>CITY_INFO['Atlantis']</code> \u2014 raises KeyError, program crashes",
-                        "<code>CITY_INFO.get('Atlantis', {})</code> \u2014 returns empty dict, program continues"
+                        "Create a new file called <code>lab-4-1.py</code> with your standard docstring.",
+                        "Add imports: <code>import random</code> and <code>import function_library</code>.",
+                        "Define <code>load_city_distances(filename)</code> that takes a filename parameter.",
+                        "Create an empty dictionary inside the function: <code>distances = {}</code>.",
+                        "Open the file and loop through each line.",
+                        "For each line: use <code>line.strip().split(',')</code> to get a list of parts.",
+                        "Extract: <code>city1 = parts[0]</code>, <code>city2 = parts[1]</code>, <code>distance = int(parts[2])</code>.",
+                        "Check if city1 is already a key; if not, create an empty dictionary for it: <code>if city1 not in distances: distances[city1] = {}</code>.",
+                        "Add the destination: <code>distances[city1][city2] = distance</code>.",
+                        "Close the file and return the distances dictionary."
                     ]
                 },
                 {
                     "type": "mentor_quote",
-                    "character": "Tyler Nguyen",
-                    "role":      "Junior Developer, Bat City Collective",
-                    "headshot":  "Tyler-Nguyen.png",
-                    "quote":     "I just replaced like fifteen lines of elif chains with four lines of dictionary lookups. I know this is obvious to everyone else but I'm having a moment over here."
+                    "character": "Terrence \"T-Bone\" Booker",
+                    "role":      "Senior Developer, Bat City Collective",
+                    "headshot":  "Terrence-Booker.png",
+                    "quote":     "When testing file-loaded data, I always check three things: Does the file load correctly? Is the data structured right? What happens if the file is malformed? Print your dictionary right after loading it \u2014 if the keys and values look right, your parsing worked. If not, you found the bug early."
                 },
                 {
                     "type": "h3",
@@ -204,86 +127,329 @@
                 },
                 {
                     "type": "table",
-                    "headers": ["Mistake", "What Goes Wrong", "Fix"],
+                    "headers": ["Common Mistake", "Fix"],
                     "rows": [
-                        ["Using the old constants alongside the new dict", "Confusing source of truth \u2014 distance from where?", "Delete or comment out all old constants before testing"],
-                        ["<code>CITY_DISTANCES[current_city]</code> raises KeyError", "City name in game state doesn't match dict key exactly", "Print <code>current_city</code> and compare to dict keys character by character"],
-                        ["<code>get_destination_by_number</code> returns wrong city", "Off-by-one error \u2014 player enters 1, index is 0", "Use <code>choice_num - 1</code> when indexing into the keys list"],
-                        ["<code>display_destinations</code> shows no options", "Returned list is empty or function isn't being called", "Check that <code>current_city</code> is spelled exactly as a key in CITY_DISTANCES"]
+                        ["Forgetting <code>.strip()</code>", "Lines have <code>\\n</code> at the end. Use <code>line.strip()</code> first."],
+                        ["KeyError when adding to nested dict", "Check if city1 exists first: <code>if city1 not in distances:</code>"],
+                        ["Forgetting to convert distance to int", "Use <code>int(parts[2])</code> \u2014 <code>split()</code> returns strings."]
                     ],
                     "accent": "green"
-                }
-            ]
-        },
-        {
-            "number": 4,
-            "title":  "Test Every City and Submit",
-            "content": [
+                },
                 {
                     "type": "h3",
                     "label": "test_your_code"
                 },
                 {
                     "type": "text",
-                    "body": "Before submitting, run through a complete test of your dictionary integration. The game should behave identically to your Module 3 version from a player's perspective \u2014 the only thing that changed is where the data lives."
+                    "body": "<strong>Step 1:</strong> Add this test harness at the bottom of your file:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\ndistances = load_city_distances('city_distances.txt')\nprint('Loaded cities:', list(distances.keys()))\nprint('San Antonio to Houston:', distances['San Antonio']['Houston'])\nprint('Houston destinations:', distances['Houston'])"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run and verify this output:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Loaded cities: ['San Antonio', 'Houston', 'Austin', 'Dallas', ...]\nSan Antonio to Houston: 200\nHouston destinations: {'Galveston': 50, 'Dallas': 240, 'San Antonio': 200}"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Verify the distance is an <code>int</code> (200) not a <code>string</code> ('200'). <strong>Step 4:</strong> <strong>DELETE the DEBUG lines</strong> before moving to Checkpoint 2."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "text",
+                    "body": "<ul><li>Docstring with your name, ID, section, and description</li><li><code>load_city_distances()</code> function that returns a nested dictionary</li><li>Uses <code>.strip()</code> and <code>.split(',')</code> to parse each line</li><li>Can access any distance with <code>distances[city1][city2]</code></li></ul>"
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "title":  "Load City Info",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "A function that reads <code>city_info.txt</code> and creates a dictionary where each city maps to <em>another dictionary</em> containing its type and tagline. Like this: <code>city_info['Houston']['tagline']</code> \u2192 <code>'Space City'</code>."
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId":   "9-1",
+                            "filename":    "card_dealer.py",
+                            "description": "You built a dictionary where card names map to values. Now build a dictionary where city names map to dictionaries of attributes."
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
                 },
                 {
                     "type": "instructions",
                     "items": [
-                        "Start the game and confirm that San Antonio's tagline ('Home of the Alamo') displays correctly.",
-                        "Confirm that the destination menu for San Antonio shows all five options with the correct mileage values pulled from <code>CITY_DISTANCES</code>.",
-                        "Travel to Austin and confirm that Austin's tagline and available destinations appear correctly.",
-                        "Travel to Corpus Christi and confirm that <code>is_win_city()</code> triggers the win condition.",
-                        "Travel to Laredo and confirm that <code>is_dead_end()</code> triggers correctly.",
-                        "Confirm that no hardcoded distance constants appear anywhere in your code. Search for any numeric literals that look like mileage values."
+                        "Define <code>load_city_info(filename)</code> that takes a filename parameter.",
+                        "Create an empty dictionary: <code>info = {}</code>.",
+                        "Open the file and loop through each line.",
+                        "For each line: use <code>line.strip().split(',')</code> to get a list of parts.",
+                        "Extract: <code>city = parts[0]</code>, <code>city_type = parts[1]</code>, <code>tagline = parts[2]</code>.",
+                        "Create the nested entry: <code>info[city] = {'type': city_type, 'tagline': tagline}</code>.",
+                        "Close the file and return the <code>info</code> dictionary."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this test harness:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 3\ncity_info = load_city_info('city_info.txt')\nprint('Houston type:', city_info['Houston']['type'])\nprint('Houston tagline:', city_info['Houston']['tagline'])\nprint('Corpus Christi type:', city_info['Corpus Christi']['type'])"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run and verify this output:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Houston type: GATEWAY\nHouston tagline: Space City\nCorpus Christi type: WIN"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> <strong>DELETE the DEBUG lines</strong> before moving to Checkpoint 3."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Common Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Using <code>city_info['type']</code> directly", "Need TWO keys: <code>city_info[city_name]['type']</code>"],
+                        ["Inconsistent key names", "Use exact keys: <code>'type'</code> and <code>'tagline'</code> (lowercase)"],
+                        ["Forgetting to return the dictionary", "Function must <code>return info</code> at the end"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "text",
+                    "body": "<ul><li><code>load_city_info()</code> function that returns a dictionary of dictionaries</li><li>Each city maps to <code>{'type': ..., 'tagline': ...}</code></li><li>Can access city attributes with <code>city_info[city]['type']</code></li></ul>"
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title":  "Data-Driven Display",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Functions that display available destinations from a city and help with navigation \u2014 all driven by your dictionaries, not hardcoded values."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Create <code>display_destinations(city, distances)</code> that takes the current city name and the distances dictionary.",
+                        "Loop through the destinations using a counter variable to number each option (1, 2, 3\u2026).",
+                        "Print each option: number, destination name, and distance.",
+                        "Create <code>get_destination_by_number(city, distances, choice)</code>.",
+                        "Convert dict keys to a list: <code>destinations = list(distances[city].keys())</code>.",
+                        "Return the destination at index <code>choice - 1</code> (user picks 1, but list index is 0).",
+                        "Create <code>is_win_city(city, city_info)</code> that checks if <code>city_info[city]['type']</code> equals <code>'WIN'</code>.",
+                        "Create <code>is_dead_end(city, city_info)</code> that checks if the type is <code>'DEAD_END'</code> or <code>'WRONG_WAY'</code>."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this test harness:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 4\ndistances = load_city_distances('city_distances.txt')\ncity_info = load_city_info('city_info.txt')\n\ndisplay_destinations('San Antonio', distances)\ndest = get_destination_by_number('San Antonio', distances, 2)\nprint('Choice 2 is:', dest)\n\nprint('Corpus Christi is win?', is_win_city('Corpus Christi', city_info))\nprint('Laredo is dead end?', is_dead_end('Laredo', city_info))"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run and verify this output:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "From San Antonio, you can travel to:\n\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice 2 is: Houston\nCorpus Christi is win? True\nLaredo is dead end? True"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> <strong>DELETE the DEBUG lines</strong> before moving to Checkpoint 4."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Common Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Using <code>choice</code> as index directly", "User enters 1 for first item, but <code>list(dict.keys())[0]</code> is index 0. Use <code>choice - 1</code>."],
+                        ["Checking type with <code>== 'win'</code> (lowercase)", "Types are uppercase: <code>'WIN'</code>, <code>'DEAD_END'</code>, <code>'GATEWAY'</code>."],
+                        ["Forgetting <code>'WRONG_WAY'</code> in <code>is_dead_end()</code>", "Both <code>'DEAD_END'</code> and <code>'WRONG_WAY'</code> end the game."]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "text",
+                    "body": "<ul><li><code>display_destinations()</code> shows a numbered menu from the dictionary</li><li><code>get_destination_by_number()</code> converts user choice to destination name</li><li><code>is_win_city()</code> returns <code>True</code> for WIN cities</li><li><code>is_dead_end()</code> returns <code>True</code> for DEAD_END or WRONG_WAY cities</li></ul>"
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "title":  "Complete Game Loop",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "A complete game that loads data, gets the player's name, displays current city info, lets the player choose destinations, uses a coin flip gate, and tracks the route until they reach the beach or a dead end."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Create a <code>main()</code> function with a welcome banner.",
+                        "Load both data files using your two loading functions.",
+                        "Get the player's name: use <code>input().strip()</code> to clean whitespace.",
+                        "Initialize game state: <code>current_city = 'San Antonio'</code>, <code>total_miles = 0</code>, <code>visited = [current_city]</code>.",
+                        "Start the game loop: <code>while playing:</code>.",
+                        "Show the current city name and its tagline from <code>city_info</code>.",
+                        "Check for a win (<code>is_win_city</code>) or dead end (<code>is_dead_end</code>).",
+                        "Display destinations and get the player's choice using <code>function_library.get_valid_int()</code>.",
+                        "Use the coin flip gate: HEADS = go to chosen city, TAILS = random redirect.",
+                        "Update state: <code>current_city</code>, <code>total_miles</code>, and the <code>visited</code> list.",
+                        "After the loop ends, print the final trip report."
                     ]
                 },
                 {
                     "type": "callout",
-                    "variant": "success",
-                    "title": "You're Done When...",
-                    "body": "Every city lookup goes through <code>CITY_DISTANCES</code> or <code>CITY_INFO</code>. There are no hardcoded distances anywhere in your game loop or helper functions. The game plays exactly like your Module 3 version \u2014 the dictionaries are invisible to the player."
+                    "variant": "tip",
+                    "title":  "Input Validation Is Data-Driven Too",
+                    "body":   "Use <code>function_library.get_valid_int(prompt, min, max)</code> for the destination choice. The upper bound is <code>len(distances[current_city])</code> \u2014 no hardcoding required."
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add the main guard at the bottom of your file:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "if __name__ == '__main__':\n    main()"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Play through the game and verify:"
+                },
+                {
+                    "type": "text",
+                    "body": "<ul><li>Data loads correctly (shows number of cities)</li><li>Current city shows tagline from the data file</li><li>Destination menu shows all options from the dictionary</li><li>Coin flip works (HEADS = choice, TAILS = random)</li><li>Reaching Corpus Christi or Galveston shows a win</li><li>Final report shows route and total miles</li></ul>"
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Common Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Data files not in the same folder as the script", "Python looks for files relative to where the script runs. Keep all .txt files with lab-4-1.py."],
+                        ["Not calling loading functions before using data", "Call <code>load_city_distances()</code> and <code>load_city_info()</code> at the start of <code>main()</code>."],
+                        ["Missing <code>if __name__ == '__main__':</code>", "Without this guard, <code>main()</code> runs when the module is imported, which breaks CodeGrade."]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "text",
+                    "body": "<ul><li>Complete <code>main()</code> function with game loop</li><li>All data comes from files (no hardcoded constants for cities)</li><li>Clean input with <code>.strip()</code></li><li>Uses <code>function_library</code> for coin flip and input validation</li><li>Complete trip report at the end</li></ul>"
                 }
             ]
         }
     ],
     "finalChecklist": {
         "beforeYouSubmit": [
-            "CITY_DISTANCES is defined with all ten cities and correct mileage values",
-            "CITY_INFO is defined with all ten cities, each with 'type' and 'tagline' keys",
-            "All old individual distance constants have been removed or commented out",
-            "display_destinations() reads from CITY_DISTANCES, not hardcoded values",
-            "get_destination_by_number() returns city name and distance from CITY_DISTANCES",
-            "is_win_city() checks CITY_INFO['type'] == 'WIN'",
-            "is_dead_end() checks CITY_INFO['type'] in dead-end types",
-            "City tagline displays at the start of each turn using CITY_INFO",
-            "Top-of-file comment block includes name, abc123, section, and description",
-            "All functions have docstrings"
+            "File is named exactly <code>lab-4-1.py</code>",
+            "Docstring includes your name, abc123, section, and description",
+            "Uses <code>.strip()</code> and <code>.split(',')</code> to parse file data",
+            "Uses dictionaries (not hardcoded constants) to store city data",
+            "Uses <code>function_library</code> for <code>flip_coin</code> and <code>get_valid_int</code>",
+            "All DEBUG/test code has been removed",
+            "No syntax errors when you run the program"
         ],
-        "scopeReminder": "You may use any technique from Chapters 2 through 9 that has been introduced so far. This week's focus is Chapter 9 dictionaries. String methods like .upper() and .strip() are technically in Chapter 8 but are being saved for Module 4.2 \u2014 do not use them yet.",
+        "scopeReminder": "Chapters 2\u20139 only. String methods like .strip() and .split() are the Chapter 8 focus this week. .upper() and .lower() are saved for Module 4.2. Sets are saved for Module 4.3. CodeGrade will flag code using techniques from later chapters.",
         "permittedTechniques": {
-            "chapters": "2\u20139 (Chapters 2\u20137 fully permitted from previous modules; Chapter 9 dictionaries as introduced this week; Chapter 8 string methods arrive in Module 4.2)",
+            "chapters": "2\u20139 (Chapters 2\u20137 fully permitted from previous modules; Chapter 8 string methods .strip() and .split() as introduced this week; Chapter 9 dictionaries and nested dictionaries)",
             "specific": [
-                "Dictionary creation: <code>CITY_DISTANCES = {'San Antonio': {'Austin': 80}}</code>",
-                "Key access: <code>CITY_DISTANCES['San Antonio']['Austin']</code>",
-                "Safe access: <code>CITY_INFO.get('Austin', {})</code>",
-                "Dict methods: <code>.keys()</code>, <code>.values()</code>, <code>.items()</code>",
-                "Membership test: <code>if city in CITY_DISTANCES:</code>"
+                "String methods: <code>.strip()</code>, <code>.split(',')</code>",
+                "File I/O: <code>open(filename)</code>, reading lines in a loop",
+                "Dictionaries: creation, key access, nested dicts",
+                "<code>import random</code>, <code>import function_library</code>"
             ],
-            "notPermitted": ".upper(), .lower(), .strip() (Module 4.2), sets (Module 4.3), list comprehensions, try/except, classes, inheritance"
+            "notPermitted": "Classes (Chapter 10), inheritance (Chapter 11), sets (Module 4.3), .upper() and .lower() (Module 4.2), list comprehensions"
         },
         "warnings": [
-            "Do not use .upper() or .strip() yet \u2014 those are the Module 4.2 reveal. CodeGrade's scope check will flag premature use of string methods."
+            "Do not use <code>.upper()</code> or <code>.lower()</code> yet \u2014 those are the Module 4.2 reveal. CodeGrade's scope check will flag premature use."
         ],
-        "saveYourCode": "Keep lab-4-1.py \u2014 Module 4.2 adds string method input handling directly on top of this dictionary foundation. You will copy this file and build on it."
+        "saveYourCode": "Keep <code>lab-4-1.py</code> \u2014 Module 4.2 adds string method input handling directly on top of your file-loading foundation. You will copy this file and build on it."
     },
     "needHelp": {
         "ifYouGetStuck": [
-            "Open your textbook to Program 9-1 (card_dealer.py) and trace through how the deck dictionary is built and accessed \u2014 it's the same pattern as CITY_DISTANCES",
-            "If you're getting a KeyError, print your current_city variable right before the lookup and compare it character by character to your dictionary keys",
-            "Build and test one dictionary before starting the other \u2014 confirm CITY_DISTANCES works completely before writing CITY_INFO",
-            "Submit to CodeGrade early \u2014 the test output shows exactly which lookup is failing and what value it expected"
+            "Re-read Program 8-10 (split_date.py) \u2014 the pattern for splitting CSV data is exactly what you need here",
+            "Re-read Program 9-1 (card_dealer.py) \u2014 creating and accessing dictionaries",
+            "Test each loading function independently \u2014 get <code>load_city_distances()</code> working before you start <code>load_city_info()</code>",
+            "Use DEBUG prints \u2014 print what you're parsing from each line to verify it's correct",
+            "Submit to CodeGrade early \u2014 it shows exactly which tests pass or fail"
         ],
-        "bookexResourceNote": "Chapter 9 BookEx Reference Guide (bookex-ch09.py) \u2014 step-by-step breakdown of Program 9-1. The card deck dictionary is structurally identical to CITY_DISTANCES."
+        "bookexResourceNote": "Chapter 8 and 9 BookEx Reference Guides \u2014 step-by-step breakdowns of every textbook example, including split_date.py and card_dealer.py."
     }
 }

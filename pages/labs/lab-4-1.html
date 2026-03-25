@@ -17,12 +17,12 @@
       </div>
       <div class="lc-topper-title">City Data</div>
     </div>
-    <div class="lc-sub-banner">MODULE 4 &bull; WEEK 1 &bull; BUILD &bull; CHAPTERS 8–9: MORE ABOUT STRINGS, DICTIONARIES AND SETS</div>
+    <div class="lc-sub-banner">MODULE 4 &bull; WEEK 1 &bull; BUILD &bull; CHAPTERS 8–9: MORE ABOUT STRINGS, DICTIONARIES</div>
   </div>
   <div class="lc-panel">
     <div class="lc-h3">Overview</div>
     <img src="../../branding/AllMyEggses.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
-    <p>Your Module 3 code is functional, but it has a problem that every working developer eventually hits: hardcoded data. You have 20+ individual distance constants, city-type checks baked into if/elif chains, and no easy way to add a new city without touching five different places in the file. This week, you fix all of that in one move. <code>CITY_DISTANCES</code> and <code>CITY_INFO</code> are two dictionaries that replace every one of those constants. Adding a new city goes from a multi-file, multi-section change to a single dictionary entry. That's what data-driven design looks like in practice.</p>
+    <p>Remember all those distance constants? <code>SAT_TO_CORPUS = 150</code>, <code>SAT_TO_HOUSTON = 200</code>, on and on? And those long if-elif chains for hazards? This week, all that hardcoded data moves into <strong>external files</strong> and gets loaded into <strong>dictionaries</strong>. One data file, one function to load it, and suddenly adding 50 more cities is just adding 50 lines to a text file. <em>This</em> is how real programs work.</p>
     <div style="clear: both;"></div>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
@@ -30,7 +30,7 @@
           <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"If you had to add 20 more cities, how long would that take with your current code? Now look at a dictionary. That&#x27;s your answer."</div>
+          <div class="lc-mentor__quote">"If I asked you to add 20 new cities to the game using constants, how long would it take? Now imagine it&#x27;s just adding 20 lines to a text file. That&#x27;s why we use data files. Dictionaries let your code work with data that doesn&#x27;t exist when you write it."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
@@ -40,53 +40,27 @@
     </div>
     <div class="lc-h3 lc-h3--yellow">Learning Objectives</div>
     <ul class="lc-objectives">
-      <li>Create a nested dictionary to store city-to-city distances</li>
-      <li>Create a second dictionary to store city type, tagline, and win status</li>
-      <li>Refactor helper functions to use dictionary lookups instead of hardcoded constants</li>
-      <li>Use the &lt;code&gt;.get()&lt;/code&gt; method for safe key access with a fallback value</li>
-      <li>Understand why dictionaries scale better than parallel constants</li>
+      <li>Write &lt;code&gt;load_city_distances()&lt;/code&gt; to parse &lt;code&gt;city_distances.txt&lt;/code&gt; into a nested dictionary</li>
+      <li>Write &lt;code&gt;load_city_info()&lt;/code&gt; to parse &lt;code&gt;city_info.txt&lt;/code&gt; into a dictionary with nested data</li>
+      <li>Display destinations and distances from dictionaries, not hardcoded values</li>
+      <li>Use &lt;code&gt;.strip()&lt;/code&gt; and &lt;code&gt;.split(&#x27;,&#x27;)&lt;/code&gt; to clean and parse file input</li>
+      <li>Wire all functions into a complete game loop with win detection and a coin flip gate</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
-    <p>Chapter 9: Program 9-1 (card_dealer.py) shows dictionary creation, key access, and looping with random.choice(). The same patterns apply directly to CITY_DISTANCES.</p>
+    <p>Chapter 8: String methods (.strip(), .split()) for parsing CSV data. Chapter 9: Dictionaries and nested dictionaries for structured data.</p>
     <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
     <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 8 &amp; 9</p>
     <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
     <ul>
-      <li>CITY_DISTANCES is a nested dictionary replacing all individual distance constants</li>
-      <li>CITY_INFO is a dictionary with city type, tagline, and win status for each city</li>
-      <li>display_destinations() reads destinations from CITY_DISTANCES, not hardcoded values</li>
-      <li>get_destination_by_number() returns a city name and distance from the dictionary</li>
-      <li>is_win_city() and is_dead_end() use CITY_INFO lookups, not hardcoded city names</li>
-      <li>Top-of-file comment block includes name, abc123, section, and description</li>
-      <li>All functions have docstrings</li>
+      <li>Your program MUST load city data from external files, not hardcoded constants</li>
+      <li>Your program MUST use &lt;code&gt;.strip()&lt;/code&gt; and &lt;code&gt;.split(&#x27;,&#x27;)&lt;/code&gt; to parse file data</li>
+      <li>Your program MUST use dictionaries to store city distances and city info</li>
+      <li>Your program MUST use &lt;code&gt;function_library.py&lt;/code&gt; for random functions and input validation</li>
+      <li>Your program MUST include a top-of-file docstring with name, abc123, section, and description</li>
     </ul>
-    <div class="lc-h3 lc-h3--yellow">Named Constants</div>
-    <div class="lc-table-wrap">
-      <table class="lc-table lc-named-constants__table">
-        <thead>
-          <tr>
-            <th>Constant</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-      <tr>
-        <td><code>CITY_DISTANCES</code></td>
-        <td>Nested dict — city name → {destination: miles}. Replaces all individual distance constants from Module 3.</td>
-      </tr>
-      <tr>
-        <td><code>CITY_INFO</code></td>
-        <td>Dict — city name → {type, tagline}. Stores city classification and display text.</td>
-      </tr>
-      <tr>
-        <td><code>STARTING_CITY</code></td>
-        <td>String constant — always &#x27;San Antonio&#x27;. Still a named constant, not hardcoded.</td>
-      </tr>
-        </tbody>
-      </table>
-    </div>
     <div class="lc-h3 lc-h3--yellow">Filename</div>
-    <p>Submit lab-4-1.py this week. Your function_library.py from Module 3 does not change this week — no need to resubmit it.</p>
+    <p>Submit <code>lab-4-1.py</code> this week.</p>
+    <p>This lab requires three additional files from Canvas: &lt;code&gt;city_distances.txt&lt;/code&gt; (CSV format: city1,city2,distance), &lt;code&gt;city_info.txt&lt;/code&gt; (CSV format: city,type,tagline), and your &lt;code&gt;function_library.py&lt;/code&gt; from Module 3. Keep all four files in the same folder.</p>
     <div class="lc-callout lc-callout--success">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -98,7 +72,7 @@
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">Save Your Code</div>
         <div class="lc-callout__body">
-          <p>Keep lab-4-1.py — Module 4.2 adds string method input handling directly on top of this dictionary foundation.</p>
+          <p>Keep &lt;code&gt;lab-4-1.py&lt;/code&gt; — Module 4.2 adds string method input handling directly on top of your file-loading foundation.</p>
         </div>
       </div>
     </div>
@@ -108,7 +82,7 @@
 
   <div class="lc-topper">
     <div class="lc-topper-title">Time Guide</div>
-    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 60–75 Minutes</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 90–120 Minutes</div>
   </div>
 
   <div class="lc-panel">
@@ -124,24 +98,24 @@
         </thead>
         <tbody>
       <tr>
-        <td><strong>CP1: CITY_DISTANCES</strong></td>
-        <td>20 min</td>
-        <td>Build the nested distances dictionary, replacing all constants</td>
+        <td><strong>CP1: Load City Distances</strong></td>
+        <td>25–30 min</td>
+        <td>Parse file into nested dictionary</td>
       </tr>
       <tr>
-        <td><strong>CP2: CITY_INFO</strong></td>
-        <td>15 min</td>
-        <td>Build the city info dictionary with type and tagline</td>
+        <td><strong>CP2: Load City Info</strong></td>
+        <td>20–25 min</td>
+        <td>Parse file into dictionary with nested data</td>
       </tr>
       <tr>
-        <td><strong>CP3: Helper Functions</strong></td>
-        <td>20 min</td>
-        <td>Refactor display_destinations, get_destination_by_number, is_win_city, is_dead_end</td>
+        <td><strong>CP3: Data-Driven Display</strong></td>
+        <td>20–25 min</td>
+        <td>Display destinations from dictionary</td>
       </tr>
       <tr>
-        <td><strong>CP4: Final Checklist</strong></td>
-        <td>10 min</td>
-        <td>Test every city, clean up, and submit</td>
+        <td><strong>CP4: Complete Game Loop</strong></td>
+        <td>25–30 min</td>
+        <td>Integrate all functions, clean input</td>
       </tr>
         </tbody>
       </table>
@@ -154,39 +128,38 @@
     <div class="lc-sub-banner">Program Architecture</div>
   </div>
   <div class="lc-panel">
-    <p class="lc-arch-intro">Here is how your program changes this week. Every [NEW] item is something you are adding. Every [REPLACED] item is something that changes from your 3.3 code. Everything else in your game loop stays the same.</p>
+    <p class="lc-arch-intro">Here&#x27;s how your finished program fits together. The [NEW] tags show what you&#x27;re adding. [REPLACED] tags show what changes from your 3.3 code.</p>
     <div class="lc-arch">
-      <pre># ---- CONSTANTS ---- (top of file)
-STARTING_CITY   = &#x27;San Antonio&#x27;          (unchanged)
-CITY_DISTANCES  = { ... }                <span class="lc-arch-new">[NEW -- replaces 20+ distance constants]</span>
-CITY_INFO       = { ... }                <span class="lc-arch-new">[NEW -- replaces city-type if/elif chains]</span>
+      <pre># ---- DATA LOADING FUNCTIONS ----  <span class="lc-arch-new">[NEW]</span>
+load_city_distances()   reads city_distances.txt → nested dict
+load_city_info()        reads city_info.txt → dict of dicts
 
-# ---- HELPER FUNCTIONS ----
-display_destinations(current_city)       <span class="lc-arch-replaced">[REPLACED -- now reads from CITY_DISTANCES]</span>
-get_destination_by_number(city, num)     <span class="lc-arch-new">[NEW -- returns name + distance from dict]</span>
-is_win_city(city_name)                   <span class="lc-arch-new">[NEW -- checks CITY_INFO[&#x27;type&#x27;]</span> == &#x27;WIN&#x27;]
-is_dead_end(city_name)                   <span class="lc-arch-new">[NEW -- checks CITY_INFO[&#x27;type&#x27;]</span> in dead ends]
+# ---- NAVIGATION FUNCTIONS ----  <span class="lc-arch-new">[NEW]</span>
+display_destinations(city, distances)      shows menu from dict
+get_destination_by_number(city, distances) validates user pick
 
-# (all your Module 3 functions stay unchanged)
-roll_d20(), flip_coin(), etc.            (from function_library -- no changes this week)
+# ---- MAIN PROGRAM ----
+Load data files into dictionaries  <span class="lc-arch-new">[NEW]</span>
+Get player name
+current_city = &#x27;San Antonio&#x27;
 
-GAME LOOP:  (structure unchanged -- only the data source changes)
-|
-|-- Display city tagline from CITY_INFO   <span class="lc-arch-replaced">[REPLACED]</span>
-|-- Call display_destinations()           <span class="lc-arch-replaced">[REPLACED -- uses dict now]</span>
-|-- Get player choice (get_valid_int)     (unchanged)
-|-- Call get_destination_by_number()      <span class="lc-arch-replaced">[REPLACED -- was hardcoded]</span>
-|
-|   DESTINATION GATE: (coin flip -- unchanged until 4.3)
-|
-|   TRAVEL LOOP: (unchanged)
-|   |-- Roll D20, accumulate miles
-|   |-- 30% hazard check
-|   |-- Repeat until arrival
-|
-|-- Call is_win_city()                    <span class="lc-arch-replaced">[REPLACED]</span>
-|-- Call is_dead_end()                    <span class="lc-arch-replaced">[REPLACED]</span>
-|-- Update stats, check keep_playing</pre>
+GAME LOOP (each pass is one leg):
+│
+│── Display city info from city_info dict  <span class="lc-arch-replaced">[REPLACED]</span> was hardcoded
+│── Show destinations from distances dict  <span class="lc-arch-replaced">[REPLACED]</span> was if/elif menu
+│── Destination Gate (coin flip)
+│
+│   TRAVEL LOOP (each pass is one turn):
+│   │── Fixed 50-mile travel, check for hazard
+│   │── Repeat until you arrive
+│
+│── Update trip totals
+│── Check outcome: beach / dead end / continue
+│── Save and quit option
+
+# ---- AFTER THE LOOP ----
+Print trip summary
+&quot;Thanks for playing!&quot;</pre>
     </div>
   </div>
 </div>
@@ -202,12 +175,144 @@ GAME LOOP:  (structure unchanged -- only the data source changes)
         <div class="lc-cp-badge__num">1</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Build CITY_DISTANCES</div>
+        <div class="lc-cp-title">Load City Distances</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Your 3.3 game works, but all that city data is baked into the code. This week you&#x27;re pulling it OUT into text files and loading it INTO dictionaries. Two new functions, one big refactor of your menu — and suddenly your game can handle any number of cities."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
+        <div class="lc-mentor__role">Senior Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3">What You're Building</div>
+    <p>A function that reads <code>city_distances.txt</code> and creates a nested dictionary where you can look up distances like <code>distances['San Antonio']['Houston']</code> → <code>200</code>.</p>
+    <div class="lc-h3">Why This Matters</div>
+    <p>In Modules 1–3, you had 20+ constants like <code>SAT_TO_HOUSTON = 200</code>. Adding a new city meant adding 5+ new constants AND updating multiple if-elif chains. With a nested dictionary loaded from a file, adding a city is just adding lines to the data file. Your code doesn't change at all.</p>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Textbook Reference</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 8-10</strong>
+            — <code>split_date.py</code>
+            
+            — You used .split('/') to break a date string into parts. Now use .split(',') to break each CSV line into city1, city2, and distance.
+          </li>
+          <li>
+            <strong>Program 9-1</strong>
+            — <code>card_dealer.py</code>
+            
+            — You created a dictionary with key-value pairs. Now you're building a nested dictionary where each city maps to another dictionary of destinations.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Create a new file called <code>lab-4-1.py</code> with your standard docstring.</li>
+      <li>Add imports: <code>import random</code> and <code>import function_library</code>.</li>
+      <li>Define <code>load_city_distances(filename)</code> that takes a filename parameter.</li>
+      <li>Create an empty dictionary inside the function: <code>distances = {}</code>.</li>
+      <li>Open the file and loop through each line.</li>
+      <li>For each line: use <code>line.strip().split(',')</code> to get a list of parts.</li>
+      <li>Extract: <code>city1 = parts[0]</code>, <code>city2 = parts[1]</code>, <code>distance = int(parts[2])</code>.</li>
+      <li>Check if city1 is already a key; if not, create an empty dictionary for it: <code>if city1 not in distances: distances[city1] = {}</code>.</li>
+      <li>Add the destination: <code>distances[city1][city2] = distance</code>.</li>
+      <li>Close the file and return the distances dictionary.</li>
+    </ol>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"When testing file-loaded data, I always check three things: Does the file load correctly? Is the data structured right? What happens if the file is malformed? Print your dictionary right after loading it — if the keys and values look right, your parsing worked. If not, you found the bug early."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
+        <div class="lc-mentor__role">Senior Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Fix</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Forgetting <code>.strip()</code></td>
+        <td>Lines have <code>\n</code> at the end. Use <code>line.strip()</code> first.</td>
+      </tr>
+      <tr>
+        <td>KeyError when adding to nested dict</td>
+        <td>Check if city1 exists first: <code>if city1 not in distances:</code></td>
+      </tr>
+      <tr>
+        <td>Forgetting to convert distance to int</td>
+        <td>Use <code>int(parts[2])</code> — <code>split()</code> returns strings.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3">Test Your Code</div>
+    <p><strong>Step 1:</strong> Add this test harness at the bottom of your file:</p>
+    <div class="lc-code-block">
+      <pre><code># DEBUG - DELETE BEFORE CHECKPOINT 2
+distances = load_city_distances(&#x27;city_distances.txt&#x27;)
+print(&#x27;Loaded cities:&#x27;, list(distances.keys()))
+print(&#x27;San Antonio to Houston:&#x27;, distances[&#x27;San Antonio&#x27;][&#x27;Houston&#x27;])
+print(&#x27;Houston destinations:&#x27;, distances[&#x27;Houston&#x27;])</code></pre>
+    </div>
+    <p><strong>Step 2:</strong> Run and verify this output:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Loaded cities: [&#x27;San Antonio&#x27;, &#x27;Houston&#x27;, &#x27;Austin&#x27;, &#x27;Dallas&#x27;, ...]
+San Antonio to Houston: 200
+Houston destinations: {&#x27;Galveston&#x27;: 50, &#x27;Dallas&#x27;: 240, &#x27;San Antonio&#x27;: 200}</pre>
+    </div>
+    <p><strong>Step 3:</strong> Verify the distance is an <code>int</code> (200) not a <code>string</code> ('200'). <strong>Step 4:</strong> <strong>DELETE the DEBUG lines</strong> before moving to Checkpoint 2.</p>
+    <div class="lc-h3">What You Should Have</div>
+    <p><ul><li>Docstring with your name, ID, section, and description</li><li><code>load_city_distances()</code> function that returns a nested dictionary</li><li>Uses <code>.strip()</code> and <code>.split(',')</code> to parse each line</li><li>Can access any distance with <code>distances[city1][city2]</code></li></ul></p>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Load City Info</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
-    <p>You are creating a nested dictionary that maps every city to its available destinations and the driving distance in miles. Once this is in place, <code>CITY_DISTANCES['San Antonio']['Austin']</code> returns <code>80</code> — no constant required.</p>
+    <p>A function that reads <code>city_info.txt</code> and creates a dictionary where each city maps to <em>another dictionary</em> containing its type and tagline. Like this: <code>city_info['Houston']['tagline']</code> → <code>'Space City'</code>.</p>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -227,7 +332,7 @@ GAME LOOP:  (structure unchanged -- only the data source changes)
             <strong>Program 9-1</strong>
             — <code>card_dealer.py</code>
             
-            — Shows dictionary creation, key access with bracket notation, and looping through keys. The same patterns apply directly to CITY_DISTANCES.
+            — You built a dictionary where card names map to values. Now build a dictionary where city names map to dictionaries of attributes.
           </li>
           </ul>
         </div>
@@ -235,88 +340,58 @@ GAME LOOP:  (structure unchanged -- only the data source changes)
     </div>
     <div class="lc-h3">Step-by-Step Instructions</div>
     <ol>
-      <li>Delete (or comment out) all of your individual distance constants from Module 3 — the lines like <code>SAT_AUS = 80</code>, <code>SAT_HOU = 200</code>, and so on.</li>
-      <li>Near the top of your file, create <code>CITY_DISTANCES</code> as an empty dictionary: <code>CITY_DISTANCES = {}</code>.</li>
-      <li>Add San Antonio as the first outer key. Its value is another dictionary with each destination city as a key and the mileage as an integer value.</li>
-      <li>Add the remaining nine cities as outer keys, each with their own inner destination dictionary. Use the city and mileage data provided in the code plan.</li>
-      <li>Test a few lookups in isolation before continuing: <code>print(CITY_DISTANCES['San Antonio']['Austin'])</code> should print <code>80</code>.</li>
+      <li>Define <code>load_city_info(filename)</code> that takes a filename parameter.</li>
+      <li>Create an empty dictionary: <code>info = {}</code>.</li>
+      <li>Open the file and loop through each line.</li>
+      <li>For each line: use <code>line.strip().split(',')</code> to get a list of parts.</li>
+      <li>Extract: <code>city = parts[0]</code>, <code>city_type = parts[1]</code>, <code>tagline = parts[2]</code>.</li>
+      <li>Create the nested entry: <code>info[city] = {'type': city_type, 'tagline': tagline}</code>.</li>
+      <li>Close the file and return the <code>info</code> dictionary.</li>
     </ol>
-    <div class="lc-callout lc-callout--tip">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
-                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="19" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Build It in Pieces</div>
-        <div class="lc-callout__body">
-        <p>Don't try to write all ten cities at once. Add San Antonio, test it, then add Houston, test again. A working two-city dictionary is better than a broken ten-city one.</p>
-        </div>
-      </div>
+    <div class="lc-h3">Test Your Code</div>
+    <p><strong>Step 1:</strong> Add this test harness:</p>
+    <div class="lc-code-block">
+      <pre><code># DEBUG - DELETE BEFORE CHECKPOINT 3
+city_info = load_city_info(&#x27;city_info.txt&#x27;)
+print(&#x27;Houston type:&#x27;, city_info[&#x27;Houston&#x27;][&#x27;type&#x27;])
+print(&#x27;Houston tagline:&#x27;, city_info[&#x27;Houston&#x27;][&#x27;tagline&#x27;])
+print(&#x27;Corpus Christi type:&#x27;, city_info[&#x27;Corpus Christi&#x27;][&#x27;type&#x27;])</code></pre>
     </div>
-    <div class="lc-callout lc-callout--pitfall">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="22.5" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Keys Are Case-Sensitive</div>
-        <div class="lc-callout__body">
-        <p>Dictionary keys must match exactly — capitalization, spaces, and all. <code>'San Antonio'</code> and <code>'san antonio'</code> are different keys. Pick one convention and stick to it throughout the entire file.</p>
-        </div>
-      </div>
+    <p><strong>Step 2:</strong> Run and verify this output:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Houston type: GATEWAY
+Houston tagline: Space City
+Corpus Christi type: WIN</pre>
     </div>
-    </div>
-    <hr class="lc-cp-sep">
-    <div class="lc-cp-row">
-      <div class="lc-cp-badge">
-        <div class="lc-cp-badge__word">Checkpoint</div>
-        <div class="lc-cp-badge__num">2</div>
-      </div>
-      <div class="lc-cp-content">
-        <div class="lc-cp-title">Build CITY_INFO</div>
-      </div>
-    </div>
-    <div class="lc-cp-body">
-    <div class="lc-h3">What You're Building</div>
-    <p>You are creating a second dictionary that stores each city's type (WIN, HUB, GATEWAY, etc.) and its tagline. This replaces every hardcoded city-type check in your game loop with a clean dictionary lookup.</p>
-    <div class="lc-h3">Step-by-Step Instructions</div>
-    <ol>
-      <li>Below your <code>CITY_DISTANCES</code> constant, create <code>CITY_INFO = {}</code>.</li>
-      <li>For each of the ten cities, add an entry where the key is the city name (spelled exactly as in CITY_DISTANCES) and the value is a dictionary with two keys: <code>'type'</code> and <code>'tagline'</code>.</li>
-      <li>Use these city types and taglines from the code plan: San Antonio (START, 'Home of the Alamo'), Houston (GATEWAY, 'Space City'), Austin (CORRIDOR, 'Keep it weird'), Corpus Christi (WIN, 'The Sparkling City by the Sea'), Galveston (WIN, 'The Playground of the South'), Laredo (DEAD_END, 'Gateway to Mexico'), El Paso (WRONG_WAY, 'Closer to California than Houston'), Dallas (HUB, 'Where everything is bigger'), Fort Worth (HUB, 'Where the West begins'), Texarkana (DEAD_END, 'Two states at once').</li>
-      <li>Test a lookup: <code>print(CITY_INFO['Austin']['tagline'])</code> should print <code>Keep it weird</code>.</li>
-    </ol>
-    <div class="lc-callout lc-callout--info">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
-        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Why a Nested Dict Instead of Two Separate Ones?</div>
-        <div class="lc-callout__body">
-        <p>You could have separate <code>CITY_TYPES</code> and <code>CITY_TAGLINES</code> dictionaries, but grouping all city data under one outer key keeps related information together. When you add a new city, you add one entry — not two.</p>
-        <ul>
-          <li>Easier to maintain — one place to update</li>
-          <li>Easier to extend — add a new field without touching existing code</li>
-          <li>Clearer intent — <code>CITY_INFO['Austin']</code> returns everything about Austin</li>
-        </ul>
-        </div>
-      </div>
+    <p><strong>Step 3:</strong> <strong>DELETE the DEBUG lines</strong> before moving to Checkpoint 3.</p>
+    <div class="lc-h3">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Using <code>city_info['type']</code> directly</td>
+        <td>Need TWO keys: <code>city_info[city_name]['type']</code></td>
+      </tr>
+      <tr>
+        <td>Inconsistent key names</td>
+        <td>Use exact keys: <code>'type'</code> and <code>'tagline'</code> (lowercase)</td>
+      </tr>
+      <tr>
+        <td>Forgetting to return the dictionary</td>
+        <td>Function must <code>return info</code> at the end</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
     <div class="lc-h3">What You Should Have</div>
-    <p>After this checkpoint, you have two dictionaries defined near the top of your file. Neither is connected to the game loop yet — that happens in CP3. Run the file to confirm it loads without errors, then move on.</p>
+    <p><ul><li><code>load_city_info()</code> function that returns a dictionary of dictionaries</li><li>Each city maps to <code>{'type': ..., 'tagline': ...}</code></li><li>Can access city attributes with <code>city_info[city]['type']</code></li></ul></p>
     </div>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
@@ -325,20 +400,107 @@ GAME LOOP:  (structure unchanged -- only the data source changes)
         <div class="lc-cp-badge__num">3</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Refactor the Helper Functions</div>
+        <div class="lc-cp-title">Data-Driven Display</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
-    <p>Now you wire the dictionaries into the game by rewriting four helper functions. Three of them (<code>display_destinations</code>, <code>is_win_city</code>, <code>is_dead_end</code>) already exist in your code from Module 3. You are replacing their implementations. One (<code>get_destination_by_number</code>) is new.</p>
+    <p>Functions that display available destinations from a city and help with navigation — all driven by your dictionaries, not hardcoded values.</p>
     <div class="lc-h3">Step-by-Step Instructions</div>
     <ol>
-      <li><strong>display_destinations(current_city):</strong> Use <code>CITY_DISTANCES[current_city]</code> to get the destination dictionary. Loop through it with a counter to display each option as a numbered menu. Return <code>list(CITY_DISTANCES[current_city].keys())</code> so the game loop knows what options are available.</li>
-      <li><strong>get_destination_by_number(current_city, choice_num):</strong> Get <code>list(CITY_DISTANCES[current_city].keys())</code>, then index into it with <code>choice_num - 1</code>. Return the destination city name and its mileage as two separate values.</li>
-      <li><strong>is_win_city(city_name):</strong> Use <code>CITY_INFO.get(city_name, {})</code> to safely fetch the city's data, then check if <code>city_data.get('type', '')</code> equals <code>'WIN'</code>. Return True or False.</li>
-      <li><strong>is_dead_end(city_name):</strong> Same pattern as is_win_city, but check if the type is in <code>['DEAD_END', 'WRONG_WAY']</code>.</li>
-      <li>Update your game loop to display the city tagline from CITY_INFO at the start of each turn: <code>tagline = CITY_INFO.get(current_city, {}).get('tagline', '')</code>.</li>
-      <li>Run the game and play through at least one full turn. Confirm the destination menu appears correctly and distances match the dictionary values.</li>
+      <li>Create <code>display_destinations(city, distances)</code> that takes the current city name and the distances dictionary.</li>
+      <li>Loop through the destinations using a counter variable to number each option (1, 2, 3…).</li>
+      <li>Print each option: number, destination name, and distance.</li>
+      <li>Create <code>get_destination_by_number(city, distances, choice)</code>.</li>
+      <li>Convert dict keys to a list: <code>destinations = list(distances[city].keys())</code>.</li>
+      <li>Return the destination at index <code>choice - 1</code> (user picks 1, but list index is 0).</li>
+      <li>Create <code>is_win_city(city, city_info)</code> that checks if <code>city_info[city]['type']</code> equals <code>'WIN'</code>.</li>
+      <li>Create <code>is_dead_end(city, city_info)</code> that checks if the type is <code>'DEAD_END'</code> or <code>'WRONG_WAY'</code>.</li>
+    </ol>
+    <div class="lc-h3">Test Your Code</div>
+    <p><strong>Step 1:</strong> Add this test harness:</p>
+    <div class="lc-code-block">
+      <pre><code># DEBUG - DELETE BEFORE CHECKPOINT 4
+distances = load_city_distances(&#x27;city_distances.txt&#x27;)
+city_info = load_city_info(&#x27;city_info.txt&#x27;)
+
+display_destinations(&#x27;San Antonio&#x27;, distances)
+dest = get_destination_by_number(&#x27;San Antonio&#x27;, distances, 2)
+print(&#x27;Choice 2 is:&#x27;, dest)
+
+print(&#x27;Corpus Christi is win?&#x27;, is_win_city(&#x27;Corpus Christi&#x27;, city_info))
+print(&#x27;Laredo is dead end?&#x27;, is_dead_end(&#x27;Laredo&#x27;, city_info))</code></pre>
+    </div>
+    <p><strong>Step 2:</strong> Run and verify this output:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>From San Antonio, you can travel to:
+
+  1. Corpus Christi - 150 miles
+  2. Houston - 200 miles
+  3. Austin - 80 miles
+  4. Laredo - 160 miles
+  5. El Paso - 550 miles
+
+Choice 2 is: Houston
+Corpus Christi is win? True
+Laredo is dead end? True</pre>
+    </div>
+    <p><strong>Step 3:</strong> <strong>DELETE the DEBUG lines</strong> before moving to Checkpoint 4.</p>
+    <div class="lc-h3">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Using <code>choice</code> as index directly</td>
+        <td>User enters 1 for first item, but <code>list(dict.keys())[0]</code> is index 0. Use <code>choice - 1</code>.</td>
+      </tr>
+      <tr>
+        <td>Checking type with <code>== 'win'</code> (lowercase)</td>
+        <td>Types are uppercase: <code>'WIN'</code>, <code>'DEAD_END'</code>, <code>'GATEWAY'</code>.</td>
+      </tr>
+      <tr>
+        <td>Forgetting <code>'WRONG_WAY'</code> in <code>is_dead_end()</code></td>
+        <td>Both <code>'DEAD_END'</code> and <code>'WRONG_WAY'</code> end the game.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <p><ul><li><code>display_destinations()</code> shows a numbered menu from the dictionary</li><li><code>get_destination_by_number()</code> converts user choice to destination name</li><li><code>is_win_city()</code> returns <code>True</code> for WIN cities</li><li><code>is_dead_end()</code> returns <code>True</code> for DEAD_END or WRONG_WAY cities</li></ul></p>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">4</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Complete Game Loop</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3">What You're Building</div>
+    <p>A complete game that loads data, gets the player's name, displays current city info, lets the player choose destinations, uses a coin flip gate, and tracks the route until they reach the beach or a dead end.</p>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>Create a <code>main()</code> function with a welcome banner.</li>
+      <li>Load both data files using your two loading functions.</li>
+      <li>Get the player's name: use <code>input().strip()</code> to clean whitespace.</li>
+      <li>Initialize game state: <code>current_city = 'San Antonio'</code>, <code>total_miles = 0</code>, <code>visited = [current_city]</code>.</li>
+      <li>Start the game loop: <code>while playing:</code>.</li>
+      <li>Show the current city name and its tagline from <code>city_info</code>.</li>
+      <li>Check for a win (<code>is_win_city</code>) or dead end (<code>is_dead_end</code>).</li>
+      <li>Display destinations and get the player's choice using <code>function_library.get_valid_int()</code>.</li>
+      <li>Use the coin flip gate: HEADS = go to chosen city, TAILS = random redirect.</li>
+      <li>Update state: <code>current_city</code>, <code>total_miles</code>, and the <code>visited</code> list.</li>
+      <li>After the loop ends, print the final trip report.</li>
     </ol>
     <div class="lc-callout lc-callout--tip">
       <div class="lc-callout__icon">
@@ -352,101 +514,47 @@ GAME LOOP:  (structure unchanged -- only the data source changes)
     </svg>
       </div>
       <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Use .get() for Safe Lookups</div>
+        <div class="lc-callout__title">Input Validation Is Data-Driven Too</div>
         <div class="lc-callout__body">
-        <p>When looking up a city in <code>CITY_INFO</code>, use <code>.get(city_name, {})</code> instead of direct bracket access. If a city somehow isn't in the dictionary, you get an empty dict back instead of a KeyError that crashes the program.</p>
-        <ul>
-          <li><code>CITY_INFO['Atlantis']</code> — raises KeyError, program crashes</li>
-          <li><code>CITY_INFO.get('Atlantis', {})</code> — returns empty dict, program continues</li>
-        </ul>
+        <p>Use <code>function_library.get_valid_int(prompt, min, max)</code> for the destination choice. The upper bound is <code>len(distances[current_city])</code> — no hardcoding required.</p>
         </div>
       </div>
     </div>
-    <div class="lc-mentor">
-      <div class="lc-mentor__inner">
-        <div class="lc-mentor__avatar">
-          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
-        </div>
-        <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"I just replaced like fifteen lines of elif chains with four lines of dictionary lookups. I know this is obvious to everyone else but I&#x27;m having a moment over here."</div>
-        </div>
-      </div>
-      <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Tyler Nguyen</div>
-        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
-      </div>
+    <div class="lc-h3">Test Your Code</div>
+    <p><strong>Step 1:</strong> Add the main guard at the bottom of your file:</p>
+    <div class="lc-code-block">
+      <pre><code>if __name__ == &#x27;__main__&#x27;:
+    main()</code></pre>
     </div>
+    <p><strong>Step 2:</strong> Play through the game and verify:</p>
+    <p><ul><li>Data loads correctly (shows number of cities)</li><li>Current city shows tagline from the data file</li><li>Destination menu shows all options from the dictionary</li><li>Coin flip works (HEADS = choice, TAILS = random)</li><li>Reaching Corpus Christi or Galveston shows a win</li><li>Final report shows route and total miles</li></ul></p>
     <div class="lc-h3">Tips &amp; Pitfalls</div>
     <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Mistake</th>
-        <th>What Goes Wrong</th>
-        <th>Fix</th>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Using the old constants alongside the new dict</td>
-        <td>Confusing source of truth — distance from where?</td>
-        <td>Delete or comment out all old constants before testing</td>
+        <td>Data files not in the same folder as the script</td>
+        <td>Python looks for files relative to where the script runs. Keep all .txt files with lab-4-1.py.</td>
       </tr>
       <tr>
-        <td><code>CITY_DISTANCES[current_city]</code> raises KeyError</td>
-        <td>City name in game state doesn't match dict key exactly</td>
-        <td>Print <code>current_city</code> and compare to dict keys character by character</td>
+        <td>Not calling loading functions before using data</td>
+        <td>Call <code>load_city_distances()</code> and <code>load_city_info()</code> at the start of <code>main()</code>.</td>
       </tr>
       <tr>
-        <td><code>get_destination_by_number</code> returns wrong city</td>
-        <td>Off-by-one error — player enters 1, index is 0</td>
-        <td>Use <code>choice_num - 1</code> when indexing into the keys list</td>
-      </tr>
-      <tr>
-        <td><code>display_destinations</code> shows no options</td>
-        <td>Returned list is empty or function isn't being called</td>
-        <td>Check that <code>current_city</code> is spelled exactly as a key in CITY_DISTANCES</td>
+        <td>Missing <code>if __name__ == '__main__':</code></td>
+        <td>Without this guard, <code>main()</code> runs when the module is imported, which breaks CodeGrade.</td>
       </tr>
         </tbody>
       </table>
     </div>
-    </div>
-    <hr class="lc-cp-sep">
-    <div class="lc-cp-row">
-      <div class="lc-cp-badge">
-        <div class="lc-cp-badge__word">Checkpoint</div>
-        <div class="lc-cp-badge__num">4</div>
-      </div>
-      <div class="lc-cp-content">
-        <div class="lc-cp-title">Test Every City and Submit</div>
-      </div>
-    </div>
-    <div class="lc-cp-body">
-    <div class="lc-h3">Test Your Code</div>
-    <p>Before submitting, run through a complete test of your dictionary integration. The game should behave identically to your Module 3 version from a player's perspective — the only thing that changed is where the data lives.</p>
-    <ol>
-      <li>Start the game and confirm that San Antonio's tagline ('Home of the Alamo') displays correctly.</li>
-      <li>Confirm that the destination menu for San Antonio shows all five options with the correct mileage values pulled from <code>CITY_DISTANCES</code>.</li>
-      <li>Travel to Austin and confirm that Austin's tagline and available destinations appear correctly.</li>
-      <li>Travel to Corpus Christi and confirm that <code>is_win_city()</code> triggers the win condition.</li>
-      <li>Travel to Laredo and confirm that <code>is_dead_end()</code> triggers correctly.</li>
-      <li>Confirm that no hardcoded distance constants appear anywhere in your code. Search for any numeric literals that look like mileage values.</li>
-    </ol>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
-        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">You're Done When...</div>
-        <div class="lc-callout__body">
-        <p>Every city lookup goes through <code>CITY_DISTANCES</code> or <code>CITY_INFO</code>. There are no hardcoded distances anywhere in your game loop or helper functions. The game plays exactly like your Module 3 version — the dictionaries are invisible to the player.</p>
-        </div>
-      </div>
-    </div>
+    <div class="lc-h3">What You Should Have</div>
+    <p><ul><li>Complete <code>main()</code> function with game loop</li><li>All data comes from files (no hardcoded constants for cities)</li><li>Clean input with <code>.strip()</code></li><li>Uses <code>function_library</code> for coin flip and input validation</li><li>Complete trip report at the end</li></ul></p>
     </div>
   </div>
 </div>
@@ -463,58 +571,45 @@ GAME LOOP:  (structure unchanged -- only the data source changes)
     <ul class="lc-checklist">
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">CITY_DISTANCES is defined with all ten cities and correct mileage values</span>
+        <span class="lc-checklist__label">File is named exactly &lt;code&gt;lab-4-1.py&lt;/code&gt;</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">CITY_INFO is defined with all ten cities, each with &#x27;type&#x27; and &#x27;tagline&#x27; keys</span>
+        <span class="lc-checklist__label">Docstring includes your name, abc123, section, and description</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">All old individual distance constants have been removed or commented out</span>
+        <span class="lc-checklist__label">Uses &lt;code&gt;.strip()&lt;/code&gt; and &lt;code&gt;.split(&#x27;,&#x27;)&lt;/code&gt; to parse file data</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">display_destinations() reads from CITY_DISTANCES, not hardcoded values</span>
+        <span class="lc-checklist__label">Uses dictionaries (not hardcoded constants) to store city data</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">get_destination_by_number() returns city name and distance from CITY_DISTANCES</span>
+        <span class="lc-checklist__label">Uses &lt;code&gt;function_library&lt;/code&gt; for &lt;code&gt;flip_coin&lt;/code&gt; and &lt;code&gt;get_valid_int&lt;/code&gt;</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">is_win_city() checks CITY_INFO[&#x27;type&#x27;] == &#x27;WIN&#x27;</span>
+        <span class="lc-checklist__label">All DEBUG/test code has been removed</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">is_dead_end() checks CITY_INFO[&#x27;type&#x27;] in dead-end types</span>
-      </li>
-      <li class="lc-checklist-item">
-        <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">City tagline displays at the start of each turn using CITY_INFO</span>
-      </li>
-      <li class="lc-checklist-item">
-        <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Top-of-file comment block includes name, abc123, section, and description</span>
-      </li>
-      <li class="lc-checklist-item">
-        <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">All functions have docstrings</span>
+        <span class="lc-checklist__label">No syntax errors when you run the program</span>
       </li>
     </ul>
     <div class="lc-h3">Scope Reminder</div>
-    <p>You may use any technique from Chapters 2 through 9 that has been introduced so far. This week&#x27;s focus is Chapter 9 dictionaries. String methods like .upper() and .strip() are technically in Chapter 8 but are being saved for Module 4.2 — do not use them yet.</p>
+    <p>Chapters 2–9 only. String methods like .strip() and .split() are the Chapter 8 focus this week. .upper() and .lower() are saved for Module 4.2. Sets are saved for Module 4.3. CodeGrade will flag code using techniques from later chapters.</p>
     <div class="lc-h3">Permitted Techniques</div>
     <div class="lc-permitted">
-      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–9 (Chapters 2–7 fully permitted from previous modules; Chapter 9 dictionaries as introduced this week; Chapter 8 string methods arrive in Module 4.2)</p>
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–9 (Chapters 2–7 fully permitted from previous modules; Chapter 8 string methods .strip() and .split() as introduced this week; Chapter 9 dictionaries and nested dictionaries)</p>
       <ul class="lc-permitted__list">
-      <li>Dictionary creation: &lt;code&gt;CITY_DISTANCES = {&#x27;San Antonio&#x27;: {&#x27;Austin&#x27;: 80}}&lt;/code&gt;</li>
-      <li>Key access: &lt;code&gt;CITY_DISTANCES[&#x27;San Antonio&#x27;][&#x27;Austin&#x27;]&lt;/code&gt;</li>
-      <li>Safe access: &lt;code&gt;CITY_INFO.get(&#x27;Austin&#x27;, {})&lt;/code&gt;</li>
-      <li>Dict methods: &lt;code&gt;.keys()&lt;/code&gt;, &lt;code&gt;.values()&lt;/code&gt;, &lt;code&gt;.items()&lt;/code&gt;</li>
-      <li>Membership test: &lt;code&gt;if city in CITY_DISTANCES:&lt;/code&gt;</li>
+      <li>String methods: &lt;code&gt;.strip()&lt;/code&gt;, &lt;code&gt;.split(&#x27;,&#x27;)&lt;/code&gt;</li>
+      <li>File I/O: &lt;code&gt;open(filename)&lt;/code&gt;, reading lines in a loop</li>
+      <li>Dictionaries: creation, key access, nested dicts</li>
+      <li>&lt;code&gt;import random&lt;/code&gt;, &lt;code&gt;import function_library&lt;/code&gt;</li>
       </ul>
-    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> .upper(), .lower(), .strip() (Module 4.2), sets (Module 4.3), list comprehensions, try/except, classes, inheritance</p>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> Classes (Chapter 10), inheritance (Chapter 11), sets (Module 4.3), .upper() and .lower() (Module 4.2), list comprehensions</p>
     </div>
     <div class="lc-callout lc-callout--warning">
       <div class="lc-callout__icon">
@@ -527,7 +622,7 @@ GAME LOOP:  (structure unchanged -- only the data source changes)
       </div>
       <div class="lc-callout__bubble">
         <div class="lc-callout__body">
-          <p>Do not use .upper() or .strip() yet — those are the Module 4.2 reveal. CodeGrade&#x27;s scope check will flag premature use of string methods.</p>
+          <p>Do not use &lt;code&gt;.upper()&lt;/code&gt; or &lt;code&gt;.lower()&lt;/code&gt; yet — those are the Module 4.2 reveal. CodeGrade&#x27;s scope check will flag premature use.</p>
         </div>
       </div>
     </div>
@@ -542,7 +637,7 @@ GAME LOOP:  (structure unchanged -- only the data source changes)
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">Save Your Code</div>
         <div class="lc-callout__body">
-          <p>Keep lab-4-1.py — Module 4.2 adds string method input handling directly on top of this dictionary foundation. You will copy this file and build on it.</p>
+          <p>Keep &lt;code&gt;lab-4-1.py&lt;/code&gt; — Module 4.2 adds string method input handling directly on top of your file-loading foundation. You will copy this file and build on it.</p>
         </div>
       </div>
     </div>
@@ -561,10 +656,11 @@ GAME LOOP:  (structure unchanged -- only the data source changes)
 
     <div class="lc-h3">If You Get Stuck</div>
     <ul>
-      <li>Open your textbook to Program 9-1 (card_dealer.py) and trace through how the deck dictionary is built and accessed — it&#x27;s the same pattern as CITY_DISTANCES</li>
-      <li>If you&#x27;re getting a KeyError, print your current_city variable right before the lookup and compare it character by character to your dictionary keys</li>
-      <li>Build and test one dictionary before starting the other — confirm CITY_DISTANCES works completely before writing CITY_INFO</li>
-      <li>Submit to CodeGrade early — the test output shows exactly which lookup is failing and what value it expected</li>
+      <li>Re-read Program 8-10 (split_date.py) — the pattern for splitting CSV data is exactly what you need here</li>
+      <li>Re-read Program 9-1 (card_dealer.py) — creating and accessing dictionaries</li>
+      <li>Test each loading function independently — get &lt;code&gt;load_city_distances()&lt;/code&gt; working before you start &lt;code&gt;load_city_info()&lt;/code&gt;</li>
+      <li>Use DEBUG prints — print what you&#x27;re parsing from each line to verify it&#x27;s correct</li>
+      <li>Submit to CodeGrade early — it shows exactly which tests pass or fail</li>
     </ul>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
@@ -580,7 +676,7 @@ GAME LOOP:  (structure unchanged -- only the data source changes)
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">BookEx Reference Guides</div>
         <div class="lc-callout__body">
-          <p>Chapter 9 BookEx Reference Guide (bookex-ch09.py) — step-by-step breakdown of Program 9-1. The card deck dictionary is structurally identical to CITY_DISTANCES.</p>
+          <p>Chapter 8 and 9 BookEx Reference Guides — step-by-step breakdowns of every textbook example, including split_date.py and card_dealer.py.</p>
         </div>
       </div>
     </div>
