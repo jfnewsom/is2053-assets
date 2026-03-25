@@ -762,7 +762,7 @@ def render_need_help(need_help: dict) -> str:
 """ if bookex_note else ""
 
     return f"""{card_open("purple")}
-{topper("Need Help", "Look No Further!")}
+{topper("Need Help?", "Look No Further!")}
 {panel_open()}
 {stuck_block}{bookex_block}    <div class="lc-h3">Contact &amp; Resources</div>
 {CONTACT_GRID_HTML}{panel_close()}{card_close()}"""

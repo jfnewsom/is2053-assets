@@ -1,0 +1,289 @@
+{
+    "meta": {
+        "labId":         "lab-4-1",
+        "title":         "City Data",
+        "module":        4,
+        "week":          1,
+        "weekType":      "BUILD",
+        "chapters":      "8\u20139",
+        "chapterTopics": "More About Strings, Dictionaries and Sets",
+        "filename":      "lab-4-1.py"
+    },
+    "overview": {
+        "body": "Your Module 3 code is functional, but it has a problem that every working developer eventually hits: hardcoded data. You have 20+ individual distance constants, city-type checks baked into if/elif chains, and no easy way to add a new city without touching five different places in the file. This week, you fix all of that in one move. <code>CITY_DISTANCES</code> and <code>CITY_INFO</code> are two dictionaries that replace every one of those constants. Adding a new city goes from a multi-file, multi-section change to a single dictionary entry. That's what data-driven design looks like in practice.",
+        "mentorQuote": {
+            "character": "Priya Venkatesh",
+            "role":      "Lead Architect, Bat City Collective",
+            "headshot":  "Priya-Venkatesh.png",
+            "quote":     "If you had to add 20 more cities, how long would that take with your current code? Now look at a dictionary. That's your answer."
+        },
+        "objectives": [
+            "Create a nested dictionary to store city-to-city distances",
+            "Create a second dictionary to store city type, tagline, and win status",
+            "Refactor helper functions to use dictionary lookups instead of hardcoded constants",
+            "Use the <code>.get()</code> method for safe key access with a fallback value",
+            "Understand why dictionaries scale better than parallel constants"
+        ],
+        "keyConceptsText": "Chapter 9: Program 9-1 (card_dealer.py) shows dictionary creation, key access, and looping with random.choice(). The same patterns apply directly to CITY_DISTANCES.",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis \u2014 Chapters 8 & 9",
+        "programRequirements": [
+            "CITY_DISTANCES is a nested dictionary replacing all individual distance constants",
+            "CITY_INFO is a dictionary with city type, tagline, and win status for each city",
+            "display_destinations() reads destinations from CITY_DISTANCES, not hardcoded values",
+            "get_destination_by_number() returns a city name and distance from the dictionary",
+            "is_win_city() and is_dead_end() use CITY_INFO lookups, not hardcoded city names",
+            "Top-of-file comment block includes name, abc123, section, and description",
+            "All functions have docstrings"
+        ],
+        "namedConstants": [
+            { "name": "CITY_DISTANCES", "description": "Nested dict \u2014 city name \u2192 {destination: miles}. Replaces all individual distance constants from Module 3." },
+            { "name": "CITY_INFO",      "description": "Dict \u2014 city name \u2192 {type, tagline}. Stores city classification and display text." },
+            { "name": "STARTING_CITY",  "description": "String constant \u2014 always 'San Antonio'. Still a named constant, not hardcoded." }
+        ],
+        "filenameNote": "Submit lab-4-1.py this week. Your function_library.py from Module 3 does not change this week \u2014 no need to resubmit it.",
+        "saveYourCode": "Keep lab-4-1.py \u2014 Module 4.2 adds string method input handling directly on top of this dictionary foundation."
+    },
+    "timeGuide": {
+        "totalTime": "60\u201375 Minutes",
+        "rows": [
+            { "checkpoint": "CP1: CITY_DISTANCES",    "time": "20 min", "task": "Build the nested distances dictionary, replacing all constants" },
+            { "checkpoint": "CP2: CITY_INFO",         "time": "15 min", "task": "Build the city info dictionary with type and tagline" },
+            { "checkpoint": "CP3: Helper Functions",  "time": "20 min", "task": "Refactor display_destinations, get_destination_by_number, is_win_city, is_dead_end" },
+            { "checkpoint": "CP4: Final Checklist",   "time": "10 min", "task": "Test every city, clean up, and submit" }
+        ]
+    },
+    "beforeYouBegin": {
+        "intro": "Here is how your program changes this week. Every [NEW] item is something you are adding. Every [REPLACED] item is something that changes from your 3.3 code. Everything else in your game loop stays the same.",
+        "architecture": "# ---- CONSTANTS ---- (top of file)\nSTARTING_CITY   = 'San Antonio'          (unchanged)\nCITY_DISTANCES  = { ... }                [NEW -- replaces 20+ distance constants]\nCITY_INFO       = { ... }                [NEW -- replaces city-type if/elif chains]\n\n# ---- HELPER FUNCTIONS ----\ndisplay_destinations(current_city)       [REPLACED -- now reads from CITY_DISTANCES]\nget_destination_by_number(city, num)     [NEW -- returns name + distance from dict]\nis_win_city(city_name)                   [NEW -- checks CITY_INFO['type'] == 'WIN']\nis_dead_end(city_name)                   [NEW -- checks CITY_INFO['type'] in dead ends]\n\n# (all your Module 3 functions stay unchanged)\nroll_d20(), flip_coin(), etc.            (from function_library -- no changes this week)\n\nGAME LOOP:  (structure unchanged -- only the data source changes)\n|\n|-- Display city tagline from CITY_INFO   [REPLACED]\n|-- Call display_destinations()           [REPLACED -- uses dict now]\n|-- Get player choice (get_valid_int)     (unchanged)\n|-- Call get_destination_by_number()      [REPLACED -- was hardcoded]\n|\n|   DESTINATION GATE: (coin flip -- unchanged until 4.3)\n|\n|   TRAVEL LOOP: (unchanged)\n|   |-- Roll D20, accumulate miles\n|   |-- 30% hazard check\n|   |-- Repeat until arrival\n|\n|-- Call is_win_city()                    [REPLACED]\n|-- Call is_dead_end()                    [REPLACED]\n|-- Update stats, check keep_playing"
+    },
+    "checkpoints": [
+        {
+            "number": 1,
+            "title":  "Build CITY_DISTANCES",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "You are creating a nested dictionary that maps every city to its available destinations and the driving distance in miles. Once this is in place, <code>CITY_DISTANCES['San Antonio']['Austin']</code> returns <code>80</code> \u2014 no constant required."
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId":   "9-1",
+                            "filename":    "card_dealer.py",
+                            "description": "Shows dictionary creation, key access with bracket notation, and looping through keys. The same patterns apply directly to CITY_DISTANCES."
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Delete (or comment out) all of your individual distance constants from Module 3 \u2014 the lines like <code>SAT_AUS = 80</code>, <code>SAT_HOU = 200</code>, and so on.",
+                        "Near the top of your file, create <code>CITY_DISTANCES</code> as an empty dictionary: <code>CITY_DISTANCES = {}</code>.",
+                        "Add San Antonio as the first outer key. Its value is another dictionary with each destination city as a key and the mileage as an integer value.",
+                        "Add the remaining nine cities as outer keys, each with their own inner destination dictionary. Use the city and mileage data provided in the code plan.",
+                        "Test a few lookups in isolation before continuing: <code>print(CITY_DISTANCES['San Antonio']['Austin'])</code> should print <code>80</code>."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "tip",
+                    "title": "Build It in Pieces",
+                    "body": "Don't try to write all ten cities at once. Add San Antonio, test it, then add Houston, test again. A working two-city dictionary is better than a broken ten-city one."
+                },
+                {
+                    "type": "callout",
+                    "variant": "pitfall",
+                    "title": "Keys Are Case-Sensitive",
+                    "body": "Dictionary keys must match exactly \u2014 capitalization, spaces, and all. <code>'San Antonio'</code> and <code>'san antonio'</code> are different keys. Pick one convention and stick to it throughout the entire file."
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "title":  "Build CITY_INFO",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "You are creating a second dictionary that stores each city's type (WIN, HUB, GATEWAY, etc.) and its tagline. This replaces every hardcoded city-type check in your game loop with a clean dictionary lookup."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Below your <code>CITY_DISTANCES</code> constant, create <code>CITY_INFO = {}</code>.",
+                        "For each of the ten cities, add an entry where the key is the city name (spelled exactly as in CITY_DISTANCES) and the value is a dictionary with two keys: <code>'type'</code> and <code>'tagline'</code>.",
+                        "Use these city types and taglines from the code plan: San Antonio (START, 'Home of the Alamo'), Houston (GATEWAY, 'Space City'), Austin (CORRIDOR, 'Keep it weird'), Corpus Christi (WIN, 'The Sparkling City by the Sea'), Galveston (WIN, 'The Playground of the South'), Laredo (DEAD_END, 'Gateway to Mexico'), El Paso (WRONG_WAY, 'Closer to California than Houston'), Dallas (HUB, 'Where everything is bigger'), Fort Worth (HUB, 'Where the West begins'), Texarkana (DEAD_END, 'Two states at once').",
+                        "Test a lookup: <code>print(CITY_INFO['Austin']['tagline'])</code> should print <code>Keep it weird</code>."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "info",
+                    "title": "Why a Nested Dict Instead of Two Separate Ones?",
+                    "body": "You could have separate <code>CITY_TYPES</code> and <code>CITY_TAGLINES</code> dictionaries, but grouping all city data under one outer key keeps related information together. When you add a new city, you add one entry \u2014 not two.",
+                    "items": [
+                        "Easier to maintain \u2014 one place to update",
+                        "Easier to extend \u2014 add a new field without touching existing code",
+                        "Clearer intent \u2014 <code>CITY_INFO['Austin']</code> returns everything about Austin"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "text",
+                    "body": "After this checkpoint, you have two dictionaries defined near the top of your file. Neither is connected to the game loop yet \u2014 that happens in CP3. Run the file to confirm it loads without errors, then move on."
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title":  "Refactor the Helper Functions",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Now you wire the dictionaries into the game by rewriting four helper functions. Three of them (<code>display_destinations</code>, <code>is_win_city</code>, <code>is_dead_end</code>) already exist in your code from Module 3. You are replacing their implementations. One (<code>get_destination_by_number</code>) is new."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "<strong>display_destinations(current_city):</strong> Use <code>CITY_DISTANCES[current_city]</code> to get the destination dictionary. Loop through it with a counter to display each option as a numbered menu. Return <code>list(CITY_DISTANCES[current_city].keys())</code> so the game loop knows what options are available.",
+                        "<strong>get_destination_by_number(current_city, choice_num):</strong> Get <code>list(CITY_DISTANCES[current_city].keys())</code>, then index into it with <code>choice_num - 1</code>. Return the destination city name and its mileage as two separate values.",
+                        "<strong>is_win_city(city_name):</strong> Use <code>CITY_INFO.get(city_name, {})</code> to safely fetch the city's data, then check if <code>city_data.get('type', '')</code> equals <code>'WIN'</code>. Return True or False.",
+                        "<strong>is_dead_end(city_name):</strong> Same pattern as is_win_city, but check if the type is in <code>['DEAD_END', 'WRONG_WAY']</code>.",
+                        "Update your game loop to display the city tagline from CITY_INFO at the start of each turn: <code>tagline = CITY_INFO.get(current_city, {}).get('tagline', '')</code>.",
+                        "Run the game and play through at least one full turn. Confirm the destination menu appears correctly and distances match the dictionary values."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "tip",
+                    "title": "Use .get() for Safe Lookups",
+                    "body": "When looking up a city in <code>CITY_INFO</code>, use <code>.get(city_name, {})</code> instead of direct bracket access. If a city somehow isn't in the dictionary, you get an empty dict back instead of a KeyError that crashes the program.",
+                    "items": [
+                        "<code>CITY_INFO['Atlantis']</code> \u2014 raises KeyError, program crashes",
+                        "<code>CITY_INFO.get('Atlantis', {})</code> \u2014 returns empty dict, program continues"
+                    ]
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Tyler Nguyen",
+                    "role":      "Junior Developer, Bat City Collective",
+                    "headshot":  "Tyler-Nguyen.png",
+                    "quote":     "I just replaced like fifteen lines of elif chains with four lines of dictionary lookups. I know this is obvious to everyone else but I'm having a moment over here."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "What Goes Wrong", "Fix"],
+                    "rows": [
+                        ["Using the old constants alongside the new dict", "Confusing source of truth \u2014 distance from where?", "Delete or comment out all old constants before testing"],
+                        ["<code>CITY_DISTANCES[current_city]</code> raises KeyError", "City name in game state doesn't match dict key exactly", "Print <code>current_city</code> and compare to dict keys character by character"],
+                        ["<code>get_destination_by_number</code> returns wrong city", "Off-by-one error \u2014 player enters 1, index is 0", "Use <code>choice_num - 1</code> when indexing into the keys list"],
+                        ["<code>display_destinations</code> shows no options", "Returned list is empty or function isn't being called", "Check that <code>current_city</code> is spelled exactly as a key in CITY_DISTANCES"]
+                    ],
+                    "accent": "green"
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "title":  "Test Every City and Submit",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "Before submitting, run through a complete test of your dictionary integration. The game should behave identically to your Module 3 version from a player's perspective \u2014 the only thing that changed is where the data lives."
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Start the game and confirm that San Antonio's tagline ('Home of the Alamo') displays correctly.",
+                        "Confirm that the destination menu for San Antonio shows all five options with the correct mileage values pulled from <code>CITY_DISTANCES</code>.",
+                        "Travel to Austin and confirm that Austin's tagline and available destinations appear correctly.",
+                        "Travel to Corpus Christi and confirm that <code>is_win_city()</code> triggers the win condition.",
+                        "Travel to Laredo and confirm that <code>is_dead_end()</code> triggers correctly.",
+                        "Confirm that no hardcoded distance constants appear anywhere in your code. Search for any numeric literals that look like mileage values."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "You're Done When...",
+                    "body": "Every city lookup goes through <code>CITY_DISTANCES</code> or <code>CITY_INFO</code>. There are no hardcoded distances anywhere in your game loop or helper functions. The game plays exactly like your Module 3 version \u2014 the dictionaries are invisible to the player."
+                }
+            ]
+        }
+    ],
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "CITY_DISTANCES is defined with all ten cities and correct mileage values",
+            "CITY_INFO is defined with all ten cities, each with 'type' and 'tagline' keys",
+            "All old individual distance constants have been removed or commented out",
+            "display_destinations() reads from CITY_DISTANCES, not hardcoded values",
+            "get_destination_by_number() returns city name and distance from CITY_DISTANCES",
+            "is_win_city() checks CITY_INFO['type'] == 'WIN'",
+            "is_dead_end() checks CITY_INFO['type'] in dead-end types",
+            "City tagline displays at the start of each turn using CITY_INFO",
+            "Top-of-file comment block includes name, abc123, section, and description",
+            "All functions have docstrings"
+        ],
+        "scopeReminder": "You may use any technique from Chapters 2 through 9 that has been introduced so far. This week's focus is Chapter 9 dictionaries. String methods like .upper() and .strip() are technically in Chapter 8 but are being saved for Module 4.2 \u2014 do not use them yet.",
+        "permittedTechniques": {
+            "chapters": "2\u20139 (Chapters 2\u20137 fully permitted from previous modules; Chapter 9 dictionaries as introduced this week; Chapter 8 string methods arrive in Module 4.2)",
+            "specific": [
+                "Dictionary creation: <code>CITY_DISTANCES = {'San Antonio': {'Austin': 80}}</code>",
+                "Key access: <code>CITY_DISTANCES['San Antonio']['Austin']</code>",
+                "Safe access: <code>CITY_INFO.get('Austin', {})</code>",
+                "Dict methods: <code>.keys()</code>, <code>.values()</code>, <code>.items()</code>",
+                "Membership test: <code>if city in CITY_DISTANCES:</code>"
+            ],
+            "notPermitted": ".upper(), .lower(), .strip() (Module 4.2), sets (Module 4.3), list comprehensions, try/except, classes, inheritance"
+        },
+        "warnings": [
+            "Do not use .upper() or .strip() yet \u2014 those are the Module 4.2 reveal. CodeGrade's scope check will flag premature use of string methods."
+        ],
+        "saveYourCode": "Keep lab-4-1.py \u2014 Module 4.2 adds string method input handling directly on top of this dictionary foundation. You will copy this file and build on it."
+    },
+    "needHelp": {
+        "ifYouGetStuck": [
+            "Open your textbook to Program 9-1 (card_dealer.py) and trace through how the deck dictionary is built and accessed \u2014 it's the same pattern as CITY_DISTANCES",
+            "If you're getting a KeyError, print your current_city variable right before the lookup and compare it character by character to your dictionary keys",
+            "Build and test one dictionary before starting the other \u2014 confirm CITY_DISTANCES works completely before writing CITY_INFO",
+            "Submit to CodeGrade early \u2014 the test output shows exactly which lookup is failing and what value it expected"
+        ],
+        "bookexResourceNote": "Chapter 9 BookEx Reference Guide (bookex-ch09.py) \u2014 step-by-step breakdown of Program 9-1. The card deck dictionary is structurally identical to CITY_DISTANCES."
+    }
+}
