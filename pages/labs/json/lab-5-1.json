@@ -6,61 +6,82 @@
         "week": 1,
         "weekType": "BUILD",
         "chapters": "10",
-        "chapterTopics": "Classes, objects, encapsulation, constructors",
-        "filename": "city.py",
-        "additionalFiles": ["city_test.py"]
-    },
-
-    "overview": {
-        "body": "Module 5 begins with a question: what if a city knew things about itself? Right now, city data lives in a dictionary. The city name is a key. Its connections are a nested dict. Its trivia is another dict. The functions that work on that data are scattered across your file. A class changes that. A <code>City</code> object holds its own name, type, tagline, connections, and trivia. The methods that work on that data live right next to it. This week you define the <code>City</code> class and write a test program that puts it through its paces. Nothing about the game changes yet. You are just building a better container for what already exists.",
-        "mentorQuote": {
-            "character": "Priya Venkatesh",
-            "role": "Lead Architect, Bat City Collective",
-            "headshot": "Priya-Venkatesh.png",
-            "quote": "A dictionary can hold city data. A class holds city data AND knows what to do with it. That is the difference between a filing cabinet and a coworker. Both have the information. Only one can act on it."
-        },
-        "objectives": [
-            "Define a class using the class keyword with an __init__ constructor",
-            "Store data in private attributes using the double-underscore naming convention",
-            "Write getter methods to safely expose private attribute values",
-            "Write functional methods that operate on the object's own data",
-            "Create City objects and call methods using dot notation",
-            "Implement the __str__ special method for clean printed output"
-        ],
-        "keyConceptsText": "Chapter 10: Program 10-12 (cellphone.py, class definition, private attributes, getters and setters) and Program 10-9 (bankaccount2.py, __str__ method and methods with logic).",
-        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis, Chapter 10",
-        "programRequirements": [
-            "city.py defines the City class with __init__, private attributes, getter methods, connection methods, trivia methods, status methods, and __str__",
-            "city_test.py imports City, creates at least 4 City objects, adds connections and trivia, and tests all major methods",
-            "Both files have top-of-file documentation headers: Name, abc123, Section, Description",
-            "All methods have docstrings"
-        ],
-        "namedConstants": [],
-        "additionalFilesNote": "Submit both city.py (the class) and city_test.py (the test program). CodeGrade imports city.py directly and tests the class methods in isolation.",
-        "filenameNote": "Submit city.py and city_test.py this week.",
-        "saveYourCode": "Keep city.py. Module 5.2 adds the Player class alongside it, and 5.3 extends it with WinCity and DeadEndCity subclasses."
-    },
-
-    "timeGuide": {
-        "totalTime": "60–75 Minutes",
-        "rows": [
-            { "checkpoint": "CP1: Class Skeleton", "time": "10 min", "task": "Define City class, __init__, and private attributes" },
-            { "checkpoint": "CP2: Getters and __str__", "time": "10 min", "task": "Add getter methods and __str__ for clean printing" },
-            { "checkpoint": "CP3: Connection Methods", "time": "15 min", "task": "add_connection(), get_distance_to(), get_destination_names()" },
-            { "checkpoint": "CP4: Trivia and Status Methods", "time": "10 min", "task": "add_trivia(), get_random_trivia(), is_win_city(), is_dead_end()" },
-            { "checkpoint": "CP5: Write city_test.py", "time": "20 min", "task": "Create objects, add data, test every method, verify output" }
+        "chapterTopics": "Classes and Object-Oriented Programming",
+        "filename": "lab-5-1.py",
+        "additionalFiles": [
+            "city.py"
         ]
     },
-
-    "beforeYouBegin": {
-        "intro": "Here is how your finished program fits together. This week you are building two new files from scratch. Nothing carries forward from Module 4 directly. The City class is the foundation everything else in Module 5 builds on.",
-        "architecture": "# ---- city.py ----\nclass City:\n│\n│── __init__(name, city_type, tagline)    [NEW] sets up private attrs\n│   self.__name          string\n│   self.__city_type     'START','HUB','WIN','DEAD_END','WRONG_WAY'\n│   self.__tagline       string\n│   self.__connections   {}   dict: city_name -> distance\n│   self.__trivia        []   list of {question, answer} dicts\n│\n│── GETTERS\n│   get_name()           returns self.__name\n│   get_type()           returns self.__city_type\n│   get_tagline()        returns self.__tagline\n│   get_connection_count() returns len of connections dict\n│   get_trivia_count()   returns len of trivia list\n│\n│── CONNECTION METHODS\n│   add_connection(city_name, distance)  adds to __connections\n│   get_distance_to(city_name)          dict .get(), returns -1 if missing\n│   get_destination_names()             list(__connections.keys())\n│\n│── TRIVIA METHODS\n│   add_trivia(question, answer)        appends to __trivia list\n│   get_random_trivia()                 random.choice, returns None if empty\n│\n│── STATUS METHODS\n│   is_win_city()        returns city_type == 'WIN'\n│   is_dead_end()        returns city_type in ['DEAD_END','WRONG_WAY']\n│\n│── DISPLAY\n│   display_info()       prints name, type, tagline, counts\n│   display_destinations() prints numbered connection list\n│   __str__()            returns 'Name (TYPE)'\n\n# ---- city_test.py ----\nfrom city import City\n\nmain():\n│── Create 4 City objects (START, HUB, WIN, DEAD_END)\n│── Test __str__ on each\n│── Add connections, test get_distance_to()\n│── Add trivia, test get_random_trivia()\n│── Test display_info() and display_destinations()\n│── Test is_win_city() and is_dead_end()"
+    "overview": {
+        "body": "All semester, you've been building <em>Deep in the Heart: A Lone Star Journey</em> with dictionaries, functions, and files. It works — but the code is scattered. City data lives in one place, distance lookups in another, and game logic somewhere else. This week, everything changes. You'll create a <strong>City class</strong> that bundles data and behavior together. A City object will <em>know</em> its own name, connections, and how to display itself. Welcome to <strong>Object-Oriented Programming</strong>.",
+        "mentorQuote": {
+            "character": "Terrence \"T-Bone\" Booker",
+            "role": "QA Lead, Bat City Collective",
+            "headshot": "Terrence-Booker.png",
+            "quote": "Testing classes is straightforward: create an object, call every method, check every attribute. If <code>city.name</code> returns the right name and <code>city.is_dead_end()</code> correctly identifies dead ends, your class works. Build the test before you build the class!"
+        },
+        "objectives": [
+            "An <code>__init__</code> constructor that initializes private attributes",
+            "Getter methods to safely access private data",
+            "Connection methods to add routes and check distances",
+            "Status methods like <code>is_win_city()</code> and <code>is_dead_end()</code>",
+            "A <code>__str__</code> method for nice printing"
+        ],
+        "keyConceptsText": "<strong>Chapter 10 Sections:</strong> 10.1 (Procedural vs OOP), 10.2 (Classes), 10.3 (Working with Instances)",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 10: Classes and Object-Oriented Programming",
+        "programRequirements": [
+            "<code>city.py</code> <strong>MUST</strong> define a class named <code>City</code>",
+            "<code>City</code> <strong>MUST</strong> use private attributes (double underscore prefix)",
+            "<code>City</code> <strong>MUST</strong> have getter methods for name, type, and tagline",
+            "<code>City</code> <strong>MUST</strong> have <code>add_connection()</code>, <code>get_distance_to()</code>, and <code>get_destination_names()</code> methods",
+            "<code>City</code> <strong>MUST</strong> have <code>is_win_city()</code> and <code>is_dead_end()</code> methods",
+            "<code>City</code> <strong>MUST</strong> have a <code>__str__</code> method",
+            "<code>lab-5-1.py</code> <strong>MUST</strong> import and test the City class"
+        ],
+        "filenameNote": "Submit <code>city.py</code> (the City class definition) and <code>lab-5-1.py</code> (the test program that imports and uses City) this week.",
+        "additionalFilesNote": "CodeGrade tests in isolation, both files must be present."
     },
-
+    "timeGuide": {
+        "totalTime": "90–120 Minutes",
+        "rows": [
+            {
+                "checkpoint": "Checkpoint 1",
+                "time": "20 min",
+                "task": "Create city.py, define class with <code>__init__</code>"
+            },
+            {
+                "checkpoint": "Checkpoint 2",
+                "time": "15 min",
+                "task": "Add getter methods"
+            },
+            {
+                "checkpoint": "Checkpoint 3",
+                "time": "25 min",
+                "task": "Add connection methods"
+            },
+            {
+                "checkpoint": "Checkpoint 4",
+                "time": "20 min",
+                "task": "Add status methods and <code>__str__</code>"
+            },
+            {
+                "checkpoint": "Checkpoint 5",
+                "time": "20 min",
+                "task": "Complete test program in <code>lab-5-1.py</code>"
+            },
+            {
+                "checkpoint": "Submit",
+                "time": "10 min",
+                "task": "Final check and CodeGrade submission"
+            }
+        ],
+        "strategy": "OOP is a new way of thinking. If it feels weird at first, that's normal! Build one method at a time, test it, then move on. By the end of this lab, the pattern will start clicking."
+    },
     "checkpoints": [
         {
             "number": 1,
-            "title": "Define the City Class Skeleton",
+            "title": "File Setup & Constructor",
+            "subtitle": "Create city.py and define the City class with its <code>__init__</code> constructor.",
             "content": [
                 {
                     "type": "h3",
@@ -68,25 +89,22 @@
                 },
                 {
                     "type": "text",
-                    "body": "Create a new file called <code>city.py</code>. This file will contain only the City class definition, with no <code>main()</code> function and no <code>if __name__</code> guard. The class is a module; the test program you write in CP5 is what runs it."
+                    "body": "The foundation of your City class: a properly documented file, the class definition, and an <code>__init__</code> method that initializes four private attributes."
                 },
                 {
                     "type": "h3",
-                    "label": "step_by_step"
+                    "label": "why_this_matters"
                 },
                 {
-                    "type": "instructions",
-                    "items": [
-                        "Add your top-of-file documentation header: Name, abc123, Section, and a one-sentence description of what city.py contains.",
-                        "Define the class: <code>class City:</code>. Everything else in this file is indented inside this class.",
-                        "Write the class docstring immediately after the class line: a one-line description of what a City object represents.",
-                        "Write the <code>__init__</code> method. It takes <code>self</code> plus three parameters: <code>name</code>, <code>city_type</code>, and <code>tagline</code>. Write a docstring that documents all three parameters. Store all three as private attributes using the double-underscore prefix: <code>self.__name</code>, <code>self.__city_type</code>, <code>self.__tagline</code>.",
-                        "In the same <code>__init__</code>, initialize two more private attributes: <code>self.__connections = {}</code> (an empty dict for city connections) and <code>self.__trivia = []</code> (an empty list for trivia questions). These are not parameters; they always start empty."
-                    ]
+                    "type": "text",
+                    "body": "This is the moment everything changes. Instead of juggling separate dictionaries for city names, distances, and info, a City object <strong>owns its own data</strong>. Every game, app, and system you'll build professionally uses objects to bundle related data and behavior together. Master this pattern and you're thinking like a software engineer."
                 },
                 {
-                    "type": "h3",
-                    "label": "bookex_patterns"
+                    "type": "mentor_quote",
+                    "character": "Bobby Hernandez",
+                    "role": "Director of Technology, Bat City Collective",
+                    "headshot": "Bobby-Hernandez.png",
+                    "quote": "In Module 4, you had CITY_INFO dictionaries and CITY_DISTANCES dictionaries and functions scattered everywhere. Now? A City object <em>knows</em> its own data. The constructor is the birth certificate — it says exactly what a City needs to exist."
                 },
                 {
                     "type": "callout",
@@ -96,9 +114,48 @@
                             "programId": "10-12",
                             "filename": "cellphone.py",
                             "step": 1,
-                            "description": "Shows exactly this pattern: class definition, __init__ constructor, and three private attributes stored with double-underscore prefix. The City class follows the same structure."
+                            "description": "You typed a CellPhone class with <code>__init__</code> that accepted parameters and stored them in private attributes like <code>self.__manufact</code>. Your City class follows the same pattern — accept <code>name</code>, <code>city_type</code>, and <code>tagline</code>, then store them with double-underscore prefixes."
                         }
                     ]
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Create a new file called <code>city.py</code>",
+                        "Add the module docstring at the top — include your name, abc123, section, and a description of the City class",
+                        "Define the <code>City</code> class and add a class docstring listing the four private attributes: <code>__name</code>, <code>__city_type</code>, <code>__tagline</code>, and <code>__connections</code>",
+                        "Write the <code>__init__</code> method that accepts <code>name</code>, <code>city_type</code>, and <code>tagline</code> parameters",
+                        "Inside <code>__init__</code>, store each parameter as a private attribute: <code>self.__name = name</code>, <code>self.__city_type = city_type</code>, <code>self.__tagline = tagline</code>",
+                        "Also initialize an empty dictionary for connections: <code>self.__connections = {}</code>"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this test code at the bottom of city.py (temporarily):"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\nsan_antonio = City('San Antonio', 'START', 'Home of the Alamo')\nprint('City object created successfully!')\nprint(type(san_antonio))"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run city.py. You should see:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "City object created successfully!\n<class '__main__.City'>"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Delete the debug code before continuing."
                 },
                 {
                     "type": "h3",
@@ -106,11 +163,20 @@
                 },
                 {
                     "type": "table",
-                    "headers": ["Mistake", "What Goes Wrong", "Fix"],
+                    "headers": ["Common Mistake", "Why It Fails"],
                     "rows": [
-                        ["Using single underscore _name instead of double __name", "Attribute is still accessible from outside; encapsulation is not enforced", "Use self.__name (two underscores) for private attributes"],
-                        ["Forgetting self as the first parameter in __init__", "TypeError: __init__ missing positional argument", "Every method in a class must have self as its first parameter"],
-                        ["Putting __init__ outside the class indentation", "IndentationError or __init__ becomes a standalone function", "Every method must be indented one level inside the class"]
+                        [
+                            "Forgetting <code>self</code> as first parameter",
+                            "Every method needs <code>self</code> first — it's how Python knows which object to work with"
+                        ],
+                        [
+                            "Using <code>name</code> instead of <code>self.__name</code>",
+                            "Attributes need the <code>self.</code> prefix to belong to the object"
+                        ],
+                        [
+                            "Naming the method <code>_init_</code> (single underscores)",
+                            "Must be <code>__init__</code> with DOUBLE underscores on both sides"
+                        ]
                     ],
                     "accent": "green"
                 },
@@ -119,22 +185,20 @@
                     "label": "what_you_should_have"
                 },
                 {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "CP1 Complete",
+                    "type": "instructions",
                     "items": [
-                        "city.py exists with a top-of-file documentation header",
-                        "class City: is defined with a class docstring",
-                        "__init__(self, name, city_type, tagline) is defined with a docstring",
-                        "Five private attributes initialized: __name, __city_type, __tagline, __connections, __trivia",
-                        "File imports nothing yet and has no main(). That is correct"
+                        "<code>city.py</code> file with module docstring",
+                        "<code>City</code> class with class docstring",
+                        "<code>__init__</code> method accepting 3 parameters",
+                        "Four private attributes initialized: <code>__name</code>, <code>__city_type</code>, <code>__tagline</code>, <code>__connections</code>"
                     ]
                 }
             ]
         },
         {
             "number": 2,
-            "title": "Add Getters and __str__",
+            "title": "Getter Methods",
+            "subtitle": "Add methods that return the values of private attributes.",
             "content": [
                 {
                     "type": "h3",
@@ -142,109 +206,186 @@
                 },
                 {
                     "type": "text",
-                    "body": "Private attributes cannot be read from outside the class directly. Getter methods are the controlled access points. Add the getters now, then add <code>__str__</code> so that printing a City object gives clean readable output."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Add a comment <code># --- GETTER METHODS ---</code> after the <code>__init__</code> to organize the class.",
-                        "Write <code>get_name(self)</code>: docstring, return <code>self.__name</code>.",
-                        "Write <code>get_type(self)</code>: docstring, return <code>self.__city_type</code>.",
-                        "Write <code>get_tagline(self)</code>: docstring, return <code>self.__tagline</code>.",
-                        "Write <code>get_connection_count(self)</code>: docstring, return <code>len(self.__connections)</code>.",
-                        "Write <code>get_trivia_count(self)</code>: docstring, return <code>len(self.__trivia)</code>.",
-                        "Write the <code>__str__(self)</code> method: return an f-string in the format <code>'CityName (CITY_TYPE)'</code>. For example, a San Antonio object should print as <code>'San Antonio (START)'</code>."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "The <code>__str__</code> method is what Python calls when you use <code>print(city_object)</code> or embed the object in an f-string with <code>f'{city_object}'</code>. Without it, printing a City gives you something like <code>&lt;city.City object at 0x7f4a...&gt;</code>. With it, you get <code>San Antonio (START)</code>. It costs one method and pays back every time you debug or display an object."
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "CP2 Complete",
-                    "items": [
-                        "Five getter methods added, each with a docstring",
-                        "__str__ returns 'CityName (CITY_TYPE)' format",
-                        "Quick test: open a Python shell, import City, create one object, and print it. Verify the output matches the format"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 3,
-            "title": "Add Connection Methods",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "The <code>__connections</code> dictionary maps destination city names to distances. These three methods let outside code add connections and query them without touching the dictionary directly."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Add a comment <code># --- CONNECTION METHODS ---</code> to organize this section.",
-                        "Write <code>add_connection(self, city_name, distance)</code>: docstring describing both parameters. Body: <code>self.__connections[city_name] = distance</code>.",
-                        "Write <code>get_distance_to(self, city_name)</code>: docstring noting it returns -1 if the city is not connected. Body: use <code>self.__connections.get(city_name, -1)</code>.",
-                        "Write <code>get_destination_names(self)</code>: docstring. Body: return <code>list(self.__connections.keys())</code>.",
-                        "Write <code>display_destinations(self)</code>: print <code>'From [city_name], you can travel to:'</code>, then loop through <code>self.__connections.items()</code> with a numbered counter and print each destination and distance."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
+                    "body": "Three getter methods that provide controlled access to your City's private data. Outside code can <em>read</em> the city's name but can't accidentally change it."
                 },
                 {
                     "type": "callout",
                     "variant": "bookex",
                     "references": [
                         {
-                            "programId": "9-1",
-                            "filename": "card_dealer.py",
-                            "step": 3,
-                            "description": "The __connections dictionary follows the same key-value pattern as the card deck. Adding a connection is the same as adding a card. get_distance_to() uses the same .get(key, default) pattern."
+                            "programId": "10-12",
+                            "filename": "cellphone.py",
+                            "step": 1,
+                            "description": "Remember <code>get_manufact()</code>, <code>get_model()</code>, and <code>get_retail_price()</code>? Each just returned <code>self.__attribute</code>. Your getters work the same way."
                         }
                     ]
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Add a comment <code># --- Getter Methods ---</code> below <code>__init__</code>",
+                        "Define <code>get_name(self)</code> that returns <code>self.__name</code>",
+                        "Define <code>get_type(self)</code> that returns <code>self.__city_type</code>",
+                        "Define <code>get_tagline(self)</code> that returns <code>self.__tagline</code>",
+                        "Add a docstring to each method (e.g., <code>\"\"\"Return the city's name.\"\"\"</code>)"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this test code at the bottom of city.py:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 3\nsan_antonio = City('San Antonio', 'START', 'Home of the Alamo')\nprint('Testing getter methods:')\nprint(f'  Name: {san_antonio.get_name()}')\nprint(f'  Type: {san_antonio.get_type()}')\nprint(f'  Tagline: {san_antonio.get_tagline()}')"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run city.py. You should see:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Testing getter methods:\n  Name: San Antonio\n  Type: START\n  Tagline: Home of the Alamo"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Delete the debug code before continuing."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Common Mistake", "Why It Fails"],
+                    "rows": [
+                        [
+                            "Accessing <code>self.name</code> instead of <code>self.__name</code>",
+                            "The attribute is private (double underscore) — must match exactly"
+                        ],
+                        [
+                            "Using <code>print()</code> instead of <code>return</code>",
+                            "Getters should return the value, not print it — the caller decides what to do with it"
+                        ],
+                        [
+                            "Forgetting parentheses when calling: <code>city.get_name</code>",
+                            "Without <code>()</code> you get the method object, not its return value"
+                        ]
+                    ],
+                    "accent": "green"
                 },
                 {
                     "type": "h3",
                     "label": "what_you_should_have"
                 },
                 {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "CP3 Complete",
+                    "type": "instructions",
                     "items": [
-                        "add_connection(), get_distance_to(), get_destination_names(), and display_destinations() all defined with docstrings",
-                        "get_distance_to() returns -1 for a city that is not connected",
-                        "display_destinations() prints a numbered list"
+                        "<code>get_name()</code> method with docstring",
+                        "<code>get_type()</code> method with docstring",
+                        "<code>get_tagline()</code> method with docstring"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title": "Connection Methods",
+            "subtitle": "Add methods to manage city connections — adding routes and checking distances.",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Three methods that let cities know about their road connections. This replaces the old <code>CITY_DISTANCES</code> dictionary — now each city manages its own connections!"
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Add a comment <code># --- Connection Methods ---</code>",
+                        "Define <code>add_connection(self, city_name, distance)</code> that stores the connection: <code>self.__connections[city_name] = distance</code> — and add a docstring",
+                        "Define <code>get_distance_to(self, city_name)</code> that returns the distance to a city, or <code>-1</code> if not connected: <code>return self.__connections.get(city_name, -1)</code> — and add a docstring",
+                        "Define <code>get_destination_names(self)</code> that returns a list of connected city names: <code>return list(self.__connections.keys())</code> — and add a docstring"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this test code:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 4\nsan_antonio = City('San Antonio', 'START', 'Home of the Alamo')\nsan_antonio.add_connection('Houston', 200)\nsan_antonio.add_connection('Corpus Christi', 150)\nsan_antonio.add_connection('Laredo', 160)\n\nprint('Testing connection methods:')\nprint(f'  Distance to Houston: {san_antonio.get_distance_to(\"Houston\")} miles')\nprint(f'  Distance to Dallas: {san_antonio.get_distance_to(\"Dallas\")} miles')\nprint(f'  Destinations: {san_antonio.get_destination_names()}')"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run city.py. You should see:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Testing connection methods:\n  Distance to Houston: 200 miles\n  Distance to Dallas: -1 miles\n  Destinations: ['Houston', 'Corpus Christi', 'Laredo']"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Delete the debug code before continuing."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Common Mistake", "Why It Fails"],
+                    "rows": [
+                        [
+                            "Using <code>self.__connections[city_name]</code> for <code>get_distance_to</code>",
+                            "KeyError if city not connected — use <code>.get(city_name, -1)</code> for safe access"
+                        ],
+                        [
+                            "Returning <code>self.__connections.keys()</code> directly",
+                            "Returns a dict_keys object, not a list — wrap with <code>list()</code>"
+                        ],
+                        [
+                            "Forgetting to add docstrings to methods",
+                            "CodeGrade checks for documentation — every method needs a docstring"
+                        ]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "<code>add_connection()</code> method with docstring",
+                        "<code>get_distance_to()</code> returning distance or -1, with docstring",
+                        "<code>get_destination_names()</code> returning a list, with docstring"
                     ]
                 }
             ]
         },
         {
             "number": 4,
-            "title": "Add Trivia, Status, and Display Methods",
+            "title": "Status Methods & __str__",
+            "subtitle": "Add methods to check city type and a <code>__str__</code> method for nice printing.",
             "content": [
                 {
                     "type": "h3",
@@ -252,7 +393,19 @@
                 },
                 {
                     "type": "text",
-                    "body": "Four more methods finish the class: trivia storage and retrieval, win/dead-end status checks, and a full city info display."
+                    "body": "Methods that let you ask a city about itself: \"Are you a win city?\" \"Are you a dead end?\" Plus a display method and the special <code>__str__</code> method that Python calls when you <code>print()</code> a City object."
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "10-9",
+                            "filename": "bankaccount2.py",
+                            "step": 1,
+                            "description": "You typed a <code>__str__</code> method that returned a formatted string. Python automatically calls this when you <code>print()</code> an object. Your City's <code>__str__</code> should return something like <code>'San Antonio (START)'</code>."
+                        }
+                    ]
                 },
                 {
                     "type": "h3",
@@ -261,39 +414,80 @@
                 {
                     "type": "instructions",
                     "items": [
-                        "Add <code># --- TRIVIA METHODS ---</code>. Write <code>add_trivia(self, question, answer)</code>: append a dictionary <code>{'question': question, 'answer': answer}</code> to <code>self.__trivia</code>.",
-                        "Write <code>get_random_trivia(self)</code>: add <code>import random</code> at the top of the method (or at the top of the file). If <code>self.__trivia</code> is empty, return <code>None</code>. Otherwise return <code>random.choice(self.__trivia)</code>.",
-                        "Add <code># --- STATUS METHODS ---</code>. Write <code>is_win_city(self)</code>: return <code>self.__city_type == 'WIN'</code>.",
-                        "Write <code>is_dead_end(self)</code>: return <code>True</code> if <code>self.__city_type</code> is <code>'DEAD_END'</code> or <code>'WRONG_WAY'</code>.",
-                        "Write <code>display_info(self)</code>: print the city name, type, tagline, connection count, and trivia count. Use the getter methods rather than accessing the private attributes directly."
+                        "Add a comment <code># --- Status Methods ---</code>",
+                        "Define <code>is_win_city(self)</code> that returns <code>True</code> if <code>self.__city_type == 'WIN'</code> — add a docstring",
+                        "Define <code>is_dead_end(self)</code> that returns <code>True</code> if <code>self.__city_type == 'DEAD_END'</code> — add a docstring",
+                        "Add a comment <code># --- Display Methods ---</code>",
+                        "Define <code>display_destinations(self)</code> that prints the destination menu — use a <code>for</code> loop over <code>self.__connections.items()</code> with a counter, and add a docstring",
+                        "Define <code>__str__(self)</code> that returns a string like <code>'San Antonio (START)'</code> using an f-string — add a docstring"
                     ]
                 },
                 {
-                    "type": "callout",
-                    "variant": "tip",
-                    "title": "Use Your Own Getters Inside the Class",
-                    "body": "Inside <code>display_info()</code>, call <code>self.get_connection_count()</code> rather than <code>len(self.__connections)</code> directly. Using your own methods internally is good practice. If the implementation of connection storage ever changes, only <code>get_connection_count()</code> needs updating."
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this test code:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 5\ncorpus = City('Corpus Christi', 'WIN', 'Sparkling City by the Sea')\nlaredo = City('Laredo', 'DEAD_END', 'Gateway to Mexico')\nsan_antonio = City('San Antonio', 'START', 'Home of the Alamo')\n\nsan_antonio.add_connection('Houston', 200)\nsan_antonio.add_connection('Corpus Christi', 150)\n\nprint('Testing __str__:')\nprint(f'  {san_antonio}')\nprint(f'  {corpus}')\nprint(f'  {laredo}')\nprint()\nprint('Testing status methods:')\nprint(f'  Corpus is_win_city: {corpus.is_win_city()}')\nprint(f'  Laredo is_dead_end: {laredo.is_dead_end()}')\nprint()\nprint('Testing display_destinations:')\nsan_antonio.display_destinations()"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run city.py. You should see:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Testing __str__:\n  San Antonio (START)\n  Corpus Christi (WIN)\n  Laredo (DEAD_END)\n\nTesting status methods:\n  Corpus is_win_city: True\n  Laredo is_dead_end: True\n\nTesting display_destinations:\nFrom San Antonio, you can travel to:\n  1. Houston - 200 miles\n  2. Corpus Christi - 150 miles"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Delete the debug code before continuing."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Common Mistake", "Why It Fails"],
+                    "rows": [
+                        [
+                            "Using <code>print()</code> inside <code>__str__</code>",
+                            "<code>__str__</code> must <em>return</em> a string — Python calls it when you print the object"
+                        ],
+                        [
+                            "Comparing type with <code>'win'</code> (lowercase)",
+                            "City types are uppercase ('WIN', 'DEAD_END') — case must match exactly"
+                        ],
+                        [
+                            "Naming method <code>_str_</code> (single underscores)",
+                            "Must be <code>__str__</code> with DOUBLE underscores — that's how Python recognizes it"
+                        ]
+                    ],
+                    "accent": "green"
                 },
                 {
                     "type": "h3",
                     "label": "what_you_should_have"
                 },
                 {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "CP4 Complete",
+                    "type": "instructions",
                     "items": [
-                        "add_trivia() appends a dict with 'question' and 'answer' keys",
-                        "get_random_trivia() returns None for empty list, random dict otherwise",
-                        "is_win_city() and is_dead_end() return the correct boolean for each city type",
-                        "display_info() prints all five city attributes using getter methods"
+                        "<code>is_win_city()</code> method returning True/False, with docstring",
+                        "<code>is_dead_end()</code> method returning True/False, with docstring",
+                        "<code>display_destinations()</code> method printing numbered menu, with docstring",
+                        "<code>__str__()</code> method returning formatted string, with docstring"
                     ]
                 }
             ]
         },
         {
             "number": 5,
-            "title": "Write city_test.py",
+            "title": "Complete Test Program",
+            "subtitle": "Create lab-5-1.py that imports City and runs a comprehensive test.",
             "content": [
                 {
                     "type": "h3",
@@ -301,7 +495,26 @@
                 },
                 {
                     "type": "text",
-                    "body": "Create a second file called <code>city_test.py</code>. This is your test harness. It imports the City class and methodically exercises every method you just wrote. A class is only as good as its tests."
+                    "body": "A separate test program that imports your City class and demonstrates all its capabilities. This is the file you'll submit to CodeGrade along with city.py."
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "10-13",
+                            "filename": "cell_phone_test.py",
+                            "step": 1,
+                            "description": "You typed <code>import cellphone</code> then created objects with <code>cellphone.CellPhone(...)</code>. Your test program uses <code>from city import City</code> so you can write <code>City(...)</code> directly."
+                        }
+                    ]
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Priya Venkatesh",
+                    "role": "Project Manager, Bat City Collective",
+                    "headshot": "Priya-Venkatesh.png",
+                    "quote": "Think about what you've built: city.py contains the City class, and lab-5-1.py tests it. Two separate files, two separate concerns. When we add the full game in Lab 5.2, we import the same City class. That's code reuse — you write it once, use it everywhere. This is how professional projects stay organized!"
                 },
                 {
                     "type": "h3",
@@ -310,23 +523,12 @@
                 {
                     "type": "instructions",
                     "items": [
-                        "Add your documentation header, then <code>from city import City</code>.",
-                        "Write a <code>main()</code> function. Start with a header line: <code>print('=' * 50)</code>, <code>print('CITY CLASS TEST')</code>, <code>print('=' * 50)</code>.",
-                        "Create four City objects: San Antonio (<code>'START'</code>, <code>'Home of the Alamo'</code>), Houston (<code>'GATEWAY'</code>, <code>'Space City'</code>), Corpus Christi (<code>'WIN'</code>, <code>'Sparkling City by the Sea'</code>), and Laredo (<code>'DEAD_END'</code>, <code>'Gateway to Mexico'</code>).",
-                        "Test <code>__str__</code>: print all four objects using f-strings and verify the output format.",
-                        "Add connections: San Antonio to Houston (200), Corpus Christi (150), and Laredo (160). Houston to San Antonio (200). Test <code>get_distance_to()</code> for a connected city and for a city that is not connected. Verify you get -1 for the missing one.",
-                        "Add two trivia questions to San Antonio. Call <code>get_random_trivia()</code> and print the question and answer.",
-                        "Call <code>display_info()</code> and <code>display_destinations()</code> on San Antonio.",
-                        "Test <code>is_win_city()</code> and <code>is_dead_end()</code> on all four cities and print the results.",
-                        "Add <code>if __name__ == '__main__': main()</code> at the bottom. Run the file and verify every section produces the expected output."
+                        "Create a new file called <code>lab-5-1.py</code>",
+                        "Add the standard header docstring with your name, abc123, section, and description",
+                        "Import the City class: <code>from city import City</code>",
+                        "Define a <code>main()</code> function that creates 4 City objects (San Antonio, Houston, Corpus Christi, Laredo), adds connections between them, and tests all methods — getters, <code>__str__</code>, connection methods, status methods, and <code>display_destinations()</code>",
+                        "Add the <code>if __name__ == '__main__':</code> block to call <code>main()</code>"
                     ]
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Tyler Nguyen",
-                    "role": "Junior Developer, Bat City Collective",
-                    "headshot": "Tyler-Nguyen.png",
-                    "quote": "I used to skip writing test programs and just submit. Then I started failing CodeGrade tests for methods I was sure worked. Now I test every method manually before I submit anything. It takes ten minutes and saves an hour."
                 },
                 {
                     "type": "h3",
@@ -334,67 +536,89 @@
                 },
                 {
                     "type": "output_block",
-                    "output": "==================================================\nCITY CLASS TEST\n==================================================\n\nTesting __str__:\n  San Antonio (START)\n  Houston (GATEWAY)\n  Corpus Christi (WIN)\n  Laredo (DEAD_END)\n\nTesting distances:\n  SA to Houston: 200 miles\n  SA to Dallas: -1 miles\n\nTesting display_info:\nCity: San Antonio\nType: START\nTagline: \"Home of the Alamo\"\nConnections: 3\nTrivia Questions: 2\n\nTesting display_destinations:\nFrom San Antonio, you can travel to:\n  1. Houston - 200 miles\n  2. Corpus Christi - 150 miles\n  3. Laredo - 160 miles\n\nTesting status methods:\n  Corpus is win city: True\n  Laredo is dead end: True\n  Houston is win city: False\n\nAll tests complete!"
+                    "output": "==================================================\nLAB 5.1: MEET THE CITIES\nTesting the City Class\n==================================================\n\nCreating cities...\n\nTesting getter methods:\n  Name: San Antonio\n  Type: START\n  Tagline: Home of the Alamo\n\nTesting __str__ method (just print the object):\n  San Antonio (START)\n  Houston (HUB)\n  Corpus Christi (WIN)\n  Laredo (DEAD_END)\n\nAdding connections...\nDone!\n\nTesting connection methods:\n  San Antonio to Houston: 200 miles\n  San Antonio to Dallas: -1 miles\n\nDestinations from San Antonio:\n  - Houston\n  - Corpus Christi\n  - Laredo\n\nTesting display_destinations():\nFrom San Antonio, you can travel to:\n  1. Houston - 200 miles\n  2. Corpus Christi - 150 miles\n  3. Laredo - 160 miles\n\nTesting is_win_city() and is_dead_end():\n  Corpus Christi is_win_city: True\n  Houston is_win_city: False\n  Laredo is_dead_end: True\n  Houston is_dead_end: False\n\n==================================================\nSUCCESS! City class works correctly.\n==================================================\n\nKey OOP concepts demonstrated:\n  - Created a class with private attributes\n  - Used __init__ to initialize objects\n  - Created getter methods for data access\n  - Used __str__ for printing objects"
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Common Mistake", "Why It Fails"],
+                    "rows": [
+                        [
+                            "Importing <code>city.py</code> instead of <code>from city import City</code>",
+                            "Need to import the class itself, not the filename"
+                        ],
+                        [
+                            "Missing <code>if __name__ == '__main__':</code>",
+                            "Test code runs when imported by other files — the guard prevents this"
+                        ],
+                        [
+                            "Files not in the same directory",
+                            "<code>city.py</code> and <code>lab-5-1.py</code> must be in the same folder"
+                        ]
+                    ],
+                    "accent": "green"
                 },
                 {
                     "type": "h3",
                     "label": "what_you_should_have"
                 },
                 {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "Lab 5.1 Complete",
+                    "type": "instructions",
                     "items": [
-                        "city.py defines the City class with all methods and docstrings",
-                        "city_test.py imports City, creates 4 objects, and tests every method",
-                        "Output matches the expected output block above",
-                        "Both files have documentation headers",
-                        "Both files submitted to CodeGrade"
+                        "<code>lab-5-1.py</code> with proper header docstring",
+                        "Import statement: <code>from city import City</code>",
+                        "<code>main()</code> function that tests all City methods",
+                        "<code>if __name__ == '__main__':</code> block",
+                        "Output demonstrates all class functionality"
                     ]
                 }
             ]
         }
     ],
-
     "finalChecklist": {
         "beforeYouSubmit": [
-            "city.py contains the City class only, with no main() and no if __name__ guard",
-            "All five private attributes initialized in __init__: __name, __city_type, __tagline, __connections, __trivia",
-            "All getter methods present: get_name(), get_type(), get_tagline(), get_connection_count(), get_trivia_count()",
-            "Connection methods present: add_connection(), get_distance_to(), get_destination_names(), display_destinations()",
-            "Trivia methods present: add_trivia(), get_random_trivia()",
-            "Status methods present: is_win_city(), is_dead_end()",
-            "__str__ returns 'CityName (CITY_TYPE)' format",
-            "city_test.py tests every method and matches expected output",
-            "Top-of-file documentation headers in both files",
-            "All methods have docstrings"
+            "<code>city.py</code> has module docstring at top",
+            "<code>City</code> class has class docstring",
+            "All attributes use <strong>double underscore</strong> prefix (private)",
+            "All methods have <strong>docstrings</strong>",
+            "<code>lab-5-1.py</code> has header docstring with your name, abc123, and section",
+            "<code>lab-5-1.py</code> imports City with <code>from city import City</code>",
+            "No debug/test code left in <code>city.py</code>",
+            "Both files run <strong>without errors</strong>",
+            "Submitted <strong>BOTH</strong> files to CodeGrade"
         ],
-        "scopeReminder": "Chapter 10 techniques: class definition, __init__ constructor, private attributes with double underscore, getter methods, __str__ special method, dot notation method calls, and creating objects. All Module 1–4 techniques also permitted.",
+        "scopeReminder": "Chapter 10 Sections 10.1–10.3 ONLY. Classes, constructors, private attributes, getter methods, and special methods only. Inheritance and multiple classes come in future labs.",
         "permittedTechniques": {
-            "chapters": "2–10",
+            "chapters": "2–10 (Sections 10.1–10.3 introduced this module; all prior techniques fully permitted)",
             "specific": [
-                "class ClassName: (class definition)",
-                "def __init__(self, param): (constructor)",
-                "self.__attribute (private attribute with name mangling)",
-                "def __str__(self): (string representation)",
-                "ClassName(args) to create an object",
-                "object.method() dot notation",
-                "from city import City (module import)"
+                "Class definition with the <code>class</code> keyword",
+                "<code>__init__</code> constructor with <code>self</code>",
+                "Private attributes with <code>__</code> prefix",
+                "Getter methods returning <code>self.__attribute</code>",
+                "<code>__str__</code> special method",
+                "All techniques from Modules 1–4"
             ],
-            "notPermitted": "list comprehensions, inheritance (Module 5.3 topic), multiple inheritance"
+            "notPermitted": "Inheritance (Lab 5.3), multiple classes working together (Lab 5.2)"
         },
         "warnings": [
-            "CodeGrade imports city.py directly and tests each method in isolation. A syntax error in city.py will fail all tests."
+            "Submit BOTH files: CodeGrade will test that <code>lab-5-1.py</code> can import your <code>City</code> class from <code>city.py</code>. If you only submit one file, the import will fail.",
+            "Make sure <code>city.py</code> has no test code at the bottom — it should only contain the class definition."
         ]
     },
-
     "needHelp": {
+        "chapterResource": "Chapter 10 BookEx Reference Guide — step-by-step breakdowns of every textbook example; your primary reference for this lab",
         "ifYouGetStuck": [
-            "Re-read Program 10-12 (cellphone.py) in your BookEx. It is the same pattern as the City class with different data",
-            "If you get AttributeError when calling a method, check that self is the first parameter in that method's definition",
-            "If print(city_object) shows a memory address instead of a name, __str__ is either missing or has a typo in the method name",
-            "Submit to CodeGrade early. It tells you exactly which methods pass and which do not"
+            "Re-read the BookEx exercises — CellPhone and BankAccount are your templates",
+            "Check your indentation — methods must be indented inside the class",
+            "Remember <code>self</code> — every method's first parameter is <code>self</code>",
+            "Submit to CodeGrade early — it shows exactly which tests pass or fail",
+            "Come to Zoom or office hours — OOP is tricky at first; we can help!"
         ],
-        "bookexResourceNote": "Chapter 10 BookEx Reference Guide, which covers Programs 10-12 and 10-9 showing the class definition pattern this lab uses"
+        "zoomLink": "https://utsa.zoom.us/j/97617245124",
+        "calendlyLink": "https://calendly.com/john-newsom-utsa/student-meeting",
+        "discordNote": "Post in the course Discord with your checkpoint number, what you expected to happen, and what actually happened. Include the specific error message if you have one."
     }
 }
