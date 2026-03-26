@@ -491,7 +491,7 @@ def render_mentor_quote(item: dict,
           <img src="{img_src}" alt="{html_lib.escape(character)}">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"{html_lib.escape(quote)}"</div>
+          <div class="lc-mentor__quote">"{quote}"</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
