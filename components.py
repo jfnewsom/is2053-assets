@@ -175,11 +175,13 @@ def topper_with_badge(badge_word: str, badge_num: str,
     sub = f'\n    <div class="lc-sub-banner">{sub_banner}</div>' if sub_banner else ""
     return f"""  <div class="lc-topper">
     <div class="lc-card-header">
-      <div class="lc-lab-badge">
-        <div class="lc-lab-badge__word">{badge_word}</div>
-        <div class="lc-lab-badge__num">{badge_num}</div>
+      <div class="lc-card-header__left">
+        <div class="lc-lab-badge">
+          <div class="lc-lab-badge__word">{badge_word}</div>
+          <div class="lc-lab-badge__num">{badge_num}</div>
+        </div>
+        <div class="lc-topper-title">{title}</div>
       </div>
-      <div class="lc-topper-title">{title}</div>
       <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" class="lc-card-header__logo">
     </div>{sub}
   </div>
