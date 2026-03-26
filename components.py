@@ -180,6 +180,7 @@ def topper_with_badge(badge_word: str, badge_num: str,
         <div class="lc-lab-badge__num">{badge_num}</div>
       </div>
       <div class="lc-topper-title">{title}</div>
+      <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" class="lc-card-header__logo">
     </div>{sub}
   </div>
 """
@@ -246,7 +247,8 @@ def render_h3(item: dict, card_color: str = "green") -> str:
     """Render a named section header — Roboto Slab, color inherited from card accent."""
     label = item.get("label", "")
     display = H3_LABELS.get(label, label.replace("_", " ").title())
-    return f'    <div class="lc-h3">{display}</div>\n'
+    modifier = H3_COLOR_FOR_CARD.get(card_color, "lc-h3--yellow")
+    return f'    <div class="lc-h3 {modifier}">{display}</div>\n'
 
 
 def render_callout(item: dict) -> str:
@@ -735,13 +737,13 @@ def render_final_checklist(checklist: dict) -> str:
       </li>
 """
 
-    submit_block = f"""    <div class="lc-h3">Before You Submit</div>
+    submit_block = f"""    <div class="lc-h3 lc-h3--yellow">Before You Submit</div>
     <ul class="lc-checklist">
 {checklist_items}    </ul>
 """ if checklist_items else ""
 
     # Scope reminder — plain text
-    scope_block = f"""    <div class="lc-h3">Scope Reminder</div>
+    scope_block = f"""    <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
     <p>{html_lib.escape(scope_reminder)}</p>
 """ if scope_reminder else ""
 
@@ -760,7 +762,7 @@ def render_final_checklist(checklist: dict) -> str:
             f'<strong>Not permitted:</strong> {html_lib.escape(not_permitted)}</p>\n'
         ) if not_permitted else ""
 
-        permitted_block = f"""    <div class="lc-h3">Permitted Techniques</div>
+        permitted_block = f"""    <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
     <div class="lc-permitted">
       <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> {html_lib.escape(chapters)}</p>
       <ul class="lc-permitted__list">
@@ -798,7 +800,7 @@ def render_final_checklist(checklist: dict) -> str:
 """ if save_your_code else ""
 
     # Academic Integrity — plain text
-    integrity_block = f"""    <div class="lc-h3">Academic Integrity</div>
+    integrity_block = f"""    <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
     <p>{html_lib.escape(academic_integrity)}</p>
 """
 
@@ -852,7 +854,7 @@ def render_need_help(need_help: dict) -> str:
         f'      <li>{html_lib.escape(item)}</li>\n'
         for item in if_you_get_stuck
     )
-    stuck_block = f"""    <div class="lc-h3">If You Get Stuck</div>
+    stuck_block = f"""    <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
     <ul>
 {stuck_items}    </ul>
 """ if stuck_items else ""
@@ -860,5 +862,5 @@ def render_need_help(need_help: dict) -> str:
     return f"""{card_open("purple")}
 {topper("Need Help?", "Look No Further!")}
 {panel_open()}
-{stuck_block}    <div class="lc-h3">Contact &amp; Resources</div>
+{stuck_block}    <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
 {CONTACT_GRID_HTML}{panel_close()}{card_close()}"""
