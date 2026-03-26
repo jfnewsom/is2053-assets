@@ -648,6 +648,14 @@ def render_before_you_begin(byb: dict) -> str:
         escaped
     )
 
+    # Color function names (word characters followed by parentheses) in neon green
+    # Must run after [NEW]/[REPLACED] substitution to avoid double-processing
+    escaped = re.sub(
+        r'(\b\w[\w.]*\([^)]*\))',
+        r'<span class="lc-arch-fn">\1</span>',
+        escaped
+    )
+
     intro_html = f'    <p class="lc-arch-intro">{html_lib.escape(intro)}</p>\n' if intro else ""
 
     return (
