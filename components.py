@@ -172,16 +172,27 @@ def topper(title: str, sub_banner: str = "") -> str:
 def topper_with_badge(badge_word: str, badge_num: str,
                       title: str, sub_banner: str = "") -> str:
     """Render a card topper with a lab/bookex badge + title side by side."""
-    sub = f'\n    <div class="lc-sub-banner">{sub_banner}</div>' if sub_banner else ""
+    sub_row = (
+        f'\n    <tr><td colspan="3" style="padding: 10px 0 0 0;">'
+        f'<div class="lc-sub-banner">{sub_banner}</div></td></tr>'
+    ) if sub_banner else ""
     return f"""  <div class="lc-topper">
-    <div class="lc-card-header">
-      <div class="lc-lab-badge">
-        <div class="lc-lab-badge__word">{badge_word}</div>
-        <div class="lc-lab-badge__num">{badge_num}</div>
-      </div>
-      <div class="lc-topper-title">{title}</div>
-      <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" class="lc-card-header__logo">
-    </div>{sub}
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0;">
+          <div class="lc-lab-badge">
+            <div class="lc-lab-badge__word">{badge_word}</div>
+            <div class="lc-lab-badge__num">{badge_num}</div>
+          </div>
+        </td>
+        <td style="vertical-align: bottom; padding: 0 0 0 16px;">
+          <div class="lc-topper-title">{title}</div>
+        </td>
+        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">
+          <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: 100px; width: auto; display: block;">
+        </td>
+      </tr>{sub_row}
+    </table>
   </div>
 """
 
