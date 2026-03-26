@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data-Driven Texas</title>
+    <title>Data-Driven Texas — IS2053</title>
     <link rel="stylesheet" href="../../labs.css">
 </head>
 <body>
@@ -11,7 +11,10 @@
 <div class="lc-card lc-card--blue">
   <div class="lc-topper">
     <div class="lc-card-header">
-      <div class="lc-lab-badge"><div class="lc-lab-badge__word">LAB</div><div class="lc-lab-badge__num">4.3</div></div>
+      <div class="lc-lab-badge">
+        <div class="lc-lab-badge__word">LAB</div>
+        <div class="lc-lab-badge__num">4.3</div>
+      </div>
       <div class="lc-topper-title">Data-Driven Texas</div>
     </div>
     <div class="lc-sub-banner">MODULE 4 &bull; WEEK 3 &bull; MASTER &bull; CHAPTERS 8–9: SETS, TRIVIA GATE, FULL DATA-DRIVEN ARCHITECTURE</div>
@@ -19,74 +22,122 @@
   <div class="lc-panel">
     <div class="lc-h3 lc-h3--yellow">Overview</div>
     <img src="../../branding/AllMyEggses3D-Full.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
-    <p>This is the week everything snaps into place. Your game has been running on hardcoded constants, coin flips, and manual duplicate checking since Module 1. That ends today.<br><br>In this MASTER week you will add three things that transform your game. First, a <code>TRIVIA</code> dictionary that stores city questions and answers. Second, a <code>trivia_gate()</code> function that replaces the coin flip. Players now earn their destination by answering correctly. Third, sets for <code>unique_cities_visited</code> and <code>unique_hazards_faced</code>, replacing the manual duplicate-checking loops from Module 3. The final trip report gets upgraded to display all three.<br><br>Copy your <code>lab-4-2.py</code> and <code>function_library.py</code> into new files named <code>lab-4-3.py</code> and <code>function_library.py</code> before you start. Everything from 4.2 carries forward.</p>
+    <p>Time to put it all together! This MASTER week introduces <strong>sets</strong> — collections that automatically remove duplicates. You’ll replace the coin flip gate with a <strong>trivia system</strong>, track unique cities and hazards with sets, and produce a comprehensive final report. This is Module 4’s capstone: data from files, dictionaries, sets, and polished output.</p>
     <div style="clear: both;"></div>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
-        <div class="lc-mentor__avatar"><img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles"></div>
-        <div class="lc-mentor__bubble"><div class="lc-mentor__quote">The coin flip was always the weakest moment in the game. Pure random chance with no player agency. Trivia changes that. Now the player has a reason to pay attention to where they are going. That is the difference between a game and a slot machine.</div></div>
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Lists remember everything. Sets remember everything once. If you visited Houston three times, a list says Houston, Houston, Houston. A set just says Houston. That’s not a limitation — it’s a superpower for tracking unique things."</div>
+        </div>
       </div>
-      <div class="lc-mentor__attribution"><div class="lc-mentor__name">Sasha Mireles</div><div class="lc-mentor__role">Creative Director, Bat City Collective</div></div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Senior Developer, Bat City Collective</div>
+      </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Filename</div>
-    <p>Submit lab-4-3.py and function_library.py this week.</p>
+    <p>Submit <code>lab-4-3.py</code> this week. Start by copying your <code>lab-4-2.py</code> and renaming it.</p>
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <ul class="lc-objectives">
-      <li>Create a TRIVIA dictionary with city-specific true/false questions and answers</li>
-      <li>Write a trivia_gate() function that presents a question and returns True or False</li>
-      <li>Replace the Destination Gate coin flip with trivia_gate() in the main game loop</li>
-      <li>Use sets to track unique_cities_visited and unique_hazards_faced automatically</li>
-      <li>Update the final trip report to display trivia stats and unique set data</li>
+      <li><code>load_trivia()</code> — Parse <code>trivia.txt</code> into a dict with list values</li>
+      <li><code>trivia_gate()</code> — TRUE/FALSE questions replace the coin flip</li>
+      <li>Sets — Track unique cities visited and unique hazards encountered</li>
+      <li><code>sorted()</code> — Display set contents in alphabetical order</li>
+      <li>Comprehensive report — Route, unique cities, trivia stats, and hazard stats</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
-    <p>Chapter 9: Program 9-1 (card_dealer.py, dictionary creation and lookup with .get()) and Program 9-3 (sets.py, set creation, .add(), and set operations). Sets and dictionaries are covered in Sections 9.1 and 9.2 respectively.</p>
+    <p>Chapter 9: set(), .add(), len() on sets, sorted() for display, and dict with list values</p>
     <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
-    <p>Starting Out with Python, 6th Edition by Tony Gaddis, Chapters 8 and 9</p>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 8 &amp; 9</p>
     <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
     <ul>
-      <li>TRIVIA dictionary contains at least 3 cities with at least 2 questions each</li>
-      <li>trivia_gate(destination) returns True if player answers correctly, False otherwise</li>
-      <li>Destination Gate uses trivia_gate() with the coin flip fully removed</li>
-      <li>unique_cities_visited and unique_hazards_faced are sets, not lists</li>
-      <li>Final trip report displays unique city count, unique hazard count, and trivia accuracy</li>
+      <li>Your program MUST use sets to track unique cities and hazards</li>
+      <li>Your program MUST load trivia from <code>trivia.txt</code></li>
+      <li>Your program MUST use <code>sorted()</code> when displaying set contents</li>
+      <li>Your program MUST include trivia statistics in the final report</li>
+      <li>Your program MUST track and display unique hazard types encountered</li>
     </ul>
+    <div class="lc-h3 lc-h3--yellow">Required Data Files</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Format</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr><td><code>city_distances.txt</code></td><td>Same as 4.1/4.2</td><td><a href="../../data/city_distances.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_distances.txt</a></td></tr>
+      <tr><td><code>city_info.txt</code></td><td>Same as 4.1/4.2</td><td><a href="../../data/city_info.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_info.txt</a></td></tr>
+      <tr><td><code>hazards.txt</code></td><td>Same as 4.2</td><td><a href="../../data/hazards.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; hazards.txt</a></td></tr>
+      <tr><td><code>trivia.txt</code> <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span></td><td>city,question,TRUE/FALSE</td><td><a href="../../data/trivia.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; trivia.txt</a></td></tr>
+        </tbody>
+      </table>
+    </div>
     <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="lc-callout__bubble"><div class="lc-callout__title">Save Your Code</div><div class="lc-callout__body"><p>This is the Module 4 capstone. Module 5 starts fresh with classes. Save lab-4-3.py as your personal reference for the data-driven architecture.</p></div></div>
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>This is the Module 4 capstone. Module 5 starts fresh with classes. Save <code>lab-4-3.py</code> as your personal reference for the data-driven architecture.</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 <div class="lc-card lc-card--orange">
+
   <div class="lc-topper">
     <div class="lc-topper-title">Time Guide</div>
-    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 75–90 Minutes</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 120–150 Minutes</div>
   </div>
+
   <div class="lc-panel">
+
     <div class="lc-table-wrap">
       <table class="lc-table">
-        <thead><tr><th>Checkpoint</th><th>Time</th><th>Task</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Time</th>
+            <th>Task</th>
+          </tr>
+        </thead>
         <tbody>
-            <tr>
-        <td><strong>CP1: TRIVIA Dictionary</strong></td>
-        <td>20 min</td>
-        <td>Build the TRIVIA constant with city questions and answers</td>
+      <tr>
+        <td><strong>CP1: Load Trivia</strong></td>
+        <td>25–30 min</td>
+        <td>Dict with list values structure</td>
       </tr>
       <tr>
-        <td><strong>CP2: trivia_gate() Function</strong></td>
-        <td>20 min</td>
-        <td>Write, test, and tune the trivia gate logic</td>
+        <td><strong>CP2: Trivia Gate</strong></td>
+        <td>30–35 min</td>
+        <td>TRUE/FALSE question system</td>
       </tr>
       <tr>
-        <td><strong>CP3: Wire It In</strong></td>
-        <td>25 min</td>
-        <td>Replace coin flip, add sets, upgrade final report</td>
+        <td><strong>CP3: Add Sets</strong></td>
+        <td>25–30 min</td>
+        <td>Unique cities and hazards tracking</td>
       </tr>
       <tr>
-        <td><strong>CP4: Master Week QA Pass</strong></td>
-        <td>15 min</td>
-        <td>Full playthrough, edge cases, CodeGrade, solution quality</td>
+        <td><strong>CP4: Final Report</strong></td>
+        <td>30–35 min</td>
+        <td>Comprehensive stats display</td>
       </tr>
-      <tr class="lc-table__total"><td colspan="2"><strong>Total Estimated Time</strong></td><td><strong>75–90 Minutes</strong></td></tr>
+      <tr class="lc-table__total">
+        <td colspan="2"><strong>Total Estimated Time</strong></td>
+        <td><strong>120–150 Minutes</strong></td>
+      </tr>
         </tbody>
       </table>
     </div>
@@ -98,45 +149,49 @@
     <div class="lc-sub-banner">Program Architecture</div>
   </div>
   <div class="lc-panel">
-    <p class="lc-arch-intro">Here is how your finished program fits together. The [NEW] tags show what you are adding this week. The [REPLACED] tags show what changes from your 4.2 code.</p>
+    <p class="lc-arch-intro">Here’s how your finished program fits together. The [NEW] tags show what you’re adding. The [REPLACED] tags show what changes from your 4.2 code. The section at the bottom runs after the game loop ends.</p>
     <div class="lc-arch">
-      <pre><span class="sy-cm"># ---- CONSTANTS (lab-4-3.py) ----</span>
-CITY_DISTANCES <span class="sy-op">=</span> <span class="sy-op">{</span> <span class="sy-op">.</span><span class="sy-op">.</span><span class="sy-op">.</span> <span class="sy-op">}</span>              <span class="sy-op">(</span><span class="sy-kw">from</span> <span class="sy-num">4.1</span><span class="sy-op">,</span> unchanged<span class="sy-op">)</span>
-CITY_INFO      <span class="sy-op">=</span> <span class="sy-op">{</span> <span class="sy-op">.</span><span class="sy-op">.</span><span class="sy-op">.</span> <span class="sy-op">}</span>              <span class="sy-op">(</span><span class="sy-kw">from</span> <span class="sy-num">4.1</span><span class="sy-op">,</span> unchanged<span class="sy-op">)</span>
-HAZARDS        <span class="sy-op">=</span> <span class="sy-op">{</span> <span class="sy-op">.</span><span class="sy-op">.</span><span class="sy-op">.</span> <span class="sy-op">}</span>              <span class="sy-op">(</span><span class="sy-kw">from</span> <span class="sy-num">4.1</span><span class="sy-op">,</span> unchanged<span class="sy-op">)</span>
-TRIVIA         <span class="sy-op">=</span> <span class="sy-op">{</span> <span class="sy-op">.</span><span class="sy-op">.</span><span class="sy-op">.</span> <span class="sy-op">}</span>              <span class="sy-op">[</span>NEW — city questions <span class="sy-kw">and</span> answers<span class="sy-op">]</span>
-STARTING_CITY  <span class="sy-op">=</span> <span class="sy-str">'San Antonio'</span>        <span class="sy-op">(</span>unchanged<span class="sy-op">)</span>
+      <pre># ---- DATA LOADING FUNCTIONS ----
+load_city_distances()   reads city_distances.txt -&gt; nested dict
+load_city_info()        reads city_info.txt -&gt; dict of dicts
+load_hazards()          reads hazards.txt -&gt; list of dicts
+load_trivia()           reads trivia.txt -&gt; dict of lists  <span class="lc-arch-new">[NEW]</span>
 
-<span class="sy-cm"># ---- TRACKING VARIABLES ----</span>
-visited_cities          <span class="sy-op">=</span> <span class="sy-op">[</span><span class="sy-op">]</span>          <span class="sy-op">(</span>unchanged — allows duplicates<span class="sy-op">,</span> shows path<span class="sy-op">)</span>
-unique_cities_visited   <span class="sy-op">=</span> <span class="sy-bi">set</span><span class="sy-op">(</span><span class="sy-op">)</span>       <span class="sy-op">[</span>NEW — <span class="sy-bi">set</span><span class="sy-op">,</span> no duplicates<span class="sy-op">]</span>
-unique_hazards_faced    <span class="sy-op">=</span> <span class="sy-bi">set</span><span class="sy-op">(</span><span class="sy-op">)</span>       <span class="sy-op">[</span>NEW — <span class="sy-bi">set</span><span class="sy-op">,</span> no duplicates<span class="sy-op">]</span>
-trivia_asked            <span class="sy-op">=</span> <span class="sy-num">0</span>           <span class="sy-op">[</span>NEW — counter<span class="sy-op">]</span>
-trivia_correct          <span class="sy-op">=</span> <span class="sy-num">0</span>           <span class="sy-op">[</span>NEW — counter<span class="sy-op">]</span>
+# ---- GAME FUNCTIONS ----
+display_destinations()  shows menu from dict
+get_destination_choice()  validates user pick
+trivia_gate(dest, trivia, all_dests, distances, current)  TRUE/FALSE question  <span class="lc-arch-new">[NEW]</span>
+handle_hazard(hazards)  random hazard + coin flip
+travel_to(distance)    D20 travel + hazard checks
 
-<span class="sy-cm"># ---- FUNCTION LIBRARY (function_library.py) ----</span>
-trivia_gate<span class="sy-op">(</span>destination<span class="sy-op">,</span> trivia_dict<span class="sy-op">)</span> <span class="sy-op">[</span>NEW — presents question<span class="sy-op">,</span> returns <span class="sy-kw">True</span><span class="sy-op">/</span><span class="sy-kw">False</span><span class="sy-op">]</span>
-<span class="sy-op">(</span>all <span class="sy-num">4.2</span> functions unchanged<span class="sy-op">)</span>
+# ---- MAIN PROGRAM ----
+Load ALL data files (distances, info, hazards, trivia)
+Get player name
+current_city = &#x27;San Antonio&#x27;
+unique_cities = set()  <span class="lc-arch-new">[NEW]</span>
+unique_hazards = set()  <span class="lc-arch-new">[NEW]</span>
 
-<span class="sy-cm"># ---- MAIN GAME (lab-4-3.py) ----</span>
-GAME LOOP<span class="sy-op">:</span>
-│
-│── DESTINATION GATE<span class="sy-op">:</span>
-│   │── trivia_gate<span class="sy-op">(</span>destination<span class="sy-op">,</span> TRIVIA<span class="sy-op">)</span>   <span class="sy-op">[</span>REPLACED — was coin flip<span class="sy-op">]</span>
-│   │── <span class="sy-kw">if</span> correct<span class="sy-op">:</span> use chosen destination
-│   │── <span class="sy-kw">if</span> wrong<span class="sy-op">:</span> random redirect
-│   │── update trivia_asked<span class="sy-op">,</span> trivia_correct
-│
-│── TRAVEL LOOP<span class="sy-op">:</span>
-│   │── unique_cities_visited<span class="sy-op">.</span>add<span class="sy-op">(</span>city<span class="sy-op">)</span>    <span class="sy-op">[</span>NEW<span class="sy-op">]</span>
-│
-│── HAZARD<span class="sy-op">:</span>
-│   │── unique_hazards_faced<span class="sy-op">.</span>add<span class="sy-op">(</span>hazard<span class="sy-op">)</span>   <span class="sy-op">[</span>NEW<span class="sy-op">]</span>
-│
-FINAL REPORT<span class="sy-op">:</span>
-│── Unique cities <span class="sy-kw">from</span> <span class="sy-bi">set</span>              <span class="sy-op">[</span>REPLACED — was manual dedup<span class="sy-op">]</span>
-│── Unique hazards <span class="sy-kw">from</span> <span class="sy-bi">set</span>             <span class="sy-op">[</span>REPLACED — was manual dedup<span class="sy-op">]</span>
-│── Trivia accuracy calculation         <span class="sy-op">[</span>NEW<span class="sy-op">]</span></pre>
+GAME LOOP (each pass is one leg):
+|
+|-- unique_cities.add(current_city)  <span class="lc-arch-new">[NEW]</span>
+|-- Display city info, show destinations
+|-- Get choice with .strip().upper()
+|-- trivia_gate()  <span class="lc-arch-replaced">[REPLACED]</span> was coin flip
+|
+|   TRAVEL LOOP (D20 rolls):
+|   |-- Roll D20, move miles
+|   |-- 30% chance: handle_hazard() -&gt; unique_hazards.add()  <span class="lc-arch-new">[NEW]</span>
+|   |-- Repeat until you arrive
+|
+|-- Update trip totals + trivia stats  <span class="lc-arch-new">[NEW]</span>
+|-- Check outcome: beach / dead end / continue
+
+=== FINAL TRIP REPORT ===  <span class="lc-arch-new">[NEW]</span>
+| Route: city -&gt; city -&gt; city (from visited list)
+| Unique cities: sorted(unique_cities)
+| Unique hazards: sorted(unique_hazards)
+| Trivia: correct / total
+| Trip stats: miles, turns, hazards</pre>
     </div>
   </div>
 </div>
@@ -147,75 +202,135 @@ FINAL REPORT<span class="sy-op">:</span>
   </div>
   <div class="lc-panel">
     <div class="lc-cp-row">
-      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">1</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Build the TRIVIA Dictionary</div>
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">1</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Load Trivia</div>
       </div>
     </div>
     <div class="lc-cp-body">
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"This is the big one. Trivia replaces the coin flip, sets handle your unique tracking, and sorted() makes your report look clean. The game loop barely changes — you’re mostly adding smarter pieces around it."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Tyler Nguyen</div>
+        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
+      </div>
+    </div>
     <div class="lc-h3">What You're Building</div>
-    <p>Open <code>lab-4-3.py</code>. Near the top of the file, after your other constants, add a <code>TRIVIA</code> dictionary. This is the data source your <code>trivia_gate()</code> function will read from. Each key is a city name. Each value is a list of question dictionaries. Each question dictionary has two keys: <code>'question'</code> (the text shown to the player) and <code>'answer'</code> (either <code>'TRUE'</code> or <code>'FALSE'</code>).</p>
-    <div class="lc-h3">Named Constants</div>
-    <p>Your <code>TRIVIA</code> dictionary must cover at least 3 cities and include at least 2 questions per city. San Antonio should always be included as a fallback for cities that are not explicitly covered. The structure looks like this:</p>
+    <p>A function that reads <code>trivia.txt</code> where each city can have <strong>multiple</strong> trivia questions. Structure: <code>trivia['Houston']</code> returns a <strong>list</strong> of question dicts.</p>
+    <div class="lc-h3">Why This Matters</div>
+    <p>This is the most sophisticated data structure you’ve built yet: a <strong>dictionary of lists of dictionaries</strong>. Real applications use nested structures like this constantly — think of a playlist app where each artist maps to a list of album objects. Mastering this pattern unlocks serious programming power.</p>
+    <div class="lc-h3">Pro Tip</div>
     <div class="lc-code-block">
-      <pre>TRIVIA <span class="sy-op">=</span> <span class="sy-op">{</span>
-    <span class="sy-str">'San Antonio'</span><span class="sy-op">:</span> <span class="sy-op">[</span>
-        <span class="sy-op">{</span>
-            <span class="sy-str">'question'</span><span class="sy-op">:</span> <span class="sy-str">'The Alamo was originally a Spanish mission.'</span><span class="sy-op">,</span>
-            <span class="sy-str">'answer'</span><span class="sy-op">:</span> <span class="sy-str">'TRUE'</span>
-        <span class="sy-op">}</span><span class="sy-op">,</span>
-        <span class="sy-op">{</span>
-            <span class="sy-str">'question'</span><span class="sy-op">:</span> <span class="sy-str">'San Antonio is the largest city in Texas by population.'</span><span class="sy-op">,</span>
-            <span class="sy-str">'answer'</span><span class="sy-op">:</span> <span class="sy-str">'FALSE'</span>
-        <span class="sy-op">}</span>
+      <pre><span class="sy-cm"># The structure you&#x27;re building:</span>
+trivia <span class="sy-op">=</span> <span class="sy-op">{</span>
+    <span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">:</span> <span class="sy-op">[</span>
+        <span class="sy-op">{</span><span class="sy-str">&#x27;question&#x27;</span><span class="sy-op">:</span> <span class="sy-str">&#x27;NASA is in Houston&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;answer&#x27;</span><span class="sy-op">:</span> <span class="sy-str">&#x27;TRUE&#x27;</span><span class="sy-op">}</span><span class="sy-op">,</span>
+        <span class="sy-op">{</span><span class="sy-str">&#x27;question&#x27;</span><span class="sy-op">:</span> <span class="sy-str">&#x27;Houston is the capital&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;answer&#x27;</span><span class="sy-op">:</span> <span class="sy-str">&#x27;FALSE&#x27;</span><span class="sy-op">}</span>
     <span class="sy-op">]</span><span class="sy-op">,</span>
-    <span class="sy-str">'Austin'</span><span class="sy-op">:</span> <span class="sy-op">[</span>
-        <span class="sy-op">{</span>
-            <span class="sy-str">'question'</span><span class="sy-op">:</span> <span class="sy-str">'Austin is the capital of Texas.'</span><span class="sy-op">,</span>
-            <span class="sy-str">'answer'</span><span class="sy-op">:</span> <span class="sy-str">'TRUE'</span>
-        <span class="sy-op">}</span><span class="sy-op">,</span>
-        <span class="sy-op">{</span>
-            <span class="sy-str">'question'</span><span class="sy-op">:</span> <span class="sy-str">'The University of Texas at Austin is located in East Austin.'</span><span class="sy-op">,</span>
-            <span class="sy-str">'answer'</span><span class="sy-op">:</span> <span class="sy-str">'FALSE'</span>
-        <span class="sy-op">}</span>
+    <span class="sy-str">&#x27;Austin&#x27;</span><span class="sy-op">:</span> <span class="sy-op">[</span>
+        <span class="sy-op">{</span><span class="sy-str">&#x27;question&#x27;</span><span class="sy-op">:</span> <span class="sy-str">&#x27;Austin has bats&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;answer&#x27;</span><span class="sy-op">:</span> <span class="sy-str">&#x27;TRUE&#x27;</span><span class="sy-op">}</span>
     <span class="sy-op">]</span>
-    <span class="sy-cm"># Add at least one more city...</span>
 <span class="sy-op">}</span></pre>
     </div>
     <div class="lc-h3">Step-by-Step Instructions</div>
     <ol>
-      <li>Add the <code>TRIVIA</code> dictionary to your constants section. Use the structure shown above as your starting point.</li>
-      <li>Add entries for at least 3 cities total, including San Antonio. Cover cities your game actually visits. Check your <code>CITY_DISTANCES</code> dictionary for the exact city names.</li>
-      <li>Write 2 questions per city at minimum. Keep questions as true/false statements about the city. Make sure every <code>'answer'</code> value is exactly <code>'TRUE'</code> or <code>'FALSE'</code> in all caps. Your <code>trivia_gate()</code> function will compare against these exact strings.</li>
-      <li>Add a comment above the constant: <code># TRIVIA (Added in 4.3): city trivia questions and answers</code></li>
-      <li>Do a quick sanity check: for each city entry, count the items in its list and verify each has both a <code>'question'</code> key and an <code>'answer'</code> key.</li>
+      <li>Copy <code>lab-4-2.py</code> and rename it to <code>lab-4-3.py</code></li>
+      <li>Update the top-of-file docstring to describe Lab 4.3</li>
+      <li>Define <code>load_trivia(filename)</code></li>
+      <li>Create an empty dict: <code>trivia = {}</code></li>
+      <li>Open the file and loop through lines: use <code>line.strip().split(',')</code></li>
+      <li>Extract parts: <code>city = parts[0]</code>, <code>question = parts[1]</code>, <code>answer = parts[2]</code></li>
+      <li>Check if the city key exists: <code>if city not in trivia: trivia[city] = []</code></li>
+      <li>Append the question dict: <code>trivia[city].append({'question': question, 'answer': answer})</code></li>
+      <li>Close the file and return the trivia dict</li>
     </ol>
     <div class="lc-h3">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/></svg></div>
-      <div class="lc-callout__bubble"><div class="lc-callout__title">BookEx Patterns</div><div class="lc-callout__body"><ul>
-          <li><strong>Program 9-1</strong> — <code>card_dealer.py</code> — Shows a dictionary whose values are lists, which is the same nested structure your TRIVIA constant uses. The pattern for accessing and iterating over values is identical.</li>
-          </ul></div></div>
-    </div>
-    <div class="lc-callout lc-callout--pitfall">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><circle cx="15" cy="22.5" r="1.5" fill="#000"/></svg></div>
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
       <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Answer Values Must Be Exact</div>
+        <div class="lc-callout__title">BookEx Patterns</div>
         <div class="lc-callout__body">
-          <p>Every <code>'answer'</code> value in your TRIVIA dictionary must be exactly <code>'TRUE'</code> or <code>'FALSE'</code> in all caps, no exceptions. Your trivia_gate() function will compare player input against these strings after calling <code>.upper()</code>. If your dictionary has <code>'True'</code> or <code>'true'</code> or <code>True</code> (the boolean), the comparison will silently fail.</p>
+          <ul>
+          <li>
+            <strong>Program 9-1</strong>
+            — <code>card_dealer.py</code>
+            (Step 1)
+            — Your Lab 4.1 <code>load_city_distances()</code> pattern applies here — same file-reading loop, but now you’re appending to lists instead of storing single values. Program 9-1 also shows dictionary creation with key-value pairs; your trivia dict adds a twist where each value is a list that can hold multiple items.
+          </li>
+          </ul>
         </div>
       </div>
     </div>
+    <div class="lc-h3">Test Your Code</div>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 2</span>
+trivia <span class="sy-op">=</span> load_trivia<span class="sy-op">(</span><span class="sy-str">&#x27;trivia.txt&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Cities with trivia: <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>trivia<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Houston questions:&#x27;</span><span class="sy-op">,</span> <span class="sy-bi">len</span><span class="sy-op">(</span>trivia<span class="sy-op">[</span><span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;First Houston Q:&#x27;</span><span class="sy-op">,</span> trivia<span class="sy-op">[</span><span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-num">0</span><span class="sy-op">]</span><span class="sy-op">)</span></pre>
+    </div>
+    <p><strong>Verify:</strong> Houston has multiple questions, and each is a dict with <code>'question'</code> and <code>'answer'</code> keys.</p>
+    <div class="lc-h3">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Forgetting to check if the city key exists before appending</td>
+        <td>KeyError — you can’t append to a list that doesn’t exist yet</td>
+      </tr>
+      <tr>
+        <td>Using trivia[city] = question_dict instead of .append()</td>
+        <td>Each new question overwrites the previous one instead of adding to the list</td>
+      </tr>
+      <tr>
+        <td>Splitting on the wrong delimiter</td>
+        <td>Check trivia.txt — what character separates city, question, and answer?</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="lc-h3">What You Should Have</div>
     <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">CP1 Complete</div>
         <div class="lc-callout__body">
         <ul>
-          <li>TRIVIA constant added to the constants section of lab-4-3.py</li>
-          <li>At least 3 cities covered, including San Antonio</li>
-          <li>At least 2 questions per city, each with 'question' and 'answer' keys</li>
-          <li>All 'answer' values are exactly 'TRUE' or 'FALSE' in all caps</li>
+          <li><code>load_trivia()</code> function defined</li>
+          <li>Returns a dictionary where values are lists</li>
+          <li>Each city can have multiple questions</li>
+          <li>Debug print shows correct city count</li>
         </ul>
         </div>
       </div>
@@ -223,84 +338,114 @@ FINAL REPORT<span class="sy-op">:</span>
     </div>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
-      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">2</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Write trivia_gate()</div>
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Trivia Gate</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
-    <p>Open <code>function_library.py</code>. You will add one new function: <code>trivia_gate()</code>. This function takes a destination city name and the TRIVIA dictionary, picks a random question for that city, presents it to the player, and returns <code>True</code> if they answer correctly, <code>False</code> if they do not. It replaces the coin flip that has been running the Destination Gate since Module 2.</p>
+    <p>A function that presents a trivia question, accepts TRUE/FALSE input (using <code>.strip().upper()</code>), and returns the final destination, distance, and whether the player got it correct.</p>
     <div class="lc-h3">Step-by-Step Instructions</div>
     <ol>
-      <li>Add a <code># TRIVIA FUNCTIONS (Added in 4.3)</code> comment block at the bottom of your function library.</li>
-      <li>Define a function named <code>trivia_gate</code> that accepts two parameters: <code>destination</code> (a string) and <code>trivia_dict</code> (the dictionary). Write a docstring that describes the parameters and return value.</li>
-      <li>Use <code>trivia_dict.get(destination, trivia_dict['San Antonio'])</code> to look up the city's question list. This uses San Antonio as a fallback for any city that does not have its own entry.</li>
-      <li>Use <code>random.choice()</code> to pick one question dictionary from the city's list. Extract the <code>'question'</code> and <code>'answer'</code> values into local variables.</li>
-      <li>Print the trivia prompt. Show the destination city name, then the question text, then a prompt asking for TRUE or FALSE.</li>
-      <li>Get the player's answer using <code>clean_input()</code>. The player can type <code>T</code>, <code>TRUE</code>, <code>F</code>, or <code>FALSE</code>. Normalize to <code>'TRUE'</code> or <code>'FALSE'</code> before comparing: if the input starts with <code>'T'</code>, treat it as TRUE; if it starts with <code>'F'</code>, treat it as FALSE. Anything else should print an error message and default to FALSE.</li>
-      <li>Compare the normalized player answer to the correct answer. Print a result message: something different for correct versus incorrect. Return <code>True</code> if correct, <code>False</code> if not.</li>
+      <li>Define <code>trivia_gate(dest, trivia, all_dests, distances, current)</code></li>
+      <li>Print a header: <code>--- TRIVIA TIME! ---</code> and announce the destination</li>
+      <li>Get a question: if <code>dest</code> has trivia, use <code>random.choice(trivia[dest])</code>; otherwise pick from any city in the dict</li>
+      <li>Display the question and prompt for an answer</li>
+      <li>Get input: <code>answer = input('TRUE or FALSE? ').strip().upper()</code></li>
+      <li>Normalize the answer: accept T/TRUE as <code>'TRUE'</code>, F/FALSE as <code>'FALSE'</code>; anything else is invalid</li>
+      <li>If correct: return <code>(dest, distance, True)</code></li>
+      <li>If wrong: pick a random other destination and return <code>(redirect, new_distance, False)</code></li>
+    </ol>
+    <div class="lc-h3">Pro Tip</div>
+    <p>To get “other” destinations for the redirect, loop through <code>all_dests</code> and build a new list that skips the chosen destination. The pattern is the same one you used in Module 3 — loop, check a condition, and <code>.append()</code> if it passes.</p>
+    <div class="lc-h3">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-1</strong>
+            — <code>card_dealer.py</code>
+            (Step 1)
+            — Your Lab 4.2 <code>.strip().upper()</code> pattern for input cleaning works perfectly here for TRUE/FALSE answers. Accessing <code>trivia[city]</code> gives you a list, then <code>random.choice()</code> picks one question from it.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <p><strong>Update main() to use trivia_gate:</strong></p>
+    <ol>
+      <li>Load trivia data alongside the other data files</li>
+      <li>After the player chooses a destination, call <code>trivia_gate()</code></li>
+      <li>Use the returned values <code>(final_dest, dist, correct)</code> to update game state</li>
+      <li>Track <code>trivia_asked</code> and <code>trivia_correct</code> counters for the final report</li>
+    </ol>
+    <div class="lc-h3">Test Your Code</div>
+    <ol>
+      <li>Play the game and verify a trivia question appears after choosing a destination</li>
+      <li>A correct answer sends you to your chosen city</li>
+      <li>A wrong answer redirects you to a different city</li>
+      <li>T, TRUE, t, and true all work as inputs (thanks to <code>.upper()</code>)</li>
     </ol>
     <div class="lc-h3">Tips &amp; Pitfalls</div>
     <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
       <table class="lc-table">
-        <thead><tr>
-                <th>Mistake</th>
-        <th>What Goes Wrong</th>
-        <th>Fix</th>
-        </tr></thead>
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
         <tbody>
-            <tr>
-        <td>Passing TRIVIA by name directly inside the function</td>
-        <td>Function is tightly coupled to one global variable, which makes it harder to test</td>
-        <td>Accept trivia_dict as a parameter; call trivia_gate(destination, TRIVIA) from main</td>
+      <tr>
+        <td>Comparing to lowercase 'true' instead of 'TRUE'</td>
+        <td>If you use .upper(), compare to uppercase strings only</td>
       </tr>
       <tr>
-        <td>Using random.randint() to pick a question</td>
-        <td>Index math, off-by-one risks, breaks if list length changes</td>
-        <td>Use random.choice(question_list), which is cleaner and length-independent</td>
+        <td>Returning just True/False instead of (dest, dist, correct)</td>
+        <td>main() needs all three values to update game state properly</td>
       </tr>
       <tr>
-        <td>Comparing player input without normalization</td>
-        <td>Player types 'true' and it fails; 'TRUE' works but 'True' does not</td>
-        <td>Use clean_input() which already calls .strip().upper(), then compare only 'T' or 'TRUE'</td>
-      </tr>
-      <tr>
-        <td>Accepting only 'TRUE' or 'FALSE' with no flexibility</td>
-        <td>Player types 'T' and gets penalized even though intent is clear</td>
-        <td>Accept 'T' and 'TRUE' as true, 'F' and 'FALSE' as false</td>
+        <td>Forgetting to handle cities with no trivia</td>
+        <td>Use 'if dest in trivia' before accessing, or use .get() with a fallback city</td>
       </tr>
         </tbody>
       </table>
     </div>
-    <div class="lc-h3">Test Your Code</div>
-    <ol>
-      <li>Import your function library and your TRIVIA constant in a Python shell.</li>
-      <li>Call <code>function_library.trivia_gate('Austin', TRIVIA)</code> and type <code>TRUE</code> when prompted. Verify it returns <code>True</code> when the answer is correct.</li>
-      <li>Call it again and type <code>FALSE</code>. Verify it returns <code>False</code> when the answer is wrong.</li>
-      <li>Call it with a city that is NOT in your TRIVIA dictionary (like <code>'El Paso'</code> if you did not include it). Verify it falls back to San Antonio's questions without crashing.</li>
-      <li>Type <code>T</code> instead of <code>TRUE</code>. Verify it is accepted. Then type <code>F</code>. Verify it is also accepted.</li>
-      <li>Type something invalid like <code>MAYBE</code>. Verify the function handles it gracefully without crashing</li>
-    </ol>
-    <div class="lc-mentor">
-      <div class="lc-mentor__inner">
-        <div class="lc-mentor__avatar"><img src="../../headshots/Terrence-Booker.png" alt="Terrence "T-Bone" Booker"></div>
-        <div class="lc-mentor__bubble"><div class="lc-mentor__quote">I typed a city that was not in your TRIVIA dictionary. Your function crashed. Then I typed a city that WAS in it and it worked fine. The .get() fallback exists for exactly this reason. If it can receive input, it needs to handle every possible input, including the ones you did not plan for.</div></div>
-      </div>
-      <div class="lc-mentor__attribution"><div class="lc-mentor__name">Terrence "T-Bone" Booker</div><div class="lc-mentor__role">QA Lead, Bat City Collective</div></div>
-    </div>
     <div class="lc-h3">What You Should Have</div>
     <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">CP2 Complete</div>
         <div class="lc-callout__body">
         <ul>
-          <li>trivia_gate(destination, trivia_dict) added to function_library.py with docstring</li>
-          <li>Uses .get() with San Antonio fallback for cities not in the dictionary</li>
-          <li>Uses random.choice() to select one question from the city's list</li>
-          <li>Accepts T/TRUE and F/FALSE as valid answers</li>
-          <li>Returns True for correct answers, False for incorrect or invalid answers</li>
-          <li>Manual testing confirms fallback works for unlisted cities</li>
+          <li><code>trivia_gate()</code> function defined with correct parameters</li>
+          <li>Displays a trivia question from loaded data</li>
+          <li>Accepts T/TRUE/F/FALSE (case-insensitive)</li>
+          <li>Returns a tuple: <code>(destination, distance, was_correct)</code></li>
+          <li>Wrong answer redirects to a different city</li>
         </ul>
         </div>
       </div>
@@ -308,60 +453,115 @@ FINAL REPORT<span class="sy-op">:</span>
     </div>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
-      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">3</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Wire It In</div>
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">3</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add Sets</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
-    <p>This checkpoint has three distinct parts: replace the coin flip in the Destination Gate, add sets for unique tracking, and upgrade the final trip report. Work through them in order.</p>
-    <div class="lc-h3">Step-by-Step Instructions</div>
-    <ol>
-      <li><strong>Part 1: Replace the Destination Gate.</strong> Find the section of your game loop where the coin flip currently runs. Remove the <code>flip_coin()</code> call and its if/else block. Replace it with a call to <code>function_library.trivia_gate(destination, TRIVIA)</code>. If it returns <code>True</code>, the player gets their chosen destination. If it returns <code>False</code>, redirect them to a random alternative destination. Use <code>random.choice()</code> on the list of other available destinations.</li>
-      <li><strong>Part 1 continued:</strong> Add two new tracking variables near the top of your game loop (outside any inner loops): <code>trivia_asked = 0</code> and <code>trivia_correct = 0</code>. Each time the trivia gate runs, increment <code>trivia_asked</code>. If the player answered correctly (the gate returned True), increment <code>trivia_correct</code>.</li>
-      <li><strong>Part 2: Add sets for unique tracking.</strong> Near the top of your game loop, initialize two new sets: <code>unique_cities_visited = set()</code> and <code>unique_hazards_faced = set()</code>.</li>
-      <li><strong>Part 2 continued:</strong> Find where your game loop updates <code>visited_cities</code> (the list that tracks every city including duplicates). Right after that line, add: <code>unique_cities_visited.add(current_city)</code>. Find where your hazard code records a hazard name. Right after that, add: <code>unique_hazards_faced.add(hazard_name)</code>. Keep the original list-based tracking. The set tracking is additive, not a replacement</li>
-      <li><strong>Part 3: Upgrade the final trip report.</strong> In your trip report output section, replace any manual unique-city or unique-hazard deduplication logic with the set data. Display <code>len(unique_cities_visited)</code> for unique city count and iterate over <code>sorted(unique_cities_visited)</code> to list them alphabetically. Do the same for unique hazards. Add a trivia performance block that shows questions asked, correct answers, and accuracy as a percentage. Guard the division with an <code>if trivia_asked > 0</code> check.</li>
-    </ol>
-    <div class="lc-callout lc-callout--tip">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22 C21 20 24 17 24 13 C24 8 20 4 15 4 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><circle cx="15" cy="19" r="1.5" fill="#000"/></svg></div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">sorted() Works on Sets</div>
-        <div class="lc-callout__body">
-          <p>Sets have no guaranteed order, so iterating directly can produce inconsistent output. Wrapping the set in <code>sorted()</code> gives you alphabetical order and makes CodeGrade's output comparison reliable: <code>for city in sorted(unique_cities_visited):</code></p>
+    <p>Two sets: <code>unique_cities</code> for tracking which cities the player has visited (no repeats), and <code>unique_hazards</code> for tracking which hazard types they’ve encountered.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"With a list, you’d have to check &#x27;if city not in visited&#x27; before adding. With a set? Just .add() it. Duplicates vanish automatically. Less code, fewer bugs — that’s the kind of shortcut I wish I’d known sooner!"</div>
         </div>
       </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Tyler Nguyen</div>
+        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
+      </div>
     </div>
-    <div class="lc-callout lc-callout--info">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><circle cx="15" cy="9.5" r="1.5" fill="#000"/></svg></div>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <ol>
+      <li>In <code>main()</code>, create two empty sets using <code>set()</code>: one for unique cities, one for unique hazards</li>
+      <li>Add the starting city to your unique cities set right after creating it</li>
+      <li>After each city visit, use <code>.add()</code> to include the destination in your unique cities set</li>
+      <li>Update <code>handle_hazard()</code> to accept the unique hazards set as a parameter, then add the hazard’s name to it</li>
+      <li>Update <code>travel_to()</code> to pass the unique hazards set to <code>handle_hazard()</code></li>
+    </ol>
+    <div class="lc-h3">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
       <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Keep the Original Lists</div>
+        <div class="lc-callout__title">BookEx Patterns</div>
         <div class="lc-callout__body">
-          <p><code>visited_cities</code> (the list) intentionally keeps duplicates; it shows the player's complete path, including revisits. <code>unique_cities_visited</code> (the set) strips duplicates for the count. Both serve different purposes. Do not remove the list.</p>
+          <ul>
+          <li>
+            <strong>Program 9-3</strong>
+            — <code>sets.py</code>
+            (Step 1)
+            — Shows set creation with <code>set()</code> and the <code>.add()</code> method. Same pattern here — create an empty set, add items as you encounter them.
+          </li>
+          </ul>
         </div>
       </div>
     </div>
     <div class="lc-h3">Test Your Code</div>
-    <ol>
-      <li>Run your game and play through a complete trip. Verify the Destination Gate now shows a trivia question instead of a coin flip.</li>
-      <li>When redirected after a wrong answer, verify the new destination is different from the one you chose.</li>
-      <li>Visit the same city twice during one trip (if your map allows it) and verify the unique city count in the report is lower than the total visit count.</li>
-      <li>Trigger at least two different hazard types and verify the unique hazard count reflects only distinct hazards.</li>
-      <li>Check the trivia accuracy percentage in the final report. If you answered 2 out of 3 correctly, it should show 66.7%.</li>
-    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - Add at end of game loop iteration</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Unique cities: <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>unique_cities<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Unique hazards: <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>unique_hazards<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    </div>
+    <p><strong>Verify:</strong> Visiting Houston twice still shows 1 in <code>unique_cities</code> (not 2).</p>
+    <div class="lc-h3">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Creating a set with {} instead of set()</td>
+        <td>{} creates an empty dictionary, not a set</td>
+      </tr>
+      <tr>
+        <td>Using .append() instead of .add()</td>
+        <td>Sets use .add(), lists use .append() — don’t mix them up</td>
+      </tr>
+      <tr>
+        <td>Forgetting to pass unique_hazards to handle_hazard()</td>
+        <td>The set won’t track hazards if the function can’t access it</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="lc-h3">What You Should Have</div>
     <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">CP3 Complete</div>
         <div class="lc-callout__body">
         <ul>
-          <li>Destination Gate calls trivia_gate() with no coin flip remaining</li>
-          <li>trivia_asked and trivia_correct track correctly across the game loop</li>
-          <li>unique_cities_visited and unique_hazards_faced are sets initialized before the game loop</li>
-          <li>.add() called at the correct points in the game loop for both sets</li>
-          <li>Final report uses sorted() on both sets for alphabetical display</li>
-          <li>Trivia accuracy percentage is guarded against division by zero</li>
+          <li>Two sets created: <code>unique_cities</code> and <code>unique_hazards</code></li>
+          <li>Starting city added to <code>unique_cities</code></li>
+          <li>Each destination added with <code>.add()</code></li>
+          <li><code>handle_hazard()</code> tracks unique hazard names</li>
+          <li>Debug shows set counts staying unique (no duplicates)</li>
         </ul>
         </div>
       </div>
@@ -369,112 +569,134 @@ FINAL REPORT<span class="sy-op">:</span>
     </div>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
-      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">4</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Master Week QA Pass</div>
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">4</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Final Report</div>
       </div>
     </div>
     <div class="lc-cp-body">
-    <div class="lc-h3">Test Your Code</div>
-    <p>MASTER week means a full QA pass before submitting. Work through the test table below. Each row targets a specific behavior this week's changes were supposed to produce.</p>
+    <div class="lc-h3">What You're Building</div>
+    <p>A polished final report showing: route traveled (with arrows), unique cities visited (sorted alphabetically using <code>sorted()</code>), trivia performance, hazard statistics, and total miles.</p>
+    <div class="lc-h3">Pro Tip</div>
+    <p><strong>Important:</strong> Sets are unordered. To display them predictably, wrap them in <code>sorted()</code>:</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;UNIQUE CITIES (<span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>unique_cities<span class="sy-op">)</span><span class="sy-op">}</span>):&#x27;<span class="sy-op">)</span>
+<span class="sy-kw">for</span> city <span class="sy-kw">in</span> <span class="sy-bi">sorted</span><span class="sy-op">(</span>unique_cities<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  - <span class="sy-op">{</span>city<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    </div>
+    <div class="lc-h3">Step-by-Step Instructions</div>
+    <p><strong>Your final report should include:</strong></p>
+    <ol>
+      <li><strong>Header:</strong> "FINAL TRIP REPORT" with driver name and final city</li>
+      <li><strong>ROUTE:</strong> The visited list joined with <code>" -> "</code></li>
+      <li><strong>UNIQUE CITIES:</strong> Count and sorted list from set</li>
+      <li><strong>TRIVIA:</strong> Asked, Correct, Accuracy percentage</li>
+      <li><strong>HAZARDS:</strong> Faced, Escaped, Unique types count</li>
+      <li><strong>STATS:</strong> Total Miles</li>
+    </ol>
+    <div class="lc-h3">Expected Output</div>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>==================================================
+FINAL TRIP REPORT
+==================================================
+Driver: Alex
+Final City: Corpus Christi
+
+ROUTE:
+  San Antonio -&gt; Houston -&gt; Houston -&gt; Corpus Christi
+
+UNIQUE CITIES (3):
+  - Corpus Christi
+  - Houston
+  - San Antonio
+
+TRIVIA:
+  Asked: 3
+  Correct: 2
+  Accuracy: 66.7%
+
+HAZARDS:
+  Faced: 4
+  Escaped: 2
+  Unique types: 3
+
+STATS:
+  Total Miles: 410</pre>
+    </div>
+    <div class="lc-h3">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-3</strong>
+            — <code>sets.py</code>
+            (Step 1)
+            — The <code>sorted()</code> function works on sets, returning a sorted list you can iterate through. Your Lab 3.3 trip report pattern returns here — now with sets for unique tracking and trivia statistics added.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3">Tips &amp; Pitfalls</div>
     <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
       <table class="lc-table">
-        <thead><tr>
-                <th>Test</th>
-        <th>What to Do</th>
-        <th>Expected Result</th>
-        </tr></thead>
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
         <tbody>
-            <tr>
-        <td>Trivia gate fires</td>
-        <td>Play to a destination choice</td>
-        <td>A trivia question appears, no coin flip</td>
+      <tr>
+        <td>Printing the set directly without sorted()</td>
+        <td>Output order is unpredictable — CodeGrade expects alphabetical</td>
       </tr>
       <tr>
-        <td>Correct answer accepted</td>
-        <td>Answer the trivia question correctly</td>
-        <td>Player travels to their chosen destination</td>
+        <td>Dividing by trivia_asked when it might be 0</td>
+        <td>ZeroDivisionError if the player quits before any trivia fires — check first</td>
       </tr>
       <tr>
-        <td>Wrong answer redirects</td>
-        <td>Answer the trivia question incorrectly</td>
-        <td>Player is sent to a different destination with a message</td>
-      </tr>
-      <tr>
-        <td>T accepted as TRUE</td>
-        <td>Type 'T' at the trivia prompt</td>
-        <td>Treated as TRUE with no error</td>
-      </tr>
-      <tr>
-        <td>F accepted as FALSE</td>
-        <td>Type 'F' at the trivia prompt</td>
-        <td>Treated as FALSE with no error</td>
-      </tr>
-      <tr>
-        <td>Invalid trivia input handled</td>
-        <td>Type 'MAYBE' at the trivia prompt</td>
-        <td>Error message shown, defaults to FALSE gracefully</td>
-      </tr>
-      <tr>
-        <td>Sets deduplicate</td>
-        <td>Visit a city more than once</td>
-        <td>Unique city count is lower than total visit count</td>
-      </tr>
-      <tr>
-        <td>sorted() on sets</td>
-        <td>Check the final report city and hazard lists</td>
-        <td>Cities and hazards appear in alphabetical order</td>
-      </tr>
-      <tr>
-        <td>Accuracy math</td>
-        <td>Answer 1 of 2 trivia questions correctly</td>
-        <td>Report shows 50.0% accuracy</td>
-      </tr>
-      <tr>
-        <td>Zero division guard</td>
-        <td>End the game without any trivia prompts firing</td>
-        <td>Report skips accuracy line or shows 0 with no crash</td>
+        <td>Missing report sections</td>
+        <td>CodeGrade checks for all required sections — match the expected output format</td>
       </tr>
         </tbody>
       </table>
     </div>
-    <div class="lc-h3">Step-by-Step Instructions</div>
-    <ol>
-      <li>Run through all ten test cases above. Note any failures before moving on.</li>
-      <li>Verify your top-of-file documentation header is present in both <code>lab-4-3.py</code> and <code>function_library.py</code>. Required: Name, abc123, Section, and description.</li>
-      <li>Scan every <code>def</code> in both files and verify each has a docstring.</li>
-      <li>Run Flake8 on both files and fix any warnings.</li>
-      <li>Submit both files to CodeGrade. Review automated feedback carefully. The trivia gate test uses a mock TRIVIA dictionary, so any hardcoded city name inside <code>trivia_gate()</code> will cause those tests to fail.</li>
-      <li>This is a MASTER week. Anjali will review your submission for Solution Quality. Clean, readable code with well-named variables and consistent style matters here.</li>
-    </ol>
-    <div class="lc-callout lc-callout--warning">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="20" height="20" rx="3" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><circle cx="15" cy="21" r="1.5" fill="#000"/></svg></div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">CodeGrade Uses a Mock TRIVIA Dictionary</div>
-        <div class="lc-callout__body">
-          <p>CodeGrade calls <code>trivia_gate(destination, trivia_dict)</code> with its own test dictionary, not your TRIVIA constant. This is why the function must accept <code>trivia_dict</code> as a parameter rather than referencing <code>TRIVIA</code> directly inside the function body. If your function looks up <code>TRIVIA</code> by name internally, the CodeGrade tests will fail.</p>
-        </div>
-      </div>
-    </div>
-    <div class="lc-mentor">
-      <div class="lc-mentor__inner">
-        <div class="lc-mentor__avatar"><img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles"></div>
-        <div class="lc-mentor__bubble"><div class="lc-mentor__quote">Play your game all the way through before you submit. Not just a few turns. Play the whole trip. You would be surprised how many bugs only appear when all the pieces are running together. If you would not ship it, do not submit it.</div></div>
-      </div>
-      <div class="lc-mentor__attribution"><div class="lc-mentor__name">Sasha Mireles</div><div class="lc-mentor__role">Creative Director, Bat City Collective</div></div>
-    </div>
     <div class="lc-h3">What You Should Have</div>
     <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
       <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Lab 4.3 Complete</div>
+        <div class="lc-callout__title">CP4 Complete</div>
         <div class="lc-callout__body">
         <ul>
-          <li>All ten test cases from the table above pass</li>
-          <li>Both lab-4-3.py and function_library.py submitted to CodeGrade</li>
-          <li>Documentation headers in both files</li>
-          <li>All functions have docstrings</li>
-          <li>Flake8 returns no warnings on either file</li>
-          <li>trivia_gate() accepts trivia_dict as a parameter with no internal TRIVIA reference</li>
+          <li>Report header with driver name and final city</li>
+          <li>Route showing all cities visited with arrows</li>
+          <li>Unique cities displayed alphabetically using <code>sorted()</code></li>
+          <li>Trivia stats: asked, correct, accuracy percentage</li>
+          <li>Hazard stats including unique types count</li>
+          <li>Total miles displayed</li>
         </ul>
         </div>
       </div>
@@ -483,76 +705,168 @@ FINAL REPORT<span class="sy-op">:</span>
   </div>
 </div>
 <div class="lc-card lc-card--red">
+
   <div class="lc-topper">
     <div class="lc-topper-title">Final Checklist</div>
     <div class="lc-sub-banner">Check It Before You Wreck It</div>
   </div>
+
   <div class="lc-panel">
+
     <div class="lc-h3">Before You Submit</div>
     <ul class="lc-checklist">
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">TRIVIA dictionary has at least 3 cities with at least 2 questions each</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">All 'answer' values in TRIVIA are exactly 'TRUE' or 'FALSE' in all caps</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">trivia_gate(destination, trivia_dict) is in function_library.py with a docstring</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">trivia_gate() accepts trivia_dict as a parameter and does not reference TRIVIA internally</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">Destination Gate uses trivia_gate() with no flip_coin() call remaining in that section</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">unique_cities_visited and unique_hazards_faced are sets initialized before the game loop</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">sorted() used when iterating over sets in the final report</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">Trivia accuracy is guarded against division by zero</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">Top-of-file documentation headers in both files: Name, abc123, Section, Description</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">All functions in both files have docstrings</span></li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">File is named exactly <code>lab-4-3.py</code></span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Docstring updated to describe Lab 4.3</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Uses sets for <code>unique_cities</code> AND <code>unique_hazards</code></span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Uses <code>sorted()</code> when displaying set contents</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>load_trivia()</code> returns a dict with list values</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>trivia_gate()</code> handles TRUE/FALSE with <code>.strip().upper()</code></span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Final report includes all required sections</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All debug/test code has been removed</span>
+      </li>
     </ul>
     <div class="lc-h3">Scope Reminder</div>
-    <p>You may use sets, set .add(), set membership testing with in, sorted() on sets, dictionaries and all dictionary methods from 4.1, string methods from 4.2, and all techniques from Chapters 2 through 8. Do NOT use list comprehensions, classes, inheritance, or any Chapter 10+ features.</p>
+    <p>Chapters 2–9 ONLY. This is the capstone — use everything you’ve learned! Sets, dictionaries with list values, try/except, string methods, file I/O, and all functions from Chapters 2–8 are all fair game.</p>
     <div class="lc-h3">Permitted Techniques</div>
     <div class="lc-permitted">
       <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–9 (all techniques from Chapters 2–8 fully permitted; Chapter 9 dictionaries and sets as introduced this module)</p>
       <ul class="lc-permitted__list">
-            <li>Set creation: unique_cities = set()</li>
-      <li>Set membership: city in unique_cities_visited</li>
-      <li>Set addition: unique_cities_visited.add(city)</li>
-      <li>sorted() on a set: sorted(unique_cities_visited)</li>
-      <li>Dictionary .get() with fallback: trivia_dict.get(destination, trivia_dict['San Antonio'])</li>
-      <li>random.choice() on a list</li>
+      <li>Set creation: unique_cities = set()</li>
+      <li>Set addition: unique_cities.add(city)</li>
+      <li>Set membership: city in unique_cities</li>
+      <li>sorted() on a set: sorted(unique_cities)</li>
+      <li>Dictionary with list values: trivia[city] = []</li>
+      <li>File reading with with/open</li>
+      <li>try/except (learned in Chapter 6)</li>
       </ul>
-    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> list comprehensions, try/except, classes, inheritance</p>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> list comprehensions, classes, inheritance, any Chapter 10+ features</p>
     </div>
     <div class="lc-callout lc-callout--warning">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="20" height="20" rx="3" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><circle cx="15" cy="21" r="1.5" fill="#000"/></svg></div>
-      <div class="lc-callout__bubble"><div class="lc-callout__body"><p>MASTER Week: Anjali will review your submission for Solution Quality. This is worth 15% of the lab grade and covers code readability, naming, and overall structure.</p></div></div>
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>MASTER Week: Submit to CodeGrade early and often. The trivia gate test uses a controlled trivia.txt — make sure your load_trivia() function parses the file format correctly.</p>
+        </div>
+      </div>
     </div>
     <div class="lc-callout lc-callout--warning">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="20" height="20" rx="3" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><circle cx="15" cy="21" r="1.5" fill="#000"/></svg></div>
-      <div class="lc-callout__bubble"><div class="lc-callout__body"><p>CodeGrade imports function_library.py directly. A syntax error in your library will cause all library tests to fail, even if your game runs fine locally.</p></div></div>
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Make sure to upload all FOUR data files with your submission: city_distances.txt, city_info.txt, hazards.txt, and trivia.txt.</p>
+        </div>
+      </div>
     </div>
     <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="lc-callout__bubble"><div class="lc-callout__title">Save Your Code</div><div class="lc-callout__body"><p>This is the Module 4 capstone. Save lab-4-3.py as a reference. The data-driven architecture, trivia gate pattern, and set-based tracking are patterns you will see again in real projects.</p></div></div>
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>This is the Module 4 capstone. Save lab-4-3.py as a reference. The data-driven architecture, trivia gate pattern, and set-based tracking are patterns you will see again in real projects.</p>
+        </div>
+      </div>
     </div>
     <div class="lc-h3">Academic Integrity</div>
     <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
   </div>
 </div>
 <div class="lc-card lc-card--purple">
+
   <div class="lc-topper">
     <div class="lc-topper-title">Need Help?</div>
     <div class="lc-sub-banner">Look No Further!</div>
   </div>
+
   <div class="lc-panel">
+
+    <div class="lc-h3">If You Get Stuck</div>
+    <ul>
+      <li>Review the Chapter 9 Sets section: set(), .add(), and sorted()</li>
+      <li>Test load_trivia() first — verify the structure before building trivia_gate()</li>
+      <li>Remember: sets ignore duplicates automatically — just .add() and let the set handle it</li>
+      <li>Print intermediate values — debug prints are your friend</li>
+      <li>Submit to CodeGrade early — it shows exactly which tests pass or fail</li>
+    </ul>
     <div class="lc-h3">Contact &amp; Resources</div>
     <div class="lc-contact-grid">
-      <div class="lc-contact-card"><div class="lc-contact-card__label">Zoom Office Hours</div><div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br><a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a></div></div>
-      <div class="lc-contact-card"><div class="lc-contact-card__label">Schedule a Meeting</div><div class="lc-contact-card__value"><a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a></div></div>
-      <div class="lc-contact-card"><div class="lc-contact-card__label">Course Discord</div><div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div></div>
-      <div class="lc-contact-card"><div class="lc-contact-card__label">Email</div><div class="lc-contact-card__value"><a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>Include your section number and abc123</div></div>
-      <div class="lc-contact-card"><div class="lc-contact-card__label">CodeGrade</div><div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div></div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Zoom Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br>
+          <a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Schedule a Meeting</div>
+        <div class="lc-contact-card__value">
+          <a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Email</div>
+        <div class="lc-contact-card__value">
+          <a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>
+          Include your section number and abc123
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">CodeGrade</div>
+        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+      </div>
     </div>
   </div>
 </div>
 
     <footer class="lc-footer">
         <img src="../../branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
-        <p class="lc-footer__course">IS2053: Programming I (Python) &mdash; The University of Texas at San Antonio</p>
-        <p class="lc-footer__detail">Starting Out with Python, 6th Edition &mdash; Tony Gaddis &mdash; Pearson</p>
+        <p class="lc-footer__course">IS2053: Programming I (Python) — The University of Texas at San Antonio</p>
+        <p class="lc-footer__detail">Starting Out with Python, 6th Edition — Tony Gaddis — Pearson</p>
     </footer>
 
 </div>
