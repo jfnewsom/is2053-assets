@@ -132,13 +132,14 @@ def html_head(title: str, css_path: str = "../../labs.css") -> str:
 """
 
 
-def html_foot(logo_path: str = "../../branding/BatCity-logo-on-black.svg") -> str:
+def html_foot(logo_path: str = "../../branding/UTSanAntonio_H_Logo_Dual_TM_RGB.png") -> str:
     """Return the footer and closing tags."""
     return f"""
     <footer class="lc-footer">
-        <img src="{logo_path}" alt="Bat City Collective">
+        <img src="{logo_path}" alt="The University of Texas at San Antonio">
         <p class="lc-footer__course">IS2053: Programming I (Python) — The University of Texas at San Antonio</p>
         <p class="lc-footer__detail">Starting Out with Python, 6th Edition — Tony Gaddis — Pearson</p>
+        <p class="lc-footer__copyright">&copy; 2026 The University of Texas at San Antonio. Developed by John Newsom for IS2053: Programming I (Python). All rights reserved.</p>
     </footer>
 
 </div>
@@ -882,7 +883,7 @@ def render_need_help(need_help: dict) -> str:
     if_you_get_stuck = need_help.get("ifYouGetStuck", [])
 
     stuck_items = "".join(
-        f'      <li>{html_lib.escape(item)}</li>\n'
+        f'      <li>{item}</li>\n'
         for item in if_you_get_stuck
     )
     stuck_block = f"""    <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
