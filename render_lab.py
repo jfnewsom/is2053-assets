@@ -85,7 +85,7 @@ def render_overview_card(overview: dict, meta: dict) -> str:
     body_html = ""
     if body:
         logo_html = (
-            '<img src="../../branding/AllMyEggses.png" '
+            '<img src="../../branding/AllMyEggses3D-Full.png" '
             'alt="All My Eggses Live in Texas" '
             'style="float: right; height: 110px; margin: 0 0 12px 20px;">\n'
         )
@@ -151,7 +151,15 @@ def render_overview_card(overview: dict, meta: dict) -> str:
             f_name = html_lib.escape(df.get("file", ""))
             f_fmt  = df.get("format", "")
             new_badge = ' <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span>' if df.get("new") else ""
-            rows_html += f'      <tr><td><code>{f_name}</code>{new_badge}</td><td>{f_fmt}</td></tr>\n'
+            if df.get("file", "").endswith(".txt"):
+                download_cell = (
+                    f'<td><a href="../../data/{f_name}" download '
+                    f'style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">'
+                    f'&#11123; {f_name}</a></td>'
+                )
+            else:
+                download_cell = '<td style="color:#555; font-size:12px;">—</td>'
+            rows_html += f'      <tr><td><code>{f_name}</code>{new_badge}</td><td>{f_fmt}</td>{download_cell}</tr>\n'
         data_files_html = f"""    <div class="lc-h3 lc-h3--yellow">Required Data Files</div>
     <div class="lc-table-wrap">
       <table class="lc-table">
@@ -159,6 +167,7 @@ def render_overview_card(overview: dict, meta: dict) -> str:
           <tr>
             <th>File</th>
             <th>Format</th>
+            <th>Download</th>
           </tr>
         </thead>
         <tbody>
@@ -313,5 +322,4 @@ def main():
     render_lab(data, output_path)
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__":    main()
