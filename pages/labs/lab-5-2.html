@@ -58,14 +58,35 @@
 <div class="lc-card lc-card--orange">
   <div class="lc-topper">
     <div class="lc-topper-title">Time Guide</div>
-    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; </div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 60–75 Minutes</div>
   </div>
   <div class="lc-panel">
     <div class="lc-table-wrap">
       <table class="lc-table">
         <thead><tr><th>Checkpoint</th><th>Time</th><th>Task</th></tr></thead>
         <tbody>
-              </tbody>
+            <tr>
+        <td><strong>CP1: Player Class</strong></td>
+        <td>20 min</td>
+        <td>Define Player with __init__, getters, travel_to(), add_turn(), __str__</td>
+      </tr>
+      <tr>
+        <td><strong>CP2: Game Class Skeleton</strong></td>
+        <td>20 min</td>
+        <td>Define Game with __init__ and __setup_cities() (cities dict, no player yet)</td>
+      </tr>
+      <tr>
+        <td><strong>CP3: Wire It Together</strong></td>
+        <td>10 min</td>
+        <td>Add player to Game, write start_new_game() and get_current_city()</td>
+      </tr>
+      <tr>
+        <td><strong>CP4: Write journey_test.py</strong></td>
+        <td>15 min</td>
+        <td>Create Game, simulate travel, verify Player stats</td>
+      </tr>
+      <tr class="lc-table__total"><td colspan="2"><strong>Total Estimated Time</strong></td><td><strong>60–75 Minutes</strong></td></tr>
+        </tbody>
       </table>
     </div>
   </div>
@@ -77,6 +98,57 @@
   </div>
   <div class="lc-panel">
     <p class="lc-arch-intro">Here is how your finished files fit together. The [NEW] tags show what you are adding this week. city.py carries forward unchanged from 5.1.</p>
+    <div class="lc-arch">
+      <pre># ---- city.py (UNCHANGED from 5.1) ----
+class City:  ...all methods as built...
+
+# ---- player.py [NEW] ----
+class Player:
+│
+│── __init__(name, starting_city='San Antonio')
+│   self.__name           string
+│   self.__current_city   string
+│   self.__total_miles    int (starts 0)
+│   self.__total_turns    int (starts 0)
+│   self.__visited_cities list (starts with starting_city)
+│   self.__unique_cities  set  (starts with starting_city)
+│
+│── GETTERS
+│   get_name(), get_current_city()
+│   get_total_miles(), get_total_turns()
+│   get_visited_cities(), get_unique_count()
+│
+│── TRAVEL METHODS
+│   travel_to(city_name, distance)   updates city, miles, lists/set
+│   add_turn()                       increments __total_turns
+│   add_miles(miles)                 adds to __total_miles
+│
+│── DISPLAY
+│   get_route_string()   ' -> '.join(visited_cities)
+│   __str__              'Name at City (X mi)'
+
+# ---- game.py [NEW] ----
+class Game:
+│
+│── __init__()
+│   self.__cities = {}     dict of name -> City objects
+│   self.__player = None   set later in start_new_game()
+│   self.__setup_cities()  called in __init__
+│
+│── __setup_cities()   [private] creates City objects, adds connections
+│── start_new_game()   gets player name, creates Player object
+│── get_current_city() returns City object for player's location
+
+# ---- journey_test.py [NEW] ----
+from game import Game
+main():
+│── Create Game object (cities set up automatically)
+│── Call start_new_game() to create Player
+│── Simulate 3+ moves: call game.get_current_city(),
+│   pick a destination, call player.travel_to()
+│── Print player __str__ after each move
+│── Print final route and stats</pre>
+    </div>
   </div>
 </div>
 <div class="lc-card lc-card--green">
@@ -87,7 +159,8 @@
   <div class="lc-panel">
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">1</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Write the Player Class</div><div class="lc-sub-banner"></div></div>
+      <div class="lc-cp-content"><div class="lc-cp-title">Write the Player Class</div>
+      </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
@@ -129,7 +202,8 @@
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">2</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Write the Game Class Skeleton</div><div class="lc-sub-banner"></div></div>
+      <div class="lc-cp-content"><div class="lc-cp-title">Write the Game Class Skeleton</div>
+      </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
@@ -170,7 +244,8 @@
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">3</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Wire Player into Game</div><div class="lc-sub-banner"></div></div>
+      <div class="lc-cp-content"><div class="lc-cp-title">Wire Player into Game</div>
+      </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
@@ -206,7 +281,8 @@
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">4</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Write journey_test.py</div><div class="lc-sub-banner"></div></div>
+      <div class="lc-cp-content"><div class="lc-cp-title">Write journey_test.py</div>
+      </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
