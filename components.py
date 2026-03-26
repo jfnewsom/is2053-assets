@@ -7,7 +7,10 @@ Source of truth: IS2053_JSON_Schema_Spec_v1.md
 """
 
 import html as html_lib
+import io
+import keyword
 import re
+import tokenize
 
 
 # ============================================================
@@ -316,13 +319,97 @@ def render_bookex_callout(item: dict) -> str:
 """
 
 
+
+# ============================================================
+# Python Syntax Highlighter
+# ============================================================
+
+_HIGHLIGHT_BUILTINS = frozenset({
+    'print', 'input', 'len', 'range', 'int', 'float', 'str', 'list',
+    'dict', 'set', 'tuple', 'open', 'enumerate', 'zip', 'sorted',
+    'sum', 'min', 'max', 'abs', 'round', 'isinstance', 'type', 'bool',
+    'super', 'object', 'hasattr', 'getattr', 'setattr',
+})
+
+
+def highlight_python(source: str) -> str:
+    """Return source as HTML with sy-* syntax highlighting spans.
+    Falls back to plain html_lib.escape() on tokenize error.
+    """
+    try:
+        src_lines = source.splitlines(keepends=True)
+        cumulative = [0]
+        for ln in src_lines:
+            cumulative.append(cumulative[-1] + len(ln))
+
+        def to_offset(row, col):
+            return cumulative[row - 1] + col if row - 1 < len(cumulative) else len(source)
+
+        parts = []
+        last = 0
+        prev_name = None
+
+        for tok_type, tok_str, tok_start, tok_end, _ in \
+                tokenize.generate_tokens(io.StringIO(source).readline):
+
+            if tok_type in (tokenize.ENCODING, tokenize.ENDMARKER):
+                continue
+
+            start = to_offset(*tok_start)
+            end   = to_offset(*tok_end)
+
+            if start > last:
+                parts.append(html_lib.escape(source[last:start]))
+
+            last = end
+
+            if tok_type in (tokenize.NEWLINE, tokenize.NL,
+                            tokenize.INDENT, tokenize.DEDENT):
+                parts.append(html_lib.escape(tok_str))
+                prev_name = None
+                continue
+
+            esc = html_lib.escape(tok_str)
+
+            if tok_type == tokenize.COMMENT:
+                parts.append(f'<span class="sy-cm">{esc}</span>')
+            elif tok_type == tokenize.STRING:
+                parts.append(f'<span class="sy-str">{esc}</span>')
+            elif tok_type == tokenize.NUMBER:
+                parts.append(f'<span class="sy-num">{esc}</span>')
+            elif tok_type == tokenize.OP:
+                parts.append(f'<span class="sy-op">{esc}</span>')
+            elif tok_type == tokenize.NAME:
+                if keyword.iskeyword(tok_str) or tok_str in ('True', 'False', 'None'):
+                    parts.append(f'<span class="sy-kw">{esc}</span>')
+                elif prev_name == 'def':
+                    parts.append(f'<span class="sy-fn">{esc}</span>')
+                elif tok_str in _HIGHLIGHT_BUILTINS:
+                    parts.append(f'<span class="sy-bi">{esc}</span>')
+                else:
+                    parts.append(esc)
+            else:
+                parts.append(esc)
+
+            prev_name = tok_str if tok_type == tokenize.NAME else None
+
+        if last < len(source):
+            parts.append(html_lib.escape(source[last:]))
+
+        return ''.join(parts)
+
+    except tokenize.TokenError:
+        return html_lib.escape(source)
+
 def render_code_block(item: dict) -> str:
-    """Render a pre-formatted code block."""
-    code = html_lib.escape(item.get("code", ""))
-    return f"""    <div class="lc-code-block">
-      <pre><code>{code}</code></pre>
+    """Render a pre-formatted code block with Python syntax highlighting."""
+    code = item.get("code", "")
+    lang = item.get("lang", "python")
+    highlighted = highlight_python(code) if lang == "python" else html_lib.escape(code)
+    return f'''    <div class="lc-code-block">
+      <pre>{highlighted}</pre>
     </div>
-"""
+'''
 
 
 def render_output_block(item: dict) -> str:
