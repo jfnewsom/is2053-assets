@@ -51,31 +51,29 @@ from components import (
 def render_overview_card(overview: dict, meta: dict) -> str:
     """Render the full blue Overview card."""
 
-    body        = overview.get("body", "")
-    mentor      = overview.get("mentorQuote", {})
-    objectives  = overview.get("objectives", [])
-    key_concepts = overview.get("keyConceptsText", "")
-    textbook_ref = overview.get("textbookReference", "")
-    prog_reqs   = overview.get("programRequirements", [])
-    named_const = overview.get("namedConstants", [])
-    filename_note = overview.get("filenameNote", "")
+    body             = overview.get("body", "")
+    mentor           = overview.get("mentorQuote", {})
+    objectives       = overview.get("objectives", [])
+    key_concepts     = overview.get("keyConceptsText", "")
+    textbook_ref     = overview.get("textbookReference", "")
+    prog_reqs        = overview.get("programRequirements", [])
+    named_const      = overview.get("namedConstants", [])
+    filename_note    = overview.get("filenameNote", "")
     additional_files_note = overview.get("additionalFilesNote", "")
-    save_your_code = overview.get("saveYourCode", "")
+    data_files       = overview.get("dataFiles", [])
+    save_your_code   = overview.get("saveYourCode", "")
 
-    week_type   = meta.get("weekType", "BUILD")
-    module      = meta.get("module", "")
-    week        = meta.get("week", "")
-    chapters    = meta.get("chapters", "")
-    chapter_topics = meta.get("chapterTopics", "")
-    title       = meta.get("title", "")
-    lab_id      = meta.get("labId", "")
-    filename    = meta.get("filename", "")
+    week_type        = meta.get("weekType", "BUILD")
+    module           = meta.get("module", "")
+    week             = meta.get("week", "")
+    chapters         = meta.get("chapters", "")
+    chapter_topics   = meta.get("chapterTopics", "")
+    title            = meta.get("title", "")
+    filename         = meta.get("filename", "")
     additional_files = meta.get("additionalFiles", [])
 
-    # Badge number: "1.1", "4.2", etc.
     badge_num = f"{module}.{week}"
 
-    # Sub-banner: MODULE X • WEEK Y • TYPE • CHAPTERS 8–9: TOPICS
     sub_banner_text = f"MODULE {module} &bull; WEEK {week} &bull; {week_type}"
     if chapters:
         chapter_part = html_lib.escape(chapters)
@@ -83,7 +81,7 @@ def render_overview_card(overview: dict, meta: dict) -> str:
             chapter_part += f": {html_lib.escape(chapter_topics).upper()}"
         sub_banner_text += f" &bull; CHAPTERS {chapter_part}"
 
-    # Body narrative — preceded by Overview H3, logo floated right
+    # 1. Overview — body narrative with logo floated right
     body_html = ""
     if body:
         logo_html = (
@@ -92,32 +90,44 @@ def render_overview_card(overview: dict, meta: dict) -> str:
             'style="float: right; height: 110px; margin: 0 0 12px 20px;">\n'
         )
         body_html = (
-            '    <div class="lc-h3">Overview</div>\n'
+            '    <div class="lc-h3 lc-h3--yellow">Overview</div>\n'
             f"    {logo_html}"
             f"    <p>{body}</p>\n"
             '    <div style="clear: both;"></div>\n'
         )
 
-    # Mentor quote
+    # 2. Mentor quote
     mentor_html = render_mentor_quote(mentor) if mentor else ""
 
-    # Objectives
+    # 3. Filename — primary submission file + any additional files listed inline
+    filename_html = ""
+    if filename_note or filename:
+        display_note = filename_note if filename_note else f"Submit <code>{filename}</code> this week."
+        filename_html = f'    <div class="lc-h3 lc-h3--yellow">Filename</div>\n    <p>{display_note}</p>\n'
+    if additional_files_note:
+        filename_html += f"    <p>{additional_files_note}</p>\n"
+    elif additional_files and not data_files:
+        # Fall back to inline list only when no dataFiles table is provided
+        files_list = ", ".join(f"<code>{f}</code>" for f in additional_files)
+        filename_html += f"    <p>Also required: {files_list}</p>\n"
+
+    # 4. What You're Building — learning objectives
     objectives_html = ""
     if objectives:
         objectives_html = (
-            '    <div class="lc-h3 lc-h3--yellow">Learning Objectives</div>\n'
+            '    <div class="lc-h3 lc-h3--yellow">What You\'re Building</div>\n'
             + render_objectives(objectives)
         )
 
-    # Key concepts
+    # 5. Key Concepts — may contain HTML inline code tags
     key_concepts_html = ""
     if key_concepts:
         key_concepts_html = (
             '    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>\n'
-            f"    <p>{html_lib.escape(key_concepts)}</p>\n"
+            f"    <p>{key_concepts}</p>\n"
         )
 
-    # Textbook reference
+    # 6. Textbook reference — plain text
     textbook_html = ""
     if textbook_ref:
         textbook_html = (
@@ -125,13 +135,37 @@ def render_overview_card(overview: dict, meta: dict) -> str:
             f"    <p>{html_lib.escape(textbook_ref)}</p>\n"
         )
 
-    # Program requirements
+    # 7. Program requirements — items may contain HTML
     prog_reqs_html = ""
     if prog_reqs:
         prog_reqs_html = (
             '    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>\n'
             + render_program_requirements(prog_reqs)
         )
+
+    # 8. Required Data Files — rendered as a table when dataFiles array is present
+    data_files_html = ""
+    if data_files:
+        rows_html = ""
+        for df in data_files:
+            f_name = html_lib.escape(df.get("file", ""))
+            f_fmt  = df.get("format", "")
+            new_badge = ' <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span>' if df.get("new") else ""
+            rows_html += f'      <tr><td><code>{f_name}</code>{new_badge}</td><td>{f_fmt}</td></tr>\n'
+        data_files_html = f"""    <div class="lc-h3 lc-h3--yellow">Required Data Files</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Format</th>
+          </tr>
+        </thead>
+        <tbody>
+{rows_html}        </tbody>
+      </table>
+    </div>
+"""
 
     # Named constants
     named_const_html = ""
@@ -141,21 +175,7 @@ def render_overview_card(overview: dict, meta: dict) -> str:
             + render_named_constants(named_const)
         )
 
-    # Filename note
-    filename_html = ""
-    if filename_note or filename:
-        display_note = filename_note or f"Submit <code>{filename}</code> this week."
-        filename_html = f"""    <div class="lc-h3 lc-h3--yellow">Filename</div>
-    <p>{display_note}</p>
-"""
-    # Additional files note
-    if additional_files_note:
-        filename_html += f"    <p>{html_lib.escape(additional_files_note)}</p>\n"
-    elif additional_files:
-        files_list = ", ".join(f"<code>{f}</code>" for f in additional_files)
-        filename_html += f"    <p>Also submit: {files_list}</p>\n"
-
-    # Save Your Code callout
+    # 9. Save Your Code callout — may contain HTML
     save_html = ""
     if save_your_code:
         save_html = f"""    <div class="lc-callout lc-callout--success">
@@ -165,7 +185,7 @@ def render_overview_card(overview: dict, meta: dict) -> str:
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">Save Your Code</div>
         <div class="lc-callout__body">
-          <p>{html_lib.escape(save_your_code)}</p>
+          <p>{save_your_code}</p>
         </div>
       </div>
     </div>
@@ -177,12 +197,13 @@ def render_overview_card(overview: dict, meta: dict) -> str:
         + panel_open()
         + body_html
         + mentor_html
+        + filename_html
         + objectives_html
         + key_concepts_html
         + textbook_html
         + prog_reqs_html
+        + data_files_html
         + named_const_html
-        + filename_html
         + save_html
         + panel_close()
         + card_close()

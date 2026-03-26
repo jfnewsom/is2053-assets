@@ -306,7 +306,7 @@ def render_bookex_callout(item: dict) -> str:
         {icon_svg.strip()}
       </div>
       <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Textbook Reference</div>
+        <div class="lc-callout__title">BookEx Patterns</div>
         <div class="lc-callout__body">
           <ul>
 {refs_html}          </ul>
@@ -409,15 +409,18 @@ def render_mentor_quote(item: dict,
 def render_checkpoint(cp: dict, index: int, total: int,
                       headshot_path: str = "../../headshots/") -> str:
     """
-    Render a single checkpoint — separator (if not first), badge+title row,
+    Render a single checkpoint — separator (if not first), badge+title+subtitle row,
     then all content items.
     index is 0-based. total is len(checkpoints).
     """
     number = cp.get("number", index + 1)
     title = cp.get("title", f"Checkpoint {number}")
+    subtitle = cp.get("subtitle", "")
     content = cp.get("content", [])
 
     separator = '    <hr class="lc-cp-sep">\n' if index > 0 else ""
+
+    subtitle_html = f'\n        <div class="lc-sub-banner">{html_lib.escape(subtitle)}</div>' if subtitle else ""
 
     content_html = ""
     for item in content:
@@ -430,7 +433,7 @@ def render_checkpoint(cp: dict, index: int, total: int,
         <div class="lc-cp-badge__num">{number}</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">{html_lib.escape(title)}</div>
+        <div class="lc-cp-title">{html_lib.escape(title)}</div>{subtitle_html}
       </div>
     </div>
     <div class="lc-cp-body">
@@ -446,6 +449,7 @@ def render_time_guide(time_guide: dict) -> str:
     """Render the full orange Time Guide card."""
     total_time = time_guide.get("totalTime", "")
     rows = time_guide.get("rows", [])
+    strategy = time_guide.get("strategy", "")
 
     rows_html = ""
     for row in rows:
@@ -458,6 +462,25 @@ def render_time_guide(time_guide: dict) -> str:
         <td>{html_lib.escape(task)}</td>
       </tr>
 """
+
+    total_row = f"""      <tr class="lc-table__total">
+        <td colspan="2"><strong>Total Estimated Time</strong></td>
+        <td><strong>{html_lib.escape(total_time)}</strong></td>
+      </tr>
+""" if total_time else ""
+
+    strategy_html = f"""    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        {CALLOUT_ICONS["tip"].strip()}
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Strategy</div>
+        <div class="lc-callout__body">
+          <p>{html_lib.escape(strategy)}</p>
+        </div>
+      </div>
+    </div>
+""" if strategy else ""
 
     return f"""{card_open("orange")}
 {topper("Time Guide", f"Plan Your Session &nbsp;&mdash;&nbsp; {html_lib.escape(total_time)}")}
@@ -472,10 +495,10 @@ def render_time_guide(time_guide: dict) -> str:
           </tr>
         </thead>
         <tbody>
-{rows_html}        </tbody>
+{rows_html}{total_row}        </tbody>
       </table>
     </div>
-{panel_close()}{card_close()}"""
+{strategy_html}{panel_close()}{card_close()}"""
 
 
 # ============================================================
@@ -546,9 +569,9 @@ def render_before_you_begin(byb: dict) -> str:
 # ============================================================
 
 def render_objectives(objectives: list) -> str:
-    """Render the learning objectives list."""
+    """Render the learning objectives list. Content may contain HTML — do not escape."""
     items = "".join(
-        f'      <li>{html_lib.escape(obj)}</li>\n'
+        f'      <li>{obj}</li>\n'
         for obj in objectives
     )
     return f"""    <ul class="lc-objectives">
@@ -583,9 +606,9 @@ def render_named_constants(constants: list) -> str:
 
 
 def render_program_requirements(requirements: list) -> str:
-    """Render the program requirements checklist."""
+    """Render the program requirements checklist. Content may contain HTML — do not escape."""
     items = "".join(
-        f'      <li>{html_lib.escape(req)}</li>\n'
+        f'      <li>{req}</li>\n'
         for req in requirements
     )
     return f"""    <ul>
@@ -616,12 +639,12 @@ def render_final_checklist(checklist: dict) -> str:
         "academicIntegrity", ACADEMIC_INTEGRITY_DEFAULT
     )
 
-    # Before You Submit checklist
+    # Before You Submit checklist — items may contain HTML
     checklist_items = ""
     for item in before_you_submit:
         checklist_items += f"""      <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">{html_lib.escape(item)}</span>
+        <span class="lc-checklist__label">{item}</span>
       </li>
 """
 
@@ -630,12 +653,12 @@ def render_final_checklist(checklist: dict) -> str:
 {checklist_items}    </ul>
 """ if checklist_items else ""
 
-    # Scope reminder
+    # Scope reminder — plain text
     scope_block = f"""    <div class="lc-h3">Scope Reminder</div>
     <p>{html_lib.escape(scope_reminder)}</p>
 """ if scope_reminder else ""
 
-    # Permitted techniques
+    # Permitted techniques — specific items may contain HTML
     permitted_block = ""
     if permitted:
         chapters = permitted.get("chapters", "")
@@ -643,7 +666,7 @@ def render_final_checklist(checklist: dict) -> str:
         not_permitted = permitted.get("notPermitted", "")
 
         specific_items = "".join(
-            f'      <li>{html_lib.escape(s)}</li>\n' for s in specific
+            f'      <li>{s}</li>\n' for s in specific
         )
         not_permitted_html = (
             f'    <p class="lc-permitted__not-permitted">'
@@ -658,7 +681,7 @@ def render_final_checklist(checklist: dict) -> str:
 {not_permitted_html}    </div>
 """
 
-    # Warnings
+    # Warnings — plain text
     warnings_html = ""
     for w in warnings:
         warnings_html += f"""    <div class="lc-callout lc-callout--warning">
@@ -673,7 +696,7 @@ def render_final_checklist(checklist: dict) -> str:
     </div>
 """
 
-    # Save Your Code
+    # Save Your Code — may contain HTML
     save_block = f"""    <div class="lc-callout lc-callout--success">
       <div class="lc-callout__icon">
         {CALLOUT_ICONS["success"].strip()}
@@ -681,13 +704,13 @@ def render_final_checklist(checklist: dict) -> str:
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">Save Your Code</div>
         <div class="lc-callout__body">
-          <p>{html_lib.escape(save_your_code)}</p>
+          <p>{save_your_code}</p>
         </div>
       </div>
     </div>
 """ if save_your_code else ""
 
-    # Academic Integrity
+    # Academic Integrity — plain text
     integrity_block = f"""    <div class="lc-h3">Academic Integrity</div>
     <p>{html_lib.escape(academic_integrity)}</p>
 """
@@ -737,7 +760,6 @@ CONTACT_GRID_HTML = """    <div class="lc-contact-grid">
 def render_need_help(need_help: dict) -> str:
     """Render the full purple Need Help card."""
     if_you_get_stuck = need_help.get("ifYouGetStuck", [])
-    bookex_note = need_help.get("bookexResourceNote", "")
 
     stuck_items = "".join(
         f'      <li>{html_lib.escape(item)}</li>\n'
@@ -748,21 +770,8 @@ def render_need_help(need_help: dict) -> str:
 {stuck_items}    </ul>
 """ if stuck_items else ""
 
-    bookex_block = f"""    <div class="lc-callout lc-callout--bookex">
-      <div class="lc-callout__icon">
-        {CALLOUT_ICONS["bookex"].strip()}
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">BookEx Reference Guides</div>
-        <div class="lc-callout__body">
-          <p>{html_lib.escape(bookex_note)}</p>
-        </div>
-      </div>
-    </div>
-""" if bookex_note else ""
-
     return f"""{card_open("purple")}
 {topper("Need Help?", "Look No Further!")}
 {panel_open()}
-{stuck_block}{bookex_block}    <div class="lc-h3">Contact &amp; Resources</div>
+{stuck_block}    <div class="lc-h3">Contact &amp; Resources</div>
 {CONTACT_GRID_HTML}{panel_close()}{card_close()}"""

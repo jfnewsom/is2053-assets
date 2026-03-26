@@ -6,72 +6,95 @@
         "week": 2,
         "weekType": "ENHANCE",
         "chapters": "8–9",
-        "chapterTopics": "String methods, input normalization, method chaining",
+        "chapterTopics": "String Methods, Lists of Dictionaries",
         "filename": "lab-4-2.py",
         "additionalFiles": [
+            "city_distances.txt",
+            "city_info.txt",
+            "hazards.txt",
             "function_library.py"
         ]
     },
     "overview": {
-        "body": "You felt the friction. For three weeks, every yes/no prompt in your game required four comparisons: <code>answer == 'y' or answer == 'Y' or answer == 'n' or answer == 'N'</code>. Every menu choice needed two branches just to handle case. Today that ends.<br><br>Chapter 8 introduces string methods: small but powerful tools that transform how you handle user input. <code>.upper()</code>, <code>.lower()</code>, and <code>.strip()</code> let you normalize what the player types before you ever compare it. You will refactor <code>function_library.py</code> with two new helper functions, update <code>get_yes_no()</code>, and apply consistent input cleaning across your entire game loop. When you are done, your code will be shorter, more readable, and far more forgiving of sloppy typing.",
+        "body": "Remember writing <code>if choice == 'y' or choice == 'Y':</code> over and over? Those days are <strong>OVER</strong>. This week you'll discover <code>.upper()</code> and <code>.strip()</code> — string methods that clean and normalize input in one line. You'll also add <strong>hazards</strong> loaded from a data file and a <strong>D20 travel system</strong> where dice rolls determine how far you go each turn.",
         "mentorQuote": {
-            "character": "Danny Cavanaugh",
-            "role": "Senior Developer, Bat City Collective",
-            "headshot": "Danny-Cavanaugh.png",
-            "quote": "Three weeks ago, get_yes_no() had to handle 'y' AND 'Y' AND 'n' AND 'N'. That is four comparisons to do one job. .upper() collapses all of that into one. When a function shrinks and still does everything it did before, that is a sign you found the right tool."
+            "character": "Tyler Nguyen",
+            "role": "Junior Developer, Bat City Collective",
+            "headshot": "Tyler-Nguyen.png",
+            "quote": "I spent SO much time writing 'if choice == y or choice == Y' everywhere. When someone showed me 'choice.upper() == Y', I was like... wait, that's IT? One method fixes ALL my case problems? Now I .upper() or .lower() every string comparison."
         },
         "objectives": [
-            "Apply .upper() and .strip() to normalize user input before comparison",
-            "Chain string methods to clean input in a single expression",
-            "Refactor get_yes_no() using .upper() to eliminate redundant OR conditions",
-            "Add clean_input() and clean_input_lower() to function_library.py",
-            "Update all user input in lab-4-2.py to use the new helper functions"
+            "Write <code>load_hazards()</code> to parse <code>hazards.txt</code> into a list of dictionaries",
+            "Replace all <code>or</code> case-handling patterns with <code>.strip().upper()</code>",
+            "Write <code>handle_hazard()</code> to pick a random hazard and flip a coin for the outcome",
+            "Write <code>travel_to()</code> with D20-based progression and a 30% hazard chance per turn",
+            "Track hazards faced and escaped in the final trip report"
         ],
-        "keyConceptsText": "Chapter 8: Programs 8-1 (iterating over strings), 8-5 (string testing methods), and 8-9 and 8-10 (splitting strings). String modification methods (.upper(), .lower(), and .strip()) are covered in the Chapter 8 methods reference table.",
-        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis, Chapters 8 and 9",
+        "keyConceptsText": "Chapter 8: .upper(), .lower(), .strip(), and method chaining. Chapter 9: List of dictionaries, random.choice() with a list of dicts.",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 8 & 9",
         "programRequirements": [
-            "function_library.py contains clean_input() and clean_input_lower() functions",
-            "get_yes_no() uses .upper() with no OR chains comparing both uppercase and lowercase variants",
-            "lab-4-2.py applies .strip() or clean_input() to every user input before comparison",
-            "All functions have docstrings; file has top-of-file documentation header"
+            "Your program MUST use <code>.strip().upper()</code> for all yes/no input handling",
+            "Your program MUST load hazards from <code>hazards.txt</code> into a list of dictionaries",
+            "Your program MUST use D20 rolls for travel distance (roll × 10 miles per turn)",
+            "Your program MUST use <code>function_library.py</code> for <code>roll_d20</code>, <code>flip_coin</code>, and <code>check_percentage</code>",
+            "Your program MUST track and display hazards faced and escaped in the final report"
         ],
-        "additionalFilesNote": "This lab updates both lab-4-2.py and function_library.py. Submit both files. CodeGrade will test your library functions independently.",
-        "filenameNote": "Submit lab-4-2.py and function_library.py this week.",
-        "saveYourCode": "Keep both files. Module 4.3 adds sets and a trivia gate on top of the input handling you build here."
-    },
-    "timeGuide": {
-        "totalTime": "45–60 Minutes",
-        "rows": [
+        "filenameNote": "Submit <code>lab-4-2.py</code> this week. Start by copying your <code>lab-4-1.py</code> and renaming it.",
+        "saveYourCode": "Keep <code>lab-4-2.py</code> — Module 4.3 adds sets and a visited-cities tracker directly on top of this foundation.",
+        "dataFiles": [
             {
-                "checkpoint": "CP1: New Library Functions",
-                "time": "10 min",
-                "task": "Add clean_input() and clean_input_lower() to function_library.py"
+                "file": "city_distances.txt",
+                "format": "Same as Lab 4.1"
             },
             {
-                "checkpoint": "CP2: Refactor get_yes_no()",
-                "time": "15 min",
-                "task": "Replace OR chains with .strip().upper() (the pain-before-magic payoff)"
+                "file": "city_info.txt",
+                "format": "Same as Lab 4.1"
             },
             {
-                "checkpoint": "CP3: Clean All Input in lab-4-2.py",
-                "time": "15 min",
-                "task": "Apply input normalization across the entire game loop"
+                "file": "hazards.txt",
+                "format": "name,heads_message,tails_message",
+                "new": true
             },
             {
-                "checkpoint": "CP4: Test and Submit",
-                "time": "10 min",
-                "task": "Test edge cases, verify CodeGrade, clean up and submit"
+                "file": "function_library.py",
+                "format": "Your shared function library from Module 3"
             }
         ]
     },
+    "timeGuide": {
+        "totalTime": "90–120 Minutes",
+        "rows": [
+            {
+                "checkpoint": "CP1: Copy & Load Hazards",
+                "time": "20–25 min",
+                "task": "Copy lab-4-1.py, add load_hazards()"
+            },
+            {
+                "checkpoint": "CP2: The .upper() Relief",
+                "time": "15–20 min",
+                "task": "Clean input with string methods"
+            },
+            {
+                "checkpoint": "CP3: Handle Hazards",
+                "time": "20–25 min",
+                "task": "Random hazard selection and outcomes"
+            },
+            {
+                "checkpoint": "CP4: D20 Travel System",
+                "time": "30–35 min",
+                "task": "Roll-based travel with hazard checks"
+            }
+        ],
+        "strategy": "Start by copying your working lab-4-1.py. The checkpoint order is designed so you can test each new feature independently before combining them."
+    },
     "beforeYouBegin": {
-        "intro": "Here is how your finished program fits together. The [NEW] tags show what you are adding to function_library.py. The [REPLACED] tags show what changes in lab-4-2.py from your 4.1 code. Everything else carries forward unchanged.",
-        "architecture": "# ---- CONSTANTS (lab-4-2.py) ----\nCITY_DISTANCES = { ... }              (from 4.1, unchanged)\nCITY_INFO      = { ... }              (from 4.1, unchanged)\nSTARTING_CITY  = 'San Antonio'        (unchanged)\n\n# ---- FUNCTION LIBRARY (function_library.py) ----\nclean_input(prompt)                   [NEW] strip + upper\nclean_input_lower(prompt)             [NEW] strip + lower\nget_yes_no(prompt)                    [REPLACED] now uses .upper()\nget_valid_int(prompt, min, max)       (unchanged)\nflip_coin()                           (unchanged)\nroll_d20()                            (unchanged)\ndisplay_numbered_list(items, title)   (unchanged)\nsave_list_to_file(filename, data)     (unchanged)\nload_list_from_file(filename)         (unchanged)\nfile_exists(filename)                 (unchanged)\n\n# ---- MAIN GAME (lab-4-2.py) ----\nGAME LOOP:\n│\n│── Player name input         .strip()           [REPLACED]\n│── Main menu choice          .strip().upper()   [REPLACED]\n│\n│   DESTINATION SELECTION:\n│   │── Destination input     .strip().upper()   [REPLACED]\n│   │── Hazard prompt        get_yes_no()        (now cleaner)\n│   │\n│   TRAVEL LOOP:\n│   │── All prompts normalized before comparison [REPLACED]\n│\n│── Play again?               get_yes_no()       (now cleaner)\n│\nAll user input normalized before any comparison.\nNo more 'y' vs 'Y' failures."
+        "intro": "Here's how your finished program fits together. The [NEW] tags show what you're adding. [REPLACED] tags show what changes from your 4.1 code.",
+        "architecture": "# ---- DATA LOADING FUNCTIONS ----\nload_city_distances()   reads city_distances.txt → nested dict\nload_city_info()        reads city_info.txt → dict of dicts\nload_hazards()          reads hazards.txt → list of dicts     [NEW]\n\n# ---- GAME FUNCTIONS ----\ndisplay_destinations()  shows menu from dict\nget_destination_choice()  validates user pick\nhandle_hazard(hazards)  random hazard + coin flip              [NEW]\ntravel_to(distance)     D20 travel + hazard checks             [NEW]\n\n# ---- MAIN PROGRAM ----\nLoad data files (distances, info, hazards)\nGet player name\ncurrent_city = 'San Antonio'\n\nGAME LOOP (each pass is one leg):\n│\n│── Display city info, show destinations\n│── Get choice with .strip().upper()          [REPLACED] was or chains\n│── Destination Gate (coin flip)\n│\n│   TRAVEL LOOP (D20 rolls!):               [REPLACED] was fixed 50-mile\n│   │── Roll D20, move (roll × 10) miles\n│   │── 30% chance: handle_hazard()           [NEW]\n│   │── Repeat until you arrive\n│\n│── Update trip totals (+ hazards_faced, hazards_escaped)\n│── Check outcome: beach / dead end / continue\n│── Save and quit option\n\n# ---- AFTER THE LOOP ----\nPrint trip summary with hazard stats          [NEW]\n\"Thanks for playing!\""
     },
     "checkpoints": [
         {
             "number": 1,
-            "title": "Add String Functions to function_library.py",
+            "title": "Copy & Load Hazards",
             "content": [
                 {
                     "type": "h3",
@@ -79,7 +102,26 @@
                 },
                 {
                     "type": "text",
-                    "body": "Open <code>function_library.py</code> from your 4.1 submission. You will add two new functions at the bottom of the STRING FUNCTIONS section. These functions wrap Python's built-in string methods so the rest of your code can call one clean function instead of chaining methods inline every time."
+                    "body": "A function that reads <code>hazards.txt</code> and returns a <strong>list of dictionaries</strong>. Each hazard dictionary has keys for name, heads message, and tails message."
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Loading structured data from files into a list of dictionaries is everywhere in professional development. JSON APIs return lists of objects, database queries return lists of records, and configuration files store lists of settings. Master this pattern and you've unlocked how real applications manage data."
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "9-1",
+                            "filename": "card_dealer.py",
+                            "description": "Your load_city_info() from Lab 4.1 already creates dictionaries from CSV lines. This is the same pattern — but you'll append each hazard dict to a list instead of adding it to a parent dict."
+                        }
+                    ]
                 },
                 {
                     "type": "h3",
@@ -88,42 +130,47 @@
                 {
                     "type": "instructions",
                     "items": [
-                        "Add a <code># STRING FUNCTIONS (Added in 4.2)</code> comment block at the bottom of your function library to separate the new additions.",
-                        "Write a function named <code>clean_input</code> that accepts one parameter: <code>prompt</code>. It should get input from the user, strip leading and trailing whitespace, convert the result to uppercase, and return that cleaned string. Include a docstring that describes what it does, the parameter, and the return value.",
-                        "Write a second function named <code>clean_input_lower</code> that works the same way but converts to lowercase instead of uppercase. It should also accept a <code>prompt</code> parameter and include a docstring.",
-                        "In your Python shell, test both functions manually: call <code>clean_input('Test: ')</code> and type <code>&nbsp; hello &nbsp;</code> with spaces. Verify the return value is <code>'HELLO'</code> with no spaces.",
-                        "Repeat the test with <code>clean_input_lower</code> and verify the return value is <code>'hello'</code>."
+                        "Copy your <code>lab-4-1.py</code> and rename it to <code>lab-4-2.py</code>.",
+                        "Update your docstring description to reflect Lab 4.2.",
+                        "Define <code>load_hazards(filename)</code> that takes a filename parameter.",
+                        "Create an empty list inside the function: <code>hazards = []</code>.",
+                        "Open the file and loop through each line.",
+                        "For each line: use <code>line.strip().split(',')</code> to get a list of parts.",
+                        "Create a hazard dict: <code>{'name': parts[0], 'heads': parts[1], 'tails': parts[2]}</code>.",
+                        "Append the dict to the list: <code>hazards.append(hazard)</code>.",
+                        "Close the file and return the <code>hazards</code> list."
                     ]
                 },
                 {
                     "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "8-1",
-                            "filename": "count_Ts.py",
-                            "step": 4,
-                            "description": "Shows how individual characters behave when tested with ==, which is the same logic that makes case comparison fragile without normalization."
-                        },
-                        {
-                            "programId": "8-5",
-                            "filename": "string_test.py",
-                            "step": 3,
-                            "description": "Demonstrates string testing methods (.isdigit(), .isalpha(), .isupper(), and .islower()) , useful for input validation beyond case normalization."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
+                    "label": "test_your_code"
                 },
                 {
                     "type": "text",
-                    "body": "Method chaining is the key idea here. When you write <code>input(prompt).strip().upper()</code>, Python executes left to right: <code>input()</code> gets a string from the user, <code>.strip()</code> removes whitespace from both ends of that string, and <code>.upper()</code> converts the result to uppercase. Each method returns a new string, and the next method is called on that result. Strings are immutable in Python, so nothing is modified in place. You are building a pipeline."
+                    "body": "<strong>Step 1:</strong> Add this test harness:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\nhazards = load_hazards('hazards.txt')\nprint(f'Loaded {len(hazards)} hazards')\nprint('First hazard:', hazards[0])\nprint('First hazard name:', hazards[0]['name'])"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run and verify this output:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Loaded 8 hazards\nFirst hazard: {'name': \"Buc-ee's appears!\", 'heads': 'You resist...', 'tails': 'Lost 2 hours...'}\nFirst hazard name: Buc-ee's appears!"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> <strong><strong style=\"color:#FF6B1A;\">DELETE the DEBUG lines</strong></strong> before moving to Checkpoint 2."
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Sasha Mireles",
+                    "role": "Creative Director, Bat City Collective",
+                    "headshot": "Sasha-Mireles.png",
+                    "quote": "You've been writing 'if x == y or x == Y:' for weeks. Today that pain ends. You're also loading hazards from a file and building a real travel system with D20 rolls. Three new functions, one massive quality-of-life upgrade."
                 },
                 {
                     "type": "h3",
@@ -132,30 +179,21 @@
                 {
                     "type": "table",
                     "headers": [
-                        "Mistake",
-                        "What Goes Wrong",
-                        "Fix"
+                        "Common Mistake",
+                        "Why It Fails"
                     ],
                     "rows": [
                         [
-                            "Writing `input.strip().upper(prompt)`",
-                            "input is a function; the prompt goes inside the parentheses",
-                            "Write `input(prompt).strip().upper()` because call order matters"
+                            "Using wrong index: <code>parts[3]</code>",
+                            "Only 3 parts per line (indices 0, 1, 2). Check your CSV structure."
                         ],
                         [
-                            "Forgetting to return the result",
-                            "Function runs but the caller gets None back",
-                            "Make sure the last expression in your function is a return statement"
+                            "Forgetting <code>.strip()</code> on the line",
+                            "Trailing newlines corrupt your data and comparisons will fail."
                         ],
                         [
-                            "Using `string.upper` without parentheses",
-                            "You get a reference to the method object, not the result",
-                            "Always include the parentheses: `string.upper()`"
-                        ],
-                        [
-                            "Assigning back unnecessarily",
-                            "Writing `text = text.strip()` when you just want the cleaned value once",
-                            "If you only use it once, chain directly: `input(prompt).strip().upper()`"
+                            "Creating the dict outside the loop",
+                            "Each line needs a NEW dict. Create it inside the loop."
                         ]
                     ],
                     "accent": "green"
@@ -165,21 +203,15 @@
                     "label": "what_you_should_have"
                 },
                 {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "CP1 Complete",
-                    "items": [
-                        "function_library.py has a STRING FUNCTIONS section with clean_input() and clean_input_lower()",
-                        "Both functions have docstrings with parameter and return descriptions",
-                        "Manual testing confirms clean_input('Test: ') with '  hello  ' returns 'HELLO'",
-                        "Manual testing confirms clean_input_lower('Test: ') with '  HELLO  ' returns 'hello'"
-                    ]
+                    "type": "text",
+                    "body": "<ul><li><code>lab-4-2.py</code> with an updated docstring</li><li><code>load_hazards()</code> that returns a list of dictionaries</li><li>Each dict has <code>'name'</code>, <code>'heads'</code>, and <code>'tails'</code> keys</li><li>Can access hazards with <code>hazards[0]['name']</code></li></ul>"
                 }
-            ]
+            ],
+            "subtitle": "Start from your Lab 4.1 code and add a new file-loading function for hazards."
         },
         {
             "number": 2,
-            "title": "Refactor get_yes_no()",
+            "title": "The .upper() Relief",
             "content": [
                 {
                     "type": "h3",
@@ -187,23 +219,7 @@
                 },
                 {
                     "type": "text",
-                    "body": "This is the payoff checkpoint. Open <code>function_library.py</code> and find your existing <code>get_yes_no()</code> function. You are going to rewrite it using <code>.strip().upper()</code> and watch it get shorter, cleaner, and more capable all at once."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "Here is what your current function has to do to handle both cases:"
-                },
-                {
-                    "type": "code_block",
-                    "code": "# BEFORE: get_yes_no() the painful way\n# Four comparisons just to check two possible answers\nwhile answer != 'y' and answer != 'Y' and answer != 'n' and answer != 'N':\n    print(\"ERROR: Enter 'y' or 'n'.\")\n    answer = input(prompt)\nif answer == 'y' or answer == 'Y':\n    return True\nelse:\n    return False"
-                },
-                {
-                    "type": "text",
-                    "body": "After normalizing with <code>.upper()</code>, the logic collapses. There are only two valid uppercase answers to check, and the return statement becomes a single comparison."
+                    "body": "Clean, normalized input handling using <code>.strip().upper()</code>. No more <code>if x == 'y' or x == 'Y':</code>."
                 },
                 {
                     "type": "h3",
@@ -212,183 +228,86 @@
                 {
                     "type": "instructions",
                     "items": [
-                        "Find <code>get_yes_no()</code> in your function library. Read through its current logic and count how many comparisons it makes.",
-                        "Rewrite the first <code>input()</code> call inside the function so it chains <code>.strip()</code> and <code>.upper()</code> before assigning to <code>answer</code>.",
-                        "Update the <code>while</code> loop condition. After normalizing, you only need to compare against <code>'Y'</code> and <code>'N'</code>. No need to check both cases.",
-                        "Update the <code>input()</code> call inside the loop to also use <code>.strip().upper()</code>.",
-                        "Simplify the return statement. Hint: after normalization, returning whether <code>answer</code> equals <code>'Y'</code> is all you need. No <code>if/else</code> required.",
-                        "Update the docstring to note that the function now uses <code>.upper()</code> for case-insensitive input handling."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Import your library in a Python shell: <code>import function_library</code>",
-                        "Call <code>function_library.get_yes_no('Continue? (y/n): ')</code> and type lowercase <code>y</code>. Verify it returns <code>True</code>.",
-                        "Call it again and type uppercase <code>Y</code>. Verify it also returns <code>True</code>.",
-                        "Call it again and type <code>&nbsp; y &nbsp;</code> with leading and trailing spaces. Verify it still returns <code>True</code>.",
-                        "Verify that <code>n</code>, <code>N</code>, and <code>&nbsp;n&nbsp;</code> all return <code>False</code>.",
-                        "Verify that typing something invalid (like <code>yes</code>) triggers the error message and re-prompts."
-                    ]
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Danny Cavanaugh",
-                    "role": "Senior Developer, Bat City Collective",
-                    "headshot": "Danny-Cavanaugh.png",
-                    "quote": "Count the comparisons in your old get_yes_no(), then count the comparisons in the new one. If that number went down and the function still works, you did it right. Fewer moving parts means fewer places to break."
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "CP2 Complete",
-                    "items": [
-                        "get_yes_no() no longer uses OR chains to handle both 'y' and 'Y'",
-                        "Both the initial input and the loop's re-prompt use .strip().upper()",
-                        "The return statement is a single comparison with no if/else needed",
-                        "Docstring updated to describe the .upper() normalization",
-                        "Manual testing confirms 'y', 'Y', and '  y  ' all return True"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 3,
-            "title": "Clean All Input in lab-4-2.py",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "Open <code>lab-4-2.py</code> from your 4.1 submission and save a copy as <code>lab-4-2.py</code>. Work through the entire file and apply input normalization everywhere a player types something. This is a refactor pass, not glamorous work. But it is the kind of pass that separates code that works for the developer from code that works for the player."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Start at the top of your game loop. Find every <code>input()</code> call that reads a player choice: destination selection, menu options, hazard responses, and any other prompt that leads to a comparison.",
-                        "For any input that gets compared against letter strings (like <code>'A'</code>, <code>'B'</code>, <code>'Y'</code>, <code>'N'</code>), replace the bare <code>input(prompt)</code> call with <code>input(prompt).strip().upper()</code>. You may also use your new <code>clean_input(prompt)</code> function from the library. Both are acceptable.",
-                        "For the player's name input (which is not compared against a fixed set of values), apply only <code>.strip()</code>. Do not convert names to uppercase.",
-                        "Find every <code>while</code> loop condition that currently checks both lowercase and uppercase (like <code>answer != 'a' and answer != 'A'</code>) and simplify it to check only the uppercase version.",
-                        "Find every <code>if/elif</code> chain that currently checks both cases (like <code>if choice == 'a' or choice == 'A':</code>) and simplify each condition to check only the uppercase version.",
-                        "After all replacements, do a quick scan for any remaining lowercase letter literals in conditions. If you see <code>== 'a'</code>, <code>== 'b'</code>, or similar, those are candidates for cleanup. Verify they still make sense after normalization."
+                        "Find the dead-end handling in your game loop (the \"Return to San Antonio?\" input).",
+                        "Change the input line to use method chaining: <code>choice = input('Return to San Antonio? (y/n): ').strip().upper()</code>.",
+                        "Update the comparison: check for <code>'Y'</code> only, not <code>'y'</code>.",
+                        "Update the player name input to use <code>.strip()</code> to remove accidental leading or trailing spaces.",
+                        "Search the rest of your code for any remaining <code>or</code> patterns in input handling and fix them the same way."
                     ]
                 },
                 {
                     "type": "callout",
                     "variant": "tip",
-                    "title": "Use VS Code's Find to Catch Everything",
-                    "body": "In VS Code, use <strong>Ctrl+F</strong> (or Cmd+F on Mac) and search for <code>input(</code> to jump to every input call in your file. Work through them one at a time. It takes five minutes and ensures you do not miss any."
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Terrence \"T-Bone\" Booker",
-                    "role": "QA Lead, Bat City Collective",
-                    "headshot": "Terrence-Booker.png",
-                    "quote": "I typed ' y ' with spaces on both sides. Your program crashed. Then I typed 'Y' and it worked fine. Those should behave identically. If your input handling works for some inputs but not others, it does not work. It just works for you."
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "instructions",
+                    "title": "Old Way vs. New Way",
+                    "body": "Here's the before and after:",
                     "items": [
-                        "Run your game from the terminal. At the first yes/no prompt, type a lowercase letter. Verify it is accepted..",
-                        "At the first menu choice prompt, type a lowercase letter. Verify it selects the correct option..",
-                        "At any prompt, type a valid answer with a leading space (like <code>&nbsp;a</code>). Verify it still works..",
-                        "Try typing all-caps where the game expects a single letter. Verify it works..",
-                        "Play through at least one complete trip to confirm the game runs without errors before moving to CP4."
+                        "<code># Old: if choice == 'y' or choice == 'Y':</code>",
+                        "<code># New: choice = input(...).strip().upper()</code>  then  <code>if choice == 'Y':</code>"
                     ]
                 },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "CP3 Complete",
-                    "items": [
-                        "Every player choice input in lab-4-2.py uses .strip() at minimum",
-                        "Every input compared against letter constants uses .strip().upper() or clean_input()",
-                        "Player name input uses .strip() only; name is not uppercased",
-                        "All if/elif conditions check only uppercase literals; no more 'a' or 'A' patterns",
-                        "The game plays through a complete trip without input errors"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 4,
-            "title": "Test, Clean Up, and Submit",
-            "content": [
                 {
                     "type": "h3",
                     "label": "test_your_code"
                 },
                 {
                     "type": "text",
-                    "body": "Before submitting, run your game through the following test scenarios. Each one targets a specific thing the refactor was supposed to fix."
+                    "body": "Run your game and navigate to a dead end (Laredo or El Paso). When asked \"Return to San Antonio?\", try each of these inputs and confirm all three work: <code>y</code>, <code>Y</code>, and <code>&nbsp;&nbsp;y&nbsp;&nbsp;</code> (with spaces)."
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Sasha Mireles",
+                    "role": "Creative Director, Bat City Collective",
+                    "headshot": "Sasha-Mireles.png",
+                    "quote": "Players will do exactly what you didn't expect. They'll type 'Y', 'y', 'YES', or '  y  ' with extra spaces. .strip().upper() handles ALL of that in one line. Design for chaos."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
                 },
                 {
                     "type": "table",
                     "headers": [
-                        "Test Input",
-                        "Where to Type It",
-                        "Expected Result"
+                        "Common Mistake",
+                        "Fix"
                     ],
                     "rows": [
                         [
-                            "Lowercase 'y'",
-                            "Any yes/no prompt",
-                            "Accepted (same as 'Y')"
+                            "Still checking lowercase after <code>.upper()</code>",
+                            "Only compare against <code>'Y'</code> and <code>'N'</code>, never <code>'y'</code> or <code>'n'</code>."
                         ],
                         [
-                            "Uppercase 'N'",
-                            "Any yes/no prompt",
-                            "Accepted (same as 'n')"
+                            "Forgetting the parentheses: <code>.upper</code>",
+                            "Methods require parentheses: <code>.upper()</code>."
                         ],
                         [
-                            "'  y  ' with spaces",
-                            "Any yes/no prompt",
-                            "Spaces stripped and accepted"
-                        ],
-                        [
-                            "Lowercase destination letter",
-                            "Destination selection menu",
-                            "Correct destination selected"
-                        ],
-                        [
-                            "Invalid character like '?'",
-                            "Any menu prompt",
-                            "Error message shown, re-prompted"
-                        ],
-                        [
-                            "Player name with leading space",
-                            "Name prompt at game start",
-                            "Name stored without the leading space"
-                        ],
-                        [
-                            "All caps name like 'ALEX'",
-                            "Name prompt at game start",
-                            "Stored as 'ALEX' without conversion"
+                            "Reversed order: <code>.upper().strip()</code>",
+                            "Won't crash, but <code>.strip().upper()</code> is the standard pattern. Strip the junk first, then transform."
                         ]
                     ],
                     "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "text",
+                    "body": "<ul><li>All yes/no inputs use <code>.strip().upper()</code></li><li>No remaining <code>or</code> patterns for case handling</li><li>Player name input uses <code>.strip()</code></li></ul>"
+                }
+            ],
+            "subtitle": "Replace those painful or statements with clean string methods!"
+        },
+        {
+            "number": 3,
+            "title": "Handle Hazards",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "A function that selects a random hazard from your list, displays it, flips a coin, and shows the appropriate outcome message. Returns <code>True</code> if the player escaped (HEADS) or <code>False</code> if not (TAILS)."
                 },
                 {
                     "type": "h3",
@@ -397,69 +316,204 @@
                 {
                     "type": "instructions",
                     "items": [
-                        "Run each test case from the table above. Note any failures. If something does not behave as expected, trace back to the input call that handles that prompt.",
-                        "Verify your top-of-file documentation header is present in both <code>lab-4-2.py</code> and <code>function_library.py</code>. Required fields: Name, abc123, Section, and a one-sentence description of what the file does.",
-                        "Verify every function in both files has a docstring. Quick check: open each file and scan for <code>def </code>. Every one should be followed by a docstring on the next indented line.",
-                        "Run Flake8 on both files and fix any warnings before submitting.",
-                        "Submit both <code>lab-4-2.py</code> and <code>function_library.py</code> to CodeGrade. Review the automated feedback. If any correctness tests fail, read the error output carefully and trace it back to the specific input that is not being cleaned."
+                        "Define <code>handle_hazard(hazards)</code> that takes the hazards list.",
+                        "Pick a random hazard: <code>hazard = random.choice(hazards)</code>.",
+                        "Display the hazard name: <code>*** HAZARD: {hazard['name']} ***</code>.",
+                        "Flip a coin: <code>result = function_library.flip_coin()</code>.",
+                        "Display the flip result.",
+                        "If HEADS: print <code>hazard['heads']</code> and return <code>True</code>.",
+                        "If TAILS: print <code>hazard['tails']</code> and return <code>False</code>."
                     ]
                 },
                 {
-                    "type": "callout",
-                    "variant": "info",
-                    "title": "CodeGrade Tests Your Library Separately",
-                    "body": "CodeGrade imports your <code>function_library.py</code> directly and calls <code>clean_input()</code> and <code>get_yes_no()</code> in isolation. Make sure those functions work correctly on their own, not just when the full game is running."
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this test harness:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 4\nhazards = load_hazards('hazards.txt')\nprint('Testing hazard handling...')\nfor i in range(3):\n    escaped = handle_hazard(hazards)\n    print(f'Escaped: {escaped}')\n    print()"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run several times. Verify you see different hazards and both HEADS and TAILS outcomes appearing across runs. <strong>Step 3:</strong> <strong><strong style=\"color:#FF6B1A;\">DELETE the DEBUG lines</strong></strong> before moving to Checkpoint 4."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": [
+                        "Common Mistake",
+                        "Why It Fails"
+                    ],
+                    "rows": [
+                        [
+                            "Using <code>hazard['HEADS']</code> (uppercase key)",
+                            "Keys are lowercase: <code>'heads'</code> and <code>'tails'</code>, matching how you defined them in <code>load_hazards()</code>."
+                        ],
+                        [
+                            "Forgetting to return True or False",
+                            "The caller needs to know if the player escaped. The function must return a boolean."
+                        ],
+                        [
+                            "Using <code>random.choice(hazards)</code> without <code>import random</code>",
+                            "Make sure <code>import random</code> is at the top of your file."
+                        ]
+                    ],
+                    "accent": "green"
                 },
                 {
                     "type": "h3",
                     "label": "what_you_should_have"
                 },
                 {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "Lab 4.2 Complete",
-                    "items": [
-                        "Both lab-4-2.py and function_library.py submitted to CodeGrade",
-                        "All test cases from the table above pass",
-                        "Documentation headers present in both files",
-                        "All functions have docstrings",
-                        "Flake8 returns no warnings on either file"
-                    ]
+                    "type": "text",
+                    "body": "<ul><li>A working <code>handle_hazard(hazards)</code> that returns <code>True</code> or <code>False</code></li><li>Random hazard selection using <code>random.choice()</code></li><li>Correct lowercase dictionary keys: <code>'heads'</code> and <code>'tails'</code></li><li>DEBUG test lines deleted</li></ul>"
                 }
-            ]
+            ],
+            "subtitle": "Create a function that picks a random hazard and determines the outcome with a coin flip."
+        },
+        {
+            "number": 4,
+            "title": "D20 Travel System",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "A <code>travel_to()</code> function where you roll a D20 each turn, travel roll × 10 miles, and have a 30% chance of encountering a hazard. The journey continues until you've covered the full distance to the destination."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Define <code>travel_to(destination, distance, hazards)</code>.",
+                        "Initialize: <code>remaining = distance</code>, <code>miles_traveled = 0</code>, <code>hazards_faced = 0</code>, <code>hazards_escaped = 0</code>.",
+                        "Create the travel loop: <code>while remaining > 0:</code>.",
+                        "Roll the D20: <code>roll = function_library.roll_d20()</code>.",
+                        "Calculate miles this turn: <code>miles = roll * 10</code>.",
+                        "Cap miles if it would overshoot the destination: <code>if miles > remaining: miles = remaining</code>.",
+                        "Update accumulators: add <code>miles</code> to <code>miles_traveled</code>, subtract from <code>remaining</code>.",
+                        "Print progress: show the roll, miles gained this turn, and remaining distance.",
+                        "Check for a hazard only if <code>remaining > 0</code>: use <code>function_library.check_percentage(30)</code>.",
+                        "If a hazard triggers: call <code>handle_hazard(hazards)</code>, increment <code>hazards_faced</code>, and increment <code>hazards_escaped</code> if it returned <code>True</code>.",
+                        "After the loop, return the tuple: <code>(miles_traveled, hazards_faced, hazards_escaped)</code>."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "tip",
+                    "title": "No Hazards on the Last Turn",
+                    "body": "Only check for hazards when <code>remaining > 0</code>. You don't want a hazard to fire on the turn you've already arrived at your destination."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Update <code>main()</code> to use the new system:</strong>"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Load hazards alongside city data at the start of <code>main()</code>.",
+                        "Remove the old coin flip destination gate (the D20 travel system replaces it).",
+                        "Call <code>travel_to()</code> after the player chooses a destination, passing destination name, distance, and hazards list.",
+                        "Unpack the returned tuple and add to running totals: <code>miles, faced, escaped = travel_to(...)</code>.",
+                        "Update the final report to display total hazards faced and escaped."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "Play through the complete game and verify: D20 rolls determine progress (roll × 10 miles), hazards appear randomly on about 30% of turns, hazard outcomes depend on the coin flip, the final report shows hazards escaped vs. faced, and total miles matches the sum of all journeys."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": [
+                        "Common Mistake",
+                        "Why It Fails"
+                    ],
+                    "rows": [
+                        [
+                            "Using <code>check_percentage(0.3)</code>",
+                            "The function expects a whole number: <code>check_percentage(30)</code>."
+                        ],
+                        [
+                            "D20 range wrong: <code>randint(0, 20)</code>",
+                            "A D20 rolls 1–20, not 0–20. Use the library function to be safe."
+                        ],
+                        [
+                            "Forgetting to return the tuple",
+                            "The caller needs <code>(miles, faced, escaped)</code> to update the final report."
+                        ]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "text",
+                    "body": "<ul><li><code>travel_to()</code> with D20-based progression and a 30% hazard chance per turn</li><li>Returns a tuple of <code>(miles_traveled, hazards_faced, hazards_escaped)</code></li><li>Updated <code>main()</code> that integrates all new features</li><li>Final report includes hazard statistics</li></ul>"
+                }
+            ],
+            "subtitle": "Replace instant travel with dice-roll-based progression and random hazard encounters."
         }
     ],
     "finalChecklist": {
         "beforeYouSubmit": [
-            "function_library.py contains clean_input() and clean_input_lower() with docstrings",
-            "get_yes_no() uses .strip().upper() with no OR chains comparing both 'y' and 'Y'",
-            "Every player input in lab-4-2.py uses .strip() at minimum before comparison",
-            "Player name uses .strip() only, not converted to uppercase",
-            "All if/elif and while conditions compare against uppercase literals only",
-            "Top-of-file documentation header in both files: Name, abc123, Section, Description",
-            "All functions in both files have docstrings"
+            "File is named exactly <code>lab-4-2.py</code>",
+            "Docstring updated with name, abc123, section, and description for Lab 4.2",
+            "All yes/no inputs use <code>.strip().upper()</code> with no remaining <code>or</code> patterns",
+            "<code>load_hazards()</code> returns a list of dictionaries with <code>'name'</code>, <code>'heads'</code>, and <code>'tails'</code> keys",
+            "<code>travel_to()</code> uses D20 rolls and a 30% hazard chance per turn",
+            "Final report includes total hazards faced and escaped",
+            "All DEBUG/test code has been removed"
         ],
-        "scopeReminder": "You may use .upper(), .lower(), .strip(), .lstrip(), .rstrip(), .isdigit(), .isalpha(), method chaining, and all dictionary techniques from Chapter 9 that you used in 4.1. Do NOT use list comprehensions, try/except blocks, classes, or inheritance.",
+        "scopeReminder": "Chapters 2–9 only. String methods .strip(), .upper(), and .lower() are the Chapter 8 additions this week. Sets are saved for Module 4.3. CodeGrade will flag code using techniques from later chapters.",
         "permittedTechniques": {
-            "chapters": "2–9 (all techniques from Chapters 2–8 fully permitted; Chapter 9 dictionaries as introduced in 4.1)",
+            "chapters": "2–9 (all prior techniques permitted; this week adds .strip(), .upper(), .lower(), and method chaining from Chapter 8, and list of dictionaries with random.choice() from Chapter 9)",
             "specific": [
-                "String normalization: .upper(), .lower(), .strip(), .lstrip(), .rstrip()",
-                "String testing: .isdigit(), .isalpha(), .isalnum()",
-                "Method chaining: input(prompt).strip().upper()",
-                "Dictionary access and methods from 4.1: key access, .get(), .keys(), .values(), .items()"
+                "String methods: <code>.strip()</code>, <code>.upper()</code>, <code>.lower()</code>, <code>.split(',')</code>",
+                "Method chaining: <code>input(...).strip().upper()</code>",
+                "List of dictionaries: <code>[{'name': ..., 'heads': ..., 'tails': ...}, ...]</code>",
+                "<code>random.choice(list)</code> to pick a random item",
+                "Returning tuples from functions"
             ],
-            "notPermitted": "list comprehensions, try/except, sets (coming in 4.3), classes, inheritance"
+            "notPermitted": "Sets (Module 4.3), list comprehensions, try/except, classes, inheritance"
         },
         "warnings": [
-            "Do not use try/except for input validation in this lab. That pattern is out of scope. Use while loops and the string testing methods from Chapter 8.",
-            "CodeGrade imports function_library.py directly. A syntax error in your library file will cause all library tests to fail, even if your game runs fine."
+            "Do not use sets yet — those are the Module 4.3 reveal. CodeGrade's scope check will flag premature use."
         ],
-        "saveYourCode": "Keep both files. Module 4.3 adds a sets-based unique city tracker and a trivia gate. both build on the cleaned-up input handling you just wrote."
+        "saveYourCode": "Keep <code>lab-4-2.py</code> — Module 4.3 adds sets and a visited-cities tracker directly on top of this foundation. You will copy this file and build on it."
     },
     "needHelp": {
-        "chapterResource": "Chapter 8 (More About Strings) in Gaddis covers string methods starting in Section 8.3. The methods reference table at the end of your Chapter 8 BookEx is a quick lookup for .upper(), .lower(), .strip(), and related methods.",
-        "zoomLink": "https://utsa.zoom.us/j/97617245124",
-        "calendlyLink": "https://calendly.com/john-newsom-utsa/student-meeting",
-        "discordNote": "Post your question in the course Discord. Include which checkpoint you are on and what behavior you expected versus what actually happened."
+        "ifYouGetStuck": [
+            "Review the Chapter 8 string methods table in your textbook — .strip(), .upper(), and .lower() are all covered with examples",
+            "Test functions in isolation: get <code>load_hazards()</code> working before writing <code>handle_hazard()</code>, and get <code>handle_hazard()</code> working before integrating <code>travel_to()</code>",
+            "Check your method chaining order — <code>.strip().upper()</code>, not <code>.strip.upper()</code> (missing parentheses is a common error)",
+            "Add DEBUG print statements to see what's happening inside <code>travel_to()</code> — print the roll, miles, and remaining each turn",
+            "Submit to CodeGrade early — it shows exactly which tests pass or fail"
+        ]
     }
 }
