@@ -70,14 +70,35 @@
 <div class="lc-card lc-card--orange">
   <div class="lc-topper">
     <div class="lc-topper-title">Time Guide</div>
-    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; </div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 90–120 Minutes</div>
   </div>
   <div class="lc-panel">
     <div class="lc-table-wrap">
       <table class="lc-table">
         <thead><tr><th>Checkpoint</th><th>Time</th><th>Task</th></tr></thead>
         <tbody>
-              </tbody>
+            <tr>
+        <td><strong>CP1: Load City Distances</strong></td>
+        <td>25–30 min</td>
+        <td>Parse file into nested dictionary</td>
+      </tr>
+      <tr>
+        <td><strong>CP2: Load City Info</strong></td>
+        <td>20–25 min</td>
+        <td>Parse file into dictionary with nested data</td>
+      </tr>
+      <tr>
+        <td><strong>CP3: Data-Driven Display</strong></td>
+        <td>20–25 min</td>
+        <td>Display destinations from dictionary</td>
+      </tr>
+      <tr>
+        <td><strong>CP4: Complete Game Loop</strong></td>
+        <td>25–30 min</td>
+        <td>Integrate all functions, clean input</td>
+      </tr>
+      <tr class="lc-table__total"><td colspan="2"><strong>Total Estimated Time</strong></td><td><strong>90–120 Minutes</strong></td></tr>
+        </tbody>
       </table>
     </div>
     <div class="lc-callout lc-callout--tip">
@@ -93,6 +114,38 @@
   </div>
   <div class="lc-panel">
     <p class="lc-arch-intro">Here's how your finished program fits together. The [NEW] tags show what you're adding. [REPLACED] tags show what changes from your 3.3 code.</p>
+    <div class="lc-arch">
+      <pre># ---- DATA LOADING FUNCTIONS ----  [NEW]
+load_city_distances()   reads city_distances.txt → nested dict
+load_city_info()        reads city_info.txt → dict of dicts
+
+# ---- NAVIGATION FUNCTIONS ----  [NEW]
+display_destinations(city, distances)      shows menu from dict
+get_destination_by_number(city, distances) validates user pick
+
+# ---- MAIN PROGRAM ----
+Load data files into dictionaries  [NEW]
+Get player name
+current_city = 'San Antonio'
+
+GAME LOOP (each pass is one leg):
+│
+│── Display city info from city_info dict  [REPLACED] was hardcoded
+│── Show destinations from distances dict  [REPLACED] was if/elif menu
+│── Destination Gate (coin flip)
+│
+│   TRAVEL LOOP (each pass is one turn):
+│   │── Fixed 50-mile travel, check for hazard
+│   │── Repeat until you arrive
+│
+│── Update trip totals
+│── Check outcome: beach / dead end / continue
+│── Save and quit option
+
+# ---- AFTER THE LOOP ----
+Print trip summary
+"Thanks for playing!"</pre>
+    </div>
   </div>
 </div>
 <div class="lc-card lc-card--green">
@@ -103,9 +156,10 @@
   <div class="lc-panel">
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">1</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Load City Distances</div><div class="lc-sub-banner"></div></div>
+      <div class="lc-cp-content"><div class="lc-cp-title">Load City Distances</div>
+          <div class="lc-sub-banner">Parse the city_distances.txt file and build a nested dictionary structure.</div>
+      </div>
     </div>
-    <div class="lc-sub-banner">Parse the city_distances.txt file and build a nested dictionary structure.</div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
     <p>A function that reads <code>city_distances.txt</code> and creates a nested dictionary where you can look up distances like <code>distances['San Antonio']['Houston']</code> → <code>200</code>.</p>
@@ -185,9 +239,10 @@ Houston destinations: {'Galveston': 50, 'Dallas': 240, 'San Antonio': 200}</pre>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">2</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Load City Info</div><div class="lc-sub-banner"></div></div>
+      <div class="lc-cp-content"><div class="lc-cp-title">Load City Info</div>
+          <div class="lc-sub-banner">Parse the city_info.txt file and build a dictionary with nested city data.</div>
+      </div>
     </div>
-    <div class="lc-sub-banner">Parse the city_info.txt file and build a dictionary with nested city data.</div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
     <p>A function that reads <code>city_info.txt</code> and creates a dictionary where each city maps to <em>another dictionary</em> containing its type and tagline. Like this: <code>city_info['Houston']['tagline']</code> → <code>'Space City'</code>.</p>
@@ -253,9 +308,10 @@ Corpus Christi type: WIN</pre>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">3</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Data-Driven Display</div><div class="lc-sub-banner"></div></div>
+      <div class="lc-cp-content"><div class="lc-cp-title">Data-Driven Display</div>
+          <div class="lc-sub-banner">Create helper functions that use dictionaries to display destinations and look up information.</div>
+      </div>
     </div>
-    <div class="lc-sub-banner">Create helper functions that use dictionaries to display destinations and look up information.</div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
     <p>Functions that display available destinations from a city and help with navigation — all driven by your dictionaries, not hardcoded values.</p>
@@ -329,9 +385,10 @@ Laredo is dead end? True</pre>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">4</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Complete Game Loop</div><div class="lc-sub-banner"></div></div>
+      <div class="lc-cp-content"><div class="lc-cp-title">Complete Game Loop</div>
+          <div class="lc-sub-banner">Wire everything together into a complete road trip game with the main() function.</div>
+      </div>
     </div>
-    <div class="lc-sub-banner">Wire everything together into a complete road trip game with the main() function.</div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
     <p>A complete game that loads data, gets the player's name, displays current city info, lets the player choose destinations, uses a coin flip gate, and tracks the route until they reach the beach or a dead end.</p>
