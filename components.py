@@ -173,10 +173,11 @@ def topper_with_badge(badge_word: str, badge_num: str,
                       title: str, sub_banner: str = "") -> str:
     """Render a card topper with a lab/bookex badge + title side by side."""
     sub_row = (
-        f'\n    <tr><td colspan="3" style="padding: 10px 0 0 0;">'
+        f'\n    <tr><td colspan="2" style="padding: 10px 0 0 0;">'
         f'<div class="lc-sub-banner">{sub_banner}</div></td></tr>'
     ) if sub_banner else ""
     return f"""  <div class="lc-topper">
+    <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="float: right; height: 110px; margin: 0 0 8px 16px;">
     <table style="width: 100%; border-collapse: collapse;">
       <tr>
         <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0;">
@@ -188,11 +189,9 @@ def topper_with_badge(badge_word: str, badge_num: str,
         <td style="vertical-align: bottom; padding: 0 0 0 16px;">
           <div class="lc-topper-title">{title}</div>
         </td>
-        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">
-          <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: var(--badge-height); width: auto; display: block;">
-        </td>
       </tr>{sub_row}
     </table>
+    <div style="clear: both;"></div>
   </div>
 """
 
