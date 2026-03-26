@@ -244,7 +244,9 @@ def render_instructions(item: dict) -> str:
     items_html = ""
     for step in item.get("items", []):
         items_html += f"      <li>{step}</li>\n"
-    return f"""    <ol>
+    start = item.get("start", 1)
+    start_attr = f' start="{start}"' if start != 1 else ""
+    return f"""    <ol{start_attr}>
 {items_html}    </ol>
 """
 
@@ -808,7 +810,7 @@ def render_final_checklist(checklist: dict) -> str:
       </div>
       <div class="lc-callout__bubble">
         <div class="lc-callout__body">
-          <p>{html_lib.escape(w)}</p>
+          <p>{w}</p>
         </div>
       </div>
     </div>
