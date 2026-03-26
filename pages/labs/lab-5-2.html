@@ -3,91 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Game Class</title>
+    <title>The Game Class — IS2053</title>
     <link rel="stylesheet" href="../../labs.css">
 </head>
 <body>
 <div class="lc-wrapper">
 <div class="lc-card lc-card--blue">
   <div class="lc-topper">
-    <div class="lc-card-header">
-      <div class="lc-lab-badge"><div class="lc-lab-badge__word">LAB</div><div class="lc-lab-badge__num">5.2</div></div>
-      <div class="lc-topper-title">The Game Class</div>
-    </div>
-    <div class="lc-sub-banner">MODULE 5 &bull; WEEK 2 &bull; ENHANCE &bull; CHAPTERS 10: MULTIPLE CLASSES, OBJECT INTERACTION, ENCAPSULATED STATE</div>
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0;">
+          <div class="lc-lab-badge">
+            <div class="lc-lab-badge__word">LAB</div>
+            <div class="lc-lab-badge__num">5.2</div>
+          </div>
+        </td>
+        <td style="vertical-align: bottom; padding: 0 0 0 16px;">
+          <div class="lc-topper-title">The Game Class</div>
+        </td>
+        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">
+          <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: 120px; width: auto; display: block;">
+        </td>
+      </tr>
+    <tr><td colspan="3" style="padding: 10px 0 0 0;"><div class="lc-sub-banner">MODULE 5 &bull; WEEK 2 &bull; ENHANCE &bull; CHAPTERS 10: MULTIPLE CLASSES</div></td></tr>
+    </table>
   </div>
   <div class="lc-panel">
     <div class="lc-h3 lc-h3--yellow">Overview</div>
     <img src="../../branding/AllMyEggses3D-Full.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
-    <p>One class is a container. Multiple classes working together is architecture. This week you add two more pieces to your program. First, the <code>Player</code> class: an object that knows where the player is, how far they have traveled, and what cities they have visited. Second, a <code>Game</code> class skeleton that holds the cities dictionary and the player, and can start a new game. You will wire them together in <code>journey_test.py</code>, which simulates a simple trip without a full game loop. Next week you complete the Game class and add inheritance. This week is about getting the objects talking to each other.</p>
+    <p>Last week, you created a City class that knows its own name, connections, and type. But a road trip needs a <em>traveler</em>. This week, you'll create a <strong>Game class</strong> that tracks the journey — current location, total miles, cities visited. Then you'll make City and Game objects <strong>work together</strong>. The City displays destinations; the Game tracks your journey. Two classes, one program.</p>
     <div style="clear: both;"></div>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
-        <div class="lc-mentor__avatar"><img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh"></div>
-        <div class="lc-mentor__bubble"><div class="lc-mentor__quote">When classes work together, each one should do its own job and nothing else. The Player tracks the player. The City knows about the city. The Game coordinates between them. If you find yourself putting travel logic in the City class or city setup logic in the Player class, something is off.</div></div>
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"In Module 4, you had <code>current_city</code> and <code>total_miles</code> as loose variables floating around. Now the Game object <em>owns</em> that state. Ask where you are: <code>game.get_current_city()</code>. Move forward: <code>game.travel_to(...)</code>. The object manages itself."</div>
+        </div>
       </div>
-      <div class="lc-mentor__attribution"><div class="lc-mentor__name">Danny Cavanaugh</div><div class="lc-mentor__role">Senior Developer, Bat City Collective</div></div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Lead Developer, Bat City Collective</div>
+      </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Filename</div>
-    <p>Submit player.py, city.py, game.py, and journey_test.py this week.</p>
+    <p>This week you'll work with FOUR files: <code>city.py</code> (your City class from Lab 5.1), <code>game.py</code> (the new Game class you'll build), <code>function_library.py</code> (your utility functions from previous labs), and <code>lab-5-2.py</code> (the game that uses all three modules together).</p>
+    <p>CodeGrade tests that <code>lab-5-2.py</code> can import all three modules. Missing any file will cause import failures.</p>
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <ul class="lc-objectives">
-      <li>Define a Player class that tracks name, location, miles, turns, and visited cities</li>
-      <li>Write Player methods for travel, stats accumulation, and route display</li>
-      <li>Define a Game class skeleton with city setup and player initialization</li>
-      <li>Create Player and City objects that interact through method calls</li>
-      <li>Test multi-class interaction in journey_test.py</li>
+      <li>A <code>Game</code> class with <code>__init__</code>, getters, <code>travel_to()</code>, and <code>__str__</code></li>
+      <li><strong>Private attributes</strong> for name, current city, total miles, and cities visited</li>
+      <li>A <strong>game loop</strong> where City objects show destinations and Game objects track movement</li>
+      <li>A <strong>win condition</strong> when the player reaches a WIN city</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
-    <p>Chapter 10: Program 10-9 (bankaccount2.py, methods that modify object state) and Program 10-10 (account_test2.py, creating objects and calling methods in sequence). The Player class follows the same accumulator pattern as BankAccount.</p>
+    <p><strong>Chapter 10 Sections:</strong> 10.2 (Classes), 10.3 (Working with Instances), 10.4 (Techniques for Designing Classes)</p>
     <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
-    <p>Starting Out with Python, 6th Edition by Tony Gaddis, Chapter 10</p>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 10: Classes and Object-Oriented Programming</p>
     <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
     <ul>
-      <li>player.py defines the Player class with __init__, getter methods, travel_to(), add_turn(), add_miles(), and __str__</li>
-      <li>game.py defines the Game class with __init__ that sets up cities and __setup_cities() private method</li>
-      <li>journey_test.py creates a Game object and a Player object and simulates at least 3 travel steps</li>
-      <li>All files have documentation headers and all methods have docstrings</li>
+      <li><code>game.py</code> <strong>MUST</strong> define a class named <code>Game</code></li>
+      <li><code>Game</code> <strong>MUST</strong> use private attributes with double underscore prefix</li>
+      <li><code>Game</code> <strong>MUST</strong> have a <code>travel_to(city_name, distance)</code> method</li>
+      <li><code>Game</code> <strong>MUST</strong> track cities visited in a list</li>
+      <li><code>lab-5-2.py</code> <strong>MUST</strong> import City, Game, and <code>get_valid_int</code></li>
+      <li><code>lab-5-2.py</code> <strong>MUST</strong> have a game loop that ends when the player reaches a WIN city</li>
     </ul>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="lc-callout__bubble"><div class="lc-callout__title">Save Your Code</div><div class="lc-callout__body"><p>Keep all four files. Module 5.3 completes game.py with the full game loop and adds WinCity and DeadEndCity subclasses to city.py.</p></div></div>
-    </div>
   </div>
 </div>
 <div class="lc-card lc-card--orange">
+
   <div class="lc-topper">
     <div class="lc-topper-title">Time Guide</div>
-    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 60–75 Minutes</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 90–120 Minutes</div>
   </div>
+
   <div class="lc-panel">
+
     <div class="lc-table-wrap">
       <table class="lc-table">
-        <thead><tr><th>Checkpoint</th><th>Time</th><th>Task</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Time</th>
+            <th>Task</th>
+          </tr>
+        </thead>
         <tbody>
-            <tr>
-        <td><strong>CP1: Player Class</strong></td>
+      <tr>
+        <td><strong>Checkpoint 1</strong></td>
         <td>20 min</td>
-        <td>Define Player with __init__, getters, travel_to(), add_turn(), __str__</td>
+        <td>Create game.py with &lt;code&gt;__init__&lt;/code&gt; and getters</td>
       </tr>
       <tr>
-        <td><strong>CP2: Game Class Skeleton</strong></td>
+        <td><strong>Checkpoint 2</strong></td>
         <td>20 min</td>
-        <td>Define Game with __init__ and __setup_cities() (cities dict, no player yet)</td>
+        <td>Add &lt;code&gt;travel_to()&lt;/code&gt;, &lt;code&gt;display_stats()&lt;/code&gt;, &lt;code&gt;__str__&lt;/code&gt;</td>
       </tr>
       <tr>
-        <td><strong>CP3: Wire It Together</strong></td>
+        <td><strong>Checkpoint 3</strong></td>
+        <td>25 min</td>
+        <td>Build city network in &lt;code&gt;lab-5-2.py&lt;/code&gt;</td>
+      </tr>
+      <tr>
+        <td><strong>Checkpoint 4</strong></td>
+        <td>25 min</td>
+        <td>Complete game loop with win/dead-end logic</td>
+      </tr>
+      <tr>
+        <td><strong>Submit</strong></td>
         <td>10 min</td>
-        <td>Add player to Game, write start_new_game() and get_current_city()</td>
+        <td>Final check and CodeGrade submission</td>
       </tr>
-      <tr>
-        <td><strong>CP4: Write journey_test.py</strong></td>
-        <td>15 min</td>
-        <td>Create Game, simulate travel, verify Player stats</td>
+      <tr class="lc-table__total">
+        <td colspan="2"><strong>Total Estimated Time</strong></td>
+        <td><strong>90–120 Minutes</strong></td>
       </tr>
-      <tr class="lc-table__total"><td colspan="2"><strong>Total Estimated Time</strong></td><td><strong>60–75 Minutes</strong></td></tr>
         </tbody>
       </table>
+    </div>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
+                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="19" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Strategy</div>
+        <div class="lc-callout__body">
+          <p>Build the Game class first and test it standalone before trying to integrate with City. Get one class working perfectly, then connect them. Debugging two broken classes at once is a nightmare!</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -97,57 +149,45 @@
     <div class="lc-sub-banner">Program Architecture</div>
   </div>
   <div class="lc-panel">
-    <p class="lc-arch-intro">Here is how your finished files fit together. The [NEW] tags show what you are adding this week. city.py carries forward unchanged from 5.1.</p>
+    <p class="lc-arch-intro">game.py contains nothing but the Game class definition. lab-5-2.py imports City, Game, and get_valid_int, then runs the complete game. Build and test each checkpoint before moving to the next.</p>
     <div class="lc-arch">
-      <pre><span class="sy-cm"># ---- city.py (UNCHANGED from 5.1) ----</span>
-<span class="sy-kw">class</span> City<span class="sy-op">:</span>  <span class="sy-op">.</span><span class="sy-op">.</span><span class="sy-op">.</span>all methods <span class="sy-kw">as</span> built<span class="sy-op">.</span><span class="sy-op">.</span><span class="sy-op">.</span>
+      <pre># ---- game.py ----
+class Game:
 
-<span class="sy-cm"># ---- player.py [NEW] ----</span>
-<span class="sy-kw">class</span> Player<span class="sy-op">:</span>
-│
-│── __init__<span class="sy-op">(</span>name<span class="sy-op">,</span> starting_city<span class="sy-op">=</span><span class="sy-str">'San Antonio'</span><span class="sy-op">)</span>
-│   self<span class="sy-op">.</span>__name           string
-│   self<span class="sy-op">.</span>__current_city   string
-│   self<span class="sy-op">.</span>__total_miles    <span class="sy-bi">int</span> <span class="sy-op">(</span>starts <span class="sy-num">0</span><span class="sy-op">)</span>
-│   self<span class="sy-op">.</span>__total_turns    <span class="sy-bi">int</span> <span class="sy-op">(</span>starts <span class="sy-num">0</span><span class="sy-op">)</span>
-│   self<span class="sy-op">.</span>__visited_cities <span class="sy-bi">list</span> <span class="sy-op">(</span>starts <span class="sy-kw">with</span> starting_city<span class="sy-op">)</span>
-│   self<span class="sy-op">.</span>__unique_cities  <span class="sy-bi">set</span>  <span class="sy-op">(</span>starts <span class="sy-kw">with</span> starting_city<span class="sy-op">)</span>
-│
-│── GETTERS
-│   get_name<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">,</span> get_current_city<span class="sy-op">(</span><span class="sy-op">)</span>
-│   get_total_miles<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">,</span> get_total_turns<span class="sy-op">(</span><span class="sy-op">)</span>
-│   get_visited_cities<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">,</span> get_unique_count<span class="sy-op">(</span><span class="sy-op">)</span>
-│
-│── TRAVEL METHODS
-│   travel_to<span class="sy-op">(</span>city_name<span class="sy-op">,</span> distance<span class="sy-op">)</span>   updates city<span class="sy-op">,</span> miles<span class="sy-op">,</span> lists<span class="sy-op">/</span><span class="sy-bi">set</span>
-│   add_turn<span class="sy-op">(</span><span class="sy-op">)</span>                       increments __total_turns
-│   add_miles<span class="sy-op">(</span>miles<span class="sy-op">)</span>                 adds to __total_miles
-│
-│── DISPLAY
-│   get_route_string<span class="sy-op">(</span><span class="sy-op">)</span>   <span class="sy-str">' -&gt; '</span><span class="sy-op">.</span>join<span class="sy-op">(</span>visited_cities<span class="sy-op">)</span>
-│   __str__              <span class="sy-str">'Name at City (X mi)'</span>
+    # --- Constructor ---
+    <span class="lc-arch-fn">__init__(self, name, starting_city)</span>       stores 4 private attributes
+        self.__name            = name
+        self.__current_city    = starting_city
+        self.__total_miles     = 0
+        self.__cities_visited  = [starting_city]   start with starting city!
 
-<span class="sy-cm"># ---- game.py [NEW] ----</span>
-<span class="sy-kw">class</span> Game<span class="sy-op">:</span>
-│
-│── __init__<span class="sy-op">(</span><span class="sy-op">)</span>
-│   self<span class="sy-op">.</span>__cities <span class="sy-op">=</span> <span class="sy-op">{</span><span class="sy-op">}</span>     <span class="sy-bi">dict</span> of name <span class="sy-op">-</span><span class="sy-op">&gt;</span> City objects
-│   self<span class="sy-op">.</span>__player <span class="sy-op">=</span> <span class="sy-kw">None</span>   <span class="sy-bi">set</span> later <span class="sy-kw">in</span> start_new_game<span class="sy-op">(</span><span class="sy-op">)</span>
-│   self<span class="sy-op">.</span>__setup_cities<span class="sy-op">(</span><span class="sy-op">)</span>  called <span class="sy-kw">in</span> __init__
-│
-│── __setup_cities<span class="sy-op">(</span><span class="sy-op">)</span>   <span class="sy-op">[</span>private<span class="sy-op">]</span> creates City objects<span class="sy-op">,</span> adds connections
-│── start_new_game<span class="sy-op">(</span><span class="sy-op">)</span>   gets player name<span class="sy-op">,</span> creates Player <span class="sy-bi">object</span>
-│── get_current_city<span class="sy-op">(</span><span class="sy-op">)</span> returns City <span class="sy-bi">object</span> <span class="sy-kw">for</span> player<span class="sy-str">'s location
+    # --- Getter Methods ---   [CP1]
+    <span class="lc-arch-fn">get_name(self)</span>                returns self.__name
+    <span class="lc-arch-fn">get_current_city(self)</span>        returns self.__current_city
+    <span class="lc-arch-fn">get_total_miles(self)</span>         returns self.__total_miles
+    <span class="lc-arch-fn">get_cities_visited(self)</span>      returns <span class="lc-arch-fn">self.__cities_visited.copy()</span>
 
-# ---- journey_test.py [NEW] ----
+    # --- Travel Methods ---   [CP2]
+    <span class="lc-arch-fn">travel_to(self, city_name, distance)</span>      updates city, miles, visited list
+
+    # --- Display Methods ---   [CP2]
+    <span class="lc-arch-fn">display_stats(self)</span>           prints team, city, miles, cities count
+    <span class="lc-arch-fn">__str__(self)</span>                 returns &#x27;Maria in San Antonio&#x27;
+
+
+# ---- lab-5-2.py ----
+from city import City
 from game import Game
-main():
-│── Create Game object (cities set up automatically)
-│── Call start_new_game() to create Player
-│── Simulate 3+ moves: call game.get_current_city(),
-│   pick a destination, call player.travel_to()
-│── Print player __str__ after each move
-│── Print final route and stats</span></pre>
+from function_library import get_valid_int
+
+<span class="lc-arch-fn">create_cities()</span>    returns dict of connected City objects   [CP3]
+<span class="lc-arch-fn">main()</span>             title banner, city network, game loop    [CP4]
+    while playing:
+        current_city = cities[<span class="lc-arch-fn">game.get_current_city()</span>]
+        check win / dead-end / show destinations
+        <span class="lc-arch-fn">game.travel_to(city_name, distance)</span>
+
+if __name__ == &#x27;__main__&#x27;: -&gt; <span class="lc-arch-fn">main()</span></pre>
     </div>
   </div>
 </div>
@@ -158,247 +198,690 @@ main():
   </div>
   <div class="lc-panel">
     <div class="lc-cp-row">
-      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">1</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Write the Player Class</div>
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">1</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Game Class Foundation</div>
+        <div class="lc-sub-banner">Create game.py with the Game class, &lt;code&gt;__init__&lt;/code&gt; constructor, and getter methods.</div>
       </div>
     </div>
     <div class="lc-cp-body">
-    <div class="lc-h3">What You're Building</div>
-    <p>Create <code>player.py</code>. The Player class tracks everything about the player's journey: where they are, how far they have gone, how many turns have elapsed, and where they have been. All of this used to be scattered as global variables in your game loop. Now it lives in one object.</p>
-    <div class="lc-h3">Step-by-Step Instructions</div>
-    <ol>
-      <li>Add a documentation header. Define <code>class Player:</code> with a class docstring.</li>
-      <li>Write <code>__init__(self, name, starting_city='San Antonio')</code>. Initialize private attributes: <code>self.__name</code>, <code>self.__current_city</code> (set to <code>starting_city</code>), <code>self.__total_miles = 0</code>, <code>self.__total_turns = 0</code>. Also initialize <code>self.__visited_cities = [starting_city]</code> (a list, preserves duplicates) and <code>self.__unique_cities = set()</code> then immediately <code>self.__unique_cities.add(starting_city)</code>.</li>
-      <li>Write getter methods: <code>get_name()</code>, <code>get_current_city()</code>, <code>get_total_miles()</code>, <code>get_total_turns()</code>, <code>get_visited_cities()</code> (return a copy with <code>.copy()</code>), and <code>get_unique_count()</code> (return <code>len(self.__unique_cities)</code>).</li>
-      <li>Write <code>travel_to(self, city_name, distance)</code>: update <code>self.__current_city</code>, add <code>distance</code> to <code>self.__total_miles</code>, append <code>city_name</code> to <code>self.__visited_cities</code>, and call <code>self.__unique_cities.add(city_name)</code>.</li>
-      <li>Write <code>add_turn(self)</code>: increment <code>self.__total_turns</code> by 1.</li>
-      <li>Write <code>add_miles(self, miles)</code>: add <code>miles</code> to <code>self.__total_miles</code>.</li>
-      <li>Write <code>get_route_string(self)</code>: return <code>' -> '.join(self.__visited_cities)</code>.</li>
-      <li>Write <code>__str__(self)</code>: return <code>f'{self.__name} at {self.__current_city} ({self.__total_miles} mi)'</code>.</li>
-    </ol>
-    <div class="lc-h3">BookEx Patterns</div>
-    <div class="lc-callout lc-callout--bookex">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/></svg></div>
-      <div class="lc-callout__bubble"><div class="lc-callout__title">BookEx Patterns</div><div class="lc-callout__body"><ul>
-          <li><strong>Program 10-9</strong> — <code>bankaccount2.py</code> — The deposit() method adds to __balance using +=. travel_to() does the same thing: it updates __total_miles and __current_city just like deposit() updates __balance. The pattern is identical.</li>
-          </ul></div></div>
-    </div>
-    <div class="lc-h3">What You Should Have</div>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">CP1 Complete</div>
-        <div class="lc-callout__body">
-        <ul>
-          <li>player.py exists with Player class, docstrings on all methods</li>
-          <li>travel_to() updates current_city, total_miles, visited_cities list, and unique_cities set</li>
-          <li>get_visited_cities() returns a copy, not the original list</li>
-          <li>__str__ returns 'Name at City (X mi)' format</li>
-        </ul>
-        </div>
-      </div>
-    </div>
-    </div>
-    <hr class="lc-cp-sep">
-    <div class="lc-cp-row">
-      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">2</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Write the Game Class Skeleton</div>
-      </div>
-    </div>
-    <div class="lc-cp-body">
-    <div class="lc-h3">What You're Building</div>
-    <p>Create <code>game.py</code>. The Game class is the orchestrator. It holds all the City objects and the Player, and it will eventually run the full game loop. This week you build the foundation: city setup and the ability to start a new game. The game loop itself comes in 5.3.</p>
-    <div class="lc-h3">Step-by-Step Instructions</div>
-    <ol>
-      <li>Add imports at the top: <code>import random</code>, <code>import function_library</code>, <code>from city import City</code>, <code>from player import Player</code>.</li>
-      <li>Define <code>class Game:</code> with a class docstring. Write <code>__init__(self)</code>: initialize <code>self.__cities = {}</code>, <code>self.__player = None</code>, then call <code>self.__setup_cities()</code>.</li>
-      <li>Write <code>__setup_cities(self)</code> as a private method (double underscore). Inside, create City objects for at least 5 cities: San Antonio (START), Houston (GATEWAY), Austin (CORRIDOR), Corpus Christi (WIN), and Laredo (DEAD_END). Use the taglines from your Module 4 game.</li>
-      <li>After creating the City objects, add connections between them using <code>city_object.add_connection(name, distance)</code>. Use the same distances from your Module 4 game. Add at least 3 trivia questions to San Antonio and Houston using <code>city_object.add_trivia(question, answer)</code>.</li>
-      <li>Store each city in <code>self.__cities</code> with the city name as the key: <code>self.__cities['San Antonio'] = san_antonio</code>.</li>
-    </ol>
-    <div class="lc-callout lc-callout--tip">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22 C21 20 24 17 24 13 C24 8 20 4 15 4 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><circle cx="15" cy="19" r="1.5" fill="#000"/></svg></div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Private Methods Use Double Underscore Too</div>
-        <div class="lc-callout__body">
-          <p>Just like private attributes, private methods use the double-underscore prefix: <code>def __setup_cities(self):</code>. This prevents outside code from calling setup directly. The method is called once from <code>__init__</code> and never needs to be called again.</p>
-        </div>
-      </div>
-    </div>
-    <div class="lc-h3">What You Should Have</div>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">CP2 Complete</div>
-        <div class="lc-callout__body">
-        <ul>
-          <li>game.py imports random, function_library, City, and Player</li>
-          <li>Game.__init__ initializes __cities and __player, then calls __setup_cities()</li>
-          <li>__setup_cities() creates at least 5 City objects with connections and trivia stored in __cities dict</li>
-          <li>Creating a Game object does not crash</li>
-        </ul>
-        </div>
-      </div>
-    </div>
-    </div>
-    <hr class="lc-cp-sep">
-    <div class="lc-cp-row">
-      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">3</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Wire Player into Game</div>
-      </div>
-    </div>
-    <div class="lc-cp-body">
-    <div class="lc-h3">What You're Building</div>
-    <p>Add two more methods to the Game class: <code>start_new_game()</code>, which creates the Player object, and <code>get_current_city()</code>, which returns the City object for wherever the player currently is. These are the two methods <code>journey_test.py</code> will use.</p>
-    <div class="lc-h3">Step-by-Step Instructions</div>
-    <ol>
-      <li>Write <code>start_new_game(self)</code>: get the player's name with <code>input()</code> and <code>.strip()</code>. Create <code>self.__player = Player(name, 'San Antonio')</code>. Print a welcome message.</li>
-      <li>Write <code>get_current_city(self)</code>: get the player's current city name with <code>self.__player.get_current_city()</code>, then return <code>self.__cities[city_name]</code>. This returns the actual City object, not just the name.</li>
-      <li>Write <code>get_player(self)</code>: return <code>self.__player</code>. This lets journey_test.py access the Player object to call travel methods.</li>
-    </ol>
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>A Game class that stores journey state: team name, current city, total miles traveled, and a list of all cities visited.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Professional games, apps, and systems use a "state object" that carries all the information about what's happening. Instead of scattering variables everywhere, the Game object <strong>owns its state</strong>. This pattern makes code cleaner, debugging easier, and save/load features possible.</p>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
-        <div class="lc-mentor__avatar"><img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh"></div>
-        <div class="lc-mentor__bubble"><div class="lc-mentor__quote">get_current_city() returns a City object, not a string. That is the key difference from Module 4. Instead of looking up a name in a dictionary, you are handing back something that knows what to do with itself. The Game does not have to know how to display destinations. It just asks the City to do it.</div></div>
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"When I first learned OOP, the lightbulb moment was realizing that the Game object <em>carries its own history</em>. You don't need global variables to track where you've been — the game knows. Ask it: <code>game.get_cities_visited()</code>. It remembers for you."</div>
+        </div>
       </div>
-      <div class="lc-mentor__attribution"><div class="lc-mentor__name">Danny Cavanaugh</div><div class="lc-mentor__role">Senior Developer, Bat City Collective</div></div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Tyler Nguyen</div>
+        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
+      </div>
     </div>
-    <div class="lc-h3">What You Should Have</div>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
       <div class="lc-callout__bubble">
-        <div class="lc-callout__title">CP3 Complete</div>
+        <div class="lc-callout__title">BookEx Patterns</div>
         <div class="lc-callout__body">
-        <ul>
-          <li>start_new_game() creates a Player object stored in self.__player</li>
-          <li>get_current_city() returns a City object (not a string)</li>
-          <li>get_player() returns the Player object</li>
-        </ul>
+          <ul>
+          <li>
+            <strong>Program 10-12</strong>
+            — <code>cellphone.py</code>
+            (Step 1)
+            — You already know this pattern from Lab 5.1! Game follows the exact same structure — <code>__init__</code> with private attributes, getter methods for each. The only new thing is that one attribute (<code>__cities_visited</code>) is a list instead of a simple value.
+          </li>
+          </ul>
         </div>
       </div>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Create a new file called <code>game.py</code></li>
+      <li>Add the module docstring at the top:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-str">&quot;&quot;&quot;
+game.py
+Name: Your Name
+abc123: your_abc123
+Section: 001
+Description: Game class for the Deep in the Heart road trip game.
+
+Chapter 10 Concepts:
+- Class definition
+- __init__ constructor
+- Private attributes
+- Getter methods
+- Methods that modify attributes
+- __str__ method
+&quot;&quot;&quot;</span></pre>
+    </div>
+    <ol start="3">
+      <li>Define the <code>Game</code> class with a docstring explaining the private attributes</li>
+      <li>Write <code>__init__(self, name, starting_city)</code> that initializes four private attributes: <code>self.__name = name</code>, <code>self.__current_city = starting_city</code>, <code>self.__total_miles = 0</code>, and <code>self.__cities_visited = [starting_city]</code> (start with the starting city already in the list!)</li>
+      <li>Add getter methods: <code>get_name()</code>, <code>get_current_city()</code>, <code>get_total_miles()</code></li>
+      <li>Add <code>get_cities_visited()</code> that returns a <strong>copy</strong> of the list:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">get_cities_visited</span><span class="sy-op">(</span>self<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;Return list of cities visited.&quot;&quot;&quot;</span>
+    <span class="sy-kw">return</span> self<span class="sy-op">.</span>__cities_visited<span class="sy-op">.</span>copy<span class="sy-op">(</span><span class="sy-op">)</span></pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1:</strong> Add this test code at the bottom of game.py:</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 2</span>
+game <span class="sy-op">=</span> Game<span class="sy-op">(</span><span class="sy-str">&#x27;Maria&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Testing Game getters:&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  Name: <span class="sy-op">{</span>game<span class="sy-op">.</span>get_name<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  Current City: <span class="sy-op">{</span>game<span class="sy-op">.</span>get_current_city<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  Total Miles: <span class="sy-op">{</span>game<span class="sy-op">.</span>get_total_miles<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  Cities Visited: <span class="sy-op">{</span>game<span class="sy-op">.</span>get_cities_visited<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    </div>
+    <p><strong>Step 2:</strong> Run game.py. You should see:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Testing Game getters:
+  Name: Maria
+  Current City: San Antonio
+  Total Miles: 0
+  Cities Visited: [&#x27;San Antonio&#x27;]</pre>
+    </div>
+    <p><strong>Step 3:</strong> Delete the debug code before continuing.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Mistake</th>
+        <th>Why It Matters</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>return self.__cities_visited</code></td>
+        <td>Returns the actual list — outside code could modify it!</td>
+      </tr>
+      <tr>
+        <td><code>return self.__cities_visited.copy()</code></td>
+        <td>Returns a copy — protects the private data</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>game.py</code> with module docstring</li>
+      <li><code>Game</code> class with class docstring</li>
+      <li><code>__init__</code> with 4 private attributes</li>
+      <li>Four getter methods (returning <code>.copy()</code> for the list)</li>
+    </ol>
     </div>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
-      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">4</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Write journey_test.py</div>
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Travel &amp; Display Methods</div>
+        <div class="lc-sub-banner">Add methods that modify game state and display information.</div>
       </div>
     </div>
     <div class="lc-cp-body">
-    <div class="lc-h3">What You're Building</div>
-    <p>Create <code>journey_test.py</code>. This simulates a short trip using your Game and Player classes together. There is no game loop yet. You will manually call travel steps to verify everything is wired up correctly.</p>
-    <div class="lc-h3">Step-by-Step Instructions</div>
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>The <code>travel_to()</code> method that updates game state — new city, added miles, and recorded visit. Plus display and <code>__str__</code> methods.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>Add imports: <code>from game import Game</code>.</li>
-      <li>Write <code>main()</code>. Create a <code>Game</code> object. Call <code>game.start_new_game()</code>.</li>
-      <li>Get the current city object: <code>city = game.get_current_city()</code>. Print it and call <code>city.display_destinations()</code>.</li>
-      <li>Simulate travel: call <code>game.get_player().travel_to('Houston', 200)</code>. Print the player object to verify the updated state.</li>
-      <li>Simulate two more travel steps to different cities. After each one, print the player and verify the city name and mileage update.</li>
-      <li>After all three steps, print the player's full route using <code>game.get_player().get_route_string()</code> and the unique city count using <code>game.get_player().get_unique_count()</code>.</li>
-      <li>Add the <code>if __name__ == '__main__':</code> guard and call <code>main()</code>.</li>
+      <li>Add a comment <code># --- Travel Methods ---</code></li>
+      <li>Define <code>travel_to(self, city_name, distance)</code>:</li>
     </ol>
-    <div class="lc-callout lc-callout--pitfall">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><circle cx="15" cy="22.5" r="1.5" fill="#000"/></svg></div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Hardcoded Travel in the Test Is Fine</div>
-        <div class="lc-callout__body">
-          <p>In <code>journey_test.py</code>, calling <code>game.get_player().travel_to('Houston', 200)</code> directly is correct. This is a test program. You are verifying the objects work, not simulating real gameplay. The real game loop with user input comes in 5.3.</p>
-        </div>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">travel_to</span><span class="sy-op">(</span>self<span class="sy-op">,</span> city_name<span class="sy-op">,</span> distance<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;
+    Travel to a new city.
+
+    Args:
+        city_name (str): Name of destination city
+        distance (int): Distance in miles
+    &quot;&quot;&quot;</span>
+    self<span class="sy-op">.</span>__current_city <span class="sy-op">=</span> city_name
+    self<span class="sy-op">.</span>__total_miles <span class="sy-op">=</span> self<span class="sy-op">.</span>__total_miles <span class="sy-op">+</span> distance
+    self<span class="sy-op">.</span>__cities_visited<span class="sy-op">.</span>append<span class="sy-op">(</span>city_name<span class="sy-op">)</span></pre>
+    </div>
+    <ol start="3">
+      <li>Add a comment <code># --- Display Methods ---</code></li>
+      <li>Define <code>display_stats(self)</code> that prints game statistics:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">display_stats</span><span class="sy-op">(</span>self<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;Display game statistics.&quot;&quot;&quot;</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Team: <span class="sy-op">{</span>self<span class="sy-op">.</span>__name<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Current City: <span class="sy-op">{</span>self<span class="sy-op">.</span>__current_city<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Total Miles: <span class="sy-op">{</span>self<span class="sy-op">.</span>__total_miles<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Cities Visited: <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>self<span class="sy-op">.</span>__cities_visited<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    </div>
+    <ol start="5">
+      <li>Define <code>__str__(self)</code> that returns a short string representation:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">__str__</span><span class="sy-op">(</span>self<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;Return string representation of game.&quot;&quot;&quot;</span>
+    <span class="sy-kw">return</span> f&#x27;<span class="sy-op">{</span>self<span class="sy-op">.</span>__name<span class="sy-op">}</span> in <span class="sy-op">{</span>self<span class="sy-op">.</span>__current_city<span class="sy-op">}</span>&#x27;</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1:</strong> Add this test code:</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 3</span>
+game <span class="sy-op">=</span> Game<span class="sy-op">(</span><span class="sy-str">&#x27;Maria&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Starting: <span class="sy-op">{</span>game<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span>
+
+game<span class="sy-op">.</span>travel_to<span class="sy-op">(</span><span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">,</span> <span class="sy-num">200</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;After Houston: <span class="sy-op">{</span>game<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+
+game<span class="sy-op">.</span>travel_to<span class="sy-op">(</span><span class="sy-str">&#x27;Corpus Christi&#x27;</span><span class="sy-op">,</span> <span class="sy-num">210</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;After Corpus: <span class="sy-op">{</span>game<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span>
+
+game<span class="sy-op">.</span>display_stats<span class="sy-op">(</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Route: <span class="sy-op">{</span>game<span class="sy-op">.</span>get_cities_visited<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    </div>
+    <p><strong>Step 2:</strong> Run game.py. You should see:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Starting: Maria in San Antonio
+
+After Houston: Maria in Houston
+After Corpus: Maria in Corpus Christi
+
+Team: Maria
+Current City: Corpus Christi
+Total Miles: 410
+Cities Visited: 3
+
+Route: [&#x27;San Antonio&#x27;, &#x27;Houston&#x27;, &#x27;Corpus Christi&#x27;]</pre>
+    </div>
+    <p><strong>Step 3:</strong> Delete the debug code before continuing.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Using <code>print()</code> in <code>__str__()</code></td>
+        <td><code>__str__</code> must <em>return</em> a string — don't print inside it</td>
+      </tr>
+      <tr>
+        <td>Forgetting to append to <code>__cities_visited</code></td>
+        <td><code>travel_to()</code> must update the history list</td>
+      </tr>
+      <tr>
+        <td>Returning the actual <code>__cities_visited</code> list</td>
+        <td>Return a copy with <code>list(self.__cities_visited)</code> to protect the original</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>travel_to()</code> updates city, miles, and visited list</li>
+      <li><code>display_stats()</code> prints formatted stats</li>
+      <li><code>__str__()</code> returns short string for printing</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">3</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Build the City Network</div>
+        <div class="lc-sub-banner">Create lab-5-2.py with a function that builds interconnected City objects.</div>
       </div>
     </div>
-    <div class="lc-h3">What You Should Have</div>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Lab 5.2 Complete</div>
-        <div class="lc-callout__body">
-        <ul>
-          <li>player.py, city.py, game.py, and journey_test.py all submitted to CodeGrade</li>
-          <li>journey_test.py simulates at least 3 travel steps and prints player state after each</li>
-          <li>get_route_string() shows the full path including starting city</li>
-          <li>get_unique_count() is lower than len(visited_cities) if any city was visited twice</li>
-          <li>Documentation headers and docstrings present in all files</li>
-        </ul>
-        </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>A <code>create_cities()</code> function that creates City objects, connects them with roads, and returns a dictionary for easy lookup by name.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Create <code>lab-5-2.py</code> with your standard header docstring</li>
+      <li>Add imports at the top:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">from</span> city <span class="sy-kw">import</span> City
+<span class="sy-kw">from</span> game <span class="sy-kw">import</span> Game
+<span class="sy-kw">from</span> function_library <span class="sy-kw">import</span> get_valid_int</pre>
+    </div>
+    <ol start="3">
+      <li>Define <code>create_cities()</code> that creates 4 City objects — San Antonio (START), Houston (HUB), Corpus Christi (WIN), and Laredo (DEAD_END) — adds connections between them using <code>add_connection()</code>, and returns a dictionary: <code>{'San Antonio': san_antonio, 'Houston': houston, ...}</code></li>
+      <li>Here's the city network to build:</li>
+    </ol>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Miles</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>San Antonio</td>
+        <td>Houston, Corpus Christi, Laredo</td>
+        <td>200, 150, 160</td>
+      </tr>
+      <tr>
+        <td>Houston</td>
+        <td>San Antonio, Corpus Christi</td>
+        <td>200, 210</td>
+      </tr>
+      <tr>
+        <td>Corpus Christi</td>
+        <td>San Antonio, Houston</td>
+        <td>150, 210</td>
+      </tr>
+      <tr>
+        <td>Laredo</td>
+        <td>San Antonio</td>
+        <td>160</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1:</strong> Add a temporary <code>main()</code> to test:</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">main</span><span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-cm"># DEBUG - will be replaced in Checkpoint 4</span>
+    cities <span class="sy-op">=</span> create_cities<span class="sy-op">(</span><span class="sy-op">)</span>
+
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Cities created:&#x27;</span><span class="sy-op">)</span>
+    <span class="sy-kw">for</span> name<span class="sy-op">,</span> city <span class="sy-kw">in</span> cities<span class="sy-op">.</span>items<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">:</span>
+        <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  <span class="sy-op">{</span>city<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Testing lookup and connections:&#x27;</span><span class="sy-op">)</span>
+    sa <span class="sy-op">=</span> cities<span class="sy-op">[</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">]</span>
+    sa<span class="sy-op">.</span>display_destinations<span class="sy-op">(</span><span class="sy-op">)</span>
+
+<span class="sy-kw">if</span> __name__ <span class="sy-op">==</span> <span class="sy-str">&#x27;__main__&#x27;</span><span class="sy-op">:</span>
+    main<span class="sy-op">(</span><span class="sy-op">)</span></pre>
+    </div>
+    <p><strong>Step 2:</strong> Run lab-5-2.py. You should see:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Cities created:
+  San Antonio (START)
+  Houston (HUB)
+  Corpus Christi (WIN)
+  Laredo (DEAD_END)
+
+Testing lookup and connections:
+From San Antonio, you can travel to:
+  1. Houston - 200 miles
+  2. Corpus Christi - 150 miles
+  3. Laredo - 160 miles</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Storing string names instead of City objects</td>
+        <td>Dictionary values should be the City objects themselves</td>
+      </tr>
+      <tr>
+        <td>Adding connections before creating all cities</td>
+        <td>Create ALL City objects first, THEN add connections</td>
+      </tr>
+      <tr>
+        <td>Forgetting bi-directional connections</td>
+        <td>If SA connects to Houston, Houston should connect back to SA</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>lab-5-2.py</code> imports City, Game, and <code>get_valid_int</code></li>
+      <li><code>create_cities()</code> returns a dictionary of connected City objects</li>
+      <li>Can look up any city by name: <code>cities['Houston']</code></li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">4</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Complete Game Loop</div>
+        <div class="lc-sub-banner">Build the main() function with a game loop where City and Game work together.</div>
       </div>
     </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>A complete game loop: get the current City object from the game's location, check for win or dead-end, show destinations, get choice, travel. Two classes working in harmony!</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Notice how clean the game loop is now. You ask the game where it is, get that city from the dictionary, ask the city what destinations are available, then tell the game to travel. Each object does its own job. That's the OOP magic."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Replace your test <code>main()</code> with the real game loop</li>
+      <li>Start with a title banner, create cities, prompt for team name, and create a Game object</li>
+      <li>Build the game loop using this structure:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre>playing <span class="sy-op">=</span> <span class="sy-kw">True</span>
+
+<span class="sy-kw">while</span> playing<span class="sy-op">:</span>
+    <span class="sy-cm"># Get current city OBJECT from dictionary</span>
+    current_city <span class="sy-op">=</span> cities<span class="sy-op">[</span>game<span class="sy-op">.</span>get_current_city<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">]</span>
+
+    <span class="sy-cm"># Display current location</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;-&#x27;</span> <span class="sy-op">*</span> <span class="sy-num">40</span><span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;You are in: <span class="sy-op">{</span>current_city<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;&quot;<span class="sy-op">{</span>current_city<span class="sy-op">.</span>get_tagline<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">}</span>&quot;&#x27;<span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;-&#x27;</span> <span class="sy-op">*</span> <span class="sy-num">40</span><span class="sy-op">)</span>
+
+    <span class="sy-cm"># Check for win</span>
+    <span class="sy-kw">if</span> current_city<span class="sy-op">.</span>is_win_city<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">:</span>
+        <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span>
+        <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;YOU REACHED THE BEACH!&#x27;</span><span class="sy-op">)</span>
+        playing <span class="sy-op">=</span> <span class="sy-kw">False</span>
+    <span class="sy-kw">elif</span> current_city<span class="sy-op">.</span>is_dead_end<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">:</span>
+        <span class="sy-cm"># Send back to San Antonio</span>
+        <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span>
+        <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;This is a dead end! No beach here.&#x27;</span><span class="sy-op">)</span>
+        <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Returning to San Antonio...&#x27;</span><span class="sy-op">)</span>
+        game<span class="sy-op">.</span>travel_to<span class="sy-op">(</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">,</span> <span class="sy-num">0</span><span class="sy-op">)</span>
+    <span class="sy-kw">else</span><span class="sy-op">:</span>
+        <span class="sy-cm"># Show destinations and get choice</span>
+        current_city<span class="sy-op">.</span>display_destinations<span class="sy-op">(</span><span class="sy-op">)</span>
+        num_destinations <span class="sy-op">=</span> <span class="sy-bi">len</span><span class="sy-op">(</span>current_city<span class="sy-op">.</span>get_destination_names<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">)</span>
+        choice <span class="sy-op">=</span> get_valid_int<span class="sy-op">(</span>f&#x27;Choose (1-<span class="sy-op">{</span>num_destinations<span class="sy-op">}</span>): &#x27;<span class="sy-op">,</span> <span class="sy-num">1</span><span class="sy-op">,</span> num_destinations<span class="sy-op">)</span>
+        <span class="sy-cm"># ... convert choice to city name, get distance, travel</span></pre>
+    </div>
+    <ol start="4">
+      <li>In the else branch, use <code>get_valid_int()</code> from your function library — no crashes on bad input!</li>
+      <li>After the loop ends, display final stats using <code>game.display_stats()</code> and show the full route</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">Expected Output</div>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>==================================================
+LAB 5.2: TEXAS ROAD TRIP
+City + Game Classes Working Together
+==================================================
+
+Enter team name: Maria
+
+Welcome, Maria!
+Goal: Reach Corpus Christi (the beach)!
+
+----------------------------------------
+You are in: San Antonio (START)
+&quot;Home of the Alamo&quot;
+----------------------------------------
+
+From San Antonio, you can travel to:
+  1. Houston - 200 miles
+  2. Corpus Christi - 150 miles
+  3. Laredo - 160 miles
+Choose (1-3): 2
+
+Traveling to Corpus Christi...
+Distance: 150 miles
+
+----------------------------------------
+You are in: Corpus Christi (WIN)
+&quot;Sparkling City by the Sea&quot;
+----------------------------------------
+
+YOU REACHED THE BEACH!
+
+==================================================
+TRIP COMPLETE!
+==================================================
+
+Team: Maria
+Current City: Corpus Christi
+Total Miles: 150
+Cities Visited: 2
+
+Route taken:
+  San Antonio -&gt; Corpus Christi</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Looking up city by name incorrectly</td>
+        <td>Get current City object with: <code>cities[game.get_current_city()]</code></td>
+      </tr>
+      <tr>
+        <td>Checking win/dead-end on Game instead of City</td>
+        <td>City knows its type — use <code>city.is_win_city()</code></td>
+      </tr>
+      <tr>
+        <td>Files not in same directory</td>
+        <td><code>city.py</code>, <code>game.py</code>, and <code>lab-5-2.py</code> must be in the same folder</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li>Game loop uses both City and Game objects</li>
+      <li>Win condition triggers when reaching Corpus Christi</li>
+      <li>Dead end (Laredo) sends player back to San Antonio</li>
+      <li>Final stats and route displayed after game ends</li>
+      <li>Route shown using <code>' -> '.join()</code></li>
+    </ol>
     </div>
   </div>
 </div>
 <div class="lc-card lc-card--red">
+
   <div class="lc-topper">
     <div class="lc-topper-title">Final Checklist</div>
     <div class="lc-sub-banner">Check It Before You Wreck It</div>
   </div>
+
   <div class="lc-panel">
-    <div class="lc-h3">Before You Submit</div>
+
+    <div class="lc-h3 lc-h3--yellow">Before You Submit</div>
     <ul class="lc-checklist">
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">player.py: Player class with __init__, getters, travel_to(), add_turn(), add_miles(), get_route_string(), __str__</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">game.py: Game class with __init__, private __setup_cities(), start_new_game(), get_current_city(), get_player()</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">city.py: unchanged from 5.1, submitted alongside the new files</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">journey_test.py: creates Game, starts game, simulates 3+ travel steps, prints route and unique count</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">travel_to() updates both visited_cities list AND unique_cities set</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">get_visited_cities() returns a copy, not the original list</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">All files have documentation headers and all methods have docstrings</span></li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>city.py</code> is your working City class from Lab 5.1</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>function_library.py</code> is included (for <code>get_valid_int</code>)</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>game.py</code> has module and class docstrings</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>Game</code> uses private attributes (double underscore)</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>get_cities_visited()</code> returns <strong>.copy()</strong> of the list</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>lab-5-2.py</code> has header docstring with your name, abc123, and section</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Game ends when player reaches a <strong>WIN</strong> city</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">No debug/test code left in any file</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Submitted <strong>ALL FOUR</strong> files to CodeGrade</span>
+      </li>
     </ul>
-    <div class="lc-h3">Scope Reminder</div>
-    <p>Chapter 10 techniques only this week. Inheritance (Chapter 11) is reserved for 5.3. Do not create WinCity or DeadEndCity yet.</p>
-    <div class="lc-h3">Permitted Techniques</div>
+    <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
+    <p>Chapter 10 Sections 10.2–10.4. Multiple classes working together, constructors, private attributes, and getter methods. Inheritance and method overriding come in Lab 5.3.</p>
+    <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
     <div class="lc-permitted">
-      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–10</p>
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–10 (Sections 10.2–10.4 introduced this module; all prior techniques fully permitted)</p>
       <ul class="lc-permitted__list">
-            <li>Multiple class definitions across multiple files</li>
-      <li>from module import ClassName</li>
-      <li>Object as attribute: self.__player = Player(name)</li>
-      <li>Method returning an object: return self.__cities[name]</li>
-      <li>Calling methods on returned objects: game.get_current_city().display_destinations()</li>
+      <li>Multiple class files (<code>city.py</code>, <code>game.py</code>)</li>
+      <li><code>from module import Class</code> syntax</li>
+      <li>Methods that modify private attributes</li>
+      <li>Objects stored in dictionaries</li>
+      <li>All techniques from Module 5.1 and earlier</li>
       </ul>
-    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> list comprehensions, inheritance, WinCity or DeadEndCity subclasses (Module 5.3)</p>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> Inheritance (Lab 5.3), method overriding and polymorphism (Lab 5.3)</p>
     </div>
     <div class="lc-callout lc-callout--warning">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="20" height="20" rx="3" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><circle cx="15" cy="21" r="1.5" fill="#000"/></svg></div>
-      <div class="lc-callout__bubble"><div class="lc-callout__body"><p>CodeGrade imports player.py directly and tests Player methods in isolation. Make sure Player works without a Game object.</p></div></div>
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Submit ALL FOUR files: <code>city.py</code>, <code>game.py</code>, <code>function_library.py</code>, and <code>lab-5-2.py</code>. Missing any file will cause import failures.</p>
+        </div>
+      </div>
     </div>
     <div class="lc-callout lc-callout--warning">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="20" height="20" rx="3" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><circle cx="15" cy="21" r="1.5" fill="#000"/></svg></div>
-      <div class="lc-callout__bubble"><div class="lc-callout__body"><p>function_library.py must be in the same directory as your submitted files. Submit it along with the others.</p></div></div>
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Make sure <code>game.py</code> has no test code at the bottom — it should only contain the class definition.</p>
+        </div>
+      </div>
     </div>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/><polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="lc-callout__bubble"><div class="lc-callout__title">Save Your Code</div><div class="lc-callout__body"><p>Keep all four files. Module 5.3 adds to city.py (inheritance) and completes game.py (full game loop, trivia gate, hazards, final report).</p></div></div>
-    </div>
-    <div class="lc-h3">Academic Integrity</div>
+    <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
     <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
   </div>
 </div>
 <div class="lc-card lc-card--purple">
+
   <div class="lc-topper">
     <div class="lc-topper-title">Need Help?</div>
     <div class="lc-sub-banner">Look No Further!</div>
   </div>
+
   <div class="lc-panel">
-    <div class="lc-h3">If You Get Stuck</div>
+
+    <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
     <ul>
-      <li>If importing Game crashes with a ModuleNotFoundError, verify city.py and player.py are in the same folder as game.py</li>
-      <li>If get_current_city() returns a string instead of an object, check that you are returning self.__cities[city_name] and not city_name itself</li>
-      <li>Re-read Program 10-10 (account_test2.py). It shows the same pattern of creating an object and calling methods on it in sequence</li>
-      <li>Submit to CodeGrade early to isolate which class is failing</li>
+      <li>Test each class separately first — get Game working before connecting it to City</li>
+      <li>Check your imports — &lt;code&gt;from city import City&lt;/code&gt; (not &lt;code&gt;import city&lt;/code&gt;)</li>
+      <li>Dictionary lookup pattern — &lt;code&gt;cities[game.get_current_city()]&lt;/code&gt; gets the City object</li>
+      <li>Submit to CodeGrade early — it tests each class independently</li>
+      <li>Come to Zoom or office hours — multi-class programs can be tricky to debug</li>
     </ul>
-    <div class="lc-h3">Contact &amp; Resources</div>
+    <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
     <div class="lc-contact-grid">
-      <div class="lc-contact-card"><div class="lc-contact-card__label">Zoom Office Hours</div><div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br><a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a></div></div>
-      <div class="lc-contact-card"><div class="lc-contact-card__label">Schedule a Meeting</div><div class="lc-contact-card__value"><a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a></div></div>
-      <div class="lc-contact-card"><div class="lc-contact-card__label">Course Discord</div><div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div></div>
-      <div class="lc-contact-card"><div class="lc-contact-card__label">Email</div><div class="lc-contact-card__value"><a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>Include your section number and abc123</div></div>
-      <div class="lc-contact-card"><div class="lc-contact-card__label">CodeGrade</div><div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div></div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Zoom Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br>
+          <a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Schedule a Meeting</div>
+        <div class="lc-contact-card__value">
+          <a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Email</div>
+        <div class="lc-contact-card__value">
+          <a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>
+          Include your section number and abc123
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">CodeGrade</div>
+        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+      </div>
     </div>
   </div>
 </div>
 
     <footer class="lc-footer">
         <img src="../../branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
-        <p class="lc-footer__course">IS2053: Programming I (Python) &mdash; The University of Texas at San Antonio</p>
-        <p class="lc-footer__detail">Starting Out with Python, 6th Edition &mdash; Tony Gaddis &mdash; Pearson</p>
+        <p class="lc-footer__course">IS2053: Programming I (Python) — The University of Texas at San Antonio</p>
+        <p class="lc-footer__detail">Starting Out with Python, 6th Edition — Tony Gaddis — Pearson</p>
     </footer>
 
 </div>

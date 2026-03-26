@@ -6,58 +6,81 @@
         "week": 2,
         "weekType": "ENHANCE",
         "chapters": "10",
-        "chapterTopics": "Multiple classes, object interaction, encapsulated state",
-        "filename": "player.py",
-        "additionalFiles": ["city.py", "game.py", "journey_test.py"]
-    },
-
-    "overview": {
-        "body": "One class is a container. Multiple classes working together is architecture. This week you add two more pieces to your program. First, the <code>Player</code> class: an object that knows where the player is, how far they have traveled, and what cities they have visited. Second, a <code>Game</code> class skeleton that holds the cities dictionary and the player, and can start a new game. You will wire them together in <code>journey_test.py</code>, which simulates a simple trip without a full game loop. Next week you complete the Game class and add inheritance. This week is about getting the objects talking to each other.",
-        "mentorQuote": {
-            "character": "Danny Cavanaugh",
-            "role": "Senior Developer, Bat City Collective",
-            "headshot": "Danny-Cavanaugh.png",
-            "quote": "When classes work together, each one should do its own job and nothing else. The Player tracks the player. The City knows about the city. The Game coordinates between them. If you find yourself putting travel logic in the City class or city setup logic in the Player class, something is off."
-        },
-        "objectives": [
-            "Define a Player class that tracks name, location, miles, turns, and visited cities",
-            "Write Player methods for travel, stats accumulation, and route display",
-            "Define a Game class skeleton with city setup and player initialization",
-            "Create Player and City objects that interact through method calls",
-            "Test multi-class interaction in journey_test.py"
-        ],
-        "keyConceptsText": "Chapter 10: Program 10-9 (bankaccount2.py, methods that modify object state) and Program 10-10 (account_test2.py, creating objects and calling methods in sequence). The Player class follows the same accumulator pattern as BankAccount.",
-        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis, Chapter 10",
-        "programRequirements": [
-            "player.py defines the Player class with __init__, getter methods, travel_to(), add_turn(), add_miles(), and __str__",
-            "game.py defines the Game class with __init__ that sets up cities and __setup_cities() private method",
-            "journey_test.py creates a Game object and a Player object and simulates at least 3 travel steps",
-            "All files have documentation headers and all methods have docstrings"
-        ],
-        "additionalFilesNote": "Submit player.py, city.py (from 5.1, unchanged), game.py, and journey_test.py. CodeGrade tests Player methods in isolation.",
-        "filenameNote": "Submit player.py, city.py, game.py, and journey_test.py this week.",
-        "saveYourCode": "Keep all four files. Module 5.3 completes game.py with the full game loop and adds WinCity and DeadEndCity subclasses to city.py."
-    },
-
-    "timeGuide": {
-        "totalTime": "60–75 Minutes",
-        "rows": [
-            { "checkpoint": "CP1: Player Class", "time": "20 min", "task": "Define Player with __init__, getters, travel_to(), add_turn(), __str__" },
-            { "checkpoint": "CP2: Game Class Skeleton", "time": "20 min", "task": "Define Game with __init__ and __setup_cities() (cities dict, no player yet)" },
-            { "checkpoint": "CP3: Wire It Together", "time": "10 min", "task": "Add player to Game, write start_new_game() and get_current_city()" },
-            { "checkpoint": "CP4: Write journey_test.py", "time": "15 min", "task": "Create Game, simulate travel, verify Player stats" }
+        "chapterTopics": "Multiple Classes",
+        "filename": "lab-5-2.py",
+        "additionalFiles": [
+            "city.py",
+            "game.py",
+            "function_library.py"
         ]
     },
-
-    "beforeYouBegin": {
-        "intro": "Here is how your finished files fit together. The [NEW] tags show what you are adding this week. city.py carries forward unchanged from 5.1.",
-        "architecture": "# ---- city.py (UNCHANGED from 5.1) ----\nclass City:  ...all methods as built...\n\n# ---- player.py [NEW] ----\nclass Player:\n│\n│── __init__(name, starting_city='San Antonio')\n│   self.__name           string\n│   self.__current_city   string\n│   self.__total_miles    int (starts 0)\n│   self.__total_turns    int (starts 0)\n│   self.__visited_cities list (starts with starting_city)\n│   self.__unique_cities  set  (starts with starting_city)\n│\n│── GETTERS\n│   get_name(), get_current_city()\n│   get_total_miles(), get_total_turns()\n│   get_visited_cities(), get_unique_count()\n│\n│── TRAVEL METHODS\n│   travel_to(city_name, distance)   updates city, miles, lists/set\n│   add_turn()                       increments __total_turns\n│   add_miles(miles)                 adds to __total_miles\n│\n│── DISPLAY\n│   get_route_string()   ' -> '.join(visited_cities)\n│   __str__              'Name at City (X mi)'\n\n# ---- game.py [NEW] ----\nclass Game:\n│\n│── __init__()\n│   self.__cities = {}     dict of name -> City objects\n│   self.__player = None   set later in start_new_game()\n│   self.__setup_cities()  called in __init__\n│\n│── __setup_cities()   [private] creates City objects, adds connections\n│── start_new_game()   gets player name, creates Player object\n│── get_current_city() returns City object for player's location\n\n# ---- journey_test.py [NEW] ----\nfrom game import Game\nmain():\n│── Create Game object (cities set up automatically)\n│── Call start_new_game() to create Player\n│── Simulate 3+ moves: call game.get_current_city(),\n│   pick a destination, call player.travel_to()\n│── Print player __str__ after each move\n│── Print final route and stats"
+    "overview": {
+        "body": "Last week, you created a City class that knows its own name, connections, and type. But a road trip needs a <em>traveler</em>. This week, you'll create a <strong>Game class</strong> that tracks the journey — current location, total miles, cities visited. Then you'll make City and Game objects <strong>work together</strong>. The City displays destinations; the Game tracks your journey. Two classes, one program.",
+        "mentorQuote": {
+            "character": "Danny Cavanaugh",
+            "role": "Lead Developer, Bat City Collective",
+            "headshot": "Danny-Cavanaugh.png",
+            "quote": "In Module 4, you had <code>current_city</code> and <code>total_miles</code> as loose variables floating around. Now the Game object <em>owns</em> that state. Ask where you are: <code>game.get_current_city()</code>. Move forward: <code>game.travel_to(...)</code>. The object manages itself."
+        },
+        "objectives": [
+            "A <code>Game</code> class with <code>__init__</code>, getters, <code>travel_to()</code>, and <code>__str__</code>",
+            "<strong>Private attributes</strong> for name, current city, total miles, and cities visited",
+            "A <strong>game loop</strong> where City objects show destinations and Game objects track movement",
+            "A <strong>win condition</strong> when the player reaches a WIN city"
+        ],
+        "keyConceptsText": "<strong>Chapter 10 Sections:</strong> 10.2 (Classes), 10.3 (Working with Instances), 10.4 (Techniques for Designing Classes)",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 10: Classes and Object-Oriented Programming",
+        "programRequirements": [
+            "<code>game.py</code> <strong>MUST</strong> define a class named <code>Game</code>",
+            "<code>Game</code> <strong>MUST</strong> use private attributes with double underscore prefix",
+            "<code>Game</code> <strong>MUST</strong> have a <code>travel_to(city_name, distance)</code> method",
+            "<code>Game</code> <strong>MUST</strong> track cities visited in a list",
+            "<code>lab-5-2.py</code> <strong>MUST</strong> import City, Game, and <code>get_valid_int</code>",
+            "<code>lab-5-2.py</code> <strong>MUST</strong> have a game loop that ends when the player reaches a WIN city"
+        ],
+        "filenameNote": "This week you'll work with FOUR files: <code>city.py</code> (your City class from Lab 5.1), <code>game.py</code> (the new Game class you'll build), <code>function_library.py</code> (your utility functions from previous labs), and <code>lab-5-2.py</code> (the game that uses all three modules together).",
+        "additionalFilesNote": "CodeGrade tests that <code>lab-5-2.py</code> can import all three modules. Missing any file will cause import failures."
     },
-
+    "timeGuide": {
+        "totalTime": "90–120 Minutes",
+        "rows": [
+            {
+                "checkpoint": "Checkpoint 1",
+                "time": "20 min",
+                "task": "Create game.py with <code>__init__</code> and getters"
+            },
+            {
+                "checkpoint": "Checkpoint 2",
+                "time": "20 min",
+                "task": "Add <code>travel_to()</code>, <code>display_stats()</code>, <code>__str__</code>"
+            },
+            {
+                "checkpoint": "Checkpoint 3",
+                "time": "25 min",
+                "task": "Build city network in <code>lab-5-2.py</code>"
+            },
+            {
+                "checkpoint": "Checkpoint 4",
+                "time": "25 min",
+                "task": "Complete game loop with win/dead-end logic"
+            },
+            {
+                "checkpoint": "Submit",
+                "time": "10 min",
+                "task": "Final check and CodeGrade submission"
+            }
+        ],
+        "strategy": "Build the Game class first and test it standalone before trying to integrate with City. Get one class working perfectly, then connect them. Debugging two broken classes at once is a nightmare!"
+    },
+    "beforeYouBegin": {
+        "intro": "game.py contains nothing but the Game class definition. lab-5-2.py imports City, Game, and get_valid_int, then runs the complete game. Build and test each checkpoint before moving to the next.",
+        "architecture": "# ---- game.py ----\nclass Game:\n\n    # --- Constructor ---\n    __init__(self, name, starting_city)       stores 4 private attributes\n        self.__name            = name\n        self.__current_city    = starting_city\n        self.__total_miles     = 0\n        self.__cities_visited  = [starting_city]   start with starting city!\n\n    # --- Getter Methods ---   [CP1]\n    get_name(self)                returns self.__name\n    get_current_city(self)        returns self.__current_city\n    get_total_miles(self)         returns self.__total_miles\n    get_cities_visited(self)      returns self.__cities_visited.copy()\n\n    # --- Travel Methods ---   [CP2]\n    travel_to(self, city_name, distance)      updates city, miles, visited list\n\n    # --- Display Methods ---   [CP2]\n    display_stats(self)           prints team, city, miles, cities count\n    __str__(self)                 returns 'Maria in San Antonio'\n\n\n# ---- lab-5-2.py ----\nfrom city import City\nfrom game import Game\nfrom function_library import get_valid_int\n\ncreate_cities()    returns dict of connected City objects   [CP3]\nmain()             title banner, city network, game loop    [CP4]\n    while playing:\n        current_city = cities[game.get_current_city()]\n        check win / dead-end / show destinations\n        game.travel_to(city_name, distance)\n\nif __name__ == '__main__': -> main()"
+    },
     "checkpoints": [
         {
             "number": 1,
-            "title": "Write the Player Class",
+            "title": "Game Class Foundation",
+            "subtitle": "Create game.py with the Game class, <code>__init__</code> constructor, and getter methods.",
             "content": [
                 {
                     "type": "h3",
@@ -65,61 +88,126 @@
                 },
                 {
                     "type": "text",
-                    "body": "Create <code>player.py</code>. The Player class tracks everything about the player's journey: where they are, how far they have gone, how many turns have elapsed, and where they have been. All of this used to be scattered as global variables in your game loop. Now it lives in one object."
+                    "body": "A Game class that stores journey state: team name, current city, total miles traveled, and a list of all cities visited."
                 },
                 {
                     "type": "h3",
-                    "label": "step_by_step"
+                    "label": "why_this_matters"
                 },
                 {
-                    "type": "instructions",
-                    "items": [
-                        "Add a documentation header. Define <code>class Player:</code> with a class docstring.",
-                        "Write <code>__init__(self, name, starting_city='San Antonio')</code>. Initialize private attributes: <code>self.__name</code>, <code>self.__current_city</code> (set to <code>starting_city</code>), <code>self.__total_miles = 0</code>, <code>self.__total_turns = 0</code>. Also initialize <code>self.__visited_cities = [starting_city]</code> (a list, preserves duplicates) and <code>self.__unique_cities = set()</code> then immediately <code>self.__unique_cities.add(starting_city)</code>.",
-                        "Write getter methods: <code>get_name()</code>, <code>get_current_city()</code>, <code>get_total_miles()</code>, <code>get_total_turns()</code>, <code>get_visited_cities()</code> (return a copy with <code>.copy()</code>), and <code>get_unique_count()</code> (return <code>len(self.__unique_cities)</code>).",
-                        "Write <code>travel_to(self, city_name, distance)</code>: update <code>self.__current_city</code>, add <code>distance</code> to <code>self.__total_miles</code>, append <code>city_name</code> to <code>self.__visited_cities</code>, and call <code>self.__unique_cities.add(city_name)</code>.",
-                        "Write <code>add_turn(self)</code>: increment <code>self.__total_turns</code> by 1.",
-                        "Write <code>add_miles(self, miles)</code>: add <code>miles</code> to <code>self.__total_miles</code>.",
-                        "Write <code>get_route_string(self)</code>: return <code>' -> '.join(self.__visited_cities)</code>.",
-                        "Write <code>__str__(self)</code>: return <code>f'{self.__name} at {self.__current_city} ({self.__total_miles} mi)'</code>."
-                    ]
+                    "type": "text",
+                    "body": "Professional games, apps, and systems use a \"state object\" that carries all the information about what's happening. Instead of scattering variables everywhere, the Game object <strong>owns its state</strong>. This pattern makes code cleaner, debugging easier, and save/load features possible."
                 },
                 {
-                    "type": "h3",
-                    "label": "bookex_patterns"
+                    "type": "mentor_quote",
+                    "character": "Tyler Nguyen",
+                    "role": "Junior Developer, Bat City Collective",
+                    "headshot": "Tyler-Nguyen.png",
+                    "quote": "When I first learned OOP, the lightbulb moment was realizing that the Game object <em>carries its own history</em>. You don't need global variables to track where you've been — the game knows. Ask it: <code>game.get_cities_visited()</code>. It remembers for you."
                 },
                 {
                     "type": "callout",
                     "variant": "bookex",
                     "references": [
                         {
-                            "programId": "10-9",
-                            "filename": "bankaccount2.py",
-                            "step": 3,
-                            "description": "The deposit() method adds to __balance using +=. travel_to() does the same thing: it updates __total_miles and __current_city just like deposit() updates __balance. The pattern is identical."
+                            "programId": "10-12",
+                            "filename": "cellphone.py",
+                            "step": 1,
+                            "description": "You already know this pattern from Lab 5.1! Game follows the exact same structure — <code>__init__</code> with private attributes, getter methods for each. The only new thing is that one attribute (<code>__cities_visited</code>) is a list instead of a simple value."
                         }
                     ]
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Create a new file called <code>game.py</code>",
+                        "Add the module docstring at the top:"
+                    ]
+                },
+                {
+                    "type": "code_block",
+                    "code": "\"\"\"\ngame.py\nName: Your Name\nabc123: your_abc123\nSection: 001\nDescription: Game class for the Deep in the Heart road trip game.\n\nChapter 10 Concepts:\n- Class definition\n- __init__ constructor\n- Private attributes\n- Getter methods\n- Methods that modify attributes\n- __str__ method\n\"\"\""
+                },
+                {
+                    "type": "instructions",
+                    "start": 3,
+                    "items": [
+                        "Define the <code>Game</code> class with a docstring explaining the private attributes",
+                        "Write <code>__init__(self, name, starting_city)</code> that initializes four private attributes: <code>self.__name = name</code>, <code>self.__current_city = starting_city</code>, <code>self.__total_miles = 0</code>, and <code>self.__cities_visited = [starting_city]</code> (start with the starting city already in the list!)",
+                        "Add getter methods: <code>get_name()</code>, <code>get_current_city()</code>, <code>get_total_miles()</code>",
+                        "Add <code>get_cities_visited()</code> that returns a <strong>copy</strong> of the list:"
+                    ]
+                },
+                {
+                    "type": "code_block",
+                    "code": "def get_cities_visited(self):\n    \"\"\"Return list of cities visited.\"\"\"\n    return self.__cities_visited.copy()"
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this test code at the bottom of game.py:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\ngame = Game('Maria', 'San Antonio')\nprint('Testing Game getters:')\nprint(f'  Name: {game.get_name()}')\nprint(f'  Current City: {game.get_current_city()}')\nprint(f'  Total Miles: {game.get_total_miles()}')\nprint(f'  Cities Visited: {game.get_cities_visited()}')"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run game.py. You should see:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Testing Game getters:\n  Name: Maria\n  Current City: San Antonio\n  Total Miles: 0\n  Cities Visited: ['San Antonio']"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Delete the debug code before continuing."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Matters"],
+                    "rows": [
+                        [
+                            "<code>return self.__cities_visited</code>",
+                            "Returns the actual list — outside code could modify it!"
+                        ],
+                        [
+                            "<code>return self.__cities_visited.copy()</code>",
+                            "Returns a copy — protects the private data"
+                        ]
+                    ],
+                    "accent": "green"
                 },
                 {
                     "type": "h3",
                     "label": "what_you_should_have"
                 },
                 {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "CP1 Complete",
+                    "type": "instructions",
                     "items": [
-                        "player.py exists with Player class, docstrings on all methods",
-                        "travel_to() updates current_city, total_miles, visited_cities list, and unique_cities set",
-                        "get_visited_cities() returns a copy, not the original list",
-                        "__str__ returns 'Name at City (X mi)' format"
+                        "<code>game.py</code> with module docstring",
+                        "<code>Game</code> class with class docstring",
+                        "<code>__init__</code> with 4 private attributes",
+                        "Four getter methods (returning <code>.copy()</code> for the list)"
                     ]
                 }
             ]
         },
         {
             "number": 2,
-            "title": "Write the Game Class Skeleton",
+            "title": "Travel & Display Methods",
+            "subtitle": "Add methods that modify game state and display information.",
             "content": [
                 {
                     "type": "h3",
@@ -127,7 +215,7 @@
                 },
                 {
                     "type": "text",
-                    "body": "Create <code>game.py</code>. The Game class is the orchestrator. It holds all the City objects and the Player, and it will eventually run the full game loop. This week you build the foundation: city setup and the ability to start a new game. The game loop itself comes in 5.3."
+                    "body": "The <code>travel_to()</code> method that updates game state — new city, added miles, and recorded visit. Plus display and <code>__str__</code> methods."
                 },
                 {
                     "type": "h3",
@@ -136,39 +224,102 @@
                 {
                     "type": "instructions",
                     "items": [
-                        "Add imports at the top: <code>import random</code>, <code>import function_library</code>, <code>from city import City</code>, <code>from player import Player</code>.",
-                        "Define <code>class Game:</code> with a class docstring. Write <code>__init__(self)</code>: initialize <code>self.__cities = {}</code>, <code>self.__player = None</code>, then call <code>self.__setup_cities()</code>.",
-                        "Write <code>__setup_cities(self)</code> as a private method (double underscore). Inside, create City objects for at least 5 cities: San Antonio (START), Houston (GATEWAY), Austin (CORRIDOR), Corpus Christi (WIN), and Laredo (DEAD_END). Use the taglines from your Module 4 game.",
-                        "After creating the City objects, add connections between them using <code>city_object.add_connection(name, distance)</code>. Use the same distances from your Module 4 game. Add at least 3 trivia questions to San Antonio and Houston using <code>city_object.add_trivia(question, answer)</code>.",
-                        "Store each city in <code>self.__cities</code> with the city name as the key: <code>self.__cities['San Antonio'] = san_antonio</code>."
+                        "Add a comment <code># --- Travel Methods ---</code>",
+                        "Define <code>travel_to(self, city_name, distance)</code>:"
                     ]
                 },
                 {
-                    "type": "callout",
-                    "variant": "tip",
-                    "title": "Private Methods Use Double Underscore Too",
-                    "body": "Just like private attributes, private methods use the double-underscore prefix: <code>def __setup_cities(self):</code>. This prevents outside code from calling setup directly. The method is called once from <code>__init__</code> and never needs to be called again."
+                    "type": "code_block",
+                    "code": "def travel_to(self, city_name, distance):\n    \"\"\"\n    Travel to a new city.\n\n    Args:\n        city_name (str): Name of destination city\n        distance (int): Distance in miles\n    \"\"\"\n    self.__current_city = city_name\n    self.__total_miles = self.__total_miles + distance\n    self.__cities_visited.append(city_name)"
+                },
+                {
+                    "type": "instructions",
+                    "start": 3,
+                    "items": [
+                        "Add a comment <code># --- Display Methods ---</code>",
+                        "Define <code>display_stats(self)</code> that prints game statistics:"
+                    ]
+                },
+                {
+                    "type": "code_block",
+                    "code": "def display_stats(self):\n    \"\"\"Display game statistics.\"\"\"\n    print(f'Team: {self.__name}')\n    print(f'Current City: {self.__current_city}')\n    print(f'Total Miles: {self.__total_miles}')\n    print(f'Cities Visited: {len(self.__cities_visited)}')"
+                },
+                {
+                    "type": "instructions",
+                    "start": 5,
+                    "items": [
+                        "Define <code>__str__(self)</code> that returns a short string representation:"
+                    ]
+                },
+                {
+                    "type": "code_block",
+                    "code": "def __str__(self):\n    \"\"\"Return string representation of game.\"\"\"\n    return f'{self.__name} in {self.__current_city}'"
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this test code:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 3\ngame = Game('Maria', 'San Antonio')\nprint(f'Starting: {game}')\nprint()\n\ngame.travel_to('Houston', 200)\nprint(f'After Houston: {game}')\n\ngame.travel_to('Corpus Christi', 210)\nprint(f'After Corpus: {game}')\nprint()\n\ngame.display_stats()\nprint()\nprint(f'Route: {game.get_cities_visited()}')"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run game.py. You should see:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Starting: Maria in San Antonio\n\nAfter Houston: Maria in Houston\nAfter Corpus: Maria in Corpus Christi\n\nTeam: Maria\nCurrent City: Corpus Christi\nTotal Miles: 410\nCities Visited: 3\n\nRoute: ['San Antonio', 'Houston', 'Corpus Christi']"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Delete the debug code before continuing."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Common Mistake", "Why It Fails"],
+                    "rows": [
+                        [
+                            "Using <code>print()</code> in <code>__str__()</code>",
+                            "<code>__str__</code> must <em>return</em> a string — don't print inside it"
+                        ],
+                        [
+                            "Forgetting to append to <code>__cities_visited</code>",
+                            "<code>travel_to()</code> must update the history list"
+                        ],
+                        [
+                            "Returning the actual <code>__cities_visited</code> list",
+                            "Return a copy with <code>list(self.__cities_visited)</code> to protect the original"
+                        ]
+                    ],
+                    "accent": "green"
                 },
                 {
                     "type": "h3",
                     "label": "what_you_should_have"
                 },
                 {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "CP2 Complete",
+                    "type": "instructions",
                     "items": [
-                        "game.py imports random, function_library, City, and Player",
-                        "Game.__init__ initializes __cities and __player, then calls __setup_cities()",
-                        "__setup_cities() creates at least 5 City objects with connections and trivia stored in __cities dict",
-                        "Creating a Game object does not crash"
+                        "<code>travel_to()</code> updates city, miles, and visited list",
+                        "<code>display_stats()</code> prints formatted stats",
+                        "<code>__str__()</code> returns short string for printing"
                     ]
                 }
             ]
         },
         {
             "number": 3,
-            "title": "Wire Player into Game",
+            "title": "Build the City Network",
+            "subtitle": "Create lab-5-2.py with a function that builds interconnected City objects.",
             "content": [
                 {
                     "type": "h3",
@@ -176,7 +327,7 @@
                 },
                 {
                     "type": "text",
-                    "body": "Add two more methods to the Game class: <code>start_new_game()</code>, which creates the Player object, and <code>get_current_city()</code>, which returns the City object for wherever the player currently is. These are the two methods <code>journey_test.py</code> will use."
+                    "body": "A <code>create_cities()</code> function that creates City objects, connects them with roads, and returns a dictionary for easy lookup by name."
                 },
                 {
                     "type": "h3",
@@ -185,37 +336,94 @@
                 {
                     "type": "instructions",
                     "items": [
-                        "Write <code>start_new_game(self)</code>: get the player's name with <code>input()</code> and <code>.strip()</code>. Create <code>self.__player = Player(name, 'San Antonio')</code>. Print a welcome message.",
-                        "Write <code>get_current_city(self)</code>: get the player's current city name with <code>self.__player.get_current_city()</code>, then return <code>self.__cities[city_name]</code>. This returns the actual City object, not just the name.",
-                        "Write <code>get_player(self)</code>: return <code>self.__player</code>. This lets journey_test.py access the Player object to call travel methods."
+                        "Create <code>lab-5-2.py</code> with your standard header docstring",
+                        "Add imports at the top:"
                     ]
                 },
                 {
-                    "type": "mentor_quote",
-                    "character": "Danny Cavanaugh",
-                    "role": "Senior Developer, Bat City Collective",
-                    "headshot": "Danny-Cavanaugh.png",
-                    "quote": "get_current_city() returns a City object, not a string. That is the key difference from Module 4. Instead of looking up a name in a dictionary, you are handing back something that knows what to do with itself. The Game does not have to know how to display destinations. It just asks the City to do it."
+                    "type": "code_block",
+                    "code": "from city import City\nfrom game import Game\nfrom function_library import get_valid_int"
+                },
+                {
+                    "type": "instructions",
+                    "start": 3,
+                    "items": [
+                        "Define <code>create_cities()</code> that creates 4 City objects — San Antonio (START), Houston (HUB), Corpus Christi (WIN), and Laredo (DEAD_END) — adds connections between them using <code>add_connection()</code>, and returns a dictionary: <code>{'San Antonio': san_antonio, 'Houston': houston, ...}</code>",
+                        "Here's the city network to build:"
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": ["From", "To", "Miles"],
+                    "rows": [
+                        ["San Antonio", "Houston, Corpus Christi, Laredo", "200, 150, 160"],
+                        ["Houston", "San Antonio, Corpus Christi", "200, 210"],
+                        ["Corpus Christi", "San Antonio, Houston", "150, 210"],
+                        ["Laredo", "San Antonio", "160"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add a temporary <code>main()</code> to test:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "def main():\n    # DEBUG - will be replaced in Checkpoint 4\n    cities = create_cities()\n\n    print('Cities created:')\n    for name, city in cities.items():\n        print(f'  {city}')\n\n    print()\n    print('Testing lookup and connections:')\n    sa = cities['San Antonio']\n    sa.display_destinations()\n\nif __name__ == '__main__':\n    main()"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run lab-5-2.py. You should see:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Cities created:\n  San Antonio (START)\n  Houston (HUB)\n  Corpus Christi (WIN)\n  Laredo (DEAD_END)\n\nTesting lookup and connections:\nFrom San Antonio, you can travel to:\n  1. Houston - 200 miles\n  2. Corpus Christi - 150 miles\n  3. Laredo - 160 miles"
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Common Mistake", "Why It Fails"],
+                    "rows": [
+                        [
+                            "Storing string names instead of City objects",
+                            "Dictionary values should be the City objects themselves"
+                        ],
+                        [
+                            "Adding connections before creating all cities",
+                            "Create ALL City objects first, THEN add connections"
+                        ],
+                        [
+                            "Forgetting bi-directional connections",
+                            "If SA connects to Houston, Houston should connect back to SA"
+                        ]
+                    ],
+                    "accent": "green"
                 },
                 {
                     "type": "h3",
                     "label": "what_you_should_have"
                 },
                 {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "CP3 Complete",
+                    "type": "instructions",
                     "items": [
-                        "start_new_game() creates a Player object stored in self.__player",
-                        "get_current_city() returns a City object (not a string)",
-                        "get_player() returns the Player object"
+                        "<code>lab-5-2.py</code> imports City, Game, and <code>get_valid_int</code>",
+                        "<code>create_cities()</code> returns a dictionary of connected City objects",
+                        "Can look up any city by name: <code>cities['Houston']</code>"
                     ]
                 }
             ]
         },
         {
             "number": 4,
-            "title": "Write journey_test.py",
+            "title": "Complete Game Loop",
+            "subtitle": "Build the main() function with a game loop where City and Game work together.",
             "content": [
                 {
                     "type": "h3",
@@ -223,7 +431,14 @@
                 },
                 {
                     "type": "text",
-                    "body": "Create <code>journey_test.py</code>. This simulates a short trip using your Game and Player classes together. There is no game loop yet. You will manually call travel steps to verify everything is wired up correctly."
+                    "body": "A complete game loop: get the current City object from the game's location, check for win or dead-end, show destinations, get choice, travel. Two classes working in harmony!"
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Sasha Mireles",
+                    "role": "Creative Director, Bat City Collective",
+                    "headshot": "Sasha-Mireles.png",
+                    "quote": "Notice how clean the game loop is now. You ask the game where it is, get that city from the dictionary, ask the city what destinations are available, then tell the game to travel. Each object does its own job. That's the OOP magic."
                 },
                 {
                     "type": "h3",
@@ -232,77 +447,111 @@
                 {
                     "type": "instructions",
                     "items": [
-                        "Add imports: <code>from game import Game</code>.",
-                        "Write <code>main()</code>. Create a <code>Game</code> object. Call <code>game.start_new_game()</code>.",
-                        "Get the current city object: <code>city = game.get_current_city()</code>. Print it and call <code>city.display_destinations()</code>.",
-                        "Simulate travel: call <code>game.get_player().travel_to('Houston', 200)</code>. Print the player object to verify the updated state.",
-                        "Simulate two more travel steps to different cities. After each one, print the player and verify the city name and mileage update.",
-                        "After all three steps, print the player's full route using <code>game.get_player().get_route_string()</code> and the unique city count using <code>game.get_player().get_unique_count()</code>.",
-                        "Add the <code>if __name__ == '__main__':</code> guard and call <code>main()</code>."
+                        "Replace your test <code>main()</code> with the real game loop",
+                        "Start with a title banner, create cities, prompt for team name, and create a Game object",
+                        "Build the game loop using this structure:"
                     ]
                 },
                 {
-                    "type": "callout",
-                    "variant": "pitfall",
-                    "title": "Hardcoded Travel in the Test Is Fine",
-                    "body": "In <code>journey_test.py</code>, calling <code>game.get_player().travel_to('Houston', 200)</code> directly is correct. This is a test program. You are verifying the objects work, not simulating real gameplay. The real game loop with user input comes in 5.3."
+                    "type": "code_block",
+                    "code": "playing = True\n\nwhile playing:\n    # Get current city OBJECT from dictionary\n    current_city = cities[game.get_current_city()]\n\n    # Display current location\n    print()\n    print('-' * 40)\n    print(f'You are in: {current_city}')\n    print(f'\"{current_city.get_tagline()}\"')\n    print('-' * 40)\n\n    # Check for win\n    if current_city.is_win_city():\n        print()\n        print('YOU REACHED THE BEACH!')\n        playing = False\n    elif current_city.is_dead_end():\n        # Send back to San Antonio\n        print()\n        print('This is a dead end! No beach here.')\n        print('Returning to San Antonio...')\n        game.travel_to('San Antonio', 0)\n    else:\n        # Show destinations and get choice\n        current_city.display_destinations()\n        num_destinations = len(current_city.get_destination_names())\n        choice = get_valid_int(f'Choose (1-{num_destinations}): ', 1, num_destinations)\n        # ... convert choice to city name, get distance, travel"
+                },
+                {
+                    "type": "instructions",
+                    "start": 4,
+                    "items": [
+                        "In the else branch, use <code>get_valid_int()</code> from your function library — no crashes on bad input!",
+                        "After the loop ends, display final stats using <code>game.display_stats()</code> and show the full route"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "expected_output"
+                },
+                {
+                    "type": "output_block",
+                    "output": "==================================================\nLAB 5.2: TEXAS ROAD TRIP\nCity + Game Classes Working Together\n==================================================\n\nEnter team name: Maria\n\nWelcome, Maria!\nGoal: Reach Corpus Christi (the beach)!\n\n----------------------------------------\nYou are in: San Antonio (START)\n\"Home of the Alamo\"\n----------------------------------------\n\nFrom San Antonio, you can travel to:\n  1. Houston - 200 miles\n  2. Corpus Christi - 150 miles\n  3. Laredo - 160 miles\nChoose (1-3): 2\n\nTraveling to Corpus Christi...\nDistance: 150 miles\n\n----------------------------------------\nYou are in: Corpus Christi (WIN)\n\"Sparkling City by the Sea\"\n----------------------------------------\n\nYOU REACHED THE BEACH!\n\n==================================================\nTRIP COMPLETE!\n==================================================\n\nTeam: Maria\nCurrent City: Corpus Christi\nTotal Miles: 150\nCities Visited: 2\n\nRoute taken:\n  San Antonio -> Corpus Christi"
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Common Mistake", "Why It Fails"],
+                    "rows": [
+                        [
+                            "Looking up city by name incorrectly",
+                            "Get current City object with: <code>cities[game.get_current_city()]</code>"
+                        ],
+                        [
+                            "Checking win/dead-end on Game instead of City",
+                            "City knows its type — use <code>city.is_win_city()</code>"
+                        ],
+                        [
+                            "Files not in same directory",
+                            "<code>city.py</code>, <code>game.py</code>, and <code>lab-5-2.py</code> must be in the same folder"
+                        ]
+                    ],
+                    "accent": "green"
                 },
                 {
                     "type": "h3",
                     "label": "what_you_should_have"
                 },
                 {
-                    "type": "callout",
-                    "variant": "success",
-                    "title": "Lab 5.2 Complete",
+                    "type": "instructions",
                     "items": [
-                        "player.py, city.py, game.py, and journey_test.py all submitted to CodeGrade",
-                        "journey_test.py simulates at least 3 travel steps and prints player state after each",
-                        "get_route_string() shows the full path including starting city",
-                        "get_unique_count() is lower than len(visited_cities) if any city was visited twice",
-                        "Documentation headers and docstrings present in all files"
+                        "Game loop uses both City and Game objects",
+                        "Win condition triggers when reaching Corpus Christi",
+                        "Dead end (Laredo) sends player back to San Antonio",
+                        "Final stats and route displayed after game ends",
+                        "Route shown using <code>' -> '.join()</code>"
                     ]
                 }
             ]
         }
     ],
-
     "finalChecklist": {
         "beforeYouSubmit": [
-            "player.py: Player class with __init__, getters, travel_to(), add_turn(), add_miles(), get_route_string(), __str__",
-            "game.py: Game class with __init__, private __setup_cities(), start_new_game(), get_current_city(), get_player()",
-            "city.py: unchanged from 5.1, submitted alongside the new files",
-            "journey_test.py: creates Game, starts game, simulates 3+ travel steps, prints route and unique count",
-            "travel_to() updates both visited_cities list AND unique_cities set",
-            "get_visited_cities() returns a copy, not the original list",
-            "All files have documentation headers and all methods have docstrings"
+            "<code>city.py</code> is your working City class from Lab 5.1",
+            "<code>function_library.py</code> is included (for <code>get_valid_int</code>)",
+            "<code>game.py</code> has module and class docstrings",
+            "<code>Game</code> uses private attributes (double underscore)",
+            "<code>get_cities_visited()</code> returns <strong>.copy()</strong> of the list",
+            "<code>lab-5-2.py</code> has header docstring with your name, abc123, and section",
+            "Game ends when player reaches a <strong>WIN</strong> city",
+            "No debug/test code left in any file",
+            "Submitted <strong>ALL FOUR</strong> files to CodeGrade"
         ],
-        "scopeReminder": "Chapter 10 techniques only this week. Inheritance (Chapter 11) is reserved for 5.3. Do not create WinCity or DeadEndCity yet.",
+        "scopeReminder": "Chapter 10 Sections 10.2–10.4. Multiple classes working together, constructors, private attributes, and getter methods. Inheritance and method overriding come in Lab 5.3.",
         "permittedTechniques": {
-            "chapters": "2–10",
+            "chapters": "2–10 (Sections 10.2–10.4 introduced this module; all prior techniques fully permitted)",
             "specific": [
-                "Multiple class definitions across multiple files",
-                "from module import ClassName",
-                "Object as attribute: self.__player = Player(name)",
-                "Method returning an object: return self.__cities[name]",
-                "Calling methods on returned objects: game.get_current_city().display_destinations()"
+                "Multiple class files (<code>city.py</code>, <code>game.py</code>)",
+                "<code>from module import Class</code> syntax",
+                "Methods that modify private attributes",
+                "Objects stored in dictionaries",
+                "All techniques from Module 5.1 and earlier"
             ],
-            "notPermitted": "list comprehensions, inheritance, WinCity or DeadEndCity subclasses (Module 5.3)"
+            "notPermitted": "Inheritance (Lab 5.3), method overriding and polymorphism (Lab 5.3)"
         },
         "warnings": [
-            "CodeGrade imports player.py directly and tests Player methods in isolation. Make sure Player works without a Game object.",
-            "function_library.py must be in the same directory as your submitted files. Submit it along with the others."
-        ],
-        "saveYourCode": "Keep all four files. Module 5.3 adds to city.py (inheritance) and completes game.py (full game loop, trivia gate, hazards, final report)."
+            "Submit ALL FOUR files: <code>city.py</code>, <code>game.py</code>, <code>function_library.py</code>, and <code>lab-5-2.py</code>. Missing any file will cause import failures.",
+            "Make sure <code>game.py</code> has no test code at the bottom — it should only contain the class definition."
+        ]
     },
-
     "needHelp": {
+        "chapterResource": "Chapter 10 BookEx Reference Guide — step-by-step breakdowns of every textbook example; your primary reference for this lab",
         "ifYouGetStuck": [
-            "If importing Game crashes with a ModuleNotFoundError, verify city.py and player.py are in the same folder as game.py",
-            "If get_current_city() returns a string instead of an object, check that you are returning self.__cities[city_name] and not city_name itself",
-            "Re-read Program 10-10 (account_test2.py). It shows the same pattern of creating an object and calling methods on it in sequence",
-            "Submit to CodeGrade early to isolate which class is failing"
+            "Test each class separately first — get Game working before connecting it to City",
+            "Check your imports — <code>from city import City</code> (not <code>import city</code>)",
+            "Dictionary lookup pattern — <code>cities[game.get_current_city()]</code> gets the City object",
+            "Submit to CodeGrade early — it tests each class independently",
+            "Come to Zoom or office hours — multi-class programs can be tricky to debug"
         ],
-        "bookexResourceNote": "Chapter 10 BookEx Reference Guide, which covers Programs 10-9 and 10-10 showing the method-updating-state pattern that Player uses"
+        "zoomLink": "https://utsa.zoom.us/j/97617245124",
+        "calendlyLink": "https://calendly.com/john-newsom-utsa/student-meeting",
+        "discordNote": "Post in the course Discord with your checkpoint number, what you expected to happen, and what actually happened. Include the specific error message if you have one."
     }
 }
