@@ -153,7 +153,7 @@ def render_overview_card(overview: dict, meta: dict) -> str:
             new_badge = ' <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span>' if df.get("new") else ""
             if df.get("file", "").endswith(".txt"):
                 download_cell = (
-                    f'<td><a href="../../data/{f_name}" download '
+                    f'<td><a href="data/{f_name}" download '
                     f'style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">'
                     f'&#11123; {f_name}</a></td>'
                 )
