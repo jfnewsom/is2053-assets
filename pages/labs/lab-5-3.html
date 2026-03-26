@@ -55,14 +55,30 @@
 <div class="lc-card lc-card--orange">
   <div class="lc-topper">
     <div class="lc-topper-title">Time Guide</div>
-    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; </div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 90–105 Minutes</div>
   </div>
   <div class="lc-panel">
     <div class="lc-table-wrap">
       <table class="lc-table">
         <thead><tr><th>Checkpoint</th><th>Time</th><th>Task</th></tr></thead>
         <tbody>
-              </tbody>
+            <tr>
+        <td><strong>CP1: Add City Subclasses</strong></td>
+        <td>25 min</td>
+        <td>WinCity and DeadEndCity in city.py: inheritance, constructor calls, method overrides</td>
+      </tr>
+      <tr>
+        <td><strong>CP2: Complete game.py</strong></td>
+        <td>40 min</td>
+        <td>play_turn(), trivia gate, travel loop, hazard handler, final report</td>
+      </tr>
+      <tr>
+        <td><strong>CP3: Write main.py and Full QA</strong></td>
+        <td>25 min</td>
+        <td>Four-line main.py, full playthrough, edge cases, CodeGrade</td>
+      </tr>
+      <tr class="lc-table__total"><td colspan="2"><strong>Total Estimated Time</strong></td><td><strong>90–105 Minutes</strong></td></tr>
+        </tbody>
       </table>
     </div>
   </div>
@@ -74,6 +90,47 @@
   </div>
   <div class="lc-panel">
     <p class="lc-arch-intro">Here is the complete final architecture. The [NEW] tags show what you are adding this week. The [REPLACED] tags show what changes from 5.2. Everything else carries forward.</p>
+    <div class="lc-arch">
+      <pre># ---- city.py [EXTENDED] ----
+class City:                     (from 5.1, add get_arrival_message)
+│   get_arrival_message()       [NEW] base version: 'Welcome to Name'
+│
+class WinCity(City):            [NEW] subclass for beach cities
+│   __init__(name, tagline)     calls City.__init__(self,name,'WIN',tagline)
+│   get_arrival_message()       [NEW-override] beach winner message
+│
+class DeadEndCity(City):        [NEW] subclass for dead ends
+│   __init__(name, tagline, warning)
+│   get_arrival_message()       [NEW-override] warning message
+
+# ---- player.py (UNCHANGED) ----
+# ---- function_library.py (UNCHANGED) ----
+
+# ---- game.py [COMPLETED] ----
+class Game:
+│── __init__()              (uses WinCity/DeadEndCity now)
+│── __setup_cities()        [REPLACED] creates typed subclass objects
+│── start_new_game()        (unchanged)
+│── get_current_city()      (unchanged)
+│── get_player()            (unchanged)
+│── play_turn()             [NEW] one full turn of the game loop
+│── __trivia_gate()         [NEW] private: ask trivia, return destination
+│── __travel()              [NEW] private: D20 loop to destination
+│── __handle_hazard()       [NEW] private: random hazard from dict
+│── is_game_over()          [NEW] returns self.__game_over
+│── did_win()               [NEW] returns self.__won
+│── display_final_report()  [NEW] prints full trip summary
+
+# ---- main.py [NEW] ----
+from game import Game
+def main():
+    game = Game()
+    game.start_new_game()
+    while not game.is_game_over():
+        game.play_turn()
+    game.display_final_report()
+if __name__ == '__main__': main()</pre>
+    </div>
   </div>
 </div>
 <div class="lc-card lc-card--green">
@@ -84,7 +141,8 @@
   <div class="lc-panel">
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">1</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Add WinCity and DeadEndCity to city.py</div><div class="lc-sub-banner"></div></div>
+      <div class="lc-cp-content"><div class="lc-cp-title">Add WinCity and DeadEndCity to city.py</div>
+      </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
@@ -136,7 +194,8 @@
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">2</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Complete game.py</div><div class="lc-sub-banner"></div></div>
+      <div class="lc-cp-content"><div class="lc-cp-title">Complete game.py</div>
+      </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
@@ -190,7 +249,8 @@
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">3</div></div>
-      <div class="lc-cp-content"><div class="lc-cp-title">Write main.py and Full QA</div><div class="lc-sub-banner"></div></div>
+      <div class="lc-cp-content"><div class="lc-cp-title">Write main.py and Full QA</div>
+      </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3">What You're Building</div>
