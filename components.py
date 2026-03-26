@@ -656,6 +656,16 @@ def render_before_you_begin(byb: dict) -> str:
         escaped
     )
 
+    # Color GAME LOOP and TRAVEL LOOP labels
+    escaped = escaped.replace(
+        'GAME LOOP',
+        '<span class="lc-arch-game-loop">GAME LOOP</span>'
+    )
+    escaped = escaped.replace(
+        'TRAVEL LOOP',
+        '<span class="lc-arch-travel-loop">TRAVEL LOOP</span>'
+    )
+
     intro_html = f'    <p class="lc-arch-intro">{html_lib.escape(intro)}</p>\n' if intro else ""
 
     return (
