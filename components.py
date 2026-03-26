@@ -189,7 +189,7 @@ def topper_with_badge(badge_word: str, badge_num: str,
           <div class="lc-topper-title">{title}</div>
         </td>
         <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">
-          <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: 120px; width: auto; display: block;">
+          <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: 80px; width: auto; display: block;">
         </td>
       </tr>{sub_row}
     </table>
