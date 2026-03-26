@@ -150,6 +150,59 @@
     </div>
   </div>
 </div>
+<div class="lc-card lc-card--cyan">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Before You Begin</div>
+    <div class="lc-sub-banner">Program Architecture</div>
+  </div>
+  <div class="lc-panel">
+    <p class="lc-arch-intro">Here&#x27;s the structure of what you&#x27;re building. city.py contains nothing but the class definition — no game code, no main(). lab-5-1.py imports it and tests every piece. Each checkpoint adds one section to the class.</p>
+    <div class="lc-arch">
+      <pre># ---- city.py ----
+class City:
+
+    # --- Constructor ---
+    <span class="lc-arch-fn">__init__(self, name, city_type, tagline)</span>   stores 4 private attributes
+        self.__name          = name
+        self.__city_type     = city_type
+        self.__tagline       = tagline
+        self.__connections   = {}              empty dict to start
+
+    # --- Getter Methods ---   [CP2]
+    <span class="lc-arch-fn">get_name(self)</span>                returns self.__name
+    <span class="lc-arch-fn">get_type(self)</span>                returns self.__city_type
+    <span class="lc-arch-fn">get_tagline(self)</span>             returns self.__tagline
+
+    # --- Connection Methods ---   [CP3]
+    <span class="lc-arch-fn">add_connection(self, city_name, distance)</span>   stores in self.__connections
+    <span class="lc-arch-fn">get_distance_to(self, city_name)</span>            returns distance or -1
+    <span class="lc-arch-fn">get_destination_names(self)</span>                 returns list of connected names
+
+    # --- Status Methods ---   [CP4]
+    <span class="lc-arch-fn">is_win_city(self)</span>             returns True if type == &#x27;WIN&#x27;
+    <span class="lc-arch-fn">is_dead_end(self)</span>             returns True if type == &#x27;DEAD_END&#x27;
+
+    # --- Display Methods ---   [CP4]
+    <span class="lc-arch-fn">display_destinations(self)</span>    prints numbered menu of connections
+    <span class="lc-arch-fn">__str__(self)</span>                 returns &#x27;San Antonio (START)&#x27;
+
+
+# ---- lab-5-1.py ----   [CP5]
+from city import City
+
+<span class="lc-arch-fn">main()</span>:
+    Create 4 City objects (San Antonio, Houston, Corpus Christi, Laredo)
+    Add connections between them
+    Test all getter methods
+    Test __str__ by printing each city
+    Test connection methods
+    Test <span class="lc-arch-fn">is_win_city()</span> and <span class="lc-arch-fn">is_dead_end()</span>
+    Call <span class="lc-arch-fn">display_destinations()</span>
+
+if __name__ == &#x27;__main__&#x27;: -&gt; <span class="lc-arch-fn">main()</span></pre>
+    </div>
+  </div>
+</div>
 <div class="lc-card lc-card--green">
   <div class="lc-topper">
     <div class="lc-topper-title">Checkpoints</div>
@@ -213,8 +266,40 @@
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li>Create a new file called <code>city.py</code></li>
-      <li>Add the module docstring at the top — include your name, abc123, section, and a description of the City class</li>
-      <li>Define the <code>City</code> class and add a class docstring listing the four private attributes: <code>__name</code>, <code>__city_type</code>, <code>__tagline</code>, and <code>__connections</code></li>
+      <li>Add the module docstring at the top:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-str">&quot;&quot;&quot;
+city.py
+Name: Your Name
+abc123: your_abc123
+Section: 001
+Description: City class for the Deep in the Heart road trip game.
+
+Chapter 10 Concepts:
+- Class definition with class keyword
+- __init__ constructor
+- Private attributes with __ prefix
+- Getter methods
+- __str__ method
+&quot;&quot;&quot;</span></pre>
+    </div>
+    <ol>
+      <li>Define the <code>City</code> class and add a class docstring:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">class</span> City<span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;
+    Represents a city in the Texas road trip game.
+
+    Attributes (private):
+        __name (str): City name
+        __city_type (str): Type of city
+        __tagline (str): City motto
+        __connections (dict): Connected cities and distances
+    &quot;&quot;&quot;</span></pre>
+    </div>
+    <ol>
       <li>Write the <code>__init__</code> method that accepts <code>name</code>, <code>city_type</code>, and <code>tagline</code> parameters</li>
       <li>Inside <code>__init__</code>, store each parameter as a private attribute: <code>self.__name = name</code>, <code>self.__city_type = city_type</code>, <code>self.__tagline = tagline</code></li>
       <li>Also initialize an empty dictionary for connections: <code>self.__connections = {}</code></li>
@@ -382,10 +467,29 @@ san_antonio <span class="sy-op">=</span> City<span class="sy-op">(</span><span c
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li>Add a comment <code># --- Connection Methods ---</code></li>
-      <li>Define <code>add_connection(self, city_name, distance)</code> that stores the connection: <code>self.__connections[city_name] = distance</code> — and add a docstring</li>
-      <li>Define <code>get_distance_to(self, city_name)</code> that returns the distance to a city, or <code>-1</code> if not connected: <code>return self.__connections.get(city_name, -1)</code> — and add a docstring</li>
-      <li>Define <code>get_destination_names(self)</code> that returns a list of connected city names: <code>return list(self.__connections.keys())</code> — and add a docstring</li>
+      <li>Define <code>add_connection(self, city_name, distance)</code> that stores the connection:</li>
     </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">add_connection</span><span class="sy-op">(</span>self<span class="sy-op">,</span> city_name<span class="sy-op">,</span> distance<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;Add a connection to another city.&quot;&quot;&quot;</span>
+    self<span class="sy-op">.</span>__connections<span class="sy-op">[</span>city_name<span class="sy-op">]</span> <span class="sy-op">=</span> distance</pre>
+    </div>
+    <ol>
+      <li>Define <code>get_distance_to(self, city_name)</code> that returns the distance, or <code>-1</code> if not connected:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">get_distance_to</span><span class="sy-op">(</span>self<span class="sy-op">,</span> city_name<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;Get distance to a connected city. Returns -1 if not connected.&quot;&quot;&quot;</span>
+    <span class="sy-kw">return</span> self<span class="sy-op">.</span>__connections<span class="sy-op">.</span>get<span class="sy-op">(</span>city_name<span class="sy-op">,</span> <span class="sy-op">-</span><span class="sy-num">1</span><span class="sy-op">)</span></pre>
+    </div>
+    <ol>
+      <li>Define <code>get_destination_names(self)</code> that returns a list of connected city names:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">get_destination_names</span><span class="sy-op">(</span>self<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;Return list of connected city names.&quot;&quot;&quot;</span>
+    <span class="sy-kw">return</span> <span class="sy-bi">list</span><span class="sy-op">(</span>self<span class="sy-op">.</span>__connections<span class="sy-op">.</span>keys<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">)</span></pre>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
     <p><strong>Step 1:</strong> Add this test code:</p>
     <div class="lc-code-block">
@@ -486,9 +590,25 @@ san_antonio<span class="sy-op">.</span>add_connection<span class="sy-op">(</span
       <li>Define <code>is_win_city(self)</code> that returns <code>True</code> if <code>self.__city_type == 'WIN'</code> — add a docstring</li>
       <li>Define <code>is_dead_end(self)</code> that returns <code>True</code> if <code>self.__city_type == 'DEAD_END'</code> — add a docstring</li>
       <li>Add a comment <code># --- Display Methods ---</code></li>
-      <li>Define <code>display_destinations(self)</code> that prints the destination menu — use a <code>for</code> loop over <code>self.__connections.items()</code> with a counter, and add a docstring</li>
-      <li>Define <code>__str__(self)</code> that returns a string like <code>'San Antonio (START)'</code> using an f-string — add a docstring</li>
+      <li>Define <code>display_destinations(self)</code> that prints a numbered menu of connections:</li>
     </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">display_destinations</span><span class="sy-op">(</span>self<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;Display available destinations from this city.&quot;&quot;&quot;</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;From <span class="sy-op">{</span>self<span class="sy-op">.</span>__name<span class="sy-op">}</span>, you can travel to:&#x27;<span class="sy-op">)</span>
+    option_num <span class="sy-op">=</span> <span class="sy-num">1</span>
+    <span class="sy-kw">for</span> dest_name<span class="sy-op">,</span> distance <span class="sy-kw">in</span> self<span class="sy-op">.</span>__connections<span class="sy-op">.</span>items<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">:</span>
+        <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  <span class="sy-op">{</span>option_num<span class="sy-op">}</span>. <span class="sy-op">{</span>dest_name<span class="sy-op">}</span> - <span class="sy-op">{</span>distance<span class="sy-op">}</span> miles&#x27;<span class="sy-op">)</span>
+        option_num <span class="sy-op">=</span> option_num <span class="sy-op">+</span> <span class="sy-num">1</span></pre>
+    </div>
+    <ol>
+      <li>Define <code>__str__(self)</code> that returns a string like <code>'San Antonio (START)'</code>:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">__str__</span><span class="sy-op">(</span>self<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;Return string representation of the city.&quot;&quot;&quot;</span>
+    <span class="sy-kw">return</span> f&#x27;<span class="sy-op">{</span>self<span class="sy-op">.</span>__name<span class="sy-op">}</span> (<span class="sy-op">{</span>self<span class="sy-op">.</span>__city_type<span class="sy-op">}</span>)&#x27;</pre>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
     <p><strong>Step 1:</strong> Add this test code:</p>
     <div class="lc-code-block">

@@ -77,6 +77,10 @@
         ],
         "strategy": "OOP is a new way of thinking. If it feels weird at first, that's normal! Build one method at a time, test it, then move on. By the end of this lab, the pattern will start clicking."
     },
+    "beforeYouBegin": {
+        "intro": "Here's the structure of what you're building. city.py contains nothing but the class definition — no game code, no main(). lab-5-1.py imports it and tests every piece. Each checkpoint adds one section to the class.",
+        "architecture": "# ---- city.py ----\nclass City:\n\n    # --- Constructor ---\n    __init__(self, name, city_type, tagline)   stores 4 private attributes\n        self.__name          = name\n        self.__city_type     = city_type\n        self.__tagline       = tagline\n        self.__connections   = {}              empty dict to start\n\n    # --- Getter Methods ---   [CP2]\n    get_name(self)                returns self.__name\n    get_type(self)                returns self.__city_type\n    get_tagline(self)             returns self.__tagline\n\n    # --- Connection Methods ---   [CP3]\n    add_connection(self, city_name, distance)   stores in self.__connections\n    get_distance_to(self, city_name)            returns distance or -1\n    get_destination_names(self)                 returns list of connected names\n\n    # --- Status Methods ---   [CP4]\n    is_win_city(self)             returns True if type == 'WIN'\n    is_dead_end(self)             returns True if type == 'DEAD_END'\n\n    # --- Display Methods ---   [CP4]\n    display_destinations(self)    prints numbered menu of connections\n    __str__(self)                 returns 'San Antonio (START)'\n\n\n# ---- lab-5-1.py ----   [CP5]\nfrom city import City\n\nmain():\n    Create 4 City objects (San Antonio, Houston, Corpus Christi, Laredo)\n    Add connections between them\n    Test all getter methods\n    Test __str__ by printing each city\n    Test connection methods\n    Test is_win_city() and is_dead_end()\n    Call display_destinations()\n\nif __name__ == '__main__': -> main()"
+    },
     "checkpoints": [
         {
             "number": 1,
@@ -126,8 +130,26 @@
                     "type": "instructions",
                     "items": [
                         "Create a new file called <code>city.py</code>",
-                        "Add the module docstring at the top — include your name, abc123, section, and a description of the City class",
-                        "Define the <code>City</code> class and add a class docstring listing the four private attributes: <code>__name</code>, <code>__city_type</code>, <code>__tagline</code>, and <code>__connections</code>",
+                        "Add the module docstring at the top:"
+                    ]
+                },
+                {
+                    "type": "code_block",
+                    "code": "\"\"\"\ncity.py\nName: Your Name\nabc123: your_abc123\nSection: 001\nDescription: City class for the Deep in the Heart road trip game.\n\nChapter 10 Concepts:\n- Class definition with class keyword\n- __init__ constructor\n- Private attributes with __ prefix\n- Getter methods\n- __str__ method\n\"\"\""
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Define the <code>City</code> class and add a class docstring:"
+                    ]
+                },
+                {
+                    "type": "code_block",
+                    "code": "class City:\n    \"\"\"\n    Represents a city in the Texas road trip game.\n\n    Attributes (private):\n        __name (str): City name\n        __city_type (str): Type of city\n        __tagline (str): City motto\n        __connections (dict): Connected cities and distances\n    \"\"\""
+                },
+                {
+                    "type": "instructions",
+                    "items": [
                         "Write the <code>__init__</code> method that accepts <code>name</code>, <code>city_type</code>, and <code>tagline</code> parameters",
                         "Inside <code>__init__</code>, store each parameter as a private attribute: <code>self.__name = name</code>, <code>self.__city_type = city_type</code>, <code>self.__tagline = tagline</code>",
                         "Also initialize an empty dictionary for connections: <code>self.__connections = {}</code>"
@@ -316,10 +338,32 @@
                     "type": "instructions",
                     "items": [
                         "Add a comment <code># --- Connection Methods ---</code>",
-                        "Define <code>add_connection(self, city_name, distance)</code> that stores the connection: <code>self.__connections[city_name] = distance</code> — and add a docstring",
-                        "Define <code>get_distance_to(self, city_name)</code> that returns the distance to a city, or <code>-1</code> if not connected: <code>return self.__connections.get(city_name, -1)</code> — and add a docstring",
-                        "Define <code>get_destination_names(self)</code> that returns a list of connected city names: <code>return list(self.__connections.keys())</code> — and add a docstring"
+                        "Define <code>add_connection(self, city_name, distance)</code> that stores the connection:"
                     ]
+                },
+                {
+                    "type": "code_block",
+                    "code": "def add_connection(self, city_name, distance):\n    \"\"\"Add a connection to another city.\"\"\"\n    self.__connections[city_name] = distance"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Define <code>get_distance_to(self, city_name)</code> that returns the distance, or <code>-1</code> if not connected:"
+                    ]
+                },
+                {
+                    "type": "code_block",
+                    "code": "def get_distance_to(self, city_name):\n    \"\"\"Get distance to a connected city. Returns -1 if not connected.\"\"\"\n    return self.__connections.get(city_name, -1)"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Define <code>get_destination_names(self)</code> that returns a list of connected city names:"
+                    ]
+                },
+                {
+                    "type": "code_block",
+                    "code": "def get_destination_names(self):\n    \"\"\"Return list of connected city names.\"\"\"\n    return list(self.__connections.keys())"
                 },
                 {
                     "type": "h3",
@@ -418,9 +462,22 @@
                         "Define <code>is_win_city(self)</code> that returns <code>True</code> if <code>self.__city_type == 'WIN'</code> — add a docstring",
                         "Define <code>is_dead_end(self)</code> that returns <code>True</code> if <code>self.__city_type == 'DEAD_END'</code> — add a docstring",
                         "Add a comment <code># --- Display Methods ---</code>",
-                        "Define <code>display_destinations(self)</code> that prints the destination menu — use a <code>for</code> loop over <code>self.__connections.items()</code> with a counter, and add a docstring",
-                        "Define <code>__str__(self)</code> that returns a string like <code>'San Antonio (START)'</code> using an f-string — add a docstring"
+                        "Define <code>display_destinations(self)</code> that prints a numbered menu of connections:"
                     ]
+                },
+                {
+                    "type": "code_block",
+                    "code": "def display_destinations(self):\n    \"\"\"Display available destinations from this city.\"\"\"\n    print(f'From {self.__name}, you can travel to:')\n    option_num = 1\n    for dest_name, distance in self.__connections.items():\n        print(f'  {option_num}. {dest_name} - {distance} miles')\n        option_num = option_num + 1"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Define <code>__str__(self)</code> that returns a string like <code>'San Antonio (START)'</code>:"
+                    ]
+                },
+                {
+                    "type": "code_block",
+                    "code": "def __str__(self):\n    \"\"\"Return string representation of the city.\"\"\"\n    return f'{self.__name} ({self.__city_type})'"
                 },
                 {
                     "type": "h3",
