@@ -1,0 +1,279 @@
+{
+    "meta": {
+        "chapterId":    "bookex-ch05",
+        "chapter":      5,
+        "title":        "Functions",
+        "programCount": 10,
+        "filename":     "10 individual .py files"
+    },
+    "overview": {
+        "body": "Work through each Gaddis program in order. Chapter 5 is the biggest structural shift in the course \u2014 your code stops being a single block and starts being organized into functions. Type every program by hand. The main() pattern, parameter passing, and return values introduced here are used in every Lab assignment for the rest of the semester.",
+        "objectives": [
+            "Define functions using the def keyword and call them from main()",
+            "Organize a program into multiple single-purpose functions",
+            "Understand that local variables in different functions are independent",
+            "Pass data into functions using arguments and parameters",
+            "Use global constants (defined outside all functions) across multiple functions",
+            "Return values from functions using the return statement",
+            "Import and use the math and random modules",
+            "Use the if __name__ == '__main__': guard for reusable modules"
+        ],
+        "keyConceptsText": "Chapter 5 covers function definition and calling, local variable scope, passing arguments, global constants, return values, importing the math and random modules, and the if __name__ == '__main__' guard.",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis \u2014 Chapter 5: Functions",
+        "programRequirements": [
+            "Each program is saved as its own individual .py file",
+            "Each file uses the exact filename listed in the instructions",
+            "Each program runs without syntax errors",
+            "Output matches what is shown in the textbook"
+        ],
+        "filenameNote": "This chapter uses 10 individual files. Submit all 10 files together in your final CodeGrade submission."
+    },
+    "timeGuide": {
+        "totalTime": "90\u2013120 Minutes",
+        "rows": [
+            { "checkpoint": "two_functions.py",   "time": "10 min", "task": "Basic function definition and calling" },
+            { "checkpoint": "acme_dryer.py",       "time": "15 min", "task": "Multiple single-purpose functions" },
+            { "checkpoint": "birds.py",            "time": "10 min", "task": "Local variable scope" },
+            { "checkpoint": "cups_to_ounces.py",   "time": "10 min", "task": "Passing one argument to a function" },
+            { "checkpoint": "multiple_args.py",    "time": "10 min", "task": "Multiple arguments and return values" },
+            { "checkpoint": "retirement.py",       "time": "10 min", "task": "Global constants shared across functions" },
+            { "checkpoint": "dice.py",             "time": "10 min", "task": "Importing and using the random module" },
+            { "checkpoint": "sale_price.py",       "time": "10 min", "task": "Chaining value-returning functions" },
+            { "checkpoint": "hypotenuse.py",       "time": "10 min", "task": "Importing and using the math module" },
+            { "checkpoint": "rectangle2.py",       "time": "10 min", "task": "Multiple return values and the __name__ guard" }
+        ]
+    },
+    "checkpoints": [
+        {
+            "number": 1,
+            "filename": "two_functions.py",
+            "programRef": "Program 5-2 (6th Ed) \u2022 Program 5-2 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A program with two functions: main() and message(). The main() function calls message(), which prints two lines, then execution returns to main() and continues. This is the simplest demonstration of how function calls transfer and return control." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 5-2.",
+                    "Create a new file named two_functions.py.",
+                    "Type the program exactly as shown, including the call to main() at the bottom.",
+                    "Run it and trace the output to confirm the execution order matches the call sequence."
+                ]},
+                { "type": "callout", "variant": "tip", "title": "Define Functions at the Top, Call main() at the Bottom",
+                  "body": "Python reads all function definitions when the file loads. That's why main() can call message() even though message() is defined after main() \u2014 by the time main() runs, Python already knows about message(). Always put the call to main() at the very bottom of the file." }
+            ]
+        },
+        {
+            "number": 2,
+            "filename": "acme_dryer.py",
+            "programRef": "Program 5-3 (6th Ed) \u2022 Program 5-3 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A step-by-step instruction program for disassembling a dryer, broken into six functions: startup_message(), step1() through step4(), and main() which calls them all in sequence and pauses for user input between steps. This is the pattern of organizing a program into single-purpose functions." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 5-3.",
+                    "Create a new file named acme_dryer.py.",
+                    "Type all six function definitions and the call to main() at the bottom.",
+                    "Run it and press Enter to step through each section.",
+                    "Confirm each step's message appears in the correct order."
+                ]},
+                { "type": "callout", "variant": "info", "title": "Each Function Has One Job",
+                  "body": "Notice that startup_message() only handles the intro, step1() only handles step 1, and so on. main() does nothing except coordinate the others. This is the single-responsibility principle, and it's what makes code easy to read and maintain." }
+            ]
+        },
+        {
+            "number": 3,
+            "filename": "birds.py",
+            "programRef": "Program 5-5 (6th Ed) \u2022 Program 5-5 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A program with two functions \u2014 texas() and california() \u2014 that each have a local variable named birds. Despite sharing the same name, the two variables are completely independent. This demonstrates that local variables belong to their function and can't be seen or affected by other functions." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 5-5.",
+                    "Create a new file named birds.py.",
+                    "Type the program as shown.",
+                    "Run it and confirm texas() prints 5000 and california() prints 8000.",
+                    "Notice that changing birds in one function would have zero effect on the other."
+                ]},
+                { "type": "callout", "variant": "info", "title": "Local Variables Only Exist Inside Their Function",
+                  "body": "The birds variable in texas() and the birds variable in california() are two completely separate variables that happen to share a name. When texas() finishes, its birds disappears. This independence is called scope, and it prevents functions from accidentally interfering with each other." }
+            ]
+        },
+        {
+            "number": 4,
+            "filename": "cups_to_ounces.py",
+            "programRef": "Program 5-7 (6th Ed) \u2022 Program 5-7 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A unit converter that collects cups from the user in main(), then passes the value to cups_to_ounces() as an argument. The function receives it as the parameter cups, calculates the ounces, and prints the result. This is the core argument-passing pattern you will use in every Lab assignment." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 5-7.",
+                    "Create a new file named cups_to_ounces.py.",
+                    "Type the program including the intro() function.",
+                    "Run it and enter a number of cups.",
+                    "Confirm the correct number of ounces is displayed."
+                ]},
+                { "type": "callout", "variant": "tip", "title": "Arguments vs Parameters",
+                  "body": "When main() calls cups_to_ounces(cups_needed), cups_needed is the argument \u2014 the value being passed. When cups_to_ounces(cups) receives it, cups is the parameter \u2014 the variable inside the function that holds the value. Same data, different names depending on which side of the call you're describing." }
+            ]
+        },
+        {
+            "number": 5,
+            "filename": "multiple_args.py",
+            "programRef": "Program 5-8 (6th Ed) \u2022 Program 5-8 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A program where main() calls show_sum(12, 45), passing two arguments. The function accepts two parameters, calculates their sum, and returns it. main() stores the returned value in total and prints it. This demonstrates both multiple arguments and the return statement." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 5-8.",
+                    "Create a new file named multiple_args.py.",
+                    "Type the program exactly as shown, including the commented-out print inside show_sum.",
+                    "Run it and confirm the output shows 57."
+                ]},
+                { "type": "callout", "variant": "pitfall", "title": "return Sends Data Back; print Only Displays It",
+                  "body": "If show_sum used print(result) instead of return result, main() would receive None when it calls show_sum(12, 45) \u2014 and total would be None, not 57. Use return when you need the caller to be able to use the value. Use print only for final display." }
+            ]
+        },
+        {
+            "number": 6,
+            "filename": "retirement.py",
+            "programRef": "Program 5-17 (6th Ed) \u2022 Program 5-15 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A retirement contribution calculator with a global constant CONTRIBUTION_RATE defined outside all functions. Both show_pay_contrib() and show_bonus_contrib() use it in their calculations without needing it passed as an argument. This demonstrates the correct use of global constants." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 5-17 (6th Ed) or Program 5-15 (5th Ed).",
+                    "Create a new file named retirement.py.",
+                    "Type the CONTRIBUTION_RATE constant at the very top, before any function definitions.",
+                    "Run it and enter a gross pay and bonus amount.",
+                    "Confirm both contributions are calculated at 5% of the amounts entered."
+                ]},
+                { "type": "callout", "variant": "tip", "title": "Global Constants Are Fine; Global Variables Are Not",
+                  "body": "CONTRIBUTION_RATE is a constant \u2014 it never changes. That makes it safe to share across functions. What you want to avoid is modifying a global variable from inside a function, which makes your code unpredictable. Constants (ALL_CAPS) shared for reading: fine. Variables modified from inside functions: avoid." }
+            ]
+        },
+        {
+            "number": 7,
+            "filename": "dice.py",
+            "programRef": "Program 5-21 (6th Ed) \u2022 Program 5-19 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A dice simulator that imports the random module and uses random.randint(MIN, MAX) to generate two random values between 1 and 6. A sentinel loop lets the user keep rolling. This is the standard random module introduction and the pattern used in the game Lab assignments." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 5-21 (6th Ed) or Program 5-19 (5th Ed).",
+                    "Create a new file named dice.py.",
+                    "Type the program including the import random statement at the top and the MIN/MAX constants.",
+                    "Run it and roll the dice several times.",
+                    "Confirm the values are between 1 and 6 and change with each roll."
+                ]},
+                { "type": "callout", "variant": "info", "title": "random.randint() Is Inclusive on Both Ends",
+                  "body": "random.randint(1, 6) can return 1, 2, 3, 4, 5, or 6 \u2014 both endpoints included. This is different from range(), which excludes the end. The two calls in this program simulate two separate dice rolls, so both values can be different on the same roll." }
+            ]
+        },
+        {
+            "number": 8,
+            "filename": "sale_price.py",
+            "programRef": "Program 5-24 (6th Ed) \u2022 Program 5-22 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A sale price calculator with three functions: get_regular_price() returns user input, discount(price) returns the discount amount, and main() chains them together: sale_price = reg_price - discount(reg_price). This shows how return values can be used directly in expressions and how functions can call other functions." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 5-24 (6th Ed) or Program 5-22 (5th Ed).",
+                    "Create a new file named sale_price.py.",
+                    "Type the program including the DISCOUNT_PERCENTAGE global constant.",
+                    "Run it and enter a price like 50.00.",
+                    "Confirm the sale price is 20% less than the regular price."
+                ]},
+                { "type": "callout", "variant": "tip", "title": "Return Values Can Be Used Directly in Expressions",
+                  "body": "sale_price = reg_price - discount(reg_price) calls discount() and subtracts its return value in a single line. You don't have to store the return value in a variable first unless you need to use it more than once." }
+            ]
+        },
+        {
+            "number": 9,
+            "filename": "hypotenuse.py",
+            "programRef": "Program 5-28 (6th Ed) \u2022 Program 5-26 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A right triangle hypotenuse calculator that imports the math module and calls math.hypot(a, b). This demonstrates import math and dot notation for module functions. The math module provides pre-built mathematical functions so you don't have to implement them yourself." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 5-28 (6th Ed) or Program 5-26 (5th Ed).",
+                    "Create a new file named hypotenuse.py.",
+                    "Type the program with import math at the top.",
+                    "Run it and enter side lengths of 3 and 4 \u2014 the hypotenuse should be 5.0.",
+                    "Try other values to confirm it works."
+                ]},
+                { "type": "callout", "variant": "info", "title": "Dot Notation for Module Functions",
+                  "body": "math.hypot(a, b) means: from the math module, call the hypot function. The module name comes first, then a dot, then the function name. This is the same pattern as math.sqrt(), math.floor(), and any other module function." }
+            ]
+        },
+        {
+            "number": 10,
+            "filename": "rectangle2.py",
+            "programRef": "Program 5-32 (6th Ed) \u2022 Program 5-30 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A rectangle calculator with separate area() and perimeter() functions that each accept width and length and return a calculated value. main() calls both and uses their return values directly in print statements. This also introduces the if __name__ == '__main__': guard, which is the standard way to structure reusable Python files." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 5-32 (6th Ed) or Program 5-30 (5th Ed).",
+                    "Create a new file named rectangle2.py.",
+                    "Type the program including the if __name__ == '__main__': guard at the bottom instead of a bare main() call.",
+                    "Run it and enter width and length values.",
+                    "Confirm the area and perimeter are both calculated correctly."
+                ]},
+                { "type": "callout", "variant": "info", "title": "Why if __name__ == '__main__': Matters",
+                  "body": "When Python runs a file directly, __name__ equals '__main__'. When the file is imported by another file, __name__ equals the filename instead. The guard ensures main() only runs when you execute the file directly \u2014 not when you import it. You will see this pattern in every Lab assignment from here on." }
+            ]
+        }
+    ],
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "two_functions.py runs and output matches the book",
+            "acme_dryer.py runs and output matches the book",
+            "birds.py runs and output matches the book",
+            "cups_to_ounces.py runs and output matches the book",
+            "multiple_args.py runs and output matches the book",
+            "retirement.py runs and output matches the book",
+            "dice.py runs and output matches the book",
+            "sale_price.py runs and output matches the book",
+            "hypotenuse.py runs and output matches the book",
+            "rectangle2.py runs and output matches the book"
+        ],
+        "submissionReminder": "CodeGrade only keeps your most recent submission. Your final upload must include all 10 files or you will lose credit for any that are missing.",
+        "scopeReminder": "These are Chapter 5 BookEx exercises. You are typing Gaddis programs exactly as written. All programs use the def and main() pattern introduced in this chapter.",
+        "permittedTechniques": {
+            "chapters": "2\u20135",
+            "specific": [
+                "Function definition with def and calling with parentheses",
+                "main() as the entry point, called at the bottom of the file",
+                "Parameters and arguments (positional)",
+                "return statement and using return values",
+                "Local variable scope",
+                "Global constants defined outside all functions",
+                "import math and import random with dot notation",
+                "if __name__ == '__main__': guard",
+                "All Chapter 2\u20134 techniques"
+            ],
+            "notPermitted": "lists as data structures, file I/O, classes, anything from chapters not yet covered"
+        },
+        "warnings": []
+    },
+    "needHelp": {
+        "ifYouGetStuck": [
+            "Check that every function definition ends with a colon and that the body is indented 4 spaces",
+            "Make sure main() is called at the bottom of the file \u2014 forgetting this is the most common reason a program appears to do nothing",
+            "If a function should return a value, make sure it has a return statement \u2014 functions without return give back None",
+            "Submit to CodeGrade early \u2014 it shows exactly which files pass and which need work",
+            "Post in the course Discord if you are stuck after two attempts (describe the error, do not post your code)",
+            "Come to Zoom or office hours if you are still stuck"
+        ],
+        "bookexResourceNote": "Chapter 5 BookEx Reference Guide \u2014 step-by-step breakdown of every program in this chapter"
+    }
+}
