@@ -2,21 +2,26 @@
  * nav.js — IS2053 Programming I
  * Top horizontal navigation bar with dropdown menus.
  *
- * Context rules:
- *   Standalone (not in iframe)            → full nav (all sections + assignments)
- *   In iframe + site-context="support"    → slim nav (Course, Resources, The Game only)
- *   In iframe + site-context="assignment" → no nav rendered at all
+ * Context is determined by the ?context= query parameter in the URL:
+ *
+ *   No parameter (direct open)   → full nav (all sections + assignments)
+ *   ?context=support             → slim nav (Course, Resources, The Game only)
+ *   ?context=assignment          → no nav rendered at all
+ *
+ * This means the same HTML file behaves correctly whether opened
+ * directly by a student or embedded in a Canvas iframe.
  */
 
 (function () {
   'use strict';
 
   /* ── Context detection ──────────────────────────────────── */
-  const inIframe = window.self !== window.top;
-  const ctxMeta  = document.querySelector('meta[name="site-context"]');
-  const ctx      = ctxMeta ? ctxMeta.getAttribute('content') : 'support';
+  const params = new URLSearchParams(window.location.search);
+  const ctx    = params.get('context'); // null | 'support' | 'assignment'
 
-  if (inIframe && ctx === 'assignment') return;
+  if (ctx === 'assignment') return;
+
+  const showFull = ctx === null; // no param = opened directly = full nav
 
   /* ── Base URLs ──────────────────────────────────────────── */
   const BASE = 'https://jfnewsom.github.io/is2053-assets';
@@ -25,8 +30,7 @@
   const L    = BASE + '/pages/labs/';
   const BX   = BASE + '/pages/bookex/';
 
-  /* ── Fonts (Roboto Slab + Roboto already in labs.css,
-       but inject if this page doesn't load labs.css) ────── */
+  /* ── Fonts ──────────────────────────────────────────────── */
   if (!document.querySelector('link[href*="Roboto+Slab"]') &&
       !document.querySelector('link[href*="fonts.googleapis"]')) {
     const f = document.createElement('link');
@@ -67,11 +71,6 @@
       border-right: 1px solid #222;
       flex-shrink: 0;
       white-space: nowrap;
-    }
-    #is2053-nav .nav-logo img {
-      height: 22px;
-      width: auto;
-      opacity: 0.8;
     }
     #is2053-nav .nav-logo-label {
       font-family: 'Roboto Slab', serif;
@@ -169,8 +168,6 @@
       border-top: 1px solid #1a1a1a;
       margin: 4px 0;
     }
-
-    /* Sub-group label inside dropdowns */
     #is2053-nav .drop-sub {
       font-size: 9px;
       font-weight: 700;
@@ -267,8 +264,6 @@
   }
 
   /* ── Nav HTML ───────────────────────────────────────────── */
-  const showFull = !inIframe;
-
   const labsDropdown = showFull ? `
     <div class="nav-item">
       <div class="nav-trigger">Labs <span class="nav-caret">&#9660;</span></div>
@@ -303,17 +298,17 @@
       <div class="nav-dropdown">
         <div class="drop-label">Book Exercises</div>
         <div class="drop-sub">Module 1 &mdash; Ch. 2&ndash;3</div>
-        ${link('Chapter 2', BX + 'BookExCH02.html', 'dd-purple')}
-        ${link('Chapter 3', BX + 'BookExCH03.html', 'dd-purple')}
+        ${link('Chapter 2',  BX + 'BookExCH02.html', 'dd-purple')}
+        ${link('Chapter 3',  BX + 'BookExCH03.html', 'dd-purple')}
         <div class="drop-sub">Module 2 &mdash; Ch. 4&ndash;5</div>
-        ${link('Chapter 4', BX + 'BookExCH04.html', 'dd-purple')}
-        ${link('Chapter 5', BX + 'BookExCH05.html', 'dd-purple')}
+        ${link('Chapter 4',  BX + 'BookExCH04.html', 'dd-purple')}
+        ${link('Chapter 5',  BX + 'BookExCH05.html', 'dd-purple')}
         <div class="drop-sub">Module 3 &mdash; Ch. 6&ndash;7</div>
-        ${link('Chapter 6', BX + 'BookExCH06.html', 'dd-purple')}
-        ${link('Chapter 7', BX + 'BookExCH07.html', 'dd-purple')}
+        ${link('Chapter 6',  BX + 'BookExCH06.html', 'dd-purple')}
+        ${link('Chapter 7',  BX + 'BookExCH07.html', 'dd-purple')}
         <div class="drop-sub">Module 4 &mdash; Ch. 8&ndash;9</div>
-        ${link('Chapter 8', BX + 'BookExCH08.html', 'dd-purple')}
-        ${link('Chapter 9', BX + 'BookExCH09.html', 'dd-purple')}
+        ${link('Chapter 8',  BX + 'BookExCH08.html', 'dd-purple')}
+        ${link('Chapter 9',  BX + 'BookExCH09.html', 'dd-purple')}
         <div class="drop-sub">Module 5 &mdash; Ch. 10&ndash;11</div>
         ${link('Chapter 10', BX + 'BookExCH10.html', 'dd-purple')}
         ${link('Chapter 11', BX + 'BookExCH11.html', 'dd-purple')}
@@ -370,8 +365,8 @@
           <div class="nav-trigger">Tools <span class="nav-caret">&#9660;</span></div>
           <div class="nav-dropdown">
             <div class="drop-label">External Tools</div>
-            ${link('Python Docs', 'https://www.python.org/downloads/',            'dd-cyan', true)}
-            ${link('VS Code',     'https://code.visualstudio.com/download',       'dd-cyan', true)}
+            ${link('Python Docs', 'https://www.python.org/downloads/',                    'dd-cyan', true)}
+            ${link('VS Code',     'https://code.visualstudio.com/download',               'dd-cyan', true)}
             ${link('Calendly',    'https://calendly.com/john-newsom-utsa/student-meeting', 'dd-cyan', true)}
           </div>
         </div>
@@ -382,14 +377,12 @@
     </div>`;
 
   /* ── Zoom session time check ────────────────────────────── */
-  // Shows Join Zoom button only while session is active:
-  // Tuesdays 5:45 PM – 7:15 PM CT (America/Chicago)
   function checkZoomActive() {
     try {
-      const ct = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
-      const day = ct.getDay();                          // 0=Sun … 2=Tue
+      const ct   = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+      const day  = ct.getDay();
       const mins = ct.getHours() * 60 + ct.getMinutes();
-      const active = day === 2 && mins >= 1065 && mins <= 1155; // 17*60+45=1065, 19*60+15=1155
+      const active = day === 2 && mins >= 1065 && mins <= 1155;
       const el = document.getElementById('is2053-nav-actions');
       if (el && active) {
         el.innerHTML =
@@ -414,7 +407,6 @@
 
     checkZoomActive();
 
-    // Inject shared footer
     const footer = document.createElement('footer');
     footer.className = 'site-footer';
     footer.innerHTML =
@@ -423,10 +415,12 @@
       ' alt="UT San Antonio">' +
       '<div class="site-footer__citation">' +
       '<span class="site-footer__citation-label">Textbook</span>' +
-      '<span class="site-footer__citation-text"><em>Starting Out with Python</em>, 6th Edition &middot; Tony Gaddis &middot; Pearson &middot; ISBN 978-0-13-787120-9</span>' +
+      '<span class="site-footer__citation-text"><em>Starting Out with Python</em>, 6th Edition' +
+      ' &middot; Tony Gaddis &middot; Pearson &middot; ISBN 978-0-13-787120-9</span>' +
       '</div>' +
       '<div class="site-footer__copyright">' +
-      '&copy; 2026 The University of Texas at San Antonio. Developed by John Newsom for IS2053: Programming I (Python). All rights reserved.' +
+      '&copy; 2026 The University of Texas at San Antonio. Developed by John Newsom' +
+      ' for IS2053: Programming I (Python). All rights reserved.' +
       '</div>';
     document.body.appendChild(footer);
   }
