@@ -299,6 +299,7 @@
       <div class="nav-trigger">BookEx <span class="nav-caret">&#9660;</span></div>
       <div class="nav-dropdown">
         <div class="drop-label">Book Exercises</div>
+        ${link('BookEx Overview', BX + 'bookex-overview.html' + suffix, 'dd-purple')}
         <div class="drop-sub">Module 1 &mdash; Ch. 2&ndash;3</div>
         ${link('Chapter 2',  BX + 'BookExCH02.html' + suffix, 'dd-purple')}
         ${link('Chapter 3',  BX + 'BookExCH03.html' + suffix, 'dd-purple')}
@@ -348,6 +349,8 @@
             ${link('How To Get Help',     S + 'how-to-get-help.html' + suffix,     'dd-green')}
             ${link('Discord',             S + 'discord.html' + suffix,             'dd-green')}
             ${link('Stretch Goals',       S + 'stretch-goals.html' + suffix,       'dd-green')}
+            ${link('AI Policy',           S + 'ai-policy.html' + suffix,           'dd-green')}
+            ${link('Practice Archive',    S + 'practice-archive.html' + suffix,    'dd-green')}
           </div>
         </div>
 
@@ -362,6 +365,28 @@
 
         ${labsDropdown}
         ${bookexDropdown}
+
+        <div class="nav-item">
+          <div class="nav-trigger">Reading <span class="nav-caret">&#9660;</span></div>
+          <div class="nav-dropdown">
+            <div class="drop-label">Reading Guide</div>
+            <div class="drop-sub">Module 1 &mdash; Ch. 2&ndash;3</div>
+            ${link('Chapter 2',  S + 'reading.html#ch02' + suffix, 'dd-orange')}
+            ${link('Chapter 3',  S + 'reading.html#ch03' + suffix, 'dd-orange')}
+            <div class="drop-sub">Module 2 &mdash; Ch. 4&ndash;5</div>
+            ${link('Chapter 4',  S + 'reading.html#ch04' + suffix, 'dd-orange')}
+            ${link('Chapter 5',  S + 'reading.html#ch05' + suffix, 'dd-orange')}
+            <div class="drop-sub">Module 3 &mdash; Ch. 6&ndash;7</div>
+            ${link('Chapter 6',  S + 'reading.html#ch06' + suffix, 'dd-orange')}
+            ${link('Chapter 7',  S + 'reading.html#ch07' + suffix, 'dd-orange')}
+            <div class="drop-sub">Module 4 &mdash; Ch. 8&ndash;9</div>
+            ${link('Chapter 8',  S + 'reading.html#ch08' + suffix, 'dd-orange')}
+            ${link('Chapter 9',  S + 'reading.html#ch09' + suffix, 'dd-orange')}
+            <div class="drop-sub">Module 5 &mdash; Ch. 10&ndash;11</div>
+            ${link('Chapter 10', S + 'reading.html#ch10' + suffix, 'dd-orange')}
+            ${link('Chapter 11', S + 'reading.html#ch11' + suffix, 'dd-orange')}
+          </div>
+        </div>
 
         <div class="nav-item">
           <div class="nav-trigger">Tools <span class="nav-caret">&#9660;</span></div>
