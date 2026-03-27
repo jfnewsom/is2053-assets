@@ -1,0 +1,586 @@
+{
+    "meta": {
+        "labId": "lab-2-1",
+        "title": "Keep On Driving",
+        "module": 2,
+        "week": 1,
+        "weekType": "BUILD",
+        "chapters": "4",
+        "chapterTopics": "Repetition Structures",
+        "filename": "lab-2-1.py"
+    },
+    "overview": {
+        "body": "In Module 1, you chose a destination from San Antonio — but never actually went anywhere! Time to hit the road. This week, you'll add a <strong>while loop</strong> that simulates driving toward your destination. Each turn you travel a fixed 50 miles until you arrive. This is your first taste of the <strong>accumulator pattern</strong> — keeping a running total as the loop repeats.",
+        "mentorQuote": {
+            "character": "Terrence \"T-Bone\" Booker",
+            "role": "Senior Developer, Bat City Collective",
+            "headshot": "Terrence-Booker.png",
+            "quote": "The scariest bug in programming? An infinite loop. Before you write any while loop, I need you to answer one question: 'What makes this loop stop?' If you can't answer that clearly, you're not ready to code it yet. Test your exit condition first!"
+        },
+        "objectives": [
+            "Simplify to <strong>3 destinations</strong> (Corpus Christi, Houston, Austin)",
+            "Add a constant: <code>MILES_PER_TURN = 50</code>",
+            "Use a <strong>while loop</strong> to travel until you arrive",
+            "Track progress with an <strong>accumulator</strong> (total miles)",
+            "Display turn-by-turn progress and a trip summary when you arrive"
+        ],
+        "keyConceptsText": "<strong>Chapter 4 Sections:</strong> 4.2 (The while Loop), 4.4 (Calculating a Running Total)",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 4: Repetition Structures",
+        "namedConstants": [
+            { "name": "SAT_TO_CORPUS",  "description": "Distance from San Antonio to Corpus Christi (150 miles)" },
+            { "name": "SAT_TO_HOUSTON", "description": "Distance from San Antonio to Houston (200 miles)" },
+            { "name": "SAT_TO_AUSTIN",  "description": "Distance from San Antonio to Austin (80 miles)" },
+            { "name": "MILES_PER_TURN", "description": "Fixed travel distance per turn (50 miles) — NEW this week!" }
+        ],
+        "programRequirements": [
+            "Your program <strong>MUST</strong> use a while loop that continues while distance remaining is greater than 0",
+            "Your program <strong>MUST</strong> implement the accumulator pattern for tracking total miles",
+            "Your program <strong>MUST</strong> display turn-by-turn progress",
+            "Your program <strong>MUST</strong> display a trip summary after arrival",
+            "Your program <strong>MUST</strong> work for all 3 destination choices"
+        ],
+        "filenameNote": "Submit <code>lab-2-1.py</code> this week.",
+        "saveYourCode": "Keep <code>lab-2-1.py</code> — Module 2.2 adds hazard checks and a for loop directly on top of this file."
+    },
+    "timeGuide": {
+        "totalTime": "60–90 Minutes",
+        "rows": [
+            { "checkpoint": "CP1: Setup & Simplify",          "time": "15 min", "task": "Start fresh, simplify to 3 destinations" },
+            { "checkpoint": "CP2: Initialize Variables",       "time": "10 min", "task": "Set up tracking variables BEFORE the loop" },
+            { "checkpoint": "CP3: Build the while Loop",       "time": "20 min", "task": "The condition and basic structure" },
+            { "checkpoint": "CP4: Complete the Loop Body",     "time": "20 min", "task": "Turn display, distance updates, accumulator" },
+            { "checkpoint": "CP5: Arrival & Trip Summary",     "time": "15 min", "task": "What happens after the loop" },
+            { "checkpoint": "Testing & Polish",                "time": "10 min", "task": "Test all 3 destinations, verify turn counts" }
+        ],
+        "strategy": "Build and test after EACH checkpoint! Don't write the entire program at once. Get each piece working before adding the next. This 'build a little, test a little' habit will save you hours of debugging."
+    },
+    "beforeYouBegin": {
+        "intro": "Here's how your finished program fits together. Everything here is new — you're starting fresh this module.",
+        "architecture": "# ---- CONSTANTS ----  [NEW]\nSAT_TO_CORPUS = 150\nSAT_TO_HOUSTON = 200\nSAT_TO_AUSTIN = 80\nMILES_PER_TURN = 50\n\n# ---- MAIN PROGRAM ----\ndef main():\n│\n│── Welcome banner, player name          [NEW-CP1]\n│── 3-choice menu, get choice            [NEW-CP1]\n│── if/elif/else → set destination,      [NEW-CP1]\n│                    distance\n│\n│── distance_remaining = distance        [NEW-CP2]\n│── total_miles = 0                      [NEW-CP2]\n│── turn = 1                             [NEW-CP2]\n│\n│── Print journey header                 [NEW-CP3]\n│\n│   TRAVEL LOOP:                         [NEW-CP3/4]\n│   while distance_remaining > 0:\n│   │── Display turn header\n│   │── Display miles remaining\n│   │── Display travel message\n│   │── distance_remaining -= MILES_PER_TURN\n│   │── total_miles += MILES_PER_TURN\n│   │── turn += 1\n│\n│── Arrival announcement                 [NEW-CP5]\n│── TRIP SUMMARY                         [NEW-CP5]\n│── Outcome message                      [NEW-CP5]\n\nif __name__ == '__main__':\n    main()"
+    },
+    "checkpoints": [
+        {
+            "number": 1,
+            "title": "Setup & Simplify",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "A streamlined starting point with welcome banner, player name input, a 3-choice destination menu, and the if-elif-else chain to set destination and distance."
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "We're simplifying to 3 destinations so you can focus on the new concept (while loops) without getting lost in complex branching. Keep it simple to learn the pattern!"
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Create a new file called <code>lab-2-1.py</code> with your standard docstring",
+                        "Add the <code>main()</code> structure (same pattern you used in Module 1)",
+                        "Define 3 distance constants: <code>SAT_TO_CORPUS = 150</code>, <code>SAT_TO_HOUSTON = 200</code>, <code>SAT_TO_AUSTIN = 80</code>",
+                        "Add the new travel constant: <code>MILES_PER_TURN = 50</code>",
+                        "Build a welcome banner and get the player's name",
+                        "Display a 3-choice menu: Corpus Christi (BEACH!), Houston, Austin",
+                        "Get the player's choice using <code>input()</code> — store as a string this week",
+                        "Use if-elif-else to set <code>destination</code> and <code>distance</code> based on choice"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this debug line at the end of your if-elif-else chain:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "    # DEBUG - DELETE BEFORE CHECKPOINT 2\n    print(f'DEBUG: destination={destination}, distance={distance}')"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run three times with choices 1, 2, and 3. Verify:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Choice 1: DEBUG: destination=Corpus Christi, distance=150\nChoice 2: DEBUG: destination=Houston, distance=200\nChoice 3: DEBUG: destination=Austin, distance=80"
+                },
+                {
+                    "type": "callout",
+                    "variant": "pitfall",
+                    "title": "Delete the debug line",
+                    "body": "Delete the debug line before moving to Checkpoint 2."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Hardcoding distances instead of using constants", "CodeGrade checks for constants — use SAT_TO_CORPUS, not 150"],
+                        ["Swapping destination and distance values", "Houston is 200 miles, Corpus is 150 — test each choice carefully"],
+                        ["Using int(input()) for the menu choice", "Keep it as a string and compare with '1', '2', '3' in your if-elif-else"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "4 constants defined (3 distances + MILES_PER_TURN)",
+                        "Welcome banner and player name input",
+                        "3-choice menu displays correctly",
+                        "Choosing 1, 2, or 3 sets the correct destination and distance"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "title": "Initialize Tracking Variables",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Three variables: one to track how far you still need to go, one to accumulate total miles traveled, and one to count turns."
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>The #1 accumulator mistake is initializing inside the loop.</strong> If you set <code>total = 0</code> inside the loop, it resets to 0 every iteration! You must initialize BEFORE the loop."
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "4-17",
+                            "filename": "sum_numbers.py",
+                            "description": "You initialized total = 0.0 BEFORE the loop, then added to it inside. Same pattern here — initialize your tracking variables before the loop!"
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>After</strong> your if-elif-else chain (where <code>destination</code> and <code>distance</code> are set), add three variables:"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "<code>distance_remaining</code> — starts equal to the full distance",
+                        "<code>total_miles</code> — accumulator, starts at 0",
+                        "<code>turn</code> — counter, starts at 1"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add these debug lines AFTER your three variable initializations:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "    # DEBUG - DELETE BEFORE CHECKPOINT 3\n    print(f'DEBUG: distance_remaining={distance_remaining}')\n    print(f'DEBUG: total_miles={total_miles}')\n    print(f'DEBUG: turn={turn}')"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run with choice 1 (Corpus Christi). Verify:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "DEBUG: distance_remaining=150\nDEBUG: total_miles=0\nDEBUG: turn=1"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Run again with choice 3 (Austin). Verify:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "DEBUG: distance_remaining=80\nDEBUG: total_miles=0\nDEBUG: turn=1"
+                },
+                {
+                    "type": "callout",
+                    "variant": "pitfall",
+                    "title": "Delete all three debug lines",
+                    "body": "Delete all three debug lines before moving to Checkpoint 3."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Initializing variables INSIDE the loop", "They reset every iteration! Initialize BEFORE the loop starts"],
+                        ["Starting turn at 0 instead of 1", "Turn 1 is the first turn — human counting starts at 1!"],
+                        ["Putting tracking variables before if-elif-else", "You need to know distance first before setting distance_remaining"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Three tracking variables initialized AFTER if-elif-else, BEFORE the loop",
+                        "<code>distance_remaining</code> equals the distance for the chosen destination",
+                        "<code>total_miles</code> is 0, <code>turn</code> is 1"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title": "Build the while Loop",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "A while loop that continues as long as there's still distance to travel. Think of it as: \"Keep driving WHILE there are miles remaining.\""
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "4-2",
+                            "filename": "temperature.py",
+                            "description": "You wrote a loop that continued while temperature > MAX_TEMP. Your travel loop continues while distance_remaining > 0. Same pattern!"
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Add a \"journey begins\" header with print statements before the loop",
+                        "Write the while statement: continue while <code>distance_remaining</code> is greater than 0",
+                        "Don't forget the colon — <code>while condition:</code> requires it",
+                        "For now, just add a placeholder inside the loop: print the turn number"
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "warning",
+                    "title": "Infinite Loop Danger!",
+                    "body": "If you run this now without updating <code>distance_remaining</code> inside the loop, it will run forever. Press <strong>Ctrl+C</strong> to stop it. Use the test harness below to safely test your loop structure."
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this test harness INSIDE your while loop (indented!):"
+                },
+                {
+                    "type": "code_block",
+                    "code": "    # DEBUG - DELETE BEFORE CHECKPOINT 4\n    print('DEBUG: Loop entered! Condition was True.')\n    print(f'DEBUG: distance_remaining={distance_remaining}')\n    break  # TEMPORARY - stops loop after 1 iteration"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run with choice 1 (Corpus Christi). Verify:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "DEBUG: Loop entered! Condition was True.\nDEBUG: distance_remaining=150"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> This confirms your while condition is correct — the loop entered because <code>distance_remaining</code> (150) is greater than 0."
+                },
+                {
+                    "type": "callout",
+                    "variant": "pitfall",
+                    "title": "Delete all three debug/break lines",
+                    "body": "Delete all three debug/break lines before moving to Checkpoint 4."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Using while distance_remaining != 0", "You might overshoot 0! Use > 0 instead"],
+                        ["Forgetting the colon after the while condition", "SyntaxError — while condition: needs that colon!"],
+                        ["Loop body not indented", "Everything INSIDE the loop must be indented one level"]
+                    ],
+                    "accent": "green"
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "title": "Complete the Loop Body",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "The complete loop body that: shows turn info, travels 50 miles, updates <code>distance_remaining</code> so the loop eventually ends, accumulates <code>total_miles</code>, and increments the turn counter."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "text",
+                    "body": "Inside your while loop (indented!), do these things <strong>in order</strong>:"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Display the turn header — show what turn number this is",
+                        "Display miles remaining — so the player sees their progress",
+                        "Display a travel message — \"You travel 50 miles...\" (use your constant!)",
+                        "Update <code>distance_remaining</code> — SUBTRACT miles traveled",
+                        "Update <code>total_miles</code> — ADD miles traveled (accumulator pattern!)",
+                        "Increment <code>turn</code> — add 1 so next iteration shows Turn 2, Turn 3, etc."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "4-17",
+                            "filename": "sum_numbers.py",
+                            "description": "You wrote total = total + number to accumulate. Your version: total_miles = total_miles + MILES_PER_TURN"
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Forgetting to subtract from distance_remaining", "Infinite loop! Distance never reaches 0"],
+                        ["Using = instead of = ... + for accumulator", "Overwrites instead of accumulating — always shows 50"],
+                        ["Wrong indentation", "Code outside loop only runs once; code inside repeats"],
+                        ["Forgetting to increment turn", "Every turn displays as Turn 1"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this debug line at the END of your while loop (still indented inside the loop):"
+                },
+                {
+                    "type": "code_block",
+                    "code": "    # DEBUG - DELETE BEFORE CHECKPOINT 5\n    print(f'DEBUG END OF TURN: remaining={distance_remaining}, total={total_miles}, next_turn={turn}')\n    print()"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run with choice 1 (Corpus Christi, 150 mi). Verify you see exactly 3 turns:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "--- Turn 1 ---\nMiles remaining: 150\nYou travel 50 miles...\nDEBUG END OF TURN: remaining=100, total=50, next_turn=2\n\n--- Turn 2 ---\nMiles remaining: 100\nYou travel 50 miles...\nDEBUG END OF TURN: remaining=50, total=100, next_turn=3\n\n--- Turn 3 ---\nMiles remaining: 50\nYou travel 50 miles...\nDEBUG END OF TURN: remaining=0, total=150, next_turn=4"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Verify these critical values: remaining decreases by 50 each turn (150 → 100 → 50 → 0), total increases by 50 each turn (50 → 100 → 150), next_turn increments (2 → 3 → 4), and the loop STOPS when remaining hits 0."
+                },
+                {
+                    "type": "callout",
+                    "variant": "pitfall",
+                    "title": "Delete the debug lines",
+                    "body": "Delete the debug lines before moving to Checkpoint 5."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Loop runs the correct number of turns for each destination (3 for Corpus, 4 for Houston, 2 for Austin)",
+                        "Turn counter increments each iteration",
+                        "Miles remaining decreases each turn",
+                        "Loop stops when <code>distance_remaining</code> reaches 0"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 5,
+            "title": "Arrival & Trip Summary",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Code that runs <strong>after</strong> the while loop (fully unindented!) to announce arrival and display trip statistics."
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Code INSIDE the loop repeats. Code AFTER the loop (unindented) runs once when the loop is done. This is where you celebrate arrival and show the summary."
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Sasha Mireles",
+                    "role": "Creative Director, Bat City Collective",
+                    "headshot": "Sasha-Mireles.png",
+                    "quote": "The Trip Summary is your user's reward for completing the journey! Make it feel like an achievement — use separator lines, clear labels, and organized data. A well-designed summary turns raw numbers into a story of their adventure."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>After</strong> the while loop (no indentation!), add:"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Arrival announcement — \"You made it to {destination}!\"",
+                        "Trip Summary header with separator lines",
+                        "Display Driver (player_name), Destination, Distance, Total turns, and Total miles",
+                        "Display total turns as <code>turn - 1</code> (see warning below)",
+                        "Outcome message — different text for Corpus Christi (beach!) vs other destinations"
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "warning",
+                    "title": "Why turn - 1?",
+                    "body": "You increment turn at the END of each loop iteration. After 3 turns complete, turn equals 4 when the loop exits. So display <code>turn - 1</code> for the actual count."
+                },
+                {
+                    "type": "h3",
+                    "label": "expected_output"
+                },
+                {
+                    "type": "text",
+                    "body": "Complete output with name \"Maria\" and choice 1 (Corpus Christi):"
+                },
+                {
+                    "type": "output_block",
+                    "output": "==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nWhat is your name, traveler? Maria\n\nWelcome, Maria!\nYou are in San Antonio. Your goal: reach the beach!\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n\nEnter your choice (1-3): 1\n\nHeading to Corpus Christi!\nDistance: 150 miles\nYou will travel 50 miles per turn.\n\n==================================================\nLET THE JOURNEY BEGIN!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou travel 50 miles...\nMiles remaining: 100\n\n--- Turn 2 ---\nMiles remaining: 100\nYou travel 50 miles...\nMiles remaining: 50\n\n--- Turn 3 ---\nMiles remaining: 50\nYou travel 50 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nTRIP SUMMARY\n==================================================\nDriver: Maria\nDestination: Corpus Christi\nDistance: 150 miles\nTotal turns: 3\nTotal miles: 150\n==================================================\n\nCONGRATULATIONS! You reached the beach!\n\nThanks for playing!"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Also test all three destinations and verify turn counts:</strong> Choice 1 (Corpus Christi, 150 mi) → 3 turns, beach message. Choice 2 (Houston, 200 mi) → 4 turns, different message. Choice 3 (Austin, 80 mi) → 2 turns, no beach message."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Arrival message INSIDE the loop", "Prints every turn! Put it AFTER the loop ends"],
+                        ["Using turn instead of turn - 1 for total turns", "Turn increments at end of loop — after exiting, it's one too high"],
+                        ["Wrong beach logic", "Only Corpus Christi has a beach — check destination name exactly"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Arrival message appears once (not every turn)",
+                        "Trip Summary shows correct turn count and total miles",
+                        "Different outcome messages for beach vs. non-beach destinations",
+                        "Complete program works for all 3 destinations"
+                    ]
+                }
+            ]
+        }
+    ],
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "Test ALL three destination choices and verify correct turn counts: Corpus Christi (150 mi) → 3 turns, Houston (200 mi) → 4 turns, Austin (80 mi) → 2 turns",
+            "File named exactly <code>lab-2-1.py</code>",
+            "Docstring includes name, abc123, section, and description",
+            "4 constants defined including <code>MILES_PER_TURN = 50</code>",
+            "while loop condition uses <code>distance_remaining > 0</code>",
+            "Accumulator updates inside the loop: <code>total_miles = total_miles + MILES_PER_TURN</code>",
+            "Arrival message and Trip Summary appear AFTER the loop",
+            "Trip Summary displays <code>turn - 1</code> for total turns",
+            "All DEBUG lines removed"
+        ],
+        "scopeReminder": "Chapters 2–4 only. CodeGrade will flag code using techniques from later chapters.",
+        "permittedTechniques": {
+            "chapters": "Chapters 2–4",
+            "specific": [
+                "Variables, constants, print(), input()",
+                "int(), f-strings, string multiplication",
+                "if, elif, else",
+                "while loops — NEW this week!",
+                "Accumulator pattern — NEW this week!"
+            ],
+            "notPermitted": "for loops (save for 2.2), random module (Chapter 5), functions you define (Chapter 5), import statements, lists (Chapter 7)"
+        },
+        "warnings": []
+    },
+    "needHelp": {
+        "ifYouGetStuck": [
+            "Re-read Program 4-2 (temperature.py) and Program 4-17 (sum_numbers.py) — the while loop and accumulator patterns are exactly what you need",
+            "Add DEBUG prints before and inside the loop to see what's happening",
+            "Check your indentation — everything inside the loop needs 4 spaces",
+            "Submit to CodeGrade early — it shows exactly which tests pass or fail",
+            "Come to Zoom or office hours — we can screen share and debug together"
+        ],
+        "bookexResourceNote": "Chapter 4 BookEx Reference Guide — step-by-step breakdowns of every textbook example, your primary reference"
+    }
+}
