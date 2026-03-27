@@ -3,1133 +3,639 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookEx: Chapter 6 – Files and Exceptions</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Slab:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>BookEx Chapter 6: Files and Exceptions — IS2053</title>
+    <link rel="stylesheet" href="../../labs.css">
 </head>
-<body style="background: #0a0a0a; color: #F5F5F5; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: 0 auto;">
+<body>
+<div class="lc-wrapper">
 
 <!-- ============================================================ -->
 <!-- CARD 1: OVERVIEW (Blue) -->
 <!-- ============================================================ -->
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <!-- Shadow layer -->
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <!-- Content card -->
-    <div style="position: relative; padding: 8px 12px 12px 12px; border: 4px solid #000; background: linear-gradient(135deg, #0055FF 0%, #001a4d 100%);">
-        
-        <!-- Card Header Row -->
-        <div style="padding-bottom: 2px;">
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-bookex-chapter-6.svg" alt="BookEx: Chapter 6" style="height: 70px; display: block; margin-bottom: 2px; margin-left: -8px;">
-            <div style="display: inline-block; background: #FFCC00; color: #000; font-family: 'Roboto', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; padding: 5px 12px; border: 2px solid #000;">Textbook Practice &bull; Files and Exceptions</div>
+<div class="lc-card lc-card--blue">
+  <div class="lc-topper">
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0;">
+          <div class="lc-lab-badge">
+            <div class="lc-lab-badge__word">BOOKEX</div>
+            <div class="lc-lab-badge__num">6</div>
+          </div>
+        </td>
+        <td style="vertical-align: bottom; padding: 0 0 0 16px;">
+          <div class="lc-topper-title">Files and Exceptions</div>
+        </td>
+        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">
+          <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: 120px; width: auto; display: block;">
+        </td>
+      </tr>
+      <tr><td colspan="3" style="padding: 10px 0 0 0;"><div class="lc-sub-banner">Chapter 6 &nbsp;&mdash;&nbsp; 10 Programs</div></td></tr>
+    </table>
+  </div>
+  <div class="lc-panel">
+    <p>Work through each Gaddis program in order. Chapter 6 is where your programs start talking to the file system. Type every program by hand and actually run each one &mdash; you need to see the files get created and read back. Programs 1 through 7 build the foundation; Programs 8 through 10 introduce the <code>with</code> statement, append mode, and exception handling.</p>
+
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+        </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Run Programs in Order &mdash; Some Depend on Earlier Ones</div>
+        <div class="lc-callout__body">
+          <p>Several programs read files created by earlier checkpoints. Run file_write.py before file_read.py and line_read.py. Run write_numbers.py before read_numbers.py. Run add_coffee_record.py before show_coffee_records.py. Also, Programs 8 through 10 in the 6th Edition are numbered 3 higher than in the 5th Edition &mdash; each checkpoint shows both numbers.</p>
         </div>
-        
-        <!-- Content Panel -->
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            <!-- H3: Overview -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-overview.svg" alt="Overview" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 15px 0; font-size: 15px; line-height: 1.7;">
-                As you read through Chapter 6, you'll type in and run a series of short example programs. These are designed to help you build fluency with Python syntax and reinforce the core skills you'll need in your Lab assignments.
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0; font-size: 15px; line-height: 1.7;">
-                Each example is listed by name and linked to its corresponding program number in the textbook. Be sure to use the <strong style="color: #fff;">exact file name provided</strong>&mdash;CodeGrade expects those names when grading.
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0; font-size: 15px; line-height: 1.7;">
-                This is low-stakes practice that will pay off big later. You'll be using these same techniques all semester long.
-            </p>
-            
-            <!-- H3: Key Concepts -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-key-concepts.svg" alt="Key Concepts" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Chapter 6 Sections:</strong></p>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 0 0 20px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #0055ff; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #0055FF; width: 25%;">Section</th>
-                            <th style="background: #1a1a1a; color: #0055ff; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #0055FF;">Topic</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">6.1</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Introduction to File Input and Output</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">6.2</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Using Loops to Process Files</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">6.3</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Processing Records</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px;">6.4</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Exceptions</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- H3: Program Requirements -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-program-requirements.svg" alt="Program Requirements" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Each program must be <strong style="color: #fff;">typed manually</strong> and saved using the correct filename</li>
-                <li style="margin-bottom: 8px;">Each program must <strong style="color: #fff;">run without syntax errors</strong></li>
-                <li style="margin-bottom: 8px;">Your output should <strong style="color: #fff;">match what's shown</strong> in the textbook</li>
-                <li>File names must match exactly&mdash;<strong style="color: #fff;">capitalization and spelling matter!</strong></li>
-            </ul>
-            
-            <!-- H3: Filename -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-filename.svg" alt="Filename" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Required Files (10 total):</strong></p>
-            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
-                <span style="background: #2a2a2a; padding: 4px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">file_write.py</span>
-                <span style="background: #2a2a2a; padding: 4px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">file_read.py</span>
-                <span style="background: #2a2a2a; padding: 4px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">line_read.py</span>
-                <span style="background: #2a2a2a; padding: 4px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">write_names.py</span>
-                <span style="background: #2a2a2a; padding: 4px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">strip_newline.py</span>
-                <span style="background: #2a2a2a; padding: 4px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">write_numbers.py</span>
-                <span style="background: #2a2a2a; padding: 4px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">read_numbers.py</span>
-                <span style="background: #2a2a2a; padding: 4px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">add_coffee_record.py</span>
-                <span style="background: #2a2a2a; padding: 4px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">show_coffee_records.py</span>
-                <span style="background: #2a2a2a; padding: 4px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_file2.py</span>
-            </div>
-            
-            <!-- H3: Textbook Reference -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                <strong style="color: #fff;">Starting Out with Python, 6th Edition</strong> by Tony Gaddis &mdash; Chapter 6: Files and Exceptions
-            </p>
-            
-        </div>
+      </div>
     </div>
+
+    <div class="lc-h3 lc-h3--yellow">Learning Objectives</div>
+    <ul class="lc-objectives">
+      <li>Open a file in write mode and write strings with newline characters</li>
+      <li>Open a file in read mode and read its entire contents</li>
+      <li>Read a file one line at a time using <code>readline()</code></li>
+      <li>Use <code>rstrip()</code> to remove newline characters from lines read from a file</li>
+      <li>Convert numbers to strings before writing, and strings back to numbers after reading</li>
+      <li>Use the <code>with</code> statement for automatic file closing</li>
+      <li>Open a file in append mode to add records without overwriting existing data</li>
+      <li>Use <code>try-except</code> to handle <code>FileNotFoundError</code> gracefully</li>
+    </ul>
+
+    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
+    <p>Chapter 6 covers file modes ('r', 'w', 'a'), <code>write()</code> and <code>readline()</code>, the end-of-file sentinel pattern, <code>rstrip()</code>, type conversion for file I/O, the <code>with</code> statement, and <code>try-except</code> for <code>FileNotFoundError</code>.</p>
+
+    <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis &mdash; Chapter 6: Files and Exceptions</p>
+
+    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
+    <ul>
+      <li>Each program is saved as its own individual .py file</li>
+      <li>Each file uses the exact filename listed in the instructions</li>
+      <li>Run programs in order &mdash; several programs read files created by earlier programs</li>
+      <li>Each program runs without syntax errors and output matches the textbook</li>
+    </ul>
+
+    <div class="lc-h3 lc-h3--yellow">Filename</div>
+    <p>This chapter uses 10 individual files. Submit all 10 files together in your final CodeGrade submission.</p>
+  </div>
 </div>
 
 <!-- ============================================================ -->
-<!-- CARD 2: TIME CHECK (Orange) -->
+<!-- CARD 2: TIME GUIDE (Orange) -->
 <!-- ============================================================ -->
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF6B1A 0%, #8B3A00 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-time-guide.svg" alt="Time Guide" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Plan Your Session &mdash; 65–85 minutes
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                This assignment includes <strong style="color: #fff;">10 short coding checkpoints</strong>. Each one is based on a textbook example and should take only a few minutes to complete if you work carefully and type the code exactly as shown.
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                I recommend spreading the work out across a couple of sessions. Try tackling 3–4 checkpoints in one sitting, and don't rush. You'll build speed and confidence with each one.
-            </p>
-            
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A; width: 55%;">Checkpoint</th>
-                            <th style="background: #1a1a1a; color: #ff6b1a; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #FF6B1A;">Estimated Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 1: file_write.py</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">5–7 minutes</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 2: file_read.py</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">5–7 minutes</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 3: line_read.py</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">6–8 minutes</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 4: write_names.py</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">6–8 minutes</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 5: strip_newline.py</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">5–7 minutes</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 6: write_numbers.py</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">6–8 minutes</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 7: read_numbers.py</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">6–8 minutes</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 8: add_coffee_record.py</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">7–9 minutes</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">Checkpoint 9: show_coffee_records.py</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">6–8 minutes</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px;">Checkpoint 10: display_file2.py</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">7–9 minutes</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- Pro Tip -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF6B1A;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                <strong style="color: #fff;">Build and test after EACH checkpoint!</strong> Don't write all 10 programs at once. Get each one working before moving to the next. This "build a little, test a little" habit will save you hours of debugging.
-            </p>
-            
-        </div>
+<div class="lc-card lc-card--orange">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Time Guide</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 90&ndash;120 Minutes</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr><th>Checkpoint</th><th>Time</th><th>Task</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>file_write.py</strong></td><td>10 min</td><td>Write strings to a file in 'w' mode</td></tr>
+          <tr><td><strong>file_read.py</strong></td><td>10 min</td><td>Read entire file contents with read()</td></tr>
+          <tr><td><strong>line_read.py</strong></td><td>10 min</td><td>Read lines individually with readline()</td></tr>
+          <tr><td><strong>write_names.py</strong></td><td>10 min</td><td>Write user input to a file</td></tr>
+          <tr><td><strong>strip_newline.py</strong></td><td>10 min</td><td>Remove newlines with rstrip()</td></tr>
+          <tr><td><strong>write_numbers.py</strong></td><td>10 min</td><td>Convert numbers to strings before writing</td></tr>
+          <tr><td><strong>read_numbers.py</strong></td><td>10 min</td><td>Convert strings to numbers after reading</td></tr>
+          <tr><td><strong>add_coffee_record.py</strong></td><td>10 min</td><td>Append mode and the with statement</td></tr>
+          <tr><td><strong>show_coffee_records.py</strong></td><td>10 min</td><td>Read records in a loop until end of file</td></tr>
+          <tr><td><strong>display_file2.py</strong></td><td>10 min</td><td>try-except for FileNotFoundError</td></tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
 
 <!-- ============================================================ -->
 <!-- CARD 3: CHECKPOINTS (Green) -->
 <!-- ============================================================ -->
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #39FF14 0%, #0D4D00 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-checkpoints.svg" alt="Checkpoints" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            10 Checkpoints
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
+<div class="lc-card lc-card--green">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Programs</div>
+    <div class="lc-sub-banner">10 Programs</div>
+  </div>
+  <div class="lc-panel">
 
-            <!-- ============================================================ -->
-            <!-- CHECKPOINT 1 -->
-            <!-- ============================================================ -->
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-1.svg" alt="Checkpoint 1" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">file_write.py</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Program 6-1 (6th Ed) &bull; Program 6-1 (5th Ed)</p>
-                </div>
-            </div>
-            
-            <!-- What You're Building -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A program that writes data to a text file using the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">open()</span> function in write mode.
-            </p>
-            
-            <!-- Why This Matters -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Writing to files lets your programs save data permanently. This is essential for any application that needs to store information.
-            </p>
-            
-            <!-- Step-by-Step -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Create a new file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">file_write.py</span></li>
-                <li style="margin-bottom: 8px;">Type the code from Program 6-1 exactly as shown</li>
-                <li>Run the program and check that the output file was created</li>
-            </ol>
-            
-            <!-- Tips & Pitfalls -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 50%;">Tip</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Watch Out</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">open(filename, 'w')</code> for write mode</td>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Write mode <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">'w'</code> overwrites existing files!</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- What You Should Have -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A working file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">file_write.py</span> that matches the textbook example output.
-            </p>
-            
-            <!-- Textbook Reference -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 30px 0;">
-                Program 6-1 in <strong style="color: #fff;">Chapter 6</strong> of the 6th Edition textbook, also listed as Program 6-1 in the 5th Edition.
-            </p>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            <!-- ============================================================ -->
-            <!-- CHECKPOINT 2 -->
-            <!-- ============================================================ -->
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-2.svg" alt="Checkpoint 2" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">file_read.py</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Program 6-2 (6th Ed) &bull; Program 6-2 (5th Ed)</p>
-                </div>
-            </div>
-            
-            <!-- What You're Building -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A program that reads the contents of a text file and displays it on screen.
-            </p>
-            
-            <!-- Why This Matters -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Reading files is how programs access stored data. You'll use this pattern to load configuration, user data, and more.
-            </p>
-            
-            <!-- Step-by-Step -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Create a new file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">file_read.py</span></li>
-                <li style="margin-bottom: 8px;">Type the code from Program 6-2 in your textbook</li>
-                <li>Make sure you have a file to read (create it first if needed)</li>
-            </ol>
-            
-            <!-- Tips & Pitfalls -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 50%;">Tip</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Watch Out</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">open(filename, 'r')</code> for read mode</td>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Trying to read a non-existent file causes a FileNotFoundError</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- What You Should Have -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A working file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">file_read.py</span> that matches the textbook example output.
-            </p>
-            
-            <!-- Textbook Reference -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 30px 0;">
-                Program 6-2 in <strong style="color: #fff;">Chapter 6</strong> of the 6th Edition textbook, also listed as Program 6-2 in the 5th Edition.
-            </p>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            <!-- ============================================================ -->
-            <!-- CHECKPOINT 3 -->
-            <!-- ============================================================ -->
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-3.svg" alt="Checkpoint 3" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">line_read.py</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Program 6-3 (6th Ed) &bull; Program 6-3 (5th Ed)</p>
-                </div>
-            </div>
-            
-            <!-- What You're Building -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A program that reads a file line by line using a <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">for</span> loop.
-            </p>
-            
-            <!-- Why This Matters -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Processing files line by line is more memory-efficient and lets you handle each record individually.
-            </p>
-            
-            <!-- Step-by-Step -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Create a new file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">line_read.py</span></li>
-                <li style="margin-bottom: 8px;">Type the code from Program 6-3 exactly as shown</li>
-                <li>Test with a file containing multiple lines</li>
-            </ol>
-            
-            <!-- Tips & Pitfalls -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 50%;">Tip</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Watch Out</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">for line in file_object:</code> to iterate through lines</td>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Each line includes the newline character at the end</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- What You Should Have -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A working file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">line_read.py</span> that matches the textbook example output.
-            </p>
-            
-            <!-- Textbook Reference -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 30px 0;">
-                Program 6-3 in <strong style="color: #fff;">Chapter 6</strong> of the 6th Edition textbook, also listed as Program 6-3 in the 5th Edition.
-            </p>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            <!-- ============================================================ -->
-            <!-- CHECKPOINT 4 -->
-            <!-- ============================================================ -->
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-4.svg" alt="Checkpoint 4" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">write_names.py</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Program 6-4 (6th Ed) &bull; Program 6-4 (5th Ed)</p>
-                </div>
-            </div>
-            
-            <!-- What You're Building -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A program that writes user-entered names to a file using a loop.
-            </p>
-            
-            <!-- Why This Matters -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                This combines user input with file writing—a common pattern for data entry applications.
-            </p>
-            
-            <!-- Step-by-Step -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Create a new file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">write_names.py</span></li>
-                <li style="margin-bottom: 8px;">Type the code from Program 6-4 in your textbook</li>
-                <li>Enter several names and verify they're saved to the file</li>
-            </ol>
-            
-            <!-- Tips & Pitfalls -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 50%;">Tip</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Watch Out</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Add <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">\n</code> to the end of each line when writing</td>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Forgetting the newline character runs all data together</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- What You Should Have -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A working file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">write_names.py</span> that matches the textbook example output.
-            </p>
-            
-            <!-- Textbook Reference -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 30px 0;">
-                Program 6-4 in <strong style="color: #fff;">Chapter 6</strong> of the 6th Edition textbook, also listed as Program 6-4 in the 5th Edition.
-            </p>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            <!-- ============================================================ -->
-            <!-- CHECKPOINT 5 -->
-            <!-- ============================================================ -->
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-5.svg" alt="Checkpoint 5" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">strip_newline.py</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Program 6-5 (6th Ed) &bull; Program 6-5 (5th Ed)</p>
-                </div>
-            </div>
-            
-            <!-- What You're Building -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A program demonstrating how to remove newline characters when reading file data.
-            </p>
-            
-            <!-- Why This Matters -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                The <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">strip()</span> method cleans up file data for display and processing.
-            </p>
-            
-            <!-- Step-by-Step -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Create a new file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">strip_newline.py</span></li>
-                <li style="margin-bottom: 8px;">Type the code from Program 6-5 exactly as shown</li>
-                <li>Compare output with and without the strip() call</li>
-            </ol>
-            
-            <!-- Tips & Pitfalls -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 50%;">Tip</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Watch Out</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">line.rstrip('\n')</code> to remove only the newline</td>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">strip()</code> without arguments removes all whitespace</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- What You Should Have -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A working file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">strip_newline.py</span> that matches the textbook example output.
-            </p>
-            
-            <!-- Textbook Reference -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 30px 0;">
-                Program 6-5 in <strong style="color: #fff;">Chapter 6</strong> of the 6th Edition textbook, also listed as Program 6-5 in the 5th Edition.
-            </p>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            <!-- ============================================================ -->
-            <!-- CHECKPOINT 6 -->
-            <!-- ============================================================ -->
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-6.svg" alt="Checkpoint 6" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">write_numbers.py</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Program 6-6 (6th Ed) &bull; Program 6-6 (5th Ed)</p>
-                </div>
-            </div>
-            
-            <!-- What You're Building -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A program that writes numeric data to a file, converting numbers to strings.
-            </p>
-            
-            <!-- Why This Matters -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Files store text, so numbers must be converted to strings before writing. This is a critical detail for data persistence.
-            </p>
-            
-            <!-- Step-by-Step -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Create a new file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">write_numbers.py</span></li>
-                <li style="margin-bottom: 8px;">Type the code from Program 6-6 in your textbook</li>
-                <li>Verify the numbers are written correctly to the file</li>
-            </ol>
-            
-            <!-- Tips & Pitfalls -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 50%;">Tip</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Watch Out</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">str(number)</code> to convert before writing</td>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Writing a number directly without converting causes a TypeError</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- What You Should Have -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A working file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">write_numbers.py</span> that matches the textbook example output.
-            </p>
-            
-            <!-- Textbook Reference -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 30px 0;">
-                Program 6-6 in <strong style="color: #fff;">Chapter 6</strong> of the 6th Edition textbook, also listed as Program 6-6 in the 5th Edition.
-            </p>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            <!-- ============================================================ -->
-            <!-- CHECKPOINT 7 -->
-            <!-- ============================================================ -->
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-7.svg" alt="Checkpoint 7" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">read_numbers.py</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Program 6-7 (6th Ed) &bull; Program 6-7 (5th Ed)</p>
-                </div>
-            </div>
-            
-            <!-- What You're Building -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A program that reads numeric data from a file and converts strings back to numbers.
-            </p>
-            
-            <!-- Why This Matters -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                When reading numbers from files, you must convert them back from strings to perform calculations.
-            </p>
-            
-            <!-- Step-by-Step -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Create a new file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">read_numbers.py</span></li>
-                <li style="margin-bottom: 8px;">Type the code from Program 6-7 exactly as shown</li>
-                <li>Test with a file containing numeric values</li>
-            </ol>
-            
-            <!-- Tips & Pitfalls -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 50%;">Tip</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Watch Out</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">int()</code> or <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">float()</code> to convert strings to numbers</td>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Converting non-numeric text causes a ValueError</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- What You Should Have -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A working file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">read_numbers.py</span> that matches the textbook example output.
-            </p>
-            
-            <!-- Textbook Reference -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 30px 0;">
-                Program 6-7 in <strong style="color: #fff;">Chapter 6</strong> of the 6th Edition textbook, also listed as Program 6-7 in the 5th Edition.
-            </p>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            <!-- ============================================================ -->
-            <!-- CHECKPOINT 8 -->
-            <!-- ============================================================ -->
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-8.svg" alt="Checkpoint 8" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">add_coffee_record.py</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Program 6-18 (6th Ed) &bull; Program 6-15 (5th Ed)</p>
-                </div>
-            </div>
-            
-            <!-- What You're Building -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A program that adds records to a file using append mode to preserve existing data.
-            </p>
-            
-            <!-- Why This Matters -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Append mode lets you add to files without erasing what's already there—essential for logging and data collection.
-            </p>
-            
-            <!-- Step-by-Step -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Create a new file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">add_coffee_record.py</span></li>
-                <li style="margin-bottom: 8px;">Type the code from Program 6-18 in your textbook (Program 6-15 if using the 5th Edition)</li>
-                <li>Run multiple times and verify data accumulates</li>
-            </ol>
-            
-            <!-- Tips & Pitfalls -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 50%;">Tip</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Watch Out</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">open(filename, 'a')</code> for append mode</td>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Using <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">'w'</code> instead of <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">'a'</code> will erase existing data</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- What You Should Have -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A working file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">add_coffee_record.py</span> that matches the textbook example output.
-            </p>
-            
-            <!-- Textbook Reference -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 30px 0;">
-                Program 6-18 in <strong style="color: #fff;">Chapter 6</strong> of the 6th Edition textbook, listed as Program 6-15 in the 5th Edition.
-            </p>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            <!-- ============================================================ -->
-            <!-- CHECKPOINT 9 -->
-            <!-- ============================================================ -->
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-9.svg" alt="Checkpoint 9" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">show_coffee_records.py</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Program 6-19 (6th Ed) &bull; Program 6-16 (5th Ed)</p>
-                </div>
-            </div>
-            
-            <!-- What You're Building -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A program that reads and displays records from a file containing multiple fields per record.
-            </p>
-            
-            <!-- Why This Matters -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                This shows how to process structured data files where each record has multiple pieces of information.
-            </p>
-            
-            <!-- Step-by-Step -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Create a new file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">show_coffee_records.py</span></li>
-                <li style="margin-bottom: 8px;">Type the code from Program 6-19 exactly as shown (Program 6-16 if using the 5th Edition)</li>
-                <li>Test with the coffee inventory data file</li>
-            </ol>
-            
-            <!-- Tips & Pitfalls -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 50%;">Tip</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Watch Out</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Read fields in the same order they were written</td>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Reading fields out of order garbles your data</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- What You Should Have -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A working file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">show_coffee_records.py</span> that matches the textbook example output.
-            </p>
-            
-            <!-- Textbook Reference -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 30px 0;">
-                Program 6-19 in <strong style="color: #fff;">Chapter 6</strong> of the 6th Edition textbook, listed as Program 6-16 in the 5th Edition.
-            </p>
-            
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-            <!-- ============================================================ -->
-            <!-- CHECKPOINT 10 -->
-            <!-- ============================================================ -->
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-10.svg" alt="Checkpoint 10" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">display_file2.py</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Program 6-28 (6th Ed) &bull; Program 6-25 (5th Ed)</p>
-                </div>
-            </div>
-            
-            <!-- What You're Building -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A program using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">try-except</span> to handle file errors gracefully.
-            </p>
-            
-            <!-- Why This Matters -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Exception handling prevents your program from crashing when files are missing or inaccessible. It's professional error handling.
-            </p>
-            
-            <!-- Step-by-Step -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Create a new file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_file2.py</span></li>
-                <li style="margin-bottom: 8px;">Type the code from Program 6-28 in your textbook (Program 6-25 if using the 5th Edition)</li>
-                <li>Test with both existing and non-existing filenames</li>
-            </ol>
-            
-            <!-- Tips & Pitfalls -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 50%;">Tip</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Watch Out</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Wrap file operations in <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">try-except</code> blocks</td>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Catching all exceptions with bare <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">except:</code> hides other bugs</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- What You Should Have -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A working file named <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_file2.py</span> that matches the textbook example output.
-            </p>
-            
-            <!-- Textbook Reference -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 30px 0;">
-                Program 6-28 in <strong style="color: #fff;">Chapter 6</strong> of the 6th Edition textbook, listed as Program 6-25 in the 5th Edition.
-            </p>
-            
-        </div>
+    <!-- CHECKPOINT 1 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">1</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">file_write.py</div>
+        <div class="lc-cp-subtitle">Program 6-1 (6th Ed) &bull; Program 6-1 (5th Ed)</div>
+      </div>
     </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+      <p>A program that opens a file named <code>philosophers.txt</code> in write mode ('w'), writes three philosopher names to it (each followed by <code>\n</code>), and closes the file. After running it, you should find <code>philosophers.txt</code> in your working directory. Programs 2 and 3 read this file back.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-1.</li>
+        <li>Create a new file named <code>file_write.py</code>.</li>
+        <li>Type the program exactly as shown including the <code>if __name__ == '__main__':</code> guard.</li>
+        <li>Run it &mdash; no output appears in the terminal, but <code>philosophers.txt</code> is created.</li>
+        <li>Open <code>philosophers.txt</code> in VS Code to confirm all three names are there.</li>
+      </ol>
+      <div class="lc-callout lc-callout--warning">
+        <div class="lc-callout__icon">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="5" y="5" width="20" height="20" rx="3" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="15" cy="21" r="1.5" fill="#000"/>
+          </svg>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">Mode 'w' Overwrites the Entire File</div>
+          <div class="lc-callout__body">
+            <p>Opening a file in 'w' mode destroys all existing content and starts fresh. If <code>philosophers.txt</code> already existed, it is gone. This is intentional here, but it is dangerous for data you want to keep. You will use append mode ('a') in Checkpoint 8 to add without overwriting.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="lc-cp-sep">
+
+    <!-- CHECKPOINT 2 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">2</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">file_read.py</div>
+        <div class="lc-cp-subtitle">Program 6-2 (6th Ed) &bull; Program 6-2 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+      <p>A program that opens <code>philosophers.txt</code> in read mode ('r'), reads the entire file at once using <code>read()</code>, and prints the result. This is the simplest way to read a file &mdash; one call, everything returned as a single string.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-2.</li>
+        <li>Create a new file named <code>file_read.py</code>.</li>
+        <li>Type the program as shown.</li>
+        <li>Make sure <code>file_write.py</code> has been run first so <code>philosophers.txt</code> exists.</li>
+        <li>Run <code>file_read.py</code> and confirm all three names appear in the output.</li>
+      </ol>
+      <div class="lc-callout lc-callout--pitfall">
+        <div class="lc-callout__icon">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="15" cy="22.5" r="1.5" fill="#000"/>
+          </svg>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">The File Must Exist Before You Read It</div>
+          <div class="lc-callout__body">
+            <p>Opening a file in 'r' mode raises <code>FileNotFoundError</code> if the file doesn't exist. Run <code>file_write.py</code> first to create <code>philosophers.txt</code>, then run <code>file_read.py</code>. You will learn how to handle this error gracefully in Checkpoint 10.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="lc-cp-sep">
+
+    <!-- CHECKPOINT 3 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">3</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">line_read.py</div>
+        <div class="lc-cp-subtitle">Program 6-3 (6th Ed) &bull; Program 6-3 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+      <p>A program that reads <code>philosophers.txt</code> three times using <code>readline()</code> &mdash; once per name &mdash; storing each in a separate variable. Unlike <code>read()</code>, <code>readline()</code> fetches one line at a time and includes the <code>\n</code> character at the end.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-3.</li>
+        <li>Create a new file named <code>line_read.py</code>.</li>
+        <li>Type the program as shown.</li>
+        <li>Run it and observe the extra blank lines between names in the output.</li>
+        <li>Note why they appear &mdash; Checkpoint 5 fixes this.</li>
+      </ol>
+      <div class="lc-callout lc-callout--info">
+        <div class="lc-callout__icon">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+          <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+          </svg>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">readline() Keeps the Newline Character</div>
+          <div class="lc-callout__body">
+            <p>Each <code>readline()</code> call returns the line including its trailing <code>\n</code>. When <code>print()</code> then displays that string, it adds its own newline on top &mdash; resulting in a blank line between each name. Checkpoint 5 shows how to strip that extra <code>\n</code> before printing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="lc-cp-sep">
+
+    <!-- CHECKPOINT 4 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">4</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">write_names.py</div>
+        <div class="lc-cp-subtitle">Program 6-4 (6th Ed) &bull; Program 6-4 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+      <p>A program that collects three friend names from the user using <code>input()</code> and writes them to <code>friends.txt</code>. The names are written with <code>'\n'</code> concatenated so each lands on its own line in the file.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-4.</li>
+        <li>Create a new file named <code>write_names.py</code>.</li>
+        <li>Type the program as shown.</li>
+        <li>Run it and enter three names.</li>
+        <li>Open <code>friends.txt</code> to confirm each name is on its own line.</li>
+      </ol>
+      <div class="lc-callout lc-callout--tip">
+        <div class="lc-callout__icon">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22 C21 20 24 17 24 13 C24 8 20 4 15 4 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="15" cy="19" r="1.5" fill="#000"/>
+          </svg>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">write() Does Not Add Newlines Automatically</div>
+          <div class="lc-callout__body">
+            <p>Unlike <code>print()</code>, <code>write()</code> puts exactly what you give it and nothing more. If you write <code>name1</code> without <code>+ '\n'</code>, all three names end up on a single line in the file. Always append <code>'\n'</code> when you want each item on its own line.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="lc-cp-sep">
+
+    <!-- CHECKPOINT 5 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">5</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">strip_newline.py</div>
+        <div class="lc-cp-subtitle">Program 6-5 (6th Ed) &bull; Program 6-5 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+      <p>The same line-by-line read from Checkpoint 3, but with <code>rstrip('\n')</code> applied to each line before printing. This removes the trailing newline character that <code>readline()</code> includes, eliminating the extra blank lines in the output.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-5.</li>
+        <li>Create a new file named <code>strip_newline.py</code>.</li>
+        <li>Type the program as shown, noting the three <code>rstrip('\n')</code> calls.</li>
+        <li>Run it and confirm the output no longer has extra blank lines between names.</li>
+      </ol>
+      <div class="lc-callout lc-callout--tip">
+        <div class="lc-callout__icon">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22 C21 20 24 17 24 13 C24 8 20 4 15 4 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="15" cy="19" r="1.5" fill="#000"/>
+          </svg>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">rstrip('\n') Is Standard Practice for File Reading</div>
+          <div class="lc-callout__body">
+            <p>Almost every program that reads lines from a file needs <code>rstrip('\n')</code> or <code>strip()</code> to clean up the newline before using the data. Make it a habit: any time you call <code>readline()</code>, strip the result before you print it or compare it to anything.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="lc-cp-sep">
+
+    <!-- CHECKPOINT 6 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">6</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">write_numbers.py</div>
+        <div class="lc-cp-subtitle">Program 6-6 (6th Ed) &bull; Program 6-6 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+      <p>A program that collects three integers from the user and writes them to <code>numbers.txt</code>. Because <code>write()</code> only accepts strings, each integer must be converted with <code>str()</code> before writing. Checkpoint 7 reads this file back and converts the strings to integers for math.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-6.</li>
+        <li>Create a new file named <code>write_numbers.py</code>.</li>
+        <li>Type the program as shown.</li>
+        <li>Run it and enter three numbers.</li>
+        <li>Open <code>numbers.txt</code> to confirm the numbers are stored one per line.</li>
+      </ol>
+      <div class="lc-callout lc-callout--pitfall">
+        <div class="lc-callout__icon">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="15" cy="22.5" r="1.5" fill="#000"/>
+          </svg>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">write() Only Accepts Strings</div>
+          <div class="lc-callout__body">
+            <p>Trying to write an integer directly &mdash; <code>outfile.write(num1)</code> &mdash; raises a <code>TypeError</code>. Files store text, not numbers. Use <code>str(num1)</code> to convert first. When reading the number back in Checkpoint 7, you reverse this with <code>int()</code>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="lc-cp-sep">
+
+    <!-- CHECKPOINT 7 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">7</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">read_numbers.py</div>
+        <div class="lc-cp-subtitle">Program 6-7 (6th Ed) &bull; Program 6-7 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+      <p>A program that reads the three numbers written by <code>write_numbers.py</code> and calculates their total. Each <code>readline()</code> call is wrapped in <code>int()</code> to convert the string back to an integer immediately. The total is then calculated and displayed.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-7.</li>
+        <li>Create a new file named <code>read_numbers.py</code>.</li>
+        <li>Type the program as shown.</li>
+        <li>Make sure <code>write_numbers.py</code> has been run first to create <code>numbers.txt</code>.</li>
+        <li>Run it and confirm the total matches the sum of the numbers you entered.</li>
+      </ol>
+      <div class="lc-callout lc-callout--info">
+        <div class="lc-callout__icon">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+          <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+          </svg>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">int() and readline() Can Be Combined</div>
+          <div class="lc-callout__body">
+            <p><code>int(infile.readline())</code> reads a line and converts it to an integer in one step. This works because <code>int()</code> strips the trailing <code>\n</code> automatically when it parses the string. You could also call <code>readline()</code>, then <code>rstrip()</code>, then <code>int()</code> &mdash; same result, just more steps.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="lc-cp-sep">
+
+    <!-- CHECKPOINT 8 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">8</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">add_coffee_record.py</div>
+        <div class="lc-cp-subtitle">Program 6-18 (6th Ed) &bull; Program 6-15 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+      <p>A coffee inventory program that uses two things introduced together: the <code>with</code> statement (which closes the file automatically when the block ends) and append mode ('a'), which adds records to the end of <code>coffee.txt</code> without erasing what's already there. A sentinel loop lets the user add multiple records.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-18 (6th Ed) or Program 6-15 (5th Ed).</li>
+        <li>Create a new file named <code>add_coffee_record.py</code>.</li>
+        <li>Type the program as shown, paying attention to the <code>with</code> block indentation.</li>
+        <li>Run it and add two or three coffee records.</li>
+        <li>Run it a second time and add one more record &mdash; confirm the earlier records are still there.</li>
+      </ol>
+      <div class="lc-callout lc-callout--tip">
+        <div class="lc-callout__icon">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22 C21 20 24 17 24 13 C24 8 20 4 15 4 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="15" cy="19" r="1.5" fill="#000"/>
+          </svg>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">with Closes the File Automatically</div>
+          <div class="lc-callout__body">
+            <p>When the <code>with</code> block ends (when the indentation returns to the <code>main()</code> level), Python closes the file automatically &mdash; even if an error occurs inside the block. This is the preferred way to handle files in Python and eliminates the need for a separate <code>close()</code> call.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="lc-cp-sep">
+
+    <!-- CHECKPOINT 9 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">9</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">show_coffee_records.py</div>
+        <div class="lc-cp-subtitle">Program 6-19 (6th Ed) &bull; Program 6-16 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+      <p>A program that reads <code>coffee.txt</code> and displays every record using the read-process-read loop pattern: read the first description before the loop, loop while the description is not an empty string, process the record inside the loop, then read the next description at the bottom of the loop. An empty string from <code>readline()</code> signals the end of the file.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-19 (6th Ed) or Program 6-16 (5th Ed).</li>
+        <li>Create a new file named <code>show_coffee_records.py</code>.</li>
+        <li>Type the program as shown, paying careful attention to where <code>readline()</code> is called.</li>
+        <li>Make sure <code>add_coffee_record.py</code> has been run first to create <code>coffee.txt</code>.</li>
+        <li>Run it and confirm all your coffee records appear.</li>
+      </ol>
+      <div class="lc-callout lc-callout--pitfall">
+        <div class="lc-callout__icon">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="15" cy="22.5" r="1.5" fill="#000"/>
+          </svg>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">The Read-Process-Read Pattern Is Easy to Get Wrong</div>
+          <div class="lc-callout__body">
+            <p>The structure is: read descr before the while &rarr; while descr != '' &rarr; process inside the loop &rarr; read the next descr at the bottom. If you move that last <code>readline()</code> outside the loop or forget it entirely, you get an infinite loop or read the wrong data.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="lc-cp-sep">
+
+    <!-- CHECKPOINT 10 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">10</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">display_file2.py</div>
+        <div class="lc-cp-subtitle">Program 6-28 (6th Ed) &bull; Program 6-25 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+      <p>A file viewer that asks the user for a filename, then uses <code>try-except</code> to attempt opening and displaying it. If the file doesn't exist, the <code>except FileNotFoundError</code> block catches the error and prints a friendly message instead of crashing. This is the standard pattern for any program that opens files by name.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-28 (6th Ed) or Program 6-25 (5th Ed).</li>
+        <li>Create a new file named <code>display_file2.py</code>.</li>
+        <li>Type the program as shown.</li>
+        <li>Run it and enter <code>philosophers.txt</code> &mdash; confirm the contents appear.</li>
+        <li>Run it again and enter a filename that does not exist &mdash; confirm the error message appears instead of a crash.</li>
+      </ol>
+      <div class="lc-callout lc-callout--tip">
+        <div class="lc-callout__icon">
+          <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22 C21 20 24 17 24 13 C24 8 20 4 15 4 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="15" cy="19" r="1.5" fill="#000"/>
+          </svg>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">try-except Is How You Handle Predictable Errors</div>
+          <div class="lc-callout__body">
+            <p>Code in the <code>try</code> block runs normally. If a <code>FileNotFoundError</code> occurs, Python jumps to the <code>except</code> block instead of crashing. The program continues cleanly after the <code>except</code> block. This pattern works for any predictable error &mdash; not just file errors.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <!-- ============================================================ -->
 <!-- CARD 4: FINAL CHECKLIST (Red) -->
 <!-- ============================================================ -->
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF1744 0%, #4A0A0A 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-final-checklist.svg" alt="Final Checklist" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
+<div class="lc-card lc-card--red">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Final Checklist</div>
+    <div class="lc-sub-banner">Check It Before You Wreck It</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-h3 lc-h3--yellow">Before You Submit</div>
+    <ul class="lc-checklist">
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">file_write.py runs and creates philosophers.txt</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">file_read.py runs and displays the contents of philosophers.txt</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">line_read.py runs and reads philosophers.txt line by line</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">write_names.py runs and creates friends.txt with three names</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">strip_newline.py runs and output has no extra blank lines</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">write_numbers.py runs and creates numbers.txt with three numbers</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">read_numbers.py runs and displays the correct total</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">add_coffee_record.py runs and appends records to coffee.txt</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">show_coffee_records.py runs and displays all coffee records</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">display_file2.py handles both a found file and a missing file correctly</span></li>
+    </ul>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+        </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Final Submission Must Include All 10 Files</div>
+        <div class="lc-callout__body">
+          <p>CodeGrade only keeps your most recent submission. Your final upload must include all 10 .py files or you will lose credit for any that are missing. Note: you do not need to submit the .txt data files &mdash; CodeGrade creates and reads those when it runs your programs.</p>
         </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Check It Before You Wreck It
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            <!-- Before You Submit -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-before-you-submit.svg" alt="Before You Submit" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">You have typed and tested <strong style="color: #fff;">all 10 example programs</strong> from Chapter 6</li>
-                <li style="margin-bottom: 8px;">Each file is saved with the <strong style="color: #fff;">exact name</strong> shown in the instructions</li>
-                <li style="margin-bottom: 8px;">All programs <strong style="color: #fff;">run without syntax errors</strong></li>
-                <li style="margin-bottom: 8px;">Each file contains the <strong style="color: #fff;">complete program code</strong> typed manually from the textbook</li>
-                <li>Your final submission includes <strong style="color: #fff;">all 10 files</strong></li>
-            </ul>
-            
-            <!-- Important Submission Note -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-warning.svg" alt="Warning" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">
-                <strong style="color: #fff;">You may submit as many times as you want</strong> for this assignment. Feel free to test your programs one at a time&mdash;upload a single file, check the feedback, then fix and continue.
-            </p>
-            <p style="color: #ff6b1a; margin: 0 0 20px 0;">
-                <strong>But be careful:</strong> CodeGrade only keeps your most recent submission. If you only upload one file at the end, you'll overwrite your previous work and lose credit for the others. Make sure your <strong style="color: #fff;">final submission includes all 10 files</strong> to receive full credit.
-            </p>
-            
-            <!-- Grading -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-permitted-techniques.svg" alt="Grading" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">You will receive <strong style="color: #fff;">full credit</strong> for each program you submit that executes and generates the expected output shown in the textbook</li>
-                <li>If your program does not execute, does not generate the exact output as shown in the book, or is not submitted, you will receive <strong style="color: #ff6b1a;">no credit</strong></li>
-            </ul>
-            
-            <!-- CodeGrade Tip -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-codegrade-tip.svg" alt="CodeGrade Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">
-                <strong style="color: #fff;">Unlimited submissions!</strong> Submit early and often. CodeGrade will tell you exactly what's working and what needs fixing.
-            </p>
-            <p style="color: #B0B8C4; margin: 0;">
-                This course is about <strong style="color: #fff;">learning how to code</strong>, not catching you in mistakes. I'm not looking for ways to penalize you. Instead, I want you to learn from the feedback, make improvements, and feel proud of your working solution.
-            </p>
-            
-        </div>
+      </div>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
+    <p>These are Chapter 6 BookEx exercises. You are typing Gaddis programs exactly as written. All programs use the <code>def main()</code> and <code>if __name__ == '__main__':</code> structure from Chapter 5.</p>
+    <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
+    <div class="lc-permitted">
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2&ndash;6</p>
+      <ul class="lc-permitted__list">
+        <li>open() with modes 'r', 'w', and 'a'</li>
+        <li>write() with string arguments and '\n'</li>
+        <li>read() and readline()</li>
+        <li>rstrip('\n') and strip() for cleaning file data</li>
+        <li>str(), int(), float() for type conversion with file I/O</li>
+        <li>The with statement for automatic file closing</li>
+        <li>try-except with FileNotFoundError</li>
+        <li>All Chapter 2&ndash;5 techniques</li>
+      </ul>
+      <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> lists as data structures, classes, anything from chapters not yet covered</p>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
+    <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
+  </div>
 </div>
 
 <!-- ============================================================ -->
-<!-- CARD 5: NEED HELP? (Purple) -->
+<!-- CARD 5: NEED HELP (Purple) -->
 <!-- ============================================================ -->
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #BF40FF 0%, #2E0854 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-need-help.svg" alt="Need Help?" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
+<div class="lc-card lc-card--purple">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Need Help</div>
+    <div class="lc-sub-banner">Look No Further!</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
+    <ul>
+      <li>If you get <code>FileNotFoundError</code>, check that the program that creates the file has been run first &mdash; several checkpoints depend on earlier ones</li>
+      <li>If your output has extra blank lines, you are missing <code>rstrip('\n')</code> &mdash; <code>readline()</code> includes the newline character</li>
+      <li>If you get <code>TypeError</code> on <code>write()</code>, you are trying to write a number directly &mdash; use <code>str()</code> to convert first</li>
+      <li>Submit to CodeGrade early &mdash; it shows exactly which files pass and which need work</li>
+      <li>Post in the course Discord if you are stuck after two attempts (describe the error, do not post your code)</li>
+      <li>Come to Zoom or office hours if you are still stuck</li>
+    </ul>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Reference Guides</div>
+        <div class="lc-callout__body">
+          <p>Chapter 6 BookEx Reference Guide &mdash; step-by-step breakdown of every program in this chapter</p>
         </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Look No Further! We've Got You
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            <!-- If You Get Stuck -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-if-you-get-stuck.svg" alt="If You Get Stuck" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Re-read the checkpoint</strong> you're stuck on</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Check the textbook</strong> &mdash; compare your code line-by-line</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Submit to CodeGrade</strong> to see what's failing</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Post in the discussion forum</strong> (describe your issue, don't post code)</li>
-                <li><strong style="color: #fff;">Come to Zoom office hours</strong> on Tuesday evenings</li>
-            </ol>
-            
-            <!-- CodeGrade Tip -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-codegrade-tip.svg" alt="CodeGrade Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <strong style="color: #fff;">Unlimited submissions!</strong> Submit early and often. CodeGrade will tell you exactly what's working and what needs fixing. Don't wait until the deadline!
-            </p>
-            
-            <!-- Contact & Resources -->
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-contact-and-resources.svg" alt="Contact & Resources" style="height: 18px; display: block;">
-            </div>
-            
-            <!-- Help Item: Zoom -->
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Webcam-Video-Square.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Weekly Zoom Session</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Tuesdays at 6:00 PM CT &mdash; Live coding help and Q&amp;A</div>
-                    <a href="https://utsa.zoom.us/j/97617245124" style="color: #BF40FF; font-size: 13px;">https://utsa.zoom.us/j/97617245124</a>
-                </div>
-            </div>
-            
-            <!-- Help Item: Office Hours -->
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Calendar-Mark.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Office Hours (by Appointment)</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Book a 15-minute slot for one-on-one help</div>
-                    <a href="https://calendly.com/john-newsom-utsa/student-meeting" style="color: #BF40FF; font-size: 13px;">https://calendly.com/john-newsom-utsa/student-meeting</a>
-                </div>
-            </div>
-            
-            <!-- Help Item: Discord -->
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Customer-Support.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Discord Community</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Get help from classmates and share tips (optional but recommended)</div>
-                </div>
-            </div>
-            
-            <!-- Help Item: Email -->
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Mail-Send-Envelope.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Email</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">For private questions or concerns</div>
-                    <a href="/cdn-cgi/l/email-protection#157f7a7d7b3b7b7062667a7855606166743b707160" style="color: #BF40FF; font-size: 13px;"><span class="__cf_email__" data-cfemail="254f4a4d4b0b4b4052564a4865505156440b404150">[email&#160;protected]</span></a>
-                </div>
-            </div>
-            
-        </div>
+      </div>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
+    <div class="lc-contact-grid">
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Zoom Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br><a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a></div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Schedule a Meeting</div>
+        <div class="lc-contact-card__value"><a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a></div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Email</div>
+        <div class="lc-contact-card__value"><a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>Include your section number and abc123</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">CodeGrade</div>
+        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- Footer -->
-<div style="text-align: center; color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
-    <img style="height: 50px; margin-bottom: 15px;" src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
-    <div style="color: #b0b8c4; font-size: 13px;">IS2053 Programming I &mdash; UT San Antonio &mdash; Spring 2026</div>
-    
+    <footer class="lc-footer">
+        <img src="../../branding/UTSanAntonio_H_Logo_Dual_TM_RGB.png" alt="The University of Texas at San Antonio">
+        <div class="lc-footer__citation">
+            <span class="lc-footer__citation-label">Textbook</span>
+            <span class="lc-footer__citation-text"><em>Starting Out with Python</em>, 6th Edition &nbsp;&middot;&nbsp; Tony Gaddis &nbsp;&middot;&nbsp; Pearson &nbsp;&middot;&nbsp; ISBN 978-0-13-787120-9</span>
+        </div>
+        <p class="lc-footer__copyright">&copy; 2026 The University of Texas at San Antonio. Developed by John Newsom for IS2053: Programming I (Python). All rights reserved.</p>
+    </footer>
+
+</div>
+</body>
+</html>
