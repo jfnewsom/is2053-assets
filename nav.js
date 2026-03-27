@@ -214,6 +214,50 @@
     .dd-cyan   { background: #00FFFF; }
     .dd-purple { background: #BF40FF; }
     .dd-orange { background: #FF6B1A; }
+
+    /* ── Injected footer ─────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid #e0e4ef;
+      padding: 24px 40px 20px 40px;
+      margin-top: 40px;
+      text-align: center;
+      background: #fff;
+    }
+    .site-footer__logo {
+      height: 40px;
+      width: auto;
+      max-width: 240px;
+      display: block;
+      margin: 0 auto 16px auto;
+    }
+    .site-footer__citation {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 10px;
+      border: 1px solid #2a2a2a;
+      border-left: 3px solid #BF40FF;
+      padding: 6px 14px;
+      margin-bottom: 14px;
+    }
+    .site-footer__citation-label {
+      font-family: 'Roboto', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #BF40FF;
+      white-space: nowrap;
+    }
+    .site-footer__citation-text {
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      color: #555;
+    }
+    .site-footer__copyright {
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      color: #888;
+    }
   `;
 
   /* ── Helper: dropdown link ──────────────────────────────── */
