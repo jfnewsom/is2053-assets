@@ -1,0 +1,495 @@
+{
+    "meta": {
+        "labId": "lab-1-3",
+        "title": "Deep in the Heart",
+        "module": 1,
+        "week": 3,
+        "weekType": "MASTER",
+        "chapters": "3",
+        "chapterTopics": "Decision Structures and Boolean Logic",
+        "filename": "lab-1-3.py"
+    },
+    "overview": {
+        "body": "This is a <strong>MASTER</strong> week! You'll copy your Lab 1.2 code and add <strong>nested decisions</strong>. When a player reaches Houston, they get a second choice: continue to Galveston for the beach, or stay put. This is an if statement <em>inside</em> another if statement — decisions within decisions!",
+        "mentorQuote": {
+            "character": "Danny Cavanaugh",
+            "role": "Senior Developer, Bat City Collective",
+            "headshot": "Danny-Cavanaugh.png",
+            "quote": "This is where it gets interesting! Nested if statements let you build decision trees — like a 'choose your own adventure' book. If you reach Houston AND you have miles left AND you want to continue... then you can try for Galveston. That's three levels of logic working together!"
+        },
+        "objectives": [
+            "Add the <strong>HOU_TO_GALVESTON</strong> constant (50 miles)",
+            "Initialize <strong>miles_remaining</strong> and <strong>total_distance</strong> tracking variables",
+            "Write a <strong>nested if</strong> inside the Houston branch to ask about Galveston",
+            "Use the <strong>or</strong> operator to accept both 'y' and 'Y'",
+            "Set a <strong>status</strong> variable (WINNER, SHORT, DETOUR, STOPPED, ERROR) in every branch",
+            "Display a <strong>final message</strong> based on the status variable"
+        ],
+        "keyConceptsText": "<strong>Chapter 3 Sections:</strong> 3.4 (Nested if), 3.5 (Logical Operators)",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 3: Decision Structures and Boolean Logic",
+        "namedConstants": [
+            { "name": "SAT_TO_CORPUS",    "description": "Distance from San Antonio to Corpus Christi (150 miles)" },
+            { "name": "SAT_TO_HOUSTON",   "description": "Distance from San Antonio to Houston (200 miles)" },
+            { "name": "SAT_TO_AUSTIN",    "description": "Distance from San Antonio to Austin (80 miles)" },
+            { "name": "HOU_TO_GALVESTON", "description": "Distance from Houston to Galveston (50 miles) — back from Lab 1.1!" }
+        ],
+        "programRequirements": [
+            "Your program <strong>MUST</strong> start from your Lab 1.2 code",
+            "Your program <strong>MUST</strong> have a nested if inside the Houston branch",
+            "Your program <strong>MUST</strong> use the <code>or</code> operator to accept 'y' or 'Y'",
+            "Your program <strong>MUST</strong> set <code>total_distance</code> and <code>status</code> in every branch",
+            "Your program <strong>MUST</strong> display a final message based on <code>status</code>",
+            "Your program <strong>MUST</strong> include your docstring with name, abc123, section, and description"
+        ],
+        "filenameNote": "Submit <code>lab-1-3.py</code> this week."
+    },
+    "timeGuide": {
+        "totalTime": "75–90 Minutes",
+        "rows": [
+            { "checkpoint": "CP1: Setup & New Variables",   "time": "15 min", "task": "Copy 1.2, add constant, add tracking vars" },
+            { "checkpoint": "CP2: Nested Houston Logic",    "time": "25 min", "task": "The big one: nested if with Galveston" },
+            { "checkpoint": "CP3: Update Other Branches",   "time": "15 min", "task": "Corpus, Austin, Invalid with new vars" },
+            { "checkpoint": "CP4: Final Message",           "time": "10 min", "task": "Status-based ending message" },
+            { "checkpoint": "Testing & Polish",             "time": "20 min", "task": "Test ALL paths (there are many!)" }
+        ],
+        "strategy": "Draw it out! Before coding, sketch the decision tree on paper. Houston alone has 4 possible outcomes: didn't make it, made it but stayed, made it and reached Galveston, or fell short of Galveston. Visualizing helps you track all the branches."
+    },
+    "beforeYouBegin": {
+        "intro": "Here's how your finished program fits together. You're starting from Lab 1.2 — the [NEW] and [REPLACED] tags show what changes this week.",
+        "architecture": "# ---- CONSTANTS ----\nSAT_TO_CORPUS = 150\nSAT_TO_HOUSTON = 200\nSAT_TO_AUSTIN = 80\nHOU_TO_GALVESTON = 50    [NEW-CP1]\n\n# ---- MAIN PROGRAM ----\ndef main():\n│\n│── Welcome banner, player name, roll\n│── miles_remaining = miles_rolled      [NEW-CP1]\n│── total_distance = 0                  [NEW-CP1]\n│\n│── Display menu, get choice\n│\n│── if choice == 1 (Corpus):            [REPLACED-CP3]\n│       check miles_remaining >= 0\n│       set status WINNER or SHORT\n│       set total_distance\n│\n│── elif choice == 2 (Houston):         [REPLACED-CP2]\n│       check miles_remaining >= 0\n│       if made it:\n│       │   ask 'Continue to Galveston? (y/n)'\n│       │   if answer == 'y' or answer == 'Y':\n│       │       check remaining vs HOU_TO_GALVESTON\n│       │       status = WINNER or SHORT\n│       │   else:\n│       │       status = STOPPED\n│       else:\n│           status = SHORT\n│       set total_distance\n│\n│── elif choice == 3 (Austin):          [REPLACED-CP3]\n│       check miles_remaining >= 0\n│       status = DETOUR or SHORT\n│       set total_distance\n│\n│── else (invalid):                     [REPLACED-CP3]\n│       status = ERROR\n│\n│── Display TRIP SUMMARY\n│── if status == 'WINNER': ...          [NEW-CP4]\n│── elif status == 'SHORT': ...\n│── elif status == 'DETOUR': ...\n│── else: ...\n\nif __name__ == '__main__':\n    main()"
+    },
+    "checkpoints": [
+        {
+            "number": 1,
+            "title": "Setup & New Variables",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "A foundation with tracking variables that will accumulate totals as the player travels through multiple cities."
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Tracking variables that accumulate values across a program are everywhere in real software: shopping carts, game scores, step counters. Learning to initialize and update them is fundamental."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Copy your Lab 1.2 code and save as <code>lab-1-3.py</code>",
+                        "Update your docstring with the new lab number and description",
+                        "Add the Galveston constant with your other constants: <code>HOU_TO_GALVESTON = 50</code>",
+                        "After calculating <code>miles_rolled</code>, add: <code>miles_remaining = miles_rolled</code>",
+                        "Before the if-elif-else chain, add: <code>total_distance = 0</code>"
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "3-5",
+                            "filename": "loan_qualifier.py",
+                            "description": "Shows a nested if — an if inside another if. Study the indentation carefully. You're building on Lab 1.2 patterns while preparing for the nested structure in Checkpoint 2."
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Wrong initial value for tracking vars", "total_distance starts at 0; miles_remaining starts at miles_rolled"],
+                        ["Forgetting HOU_TO_GALVESTON constant", "NameError when you try to use it in Checkpoint 2"],
+                        ["Variables in wrong location", "Placement matters: tracking vars must be initialized before the if-elif-else chain"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add debug lines after your new variables:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "    # DEBUG - DELETE AFTER TESTING\n    print(f'DEBUG: miles_remaining = {miles_remaining}')\n    print(f'DEBUG: total_distance = {total_distance}')"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run with roll 15. Verify:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "DEBUG: miles_remaining = 150\nDEBUG: total_distance = 0"
+                },
+                {
+                    "type": "callout",
+                    "variant": "pitfall",
+                    "title": "Delete debug lines",
+                    "body": "Delete debug lines before moving to Checkpoint 2."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "4 constants including <code>HOU_TO_GALVESTON</code>",
+                        "<code>miles_remaining</code> initialized to <code>miles_rolled</code>",
+                        "<code>total_distance</code> initialized to <code>0</code>"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "title": "Nested Houston Logic",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "The heart of this assignment: if the player reaches Houston, they can choose to continue to Galveston. This is an if inside an if — a nested if."
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "3-5",
+                            "filename": "loan_qualifier.py",
+                            "description": "Shows nested if — the inner if only runs when the outer if is true. Study how the indentation levels work. That's exactly what you need here."
+                        },
+                        {
+                            "programId": "3-7",
+                            "filename": "loan_qualifier2.py",
+                            "description": "Shows the or operator in conditions. The pattern you need: choice == 'y' or choice == 'Y' — you must repeat the full comparison on both sides."
+                        }
+                    ]
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Tyler Nguyen",
+                    "role": "Junior Developer, Bat City Collective",
+                    "headshot": "Tyler-Nguyen.png",
+                    "quote": "When I first learned the or operator, I kept writing 'if choice == \"y\" or \"Y\":' and wondering why it always ran. You need the full comparison on both sides: 'choice == \"y\" or choice == \"Y\"'. Trust me, this trips everyone up at first!"
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Replace your Houston branch (elif choice == 2)</strong> with nested logic. The structure is:"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Check if made it to Houston (<code>miles_remaining &gt;= SAT_TO_HOUSTON</code>)",
+                        "If yes: subtract <code>SAT_TO_HOUSTON</code> from <code>miles_remaining</code>, set <code>total_distance</code>, then ask <code>'Continue to Galveston? (y/n): '</code>",
+                        "If they say y/Y: check if <code>miles_remaining &gt;= HOU_TO_GALVESTON</code> — set status WINNER or SHORT accordingly",
+                        "If they say anything else: set status to 'STOPPED'",
+                        "If didn't make Houston: set status to 'SHORT', set <code>total_distance</code> to <code>SAT_TO_HOUSTON</code>"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["choice == 'y' or 'Y'", "Always True! Need: choice == 'y' or choice == 'Y'"],
+                        ["Wrong indentation level", "Nested code must be indented further than the outer if"],
+                        ["Not updating miles_remaining", "Must subtract SAT_TO_HOUSTON before checking if you can reach Galveston"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Test all 4 Houston outcomes:</strong>"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "<strong>Roll 5, choice 2:</strong> Didn't make Houston → SHORT",
+                        "<strong>Roll 20, choice 2, 'n':</strong> Made Houston, stayed → STOPPED",
+                        "<strong>Roll 20, choice 2, 'y':</strong> Made Houston, reached Galveston → WINNER",
+                        "<strong>Roll 15, choice 2, 'y':</strong> Made Houston, short of Galveston → SHORT"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Nested if inside the Houston branch",
+                        "Input prompt asking about Galveston",
+                        "Logic handling y/Y for continue, anything else for stop",
+                        "All 4 Houston outcomes working correctly"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title": "Update Other Branches",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Updated Corpus, Austin, and Invalid branches that set <code>total_distance</code> and <code>status</code> so the final summary has accurate data."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>For each remaining branch, ensure you set both tracking variables:</strong>"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Branch", "total_distance", "status"],
+                    "rows": [
+                        ["Corpus — made it",    "SAT_TO_CORPUS",  "'WINNER'"],
+                        ["Corpus — fell short", "SAT_TO_CORPUS",  "'SHORT'"],
+                        ["Austin — made it",    "SAT_TO_AUSTIN",  "'DETOUR'"],
+                        ["Austin — fell short", "SAT_TO_AUSTIN",  "'SHORT'"],
+                        ["Invalid (else)",      "0",              "'ERROR'"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "callout",
+                    "variant": "info",
+                    "title": "Status Values",
+                    "items": [
+                        "<strong>WINNER</strong> — Reached the beach (Corpus or Galveston)",
+                        "<strong>SHORT</strong> — Ran out of miles before the destination",
+                        "<strong>DETOUR</strong> — Made it to Austin (no beach there!)",
+                        "<strong>STOPPED</strong> — Chose to stay in Houston",
+                        "<strong>ERROR</strong> — Invalid menu choice"
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "3-6",
+                            "filename": "grader.py",
+                            "description": "Shows setting different variables in each branch of an if-elif-else. Same pattern here — each destination sets its own status and total_distance."
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Inconsistent status strings", "'Winner' vs 'WINNER' — be consistent, Python is case-sensitive"],
+                        ["Missing a branch", "status stays undefined, causing a NameError in the summary"],
+                        ["Updating distance instead of total_distance", "Summary shows wrong value"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add a debug line at the END of the full if-elif-else block (right before the summary):"
+                },
+                {
+                    "type": "code_block",
+                    "code": "    # DEBUG - DELETE AFTER TESTING\n    print(f'DEBUG: total_distance = {total_distance}, status = {status}')"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Test each branch and verify <code>total_distance</code> and <code>status</code> are set correctly for every path."
+                },
+                {
+                    "type": "callout",
+                    "variant": "pitfall",
+                    "title": "Delete the debug line",
+                    "body": "Delete the debug line before moving to Checkpoint 4."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "All branches setting <code>total_distance</code> and <code>status</code>",
+                        "Consistent status strings (all uppercase)",
+                        "Each branch tested and working"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "title": "Trip Summary & Final Message",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "An updated trip summary showing total distance, plus a final message that changes based on the status variable."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Update the Trip Summary to show \"Total Distance\" using <code>total_distance</code>",
+                        "After the summary, add an if-elif-else that checks the <code>status</code> variable and prints a matching closing message"
+                    ]
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Messages to display for each status:</strong>"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Status", "Message to Print"],
+                    "rows": [
+                        ["'WINNER'", "Beach celebration message"],
+                        ["'SHORT'",  "Encouragement to try again"],
+                        ["'DETOUR'", "Suggestion to try a beach destination next time"],
+                        ["else",     "Generic thanks for playing"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "3-6",
+                            "filename": "grader.py",
+                            "description": "Shows if-elif-else with string comparisons. Same pattern here — checking status against different string values to print different messages."
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Case mismatch: 'Winner' vs 'WINNER'", "Python is case-sensitive — wrong case means no match"],
+                        ["Forgetting quotes around status string", "NameError: WINNER is not defined"],
+                        ["Missing else branch", "No message for STOPPED or ERROR status"]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Test each status outcome:</strong>"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "<strong>Roll 15, choice 1:</strong> WINNER message",
+                        "<strong>Roll 5, choice 1:</strong> SHORT message",
+                        "<strong>Roll 20, choice 3:</strong> DETOUR message",
+                        "<strong>Roll 20, choice 2, 'n':</strong> else message (STOPPED)"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Updated Trip Summary displaying <code>total_distance</code>",
+                        "if-elif-else checking <code>status</code> for the final message",
+                        "All statuses producing an appropriate closing message"
+                    ]
+                }
+            ]
+        }
+    ],
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "File named exactly <code>lab-1-3.py</code>",
+            "Docstring includes name, abc123, section, and description",
+            "4 constants including <code>HOU_TO_GALVESTON</code>",
+            "Nested if inside the Houston branch",
+            "Using <code>or</code> operator to accept 'y' or 'Y'",
+            "All branches set <code>total_distance</code> and <code>status</code>",
+            "Final message displays based on <code>status</code>",
+            "All DEBUG lines removed"
+        ],
+        "scopeReminder": "Chapters 2 and 3: all Chapter 2 and 3 techniques including nested if statements, logical operators (or, and, not), abs(), and string comparisons. NOT permitted: loops, lists, functions you define, or any Chapter 4+ techniques. Note: The main() structure is a required template you copy exactly — you'll learn why in Chapter 5.",
+        "permittedTechniques": {
+            "chapters": "Chapters 2–3",
+            "specific": [
+                "All Chapter 2 and 3 techniques",
+                "Nested if statements",
+                "Logical operators (or, and, not)",
+                "abs() function (professor-introduced)",
+                "String comparisons with =="
+            ],
+            "notPermitted": "loops, lists, functions you define, or any Chapter 4+ techniques. Note: The main() structure is a required template — you'll learn why in Chapter 5."
+        },
+        "warnings": []
+    },
+    "needHelp": {
+        "ifYouGetStuck": [
+            "Draw the decision tree on paper first — Houston has 4 paths, sketch them all before coding",
+            "Check your indentation carefully — nested code must be indented further than the outer if",
+            "Test one branch at a time using the debug technique from earlier checkpoints",
+            "Check Program 3-5 (loan_qualifier.py) for the nested if pattern",
+            "Submit to CodeGrade early and often to see which tests pass"
+        ],
+        "bookexResourceNote": "Chapters 2–3 BookEx Reference Guide — step-by-step breakdowns of every textbook example, your primary reference"
+    }
+}
