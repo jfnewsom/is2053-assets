@@ -1,0 +1,456 @@
+{
+    "meta": {
+        "labId":          "lab-3-2",
+        "title":          "Lists to the Rescue",
+        "module":         3,
+        "week":           2,
+        "weekType":       "ENHANCE",
+        "chapters":       "7",
+        "chapterTopics":  "Lists and Tuples",
+        "filename":       "lab-3-2.py",
+        "additionalFiles": ["function_library.py"]
+    },
+
+    "overview": {
+        "body": "Your save file works, but writing six separate <code>write()</code> calls for six variables already feels tedious. Now imagine needing to save twenty cities. Or fifty hazards. That approach doesn't scale.\n\nThis week you discover the tool that makes all of that elegant: lists. You will replace your if/elif destination chains with parallel lists and index lookups, add two tracking lists that grow automatically as the player travels, and upgrade your save/load system to persist those lists. You will also write three new utility functions into <code>function_library.py</code> — the first time the library grows this module.",
+        "mentorQuote": {
+            "character": "Priya Venkatesh",
+            "role":      "Lead Architect, Bat City Collective",
+            "headshot":  "Priya-Venkatesh.png",
+            "quote":     "Every if/elif chain you write is a promise to maintain it forever. Lists let you make that promise once and never revisit it. That is what scaling looks like."
+        },
+        "objectives": [
+            "Create parallel lists to store destination names, distances, and notes",
+            "Replace if/elif destination selection with list index lookups",
+            "Build tracking lists with append() to record visited cities and hazards",
+            "Use the in operator to check whether a city has already been visited",
+            "Use len() to count list items in the trip report",
+            "Upgrade save_game() and load_game() to persist tracking lists",
+            "Add save_list_to_file(), load_list_from_file(), and file_exists() to function_library.py"
+        ],
+        "keyConceptsText": "Chapter 7: Program 7-1 (list with initial values), Program 7-3 (append), Program 7-2 (in operator), Program 7-9 (len), Program 7-16 (write list to file), Program 7-17 (read file into list).",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 7",
+        "programRequirements": [
+            "SA_DESTINATIONS, SA_DISTANCES, and SA_NOTES parallel lists replace all hardcoded destination if/elif chains",
+            "visited_cities list tracks every city in the route, starting with San Antonio",
+            "hazards_list tracks every hazard name encountered during play",
+            "save_game() writes the enhanced format including lists and the ---HAZARDS--- separator",
+            "load_game() reads the enhanced format and restores both tracking lists",
+            "function_library.py adds save_list_to_file(), load_list_from_file(), and file_exists()"
+        ],
+        "namedConstants": [
+            { "name": "SA_DESTINATIONS", "description": "List of destination city names reachable from San Antonio" },
+            { "name": "SA_DISTANCES",    "description": "Parallel list — miles for each destination in SA_DESTINATIONS" },
+            { "name": "SA_NOTES",        "description": "Parallel list — short descriptor for each destination (e.g. 'BEACH!', 'Gateway East')" }
+        ],
+        "filenameNote": "Submit lab-3-2.py and function_library.py this week.",
+        "additionalFilesNote": "function_library.py is submitted alongside lab-3-2.py this week — it gets three new file utility functions. CodeGrade tests those functions in isolation.",
+        "saveYourCode": "Keep both files — Module 3.3 builds directly on this code, adding sorted hazard display and a trip report file."
+    },
+
+    "timeGuide": {
+        "totalTime": "120–150 Minutes",
+        "rows": [
+            { "checkpoint": "Setup",                    "time": "5 min",  "task": "Copy lab-3-1.py to lab-3-2.py" },
+            { "checkpoint": "CP1: Parallel Lists",      "time": "25 min", "task": "Add SA_DESTINATIONS, SA_DISTANCES, SA_NOTES and update display_destinations()" },
+            { "checkpoint": "CP2: List Indexing",       "time": "20 min", "task": "Replace if/elif destination selection with index lookup" },
+            { "checkpoint": "CP3: Tracking Lists",      "time": "25 min", "task": "Add visited_cities and hazards_list with append() and in operator" },
+            { "checkpoint": "CP4: Enhanced Save/Load",  "time": "30 min", "task": "Upgrade save_game() and load_game() to include tracking lists" },
+            { "checkpoint": "CP5: Library + Report",    "time": "25 min", "task": "Add 3 file functions to function_library.py and enhance trip report" },
+            { "checkpoint": "Test & Submit",            "time": "10 min", "task": "Test the full cycle, verify save format, submit both files" }
+        ]
+    },
+
+    "beforeYouBegin": {
+        "intro": "Here is how your finished program fits together. The [NEW] tags show what you are adding this week. The [REPLACED] tags show what changes from your 3.1 code.",
+        "architecture": "# ---- CONSTANTS ----\nSAVE_FILE = 'savegame.txt'           (unchanged)\nSA_DESTINATIONS = [...]              [NEW — replaces destination if/elif]\nSA_DISTANCES    = [...]              [NEW — parallel list for miles]\nSA_NOTES        = [...]              [NEW — parallel list for city notes]\n... (other constants unchanged)\n\n# ---- HELPER FUNCTIONS ----\ndisplay_destinations(city)           [REPLACED — now uses list loop]\nget_destination(city, choice)        [NEW — index lookup returns (dest, dist)]\n\n# ---- SAVE / LOAD FUNCTIONS ----\nsave_game(...)                       [REPLACED — now saves lists too]\nload_game()                          [REPLACED — now loads lists too]\n\n# ---- GAME STATE ----\nvisited_cities  = ['San Antonio']    [NEW — tracking list]\nhazards_list    = []                 [NEW — tracking list]\n\nMAIN MENU:  (unchanged from 3.1)\n│\nGAME LOOP:\n│\n│── display_destinations()          [REPLACED — loops the list]\n│── get_destination()                [NEW]\n│\n│   TRAVEL LOOP:\n│   │── Roll D20, move miles\n│   │── Hazard check → append to hazards_list  [NEW]\n│   │── Repeat until arrival\n│\n│── append(destination) to visited_cities      [NEW]\n│── Save and Quit option            (unchanged)\n│\nFINAL TRIP REPORT:\n│── Show visited_cities with len()  [REPLACED]\n│── Show hazards_list with len()    [REPLACED]\n\n# ---- function_library.py additions ----\nsave_list_to_file(filename, data_list)   [NEW]\nload_list_from_file(filename)            [NEW]\nfile_exists(filename)                    [NEW]"
+    },
+
+    "checkpoints": [
+        {
+            "number": 1,
+            "title": "Add the Parallel Destination Lists",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Right now your destination options are buried in if/elif chains. You are going to replace all of that with three parallel lists — one for city names, one for distances, and one for short notes. Once those lists exist, everything that used to take a chain of branches takes a single index lookup instead."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Start by copying <code>lab-3-1.py</code> to a new file named <code>lab-3-2.py</code>. All work this week goes in <code>lab-3-2.py</code>.",
+                        "Near the top of your file, after <code>SAVE_FILE</code>, add three new parallel list constants for San Antonio's destinations. Keep them adjacent so the parallel relationship is visually obvious:",
+                        "Update your <code>display_destinations()</code> function so it loops through <code>SA_DESTINATIONS</code> and <code>SA_DISTANCES</code> using <code>range(len(SA_DESTINATIONS))</code> to print the numbered menu, instead of hardcoded print statements.",
+                        "Verify the menu still displays all four destinations in the same numbered format as before — the player-facing output should not change."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId":   "7-1",
+                            "filename":    "sales_list.py",
+                            "step":        1,
+                            "description": "Demonstrates creating a list with initial values and looping through it with range(len())."
+                        }
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "info",
+                    "title": "What parallel lists look like",
+                    "body": "Position 0 in each list belongs together, position 1 belongs together, and so on. The index is the connection between them:",
+                    "items": [
+                        "SA_DESTINATIONS[0] is 'Corpus Christi', SA_DISTANCES[0] is 150, SA_NOTES[0] is 'BEACH!'",
+                        "SA_DESTINATIONS[1] is 'Houston',       SA_DISTANCES[1] is 200, SA_NOTES[1] is 'Gateway East'",
+                        "SA_DESTINATIONS[2] is 'Austin',        SA_DISTANCES[2] is 80,  SA_NOTES[2] is 'Keep it Weird'",
+                        "SA_DESTINATIONS[3] is 'Laredo',        SA_DISTANCES[3] is 160, SA_NOTES[3] is 'Dead End'"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "<code>SA_DESTINATIONS</code>, <code>SA_DISTANCES</code>, and <code>SA_NOTES</code> constants defined with four entries each",
+                        "<code>display_destinations()</code> uses a loop over the lists — no hardcoded city names in the function body",
+                        "Running the program and reaching the destination menu shows the same four options as before"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "title": "Replace if/elif Destination Selection with List Indexing",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "This is the magic moment. The if/elif chain that selected a destination based on the player's menu choice gets replaced with a single index lookup. The player's choice (1–4) maps directly to an index (0–3) via <code>choice - 1</code>."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Find the section of your game loop where the player's menu choice determined which city and distance to use. It probably looks like a chain of <code>if choice == 1: ... elif choice == 2: ...</code> blocks.",
+                        "Replace that entire chain with index lookups. Compute the index once: <code>index = choice - 1</code>, then use it to pull both values: <code>destination = SA_DESTINATIONS[index]</code> and <code>distance = SA_DISTANCES[index]</code>.",
+                        "If your code displays a city note or tagline, pull that from <code>SA_NOTES[index]</code> as well.",
+                        "Test by running the game and selecting each of the four destination choices in turn. The destination name, distance, and note should all be correct."
+                    ]
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Terrence \"T-Bone\" Booker",
+                    "role":      "Senior Developer, Bat City Collective",
+                    "headshot":  "Terrence-Booker.png",
+                    "quote":     "You just deleted fifteen lines of if/elif and replaced them with two. That is not a trick — that is how professional code actually works. One lookup, any size list."
+                },
+                {
+                    "type": "callout",
+                    "variant": "pitfall",
+                    "title": "Off-by-one: choice vs index",
+                    "body": "Player choices start at 1 (because menus do), but list indices start at 0 (because Python does). Always subtract 1: <code>index = choice - 1</code>. If you forget, choice 1 gives you the second city, and choice 4 crashes with an IndexError."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "The destination if/elif chain is completely removed",
+                        "Destination and distance are set via <code>SA_DESTINATIONS[index]</code> and <code>SA_DISTANCES[index]</code>",
+                        "All four destination choices work correctly in a test run"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title": "Add the visited_cities and hazards_list Tracking Lists",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Now you add two empty lists to the game state — one that grows every time the player arrives in a city, and one that grows every time a hazard is encountered. By the time the final trip report prints, both lists contain a complete record of the journey."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "In the game state initialization section (after the main menu, once you know whether this is a new or loaded game), add two list variables. For a new game, initialize them as: <code>visited_cities = ['San Antonio']</code> and <code>hazards_list = []</code>. San Antonio is pre-loaded because the player starts there.",
+                        "Inside the game loop, after the player arrives at their destination, append that destination to the list: <code>visited_cities.append(destination)</code>.",
+                        "Before appending, check whether the player has already visited that city using the <code>in</code> operator. If they have, print a message like <code>'You have been to Houston before!'</code> — then still append, since the list tracks the route, not unique cities.",
+                        "Inside the hazard handling block, when a hazard is triggered, append the hazard name string to <code>hazards_list</code>: <code>hazards_list.append(hazard)</code>.",
+                        "In the final trip report, replace any hardcoded stat output with list-based display. Loop through <code>visited_cities</code> using <code>range(len(visited_cities))</code> to print a numbered route. Use <code>len(hazards_list)</code> to report the hazard count."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId":   "7-3",
+                            "filename":    "list_append.py",
+                            "step":        1,
+                            "description": "Shows creating an empty list and adding items dynamically with append()."
+                        },
+                        {
+                            "programId":   "7-2",
+                            "filename":    "in_list.py",
+                            "step":        2,
+                            "description": "Demonstrates using the in operator to check whether an item exists in a list."
+                        },
+                        {
+                            "programId":   "7-9",
+                            "filename":    "average_list.py",
+                            "step":        3,
+                            "description": "Shows len() and other built-in functions for summarizing list contents."
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "<code>visited_cities</code> starts as <code>['San Antonio']</code> on a new game",
+                        "Each destination arrival appends to <code>visited_cities</code>",
+                        "The <code>in</code> operator prints a revisit message when applicable",
+                        "Each hazard trigger appends to <code>hazards_list</code>",
+                        "Final trip report loops through both lists and uses <code>len()</code> for counts"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "title": "Upgrade save_game() and load_game() for the Enhanced Format",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "Your save file currently holds six lines of scalar data. This checkpoint upgrades it to also persist the two tracking lists. Cities go after the six stats, followed by a <code>---HAZARDS---</code> separator line, followed by hazards. The load function reads cities until it hits the separator, then reads hazards until the file ends."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Update <code>save_game()</code> to accept two additional parameters: <code>visited_cities</code> and <code>hazards_list</code>. Write the six scalar variables exactly as before.",
+                        "After the six scalars, loop through <code>visited_cities</code> and write each city on its own line.",
+                        "Write the separator line: <code>outfile.write('---HAZARDS---\\n')</code>",
+                        "Loop through <code>hazards_list</code> and write each hazard on its own line. Then close the file.",
+                        "Update <code>load_game()</code> to read back the two lists. After reading the six scalars, read cities into a local list using a <code>while</code> loop — keep reading until you hit the separator line <code>'---HAZARDS---'</code> or an empty string.",
+                        "After the separator, read hazards into a second local list using another <code>while</code> loop until you reach an empty string (end of file).",
+                        "Return a tuple that now includes all eight values: the six scalars plus the two lists.",
+                        "Update the main menu's Load Game branch to unpack all eight values from the tuple."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId":   "7-16",
+                            "filename":    "write_number_list.py",
+                            "step":        1,
+                            "description": "Demonstrates writing a list to a file by looping and writing each item with str()."
+                        },
+                        {
+                            "programId":   "6-19",
+                            "filename":    "show_coffee_records.py",
+                            "step":        2,
+                            "description": "Shows the while line != '' pattern for reading variable-length data from a file."
+                        }
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "success",
+                    "title": "What the enhanced save file looks like",
+                    "body": "After saving a game where Maria traveled San Antonio → Austin → Houston and hit two hazards, the file should look like this:",
+                    "items": [
+                        "Maria",
+                        "Houston",
+                        "280",
+                        "3",
+                        "2",
+                        "1",
+                        "San Antonio",
+                        "Austin",
+                        "Houston",
+                        "---HAZARDS---",
+                        "Buc-ee's appears!",
+                        "Speed trap!"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "<code>save_game()</code> writes all six scalars, then the cities list, then <code>---HAZARDS---</code>, then the hazards list",
+                        "<code>load_game()</code> reads all eight values back correctly and returns them as a tuple",
+                        "A full save-quit-reload cycle restores the player's name, city, stats, route, and hazard history",
+                        "Opening <code>savegame.txt</code> in a text editor shows the expected multi-section format"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 5,
+            "title": "Add File Functions to function_library.py and Enhance the Trip Report",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "The final checkpoint this week has two parts. First, you add three reusable file utility functions to <code>function_library.py</code> — CodeGrade tests these in isolation. Second, you update the final trip report to display the route from <code>visited_cities</code> and the full hazard list from <code>hazards_list</code>."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Open <code>function_library.py</code>. Add a new section comment at the bottom: <code># FILE FUNCTIONS (Added in Lab 3-2)</code>",
+                        "Add <code>save_list_to_file(filename, data_list)</code> — opens the file in write mode using the <code>with</code> statement, loops through the list, and writes each item as a string with <code>'\\n'</code> appended.",
+                        "Add <code>load_list_from_file(filename)</code> — opens the file in read mode using the <code>with</code> statement, reads line by line with a <code>while line != ''</code> loop, strips <code>'\\n'</code> from each line with <code>rstrip()</code>, appends to a result list, and returns it. Wraps the whole body in <code>try-except FileNotFoundError</code> and returns an empty list if the file does not exist.",
+                        "Add <code>file_exists(filename)</code> — attempts to open the file in read mode inside a <code>try</code> block and returns <code>True</code>. Returns <code>False</code> in the <code>except FileNotFoundError</code> block.",
+                        "All three functions must have complete docstrings.",
+                        "In <code>lab-3-2.py</code>, update the final trip report section. Display the cities route as a numbered list by looping through <code>visited_cities</code> with <code>range(len(visited_cities))</code>. Display each hazard from <code>hazards_list</code> with a bullet. Use <code>len()</code> for the total counts."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId":   "7-16",
+                            "filename":    "write_number_list.py",
+                            "step":        1,
+                            "description": "Pattern for the save_list_to_file() function body — loop and write each item."
+                        },
+                        {
+                            "programId":   "7-17",
+                            "filename":    "read_number_list.py",
+                            "step":        2,
+                            "description": "Pattern for reading a file into a list — readlines() approach shown here, but use the while readline() loop in your library for consistency with 3.1."
+                        }
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "warning",
+                    "title": "Use with statement in the library functions",
+                    "body": "The three new library functions must use the <code>with</code> statement to open files — <code>with open(filename, 'w') as outfile:</code>. This is the Chapter 6.3 pattern. Using <code>open()</code> and <code>close()</code> directly in library functions is acceptable in your main game file but not in the library."
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Run the program. Play through a full game — travel to at least two cities, trigger at least one hazard.",
+                        "Let the game end normally. Verify the final trip report shows a numbered city route and a bulleted hazard list.",
+                        "Run again and choose Save and Quit after one turn. Reload and verify the full route and hazard history are restored.",
+                        "Check that <code>function_library.py</code> has all three new functions with docstrings and that they import without errors."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "function_library.py has <code>save_list_to_file()</code>, <code>load_list_from_file()</code>, and <code>file_exists()</code>, each with a docstring",
+                        "All three library functions use the <code>with</code> statement",
+                        "Final trip report displays the full city route and hazard list from the tracking lists",
+                        "Both files pass a syntax check (run <code>python3 function_library.py</code> — no errors)"
+                    ]
+                }
+            ]
+        }
+    ],
+
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "lab-3-2.py has a top-of-file comment block with your name, abc123, section number, and a description",
+            "function_library.py has all three new functions — save_list_to_file(), load_list_from_file(), and file_exists() — each with a docstring",
+            "SA_DESTINATIONS, SA_DISTANCES, and SA_NOTES parallel lists are defined as constants",
+            "Destination selection uses index lookup (choice - 1), not if/elif",
+            "visited_cities starts as ['San Antonio'] on a new game and grows with append()",
+            "hazards_list starts as [] and each hazard trigger appends to it",
+            "save_game() writes the enhanced format including both lists and the ---HAZARDS--- separator",
+            "load_game() reads back all eight values (six scalars plus two lists) correctly",
+            "Library functions use the with statement for file handling"
+        ],
+        "scopeReminder": "Chapters 6–7 are both in scope this week. The with statement is permitted in function_library.py (it is introduced in Chapter 6.3). Do NOT use sort(), copy(), or any Chapter 7 techniques not yet covered — those are saved for Lab 3.3. Do NOT use dictionaries, sets, classes, or any Chapter 8+ features.",
+        "permittedTechniques": {
+            "chapters": "2–7 (all techniques from Chapters 2–6 plus Chapter 7 list creation, append, in operator, index access, len, and file/list patterns)",
+            "specific": [
+                "List creation with initial values: SA_DESTINATIONS = ['Corpus Christi', ...]",
+                "Empty list creation: hazards_list = []",
+                "append() to add items",
+                "in operator to check membership",
+                "range(len(my_list)) for indexed loops",
+                "len() to count items",
+                "with statement in library functions",
+                "while line != '' loop for reading files"
+            ],
+            "notPermitted": "sort(), copy(), remove(), index() method, dictionaries, sets, classes, list comprehensions"
+        },
+        "warnings": [
+            "Submit both lab-3-2.py and function_library.py — CodeGrade tests the library functions independently. A missing function_library.py will fail those tests even if your main file is correct."
+        ],
+        "saveYourCode": "Keep both files — Lab 3.3 builds on this code to add sorted hazard display, unique city counting, and a formatted trip report written to a file."
+    },
+
+    "needHelp": {
+        "ifYouGetStuck": [
+            "Re-read Program 7-1 for the parallel list pattern and Program 7-3 for append() — these two programs together cover most of what this lab introduces",
+            "If the save/load cycle breaks, open savegame.txt in a text editor and count the lines — the format must match the spec exactly, with ---HAZARDS--- as the separator",
+            "Submit to CodeGrade early — it runs the library functions in isolation so you can see which specific function is failing",
+            "Come to Zoom or office hours — list and file bugs are easy to spot together on a screen share"
+        ],
+        "bookexResourceNote": "Chapter 6 and Chapter 7 BookEx Reference Guides — both chapters are in scope this week"
+    }
+}

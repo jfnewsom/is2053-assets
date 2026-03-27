@@ -132,18 +132,9 @@ def html_head(title: str, css_path: str = "../../labs.css") -> str:
 """
 
 
-def html_foot(logo_path: str = "../../branding/UTSanAntonio_H_Logo_Dual_TM_RGB.png") -> str:
-    """Return the footer and closing tags."""
-    return f"""
-    <footer class="lc-footer">
-        <img src="{logo_path}" alt="The University of Texas at San Antonio">
-        <div class="lc-footer__citation">
-            <span class="lc-footer__citation-label">Textbook</span>
-            <span class="lc-footer__citation-text"><em>Starting Out with Python</em>, 6th Edition &nbsp;&middot;&nbsp; Tony Gaddis &nbsp;&middot;&nbsp; Pearson &nbsp;&middot;&nbsp; ISBN 978-0-13-787120-9</span>
-        </div>
-        <p class="lc-footer__copyright">&copy; 2026 The University of Texas at San Antonio. Developed by John Newsom for IS2053: Programming I (Python). All rights reserved.</p>
-    </footer>
-
+def html_foot() -> str:
+    """Return the closing tags. Footer is injected by nav.js at runtime."""
+    return """
 </div>
 <script src="https://jfnewsom.github.io/is2053-assets/nav.js"></script>
 </body>

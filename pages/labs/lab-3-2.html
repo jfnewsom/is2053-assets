@@ -3,1163 +3,773 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab 3.2: Save Your Progress</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Slab:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>Lists to the Rescue — IS2053</title>
+    <link rel="stylesheet" href="../../labs.css">
 </head>
-<body style="background: #0a0a0a; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; color: #f5f5f5; line-height: 1.6;">
+<body>
+<div class="lc-wrapper">
+<div class="lc-card lc-card--blue">
+  <div class="lc-topper">
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0;">
+          <div class="lc-lab-badge">
+            <div class="lc-lab-badge__word">LAB</div>
+            <div class="lc-lab-badge__num">3.2</div>
+          </div>
+        </td>
+        <td style="vertical-align: bottom; padding: 0 0 0 16px;">
+          <div class="lc-topper-title">Lists to the Rescue</div>
+        </td>
+        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">
+          <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: 120px; width: auto; display: block;">
+        </td>
+      </tr>
+    <tr><td colspan="3" style="padding: 10px 0 0 0;"><div class="lc-sub-banner">MODULE 3 &bull; WEEK 2 &bull; ENHANCE &bull; CHAPTERS 7: LISTS AND TUPLES</div></td></tr>
+    </table>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-h3 lc-h3--yellow">Overview</div>
+    <img src="../../branding/AllMyEggses3D-Full.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
+    <p>Your save file works, but writing six separate <code>write()</code> calls for six variables already feels tedious. Now imagine needing to save twenty cities. Or fifty hazards. That approach doesn't scale.
 
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #0055FF 0%, #001a4d 100%); padding: 8px 12px 12px 12px;">
-        
-                <div style="display: flex; align-items: flex-end; gap: 8px;">
-            <img src="https://jfnewsom.github.io/is2053-assets/lab-icons/lab-badge-3-2.svg" alt="LAB 3.2" style="height: 90px;">
-            <div style="flex-grow: 1;">
-                <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-save-your-progress.svg" alt="Save Your Progress" style="display: block; height: 70px; margin-bottom: 2px; margin-left: -8px;">
-                <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-                    Module 3 &bull; ENHANCE Week &bull; Parallel Lists &amp; Tracking
-                </div>
-            </div>
+This week you discover the tool that makes all of that elegant: lists. You will replace your if/elif destination chains with parallel lists and index lookups, add two tracking lists that grow automatically as the player travels, and upgrade your save/load system to persist those lists. You will also write three new utility functions into <code>function_library.py</code> — the first time the library grows this module.</p>
+    <div style="clear: both;"></div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
         </div>
-        
-                <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-overview.svg" alt="Overview" style="height: 18px; display: block;">
-            </div>
-            
-                        <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px;">
-                <p style="color: #B0B8C4; margin: 0; flex: 1;">
-                    This is an <strong style="color: #fff;">ENHANCE</strong> week&mdash;you'll transform your ugly if/elif chains into elegant <strong style="color: #fff;">parallel lists</strong>! Remember all those repetitive destination menus and choice handlers? Lists make them disappear. You'll also add <strong style="color: #fff;">tracking lists</strong> to record your route and hazards, and update save/load to preserve them.
-                </p>
-                <img src="https://jfnewsom.github.io/is2053-assets/branding/AllMyEggses-logo.svg" alt="All My Eggses Live in Texas" style="width: 210px; flex-shrink: 0;">
-            </div>
-            
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Priya-Venkatesh.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Priya Venkatesh">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"Here's a question I ask every developer: if you had to add 20 more cities to your game, how long would it take? If the answer is 'hours of copying and pasting,' your code isn't scalable. Lists fix that. Add a city? Add one line to a list. That's it. Five minutes of planning saves five hours of debugging."</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/priya-venkatesh.svg" alt="Priya Venkatesh" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Project Manager, Bat City Collective</div>
-                </div>
-            </div>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-filename.svg" alt="Filename" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 8px 0;">
-                Submit <strong style="color: #fff;">TWO files</strong> this week:
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 8px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 14px;">function_library.py</span> &mdash; Your expanded module (now with file utility functions)
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 14px;">lab-3-2.py</span> &mdash; Your game with parallel lists and tracking
-            </p>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Your enhanced road trip game will include:
-            </p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Parallel Lists</strong> &mdash; <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">SA_DESTINATIONS</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">SA_DISTANCES</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">SA_NOTES</span> (and for Houston/Austin)</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">display_destinations()</strong> &mdash; Loop through lists to show menu dynamically</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">get_destination()</strong> &mdash; Use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">[choice - 1]</span> indexing instead of if/elif</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Tracking Lists</strong> &mdash; <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">visited_cities</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards_list</span></li>
-                <li><strong style="color: #fff;">Enhanced Save/Load</strong> &mdash; Preserve tracking lists with a separator marker</li>
-            </ul>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-key-concepts.svg" alt="Key Concepts" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Chapter 7:</strong> 7.2 (List Creation), 7.3 (for loops with lists), 7.4 (in operator), 7.5 (index, remove, copy)
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-program-requirements.svg" alt="Program Requirements" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Create parallel lists for <strong style="color: #fff;">three origin cities</strong> (San Antonio, Houston, Austin)</li>
-                <li style="margin-bottom: 8px;">San Antonio now has <strong style="color: #fff;">4 destinations</strong> (Corpus Christi, Houston, Austin, Laredo)</li>
-                <li style="margin-bottom: 8px;">Houston now has <strong style="color: #fff;">3 destinations</strong> (Galveston, San Antonio, Dallas)</li>
-                <li style="margin-bottom: 8px;">Laredo and Dallas are <strong style="color: #fff;">dead ends</strong>&mdash;no onward connections</li>
-                <li style="margin-bottom: 8px;">Track <strong style="color: #fff;">visited cities</strong> and <strong style="color: #fff;">hazards encountered</strong> in lists</li>
-                <li>Save/load must preserve <strong style="color: #fff;">both tracking lists</strong> using a separator</li>
-            </ul>
-
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Every if/elif chain you write is a promise to maintain it forever. Lists let you make that promise once and never revisit it. That is what scaling looks like."</div>
         </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Priya Venkatesh</div>
+        <div class="lc-mentor__role">Lead Architect, Bat City Collective</div>
+      </div>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Filename</div>
+    <p>Submit lab-3-2.py and function_library.py this week.</p>
+    <p>function_library.py is submitted alongside lab-3-2.py this week — it gets three new file utility functions. CodeGrade tests those functions in isolation.</p>
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <ul class="lc-objectives">
+      <li>Create parallel lists to store destination names, distances, and notes</li>
+      <li>Replace if/elif destination selection with list index lookups</li>
+      <li>Build tracking lists with append() to record visited cities and hazards</li>
+      <li>Use the in operator to check whether a city has already been visited</li>
+      <li>Use len() to count list items in the trip report</li>
+      <li>Upgrade save_game() and load_game() to persist tracking lists</li>
+      <li>Add save_list_to_file(), load_list_from_file(), and file_exists() to function_library.py</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
+    <p>Chapter 7: Program 7-1 (list with initial values), Program 7-3 (append), Program 7-2 (in operator), Program 7-9 (len), Program 7-16 (write list to file), Program 7-17 (read file into list).</p>
+    <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 7</p>
+    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
+    <ul>
+      <li>SA_DESTINATIONS, SA_DISTANCES, and SA_NOTES parallel lists replace all hardcoded destination if/elif chains</li>
+      <li>visited_cities list tracks every city in the route, starting with San Antonio</li>
+      <li>hazards_list tracks every hazard name encountered during play</li>
+      <li>save_game() writes the enhanced format including lists and the ---HAZARDS--- separator</li>
+      <li>load_game() reads the enhanced format and restores both tracking lists</li>
+      <li>function_library.py adds save_list_to_file(), load_list_from_file(), and file_exists()</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Named Constants</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table lc-named-constants__table">
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>SA_DESTINATIONS</code></td>
+        <td>List of destination city names reachable from San Antonio</td>
+      </tr>
+      <tr>
+        <td><code>SA_DISTANCES</code></td>
+        <td>Parallel list — miles for each destination in SA_DESTINATIONS</td>
+      </tr>
+      <tr>
+        <td><code>SA_NOTES</code></td>
+        <td>Parallel list — short descriptor for each destination (e.g. &#x27;BEACH!&#x27;, &#x27;Gateway East&#x27;)</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>Keep both files — Module 3.3 builds directly on this code, adding sorted hazard display and a trip report file.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--orange">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Time Guide</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 120–150 Minutes</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Time</th>
+            <th>Task</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><strong>Setup</strong></td>
+        <td>5 min</td>
+        <td>Copy lab-3-1.py to lab-3-2.py</td>
+      </tr>
+      <tr>
+        <td><strong>CP1: Parallel Lists</strong></td>
+        <td>25 min</td>
+        <td>Add SA_DESTINATIONS, SA_DISTANCES, SA_NOTES and update display_destinations()</td>
+      </tr>
+      <tr>
+        <td><strong>CP2: List Indexing</strong></td>
+        <td>20 min</td>
+        <td>Replace if/elif destination selection with index lookup</td>
+      </tr>
+      <tr>
+        <td><strong>CP3: Tracking Lists</strong></td>
+        <td>25 min</td>
+        <td>Add visited_cities and hazards_list with append() and in operator</td>
+      </tr>
+      <tr>
+        <td><strong>CP4: Enhanced Save/Load</strong></td>
+        <td>30 min</td>
+        <td>Upgrade save_game() and load_game() to include tracking lists</td>
+      </tr>
+      <tr>
+        <td><strong>CP5: Library + Report</strong></td>
+        <td>25 min</td>
+        <td>Add 3 file functions to function_library.py and enhance trip report</td>
+      </tr>
+      <tr>
+        <td><strong>Test &amp; Submit</strong></td>
+        <td>10 min</td>
+        <td>Test the full cycle, verify save format, submit both files</td>
+      </tr>
+      <tr class="lc-table__total">
+        <td colspan="2"><strong>Total Estimated Time</strong></td>
+        <td><strong>120–150 Minutes</strong></td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--cyan">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Before You Begin</div>
+    <div class="lc-sub-banner">Program Architecture</div>
+  </div>
+  <div class="lc-panel">
+    <p class="lc-arch-intro">Here is how your finished program fits together. The [NEW] tags show what you are adding this week. The [REPLACED] tags show what changes from your 3.1 code.</p>
+    <div class="lc-arch">
+      <pre># ---- CONSTANTS ----
+SAVE_FILE = &#x27;savegame.txt&#x27;           (unchanged)
+SA_DESTINATIONS = [...]              <span class="lc-arch-new">[NEW — replaces destination if/elif]</span>
+SA_DISTANCES    = [...]              <span class="lc-arch-new">[NEW — parallel list for miles]</span>
+SA_NOTES        = [...]              <span class="lc-arch-new">[NEW — parallel list for city notes]</span>
+... (other constants unchanged)
+
+# ---- HELPER FUNCTIONS ----
+<span class="lc-arch-fn">display_destinations(city)</span>           <span class="lc-arch-replaced">[REPLACED — now uses list loop]</span>
+<span class="lc-arch-fn">get_destination(city, choice)</span>        <span class="lc-arch-new">[NEW — index lookup returns (dest, dist)]</span>
+
+# ---- SAVE / LOAD FUNCTIONS ----
+<span class="lc-arch-fn">save_game(...)</span>                       <span class="lc-arch-replaced">[REPLACED — now saves lists too]</span>
+<span class="lc-arch-fn">load_game()</span>                          <span class="lc-arch-replaced">[REPLACED — now loads lists too]</span>
+
+# ---- GAME STATE ----
+visited_cities  = [&#x27;San Antonio&#x27;]    <span class="lc-arch-new">[NEW — tracking list]</span>
+hazards_list    = []                 <span class="lc-arch-new">[NEW — tracking list]</span>
+
+MAIN MENU:  (unchanged from 3.1)
+│
+<span class="lc-arch-game-loop">GAME LOOP</span>:
+│
+│── <span class="lc-arch-fn">display_destinations()</span>          <span class="lc-arch-replaced">[REPLACED — loops the list]</span>
+│── <span class="lc-arch-fn">get_destination()</span>                <span class="lc-arch-new">[NEW]</span>
+│
+│   <span class="lc-arch-travel-loop">TRAVEL LOOP</span>:
+│   │── Roll D20, move miles
+│   │── Hazard check → append to hazards_list  <span class="lc-arch-new">[NEW]</span>
+│   │── Repeat until arrival
+│
+│── <span class="lc-arch-fn">append(destination)</span> to visited_cities      <span class="lc-arch-new">[NEW]</span>
+│── Save and Quit option            (unchanged)
+│
+FINAL TRIP REPORT:
+│── Show visited_cities with <span class="lc-arch-fn">len()</span>  <span class="lc-arch-replaced">[REPLACED]</span>
+│── Show hazards_list with <span class="lc-arch-fn">len()</span>    <span class="lc-arch-replaced">[REPLACED]</span>
+
+# ---- function_library.py additions ----
+<span class="lc-arch-fn">save_list_to_file(filename, data_list)</span>   <span class="lc-arch-new">[NEW]</span>
+<span class="lc-arch-fn">load_list_from_file(filename)</span>            <span class="lc-arch-new">[NEW]</span>
+<span class="lc-arch-fn">file_exists(filename)</span>                    <span class="lc-arch-new">[NEW]</span></pre>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--green">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Checkpoints</div>
+    <div class="lc-sub-banner">5 Checkpoints</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">1</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add the Parallel Destination Lists</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Right now your destination options are buried in if/elif chains. You are going to replace all of that with three parallel lists — one for city names, one for distances, and one for short notes. Once those lists exist, everything that used to take a chain of branches takes a single index lookup instead.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Start by copying <code>lab-3-1.py</code> to a new file named <code>lab-3-2.py</code>. All work this week goes in <code>lab-3-2.py</code>.</li>
+      <li>Near the top of your file, after <code>SAVE_FILE</code>, add three new parallel list constants for San Antonio's destinations. Keep them adjacent so the parallel relationship is visually obvious:</li>
+      <li>Update your <code>display_destinations()</code> function so it loops through <code>SA_DESTINATIONS</code> and <code>SA_DISTANCES</code> using <code>range(len(SA_DESTINATIONS))</code> to print the numbered menu, instead of hardcoded print statements.</li>
+      <li>Verify the menu still displays all four destinations in the same numbered format as before — the player-facing output should not change.</li>
+    </ol>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 7-1</strong>
+            — <code>sales_list.py</code>
+            (Step 1)
+            — Demonstrates creating a list with initial values and looping through it with range(len()).
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">What parallel lists look like</div>
+        <div class="lc-callout__body">
+        <p>Position 0 in each list belongs together, position 1 belongs together, and so on. The index is the connection between them:</p>
+        <ul>
+          <li>SA_DESTINATIONS[0] is 'Corpus Christi', SA_DISTANCES[0] is 150, SA_NOTES[0] is 'BEACH!'</li>
+          <li>SA_DESTINATIONS[1] is 'Houston',       SA_DISTANCES[1] is 200, SA_NOTES[1] is 'Gateway East'</li>
+          <li>SA_DESTINATIONS[2] is 'Austin',        SA_DISTANCES[2] is 80,  SA_NOTES[2] is 'Keep it Weird'</li>
+          <li>SA_DESTINATIONS[3] is 'Laredo',        SA_DISTANCES[3] is 160, SA_NOTES[3] is 'Dead End'</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>SA_DESTINATIONS</code>, <code>SA_DISTANCES</code>, and <code>SA_NOTES</code> constants defined with four entries each</li>
+      <li><code>display_destinations()</code> uses a loop over the lists — no hardcoded city names in the function body</li>
+      <li>Running the program and reaching the destination menu shows the same four options as before</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Replace if/elif Destination Selection with List Indexing</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>This is the magic moment. The if/elif chain that selected a destination based on the player's menu choice gets replaced with a single index lookup. The player's choice (1–4) maps directly to an index (0–3) via <code>choice - 1</code>.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Find the section of your game loop where the player's menu choice determined which city and distance to use. It probably looks like a chain of <code>if choice == 1: ... elif choice == 2: ...</code> blocks.</li>
+      <li>Replace that entire chain with index lookups. Compute the index once: <code>index = choice - 1</code>, then use it to pull both values: <code>destination = SA_DESTINATIONS[index]</code> and <code>distance = SA_DISTANCES[index]</code>.</li>
+      <li>If your code displays a city note or tagline, pull that from <code>SA_NOTES[index]</code> as well.</li>
+      <li>Test by running the game and selecting each of the four destination choices in turn. The destination name, distance, and note should all be correct.</li>
+    </ol>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"You just deleted fifteen lines of if/elif and replaced them with two. That is not a trick — that is how professional code actually works. One lookup, any size list."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
+        <div class="lc-mentor__role">Senior Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--pitfall">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="22.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Off-by-one: choice vs index</div>
+        <div class="lc-callout__body">
+        <p>Player choices start at 1 (because menus do), but list indices start at 0 (because Python does). Always subtract 1: <code>index = choice - 1</code>. If you forget, choice 1 gives you the second city, and choice 4 crashes with an IndexError.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li>The destination if/elif chain is completely removed</li>
+      <li>Destination and distance are set via <code>SA_DESTINATIONS[index]</code> and <code>SA_DISTANCES[index]</code></li>
+      <li>All four destination choices work correctly in a test run</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">3</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add the visited_cities and hazards_list Tracking Lists</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Now you add two empty lists to the game state — one that grows every time the player arrives in a city, and one that grows every time a hazard is encountered. By the time the final trip report prints, both lists contain a complete record of the journey.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>In the game state initialization section (after the main menu, once you know whether this is a new or loaded game), add two list variables. For a new game, initialize them as: <code>visited_cities = ['San Antonio']</code> and <code>hazards_list = []</code>. San Antonio is pre-loaded because the player starts there.</li>
+      <li>Inside the game loop, after the player arrives at their destination, append that destination to the list: <code>visited_cities.append(destination)</code>.</li>
+      <li>Before appending, check whether the player has already visited that city using the <code>in</code> operator. If they have, print a message like <code>'You have been to Houston before!'</code> — then still append, since the list tracks the route, not unique cities.</li>
+      <li>Inside the hazard handling block, when a hazard is triggered, append the hazard name string to <code>hazards_list</code>: <code>hazards_list.append(hazard)</code>.</li>
+      <li>In the final trip report, replace any hardcoded stat output with list-based display. Loop through <code>visited_cities</code> using <code>range(len(visited_cities))</code> to print a numbered route. Use <code>len(hazards_list)</code> to report the hazard count.</li>
+    </ol>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 7-3</strong>
+            — <code>list_append.py</code>
+            (Step 1)
+            — Shows creating an empty list and adding items dynamically with append().
+          </li>
+          <li>
+            <strong>Program 7-2</strong>
+            — <code>in_list.py</code>
+            (Step 2)
+            — Demonstrates using the in operator to check whether an item exists in a list.
+          </li>
+          <li>
+            <strong>Program 7-9</strong>
+            — <code>average_list.py</code>
+            (Step 3)
+            — Shows len() and other built-in functions for summarizing list contents.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>visited_cities</code> starts as <code>['San Antonio']</code> on a new game</li>
+      <li>Each destination arrival appends to <code>visited_cities</code></li>
+      <li>The <code>in</code> operator prints a revisit message when applicable</li>
+      <li>Each hazard trigger appends to <code>hazards_list</code></li>
+      <li>Final trip report loops through both lists and uses <code>len()</code> for counts</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">4</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Upgrade save_game() and load_game() for the Enhanced Format</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Your save file currently holds six lines of scalar data. This checkpoint upgrades it to also persist the two tracking lists. Cities go after the six stats, followed by a <code>---HAZARDS---</code> separator line, followed by hazards. The load function reads cities until it hits the separator, then reads hazards until the file ends.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Update <code>save_game()</code> to accept two additional parameters: <code>visited_cities</code> and <code>hazards_list</code>. Write the six scalar variables exactly as before.</li>
+      <li>After the six scalars, loop through <code>visited_cities</code> and write each city on its own line.</li>
+      <li>Write the separator line: <code>outfile.write('---HAZARDS---\n')</code></li>
+      <li>Loop through <code>hazards_list</code> and write each hazard on its own line. Then close the file.</li>
+      <li>Update <code>load_game()</code> to read back the two lists. After reading the six scalars, read cities into a local list using a <code>while</code> loop — keep reading until you hit the separator line <code>'---HAZARDS---'</code> or an empty string.</li>
+      <li>After the separator, read hazards into a second local list using another <code>while</code> loop until you reach an empty string (end of file).</li>
+      <li>Return a tuple that now includes all eight values: the six scalars plus the two lists.</li>
+      <li>Update the main menu's Load Game branch to unpack all eight values from the tuple.</li>
+    </ol>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 7-16</strong>
+            — <code>write_number_list.py</code>
+            (Step 1)
+            — Demonstrates writing a list to a file by looping and writing each item with str().
+          </li>
+          <li>
+            <strong>Program 6-19</strong>
+            — <code>show_coffee_records.py</code>
+            (Step 2)
+            — Shows the while line != '' pattern for reading variable-length data from a file.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">What the enhanced save file looks like</div>
+        <div class="lc-callout__body">
+        <p>After saving a game where Maria traveled San Antonio → Austin → Houston and hit two hazards, the file should look like this:</p>
+        <ul>
+          <li>Maria</li>
+          <li>Houston</li>
+          <li>280</li>
+          <li>3</li>
+          <li>2</li>
+          <li>1</li>
+          <li>San Antonio</li>
+          <li>Austin</li>
+          <li>Houston</li>
+          <li>---HAZARDS---</li>
+          <li>Buc-ee's appears!</li>
+          <li>Speed trap!</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>save_game()</code> writes all six scalars, then the cities list, then <code>---HAZARDS---</code>, then the hazards list</li>
+      <li><code>load_game()</code> reads all eight values back correctly and returns them as a tuple</li>
+      <li>A full save-quit-reload cycle restores the player's name, city, stats, route, and hazard history</li>
+      <li>Opening <code>savegame.txt</code> in a text editor shows the expected multi-section format</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">5</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add File Functions to function_library.py and Enhance the Trip Report</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>The final checkpoint this week has two parts. First, you add three reusable file utility functions to <code>function_library.py</code> — CodeGrade tests these in isolation. Second, you update the final trip report to display the route from <code>visited_cities</code> and the full hazard list from <code>hazards_list</code>.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Open <code>function_library.py</code>. Add a new section comment at the bottom: <code># FILE FUNCTIONS (Added in Lab 3-2)</code></li>
+      <li>Add <code>save_list_to_file(filename, data_list)</code> — opens the file in write mode using the <code>with</code> statement, loops through the list, and writes each item as a string with <code>'\n'</code> appended.</li>
+      <li>Add <code>load_list_from_file(filename)</code> — opens the file in read mode using the <code>with</code> statement, reads line by line with a <code>while line != ''</code> loop, strips <code>'\n'</code> from each line with <code>rstrip()</code>, appends to a result list, and returns it. Wraps the whole body in <code>try-except FileNotFoundError</code> and returns an empty list if the file does not exist.</li>
+      <li>Add <code>file_exists(filename)</code> — attempts to open the file in read mode inside a <code>try</code> block and returns <code>True</code>. Returns <code>False</code> in the <code>except FileNotFoundError</code> block.</li>
+      <li>All three functions must have complete docstrings.</li>
+      <li>In <code>lab-3-2.py</code>, update the final trip report section. Display the cities route as a numbered list by looping through <code>visited_cities</code> with <code>range(len(visited_cities))</code>. Display each hazard from <code>hazards_list</code> with a bullet. Use <code>len()</code> for the total counts.</li>
+    </ol>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 7-16</strong>
+            — <code>write_number_list.py</code>
+            (Step 1)
+            — Pattern for the save_list_to_file() function body — loop and write each item.
+          </li>
+          <li>
+            <strong>Program 7-17</strong>
+            — <code>read_number_list.py</code>
+            (Step 2)
+            — Pattern for reading a file into a list — readlines() approach shown here, but use the while readline() loop in your library for consistency with 3.1.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Use with statement in the library functions</div>
+        <div class="lc-callout__body">
+        <p>The three new library functions must use the <code>with</code> statement to open files — <code>with open(filename, 'w') as outfile:</code>. This is the Chapter 6.3 pattern. Using <code>open()</code> and <code>close()</code> directly in library functions is acceptable in your main game file but not in the library.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <ol>
+      <li>Run the program. Play through a full game — travel to at least two cities, trigger at least one hazard.</li>
+      <li>Let the game end normally. Verify the final trip report shows a numbered city route and a bulleted hazard list.</li>
+      <li>Run again and choose Save and Quit after one turn. Reload and verify the full route and hazard history are restored.</li>
+      <li>Check that <code>function_library.py</code> has all three new functions with docstrings and that they import without errors.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li>function_library.py has <code>save_list_to_file()</code>, <code>load_list_from_file()</code>, and <code>file_exists()</code>, each with a docstring</li>
+      <li>All three library functions use the <code>with</code> statement</li>
+      <li>Final trip report displays the full city route and hazard list from the tracking lists</li>
+      <li>Both files pass a syntax check (run <code>python3 function_library.py</code> — no errors)</li>
+    </ol>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--red">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Final Checklist</div>
+    <div class="lc-sub-banner">Check It Before You Wreck It</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3 lc-h3--yellow">Before You Submit</div>
+    <ul class="lc-checklist">
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">lab-3-2.py has a top-of-file comment block with your name, abc123, section number, and a description</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">function_library.py has all three new functions — save_list_to_file(), load_list_from_file(), and file_exists() — each with a docstring</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">SA_DESTINATIONS, SA_DISTANCES, and SA_NOTES parallel lists are defined as constants</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Destination selection uses index lookup (choice - 1), not if/elif</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">visited_cities starts as ['San Antonio'] on a new game and grows with append()</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">hazards_list starts as [] and each hazard trigger appends to it</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">save_game() writes the enhanced format including both lists and the ---HAZARDS--- separator</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">load_game() reads back all eight values (six scalars plus two lists) correctly</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Library functions use the with statement for file handling</span>
+      </li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
+    <p>Chapters 6–7 are both in scope this week. The with statement is permitted in function_library.py (it is introduced in Chapter 6.3). Do NOT use sort(), copy(), or any Chapter 7 techniques not yet covered — those are saved for Lab 3.3. Do NOT use dictionaries, sets, classes, or any Chapter 8+ features.</p>
+    <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
+    <div class="lc-permitted">
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–7 (all techniques from Chapters 2–6 plus Chapter 7 list creation, append, in operator, index access, len, and file/list patterns)</p>
+      <ul class="lc-permitted__list">
+      <li>List creation with initial values: SA_DESTINATIONS = ['Corpus Christi', ...]</li>
+      <li>Empty list creation: hazards_list = []</li>
+      <li>append() to add items</li>
+      <li>in operator to check membership</li>
+      <li>range(len(my_list)) for indexed loops</li>
+      <li>len() to count items</li>
+      <li>with statement in library functions</li>
+      <li>while line != '' loop for reading files</li>
+      </ul>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> sort(), copy(), remove(), index() method, dictionaries, sets, classes, list comprehensions</p>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Submit both lab-3-2.py and function_library.py — CodeGrade tests the library functions independently. A missing function_library.py will fail those tests even if your main file is correct.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>Keep both files — Lab 3.3 builds on this code to add sorted hazard display, unique city counting, and a formatted trip report written to a file.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
+    <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
+  </div>
+</div>
+<div class="lc-card lc-card--purple">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Need Help?</div>
+    <div class="lc-sub-banner">Look No Further!</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
+    <ul>
+      <li>Re-read Program 7-1 for the parallel list pattern and Program 7-3 for append() — these two programs together cover most of what this lab introduces</li>
+      <li>If the save/load cycle breaks, open savegame.txt in a text editor and count the lines — the format must match the spec exactly, with ---HAZARDS--- as the separator</li>
+      <li>Submit to CodeGrade early — it runs the library functions in isolation so you can see which specific function is failing</li>
+      <li>Come to Zoom or office hours — list and file bugs are easy to spot together on a screen share</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
+    <div class="lc-contact-grid">
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Zoom Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br>
+          <a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Schedule a Meeting</div>
+        <div class="lc-contact-card__value">
+          <a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Email</div>
+        <div class="lc-contact-card__value">
+          <a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>
+          Include your section number and abc123
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">CodeGrade</div>
+        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF6B1A 0%, #8B3A00 100%); padding: 8px 12px 12px 12px;">
-        
-                <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-time-guide.svg" alt="Time Guide" style="height: 60px; margin-bottom: 2px; margin-left: -8px; display: block;">
+    <footer class="lc-footer">
+        <img src="../../branding/UTSanAntonio_H_Logo_Dual_TM_RGB.png" alt="The University of Texas at San Antonio">
+        <div class="lc-footer__citation">
+            <span class="lc-footer__citation-label">Textbook</span>
+            <span class="lc-footer__citation-text"><em>Starting Out with Python</em>, 6th Edition &nbsp;&middot;&nbsp; Tony Gaddis &nbsp;&middot;&nbsp; Pearson &nbsp;&middot;&nbsp; ISBN 978-0-13-787120-9</span>
         </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Plan Your Session &mdash; 60-75 Minutes
-        </div>
-        
-                <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                <thead>
-                    <tr>
-                        <th style="text-align: left; padding: 10px; border-bottom: 2px solid #FF6B1A; color: #FF6B1A;">Checkpoint</th>
-                        <th style="text-align: left; padding: 10px; border-bottom: 2px solid #FF6B1A; color: #FF6B1A;">Est. Time</th>
-                        <th style="text-align: left; padding: 10px; border-bottom: 2px solid #FF6B1A; color: #FF6B1A;">What You'll Do</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #fff;">CP1: Parallel Lists</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">10 min</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">Create constant lists for destinations/distances/notes</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #fff;">CP2: display_destinations()</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">15 min</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">Build function to loop through and display menu</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #fff;">CP3: get_destination()</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">10 min</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">Replace if/elif with [choice - 1] indexing</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #fff;">CP4: Tracking &amp; Save/Load</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">20 min</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">Add visited_cities, hazards_list, enhance save/load</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; color: #fff;">CP5: Trip Report</td>
-                        <td style="padding: 10px; color: #B0B8C4;">10 min</td>
-                        <td style="padding: 10px; color: #B0B8C4;">Display route and hazards from lists</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF6B1A;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                Lists are powerful but easy to mess up. <strong style="color: #fff;">Test after each checkpoint!</strong> Make sure your menus display correctly before moving on. Verify indexing works with actual gameplay. Don't save until you're sure the tracking lists are being built correctly.
-            </p>
-            
-        </div>
-    </div>
+        <p class="lc-footer__copyright">&copy; 2026 The University of Texas at San Antonio. Developed by John Newsom for IS2053: Programming I (Python). All rights reserved.</p>
+    </footer>
+
 </div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #39FF14 0%, #0D4D00 100%); padding: 8px 12px 12px 12px;">
-        
-                <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-checkpoints.svg" alt="Checkpoints" style="height: 60px; margin-bottom: 2px; margin-left: -8px; display: block;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            5 Checkpoints
-        </div>
-        
-                <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Priya-Venkatesh.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Priya Venkatesh">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"This week you&rsquo;re replacing a LOT of ugly code with clean code. All those if/elif chains for destinations? Gone&mdash;replaced by lists. All those scattered print statements for menus? Gone&mdash;replaced by functions. The game loop itself barely changes. You&rsquo;re swapping out parts, not rebuilding the engine."</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/priya-venkatesh.svg" alt="Priya Venkatesh" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Data Specialist, Bat City Collective</div>
-                </div>
-            </div>
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Here&rsquo;s how your finished program fits together.</strong> <span style="color: #FF6B1A;">[NEW]</span> = brand new code. <span style="color: #FF6B1A;">[REPLACED]</span> = old code swapped for something better.
-            </p>
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0 25px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #B0B8C4; margin: 0; padding: 15px 20px; white-space: pre; overflow-x: auto;"><span style="color: #666;"># ---- CONSTANTS ----</span>
-<span style="color: #39ff14;">SA_DESTINATIONS</span> = ['Corpus Christi', 'Houston', 'Austin', 'Laredo']  <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #39ff14;">SA_DISTANCES</span>    = [150, 200, 80, 160]                               <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #39ff14;">SA_NOTES</span>        = ['BEACH!', 'Gateway East', ...]                    <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #666;">(same pattern for HOUSTON_ and AUSTIN_ lists)</span>
-
-<span style="color: #666;"># ---- FUNCTION LIBRARY (function_library.py) ----</span>
-<span style="color: #666;">All Lab 2 functions still here, plus:</span>
-<span style="color: #39ff14;">save_list_to_file()</span>    <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #39ff14;">load_list_from_file()</span>   <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #39ff14;">file_exists()</span>          <span style="color: #FF6B1A;">[NEW]</span>
-
-<span style="color: #666;"># ---- HELPER FUNCTIONS ----</span>
-<span style="color: #39ff14;">display_destinations(city)</span>    <span style="color: #FF6B1A;">[REPLACED old print blocks]</span>
-<span style="color: #39ff14;">get_destination(city, choice)</span> <span style="color: #FF6B1A;">[REPLACED old if/elif chains]</span>
-<span style="color: #39ff14;">get_redirect(city, avoid)</span>     <span style="color: #FF6B1A;">[NEW &mdash; handles detours]</span>
-
-<span style="color: #666;"># ---- TRACKING LISTS ----</span>
-<span style="color: #39ff14;">visited_cities</span> = ['San Antonio']   <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #39ff14;">hazards_list</span> = []                   <span style="color: #FF6B1A;">[NEW]</span>
-
-<span style="color: #666;"># ---- MAIN MENU (same as 3.1) ----</span>
-<span style="color: #666;">(Load now restores tracking lists too)</span>
-
-<span style="color: #FFCC00;">GAME LOOP:</span>
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> <span style="color: #39ff14;">display_destinations(current_city)</span>     <span style="color: #FF6B1A;">[REPLACED]</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Get validated choice
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> <span style="color: #39ff14;">get_destination(current_city, choice)</span>  <span style="color: #FF6B1A;">[REPLACED]</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Destination Gate (coin flip)
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">TRAVEL LOOP:</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Roll D20, move miles
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Check for hazard
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;</span>      If hazard: <span style="color: #39ff14;">hazards_encountered.append(name)</span>  <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Repeat until arrival
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> <span style="color: #39ff14;">visited_cities.append(destination)</span>     <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Update trip totals
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Check outcome / Save &amp; Quit option
-
-<span style="color: #666;"># ---- AFTER THE LOOP ----</span>
-Enhanced trip report:
-  Route: San Antonio &rarr; Houston &rarr; Galveston   <span style="color: #FF6B1A;">[NEW]</span>
-  Hazards encountered list                        <span style="color: #FF6B1A;">[NEW]</span>
-"Thanks for playing!"</pre>
-            </div>
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-1.svg" alt="Checkpoint 1" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Create Parallel Lists</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Set up the destination, distance, and notes lists for each origin city.</p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Parallel lists</strong>&mdash;three lists where the same index across all three refers to related data. <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">SA_DESTINATIONS[0]</span> is 'Corpus Christi', <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">SA_DISTANCES[0]</span> is 150, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">SA_NOTES[0]</span> is 'BEACH!'.
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                Parallel lists are your bridge to more sophisticated data structures. While we'll learn better approaches (dictionaries, objects), understanding how to keep data synchronized across multiple lists is a fundamental skill. Many real-world systems still use this pattern, and debugging parallel list issues is a rite of passage for every programmer.
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;"><strong style="color: #fff;">Copy</strong> your <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">lab-3-1.py</span> and rename it <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">lab-3-2.py</span></li>
-                <li style="margin-bottom: 10px;"><strong style="color: #fff;">Update the docstring:</strong> "Lab 3.2: Save Your Progress"</li>
-                <li style="margin-bottom: 10px;">Near the top (after imports, before functions), add a comment section: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;"># PARALLEL LISTS</span></li>
-                <li style="margin-bottom: 10px;">Create the <strong style="color: #fff;">San Antonio lists</strong> (4 destinations now!)</li>
-                <li style="margin-bottom: 10px;">Create the <strong style="color: #fff;">Houston lists</strong> (3 destinations)</li>
-                <li>Create the <strong style="color: #fff;">Austin lists</strong> (2 destinations)</li>
-            </ol>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-named-constants.svg" alt="Named Constants" style="height: 18px; display: block;">
-            </div>
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                <thead>
-                    <tr>
-                        <th style="text-align: left; padding: 10px; border-bottom: 2px solid #39FF14; color: #39FF14;">Constant Name</th>
-                        <th style="text-align: left; padding: 10px; border-bottom: 2px solid #39FF14; color: #39FF14;">Values</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">SA_DESTINATIONS</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">['Corpus Christi', 'Houston', 'Austin', 'Laredo']</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">SA_DISTANCES</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">[150, 200, 80, 160]</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">SA_NOTES</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">['BEACH!', 'Gateway East', 'Keep it Weird', 'Dead End']</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">HOU_DESTINATIONS</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">['Galveston', 'San Antonio', 'Dallas']</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">HOU_DISTANCES</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">[50, 200, 240]</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">HOU_NOTES</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">['BEACH!', 'Back West', 'Wrong Way']</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">AUS_DESTINATIONS</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">['San Antonio', 'Houston']</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">AUS_DISTANCES</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #333; color: #B0B8C4;">[80, 165]</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">AUS_NOTES</td>
-                        <td style="padding: 10px; color: #B0B8C4;">['Back Home', 'Space City']</td>
-                    </tr>
-                </tbody>
-            </table>
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 7-1 (sales_list.py):</strong> You created a list with initial values using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">sales = [0] * NUM_DAYS</span>. Here you're doing something similar but with actual values: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">['Corpus Christi', 'Houston', ...]</span>
-                    </p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add temporary test code at the bottom of your file to verify your lists:</p>
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;">    <span style="color: #6a737d;"># TEMPORARY TEST CODE - Delete before submitting</span>
-    <span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'SA destinations:'</span>, SA_DESTINATIONS)
-    <span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'SA distances:'</span>, SA_DISTANCES)
-    <span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Index 1 test:'</span>, SA_DESTINATIONS[<span style="color: #BF40FF;">1</span>], <span style="color: #39ff14;">'-'</span>, SA_DISTANCES[<span style="color: #BF40FF;">1</span>], <span style="color: #39ff14;">'miles'</span>)</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run your file and verify the output:</p>
-            <div style="border: 2px solid #39FF14; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.5; color: #f5f5f5; margin: 0; padding: 15px 20px;">SA destinations: ['Corpus Christi', 'Houston', 'Austin', 'Laredo']
-SA distances: [150, 200, 80, 160]
-Index 1 test: Houston - 200 miles</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 3:</strong> Verify these critical behaviors:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Index alignment:</strong> Index 1 returns Houston (200 miles), not Corpus Christi</li>
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">List lengths match:</strong> All three SA lists have 4 items</li>
-                <li><strong style="color: #fff;">No typos:</strong> City names and distances are correct</li>
-            </ul>
-
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;"><strong style="color: #fff;">Step 4:</strong> Delete the test code, then move on to Checkpoint 2.</p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="margin-bottom: 20px;">
-<table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Lists have different lengths</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Parallel lists MUST have same length&mdash;index 3 needs to exist in all three!</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Data out of sync across lists</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">If index 1 is Houston in destinations, it must be 200 in distances</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using lowercase names for constants</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Constants should be <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">SA_DESTINATIONS</code> not <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #ff6b1a;">sa_destinations</code></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">9 constant lists defined at module level (3 cities  â†’ &mdash; 3 lists each)</li>
-                <li style="margin-bottom: 8px;">All lists use <strong style="color: #fff;">UPPERCASE_NAMES</strong> (they're constants)</li>
-                <li>Index 0 in all three SA lists refers to Corpus Christi data</li>
-            </ul>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-2.svg" alt="Checkpoint 2" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Build display_destinations()</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Create a function that loops through your parallel lists to display the menu.</p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A function called <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_destinations(city)</span> that takes a city name, loops through the appropriate lists, prints a numbered menu, and <strong style="color: #fff;">returns the number of choices</strong>.
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Define <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_destinations(city)</span> with one parameter</li>
-                <li style="margin-bottom: 10px;">Use if/elif to select which lists to use based on <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city</span></li>
-                <li style="margin-bottom: 10px;">Add an else case that prints "No destinations available" and returns 0</li>
-                <li style="margin-bottom: 10px;">Print <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">'Where would you like to go?'</span></li>
-                <li style="margin-bottom: 10px;">Loop with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">for i in range(len(destinations)):</span></li>
-                <li style="margin-bottom: 10px;">Inside loop: Build a line with menu number, destination, distance, and note</li>
-                <li>Return <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">len(destinations)</span></li>
-            </ol>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-expected-output.svg" alt="Expected Output" style="height: 18px; display: block;">
-            </div>
-            <div style="border: 2px solid #39FF14; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.5; color: #f5f5f5; margin: 0; padding: 15px 20px;">Where would you like to go?
-  1. Corpus Christi - 150 miles (BEACH!)
-  2. Houston - 200 miles (Gateway East)
-  3. Austin - 80 miles (Keep it Weird)
-  4. Laredo - 160 miles (Dead End)</pre>
-            </div>
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 7-1 (sales_list.py):</strong> You used <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">for index in range(len(sales))</span> to loop through indices. That's exactly what you need here&mdash;the index lets you access the same position across all three parallel lists!
-                    </p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips &amp; Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 40%;">Mistake</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222;">Printing <code style="color: #39ff14;">i</code> instead of <code style="color: #39ff14;">i + 1</code></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Users see 0, 1, 2 but expect 1, 2, 3</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222;">Forgetting to return len()</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Caller can't set valid range for get_valid_int()</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Multiple print() calls per item</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Messy output, harder to format consistently</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add temporary test code at the bottom of your file:</p>
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;">    <span style="color: #6a737d;"># TEMPORARY TEST CODE - Delete before submitting</span>
-    <span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Testing San Antonio:'</span>)
-    count = display_destinations(<span style="color: #39ff14;">'San Antonio'</span>)
-    <span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">f'Returned count: </span><span style="color: #00ffff;">{count}</span><span style="color: #39ff14;">'</span>)
-    <span style="color: #ffcc00;">print</span>()
-    <span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Testing Houston:'</span>)
-    count = display_destinations(<span style="color: #39ff14;">'Houston'</span>)
-    <span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">f'Returned count: </span><span style="color: #00ffff;">{count}</span><span style="color: #39ff14;">'</span>)</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run your file and verify the output:</p>
-            <div style="border: 2px solid #39FF14; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.5; color: #f5f5f5; margin: 0; padding: 15px 20px;">Testing San Antonio:
-  1. Corpus Christi - 150 miles (BEACH!)
-  2. Houston - 200 miles (Gateway East)
-  3. Austin - 80 miles (Keep it Weird)
-  4. Laredo - 160 miles (Dead End)
-Returned count: 4
-
-Testing Houston:
-  1. Galveston - 50 miles (BEACH!)
-  2. San Antonio - 200 miles (Back West)
-  3. Dallas - 240 miles (Wrong Way)
-Returned count: 3</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 3:</strong> Verify these critical behaviors:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Numbers start at 1</strong>, not 0</li>
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">San Antonio returns 4</strong>, Houston returns 3, Austin returns 2</li>
-                <li><strong style="color: #fff;">Notes appear</strong> in parentheses after each item</li>
-            </ul>
-
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;"><strong style="color: #fff;">Step 4:</strong> Delete the test code, then move on to Checkpoint 3.</p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_destinations(city)</span> that prints a numbered menu</li>
-                <li style="margin-bottom: 8px;">Returns the number of choices (4 for San Antonio, 3 for Houston, 2 for Austin)</li>
-                <li>Handles unknown cities gracefully (prints message, returns 0)</li>
-            </ul>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-3.svg" alt="Checkpoint 3" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Build get_destination() and get_redirect()</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Replace your if/elif choice handlers with elegant list indexing.</p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Two functions: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">get_destination(city, choice)</span> returns the destination name and distance using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">[choice - 1]</span> indexing. <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">get_redirect(city, avoid)</span> picks a random different destination for detours.
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">For get_destination(city, choice):</strong></p>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Define function with two parameters: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">choice</span></li>
-                <li style="margin-bottom: 10px;">Calculate index: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">index = choice - 1</span></li>
-                <li style="margin-bottom: 10px;">Use if/elif to determine which city's lists to access</li>
-                <li style="margin-bottom: 10px;">Return a tuple: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">return SA_DESTINATIONS[index], SA_DISTANCES[index]</span></li>
-                <li>Add else case returning <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">'San Antonio', 100</span></li>
-            </ol>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">For get_redirect(city, avoid):</strong></p>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Define function with two parameters: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">city</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">avoid</span></li>
-                <li style="margin-bottom: 10px;">Use if/elif to select city lists, then <strong style="color: #fff;">make copies</strong>: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">destinations = SA_DESTINATIONS.copy()</span></li>
-                <li style="margin-bottom: 10px;">Check if avoid is in the list: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">if avoid in destinations:</span></li>
-                <li style="margin-bottom: 10px;">Find its position: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">idx = destinations.index(avoid)</span></li>
-                <li style="margin-bottom: 10px;">Remove from both copies: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">destinations.remove(avoid)</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">distances.pop(idx)</span></li>
-                <li>Pick random from remaining using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">random.randint(0, len(destinations) - 1)</span></li>
-            </ol>
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0 0 10px 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 7-2 (in_list.py):</strong> You used the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">in</span> operator to check if a product number existed in a list. Same pattern here: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">if avoid in destinations:</span>
-                    </p>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 7-4 (index_list.py) &amp; Program 7-6 (remove_item.py):</strong> You used <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">index()</span> to find an item's position and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">remove()</span> to delete it. For parallel lists, you also need <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">pop(idx)</span> to remove by position.
-                    </p>
-                </div>
-            </div>
-
-                        <div style="background: rgba(255, 23, 68, 0.1); border: 2px solid #FF1744; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
-                <p style="color: #FF1744; margin: 0 0 8px 0; font-weight: 700;">CRITICAL: Why .copy() is Essential</p>
-                <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                    If you write <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b6b; font-size: 13px;">destinations = SA_DESTINATIONS</span>, both variables point to the <strong style="color: #fff;">same list</strong>. When you remove an item, you delete it from your original constant! Always use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.copy()</span> when you need to modify a list without affecting the original.
-                </p>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add temporary test code at the bottom of your file:</p>
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;">    <span style="color: #6a737d;"># TEMPORARY TEST CODE - Delete before submitting</span>
-    dest, dist = get_destination(<span style="color: #39ff14;">'San Antonio'</span>, <span style="color: #BF40FF;">2</span>)
-    <span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">f'Choice 2 from SA: </span><span style="color: #00ffff;">{dest}</span><span style="color: #39ff14;"> - </span><span style="color: #00ffff;">{dist}</span><span style="color: #39ff14;"> miles'</span>)
-
-    redirect = get_redirect(<span style="color: #39ff14;">'San Antonio'</span>, <span style="color: #39ff14;">'Houston'</span>)
-    <span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">f'Redirect (avoiding Houston): </span><span style="color: #00ffff;">{redirect}</span><span style="color: #39ff14;">'</span>)
-
-    <span style="color: #6a737d;"># Verify .copy() worked - original should still have Houston</span>
-    <span style="color: #ffcc00;">print</span>(<span style="color: #39ff14;">'Original SA_DESTINATIONS:'</span>, SA_DESTINATIONS)</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run your file and verify the output:</p>
-            <div style="border: 2px solid #39FF14; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.5; color: #f5f5f5; margin: 0; padding: 15px 20px;">    Choice 2 from SA: Houston - 200 miles
-    Redirect (avoiding Houston): Corpus Christi   <span style="color: #6a737d;">(or Austin or Laredo - random!)</span>
-    Original SA_DESTINATIONS: ['Corpus Christi', 'Houston', 'Austin', 'Laredo']</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 3:</strong> Verify these critical behaviors:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Choice 2 returns index 1</strong> (Houston), not index 2 (Austin)</li>
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Redirect never returns Houston</strong> (the city we're avoiding)</li>
-                <li><strong style="color: #fff;">Original list unchanged</strong> &mdash; still has all 4 cities including Houston</li>
-            </ul>
-
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;"><strong style="color: #fff;">Step 4:</strong> Delete the test code, then move on to Checkpoint 4.</p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="margin-bottom: 20px;">
-<table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Using choice as index directly</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">User enters 1 for first item, but index 0 is first&mdash;subtract 1!</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Modifying original list in get_redirect()</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Use slicing to create a copy before removing the avoided city</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting to return BOTH destination and distance</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Function returns a tuple&mdash;caller needs both values</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">get_destination()</span> returns (destination, distance) tuple using list indexing</li>
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">get_redirect()</span> returns a random different destination</li>
-                <li>Update your main game loop to call these functions instead of if/elif chains</li>
-            </ul>
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Tyler-Nguyen.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Tyler Nguyen">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"Dude, when this clicked for me, I literally said 'OHHHH' out loud. The user picks choice 2, you subtract 1 to get index 1, and boom&mdash;you've got Houston and 200 miles without a single if statement. Compare your code to last week's version. That's real progress. You're not the same coder you were seven days ago."</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/tyler-nguyen.svg" alt="Tyler Nguyen" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Junior Developer, Bat City Collective</div>
-                </div>
-            </div>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-4.svg" alt="Checkpoint 4" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Add Tracking Lists &amp; Enhanced Save/Load</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Track your route and hazards in lists, then update save/load to preserve them.</p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Two tracking lists (<span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">visited_cities</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards_list</span>) that grow as you play. Updated <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">save_game()</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_game()</span> that preserve these lists using a <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">---HAZARDS---</span> separator.
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Part A: Initialize Tracking Lists</strong></p>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">In new game setup: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">visited_cities = ['San Antonio']</span> (start with home city)</li>
-                <li style="margin-bottom: 10px;">Also add: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards_list = []</span> (empty until hazards happen)</li>
-                <li style="margin-bottom: 10px;">After arriving at destination: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">visited_cities.append(destination)</span></li>
-                <li>When hazard occurs: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards_list.append(hazard)</span> (where hazard is the message string)</li>
-            </ol>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Part B: Update save_game()</strong></p>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Add two new parameters: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">visited_cities</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards_list</span></li>
-                <li style="margin-bottom: 10px;">After writing basic stats, loop through visited_cities and write each city</li>
-                <li style="margin-bottom: 10px;">Write the separator: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">outfile.write('---HAZARDS---\n')</span></li>
-                <li>Loop through hazards_list and write each hazard</li>
-            </ol>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Part C: Update load_game()</strong></p>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">After reading basic stats, create empty <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">visited_cities = []</span></li>
-                <li style="margin-bottom: 10px;">Use a while loop to read lines until you hit <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">'---HAZARDS---'</span></li>
-                <li style="margin-bottom: 10px;">Append each city to visited_cities</li>
-                <li style="margin-bottom: 10px;">Create empty <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards_list = []</span></li>
-                <li style="margin-bottom: 10px;">Continue reading and appending until end of file</li>
-                <li>Return tuple now includes both lists</li>
-            </ol>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-expected-output.svg" alt="Expected Output" style="height: 18px; display: block;">
-            </div>
-            <div style="border: 2px solid #39FF14; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.5; color: #f5f5f5; margin: 0; padding: 15px 20px;">Maria
-Houston
-450
-7
-3
-1
-San Antonio
-Austin
-Houston
----HAZARDS---
-Buc-ee's appears!
-Speed trap!
-Armadillo crossing!</pre>
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0; font-size: 14px;">
-                The <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">---HAZARDS---</span> marker separates the variable-length visited_cities list from the variable-length hazards_list.
-            </p>
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 7-3 (list_append.py):</strong> You built a list dynamically with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">name_list = []</span> then <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">name_list.append(name)</span>. Same pattern here&mdash;start empty, append as events happen!
-                    </p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Play a short game, save mid-way, then check your save file:</p>
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;">    <span style="color: #6a737d;"># Play: San Antonio ' Austin ' Houston, encounter 2 hazards, then save</span>
-    <span style="color: #6a737d;"># Open savegame.txt in a text editor and verify contents</span></pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Your save file should look like this:</p>
-            <div style="border: 2px solid #39FF14; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.5; color: #f5f5f5; margin: 0; padding: 15px 20px;">TestPlayer
-Houston
-280
-3
-2
-1
-San Antonio
-Austin
-Houston
----HAZARDS---
-Speed trap!
-Armadillo crossing!</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 3:</strong> Quit and reload&mdash;verify these behaviors:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Route restored:</strong> visited_cities has San Antonio, Austin, Houston</li>
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Hazards restored:</strong> hazards_list has the 2 hazard messages</li>
-                <li><strong style="color: #fff;">No duplicates:</strong> Separator line itself is NOT in either list</li>
-            </ul>
-
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;"><strong style="color: #fff;">Step 4:</strong> Once save/load works correctly, move on to Checkpoint 5.</p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="margin-bottom: 20px;">
-<table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Including separator in restored lists</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">The separator is a marker, not data&mdash;skip it during load</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Forgetting <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">.strip()</code> when reading lines</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Newlines in data cause comparison failures and display bugs</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Not initializing lists before appending</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Empty lists must exist before you can append to them</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Part D: Add File Functions to function_library.py</strong></p>
-
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">These three utility functions live in <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span>, not in your main game file. Add them under a new <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;"># FILE FUNCTIONS</span> comment block after your existing validation functions.</p>
-
-            <p style="color: #B0B8C4; margin: 0 0 8px 0;"><strong style="color: #fff;">save_list_to_file(filename, data_list)</strong></p>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Define the function with two parameters: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">filename</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">data_list</span></li>
-                <li style="margin-bottom: 8px;">Open the file for writing: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">with open(filename, 'w') as outfile:</span></li>
-                <li style="margin-bottom: 8px;">Loop through <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">data_list</span> and write each item: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">outfile.write(str(item) + '\n')</span></li>
-                <li>No return value needed</li>
-            </ol>
-
-            <p style="color: #B0B8C4; margin: 0 0 8px 0;"><strong style="color: #fff;">load_list_from_file(filename)</strong></p>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Define the function with one parameter: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">filename</span></li>
-                <li style="margin-bottom: 8px;">Create an empty result list: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">result = []</span></li>
-                <li style="margin-bottom: 8px;">Open the file inside a <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">try</span> block: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">with open(filename, 'r') as infile:</span></li>
-                <li style="margin-bottom: 8px;">Use a <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">readline()</span> while loop &mdash; same pattern as your <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_game()</span></li>
-                <li style="margin-bottom: 8px;">Append each line stripped of <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">\n</span> to <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">result</span></li>
-                <li style="margin-bottom: 8px;">In the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">except FileNotFoundError</span> block: leave <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">result</span> as empty list</li>
-                <li>Return <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">result</span></li>
-            </ol>
-
-            <p style="color: #B0B8C4; margin: 0 0 8px 0;"><strong style="color: #fff;">file_exists(filename)</strong></p>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Define the function with one parameter: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">filename</span></li>
-                <li style="margin-bottom: 8px;">In a <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">try</span> block: attempt to open the file for reading</li>
-                <li style="margin-bottom: 8px;">If it opens successfully: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">return True</span></li>
-                <li>In the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">except FileNotFoundError</span> block: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">return False</span></li>
-            </ol>
-
-            <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0 0 10px 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 7-16 (write_number_list.py):</strong> Writing a list to a file one item per line &mdash; exactly what <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">save_list_to_file()</span> does.
-                    </p>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #BF40FF;">Program 7-17 (read_number_list.py):</strong> Reading a file back into a list &mdash; that's <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_list_from_file()</span>. The <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">readline()</span> while loop pattern is identical to your <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_game()</span> from Lab 3.1.
-                    </p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">visited_cities</span> grows each time you arrive somewhere</li>
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">hazards_list</span> grows each time a hazard occurs</li>
-                <li style="margin-bottom: 8px;">Save/load preserves both lists using the separator marker</li>
-                <li style="margin-bottom: 8px;">Three new functions added to <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span>: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">save_list_to_file()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_list_from_file()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">file_exists()</span></li>
-                <li>Test: Save mid-game, reload, verify lists are restored correctly</li>
-            </ul>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-5.svg" alt="Checkpoint 5" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Enhanced Trip Report</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Display your route and hazards using numbered lists in the final report.</p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                An enhanced trip report that displays your complete route as a numbered list and all hazards encountered. This shows the player exactly where they traveled and what they faced!
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">After the game loop, print <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">'YOUR ROUTE:'</span></li>
-                <li style="margin-bottom: 10px;">Loop through visited_cities with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">for i in range(len(visited_cities)):</span></li>
-                <li style="margin-bottom: 10px;">Print each city with number: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">f'  {i + 1}. {visited_cities[i]}'</span></li>
-                <li style="margin-bottom: 10px;">Print <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">'HAZARDS ENCOUNTERED:'</span></li>
-                <li style="margin-bottom: 10px;">Check <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">if len(hazards_list) > 0:</span> before looping</li>
-                <li>If no hazards, print <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">'  None - Lucky traveler!'</span></li>
-            </ol>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-expected-output.svg" alt="Expected Output" style="height: 18px; display: block;">
-            </div>
-            <div style="border: 2px solid #39FF14; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.5; color: #f5f5f5; margin: 0; padding: 15px 20px;">==================================================
-TRIP REPORT
-==================================================
-Driver: Maria
-Final City: Galveston
-
-YOUR ROUTE:
-  1. San Antonio
-  2. Houston
-  3. Galveston
-
-HAZARDS ENCOUNTERED:
-  1. Buc-ee's appears!
-  2. Speed trap!
-
-STATISTICS:
-  Total Miles: 267
-  Total Turns: 4
-  Hazards: 1/2 escaped
-==================================================</pre>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-            
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Play a full game to a beach, then check the trip report:</p>
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #f5f5f5; margin: 0; padding: 15px 20px;">    <span style="color: #6a737d;"># Play: San Antonio ' Houston ' Galveston (BEACH!)</span>
-    <span style="color: #6a737d;"># Encounter at least one hazard along the way</span>
-    <span style="color: #6a737d;"># Watch for the trip report at the end</span></pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Verify the trip report shows:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Numbered route:</strong> 1. San Antonio, 2. Houston, 3. Galveston</li>
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Numbered hazards:</strong> Each hazard message with a number</li>
-                <li><strong style="color: #fff;">Statistics:</strong> Miles, turns, and hazard escape ratio</li>
-            </ul>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 3:</strong> Test the "no hazards" case:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">Play a quick game (San Antonio ' Corpus Christi is fastest)</li>
-                <li><strong style="color: #fff;">If no hazards occurred</strong>, report should say "None - Lucky traveler!"</li>
-            </ul>
-
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;"><strong style="color: #fff;">Step 4:</strong> Once your trip report displays correctly, you're ready to submit!</p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="margin-bottom: 20px;">
-<table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 2px solid #333;">
-                    <thead>
-                        <tr>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333; width: 40%;">Common Mistake</th>
-                            <th style="background: #39FF14; color: #000; font-weight: 700; padding: 10px 12px; text-align: left; border: 2px solid #333;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Starting enumeration at 0</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Use <code style="background: #2a2a2a; padding: 2px 4px; border-radius: 3px; color: #39ff14;">enumerate(list, 1)</code> to start numbering at 1</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Not checking if hazards list is empty</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">If no hazards, display "None" instead of empty section</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Division by zero in escape ratio</td>
-                            <td style="background: #1a1a1a; color: #B0B8C4; padding: 10px 12px; border: 2px solid #333;">Check hazards_faced &gt; 0 before calculating percentage</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Trip report shows numbered route from tracking list</li>
-                <li style="margin-bottom: 8px;">Hazards section shows all encountered hazards (or "None")</li>
-                <li>Statistics section preserved from Lab 3.1</li>
-            </ul>
-
-        </div>
-    </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF1744 0%, #4A0A0A 100%); padding: 8px 12px 12px 12px;">
-        
-                <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-final-checklist.svg" alt="Final Checklist" style="height: 60px; margin-bottom: 2px; margin-left: -8px; display: block;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Check It Before You Wreck It
-        </div>
-        
-                <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-before-you-submit.svg" alt="Before You Submit" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                You're submitting <strong style="color: #fff;">TWO files</strong> this week:
-            </p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">lab-3-2.py</span> with parallel lists, tracking lists, and enhanced save/load</li>
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span> with <strong style="color: #fff;">3 new functions</strong>: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">save_list_to_file()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">load_list_from_file()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">file_exists()</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">9 parallel lists</strong> defined as constants (UPPERCASE names)</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Both files</strong> have proper header comments with your name, ID, and section</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">All functions</strong> have docstrings</li>
-                <li><strong style="color: #fff;">Save/load</strong> uses <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">---HAZARDS---</span> separator and restores both tracking lists</li>
-            </ul>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-warning.svg" alt="Warning" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <strong style="color: #fff;">Scope:</strong> You may use all Chapter 2-7 concepts including lists with initial values, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">append()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">len()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">in</span> operator, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">index()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">remove()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">pop()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">copy()</span>, for with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">range(len())</span>. <strong style="color: #FF1744;">NOT YET:</strong> <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">sort()</span> (that's Lab 3.3!), list slicing, list comprehensions, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">readlines()</span>.
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-save-your-code.svg" alt="Save Your Code" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <strong style="color: #fff;">Keep BOTH files!</strong> In Lab 3.3, you'll add <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">sort()</span>, unique city counting, and a printable trip report file. Your function library will keep growing!
-            </p>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-permitted-techniques.svg" alt="Permitted Techniques" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Chapters 2-7:</strong></p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">All previous techniques (variables, if/else, loops, functions, file I/O)</li>
-                <li style="margin-bottom: 5px;">Lists with initial values, append(), len(), in operator</li>
-                <li style="margin-bottom: 5px;">index(), remove(), pop(), copy()</li>
-                <li style="margin-bottom: 5px;">for with range(len())</li>
-            </ul>
-            <p style="color: #ff6b1a; margin: 0 0 20px 0;"><strong>NOT permitted:</strong> sort() (Lab 3.3), list slicing, list comprehensions, readlines()</p>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-academic-integrity.svg" alt="Academic Integrity" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">
-                This assignment must be <strong style="color: #fff;">your own work</strong>. You may reference the textbook and BookEx examples. You may NOT copy code from others, use AI, or share your code.
-            </p>
-
-        </div>
-    </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #BF40FF 0%, #2E0854 100%); padding: 8px 12px 12px 12px;">
-        
-                <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-need-help.svg" alt="Need Help?" style="height: 60px; margin-bottom: 2px; margin-left: -8px; display: block;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Look No Further! We've Got You
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-if-you-get-stuck.svg" alt="If You Get Stuck" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 25px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Re-read Programs 7-1 through 7-6 and Program 7-9</strong> &mdash; list creation, indexing, and modification patterns</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Test your parallel lists first</strong> &mdash; make sure indexing works before building functions</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Print intermediate values</strong> &mdash; show what's in your lists at key points</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Submit to CodeGrade early</strong> &mdash; shows exactly which tests pass or fail</li>
-                <li><strong style="color: #fff;">Come to Zoom or office hours</strong> &mdash; screen share and debug together</li>
-            </ol>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-codegrade-tip.svg" alt="CodeGrade Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <strong style="color: #fff;">Unlimited submissions!</strong> Submit early and often. CodeGrade will tell you exactly what's working and what needs fixing.
-            </p>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-contact-and-resources.svg" alt="Contact &amp; Resources" style="height: 18px; display: block;">
-            </div>
-            
-                        <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Webcam-Video-Square.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Weekly Zoom Session</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Tuesdays at 6:00 PM CT &mdash; Live coding help and Q&amp;A</div>
-                    <a href="https://utsa.zoom.us/j/97617245124" style="color: #BF40FF; font-size: 13px;">https://utsa.zoom.us/j/97617245124</a>
-                </div>
-            </div>
-            
-                        <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Calendar-Mark.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Office Hours (by Appointment)</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Book a 15-minute slot for one-on-one help</div>
-                    <a href="https://calendly.com/john-newsom-utsa/student-meeting" style="color: #BF40FF; font-size: 13px;">https://calendly.com/john-newsom-utsa/student-meeting</a>
-                </div>
-            </div>
-            
-                        <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Customer-Support.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Discord Community</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Get help from classmates and share tips</div>
-                </div>
-            </div>
-            
-                        <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Mail-Send-Envelope.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Email</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">For private questions or concerns</div>
-                    <a href="/cdn-cgi/l/email-protection#abc1c4c3c585c5cedcd8c4c6ebdedfd8ca85cecfde" style="color: #BF40FF; font-size: 13px;"><span class="__cf_email__" data-cfemail="63090c0b0d4d0d0614100c0e23161710024d060716">[email&#160;protected]</span></a>
-                </div>
-            </div>
-            
-                        <div style="display: flex; gap: 15px; align-items: center;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Chapter 7 BookEx Reference Guide</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Step-by-step breakdowns of every textbook example</div>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
-<div style="text-align: center; color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
-    <img style="height: 50px; margin-bottom: 15px;" src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
-    <div style="color: #b0b8c4; font-size: 13px;">IS2053 Programming I &mdash; UT San Antonio &mdash; Spring 2026</div>
-    <div styl
+<script src="https://jfnewsom.github.io/is2053-assets/nav.js"></script>
+</body>
+</html>
