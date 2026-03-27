@@ -366,6 +366,22 @@
     document.body.insertBefore(nav, document.body.firstChild);
 
     checkZoomActive();
+
+    // Inject shared footer
+    const footer = document.createElement('footer');
+    footer.className = 'site-footer';
+    footer.innerHTML =
+      '<img class="site-footer__logo"' +
+      ' src="https://jfnewsom.github.io/is2053-assets/branding/UTSanAntonio_H_Logo_Dual_TM_RGB.png"' +
+      ' alt="UT San Antonio">' +
+      '<div class="site-footer__citation">' +
+      '<span class="site-footer__citation-label">Textbook</span>' +
+      '<span class="site-footer__citation-text"><em>Starting Out with Python</em>, 6th Edition &middot; Tony Gaddis &middot; Pearson &middot; ISBN 978-0-13-787120-9</span>' +
+      '</div>' +
+      '<div class="site-footer__copyright">' +
+      '&copy; 2026 The University of Texas at San Antonio. Developed by John Newsom for IS2053: Programming I (Python). All rights reserved.' +
+      '</div>';
+    document.body.appendChild(footer);
   }
 
   if (document.body) {
