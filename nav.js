@@ -16,13 +16,14 @@
   'use strict';
 
   /* ── Context detection ──────────────────────────────────── */
-  const params = new URLSearchParams(window.location.search);
-  const ctx    = params.get('context'); // null | 'support' | 'assignment'
+  const inIframe = window.self !== window.top;
+  const params   = new URLSearchParams(window.location.search);
+  const ctx      = params.get('context'); // null | 'support'
 
-  if (ctx === 'assignment') return;
+  if (inIframe && ctx !== 'support') return; // assignment iframes: no nav
 
-  const showFull = ctx === null; // no param = opened directly = full nav
-  const suffix   = ctx === 'support' ? '?context=support' : '';
+  const showFull = !inIframe; // direct open = full nav; support iframe = slim nav
+  const suffix   = inIframe ? '?context=support' : '';
 
   /* ── Base URLs ──────────────────────────────────────────── */
   const BASE = 'https://jfnewsom.github.io/is2053-assets';
