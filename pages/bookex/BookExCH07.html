@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookEx Chapter 7: Lists and Tuples — IS2053</title>
+    <title>BookEx Chapter 7: Lists and Tuples &mdash; IS2053</title>
     <link rel="stylesheet" href="../../labs.css">
 </head>
 <body>
 <div class="lc-wrapper">
 
-<!-- ============================================================ -->
-<!-- CARD 1: OVERVIEW (Blue) -->
-<!-- ============================================================ -->
 <div class="lc-card lc-card--blue">
   <div class="lc-topper">
     <table style="width: 100%; border-collapse: collapse;">
@@ -33,163 +30,395 @@
     </table>
   </div>
   <div class="lc-panel">
-    <p>Work through each Gaddis program in order. Chapter 7 introduces lists &mdash; the most important data structure in the course. Type every program by hand. Lists unlock a whole new level of problem-solving, and the patterns here (append, iterate, accumulate, search, modify) show up in every Lab assignment from here on.</p>
+    <p>Work through each Gaddis program in order. Chapter 7 introduces lists — the most important data structure in the course. Type every program by hand. Lists unlock a whole new level of problem-solving, and the patterns here (append, iterate, accumulate, search, modify) show up in every Lab assignment from here on.</p>
 
-    <div class="lc-callout lc-callout--info">
+    <div class="lc-h3 lc-h3--yellow">Learning Objectives</div>
+    <ul class="lc-objectives">
+      <li>Create a list with a fixed size using the repetition operator</li>
+      <li>Build a list dynamically using append() in a loop</li>
+      <li>Search a list using the in operator</li>
+      <li>Find an item's index using index() and handle ValueError with try-except</li>
+      <li>Add items at a specific position using insert()</li>
+      <li>Remove items using remove() and handle ValueError with try-except</li>
+      <li>Calculate a list average using both a manual accumulator and sum()</li>
+      <li>Combine functions that build, process, and return lists</li>
+      <li>Write a list to a file by looping and converting each item to a string</li>
+      <li>Read a file into a list using readlines() and convert each element</li>
+    </ul>
+
+    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
+    <p>Chapter 7 covers list creation, indexing, the in operator, append(), insert(), remove(), index(), sum(), len(), min(), max(), passing lists to functions, returning lists from functions, and file I/O with lists.</p>
+
+    <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 7: Lists and Tuples</p>
+
+    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
+    <ul>
+      <li>Each program is saved as its own individual .py file</li>
+      <li>Each file uses the exact filename listed in the instructions</li>
+      <li>Run write_number_list.py before read_number_list.py</li>
+      <li>Each program runs without syntax errors and output matches the textbook</li>
+    </ul>
+
+    <div class="lc-h3 lc-h3--yellow">Filename</div>
+    <p>This chapter uses 10 individual files. Submit all 10 files together in your final CodeGrade submission. Note that read_number_list.py reads a file created by write_number_list.py — run Checkpoint 9 before Checkpoint 10.</p>
+  </div>
+</div>
+
+<div class="lc-card lc-card--orange">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Time Guide</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 90–120 Minutes</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr><th>Checkpoint</th><th>Time</th><th>Task</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>sales_list.py</strong></td><td>10 min</td><td>Create a fixed-size list and fill it with user input</td></tr>
+          <tr><td><strong>in_list.py</strong></td><td>10 min</td><td>Search a list with the in operator</td></tr>
+          <tr><td><strong>list_append.py</strong></td><td>10 min</td><td>Build a list dynamically with append()</td></tr>
+          <tr><td><strong>index_list.py</strong></td><td>10 min</td><td>Find and replace an item using index()</td></tr>
+          <tr><td><strong>insert_list.py</strong></td><td>10 min</td><td>Add an item at a specific position with insert()</td></tr>
+          <tr><td><strong>remove_item.py</strong></td><td>10 min</td><td>Remove an item with remove()</td></tr>
+          <tr><td><strong>average_list.py</strong></td><td>10 min</td><td>Calculate an average with accumulator and sum()</td></tr>
+          <tr><td><strong>drop_lowest_score.py</strong></td><td>15 min</td><td>Combine functions that build and process a list</td></tr>
+          <tr><td><strong>write_number_list.py</strong></td><td>10 min</td><td>Write a list to a file</td></tr>
+          <tr><td><strong>read_number_list.py</strong></td><td>10 min</td><td>Read a file into a list with readlines()</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="lc-card lc-card--green">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Programs</div>
+    <div class="lc-sub-banner">10 Programs</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">1</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">sales_list.py</div>
+        <div class="lc-cp-subtitle">Program 7-1 (6th Ed) • Program 7-1 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that creates a five-element list pre-filled with zeros using the repetition operator ([0] * NUM_DAYS), then uses a for loop with range(len(sales)) to collect a sales value for each index position. A second for loop displays all the values. This is the standard pattern for working with a list of known size.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 7-1.</li>
+        <li>Create a new file named sales_list.py.</li>
+        <li>Type the program as shown, including the NUM_DAYS constant.</li>
+        <li>Run it and enter five sales values.</li>
+        <li>Confirm all five values are displayed back correctly.</li>
+      </ol>
+    <div class="lc-callout lc-callout--tip">
       <div class="lc-callout__icon">
         <span class="material-symbols-outlined">lightbulb</span>
       </div>
-        <div class="lc-callout__bubble">
-          <div class="lc-callout__title">[0] * 5 Creates a List of Five Zeros</div>
-          <div class="lc-callout__body">
-            <p>The expression <code>[0] * NUM_DAYS</code> creates a list with <code>NUM_DAYS</code> elements, each initialized to 0. This reserves the space before you fill it. The for loop then replaces each 0 with user input using the index: <code>sales[index] = float(input(...))</code>.</p>
-          </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">[0] * 5 Creates a List of Five Zeros</div>
+        <div class="lc-callout__body">
+          <p>The expression [0] * NUM_DAYS creates a list with NUM_DAYS elements, each initialized to 0. This reserves the space before you fill it. The for loop then replaces each 0 with user input using the index: sales[index] = float(input(...)).</p>
         </div>
       </div>
     </div>
-
+    </div>
     <hr class="lc-cp-sep">
 
-    <!-- CHECKPOINT 2 -->
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">2</div></div>
       <div class="lc-cp-content">
         <div class="lc-cp-title">in_list.py</div>
-        <div class="lc-cp-subtitle">Program 7-2 (6th Ed) &bull; Program 7-2 (5th Ed)</div>
+        <div class="lc-cp-subtitle">Program 7-2 (6th Ed) • Program 7-2 (5th Ed)</div>
       </div>
     </div>
     <div class="lc-cp-body">
-      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-      <p>A product lookup program that stores a list of product numbers and uses the <code>in</code> operator to check whether a user's search value exists in the list. If found, a found message appears; if not, a not-found message appears.</p>
-      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A product lookup program that stores a list of product numbers and uses the in operator to check whether a user's search value is in the list. If found, a found message appears; if not, a not-found message appears. Short program, but the in operator is one of the most useful tools in Python.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
       <ol>
         <li>Open your textbook to Program 7-2.</li>
-        <li>Create a new file named <code>in_list.py</code>.</li>
+        <li>Create a new file named in_list.py.</li>
         <li>Type the program as shown.</li>
-        <li>Run it and search for <code>V475</code> &mdash; confirm the found message appears.</li>
-        <li>Run it again and search for <code>X999</code> &mdash; confirm the not-found message appears.</li>
+        <li>Run it and search for V475 — confirm the found message appears.</li>
+        <li>Run it again and search for X999 — confirm the not-found message appears.</li>
       </ol>
-      <div class="lc-callout lc-callout--info">
-        <div class="lc-callout__icon">
-        <span class="material-symbols-outlined">lightbulb</span>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">info</span>
       </div>
-        <div class="lc-callout__bubble">
-          <div class="lc-callout__title">append() Always Adds to the End</div>
-          <div class="lc-callout__body">
-            <p>Each call to <code>name_list.append(name)</code> adds the new name after all existing items. Starting with an empty list <code>[]</code> and building with <code>append()</code> is the pattern you will use in almost every Lab that collects a variable number of items.</p>
-          </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">in Works with Any List</div>
+        <div class="lc-callout__body">
+          <p>if search in prod_nums evaluates to True if search is anywhere in the list, False otherwise. This works with lists of strings, integers, or any type. It is much cleaner than looping through the list yourself to search for a match.</p>
         </div>
       </div>
     </div>
-
+    </div>
     <hr class="lc-cp-sep">
 
-    <!-- CHECKPOINT 4 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">3</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">list_append.py</div>
+        <div class="lc-cp-subtitle">Program 7-3 (6th Ed) • Program 7-3 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that starts with an empty list and builds it dynamically by appending user-entered names inside a sentinel loop. After the loop ends, a for loop displays every name in the list. This is the most common way to build a list when you don't know in advance how many items there will be.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 7-3.</li>
+        <li>Create a new file named list_append.py.</li>
+        <li>Type the program as shown.</li>
+        <li>Run it and add three or four names, then stop.</li>
+        <li>Confirm all names are displayed in the order you entered them.</li>
+      </ol>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">lightbulb</span>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">append() Always Adds to the End</div>
+        <div class="lc-callout__body">
+          <p>Each call to name_list.append(name) adds the new name after all existing items. The list grows by one element each time. Starting with an empty list [] and building with append() is the pattern you will use in almost every Lab that collects a variable number of items.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">4</div></div>
       <div class="lc-cp-content">
         <div class="lc-cp-title">index_list.py</div>
-        <div class="lc-cp-subtitle">Program 7-4 (6th Ed) &bull; Program 7-4 (5th Ed)</div>
+        <div class="lc-cp-subtitle">Program 7-4 (6th Ed) • Program 7-4 (5th Ed)</div>
       </div>
     </div>
     <div class="lc-cp-body">
-      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-      <p>A program that lets the user change an item in a list by searching for it with <code>index()</code>, which returns the item's position. The program gets a replacement value and overwrites the old item at that position. A try-except block catches <code>ValueError</code> if the item isn't found.</p>
-      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that lets the user change an item in a list by searching for it with index(), which returns the item's position. The program then gets a replacement value and overwrites the old item at that position. A try-except catches ValueError if the item isn't found.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
       <ol>
         <li>Open your textbook to Program 7-4.</li>
-        <li>Create a new file named <code>index_list.py</code>.</li>
+        <li>Create a new file named index_list.py.</li>
         <li>Type the program as shown including the try-except block.</li>
-        <li>Run it and change 'Burgers' to 'Tacos' &mdash; confirm the list updates.</li>
-        <li>Run it again and try to change 'Sushi' (not in the list) &mdash; confirm the error message appears.</li>
+        <li>Run it and change 'Burgers' to 'Tacos' — confirm the list updates.</li>
+        <li>Run it again and try to change 'Sushi' (not in the list) — confirm the error message appears.</li>
       </ol>
-      <div class="lc-callout lc-callout--pitfall">
-        <div class="lc-callout__icon">
-        <span class="material-symbols-outlined">lightbulb</span>
+    <div class="lc-callout lc-callout--pitfall">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">warning</span>
       </div>
-        <div class="lc-callout__bubble">
-          <div class="lc-callout__title">sum(), min(), max(), and len() Work on Any Numeric List</div>
-          <div class="lc-callout__body">
-            <p><code>sum(scores)</code> replaces a for loop accumulator. <code>len(scores)</code> gives the count. <code>min(scores)</code> and <code>max(scores)</code> find the extremes. You will use all four of these in upcoming Lab assignments.</p>
-          </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">index() Raises ValueError If the Item Is Not Found</div>
+        <div class="lc-callout__body">
+          <p>If the item you're searching for isn't in the list, index() raises ValueError — which crashes your program if unhandled. The try-except block in this program catches that and prints a friendly message instead. Always protect index() calls with try-except or an in check first.</p>
         </div>
       </div>
     </div>
-
+    </div>
     <hr class="lc-cp-sep">
 
-    <!-- CHECKPOINT 8 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">5</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">insert_list.py</div>
+        <div class="lc-cp-subtitle">Program 7-5 (6th Ed) • Program 7-5 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that creates a list with three names, displays it, then inserts 'Joe' at position 0 (the very beginning) using insert(0, 'Joe'). All existing items shift one position to the right. The list is displayed again to show the result.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 7-5.</li>
+        <li>Create a new file named insert_list.py.</li>
+        <li>Type the program as shown.</li>
+        <li>Run it and compare the before and after output.</li>
+        <li>Try changing insert(0, 'Joe') to insert(1, 'Joe') and see where 'Joe' ends up.</li>
+      </ol>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">info</span>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">insert(index, item) Shifts Everything Right</div>
+        <div class="lc-callout__body">
+          <p>insert(0, 'Joe') puts 'Joe' at the front and shifts 'James', 'Kathryn', and 'Bill' to positions 1, 2, and 3. insert(1, 'Joe') would put 'Joe' between 'James' and 'Kathryn'. Unlike append(), insert() can place an item anywhere.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">6</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">remove_item.py</div>
+        <div class="lc-cp-subtitle">Program 7-6 (6th Ed) • Program 7-6 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that lets the user remove an item from a food list by value. remove() finds the first matching item and deletes it, shortening the list by one. A try-except block handles the case where the item doesn't exist.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 7-6.</li>
+        <li>Create a new file named remove_item.py.</li>
+        <li>Type the program as shown including the try-except block.</li>
+        <li>Run it and remove 'Chips' — confirm the list shortens.</li>
+        <li>Run it again and try to remove 'Sushi' — confirm the error message appears.</li>
+      </ol>
+    <div class="lc-callout lc-callout--pitfall">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">warning</span>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">remove() Raises ValueError If the Item Is Not Found</div>
+        <div class="lc-callout__body">
+          <p>Just like index(), remove() raises ValueError if the item isn't in the list. The try-except block handles this gracefully. If you need to check first without raising an error, use if item in food: before calling remove().</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">7</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">average_list.py</div>
+        <div class="lc-cp-subtitle">Program 7-9 (6th Ed) • Program 7-9 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that calculates the average of a list of scores two different ways: first with a manual accumulator loop (total1), and then with the built-in sum() function (total2). Both produce the same result. This demonstrates that sum() is a clean shortcut for the accumulator pattern you already know.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 7-9.</li>
+        <li>Create a new file named average_list.py.</li>
+        <li>Type the program as shown, including both calculation approaches.</li>
+        <li>Run it and confirm both averages are identical.</li>
+      </ol>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">lightbulb</span>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">sum(), min(), max(), and len() Work on Any Numeric List</div>
+        <div class="lc-callout__body">
+          <p>Python's built-in list functions are powerful shortcuts. sum(scores) replaces a for loop accumulator. len(scores) gives the count. min(scores) and max(scores) find the extremes. You will use all four of these in upcoming Lab assignments.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">8</div></div>
       <div class="lc-cp-content">
         <div class="lc-cp-title">drop_lowest_score.py</div>
-        <div class="lc-cp-subtitle">Program 7-12 (6th Ed) &bull; Program 7-12 (5th Ed)</div>
+        <div class="lc-cp-subtitle">Program 7-12 (6th Ed) • Program 7-12 (5th Ed)</div>
       </div>
     </div>
     <div class="lc-cp-body">
-      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-      <p>A grade calculator spread across three functions: <code>get_scores()</code> builds a list of test scores using <code>append()</code> and returns it, <code>get_total()</code> accepts a list and returns the sum using an accumulator, and <code>main()</code> ties them together &mdash; calling <code>min()</code> to find the lowest score, dropping it from the total, and calculating the adjusted average. This is the most complex program in Chapter 7 and directly mirrors Lab assignment structure.</p>
-      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A grade calculator spread across three functions: get_scores() builds a list of test scores using append() and returns it, get_total() accepts a list and returns the sum using an accumulator, and main() ties them together — calling min() to find the lowest score, dropping it from the total, and calculating the adjusted average. This is the most complex program in Chapter 7 and directly mirrors Lab assignment structure.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
       <ol>
         <li>Open your textbook to Program 7-12.</li>
-        <li>Create a new file named <code>drop_lowest_score.py</code>.</li>
-        <li>Type all three functions and the <code>if __name__ == '__main__':</code> guard.</li>
+        <li>Create a new file named drop_lowest_score.py.</li>
+        <li>Type all three functions and the if __name__ == '__main__': guard.</li>
         <li>Run it and enter at least four test scores.</li>
         <li>Confirm the displayed average excludes the lowest score you entered.</li>
       </ol>
-      <div class="lc-callout lc-callout--info">
-        <div class="lc-callout__icon">
-        <span class="material-symbols-outlined">lightbulb</span>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">info</span>
       </div>
-        <div class="lc-callout__bubble">
-          <div class="lc-callout__title">Loop Through the List and Convert Each Item</div>
-          <div class="lc-callout__body">
-            <p><code>for item in numbers: outfile.write(str(item) + '\n')</code> is the standard pattern for writing a list to a file. Each element is converted to a string with <code>str()</code>, then written with a newline. Run this before Checkpoint 10 or <code>read_number_list.py</code> will fail with FileNotFoundError.</p>
-          </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Functions Can Build and Return Lists</div>
+        <div class="lc-callout__body">
+          <p>get_scores() creates an empty list, appends values inside a loop, and returns the finished list. main() stores that return value in scores. This is exactly the pattern used in Lab assignments where a helper function collects data and main() processes it. Lists are passed to and returned from functions just like any other value.</p>
         </div>
       </div>
     </div>
-
+    </div>
     <hr class="lc-cp-sep">
 
-    <!-- CHECKPOINT 10 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">9</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">write_number_list.py</div>
+        <div class="lc-cp-subtitle">Program 7-16 (6th Ed) • Program 7-16 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that creates a list of seven integers and writes them to numberlist.txt by looping through the list and calling write() on each item converted to a string with str(). Checkpoint 10 reads this file back into a list.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 7-16.</li>
+        <li>Create a new file named write_number_list.py.</li>
+        <li>Type the program as shown.</li>
+        <li>Run it — no output appears, but numberlist.txt is created.</li>
+        <li>Open numberlist.txt to confirm the seven numbers are each on their own line.</li>
+      </ol>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">lightbulb</span>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Loop Through the List and Convert Each Item</div>
+        <div class="lc-callout__body">
+          <p>for item in numbers: outfile.write(str(item) + '\n') is the standard pattern for writing a list to a file. Each element is converted to a string with str(), then written with a newline. Run this before Checkpoint 10 or read_number_list.py will fail.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">10</div></div>
       <div class="lc-cp-content">
         <div class="lc-cp-title">read_number_list.py</div>
-        <div class="lc-cp-subtitle">Program 7-17 (6th Ed) &bull; Program 7-17 (5th Ed)</div>
+        <div class="lc-cp-subtitle">Program 7-17 (6th Ed) • Program 7-17 (5th Ed)</div>
       </div>
     </div>
     <div class="lc-cp-body">
-      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-      <p>A program that reads <code>numberlist.txt</code> back into a list using <code>readlines()</code>, which returns every line as a string in a list. A for loop with <code>range(len(numbers))</code> then converts each string element to an integer in place. The finished list of integers is printed.</p>
-      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that reads numberlist.txt back into a list using readlines(), which returns every line as a string in a list. A for loop with range(len(numbers)) then converts each string element to an integer in place by assigning back to numbers[index]. The finished list is printed.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
       <ol>
         <li>Open your textbook to Program 7-17.</li>
-        <li>Create a new file named <code>read_number_list.py</code>.</li>
+        <li>Create a new file named read_number_list.py.</li>
         <li>Type the program as shown.</li>
-        <li>Make sure <code>write_number_list.py</code> has been run first to create <code>numberlist.txt</code>.</li>
+        <li>Make sure write_number_list.py has been run first to create numberlist.txt.</li>
         <li>Run it and confirm the list of integers prints correctly.</li>
       </ol>
-      <div class="lc-callout lc-callout--info">
-        <div class="lc-callout__icon">
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
         <span class="material-symbols-outlined">info</span>
       </div>
-        <div class="lc-callout__bubble">
-          <div class="lc-callout__title">readlines() Returns a List of Strings</div>
-          <div class="lc-callout__body">
-            <p><code>infile.readlines()</code> reads the entire file and returns a list where each element is one line as a string, including the trailing <code>\n</code>. The conversion <code>int(numbers[index])</code> strips the <code>\n</code> automatically when it parses the string &mdash; the same behavior as <code>int(readline())</code> from Chapter 6.</p>
-          </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">readlines() Returns a List of Strings</div>
+        <div class="lc-callout__body">
+          <p>infile.readlines() reads the entire file and returns a list where each element is one line as a string, including the trailing \n. The conversion loop int(numbers[index]) strips the \n automatically when it parses the string — the same behavior as int(readline()) from Chapter 6.</p>
         </div>
       </div>
     </div>
-
+    </div>
   </div>
 </div>
 
-<!-- ============================================================ -->
-<!-- CARD 4: FINAL CHECKLIST (Red) -->
-<!-- ============================================================ -->
 <div class="lc-card lc-card--red">
   <div class="lc-topper">
     <div class="lc-topper-title">Final Checklist</div>
@@ -209,22 +438,22 @@
       <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">write_number_list.py runs and creates numberlist.txt</span></li>
       <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">read_number_list.py runs and displays the list of integers correctly</span></li>
     </ul>
-    <div class="lc-callout lc-callout--warning">
+        <div class="lc-callout lc-callout--warning">
       <div class="lc-callout__icon">
         <span class="material-symbols-outlined">error</span>
       </div>
       <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Final Submission Must Include All 10 Files</div>
+        <div class="lc-callout__title">Final Submission Must Include All Files</div>
         <div class="lc-callout__body">
-          <p>CodeGrade only keeps your most recent submission. Your final upload must include all 10 .py files. Note: you do not need to submit <code>numberlist.txt</code> &mdash; CodeGrade creates it when it runs <code>write_number_list.py</code>.</p>
+          <p>CodeGrade only keeps your most recent submission. Your final upload must include all 10 files or you will lose credit for any that are missing.</p>
         </div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
-    <p>These are Chapter 7 BookEx exercises. You are typing Gaddis programs exactly as written. All programs use the <code>def main()</code> and <code>if __name__ == '__main__':</code> structure from Chapter 5.</p>
+    <p>These are Chapter 7 BookEx exercises. You are typing Gaddis programs exactly as written. All programs use the def main() and if __name__ == '__main__': structure from Chapter 5.</p>
     <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
     <div class="lc-permitted">
-      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2&ndash;7</p>
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–7</p>
       <ul class="lc-permitted__list">
         <li>List creation: [], [0] * n, and literal lists</li>
         <li>append(), insert(), remove(), index()</li>
@@ -234,7 +463,7 @@
         <li>Passing lists to functions and returning lists from functions</li>
         <li>Writing lists to files and reading files into lists with readlines()</li>
         <li>try-except with ValueError for index() and remove()</li>
-        <li>All Chapter 2&ndash;6 techniques</li>
+        <li>All Chapter 2–6 techniques</li>
       </ul>
       <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> list comprehensions, classes, anything from chapters not yet covered</p>
     </div>
@@ -243,9 +472,6 @@
   </div>
 </div>
 
-<!-- ============================================================ -->
-<!-- CARD 5: NEED HELP (Purple) -->
-<!-- ============================================================ -->
 <div class="lc-card lc-card--purple">
   <div class="lc-topper">
     <div class="lc-topper-title">Need Help</div>
@@ -254,10 +480,10 @@
   <div class="lc-panel">
     <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
     <ul>
-      <li>If you get <code>ValueError</code> from <code>index()</code> or <code>remove()</code>, the item isn't in the list &mdash; check the try-except block and make sure it matches the book</li>
-      <li>If <code>read_number_list.py</code> fails with <code>FileNotFoundError</code>, run <code>write_number_list.py</code> first to create <code>numberlist.txt</code></li>
-      <li>If your list output looks wrong, check whether you're iterating by value (<code>for item in list</code>) or by index (<code>for index in range(len(list))</code>)</li>
-      <li>Submit to CodeGrade early &mdash; it shows exactly which files pass and which need work</li>
+      <li>If you get ValueError from index() or remove(), the item isn't in the list — check the try-except block and make sure it matches the book</li>
+      <li>If read_number_list.py fails with FileNotFoundError, run write_number_list.py first to create numberlist.txt</li>
+      <li>If your list output looks wrong, check whether you're iterating by value (for item in list) or by index (for index in range(len(list)))</li>
+      <li>Submit to CodeGrade early — it shows exactly which files pass and which need work</li>
       <li>Post in the course Discord if you are stuck after two attempts (describe the error, do not post your code)</li>
       <li>Come to Zoom or office hours if you are still stuck</li>
     </ul>
@@ -268,7 +494,7 @@
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">BookEx Reference Guides</div>
         <div class="lc-callout__body">
-          <p>Chapter 7 BookEx Reference Guide &mdash; step-by-step breakdown of every program in this chapter</p>
+          <p>Chapter 7 BookEx Reference Guide — step-by-step breakdown of every program in this chapter</p>
         </div>
       </div>
     </div>
