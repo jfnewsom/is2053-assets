@@ -219,14 +219,12 @@
     .site-footer {
       border-top: 1px solid #e0e4ef;
       padding: 24px 40px 20px 40px;
-      margin-top: 40px;
+      margin-top: 0;
       text-align: center;
       background: #fff;
     }
     .site-footer__logo {
-      height: 40px;
-      width: auto;
-      max-width: 240px;
+      height: 48px;
       display: block;
       margin: 0 auto 16px auto;
     }
