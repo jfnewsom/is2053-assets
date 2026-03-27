@@ -299,7 +299,7 @@
       <div class="nav-trigger">BookEx <span class="nav-caret">&#9660;</span></div>
       <div class="nav-dropdown">
         <div class="drop-label">Book Exercises</div>
-        ${link('BookEx Overview', BX + 'bookex-overview.html' + suffix, 'dd-purple')}
+        ${link('BookEx Overview', S + 'bookex-overview.html' + suffix, 'dd-purple')}
         <div class="drop-sub">Module 1 &mdash; Ch. 2&ndash;3</div>
         ${link('Chapter 2',  BX + 'BookExCH02.html' + suffix, 'dd-purple')}
         ${link('Chapter 3',  BX + 'BookExCH03.html' + suffix, 'dd-purple')}
