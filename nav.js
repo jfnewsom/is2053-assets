@@ -22,6 +22,7 @@
   if (ctx === 'assignment') return;
 
   const showFull = ctx === null; // no param = opened directly = full nav
+  const suffix   = ctx === 'support' ? '?context=support' : '';
 
   /* ── Base URLs ──────────────────────────────────────────── */
   const BASE = 'https://jfnewsom.github.io/is2053-assets';
@@ -270,25 +271,25 @@
       <div class="nav-dropdown">
         <div class="drop-label">Assignment Sheets</div>
         <div class="drop-sub">Module 1</div>
-        ${link('Lab 1-1', L + 'lab-1-1.html', 'dd-cyan')}
-        ${link('Lab 1-2', L + 'lab-1-2.html', 'dd-cyan')}
-        ${link('Lab 1-3', L + 'lab-1-3.html', 'dd-cyan')}
+        ${link('Lab 1-1', L + 'lab-1-1.html' + suffix, 'dd-cyan')}
+        ${link('Lab 1-2', L + 'lab-1-2.html' + suffix, 'dd-cyan')}
+        ${link('Lab 1-3', L + 'lab-1-3.html' + suffix, 'dd-cyan')}
         <div class="drop-sub">Module 2</div>
-        ${link('Lab 2-1', L + 'lab-2-1.html', 'dd-cyan')}
-        ${link('Lab 2-2', L + 'lab-2-2.html', 'dd-cyan')}
-        ${link('Lab 2-3', L + 'lab-2-3.html', 'dd-cyan')}
+        ${link('Lab 2-1', L + 'lab-2-1.html' + suffix, 'dd-cyan')}
+        ${link('Lab 2-2', L + 'lab-2-2.html' + suffix, 'dd-cyan')}
+        ${link('Lab 2-3', L + 'lab-2-3.html' + suffix, 'dd-cyan')}
         <div class="drop-sub">Module 3</div>
-        ${link('Lab 3-1', L + 'lab-3-1.html', 'dd-cyan')}
-        ${link('Lab 3-2', L + 'lab-3-2.html', 'dd-cyan')}
-        ${link('Lab 3-3', L + 'lab-3-3.html', 'dd-cyan')}
+        ${link('Lab 3-1', L + 'lab-3-1.html' + suffix, 'dd-cyan')}
+        ${link('Lab 3-2', L + 'lab-3-2.html' + suffix, 'dd-cyan')}
+        ${link('Lab 3-3', L + 'lab-3-3.html' + suffix, 'dd-cyan')}
         <div class="drop-sub">Module 4</div>
-        ${link('Lab 4-1', L + 'lab-4-1.html', 'dd-cyan')}
-        ${link('Lab 4-2', L + 'lab-4-2.html', 'dd-cyan')}
-        ${link('Lab 4-3', L + 'lab-4-3.html', 'dd-cyan')}
+        ${link('Lab 4-1', L + 'lab-4-1.html' + suffix, 'dd-cyan')}
+        ${link('Lab 4-2', L + 'lab-4-2.html' + suffix, 'dd-cyan')}
+        ${link('Lab 4-3', L + 'lab-4-3.html' + suffix, 'dd-cyan')}
         <div class="drop-sub">Module 5</div>
-        ${link('Lab 5-1', L + 'lab-5-1.html', 'dd-cyan')}
-        ${link('Lab 5-2', L + 'lab-5-2.html', 'dd-cyan')}
-        ${link('Lab 5-3', L + 'lab-5-3.html', 'dd-cyan')}
+        ${link('Lab 5-1', L + 'lab-5-1.html' + suffix, 'dd-cyan')}
+        ${link('Lab 5-2', L + 'lab-5-2.html' + suffix, 'dd-cyan')}
+        ${link('Lab 5-3', L + 'lab-5-3.html' + suffix, 'dd-cyan')}
       </div>
     </div>` : '';
 
@@ -298,20 +299,20 @@
       <div class="nav-dropdown">
         <div class="drop-label">Book Exercises</div>
         <div class="drop-sub">Module 1 &mdash; Ch. 2&ndash;3</div>
-        ${link('Chapter 2',  BX + 'BookExCH02.html', 'dd-purple')}
-        ${link('Chapter 3',  BX + 'BookExCH03.html', 'dd-purple')}
+        ${link('Chapter 2',  BX + 'BookExCH02.html' + suffix, 'dd-purple')}
+        ${link('Chapter 3',  BX + 'BookExCH03.html' + suffix, 'dd-purple')}
         <div class="drop-sub">Module 2 &mdash; Ch. 4&ndash;5</div>
-        ${link('Chapter 4',  BX + 'BookExCH04.html', 'dd-purple')}
-        ${link('Chapter 5',  BX + 'BookExCH05.html', 'dd-purple')}
+        ${link('Chapter 4',  BX + 'BookExCH04.html' + suffix, 'dd-purple')}
+        ${link('Chapter 5',  BX + 'BookExCH05.html' + suffix, 'dd-purple')}
         <div class="drop-sub">Module 3 &mdash; Ch. 6&ndash;7</div>
-        ${link('Chapter 6',  BX + 'BookExCH06.html', 'dd-purple')}
-        ${link('Chapter 7',  BX + 'BookExCH07.html', 'dd-purple')}
+        ${link('Chapter 6',  BX + 'BookExCH06.html' + suffix, 'dd-purple')}
+        ${link('Chapter 7',  BX + 'BookExCH07.html' + suffix, 'dd-purple')}
         <div class="drop-sub">Module 4 &mdash; Ch. 8&ndash;9</div>
-        ${link('Chapter 8',  BX + 'BookExCH08.html', 'dd-purple')}
-        ${link('Chapter 9',  BX + 'BookExCH09.html', 'dd-purple')}
+        ${link('Chapter 8',  BX + 'BookExCH08.html' + suffix, 'dd-purple')}
+        ${link('Chapter 9',  BX + 'BookExCH09.html' + suffix, 'dd-purple')}
         <div class="drop-sub">Module 5 &mdash; Ch. 10&ndash;11</div>
-        ${link('Chapter 10', BX + 'BookExCH10.html', 'dd-purple')}
-        ${link('Chapter 11', BX + 'BookExCH11.html', 'dd-purple')}
+        ${link('Chapter 10', BX + 'BookExCH10.html' + suffix, 'dd-purple')}
+        ${link('Chapter 11', BX + 'BookExCH11.html' + suffix, 'dd-purple')}
       </div>
     </div>` : '';
 
@@ -327,12 +328,12 @@
           <div class="nav-trigger">Course <span class="nav-caret">&#9660;</span></div>
           <div class="nav-dropdown">
             <div class="drop-label">Course Info</div>
-            ${link('Home',            S + 'home.html',            'dd-yellow')}
-            ${link('Start Here',      S + 'start-here.html',      'dd-yellow')}
+            ${link('Home',            S + 'home.html' + suffix,            'dd-yellow')}
+            ${link('Start Here',      S + 'start-here.html' + suffix,      'dd-yellow')}
             ${link('Syllabus',        'https://utsa.simplesyllabus.com/doc/xvcdfi182/Spring-2026-IS-2053-ON1-Programming-I?mode=view', 'dd-yellow', true)}
-            ${link('Grading Info',    S + 'grading-info.html',    'dd-yellow')}
-            ${link('Course Schedule', S + 'course-schedule.html', 'dd-yellow')}
-            ${link('Zoom Sessions',   S + 'zoom-sessions.html',   'dd-yellow')}
+            ${link('Grading Info',    S + 'grading-info.html' + suffix,    'dd-yellow')}
+            ${link('Course Schedule', S + 'course-schedule.html' + suffix, 'dd-yellow')}
+            ${link('Zoom Sessions',   S + 'zoom-sessions.html' + suffix,   'dd-yellow')}
           </div>
         </div>
 
@@ -340,12 +341,12 @@
           <div class="nav-trigger">Resources <span class="nav-caret">&#9660;</span></div>
           <div class="nav-dropdown">
             <div class="drop-label">Support Resources</div>
-            ${link('Assignment Overview', S + 'assignment-overview.html', 'dd-green')}
-            ${link('CodeGrade Guide',     S + 'codegrade-guide.html',     'dd-green')}
-            ${link('Flake8 Guide',        S + 'flake8-guide.html',        'dd-green')}
-            ${link('How To Get Help',     S + 'how-to-get-help.html',     'dd-green')}
-            ${link('Discord',             S + 'discord.html',             'dd-green')}
-            ${link('Stretch Goals',       S + 'stretch-goals.html',       'dd-green')}
+            ${link('Assignment Overview', S + 'assignment-overview.html' + suffix, 'dd-green')}
+            ${link('CodeGrade Guide',     S + 'codegrade-guide.html' + suffix,     'dd-green')}
+            ${link('Flake8 Guide',        S + 'flake8-guide.html' + suffix,        'dd-green')}
+            ${link('How To Get Help',     S + 'how-to-get-help.html' + suffix,     'dd-green')}
+            ${link('Discord',             S + 'discord.html' + suffix,             'dd-green')}
+            ${link('Stretch Goals',       S + 'stretch-goals.html' + suffix,       'dd-green')}
           </div>
         </div>
 
@@ -353,8 +354,8 @@
           <div class="nav-trigger">The Game <span class="nav-caret">&#9660;</span></div>
           <div class="nav-dropdown">
             <div class="drop-label">Game World</div>
-            ${link('The Scenario',      SC + 'the-scenario.html',      'dd-orange')}
-            ${link('Texas Highway Map', SC + 'texas-highway-map.html', 'dd-orange')}
+            ${link('The Scenario',      SC + 'the-scenario.html' + suffix,      'dd-orange')}
+            ${link('Texas Highway Map', SC + 'texas-highway-map.html' + suffix, 'dd-orange')}
           </div>
         </div>
 
