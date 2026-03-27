@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Save Your Progress — IS2053</title>
+    <title>Where Have We Been? — IS2053</title>
     <link rel="stylesheet" href="../../labs.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
           </div>
         </td>
         <td style="vertical-align: bottom; padding: 0 0 0 16px;">
-          <div class="lc-topper-title">Save Your Progress</div>
+          <div class="lc-topper-title">Where Have We Been?</div>
         </td>
         <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">
           <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: 120px; width: auto; display: block;">
@@ -31,86 +31,50 @@
   <div class="lc-panel">
     <div class="lc-h3 lc-h3--yellow">Overview</div>
     <img src="../../branding/AllMyEggses3D-Full.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
-    <p>Your road trip game works great — but every time the program ends, all that progress disappears. Maria drove from San Antonio all the way to Houston, racked up 200 miles, survived two hazards, and then the program quit. Gone. Starting over from scratch is not a game. It's a punishment.
-
-This week you fix that. You'll use Python's file I/O tools to write your game state to a text file and read it back when the player returns. By the end of this lab, a player can save mid-trip, quit the program, come back tomorrow, and pick up exactly where they left off.</p>
+    <p>You've built an amazing road trip game — but there's one huge problem: <strong>everything vanishes when you quit!</strong> Imagine playing for 20 minutes, reaching Houston, then accidentally closing the program. All that progress... gone. This week, you'll learn to <strong>save your game state to a file</strong> and <strong>load it back</strong> when you return. Welcome to file I/O — the skill that makes data persist!</p>
     <div style="clear: both;"></div>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
-          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"Saves are what turn a session into a campaign. Without persistence, you don't have a game — you have a demo that forgets you exist. This week we make it remember."</div>
+          <div class="lc-mentor__quote">"Files are how programs remember things between runs. Think of it like writing notes to your future self. When you save, you're writing everything down. When you load, you're reading those notes back. Same data, different session!"</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Sasha Mireles</div>
-        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Lead Developer, Bat City Collective</div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Filename</div>
     <p>Submit lab-3-1.py this week.</p>
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <ul class="lc-objectives">
-      <li>Write game state to a text file using open() and write()</li>
-      <li>Convert numbers to strings with str() before writing</li>
-      <li>Read game state back from a file using readline() and rstrip()</li>
-      <li>Convert strings back to integers with int() after reading</li>
-      <li>Handle a missing save file gracefully using try-except FileNotFoundError</li>
-      <li>Add a main menu that lets players start fresh or load a saved game</li>
+      <li>A <code>save_game()</code> function that writes your game state to a file</li>
+      <li>A <code>load_game()</code> function that reads saved data back</li>
+      <li>A <strong>main menu</strong>: New Game / Load Saved Game / Quit</li>
+      <li>A mid-game <strong>"Save and quit"</strong> option</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
-    <p>Chapter 6: Programs 6-1 and 6-4 (writing to files), Programs 6-3 and 6-5 (reading with readline and rstrip), Programs 6-6 and 6-7 (writing and reading numbers), Program 6-28 (try-except FileNotFoundError).</p>
+    <p>Chapter 6 Sections: 6.1 (Reading/Writing Files), 6.5 (Exceptions)</p>
     <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
     <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 6</p>
     <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
     <ul>
-      <li>SAVE_FILE = 'savegame.txt' constant defined near the top of the file</li>
-      <li>save_game() function writes all 6 state variables to savegame.txt, one per line</li>
-      <li>load_game() function reads all 6 variables back and returns a tuple, or returns None if the file does not exist</li>
-      <li>Main menu at startup offers: 1. New Game, 2. Load Saved Game, 3. Quit</li>
-      <li>Game loop includes a Save and Quit option that calls save_game() before exiting</li>
+      <li>Your program <strong>MUST</strong> use <code>open()</code> with <code>'w'</code> mode to write the save file</li>
+      <li>Your program <strong>MUST</strong> use <code>open()</code> with <code>'r'</code> mode to read the save file</li>
+      <li>Your program <strong>MUST</strong> use <code>try-except FileNotFoundError</code> when loading</li>
+      <li>Your program <strong>MUST</strong> convert numbers to strings with <code>str()</code> before writing</li>
+      <li>Your program <strong>MUST</strong> use <code>rstrip('\n')</code> when reading lines</li>
     </ul>
-    <div class="lc-h3 lc-h3--yellow">Named Constants</div>
-    <div class="lc-table-wrap">
-      <table class="lc-table lc-named-constants__table">
-        <thead>
-          <tr>
-            <th>Constant</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-      <tr>
-        <td><code>SAVE_FILE</code></td>
-        <td>String constant — filename for the save file, always &#x27;savegame.txt&#x27;</td>
-      </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
-        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Save Your Code</div>
-        <div class="lc-callout__body">
-          <p>Keep this file — Module 3.2 builds on it by adding lists and expanding the save format to include visited cities and hazards.</p>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 <div class="lc-card lc-card--orange">
 
   <div class="lc-topper">
     <div class="lc-topper-title">Time Guide</div>
-    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 90–120 Minutes</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 60–75 Minutes</div>
   </div>
 
   <div class="lc-panel">
@@ -126,41 +90,54 @@ This week you fix that. You'll use Python's file I/O tools to write your game st
         </thead>
         <tbody>
       <tr>
-        <td><strong>Setup</strong></td>
-        <td>5 min</td>
-        <td>Copy lab-2-3.py to lab-3-1.py</td>
-      </tr>
-      <tr>
-        <td><strong>CP1: save_game()</strong></td>
-        <td>25 min</td>
-        <td>Add SAVE_FILE constant and write save_game() function</td>
-      </tr>
-      <tr>
-        <td><strong>CP2: load_game()</strong></td>
-        <td>25 min</td>
-        <td>Write load_game() with try-except and tuple return</td>
-      </tr>
-      <tr>
-        <td><strong>CP3: Main Menu</strong></td>
+        <td><strong>Checkpoint 1: save_game()</strong></td>
         <td>20 min</td>
-        <td>Update program startup with New Game / Load / Quit menu</td>
+        <td>Write 6 variables to a file, line by line</td>
       </tr>
       <tr>
-        <td><strong>CP4: Save &amp; Quit</strong></td>
+        <td><strong>Checkpoint 2: load_game()</strong></td>
+        <td>20 min</td>
+        <td>Read lines back, convert types, handle missing file</td>
+      </tr>
+      <tr>
+        <td><strong>Checkpoint 3: Main Menu</strong></td>
         <td>15 min</td>
-        <td>Add Save and Quit option inside the game loop</td>
+        <td>New Game / Load / Quit at startup</td>
       </tr>
       <tr>
-        <td><strong>Test &amp; Submit</strong></td>
+        <td><strong>Checkpoint 4: Save &amp; Quit Option</strong></td>
         <td>10 min</td>
-        <td>Test the full save-quit-reload cycle, then submit</td>
+        <td>Add mid-game save option after each leg</td>
+      </tr>
+      <tr>
+        <td><strong>Testing &amp; Polish</strong></td>
+        <td>10 min</td>
+        <td>Full save/load cycle, verify file contents</td>
       </tr>
       <tr class="lc-table__total">
         <td colspan="2"><strong>Total Estimated Time</strong></td>
-        <td><strong>90–120 Minutes</strong></td>
+        <td><strong>60–75 Minutes</strong></td>
       </tr>
         </tbody>
       </table>
+    </div>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
+                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="19" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Strategy</div>
+        <div class="lc-callout__body">
+          <p>&lt;strong&gt;Open your save file in Notepad!&lt;/strong&gt; After testing save_game(), open &lt;code&gt;savegame.txt&lt;/code&gt; in a text editor. You should see 6 lines of human-readable data. If it looks weird, something&#x27;s wrong with your write() calls.</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -170,42 +147,38 @@ This week you fix that. You'll use Python's file I/O tools to write your game st
     <div class="lc-sub-banner">Program Architecture</div>
   </div>
   <div class="lc-panel">
-    <p class="lc-arch-intro">Here is how your finished program fits together. The [NEW] tags show what you are adding this week. Everything else carries over from your Lab 2-3 code.</p>
+    <p class="lc-arch-intro">Here&#x27;s how your finished program fits together. The [NEW] tags show what you&#x27;re adding — everything else is your 2.3 code.</p>
     <div class="lc-arch">
-      <pre># ---- CONSTANT ----
-SAVE_FILE = &#x27;savegame.txt&#x27;                              <span class="lc-arch-new">[NEW]</span>
-... (all distance and hazard constants from 2.3)
+      <pre># ---- DEFINE YOUR FUNCTIONS ----  <span class="lc-arch-new">[NEW]</span>
+<span class="lc-arch-fn">save_game()</span>   writes 6 values to savegame.txt
+<span class="lc-arch-fn">load_game()</span>   reads 6 values back (or returns None)
 
-# ---- SAVE / LOAD FUNCTIONS ----
-<span class="lc-arch-fn">save_game(player_name, current_city, total_miles,
-          total_turns, hazards_faced, hazards_escaped)</span>  <span class="lc-arch-new">[NEW]</span>
-  └── writes 6 lines to savegame.txt
+# ---- MAIN MENU ----  <span class="lc-arch-new">[NEW]</span>
+Show menu: 1. New Game  2. Load Saved Game  3. Quit
+│  If Quit → exit program
+│  If Load → call <span class="lc-arch-fn">load_game()</span>, restore all 6 variables
+│  If New  → get player name, set starting values
 
-<span class="lc-arch-fn">load_game()</span>                                             <span class="lc-arch-new">[NEW]</span>
-  └── reads savegame.txt → returns tuple (or None)
+# ---- YOUR 2.3 GAME (unchanged structure) ----
 
-# ---- HELPER FUNCTIONS (same as 2.3) ----
-<span class="lc-arch-fn">get_random_hazard()</span>
-<span class="lc-arch-fn">display_destinations(current_city)</span>
+<span class="lc-arch-game-loop">GAME LOOP</span> (outer loop — each pass is one leg):
+│
+│── Show destination menu, get validated choice
+│── Destination Gate (coin flip)
+│
+│   <span class="lc-arch-travel-loop">TRAVEL LOOP</span> (inner loop — each pass is one turn):
+│   │── Roll D20, move miles, check for hazard
+│   │── Repeat until you arrive
+│
+│── Update trip totals
+│── Check outcome: beach / dead end / continue
+│── At a non-beach city:
+│      1. Continue journey
+│      2. Save and quit → call <span class="lc-arch-fn">save_game()</span>, stop playing  <span class="lc-arch-new">[NEW]</span>
 
-STARTUP:                                               <span class="lc-arch-new">[NEW]</span>
-│
-│── Display main menu
-│   ├── 1. New Game  → get player name, set starting city
-│   ├── 2. Load Game → call <span class="lc-arch-fn">load_game()</span>, restore all vars
-│   └── 3. Quit      → exit program
-│
-<span class="lc-arch-game-loop">GAME LOOP</span>: (same structure as 2.3)
-│
-│── Display status
-│── Get destination choice
-│── <span class="lc-arch-travel-loop">TRAVEL LOOP</span>
-│   └── Roll D20, move miles, check hazards
-│── <span class="lc-arch-new">[NEW]</span> Show Save and Quit option              <span class="lc-arch-new">[NEW]</span>
-│   └── if chosen: call <span class="lc-arch-fn">save_game()</span>, exit loop
-│── Check win condition
-│
-FINAL TRIP REPORT (same as 2.3)</pre>
+# ---- AFTER THE LOOP ----
+Print trip summary
+&quot;Thanks for playing!&quot;</pre>
     </div>
   </div>
 </div>
@@ -221,22 +194,29 @@ FINAL TRIP REPORT (same as 2.3)</pre>
         <div class="lc-cp-badge__num">1</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Add the SAVE_FILE Constant and save_game() Function</div>
+        <div class="lc-cp-title">Build save_game()</div>
+        <div class="lc-sub-banner">Create a function that writes all your game variables to a text file.</div>
       </div>
     </div>
     <div class="lc-cp-body">
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Before you start coding, look at the big picture. You're adding three things to your 2.3 game: two functions that handle files, a menu at the start, and a save option during play. Your game loop from 2.3? It's still there, untouched. You're just building around it."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
+      </div>
+    </div>
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>You are adding the ability to write your game state to a text file. The <code>save_game()</code> function takes the six variables that describe where the player is and what has happened, and writes them to <code>savegame.txt</code> — one value per line.</p>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li>Start by copying your <code>lab-2-3.py</code> file to a new file named <code>lab-3-1.py</code>. All your work this week goes in <code>lab-3-1.py</code>.</li>
-      <li>Near the top of your file, after your imports and before the distance constants, add the new constant: <code>SAVE_FILE = 'savegame.txt'</code></li>
-      <li>Define a new function <code>save_game()</code> that accepts six parameters: <code>player_name</code>, <code>current_city</code>, <code>total_miles</code>, <code>total_turns</code>, <code>hazards_faced</code>, and <code>hazards_escaped</code>.</li>
-      <li>Inside <code>save_game()</code>, open the save file for writing: <code>outfile = open(SAVE_FILE, 'w')</code></li>
-      <li>Write each variable to the file as its own line. For string variables, write the value plus <code>'\n'</code>. For integer variables, wrap in <code>str()</code> first: <code>outfile.write(str(total_miles) + '\n')</code></li>
-      <li>Write all six variables in this exact order: player_name, current_city, total_miles, total_turns, hazards_faced, hazards_escaped.</li>
-      <li>Close the file with <code>outfile.close()</code> and print <code>'Game saved!'</code> to confirm.</li>
-    </ol>
+    <p>A function that takes 6 parameters (player_name, current_city, total_miles, total_turns, hazards_faced, hazards_escaped) and writes each one to a file on its own line.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>This is your first time making data <strong>persist</strong> — it survives after your program ends. The file is just text, so you can open it in Notepad to see exactly what you saved. Human-readable data = easy debugging!</p>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -256,45 +236,79 @@ FINAL TRIP REPORT (same as 2.3)</pre>
             <strong>Program 6-1</strong>
             — <code>file_write.py</code>
             (Step 1)
-            — Shows the basic open-write-close pattern for creating a text file.
-          </li>
-          <li>
-            <strong>Program 6-4</strong>
-            — <code>write_names.py</code>
-            (Step 2)
-            — Demonstrates writing user-provided strings to a file with '\n' appended.
-          </li>
-          <li>
-            <strong>Program 6-6</strong>
-            — <code>write_numbers.py</code>
-            (Step 3)
-            — Shows why numbers must be wrapped in str() before calling write().
+            — You wrote outfile.write('John Locke\n') to save a name. Now you'll write player_name the same way — but don't forget + '\n' to put each value on its own line!
           </li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="lc-callout lc-callout--pitfall">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="22.5" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">write() only accepts strings</div>
-        <div class="lc-callout__body">
-        <p>If you pass an integer directly to <code>write()</code>, Python raises a <code>TypeError</code>. You must convert every number before writing it: <code>outfile.write(str(total_miles) + '\n')</code></p>
-        </div>
-      </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li><strong>Copy your Lab 2.3 code</strong> to a new file called <code>lab-3-1.py</code> and update the docstring</li>
+      <li><strong>Add a constant:</strong> <code>SAVE_FILE = 'savegame.txt'</code></li>
+      <li><strong>Define save_game()</strong> with 6 parameters (see What You're Building)</li>
+      <li><strong>Open the file for writing:</strong> <code>outfile = open(SAVE_FILE, 'w')</code></li>
+      <li><strong>Write player_name:</strong> <code>outfile.write(player_name + '\n')</code></li>
+      <li><strong>Write current_city</strong> the same way</li>
+      <li><strong>Write the 4 numeric values</strong> — remember to convert with <code>str()</code></li>
+      <li><strong>Close the file:</strong> <code>outfile.close()</code></li>
+      <li><strong>Print confirmation:</strong> <code>'Game saved!'</code></li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Forgetting '\n' after each write</td>
+        <td>Everything ends up on one line — can't read it back properly</td>
+      </tr>
+      <tr>
+        <td>Writing a number directly</td>
+        <td>TypeError! write() only accepts strings. Use str(total_miles)</td>
+      </tr>
+      <tr>
+        <td>Forgetting to close the file</td>
+        <td>Data might not save completely — always close()!</td>
+      </tr>
+      <tr>
+        <td>Using 'r' instead of 'w'</td>
+        <td>Can't write to a file opened for reading</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1:</strong> Add this test harness at the END of your file (after all function definitions):</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 2</span>
+save_game<span class="sy-op">(</span><span class="sy-str">&#x27;TestPlayer&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">,</span> <span class="sy-num">350</span><span class="sy-op">,</span> <span class="sy-num">5</span><span class="sy-op">,</span> <span class="sy-num">3</span><span class="sy-op">,</span> <span class="sy-num">2</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Check savegame.txt in your folder!&#x27;</span><span class="sy-op">)</span></pre>
+    </div>
+    <p><strong>Step 2:</strong> Run the program. Open <code>savegame.txt</code> in Notepad. Verify these 6 lines:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>TestPlayer
+Houston
+350
+5
+3
+2</pre>
+    </div>
+    <p><strong>Step 3:</strong> Verify each value is on its OWN line (6 lines total, not 1 long line).</p>
+    <p><strong>Step 4:</strong> DELETE the test harness lines before moving to Checkpoint 2.</p>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li><code>SAVE_FILE = 'savegame.txt'</code> constant defined near the top of your file</li>
-      <li><code>save_game()</code> function defined with six parameters and a complete docstring</li>
-      <li>All six variables written to the file in order, with integers converted via <code>str()</code></li>
-      <li>File closed after writing, and a confirmation message printed</li>
+      <li>SAVE_FILE constant defined</li>
+      <li>save_game() function with 6 parameters</li>
+      <li>6 write() calls, each with + '\n'</li>
+      <li>str() conversion for all numeric values</li>
+      <li>savegame.txt created with 6 human-readable lines</li>
     </ol>
     </div>
     <hr class="lc-cp-sep">
@@ -304,22 +318,13 @@ FINAL TRIP REPORT (same as 2.3)</pre>
         <div class="lc-cp-badge__num">2</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Build the load_game() Function</div>
+        <div class="lc-cp-title">Build load_game()</div>
+        <div class="lc-sub-banner">Create a function that reads the save file and returns all the game data — or handles a missing file gracefully.</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>You are writing the reverse of <code>save_game()</code>. The <code>load_game()</code> function opens <code>savegame.txt</code>, reads the six values back in the same order they were written, and returns them as a tuple. If the file does not exist, it returns <code>None</code> instead of crashing.</p>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li>Define <code>load_game()</code> with no parameters.</li>
-      <li>Wrap the entire function body in a <code>try-except FileNotFoundError</code> block. This handles the case where no save file exists yet.</li>
-      <li>In the <code>try</code> block, open the file for reading: <code>infile = open(SAVE_FILE, 'r')</code></li>
-      <li>Read each line in the same order it was written. For string variables, use <code>readline().rstrip('\n')</code>. For integer variables, wrap the readline in <code>int()</code>: <code>total_miles = int(infile.readline())</code></li>
-      <li>After reading all six values, close the file with <code>infile.close()</code>.</li>
-      <li>Return all six values as a tuple: <code>return (player_name, current_city, total_miles, total_turns, hazards_faced, hazards_escaped)</code></li>
-      <li>In the <code>except FileNotFoundError</code> block, simply <code>return None</code>.</li>
-    </ol>
+    <p>A function that reads 6 lines from the save file, converts them to the right types, and returns them as a tuple. If the file doesn't exist, it returns <code>None</code>.</p>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -336,28 +341,16 @@ FINAL TRIP REPORT (same as 2.3)</pre>
         <div class="lc-callout__body">
           <ul>
           <li>
-            <strong>Program 6-3</strong>
-            — <code>line_read.py</code>
-            (Step 1)
-            — Shows how readline() reads one line at a time, including the '\n' character.
-          </li>
-          <li>
             <strong>Program 6-5</strong>
             — <code>strip_newline.py</code>
-            (Step 2)
-            — Demonstrates using rstrip('\n') to clean up lines read from a file.
-          </li>
-          <li>
-            <strong>Program 6-7</strong>
-            — <code>read_numbers.py</code>
-            (Step 3)
-            — Shows wrapping readline() in int() to convert file data back to integers.
+            (Step 1)
+            — You used line.rstrip('\n') to remove the trailing newline. Do the same for each readline().
           </li>
           <li>
             <strong>Program 6-28</strong>
             — <code>display_file2.py</code>
-            (Step 4)
-            — Demonstrates try-except FileNotFoundError to handle a missing file gracefully.
+            (Step 2)
+            — You wrapped file operations in try-except FileNotFoundError. Use the same pattern here!
           </li>
           </ul>
         </div>
@@ -366,24 +359,82 @@ FINAL TRIP REPORT (same as 2.3)</pre>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
-          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"Order is everything in file I/O. Whatever order you write the lines — that is the exact order you have to read them back. Write name first, read name first. Mix up the order and your city becomes a number and your miles become a name. Test it."</div>
+          <div class="lc-mentor__quote">"Here's my test plan for load_game(): First, delete any save file and verify it returns None. Then create a valid save file and verify all 6 values come back correct. Finally, corrupt the file (wrong number of lines) and see what happens. Test the happy path AND the edge cases!"</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Danny Cavanaugh</div>
-        <div class="lc-mentor__role">Senior Developer, Bat City Collective</div>
+        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
+        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
       </div>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li><strong>Define load_game()</strong> with no parameters (it reads from SAVE_FILE)</li>
+      <li><strong>Start a try block:</strong> <code>try:</code></li>
+      <li><strong>Open for reading:</strong> <code>infile = open(SAVE_FILE, 'r')</code></li>
+      <li><strong>Read player_name:</strong> <code>player_name = infile.readline().rstrip('\n')</code></li>
+      <li><strong>Read current_city</strong> the same way</li>
+      <li><strong>Read the 4 numbers</strong> — wrap in <code>int()</code> to convert</li>
+      <li><strong>Close the file</strong></li>
+      <li><strong>Return all 6 values as a tuple:</strong> <code>return (player_name, current_city, ...)</code></li>
+      <li><strong>Add except block:</strong> <code>except FileNotFoundError: return None</code></li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Forgetting rstrip('\n')</td>
+        <td>Strings have invisible '\n' at end — causes weird comparisons</td>
+      </tr>
+      <tr>
+        <td>Forgetting int() on numbers</td>
+        <td>Everything from files is a string — math will fail</td>
+      </tr>
+      <tr>
+        <td>Reading lines in wrong order</td>
+        <td>You get player_name where you expect total_miles!</td>
+      </tr>
+      <tr>
+        <td>No try-except</td>
+        <td>Program crashes if save file doesn't exist</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1:</strong> Make sure savegame.txt still exists from Checkpoint 1. Add this test harness:</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 3</span>
+result <span class="sy-op">=</span> load_game<span class="sy-op">(</span><span class="sy-op">)</span>
+<span class="sy-kw">if</span> result <span class="sy-kw">is</span> <span class="sy-kw">None</span><span class="sy-op">:</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;No save file found&#x27;</span><span class="sy-op">)</span>
+<span class="sy-kw">else</span><span class="sy-op">:</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Loaded: <span class="sy-op">{</span>result<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    </div>
+    <p><strong>Step 2:</strong> Run the program. Verify this output:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Loaded: (&#x27;TestPlayer&#x27;, &#x27;Houston&#x27;, 350, 5, 3, 2)</pre>
+    </div>
+    <p><strong>Step 3:</strong> Delete savegame.txt, run again. Verify: <code>No save file found</code></p>
+    <p><strong>Step 4:</strong> DELETE the test harness lines before moving to Checkpoint 3.</p>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li><code>load_game()</code> function defined with a complete docstring</li>
-      <li>Entire function body wrapped in <code>try-except FileNotFoundError</code></li>
-      <li>All six values read back in the same order they were written</li>
-      <li>Integer values converted with <code>int()</code> after reading</li>
-      <li>Returns a tuple of six values on success, or <code>None</code> if the file does not exist</li>
+      <li>load_game() function with try-except</li>
+      <li>6 readline() calls with rstrip('\n')</li>
+      <li>int() conversion for numeric values</li>
+      <li>Returns tuple of 6 values on success</li>
+      <li>Returns None if file doesn't exist</li>
     </ol>
     </div>
     <hr class="lc-cp-sep">
@@ -394,62 +445,68 @@ FINAL TRIP REPORT (same as 2.3)</pre>
       </div>
       <div class="lc-cp-content">
         <div class="lc-cp-title">Add the Main Menu</div>
+        <div class="lc-sub-banner">Give players a choice: start fresh, resume their saved game, or quit.</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>Right now your program jumps straight into the game. This checkpoint adds a startup menu before the game loop so the player can choose to start a new game, load a saved game, or quit.</p>
+    <p>A startup menu that appears before the game begins. If the player chooses "Load," you call load_game() and restore all their variables. If no save exists, fall back to a new game.</p>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>Before your game variable initialization, add the main menu display. Print the title, a separator, and three numbered options: <code>1. New Game</code>, <code>2. Load Saved Game</code>, <code>3. Quit</code>.</li>
-      <li>Use your existing <code>function_library.get_valid_int()</code> to get the menu choice and validate it in the range 1–3.</li>
-      <li>If the player chooses 3, print a goodbye message and exit without starting the game. Use a <code>return</code> statement if your code is inside a function, or <code>quit()</code> at the top level.</li>
-      <li>If the player chooses 2, call <code>load_game()</code> and store the result. If the result is <code>None</code>, print <code>'No saved game found. Starting new game.'</code> and fall through to the new game setup.</li>
-      <li>If load returned data (not None), unpack the tuple into your six game variables: <code>player_name, current_city, total_miles, total_turns, hazards_faced, hazards_escaped = saved_data</code></li>
-      <li>Print a welcome-back message that shows the player's name and current city, then skip the new-game setup and go directly into the game loop.</li>
-      <li>If the player chooses 1, run the existing new-game setup: get their name, set <code>current_city = 'San Antonio'</code>, initialize all stats to 0.</li>
+      <li><strong>In your main() function</strong>, add a menu BEFORE any game logic</li>
+      <li><strong>Display the menu:</strong> 1. New Game, 2. Load Saved Game, 3. Quit</li>
+      <li><strong>Get menu_choice</strong> using get_valid_int()</li>
+      <li><strong>If choice is 3:</strong> print goodbye and <code>return</code> to exit</li>
+      <li><strong>If choice is 2:</strong> call load_game() and store the result</li>
+      <li><strong>If load returns None:</strong> print "No save found" and set menu_choice = 1</li>
+      <li><strong>If load succeeds:</strong> unpack the tuple into your 6 variables</li>
+      <li><strong>If choice is 1:</strong> do normal new game setup (get name, initialize variables)</li>
     </ol>
-    <div class="lc-h3 lc-h3--yellow">Expected Output</div>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Unpacking tuple with wrong index</td>
+        <td>saved[0] is player_name, saved[2] is total_miles — order matters!</td>
+      </tr>
+      <tr>
+        <td>Checking saved == None</td>
+        <td>Works, but <code>saved is None</code> is the Pythonic way</td>
+      </tr>
+      <tr>
+        <td>Not falling back to new game</td>
+        <td>If load fails and you don't handle it, variables are undefined</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1:</strong> Delete savegame.txt if it exists. Run the program and choose option 2 (Load). Verify:</p>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
-      <pre>============================================================
-    DEEP IN THE HEART: A LONE STAR JOURNEY
-    An All My Eggses Live in Texas Production
-============================================================
-
-MAIN MENU
---------------------
-1. New Game
-2. Load Saved Game
-3. Quit
-
-Choice (1-3): </pre>
+      <pre>No saved game found. Starting new game.</pre>
     </div>
-    <div class="lc-callout lc-callout--tip">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
-                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="19" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Checking for None</div>
-        <div class="lc-callout__body">
-        <p>The result of <code>load_game()</code> is either a tuple or <code>None</code>. Test it with <code>if saved_data is None:</code> — not <code>if saved_data == None:</code>. Using <code>is</code> is the correct Python style for None checks.</p>
-        </div>
-      </div>
+    <p><strong>Step 2:</strong> Play the game a bit, then manually call save_game() with test data (or wait for Checkpoint 4). Run again and choose option 2. Verify you see:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Welcome back, TestPlayer!
+Resuming from Houston...
+Miles so far: 350</pre>
     </div>
+    <p><strong>Step 3:</strong> Choose option 3 (Quit). Verify the program exits gracefully.</p>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li>Main menu prints before any game variables are initialized</li>
-      <li>All three menu choices (New Game, Load, Quit) are handled</li>
-      <li>A successful load unpacks the tuple and restores all six variables</li>
-      <li>A failed load (None) falls through to new-game setup with a message</li>
-      <li>New-game path still works exactly as before</li>
+      <li>Main menu displays 3 options</li>
+      <li>Option 3 exits cleanly</li>
+      <li>Option 2 loads saved game or falls back to new game</li>
+      <li>Option 1 starts new game as before</li>
     </ol>
     </div>
     <hr class="lc-cp-sep">
@@ -459,57 +516,63 @@ Choice (1-3): </pre>
         <div class="lc-cp-badge__num">4</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Add the Save and Quit Option</div>
+        <div class="lc-cp-title">Add Save &amp; Quit Option</div>
+        <div class="lc-sub-banner">Let players save their progress mid-game and come back later.</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>The player can now load a saved game — but they can't save one yet. This checkpoint adds a Save and Quit option inside the game loop. After each turn, the player can choose to save their progress and exit cleanly.</p>
+    <p>After arriving at each city (except beach cities), offer the player a choice: continue the journey OR save and quit. This turns a one-session game into a multi-session experience!</p>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>Inside your game loop, after the travel and hazard resolution for a turn, add a prompt asking whether the player wants to keep playing or save and quit. Use your existing <code>function_library.get_yes_no()</code> function.</li>
-      <li>If the player chooses to quit, call <code>save_game()</code> with all six current game variables.</li>
-      <li>After saving, print a confirmation message and break out of the game loop.</li>
-      <li>If the player chooses to keep playing, the loop continues as before.</li>
-      <li>Test the full cycle: start a new game, play one turn, save and quit, run the program again, choose Load Saved Game, and verify your stats are restored correctly.</li>
+      <li><strong>Find the spot</strong> in your game loop where you check for beach arrival</li>
+      <li><strong>In the else branch</strong> (not a beach city), add an OPTIONS menu</li>
+      <li><strong>Display:</strong> 1. Continue journey, 2. Save and quit</li>
+      <li><strong>Get choice</strong> using get_valid_int()</li>
+      <li><strong>If choice is 2:</strong> call save_game() with all 6 current values</li>
+      <li><strong>Set playing = False</strong> to exit the game loop</li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <ol>
-      <li>Run the program. Choose New Game. Play one turn and travel to a destination.</li>
-      <li>When prompted to continue, choose to Save and Quit. Verify you see the save confirmation.</li>
-      <li>Open <code>savegame.txt</code> in a text editor. Confirm it has exactly 6 lines with your game data in the correct order.</li>
-      <li>Run the program again. Choose Load Saved Game. Verify your player name, city, and stats are restored exactly.</li>
-      <li>Play another turn, then let the game end normally without saving. Run it a third time and load — you should still be at the last saved state, not the post-game state.</li>
-    </ol>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
-        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">What a good save file looks like</div>
-        <div class="lc-callout__body">
-        <p>If you saved after traveling to Houston with 200 miles and 2 turns, your <code>savegame.txt</code> should look exactly like this:</p>
-        <ul>
-          <li>Line 1: Maria</li>
-          <li>Line 2: Houston</li>
-          <li>Line 3: 200</li>
-          <li>Line 4: 2</li>
-          <li>Line 5: 1</li>
-          <li>Line 6: 0</li>
-        </ul>
-        </div>
-      </div>
+    <p><strong>Step 1:</strong> Start a new game. Travel to any non-beach city (Houston or Austin).</p>
+    <p><strong>Step 2:</strong> Choose "Save and quit." Verify you see:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Game saved!</pre>
+    </div>
+    <p><strong>Step 3:</strong> Open savegame.txt. Verify it shows YOUR player name and current city.</p>
+    <p><strong>Step 4:</strong> Run the program again, choose "Load Saved Game." Verify you resume exactly where you left off!</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Saving wrong values order</td>
+        <td>Order matters! Must match what load_game() expects</td>
+      </tr>
+      <tr>
+        <td>Showing OPTIONS menu at beach cities</td>
+        <td>OPTIONS only appears in the ELSE (not beach) branch</td>
+      </tr>
+      <tr>
+        <td>Forgetting <code>playing = False</code></td>
+        <td>Without this, game loop continues after save</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li>Game loop includes a Save and Quit prompt after each turn</li>
-      <li>Choosing to quit calls <code>save_game()</code> with current values and breaks the loop</li>
-      <li>The full save-quit-reload cycle works correctly end-to-end</li>
-      <li><code>savegame.txt</code> contains exactly 6 lines in the correct order</li>
+      <li>OPTIONS menu appears after arriving at non-beach cities</li>
+      <li>Option 1 continues the game loop</li>
+      <li>Option 2 saves and exits</li>
+      <li>Load restores exact game state</li>
+      <li>Complete save/load cycle works!</li>
     </ol>
     </div>
   </div>
@@ -527,47 +590,47 @@ Choice (1-3): </pre>
     <ul class="lc-checklist">
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">lab-3-1.py has a top-of-file comment block with your name, abc123, section number, and a description of the program</span>
+        <span class="lc-checklist__label"><strong>Docstring complete?</strong> Name, ID, Section, Description updated</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Both save_game() and load_game() have docstrings</span>
+        <span class="lc-checklist__label"><strong>All DEBUG lines deleted?</strong> No test harnesses left behind</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">SAVE_FILE = 'savegame.txt' constant is defined and used — no hardcoded filename strings inside the functions</span>
+        <span class="lc-checklist__label"><strong>save_game() works?</strong> Creates savegame.txt with 6 lines</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">load_game() uses try-except FileNotFoundError and returns None if no save file exists</span>
+        <span class="lc-checklist__label"><strong>load_game() works?</strong> Returns tuple or None</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Main menu at startup offers New Game, Load Saved Game, and Quit</span>
+        <span class="lc-checklist__label"><strong>Main menu works?</strong> All 3 options function correctly</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Game loop includes a Save and Quit option that calls save_game() before exiting</span>
+        <span class="lc-checklist__label"><strong>Full cycle works?</strong> Save → Quit → Load → Resume at correct spot</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">All six variables are written and read in the same order</span>
+        <span class="lc-checklist__label"><strong>Filename correct?</strong> <code>lab-3-1.py</code></span>
       </li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
-    <p>Chapter 6 introduces open(), write(), readline(), rstrip(), str(), int(), and try-except FileNotFoundError. All techniques from Modules 1 and 2 remain available. Do NOT use the with statement (Chapter 6.3 — introduced in the library in Module 3.2), readlines(), list operations, or any Chapter 7+ features.</p>
+    <p>NOT YET: Lists (coming in Lab 3.2!), with statement (save for function library in 3.2), readlines(), Append mode (&#x27;a&#x27;)</p>
     <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
     <div class="lc-permitted">
-      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–6 (all techniques from Chapters 2–5 plus Chapter 6 file I/O and exceptions as introduced this week)</p>
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> All Chapter 2–5 techniques (from Modules 1–2)</p>
       <ul class="lc-permitted__list">
-      <li>open(filename, 'w') and open(filename, 'r')</li>
-      <li>outfile.write(str(value) + '\n')</li>
-      <li>infile.readline().rstrip('\n')</li>
-      <li>int(infile.readline()) to read numbers</li>
+      <li>open() with 'w' and 'r' modes</li>
+      <li>write(), readline(), close()</li>
+      <li>str() and int() for type conversion</li>
+      <li>rstrip('\n')</li>
       <li>try-except FileNotFoundError</li>
-      <li>Tuple return from a function</li>
+      <li>Returning tuples from functions</li>
       </ul>
-    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> with statement, readlines(), list operations, sort(), append(), dictionaries, classes</p>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> Lists, with statement, readlines(), Append mode (&#x27;a&#x27;)</p>
     </div>
     <div class="lc-callout lc-callout--warning">
       <div class="lc-callout__icon">
@@ -580,42 +643,12 @@ Choice (1-3): </pre>
       </div>
       <div class="lc-callout__bubble">
         <div class="lc-callout__body">
-          <p>Do not hardcode the filename 'savegame.txt' inside save_game() or load_game(). Use the SAVE_FILE constant — CodeGrade may rename the file to test flexibility.</p>
-        </div>
-      </div>
-    </div>
-    <div class="lc-callout lc-callout--warning">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="5" y="5" width="20" height="20" rx="3"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="21" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__body">
-          <p>Read back every value in the exact same order it was written. If save_game() writes player_name first, load_game() must read player_name first.</p>
-        </div>
-      </div>
-    </div>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
-        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Save Your Code</div>
-        <div class="lc-callout__body">
-          <p>Keep lab-3-1.py — Module 3.2 builds directly on this file by adding list tracking for visited cities and hazards, and expanding the save format.</p>
+          <p>CodeGrade will test your save/load functions by creating and reading savegame.txt. Make sure you use <strong>exactly</strong> that filename (via your SAVE_FILE constant) and write values in the <strong>exact order</strong> specified. The tests depend on line order!</p>
         </div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
-    <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
+    <p>This assignment must be your own work. You may reference the textbook and BookEx examples. You may NOT copy code from others, use AI, or share your code.</p>
   </div>
 </div>
 <div class="lc-card lc-card--purple">
@@ -629,10 +662,11 @@ Choice (1-3): </pre>
 
     <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
     <ul>
-      <li>Re-read Programs 6-1 and 6-4 for the write pattern, and Programs 6-3 and 6-5 for the readline pattern</li>
-      <li>Open savegame.txt in Notepad after saving — if the file looks right but load fails, check your data types (integers must be wrapped in int())</li>
-      <li>Submit to CodeGrade early — it shows exactly which tests pass or fail so you know where to focus</li>
-      <li>Come to Zoom or office hours — file I/O bugs are fast to spot on a screen share</li>
+      <li>Re-read BookEx 6.1.1–6.1.7 — the patterns for writing and reading are exactly what you need</li>
+      <li>Open your save file in Notepad — see exactly what got written</li>
+      <li>Print what you read — add DEBUG prints after each readline() to see what you're getting</li>
+      <li>Check line order — you must read in the SAME order you wrote</li>
+      <li>Submit to CodeGrade early — it shows exactly which tests pass or fail</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
     <div class="lc-contact-grid">

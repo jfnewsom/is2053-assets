@@ -1,7 +1,7 @@
 {
     "meta": {
         "labId":         "lab-3-1",
-        "title":         "Save Your Progress",
+        "title":         "Where Have We Been?",
         "module":        3,
         "week":          1,
         "weekType":      "BUILD",
@@ -11,82 +11,76 @@
     },
 
     "overview": {
-        "body": "Your road trip game works great — but every time the program ends, all that progress disappears. Maria drove from San Antonio all the way to Houston, racked up 200 miles, survived two hazards, and then the program quit. Gone. Starting over from scratch is not a game. It's a punishment.\n\nThis week you fix that. You'll use Python's file I/O tools to write your game state to a text file and read it back when the player returns. By the end of this lab, a player can save mid-trip, quit the program, come back tomorrow, and pick up exactly where they left off.",
+        "body": "You've built an amazing road trip game — but there's one huge problem: <strong>everything vanishes when you quit!</strong> Imagine playing for 20 minutes, reaching Houston, then accidentally closing the program. All that progress... gone. This week, you'll learn to <strong>save your game state to a file</strong> and <strong>load it back</strong> when you return. Welcome to file I/O — the skill that makes data persist!",
         "mentorQuote": {
-            "character": "Sasha Mireles",
-            "role":      "Creative Director, Bat City Collective",
-            "headshot":  "Sasha-Mireles.png",
-            "quote":     "Saves are what turn a session into a campaign. Without persistence, you don't have a game — you have a demo that forgets you exist. This week we make it remember."
+            "character": "Danny Cavanaugh",
+            "role":      "Lead Developer, Bat City Collective",
+            "headshot":  "Danny-Cavanaugh.png",
+            "quote":     "Files are how programs remember things between runs. Think of it like writing notes to your future self. When you save, you're writing everything down. When you load, you're reading those notes back. Same data, different session!"
         },
         "objectives": [
-            "Write game state to a text file using open() and write()",
-            "Convert numbers to strings with str() before writing",
-            "Read game state back from a file using readline() and rstrip()",
-            "Convert strings back to integers with int() after reading",
-            "Handle a missing save file gracefully using try-except FileNotFoundError",
-            "Add a main menu that lets players start fresh or load a saved game"
+            "A <code>save_game()</code> function that writes your game state to a file",
+            "A <code>load_game()</code> function that reads saved data back",
+            "A <strong>main menu</strong>: New Game / Load Saved Game / Quit",
+            "A mid-game <strong>\"Save and quit\"</strong> option"
         ],
-        "keyConceptsText": "Chapter 6: Programs 6-1 and 6-4 (writing to files), Programs 6-3 and 6-5 (reading with readline and rstrip), Programs 6-6 and 6-7 (writing and reading numbers), Program 6-28 (try-except FileNotFoundError).",
+        "keyConceptsText": "Chapter 6 Sections: 6.1 (Reading/Writing Files), 6.5 (Exceptions)",
         "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 6",
         "programRequirements": [
-            "SAVE_FILE = 'savegame.txt' constant defined near the top of the file",
-            "save_game() function writes all 6 state variables to savegame.txt, one per line",
-            "load_game() function reads all 6 variables back and returns a tuple, or returns None if the file does not exist",
-            "Main menu at startup offers: 1. New Game, 2. Load Saved Game, 3. Quit",
-            "Game loop includes a Save and Quit option that calls save_game() before exiting"
+            "Your program <strong>MUST</strong> use <code>open()</code> with <code>'w'</code> mode to write the save file",
+            "Your program <strong>MUST</strong> use <code>open()</code> with <code>'r'</code> mode to read the save file",
+            "Your program <strong>MUST</strong> use <code>try-except FileNotFoundError</code> when loading",
+            "Your program <strong>MUST</strong> convert numbers to strings with <code>str()</code> before writing",
+            "Your program <strong>MUST</strong> use <code>rstrip('\\n')</code> when reading lines"
         ],
-        "namedConstants": [
-            { "name": "SAVE_FILE", "description": "String constant — filename for the save file, always 'savegame.txt'" }
-        ],
-        "filenameNote": "Submit lab-3-1.py this week.",
-        "saveYourCode": "Keep this file — Module 3.2 builds on it by adding lists and expanding the save format to include visited cities and hazards."
+        "filenameNote": "Submit lab-3-1.py this week."
     },
 
     "timeGuide": {
-        "totalTime": "90–120 Minutes",
+        "totalTime": "60–75 Minutes",
         "rows": [
-            { "checkpoint": "Setup",            "time": "5 min",  "task": "Copy lab-2-3.py to lab-3-1.py" },
-            { "checkpoint": "CP1: save_game()", "time": "25 min", "task": "Add SAVE_FILE constant and write save_game() function" },
-            { "checkpoint": "CP2: load_game()", "time": "25 min", "task": "Write load_game() with try-except and tuple return" },
-            { "checkpoint": "CP3: Main Menu",   "time": "20 min", "task": "Update program startup with New Game / Load / Quit menu" },
-            { "checkpoint": "CP4: Save & Quit", "time": "15 min", "task": "Add Save and Quit option inside the game loop" },
-            { "checkpoint": "Test & Submit",    "time": "10 min", "task": "Test the full save-quit-reload cycle, then submit" }
-        ]
+            { "checkpoint": "Checkpoint 1: save_game()",        "time": "20 min", "task": "Write 6 variables to a file, line by line" },
+            { "checkpoint": "Checkpoint 2: load_game()",        "time": "20 min", "task": "Read lines back, convert types, handle missing file" },
+            { "checkpoint": "Checkpoint 3: Main Menu",          "time": "15 min", "task": "New Game / Load / Quit at startup" },
+            { "checkpoint": "Checkpoint 4: Save & Quit Option", "time": "10 min", "task": "Add mid-game save option after each leg" },
+            { "checkpoint": "Testing & Polish",                 "time": "10 min", "task": "Full save/load cycle, verify file contents" }
+        ],
+        "strategy": "<strong>Open your save file in Notepad!</strong> After testing save_game(), open <code>savegame.txt</code> in a text editor. You should see 6 lines of human-readable data. If it looks weird, something's wrong with your write() calls."
     },
 
     "beforeYouBegin": {
-        "intro": "Here is how your finished program fits together. The [NEW] tags show what you are adding this week. Everything else carries over from your Lab 2-3 code.",
-        "architecture": "# ---- CONSTANT ----\nSAVE_FILE = 'savegame.txt'                              [NEW]\n... (all distance and hazard constants from 2.3)\n\n# ---- SAVE / LOAD FUNCTIONS ----\nsave_game(player_name, current_city, total_miles,\n          total_turns, hazards_faced, hazards_escaped)  [NEW]\n  └── writes 6 lines to savegame.txt\n\nload_game()                                             [NEW]\n  └── reads savegame.txt → returns tuple (or None)\n\n# ---- HELPER FUNCTIONS (same as 2.3) ----\nget_random_hazard()\ndisplay_destinations(current_city)\n\nSTARTUP:                                               [NEW]\n│\n│── Display main menu\n│   ├── 1. New Game  → get player name, set starting city\n│   ├── 2. Load Game → call load_game(), restore all vars\n│   └── 3. Quit      → exit program\n│\nGAME LOOP: (same structure as 2.3)\n│\n│── Display status\n│── Get destination choice\n│── TRAVEL LOOP\n│   └── Roll D20, move miles, check hazards\n│── [NEW] Show Save and Quit option              [NEW]\n│   └── if chosen: call save_game(), exit loop\n│── Check win condition\n│\nFINAL TRIP REPORT (same as 2.3)"
+        "intro": "Here's how your finished program fits together. The [NEW] tags show what you're adding — everything else is your 2.3 code.",
+        "architecture": "# ---- DEFINE YOUR FUNCTIONS ----  [NEW]\nsave_game()   writes 6 values to savegame.txt\nload_game()   reads 6 values back (or returns None)\n\n# ---- MAIN MENU ----  [NEW]\nShow menu: 1. New Game  2. Load Saved Game  3. Quit\n\u2502  If Quit \u2192 exit program\n\u2502  If Load \u2192 call load_game(), restore all 6 variables\n\u2502  If New  \u2192 get player name, set starting values\n\n# ---- YOUR 2.3 GAME (unchanged structure) ----\n\nGAME LOOP (outer loop \u2014 each pass is one leg):\n\u2502\n\u2502\u2500\u2500 Show destination menu, get validated choice\n\u2502\u2500\u2500 Destination Gate (coin flip)\n\u2502\n\u2502   TRAVEL LOOP (inner loop \u2014 each pass is one turn):\n\u2502   \u2502\u2500\u2500 Roll D20, move miles, check for hazard\n\u2502   \u2502\u2500\u2500 Repeat until you arrive\n\u2502\n\u2502\u2500\u2500 Update trip totals\n\u2502\u2500\u2500 Check outcome: beach / dead end / continue\n\u2502\u2500\u2500 At a non-beach city:\n\u2502      1. Continue journey\n\u2502      2. Save and quit \u2192 call save_game(), stop playing  [NEW]\n\n# ---- AFTER THE LOOP ----\nPrint trip summary\n\"Thanks for playing!\""
     },
 
     "checkpoints": [
         {
             "number": 1,
-            "title": "Add the SAVE_FILE Constant and save_game() Function",
+            "title": "Build save_game()",
+            "subtitle": "Create a function that writes all your game variables to a text file.",
             "content": [
+                {
+                    "type": "mentor_quote",
+                    "character": "Sasha Mireles",
+                    "role":      "QA Lead, Bat City Collective",
+                    "headshot":  "Sasha-Mireles.png",
+                    "quote":     "Before you start coding, look at the big picture. You're adding three things to your 2.3 game: two functions that handle files, a menu at the start, and a save option during play. Your game loop from 2.3? It's still there, untouched. You're just building around it."
+                },
                 {
                     "type": "h3",
                     "label": "what_youre_building"
                 },
                 {
                     "type": "text",
-                    "body": "You are adding the ability to write your game state to a text file. The <code>save_game()</code> function takes the six variables that describe where the player is and what has happened, and writes them to <code>savegame.txt</code> — one value per line."
+                    "body": "A function that takes 6 parameters (player_name, current_city, total_miles, total_turns, hazards_faced, hazards_escaped) and writes each one to a file on its own line."
                 },
                 {
                     "type": "h3",
-                    "label": "step_by_step"
+                    "label": "why_this_matters"
                 },
                 {
-                    "type": "instructions",
-                    "items": [
-                        "Start by copying your <code>lab-2-3.py</code> file to a new file named <code>lab-3-1.py</code>. All your work this week goes in <code>lab-3-1.py</code>.",
-                        "Near the top of your file, after your imports and before the distance constants, add the new constant: <code>SAVE_FILE = 'savegame.txt'</code>",
-                        "Define a new function <code>save_game()</code> that accepts six parameters: <code>player_name</code>, <code>current_city</code>, <code>total_miles</code>, <code>total_turns</code>, <code>hazards_faced</code>, and <code>hazards_escaped</code>.",
-                        "Inside <code>save_game()</code>, open the save file for writing: <code>outfile = open(SAVE_FILE, 'w')</code>",
-                        "Write each variable to the file as its own line. For string variables, write the value plus <code>'\\n'</code>. For integer variables, wrap in <code>str()</code> first: <code>outfile.write(str(total_miles) + '\\n')</code>",
-                        "Write all six variables in this exact order: player_name, current_city, total_miles, total_turns, hazards_faced, hazards_escaped.",
-                        "Close the file with <code>outfile.close()</code> and print <code>'Game saved!'</code> to confirm."
-                    ]
+                    "type": "text",
+                    "body": "This is your first time making data <strong>persist</strong> — it survives after your program ends. The file is just text, so you can open it in Notepad to see exactly what you saved. Human-readable data = easy debugging!"
                 },
                 {
                     "type": "callout",
@@ -96,206 +90,40 @@
                             "programId":   "6-1",
                             "filename":    "file_write.py",
                             "step":        1,
-                            "description": "Shows the basic open-write-close pattern for creating a text file."
-                        },
-                        {
-                            "programId":   "6-4",
-                            "filename":    "write_names.py",
-                            "step":        2,
-                            "description": "Demonstrates writing user-provided strings to a file with '\\n' appended."
-                        },
-                        {
-                            "programId":   "6-6",
-                            "filename":    "write_numbers.py",
-                            "step":        3,
-                            "description": "Shows why numbers must be wrapped in str() before calling write()."
+                            "description": "You wrote outfile.write('John Locke\\n') to save a name. Now you'll write player_name the same way — but don't forget + '\\n' to put each value on its own line!"
                         }
                     ]
                 },
                 {
-                    "type": "callout",
-                    "variant": "pitfall",
-                    "title": "write() only accepts strings",
-                    "body": "If you pass an integer directly to <code>write()</code>, Python raises a <code>TypeError</code>. You must convert every number before writing it: <code>outfile.write(str(total_miles) + '\\n')</code>"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>SAVE_FILE = 'savegame.txt'</code> constant defined near the top of your file",
-                        "<code>save_game()</code> function defined with six parameters and a complete docstring",
-                        "All six variables written to the file in order, with integers converted via <code>str()</code>",
-                        "File closed after writing, and a confirmation message printed"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 2,
-            "title": "Build the load_game() Function",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "You are writing the reverse of <code>save_game()</code>. The <code>load_game()</code> function opens <code>savegame.txt</code>, reads the six values back in the same order they were written, and returns them as a tuple. If the file does not exist, it returns <code>None</code> instead of crashing."
-                },
-                {
                     "type": "h3",
                     "label": "step_by_step"
                 },
                 {
                     "type": "instructions",
                     "items": [
-                        "Define <code>load_game()</code> with no parameters.",
-                        "Wrap the entire function body in a <code>try-except FileNotFoundError</code> block. This handles the case where no save file exists yet.",
-                        "In the <code>try</code> block, open the file for reading: <code>infile = open(SAVE_FILE, 'r')</code>",
-                        "Read each line in the same order it was written. For string variables, use <code>readline().rstrip('\\n')</code>. For integer variables, wrap the readline in <code>int()</code>: <code>total_miles = int(infile.readline())</code>",
-                        "After reading all six values, close the file with <code>infile.close()</code>.",
-                        "Return all six values as a tuple: <code>return (player_name, current_city, total_miles, total_turns, hazards_faced, hazards_escaped)</code>",
-                        "In the <code>except FileNotFoundError</code> block, simply <code>return None</code>."
-                    ]
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId":   "6-3",
-                            "filename":    "line_read.py",
-                            "step":        1,
-                            "description": "Shows how readline() reads one line at a time, including the '\\n' character."
-                        },
-                        {
-                            "programId":   "6-5",
-                            "filename":    "strip_newline.py",
-                            "step":        2,
-                            "description": "Demonstrates using rstrip('\\n') to clean up lines read from a file."
-                        },
-                        {
-                            "programId":   "6-7",
-                            "filename":    "read_numbers.py",
-                            "step":        3,
-                            "description": "Shows wrapping readline() in int() to convert file data back to integers."
-                        },
-                        {
-                            "programId":   "6-28",
-                            "filename":    "display_file2.py",
-                            "step":        4,
-                            "description": "Demonstrates try-except FileNotFoundError to handle a missing file gracefully."
-                        }
-                    ]
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Danny Cavanaugh",
-                    "role":      "Senior Developer, Bat City Collective",
-                    "headshot":  "Danny-Cavanaugh.png",
-                    "quote":     "Order is everything in file I/O. Whatever order you write the lines — that is the exact order you have to read them back. Write name first, read name first. Mix up the order and your city becomes a number and your miles become a name. Test it."
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>load_game()</code> function defined with a complete docstring",
-                        "Entire function body wrapped in <code>try-except FileNotFoundError</code>",
-                        "All six values read back in the same order they were written",
-                        "Integer values converted with <code>int()</code> after reading",
-                        "Returns a tuple of six values on success, or <code>None</code> if the file does not exist"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 3,
-            "title": "Add the Main Menu",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "Right now your program jumps straight into the game. This checkpoint adds a startup menu before the game loop so the player can choose to start a new game, load a saved game, or quit."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Before your game variable initialization, add the main menu display. Print the title, a separator, and three numbered options: <code>1. New Game</code>, <code>2. Load Saved Game</code>, <code>3. Quit</code>.",
-                        "Use your existing <code>function_library.get_valid_int()</code> to get the menu choice and validate it in the range 1–3.",
-                        "If the player chooses 3, print a goodbye message and exit without starting the game. Use a <code>return</code> statement if your code is inside a function, or <code>quit()</code> at the top level.",
-                        "If the player chooses 2, call <code>load_game()</code> and store the result. If the result is <code>None</code>, print <code>'No saved game found. Starting new game.'</code> and fall through to the new game setup.",
-                        "If load returned data (not None), unpack the tuple into your six game variables: <code>player_name, current_city, total_miles, total_turns, hazards_faced, hazards_escaped = saved_data</code>",
-                        "Print a welcome-back message that shows the player's name and current city, then skip the new-game setup and go directly into the game loop.",
-                        "If the player chooses 1, run the existing new-game setup: get their name, set <code>current_city = 'San Antonio'</code>, initialize all stats to 0."
+                        "<strong>Copy your Lab 2.3 code</strong> to a new file called <code>lab-3-1.py</code> and update the docstring",
+                        "<strong>Add a constant:</strong> <code>SAVE_FILE = 'savegame.txt'</code>",
+                        "<strong>Define save_game()</strong> with 6 parameters (see What You're Building)",
+                        "<strong>Open the file for writing:</strong> <code>outfile = open(SAVE_FILE, 'w')</code>",
+                        "<strong>Write player_name:</strong> <code>outfile.write(player_name + '\\n')</code>",
+                        "<strong>Write current_city</strong> the same way",
+                        "<strong>Write the 4 numeric values</strong> — remember to convert with <code>str()</code>",
+                        "<strong>Close the file:</strong> <code>outfile.close()</code>",
+                        "<strong>Print confirmation:</strong> <code>'Game saved!'</code>"
                     ]
                 },
                 {
                     "type": "h3",
-                    "label": "expected_output"
+                    "label": "tips_and_pitfalls"
                 },
                 {
-                    "type": "output_block",
-                    "output": "============================================================\n    DEEP IN THE HEART: A LONE STAR JOURNEY\n    An All My Eggses Live in Texas Production\n============================================================\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): "
-                },
-                {
-                    "type": "callout",
-                    "variant": "tip",
-                    "title": "Checking for None",
-                    "body": "The result of <code>load_game()</code> is either a tuple or <code>None</code>. Test it with <code>if saved_data is None:</code> — not <code>if saved_data == None:</code>. Using <code>is</code> is the correct Python style for None checks."
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Main menu prints before any game variables are initialized",
-                        "All three menu choices (New Game, Load, Quit) are handled",
-                        "A successful load unpacks the tuple and restores all six variables",
-                        "A failed load (None) falls through to new-game setup with a message",
-                        "New-game path still works exactly as before"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 4,
-            "title": "Add the Save and Quit Option",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "The player can now load a saved game — but they can't save one yet. This checkpoint adds a Save and Quit option inside the game loop. After each turn, the player can choose to save their progress and exit cleanly."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Inside your game loop, after the travel and hazard resolution for a turn, add a prompt asking whether the player wants to keep playing or save and quit. Use your existing <code>function_library.get_yes_no()</code> function.",
-                        "If the player chooses to quit, call <code>save_game()</code> with all six current game variables.",
-                        "After saving, print a confirmation message and break out of the game loop.",
-                        "If the player chooses to keep playing, the loop continues as before.",
-                        "Test the full cycle: start a new game, play one turn, save and quit, run the program again, choose Load Saved Game, and verify your stats are restored correctly."
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Forgetting '\\n' after each write", "Everything ends up on one line — can't read it back properly"],
+                        ["Writing a number directly", "TypeError! write() only accepts strings. Use str(total_miles)"],
+                        ["Forgetting to close the file", "Data might not save completely — always close()!"],
+                        ["Using 'r' instead of 'w'", "Can't write to a file opened for reading"]
                     ]
                 },
                 {
@@ -303,27 +131,304 @@
                     "label": "test_your_code"
                 },
                 {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Add this test harness at the END of your file (after all function definitions):"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\nsave_game('TestPlayer', 'Houston', 350, 5, 3, 2)\nprint('Check savegame.txt in your folder!')"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run the program. Open <code>savegame.txt</code> in Notepad. Verify these 6 lines:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "TestPlayer\nHouston\n350\n5\n3\n2"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Verify each value is on its OWN line (6 lines total, not 1 long line)."
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 4:</strong> DELETE the test harness lines before moving to Checkpoint 2."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
                     "type": "instructions",
                     "items": [
-                        "Run the program. Choose New Game. Play one turn and travel to a destination.",
-                        "When prompted to continue, choose to Save and Quit. Verify you see the save confirmation.",
-                        "Open <code>savegame.txt</code> in a text editor. Confirm it has exactly 6 lines with your game data in the correct order.",
-                        "Run the program again. Choose Load Saved Game. Verify your player name, city, and stats are restored exactly.",
-                        "Play another turn, then let the game end normally without saving. Run it a third time and load — you should still be at the last saved state, not the post-game state."
+                        "SAVE_FILE constant defined",
+                        "save_game() function with 6 parameters",
+                        "6 write() calls, each with + '\\n'",
+                        "str() conversion for all numeric values",
+                        "savegame.txt created with 6 human-readable lines"
                     ]
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "title": "Build load_game()",
+            "subtitle": "Create a function that reads the save file and returns all the game data — or handles a missing file gracefully.",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "A function that reads 6 lines from the save file, converts them to the right types, and returns them as a tuple. If the file doesn't exist, it returns <code>None</code>."
                 },
                 {
                     "type": "callout",
-                    "variant": "success",
-                    "title": "What a good save file looks like",
-                    "body": "If you saved after traveling to Houston with 200 miles and 2 turns, your <code>savegame.txt</code> should look exactly like this:",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId":   "6-5",
+                            "filename":    "strip_newline.py",
+                            "step":        1,
+                            "description": "You used line.rstrip('\\n') to remove the trailing newline. Do the same for each readline()."
+                        },
+                        {
+                            "programId":   "6-28",
+                            "filename":    "display_file2.py",
+                            "step":        2,
+                            "description": "You wrapped file operations in try-except FileNotFoundError. Use the same pattern here!"
+                        }
+                    ]
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Terrence \"T-Bone\" Booker",
+                    "role":      "QA Lead, Bat City Collective",
+                    "headshot":  "Terrence-Booker.png",
+                    "quote":     "Here's my test plan for load_game(): First, delete any save file and verify it returns None. Then create a valid save file and verify all 6 values come back correct. Finally, corrupt the file (wrong number of lines) and see what happens. Test the happy path AND the edge cases!"
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
                     "items": [
-                        "Line 1: Maria",
-                        "Line 2: Houston",
-                        "Line 3: 200",
-                        "Line 4: 2",
-                        "Line 5: 1",
-                        "Line 6: 0"
+                        "<strong>Define load_game()</strong> with no parameters (it reads from SAVE_FILE)",
+                        "<strong>Start a try block:</strong> <code>try:</code>",
+                        "<strong>Open for reading:</strong> <code>infile = open(SAVE_FILE, 'r')</code>",
+                        "<strong>Read player_name:</strong> <code>player_name = infile.readline().rstrip('\\n')</code>",
+                        "<strong>Read current_city</strong> the same way",
+                        "<strong>Read the 4 numbers</strong> — wrap in <code>int()</code> to convert",
+                        "<strong>Close the file</strong>",
+                        "<strong>Return all 6 values as a tuple:</strong> <code>return (player_name, current_city, ...)</code>",
+                        "<strong>Add except block:</strong> <code>except FileNotFoundError: return None</code>"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Forgetting rstrip('\\n')", "Strings have invisible '\\n' at end — causes weird comparisons"],
+                        ["Forgetting int() on numbers", "Everything from files is a string — math will fail"],
+                        ["Reading lines in wrong order", "You get player_name where you expect total_miles!"],
+                        ["No try-except", "Program crashes if save file doesn't exist"]
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Make sure savegame.txt still exists from Checkpoint 1. Add this test harness:"
+                },
+                {
+                    "type": "code_block",
+                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 3\nresult = load_game()\nif result is None:\n    print('No save file found')\nelse:\n    print(f'Loaded: {result}')"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Run the program. Verify this output:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Loaded: ('TestPlayer', 'Houston', 350, 5, 3, 2)"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Delete savegame.txt, run again. Verify: <code>No save file found</code>"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 4:</strong> DELETE the test harness lines before moving to Checkpoint 3."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "load_game() function with try-except",
+                        "6 readline() calls with rstrip('\\n')",
+                        "int() conversion for numeric values",
+                        "Returns tuple of 6 values on success",
+                        "Returns None if file doesn't exist"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "title": "Add the Main Menu",
+            "subtitle": "Give players a choice: start fresh, resume their saved game, or quit.",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "A startup menu that appears before the game begins. If the player chooses \"Load,\" you call load_game() and restore all their variables. If no save exists, fall back to a new game."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "<strong>In your main() function</strong>, add a menu BEFORE any game logic",
+                        "<strong>Display the menu:</strong> 1. New Game, 2. Load Saved Game, 3. Quit",
+                        "<strong>Get menu_choice</strong> using get_valid_int()",
+                        "<strong>If choice is 3:</strong> print goodbye and <code>return</code> to exit",
+                        "<strong>If choice is 2:</strong> call load_game() and store the result",
+                        "<strong>If load returns None:</strong> print \"No save found\" and set menu_choice = 1",
+                        "<strong>If load succeeds:</strong> unpack the tuple into your 6 variables",
+                        "<strong>If choice is 1:</strong> do normal new game setup (get name, initialize variables)"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Unpacking tuple with wrong index", "saved[0] is player_name, saved[2] is total_miles — order matters!"],
+                        ["Checking saved == None", "Works, but <code>saved is None</code> is the Pythonic way"],
+                        ["Not falling back to new game", "If load fails and you don't handle it, variables are undefined"]
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Delete savegame.txt if it exists. Run the program and choose option 2 (Load). Verify:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "No saved game found. Starting new game."
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Play the game a bit, then manually call save_game() with test data (or wait for Checkpoint 4). Run again and choose option 2. Verify you see:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Welcome back, TestPlayer!\nResuming from Houston...\nMiles so far: 350"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Choose option 3 (Quit). Verify the program exits gracefully."
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Main menu displays 3 options",
+                        "Option 3 exits cleanly",
+                        "Option 2 loads saved game or falls back to new game",
+                        "Option 1 starts new game as before"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "title": "Add Save & Quit Option",
+            "subtitle": "Let players save their progress mid-game and come back later.",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "After arriving at each city (except beach cities), offer the player a choice: continue the journey OR save and quit. This turns a one-session game into a multi-session experience!"
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "<strong>Find the spot</strong> in your game loop where you check for beach arrival",
+                        "<strong>In the else branch</strong> (not a beach city), add an OPTIONS menu",
+                        "<strong>Display:</strong> 1. Continue journey, 2. Save and quit",
+                        "<strong>Get choice</strong> using get_valid_int()",
+                        "<strong>If choice is 2:</strong> call save_game() with all 6 current values",
+                        "<strong>Set playing = False</strong> to exit the game loop"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 1:</strong> Start a new game. Travel to any non-beach city (Houston or Austin)."
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 2:</strong> Choose \"Save and quit.\" Verify you see:"
+                },
+                {
+                    "type": "output_block",
+                    "output": "Game saved!"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 3:</strong> Open savegame.txt. Verify it shows YOUR player name and current city."
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Step 4:</strong> Run the program again, choose \"Load Saved Game.\" Verify you resume exactly where you left off!"
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": ["Common Mistake", "Why It Fails"],
+                    "rows": [
+                        ["Saving wrong values order", "Order matters! Must match what load_game() expects"],
+                        ["Showing OPTIONS menu at beach cities", "OPTIONS only appears in the ELSE (not beach) branch"],
+                        ["Forgetting <code>playing = False</code>", "Without this, game loop continues after save"]
                     ]
                 },
                 {
@@ -333,10 +438,11 @@
                 {
                     "type": "instructions",
                     "items": [
-                        "Game loop includes a Save and Quit prompt after each turn",
-                        "Choosing to quit calls <code>save_game()</code> with current values and breaks the loop",
-                        "The full save-quit-reload cycle works correctly end-to-end",
-                        "<code>savegame.txt</code> contains exactly 6 lines in the correct order"
+                        "OPTIONS menu appears after arriving at non-beach cities",
+                        "Option 1 continues the game loop",
+                        "Option 2 saves and exits",
+                        "Load restores exact game state",
+                        "Complete save/load cycle works!"
                     ]
                 }
             ]
@@ -345,41 +451,41 @@
 
     "finalChecklist": {
         "beforeYouSubmit": [
-            "lab-3-1.py has a top-of-file comment block with your name, abc123, section number, and a description of the program",
-            "Both save_game() and load_game() have docstrings",
-            "SAVE_FILE = 'savegame.txt' constant is defined and used — no hardcoded filename strings inside the functions",
-            "load_game() uses try-except FileNotFoundError and returns None if no save file exists",
-            "Main menu at startup offers New Game, Load Saved Game, and Quit",
-            "Game loop includes a Save and Quit option that calls save_game() before exiting",
-            "All six variables are written and read in the same order"
+            "<strong>Docstring complete?</strong> Name, ID, Section, Description updated",
+            "<strong>All DEBUG lines deleted?</strong> No test harnesses left behind",
+            "<strong>save_game() works?</strong> Creates savegame.txt with 6 lines",
+            "<strong>load_game() works?</strong> Returns tuple or None",
+            "<strong>Main menu works?</strong> All 3 options function correctly",
+            "<strong>Full cycle works?</strong> Save \u2192 Quit \u2192 Load \u2192 Resume at correct spot",
+            "<strong>Filename correct?</strong> <code>lab-3-1.py</code>"
         ],
-        "scopeReminder": "Chapter 6 introduces open(), write(), readline(), rstrip(), str(), int(), and try-except FileNotFoundError. All techniques from Modules 1 and 2 remain available. Do NOT use the with statement (Chapter 6.3 — introduced in the library in Module 3.2), readlines(), list operations, or any Chapter 7+ features.",
+        "scopeReminder": "NOT YET: Lists (coming in Lab 3.2!), with statement (save for function library in 3.2), readlines(), Append mode ('a')",
         "permittedTechniques": {
-            "chapters": "2–6 (all techniques from Chapters 2–5 plus Chapter 6 file I/O and exceptions as introduced this week)",
+            "chapters": "All Chapter 2–5 techniques (from Modules 1–2)",
             "specific": [
-                "open(filename, 'w') and open(filename, 'r')",
-                "outfile.write(str(value) + '\\n')",
-                "infile.readline().rstrip('\\n')",
-                "int(infile.readline()) to read numbers",
+                "open() with 'w' and 'r' modes",
+                "write(), readline(), close()",
+                "str() and int() for type conversion",
+                "rstrip('\\n')",
                 "try-except FileNotFoundError",
-                "Tuple return from a function"
+                "Returning tuples from functions"
             ],
-            "notPermitted": "with statement, readlines(), list operations, sort(), append(), dictionaries, classes"
+            "notPermitted": "Lists, with statement, readlines(), Append mode ('a')"
         },
+        "academicIntegrity": "This assignment must be your own work. You may reference the textbook and BookEx examples. You may NOT copy code from others, use AI, or share your code.",
         "warnings": [
-            "Do not hardcode the filename 'savegame.txt' inside save_game() or load_game(). Use the SAVE_FILE constant — CodeGrade may rename the file to test flexibility.",
-            "Read back every value in the exact same order it was written. If save_game() writes player_name first, load_game() must read player_name first."
-        ],
-        "saveYourCode": "Keep lab-3-1.py — Module 3.2 builds directly on this file by adding list tracking for visited cities and hazards, and expanding the save format."
+            "CodeGrade will test your save/load functions by creating and reading savegame.txt. Make sure you use <strong>exactly</strong> that filename (via your SAVE_FILE constant) and write values in the <strong>exact order</strong> specified. The tests depend on line order!"
+        ]
     },
 
     "needHelp": {
         "ifYouGetStuck": [
-            "Re-read Programs 6-1 and 6-4 for the write pattern, and Programs 6-3 and 6-5 for the readline pattern",
-            "Open savegame.txt in Notepad after saving — if the file looks right but load fails, check your data types (integers must be wrapped in int())",
-            "Submit to CodeGrade early — it shows exactly which tests pass or fail so you know where to focus",
-            "Come to Zoom or office hours — file I/O bugs are fast to spot on a screen share"
+            "Re-read BookEx 6.1.1\u20136.1.7 \u2014 the patterns for writing and reading are exactly what you need",
+            "Open your save file in Notepad \u2014 see exactly what got written",
+            "Print what you read \u2014 add DEBUG prints after each readline() to see what you're getting",
+            "Check line order \u2014 you must read in the SAME order you wrote",
+            "Submit to CodeGrade early \u2014 it shows exactly which tests pass or fail"
         ],
-        "bookexResourceNote": "Chapter 6 BookEx Reference Guide — step-by-step breakdowns of every file I/O program from the textbook"
+        "bookexResourceNote": "Chapter 6 BookEx Reference Guide \u2014 step-by-step breakdowns of every textbook example \u2014 your primary reference"
     }
 }
