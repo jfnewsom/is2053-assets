@@ -331,12 +331,26 @@
 
       </div>
 
-      <div class="nav-actions">
-        <a class="nav-zoom-btn"
-           href="https://utsa.zoom.us/j/97617245124"
-           target="_blank" rel="noopener">&#9679; Join Zoom</a>
-      </div>
+      <div class="nav-actions" id="is2053-nav-actions"></div>
     </div>`;
+
+  /* ── Zoom session time check ────────────────────────────── */
+  // Shows Join Zoom button only while session is active:
+  // Tuesdays 5:45 PM – 7:15 PM CT (America/Chicago)
+  function checkZoomActive() {
+    try {
+      const ct = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+      const day = ct.getDay();                          // 0=Sun … 2=Tue
+      const mins = ct.getHours() * 60 + ct.getMinutes();
+      const active = day === 2 && mins >= 1065 && mins <= 1155; // 17*60+45=1065, 19*60+15=1155
+      const el = document.getElementById('is2053-nav-actions');
+      if (el && active) {
+        el.innerHTML =
+          '<a class="nav-zoom-btn" href="https://utsa.zoom.us/j/97617245124"' +
+          ' target="_blank" rel="noopener">&#9679; Join Zoom</a>';
+      }
+    } catch(e) {}
+  }
 
   /* ── Inject styles + nav ────────────────────────────────── */
   function mount() {
@@ -350,6 +364,8 @@
     nav.setAttribute('aria-label', 'Course navigation');
     nav.innerHTML = navHTML;
     document.body.insertBefore(nav, document.body.firstChild);
+
+    checkZoomActive();
   }
 
   if (document.body) {
