@@ -271,11 +271,21 @@
       <div class="nav-trigger">Modules <span class="nav-caret">&#9660;</span></div>
       <div class="nav-dropdown">
         <div class="drop-label">Module Overviews</div>
-        ${link('Module 1 &mdash; Getting Started',      S + 'module-1-overview.html' + suffix, 'dd-yellow')}
-        ${link('Module 2 &mdash; The Journey Begins',   S + 'module-2-overview.html' + suffix, 'dd-yellow')}
-        ${link('Module 3 &mdash; Keeping Track',        S + 'module-3-overview.html' + suffix, 'dd-yellow')}
-        ${link('Module 4 &mdash; Smarter Code',         S + 'module-4-overview.html' + suffix, 'dd-yellow')}
-        ${link('Module 5 &mdash; Ship It',              S + 'module-5-overview.html' + suffix, 'dd-yellow')}
+        <div class="drop-sub">Module 1 &mdash; Getting Started</div>
+        ${link('Overview',         S + 'module-1-overview.html' + suffix,         'dd-yellow')}
+        ${link('Study Worksheet',  S + 'module-1-study-worksheet.html' + suffix,  'dd-yellow')}
+        <div class="drop-sub">Module 2 &mdash; The Journey Begins</div>
+        ${link('Overview',         S + 'module-2-overview.html' + suffix,         'dd-yellow')}
+        ${link('Study Worksheet',  S + 'module-2-study-worksheet.html' + suffix,  'dd-yellow')}
+        <div class="drop-sub">Module 3 &mdash; Keeping Track</div>
+        ${link('Overview',         S + 'module-3-overview.html' + suffix,         'dd-yellow')}
+        ${link('Study Worksheet',  S + 'module-3-study-worksheet.html' + suffix,  'dd-yellow')}
+        <div class="drop-sub">Module 4 &mdash; Smarter Code</div>
+        ${link('Overview',         S + 'module-4-overview.html' + suffix,         'dd-yellow')}
+        ${link('Study Worksheet',  S + 'module-4-study-worksheet.html' + suffix,  'dd-yellow')}
+        <div class="drop-sub">Module 5 &mdash; Ship It</div>
+        ${link('Overview',         S + 'module-5-overview.html' + suffix,         'dd-yellow')}
+        ${link('Study Worksheet',  S + 'module-5-study-worksheet.html' + suffix,  'dd-yellow')}
       </div>
     </div>` : '';
 
