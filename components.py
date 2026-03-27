@@ -145,6 +145,7 @@ def html_foot(logo_path: str = "../../branding/UTSanAntonio_H_Logo_Dual_TM_RGB.p
     </footer>
 
 </div>
+<script src="https://jfnewsom.github.io/is2053-assets/nav.js"></script>
 </body>
 </html>
 """
