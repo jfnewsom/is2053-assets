@@ -161,7 +161,7 @@
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #333;
+      color: #FFCC00;
       padding: 8px 16px 3px 16px;
     }
     #is2053-nav .drop-divider {
@@ -170,13 +170,13 @@
       margin: 4px 0;
     }
 
-    /* Sub-group label inside Labs dropdown */
+    /* Sub-group label inside dropdowns */
     #is2053-nav .drop-sub {
       font-size: 9px;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: #2a2a2a;
+      color: #FFCC00;
       padding: 6px 16px 2px 16px;
     }
 
@@ -302,14 +302,19 @@
       <div class="nav-trigger">BookEx <span class="nav-caret">&#9660;</span></div>
       <div class="nav-dropdown">
         <div class="drop-label">Book Exercises</div>
-        ${link('Chapter 2',  BX + 'BookExCH02.html', 'dd-purple')}
-        ${link('Chapter 3',  BX + 'BookExCH03.html', 'dd-purple')}
-        ${link('Chapter 4',  BX + 'BookExCH04.html', 'dd-purple')}
-        ${link('Chapter 5',  BX + 'BookExCH05.html', 'dd-purple')}
-        ${link('Chapter 6',  BX + 'BookExCH06.html', 'dd-purple')}
-        ${link('Chapter 7',  BX + 'BookExCH07.html', 'dd-purple')}
-        ${link('Chapter 8',  BX + 'BookExCH08.html', 'dd-purple')}
-        ${link('Chapter 9',  BX + 'BookExCH09.html', 'dd-purple')}
+        <div class="drop-sub">Module 1 &mdash; Ch. 2&ndash;3</div>
+        ${link('Chapter 2', BX + 'BookExCH02.html', 'dd-purple')}
+        ${link('Chapter 3', BX + 'BookExCH03.html', 'dd-purple')}
+        <div class="drop-sub">Module 2 &mdash; Ch. 4&ndash;5</div>
+        ${link('Chapter 4', BX + 'BookExCH04.html', 'dd-purple')}
+        ${link('Chapter 5', BX + 'BookExCH05.html', 'dd-purple')}
+        <div class="drop-sub">Module 3 &mdash; Ch. 6&ndash;7</div>
+        ${link('Chapter 6', BX + 'BookExCH06.html', 'dd-purple')}
+        ${link('Chapter 7', BX + 'BookExCH07.html', 'dd-purple')}
+        <div class="drop-sub">Module 4 &mdash; Ch. 8&ndash;9</div>
+        ${link('Chapter 8', BX + 'BookExCH08.html', 'dd-purple')}
+        ${link('Chapter 9', BX + 'BookExCH09.html', 'dd-purple')}
+        <div class="drop-sub">Module 5 &mdash; Ch. 10&ndash;11</div>
         ${link('Chapter 10', BX + 'BookExCH10.html', 'dd-purple')}
         ${link('Chapter 11', BX + 'BookExCH11.html', 'dd-purple')}
       </div>
