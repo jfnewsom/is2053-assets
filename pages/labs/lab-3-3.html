@@ -3,770 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab 3.3: Trip Report</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Slab:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>Trip Report — IS2053</title>
+    <link rel="stylesheet" href="../../labs.css">
 </head>
-<body style="background: #0a0a0a; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; color: #f5f5f5; line-height: 1.6;">
+<body>
+<div class="lc-wrapper">
+<div class="lc-card lc-card--blue">
+  <div class="lc-topper">
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0;">
+          <div class="lc-lab-badge">
+            <div class="lc-lab-badge__word">LAB</div>
+            <div class="lc-lab-badge__num">3.3</div>
+          </div>
+        </td>
+        <td style="vertical-align: bottom; padding: 0 0 0 16px;">
+          <div class="lc-topper-title">Trip Report</div>
+        </td>
+        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">
+          <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: 120px; width: auto; display: block;">
+        </td>
+      </tr>
+    <tr><td colspan="3" style="padding: 10px 0 0 0;"><div class="lc-sub-banner">MODULE 3 &bull; WEEK 3 &bull; MASTER &bull; CHAPTERS 7: LISTS AND TUPLES</div></td></tr>
+    </table>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-h3 lc-h3--yellow">Overview</div>
+    <img src="../../branding/AllMyEggses3D-Full.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
+    <p>You have built a lot this module. You have files that save and load game state, lists that track everywhere you have been, and a working save/reload cycle. This final week pulls it all together.
 
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #0055FF 0%, #001a4d 100%); padding: 8px 12px 12px 12px;">
-        
-                <div style="display: flex; align-items: flex-end; gap: 8px;">
-            <img src="https://jfnewsom.github.io/is2053-assets/lab-icons/lab-badge-3-3.svg" alt="LAB 3.3" style="height: 90px;">
-            <div style="flex-grow: 1;">
-                <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-trip-report.svg" alt="Trip Report" style="display: block; height: 70px; margin-bottom: 2px; margin-left: -8px;">
-                <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-                    Module 3 &bull; MASTER Week &bull; Lists &amp; File Output
-                </div>
-            </div>
+You will replace the hardcoded hazard if/elif chain with a <code>HAZARD_NAMES</code> list, sort the hazard history alphabetically for display, calculate unique cities using the <code>in</code> operator, and write a formatted trip report to <code>trip_report.txt</code> at the end of a run. You will also add the final Module 3 function to <code>function_library.py</code>: <code>display_numbered_list()</code>.
+
+<strong>Before you begin:</strong> Copy your <code>lab-3-2.py</code> and <code>function_library.py</code> files into your working folder for this week. All changes go into new files named <code>lab-3-3.py</code> and an updated <code>function_library.py</code>. Do not overwrite your 3-2 work.</p>
+    <div style="clear: both;"></div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
         </div>
-        
-                <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-overview.svg" alt="Overview" style="height: 18px; display: block;">
-            </div>
-            
-                        <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px;">
-                <p style="color: #B0B8C4; margin: 0; flex: 1;">
-                    This is a <strong style="color: #fff;">MASTER</strong> week&mdash;the final polish on your Module 3 game! You'll generate a <strong style="color: #fff;">professional trip report</strong>, sort your hazards alphabetically, count unique cities visited, and <strong style="color: #fff;">save everything to a file</strong>. By the end, your road trip will have a permanent record worth sharing.
-                </p>
-                <img src="https://jfnewsom.github.io/is2053-assets/branding/AllMyEggses-logo.svg" alt="All My Eggses Live in Texas" style="width: 210px; flex-shrink: 0;">
-            </div>
-            
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Sasha-Mireles.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Sasha Mireles">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"A trip report isn't just data&mdash;it's a keepsake! Think about what players want to remember: the cities they visited, the hazards they survived, the miles they conquered. Present it beautifully with headers, sorted lists, and clear formatting. When they open that file later, they should relive the adventure!"</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/sasha-mireles.svg" alt="Sasha Mireles" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Creative Director, Bat City Collective</div>
-                </div>
-            </div>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-filename.svg" alt="Filename" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 8px 0;">
-                Submit <strong style="color: #fff;">TWO files</strong> this week:
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 8px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 14px;">function_library.py</span> &mdash; Your expanded module (now with list utilities)
-            </p>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <span style="background: #2a2a2a; padding: 3px 10px; border-radius: 4px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 14px;">lab-3-3.py</span> &mdash; Your polished game with trip report and file output
-            </p>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                Your enhanced road trip game will include:
-            </p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">HAZARD_NAMES List</strong> &mdash; Random hazard selection using list indexing (replaces if/elif)</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Sorted Hazards</strong> &mdash; Display hazards A-Z using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.copy()</span> and <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.sort()</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Unique Cities</strong> &mdash; Count distinct cities using the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">in</span> operator</li>
-                <li><strong style="color: #fff;">File Output</strong> &mdash; Save a formatted trip report to <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trip_report.txt</span></li>
-            </ul>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-key-concepts.svg" alt="Key Concepts" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Chapter 7:</strong> Program 7-2 (in operator), Section 7.5 (sort method), Program 7-9 (len function)<br>
-                <strong style="color: #fff;">Chapter 6:</strong> Program 6-1 (writing to files)
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-program-requirements.svg" alt="Program Requirements" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span> must contain <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_numbered_list()</span></li>
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">HAZARD_NAMES</span> list replaces if/elif chain for hazard selection</li>
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">get_random_hazard()</span> function uses list indexing with random</li>
-                <li style="margin-bottom: 8px;">Hazards must be displayed in <strong style="color: #fff;">alphabetical order</strong></li>
-                <li style="margin-bottom: 8px;">Unique cities count uses the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">in</span> operator (no duplicates)</li>
-                <li><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">save_trip_report()</span> writes formatted report to file</li>
-            </ul>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #0055FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-textbook-reference.svg" alt="Textbook Reference" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                <strong style="color: #fff;">Starting Out with Python, 6th Edition</strong> by Tony Gaddis &mdash; Chapters 6 &amp; 7
-            </p>
-            
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"MASTER week is when it clicks. You stop adding features and start seeing the system. The trip report is not just output — it is proof that every piece you built this module is talking to every other piece."</div>
         </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Tyler Nguyen</div>
+        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
+      </div>
     </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF6B1A 0%, #8B3A00 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-time-guide.svg" alt="Time Guide" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Plan Your Session &mdash; 60-75 Minutes
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-                        <div style="overflow-x: auto; margin-bottom: 20px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #FF6B1A; color: #000; padding: 12px 15px; text-align: left; border: 2px solid #000; font-weight: 700;">Checkpoint</th>
-                            <th style="background: #FF6B1A; color: #000; padding: 12px 15px; text-align: left; border: 2px solid #000; font-weight: 700;">Time</th>
-                            <th style="background: #FF6B1A; color: #000; padding: 12px 15px; text-align: left; border: 2px solid #000; font-weight: 700;">What You'll Do</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">CP1: HAZARD_NAMES List</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">15 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Add hazard list and get_random_hazard() function</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">CP2: Library Addition</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">10 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Add display_numbered_list() to function_library.py</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">CP3: Sorted Hazards</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">10 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Copy and sort hazards list for report</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">CP4: Unique Cities</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px; border-bottom: 2px solid #222;">10 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Build unique cities list using in operator</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px;">CP5: Save Trip Report</td>
-                            <td style="background: #000; color: #f5f5f5; padding: 12px 15px;">15 min</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Write formatted report to trip_report.txt</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF6B1A;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0;">
-                <strong style="color: #fff;">Always use .copy() before .sort()!</strong> If you sort your original list, you'll lose the order in which hazards occurred. Make a copy first, then sort the copy.
-            </p>
-            
-        </div>
+    <div class="lc-h3 lc-h3--yellow">Filename</div>
+    <p>Submit lab-3-3.py and function_library.py this week.</p>
+    <p>function_library.py is submitted alongside lab-3-3.py. CodeGrade tests display_numbered_list() in isolation.</p>
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <ul class="lc-objectives">
+      <li>Replace a hardcoded hazard if/elif chain with a HAZARD_NAMES list and index-based random selection</li>
+      <li>Use .copy() to duplicate a list before sorting so the original is preserved</li>
+      <li>Use .sort() to sort a list alphabetically in place</li>
+      <li>Build a unique cities list using the in operator to filter duplicates</li>
+      <li>Write a formatted multi-section report to a file using save_trip_report()</li>
+      <li>Add display_numbered_list() to function_library.py as the final Module 3 library function</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
+    <p>Chapter 7: Program 7-6 (list methods — remove), Program 7-9 (len and built-in functions), Program 7-12 (comprehensive list processing), Program 7-16 (writing a list to a file).</p>
+    <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 7</p>
+    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
+    <ul>
+      <li>HAZARD_NAMES list constant defined with at least six hazard strings</li>
+      <li>get_random_hazard() uses random.randint() to pick an index and returns HAZARD_NAMES[index]</li>
+      <li>REPORT_FILE = 'trip_report.txt' constant defined</li>
+      <li>save_trip_report() writes the formatted report to trip_report.txt</li>
+      <li>Sorted hazards in the trip report use .copy() then .sort() on hazards_list</li>
+      <li>Unique cities are calculated using a for loop and the in operator</li>
+      <li>function_library.py adds display_numbered_list(items, title) with a docstring</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Named Constants</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table lc-named-constants__table">
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>HAZARD_NAMES</code></td>
+        <td>List of hazard name strings used for random selection</td>
+      </tr>
+      <tr>
+        <td><code>REPORT_FILE</code></td>
+        <td>String constant — filename for the trip report, always &#x27;trip_report.txt&#x27;</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
+<div class="lc-card lc-card--orange">
 
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #39FF14 0%, #0D4D00 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-checkpoints.svg" alt="Checkpoints" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Time Guide</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 120–150 Minutes</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Time</th>
+            <th>Task</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><strong>Setup</strong></td>
+        <td>5 min</td>
+        <td>Copy lab-3-2.py and function_library.py to lab-3-3.py</td>
+      </tr>
+      <tr>
+        <td><strong>CP1: HAZARD_NAMES list</strong></td>
+        <td>25 min</td>
+        <td>Replace hazard if/elif with list + get_random_hazard() function</td>
+      </tr>
+      <tr>
+        <td><strong>CP2: sort() and copy()</strong></td>
+        <td>20 min</td>
+        <td>Sort hazard display and build unique cities list</td>
+      </tr>
+      <tr>
+        <td><strong>CP3: save_trip_report()</strong></td>
+        <td>35 min</td>
+        <td>Write save_trip_report() and add REPORT_FILE constant</td>
+      </tr>
+      <tr>
+        <td><strong>CP4: Library + Integration</strong></td>
+        <td>25 min</td>
+        <td>Add display_numbered_list() to library and wire up the full report</td>
+      </tr>
+      <tr>
+        <td><strong>Test &amp; Submit</strong></td>
+        <td>10 min</td>
+        <td>Test end-to-end, verify trip_report.txt, submit both files</td>
+      </tr>
+      <tr class="lc-table__total">
+        <td colspan="2"><strong>Total Estimated Time</strong></td>
+        <td><strong>120–150 Minutes</strong></td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--cyan">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Before You Begin</div>
+    <div class="lc-sub-banner">Program Architecture</div>
+  </div>
+  <div class="lc-panel">
+    <p class="lc-arch-intro">Here is how your finished program fits together. The [NEW] tags show what you are adding this week. The [REPLACED] tags show what changes from your 3.2 code.</p>
+    <div class="lc-arch">
+      <pre># ---- CONSTANTS ----
+SAVE_FILE    = &#x27;savegame.txt&#x27;             (unchanged)
+REPORT_FILE  = &#x27;trip_report.txt&#x27;          <span class="lc-arch-new">[NEW]</span>
+HAZARD_NAMES = [...]                      <span class="lc-arch-new">[NEW — replaces hazard if/elif]</span>
+SA_DESTINATIONS / SA_DISTANCES / SA_NOTES (unchanged)
+
+# ---- HELPER FUNCTIONS ----
+<span class="lc-arch-fn">get_random_hazard()</span>                       <span class="lc-arch-replaced">[REPLACED — uses HAZARD_NAMES[index]</span>]
+<span class="lc-arch-fn">display_destinations()</span>                    (unchanged)
+
+# ---- REPORT FUNCTION ----
+<span class="lc-arch-fn">save_trip_report(player_name,
+    current_city, total_miles, total_turns,
+    hazards_faced, hazards_escaped,
+    visited_cities, hazards_list)</span>          <span class="lc-arch-new">[NEW]</span>
+
+# ---- SAVE / LOAD ----
+<span class="lc-arch-fn">save_game()</span> / <span class="lc-arch-fn">load_game()</span>                 (unchanged from 3.2)
+
+<span class="lc-arch-game-loop">GAME LOOP</span>:  (unchanged)
+│
+FINAL TRIP REPORT:
+│── Unique cities calculation             <span class="lc-arch-new">[NEW]</span>
+│   └── for city in visited_cities:
+│       └── if city not in unique_cities
+│── sorted_hazards = <span class="lc-arch-fn">hazards_list.copy()</span>  <span class="lc-arch-new">[NEW]</span>
+│── <span class="lc-arch-fn">sorted_hazards.sort()</span>                 <span class="lc-arch-new">[NEW]</span>
+│── <span class="lc-arch-fn">function_library.display_numbered_list()</span>  <span class="lc-arch-new">[NEW]</span>
+│── <span class="lc-arch-fn">save_trip_report()</span>                    <span class="lc-arch-new">[NEW]</span>
+│── Offer to save trip report to file     <span class="lc-arch-new">[NEW]</span>
+
+# ---- function_library.py additions ----
+<span class="lc-arch-fn">display_numbered_list(items, title)</span>       <span class="lc-arch-new">[NEW]</span></pre>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--green">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Checkpoints</div>
+    <div class="lc-sub-banner">4 Checkpoints</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">1</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Replace Hazard if/elif with HAZARD_NAMES List</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Your hazard selection currently uses a chain of if/elif branches or a series of random number comparisons. You are going to apply the same parallel-list pattern from CP2 last week: define <code>HAZARD_NAMES</code> as a list constant, then write a <code>get_random_hazard()</code> function that picks a random index and returns the name at that position.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Start by copying <code>lab-3-2.py</code> to a new file named <code>lab-3-3.py</code>. Also make a copy of your current <code>function_library.py</code> — both files get updated this week.</li>
+      <li>Near the top of <code>lab-3-3.py</code>, add the <code>HAZARD_NAMES</code> list constant with at least six hazard strings. Include the hazards already used in your game, plus any new ones you want to add.</li>
+      <li>Add the <code>REPORT_FILE = 'trip_report.txt'</code> constant nearby.</li>
+      <li>Define a <code>get_random_hazard()</code> function. It should use <code>random.randint()</code> to generate a random index in the range <code>0</code> to <code>len(HAZARD_NAMES) - 1</code>, then return <code>HAZARD_NAMES[index]</code>.</li>
+      <li>In the game loop, find where hazards are triggered. Replace the old if/elif hazard selection logic with a call to <code>get_random_hazard()</code>. The return value is the hazard name string — use it the same way you used the old hazard variable.</li>
+      <li>Run the game and trigger a few hazards to confirm different hazard names appear and they all come from your list.</li>
+    </ol>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
+                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="19" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Generating a valid random index</div>
+        <div class="lc-callout__body">
+        <p>To pick a random position in a list, generate a number from 0 up to — but not including — the list length: <code>index = random.randint(0, len(HAZARD_NAMES) - 1)</code>. Then use <code>HAZARD_NAMES[index]</code> to get the hazard name at that position.</p>
         </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            5 Checkpoints
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>HAZARD_NAMES</code> list constant defined with at least six strings</li>
+      <li><code>REPORT_FILE = 'trip_report.txt'</code> constant defined</li>
+      <li><code>get_random_hazard()</code> function defined with a docstring, using random index into <code>HAZARD_NAMES</code></li>
+      <li>Old hazard if/elif chain removed from the game loop</li>
+      <li>Hazards still append to <code>hazards_list</code> as before</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add Sorted Hazard Display and Unique Cities Calculation</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>This checkpoint adds two list operations to the final trip report section. First, you will sort the hazard history alphabetically so it reads cleanly — but you must copy the list before sorting so the original order is preserved. Second, you will calculate how many unique cities the player visited by filtering out duplicates using the <code>in</code> operator.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>In the final trip report section of your game, add the sorted hazard display. First, make a copy of the list: <code>sorted_hazards = hazards_list.copy()</code>. Then sort the copy in place: <code>sorted_hazards.sort()</code>. Loop through <code>sorted_hazards</code> to display them — not <code>hazards_list</code>.</li>
+      <li>Add the unique cities calculation. Create an empty list <code>unique_cities = []</code>. Loop through <code>visited_cities</code>. For each city, check <code>if city not in unique_cities</code> — if it is not already there, append it.</li>
+      <li>Use <code>len(unique_cities)</code> in the trip report to display the count of unique cities visited.</li>
+      <li>Run the game, visit a city more than once, and confirm the unique count is lower than the total route length.</li>
+    </ol>
+    <div class="lc-callout lc-callout--pitfall">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="22.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Always copy before sorting</div>
+        <div class="lc-callout__body">
+        <p><code>sort()</code> modifies the list in place permanently. If you call <code>hazards_list.sort()</code> directly, the original encounter order is gone — which breaks the save file if the player saves again. Always create a copy first: <code>sorted_hazards = hazards_list.copy()</code>, then sort the copy.</p>
         </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-before-you-start.svg" alt="Before You Start" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 25px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Copy your Lab 3.2 files</strong> &mdash; You'll build on your existing game</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Rename the main file</strong> to <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">lab-3-3.py</span></li>
-                <li><strong style="color: #fff;">Test your Lab 3.2 code</strong> &mdash; Make sure save/load still works before adding features</li>
-            </ol>
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Terrence-Booker.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Terrence Booker">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"This is polish week. The game loop barely changes&mdash;most of what you&rsquo;re building lives in the trip report at the end. The one change inside the loop is swapping that old hazard if/elif for a clean list lookup. Everything else is about making the FINAL output shine: sorted hazards, unique cities, and saving it all to a file."</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/terrence-t-bone-booker.svg" alt="Terrence T-Bone Booker" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Senior Developer, Bat City Collective</div>
-                </div>
-            </div>
-            <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-pro-tip.svg" alt="Pro Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                <strong style="color: #fff;">Most of this week&rsquo;s work lives AFTER the game loop.</strong> Here&rsquo;s the full picture&mdash;<span style="color: #FF6B1A;">[NEW]</span> tags show what you&rsquo;re adding.
-            </p>
-            <div style="border: 2px dashed #FFCC00; border-radius: 8px; overflow: hidden; margin: 15px 0 25px 0;">
-                <pre style="background: #000; background-color: #000; font-family: 'Roboto Mono', monospace; font-size: 13px; line-height: 1.6; color: #B0B8C4; margin: 0; padding: 15px 20px; white-space: pre; overflow-x: auto;"><span style="color: #666;"># ---- CONSTANTS ----</span>
-<span style="color: #39ff14;">HAZARD_NAMES</span> = ["Buc-ees appears!", "Armadillo crossing!", ...]  <span style="color: #FF6B1A;">[NEW &mdash; replaces if/elif]</span>
-<span style="color: #39ff14;">REPORT_FILE</span>  = 'trip_report.txt'                                  <span style="color: #FF6B1A;">[NEW]</span>
-
-<span style="color: #666;"># ---- FUNCTION LIBRARY ----</span>
-<span style="color: #39ff14;">display_numbered_list(items, title)</span>   <span style="color: #FF6B1A;">[NEW in function_library.py]</span>
-
-<span style="color: #666;"># ---- HELPER FUNCTIONS ----</span>
-<span style="color: #39ff14;">get_random_hazard()</span>   uses HAZARD_NAMES[random index]  <span style="color: #FF6B1A;">[NEW &mdash; replaces if/elif]</span>
-
-<span style="color: #666;"># ---- GAME LOOP (mostly unchanged from 3.2) ----</span>
-
-<span style="color: #FFCC00;">GAME LOOP:</span>
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Display menu, get choice, Destination Gate
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">TRAVEL LOOP:</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Roll D20, move miles
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Check for hazard
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;</span>      If hazard: <span style="color: #39ff14;">get_random_hazard()</span>  <span style="color: #FF6B1A;">[REPLACED]</span>
-<span style="color: #FFCC00;">&#9474;</span>   <span style="color: #0055FF;">&#9474;&mdash;&mdash;</span> Repeat until arrival
-<span style="color: #FFCC00;">&#9474;</span>
-<span style="color: #FFCC00;">&#9474;&mdash;&mdash;</span> Append city, update totals, check outcome
-
-<span style="color: #666;"># ---- AFTER THE LOOP (this is where the action is) ----</span>
-
-<span style="color: #BF40FF;">FINAL TRIP REPORT:</span>
-<span style="color: #BF40FF;">&#9474;</span>
-<span style="color: #BF40FF;">&#9474;&mdash;&mdash;</span> Show visited cities (<span style="color: #39ff14;">display_numbered_list</span>)
-<span style="color: #BF40FF;">&#9474;</span>
-<span style="color: #BF40FF;">&#9474;&mdash;&mdash;</span> Build <span style="color: #39ff14;">unique_cities</span> list:                        <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #BF40FF;">&#9474;</span>      for city in visited_cities:
-<span style="color: #BF40FF;">&#9474;</span>          if city not in unique_cities: append it
-<span style="color: #BF40FF;">&#9474;</span>
-<span style="color: #BF40FF;">&#9474;&mdash;&mdash;</span> Sort hazards:                                      <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #BF40FF;">&#9474;</span>      <span style="color: #39ff14;">sorted_hazards</span> = hazards_encountered.<span style="color: #39ff14;">copy()</span>
-<span style="color: #BF40FF;">&#9474;</span>      sorted_hazards.<span style="color: #39ff14;">sort()</span>
-<span style="color: #BF40FF;">&#9474;</span>      Display with <span style="color: #39ff14;">display_numbered_list</span>
-<span style="color: #BF40FF;">&#9474;</span>
-<span style="color: #BF40FF;">&#9474;&mdash;&mdash;</span> Show trip stats (miles, turns, escape rate)
-<span style="color: #BF40FF;">&#9474;</span>
-<span style="color: #BF40FF;">&#9474;&mdash;&mdash;</span> Ask: Save report to file?                          <span style="color: #FF6B1A;">[NEW]</span>
-<span style="color: #BF40FF;">&#9474;</span>      If yes: write everything to <span style="color: #39ff14;">trip_report.txt</span>
-
-"Thanks for playing!"</pre>
-            </div>
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-1.svg" alt="Checkpoint 1" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Add HAZARD_NAMES List</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Replace the if/elif chain for hazard selection with a list and random indexing.</p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A constant list of hazard names and a function that picks one randomly using list indexing.
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-why-this-matters.svg" alt="Why This Matters" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                Replacing if/elif chains with lists and random indexing is how games scale. Adding 10 more hazards to a list takes seconds; adding 10 more elif branches is tedious and error-prone. This pattern is used in every game for inventory items, enemy types, loot tables, and more.
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Near the top of your file (with other constants), add this <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">HAZARD_NAMES</span> list:</li>
-            </ol>
-            <div style="background: #1a1a1a; border: 3px solid #39FF14; padding: 15px; margin-bottom: 15px; border-radius: 4px;">
-<pre style="background: #000; background-color: #000; color: #39ff14; font-family: 'Roboto Mono', monospace; font-size: 13px; margin: 0; overflow-x: auto;">HAZARD_NAMES = [
-    "Buc-ee's appears!",
-    "Armadillo crossing!",
-    "Speed trap!",
-    "Check engine light!",
-    "Whataburger cravings!",
-    "Toll road confusion!"
-]</pre>
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;" start="2">
-                <li style="margin-bottom: 10px;">Create a <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">get_random_hazard()</span> function with no parameters</li>
-                <li style="margin-bottom: 10px;">Use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">random.randint(0, len(HAZARD_NAMES) - 1)</span> to get a random index</li>
-                <li style="margin-bottom: 10px;">Return <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">HAZARD_NAMES[index]</span></li>
-                <li>Replace the old if/elif hazard chain with a call to this function</li>
-            </ol>
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img style="width: 30px; height: 30px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #da92ff;">Program 7-3:</strong> Shows creating lists with initial values. <strong style="color: #da92ff;">Program 7-9:</strong> Demonstrates <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">len()</span> for list size&mdash;use it to calculate valid index range.
-                    </p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 40%;">Mistake</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222;">Using <code style="color: #39ff14;">randint(1, 6)</code></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">List indices start at 0, so index 6 doesn't exist in a 6-item list</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222;">Hardcoding <code style="color: #39ff14;">randint(0, 5)</code></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">If you add more hazards later, you'll get wrong results. Use <code style="color: #39ff14;">len() - 1</code></td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Forgetting to return the hazard</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Function returns None, you get no hazard displayed</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this temporary test code at the bottom of your file:</p>
-            <div style="background: #1a1a1a; border: 3px dashed #FFCC00; padding: 15px; margin-bottom: 15px; border-radius: 4px;">
-<pre style="background: #000; background-color: #000; color: #39ff14; font-family: 'Roboto Mono', monospace; font-size: 13px; margin: 0; overflow-x: auto;"># TEMPORARY TEST - DELETE BEFORE SUBMITTING
-print("Testing get_random_hazard():")
-for i in range(10):
-    print(f"  {i + 1}. {get_random_hazard()}")</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run your program. You should see output like:</p>
-            <div style="background: #1a1a1a; border: 3px solid #39FF14; padding: 15px; margin-bottom: 15px; border-radius: 4px;">
-<pre style="background: #000; background-color: #000; color: #B0B8C4; font-family: 'Roboto Mono', monospace; font-size: 13px; margin: 0; overflow-x: auto;">Testing get_random_hazard():
-  1. Buc-ee's appears!
-  2. Speed trap!
-  3. Armadillo crossing!
-  4. Whataburger cravings!
-  5. Buc-ee's appears!
-  6. Toll road confusion!
-  7. Check engine light!
-  8. Speed trap!
-  9. Armadillo crossing!
-  10. Whataburger cravings!</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 3:</strong> Verify these critical behaviors:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Random selection</strong> &mdash; hazards vary between runs</li>
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">No crashes</strong> &mdash; no IndexError from invalid indices</li>
-                <li><strong style="color: #fff;">All hazards appear</strong> &mdash; run several times to see variety</li>
-            </ul>
-
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;"><strong style="color: #fff;">Step 4:</strong> Once testing passes, <strong style="color: #FF1744;">delete the test code</strong> and move on to Checkpoint 2.</p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">HAZARD_NAMES</span> list with 6 Texas-themed hazards</li>
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">get_random_hazard()</span> returns a random hazard from the list</li>
-                <li>No more if/elif chain for hazard selection</li>
-            </ul>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-2.svg" alt="Checkpoint 2" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Add display_numbered_list() to Library</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Expand your function library with a reusable list display function.</p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A function called <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_numbered_list(items, title)</span> that prints a list with numbers and a title.
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Open <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span></li>
-                <li style="margin-bottom: 10px;">Add a comment section: <code style="color: #39ff14;"># LIST UTILITY FUNCTIONS (Added in Lab 3-3)</code></li>
-                <li style="margin-bottom: 10px;">Define <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_numbered_list(items, title)</span> with two parameters</li>
-                <li style="margin-bottom: 10px;">Print the title, then a dashed line using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">'-' * len(title)</span></li>
-                <li style="margin-bottom: 10px;">Use a <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">for</span> loop with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">range(len(items))</span> to print numbered items</li>
-                <li>Add a docstring describing the function</li>
-            </ol>
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img style="width: 30px; height: 30px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #da92ff;">Program 7-3:</strong> Shows the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">for index in range(len(list))</span> pattern for accessing items with their positions.
-                    </p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 40%;">Mistake</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222;">Using <code style="color: #39ff14;">for item in items</code></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">You get items but not their index&mdash;can't print numbers</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222;">Printing <code style="color: #39ff14;">i</code> instead of <code style="color: #39ff14;">i + 1</code></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Numbering starts at 0 instead of 1</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Forgetting the blank line at the end</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Output runs together with next section</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this temporary test code in your library's <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">main()</span>:</p>
-            <div style="background: #1a1a1a; border: 3px dashed #FFCC00; padding: 15px; margin-bottom: 15px; border-radius: 4px;">
-<pre style="background: #000; background-color: #000; color: #39ff14; font-family: 'Roboto Mono', monospace; font-size: 13px; margin: 0; overflow-x: auto;"># TEMPORARY TEST - DELETE BEFORE SUBMITTING
-test_cities = ['San Antonio', 'Austin', 'Houston']
-display_numbered_list(test_cities, 'CITIES VISITED:')</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span> directly. You should see:</p>
-            <div style="background: #1a1a1a; border: 3px solid #39FF14; padding: 15px; margin-bottom: 15px; border-radius: 4px;">
-<pre style="background: #000; background-color: #000; color: #B0B8C4; font-family: 'Roboto Mono', monospace; font-size: 13px; margin: 0; overflow-x: auto;">CITIES VISITED:
-----------------
-  1. San Antonio
-  2. Austin
-  3. Houston
-</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 3:</strong> Verify these behaviors:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Title appears</strong> with dashed underline matching title length</li>
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Numbering starts at 1</strong>, not 0</li>
-                <li><strong style="color: #fff;">Blank line</strong> appears after the list</li>
-            </ul>
-
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;"><strong style="color: #fff;">Step 4:</strong> Once testing passes, move on to Checkpoint 3.</p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span> with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_numbered_list()</span></li>
-                <li style="margin-bottom: 8px;">Function prints title, dashed line, numbered items, blank line</li>
-                <li>A docstring describing the function</li>
-            </ul>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-3.svg" alt="Checkpoint 3" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Sorted Hazards Display</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Copy and sort the hazards list for alphabetical display in your trip report.</p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A sorted copy of your hazards list that displays alphabetically (A-Z) in the trip report.
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Find your trip report section (after the game loop ends)</li>
-                <li style="margin-bottom: 10px;">Before displaying hazards, create a copy: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">sorted_hazards = hazards_list.copy()</span></li>
-                <li style="margin-bottom: 10px;">Sort the copy: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">sorted_hazards.sort()</span></li>
-                <li>Display the sorted list (either with your new function or manually)</li>
-            </ol>
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img style="width: 30px; height: 30px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #da92ff;">Section 7.5:</strong> Shows the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">sort()</span> method&mdash;it modifies the list in place. That's why we copy first!
-                    </p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 40%;">Mistake</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222;">Using <code style="color: #39ff14;">sorted_hazards = hazards_list</code></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Both variables point to same list&mdash;sorting one sorts both!</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222;">Calling <code style="color: #39ff14;">hazards_list.sort()</code> directly</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Destroys original order&mdash;can't show hazards in occurrence order elsewhere</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Using <code style="color: #39ff14;">sorted_hazards = sorted_hazards.sort()</code></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;"><code style="color: #39ff14;">sort()</code> returns None, not the sorted list&mdash;you'll lose your data</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this temporary test code to verify copy/sort behavior:</p>
-            <div style="background: #1a1a1a; border: 3px dashed #FFCC00; padding: 15px; margin-bottom: 15px; border-radius: 4px;">
-<pre style="background: #000; background-color: #000; color: #39ff14; font-family: 'Roboto Mono', monospace; font-size: 13px; margin: 0; overflow-x: auto;"># TEMPORARY TEST - DELETE BEFORE SUBMITTING
-test_hazards = ["Speed trap!", "Buc-ee's appears!", "Armadillo crossing!"]
-sorted_test = test_hazards.copy()
-sorted_test.sort()
-print("Original:", test_hazards)
-print("Sorted:", sorted_test)</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run your program. You should see:</p>
-            <div style="background: #1a1a1a; border: 3px solid #39FF14; padding: 15px; margin-bottom: 15px; border-radius: 4px;">
-<pre style="background: #000; background-color: #000; color: #B0B8C4; font-family: 'Roboto Mono', monospace; font-size: 13px; margin: 0; overflow-x: auto;">Original: ["Speed trap!", "Buc-ee's appears!", "Armadillo crossing!"]
-Sorted: ["Armadillo crossing!", "Buc-ee's appears!", "Speed trap!"]</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 3:</strong> Verify these behaviors:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Original unchanged</strong> &mdash; still in occurrence order</li>
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Sorted is A-Z</strong> &mdash; alphabetical order</li>
-                <li><strong style="color: #fff;">Two separate lists</strong> &mdash; different objects in memory</li>
-            </ul>
-
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;"><strong style="color: #fff;">Step 4:</strong> Play your game, encounter some hazards, and verify the trip report shows them sorted.</p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Trip report shows hazards in alphabetical order</li>
-                <li style="margin-bottom: 8px;">Original hazards_list is NOT modified</li>
-                <li>Uses <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.copy()</span> then <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.sort()</span> pattern</li>
-            </ul>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-4.svg" alt="Checkpoint 4" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Unique Cities Count</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Count distinct cities visited using the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">in</span> operator.</p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A list of unique cities (no duplicates) and a count to display in your trip report.
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">In your trip report section, create an empty list: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">unique_cities = []</span></li>
-                <li style="margin-bottom: 10px;">Loop through <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">visited_cities</span> with a for loop</li>
-                <li style="margin-bottom: 10px;">For each city, check: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">if city not in unique_cities:</span></li>
-                <li style="margin-bottom: 10px;">If not found, append it: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">unique_cities.append(city)</span></li>
-                <li>Display the count using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">len(unique_cities)</span></li>
-            </ol>
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img style="width: 30px; height: 30px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #da92ff;">Program 7-2:</strong> Demonstrates the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">in</span> operator to check if an item exists in a list. Combine with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">not</span> to check if absent.
-                    </p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 40%;">Mistake</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222;">Using <code style="color: #39ff14;">if city in unique_cities:</code></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Logic is backwards&mdash;you only add if it's NOT already there</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222;">Using <code style="color: #39ff14;">len(visited_cities)</code> for unique count</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">That's total visits, not unique cities&mdash;includes duplicates</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Forgetting to initialize <code style="color: #39ff14;">unique_cities = []</code></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">NameError: unique_cities is not defined</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Add this temporary test code to verify the pattern:</p>
-            <div style="background: #1a1a1a; border: 3px dashed #FFCC00; padding: 15px; margin-bottom: 15px; border-radius: 4px;">
-<pre style="background: #000; background-color: #000; color: #39ff14; font-family: 'Roboto Mono', monospace; font-size: 13px; margin: 0; overflow-x: auto;"># TEMPORARY TEST - DELETE BEFORE SUBMITTING
-test_route = ['San Antonio', 'Austin', 'San Antonio', 'Houston', 'Austin']
-unique = []
-for city in test_route:
-    if city not in unique:
-        unique.append(city)
-print(f"Route: {test_route}")
-print(f"Unique: {unique}")
-print(f"Unique count: {len(unique)}")</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> Run your program. You should see:</p>
-            <div style="background: #1a1a1a; border: 3px solid #39FF14; padding: 15px; margin-bottom: 15px; border-radius: 4px;">
-<pre style="background: #000; background-color: #000; color: #B0B8C4; font-family: 'Roboto Mono', monospace; font-size: 13px; margin: 0; overflow-x: auto;">Route: ['San Antonio', 'Austin', 'San Antonio', 'Houston', 'Austin']
-Unique: ['San Antonio', 'Austin', 'Houston']
-Unique count: 3</pre>
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 3:</strong> Verify these behaviors:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">5 visits</strong> in route, but only <strong style="color: #fff;">3 unique cities</strong></li>
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Duplicates filtered</strong> &mdash; San Antonio and Austin appear once each</li>
-                <li><strong style="color: #fff;">Order preserved</strong> &mdash; first occurrence order maintained</li>
-            </ul>
-
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;"><strong style="color: #fff;">Step 4:</strong> Play your game, backtrack to some cities, and verify the unique count is correct.</p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;">Trip report shows "Unique cities visited: X"</li>
-                <li style="margin-bottom: 8px;">Count excludes duplicate visits</li>
-                <li>Uses the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">not in</span> pattern</li>
-            </ul>
-
-            <hr style="border: none; border-top: 2px dashed #333; margin: 30px 0;">
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 25px;">
-                <img src="https://jfnewsom.github.io/is2053-assets/checkpoints/starburst-5.svg" alt="Checkpoint 5" style="width: 100px; height: 100px; flex-shrink: 0;">
-                <div style="flex-grow: 1;">
-                    <h3 style="font-family: 'Roboto Slab', 'Arial Black', sans-serif; color: #39ff14; margin: 0 0 10px 0; font-size: 20px;">Save Trip Report to File</h3>
-                    <p style="color: #B0B8C4; margin: 0;">Write a formatted trip report to <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trip_report.txt</span>.</p>
-                </div>
-            </div>
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; overflow: hidden; background: #FFCC00;">
-                    <img src="https://jfnewsom.github.io/is2053-assets/headshots/Priya-Venkatesh.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Priya Venkatesh">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <p style="color: #B0B8C4; margin: 0 0 12px 0; font-size: 14px;">"This is the finish line! Take all that data you've been tracking&mdash;cities, hazards, stats&mdash;and write it to a file the player can keep. Open that file in Notepad after you play. If it looks good there, it's good anywhere!"</p>
-                    <img src="https://jfnewsom.github.io/is2053-assets/mentor-names/priya-venkatesh.svg" alt="Priya Venkatesh" style="height: 18px; display: block; margin-bottom: 4px;">
-                    <div style="color: #666; font-size: 12px;">Senior Developer, Bat City Collective</div>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-youre-building.svg" alt="What You're Building" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                A <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">save_trip_report()</span> function that writes a formatted report to a text file.
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-step-by-step-instructions.svg" alt="Step-by-Step Instructions" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 10px;">Define a <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">save_trip_report()</span> function with parameters for all report data</li>
-                <li style="margin-bottom: 10px;">Open <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trip_report.txt</span> in write mode: <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">open(REPORT_FILE, 'w')</span></li>
-                <li style="margin-bottom: 10px;">Write header: title, separator line, driver name, destination</li>
-                <li style="margin-bottom: 10px;">Write route using <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">' -> '.join(visited_cities)</span></li>
-                <li style="margin-bottom: 10px;">Write statistics: miles, turns, hazards faced/escaped, escape rate</li>
-                <li style="margin-bottom: 10px;">Write sorted hazards list (if any)</li>
-                <li>Close the file and confirm to user</li>
-            </ol>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-expected-output.svg" alt="Expected Output" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">Your <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trip_report.txt</span> should look like this:</p>
-            <div style="background: #1a1a1a; border: 3px solid #39FF14; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
-<pre style="background: #000; background-color: #000; color: #B0B8C4; font-family: 'Roboto Mono', monospace; font-size: 13px; margin: 0; overflow-x: auto;">DEEP IN THE HEART - TRIP REPORT
+      </div>
+    </div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Sorted hazards in a report are a small thing that makes a huge difference. Players notice when their journey feels organized. Copy first, sort the copy — that one line of discipline protects everything built underneath it."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li>Sorted hazard display uses <code>hazards_list.copy()</code> then <code>.sort()</code> — original list untouched</li>
+      <li>Unique cities are calculated with a <code>for</code> loop and <code>in</code> operator</li>
+      <li><code>len(unique_cities)</code> appears in the trip report output</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">3</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Write save_trip_report() and Generate trip_report.txt</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>The trip report currently only prints to the screen. This checkpoint adds a <code>save_trip_report()</code> function that writes a formatted version to <code>trip_report.txt</code> so the player can keep a record of their run.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Define <code>save_trip_report()</code> with the following parameters: <code>player_name</code>, <code>current_city</code>, <code>total_miles</code>, <code>total_turns</code>, <code>hazards_faced</code>, <code>hazards_escaped</code>, <code>visited_cities</code>, and <code>hazards_list</code>. Give it a docstring.</li>
+      <li>Inside the function, open <code>REPORT_FILE</code> in write mode using the <code>with</code> statement.</li>
+      <li>Write the header section: a title line, a separator line of equal signs, the driver name, and the final destination.</li>
+      <li>Write a ROUTE section. Loop through <code>visited_cities</code> and write each city separated by <code>' -> '</code> on a single line. Then write the unique cities count on the next line.</li>
+      <li>Write a STATISTICS section with total miles, total turns, hazards faced, hazards escaped, and the escape rate as a percentage (use <code>:.1f</code> formatting). Guard against division by zero on the escape rate.</li>
+      <li>Write a HAZARDS (A-Z) section. Copy and sort <code>hazards_list</code> inside the function, then write each hazard prefixed with <code>'  - '</code>.</li>
+      <li>Write a closing separator line.</li>
+      <li>In the main game, after the trip report prints to screen, ask the player if they want to save the report using <code>function_library.get_yes_no()</code>. If yes, call <code>save_trip_report()</code> with all the required arguments.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">Expected Output</div>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>DEEP IN THE HEART - TRIP REPORT
 ========================================
 Driver: Maria
 Final Destination: Galveston
 
 ROUTE:
-  San Antonio -> Houston -> Galveston
+  San Antonio -&gt; Houston -&gt; Galveston
   Unique cities: 3
 
 STATISTICS:
@@ -778,246 +357,270 @@ STATISTICS:
 
 HAZARDS (A-Z):
   - Armadillo crossing!
-  - Buc-ee's appears!
+  - Buc-ee&#x27;s appears!
 
 ========================================</pre>
-            </div>
-
-                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #BF40FF; border: 3px solid #000; border-radius: 50%; box-shadow: 3px 3px 0 #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                    <img style="width: 30px; height: 30px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div style="background: #1a1a1a; border: 2px solid #BF40FF; border-radius: 15px; box-shadow: 4px 4px 0 #000; padding: 15px 18px; flex-grow: 1;">
-                    <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                        <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-bookex-patterns.svg" alt="BookEx Patterns" style="height: 18px; display: block;">
-                    </div>
-                    <p style="color: #B0B8C4; margin: 0; font-size: 14px;">
-                        <strong style="color: #da92ff;">Program 6-1:</strong> Shows writing to files with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">outfile.write()</span>. Remember to add <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">'\n'</span> for newlines!
-                    </p>
-                </div>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-tips-and-pitfalls.svg" alt="Tips & Pitfalls" style="height: 18px; display: block;">
-            </div>
-            <div style="position: relative; border: 3px solid #000; overflow: hidden; margin: 15px 0;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14; width: 40%;">Mistake</th>
-                            <th style="background: #1a1a1a; color: #39ff14; font-size: 12px; padding: 12px 15px; text-align: left; border-bottom: 2px solid #39FF14;">Why It Fails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222;">Forgetting <code style="color: #39ff14;">'\n'</code> at end of lines</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">All text runs together on one line</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px; border-bottom: 2px solid #222;">Using <code style="color: #39ff14;">print()</code> instead of <code style="color: #39ff14;">write()</code></td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px; border-bottom: 2px solid #222;">Output goes to screen, not file</td>
-                        </tr>
-                        <tr>
-                            <td style="background: #000; color: #ff6b1a; padding: 12px 15px;">Forgetting to close the file</td>
-                            <td style="background: #000; color: #B0B8C4; padding: 12px 15px;">Data may not be written completely</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-test-your-code.svg" alt="Test Your Code" style="height: 18px; display: block;">
-            </div>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 1:</strong> Play a complete game to the beach.</p>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 2:</strong> When prompted, choose to save the trip report.</p>
-
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Step 3:</strong> Open <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trip_report.txt</span> in Notepad or VS Code. Verify:</p>
-            <ul style="color: #B0B8C4; margin: 0 0 15px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Header</strong> with title and separator</li>
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Route</strong> shows all cities with arrows</li>
-                <li style="margin-bottom: 5px;"><strong style="color: #fff;">Statistics</strong> are accurate</li>
-                <li><strong style="color: #fff;">Hazards</strong> are sorted A-Z</li>
-            </ul>
-
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;"><strong style="color: #fff;">Step 4:</strong> Play again with different choices and verify report updates correctly.</p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #39FF14;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/blk/h3-what-you-should-have.svg" alt="What You Should Have" style="height: 18px; display: block;">
-            </div>
-            <ul style="color: #B0B8C4; margin: 0 0 0 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">save_trip_report()</span> function writes formatted report</li>
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">trip_report.txt</span> contains complete trip summary</li>
-                <li>User is prompted to save at end of game</li>
-            </ul>
-
-        </div>
     </div>
-</div>
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #FF1744 0%, #4A0A0A 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-final-checklist.svg" alt="Final Checklist" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 7-16</strong>
+            — <code>write_number_list.py</code>
+            (Step 1)
+            — Shows the pattern for writing list contents to a file with a loop — adapt this for writing the hazards section.
+          </li>
+          </ul>
         </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Check It Before You Wreck It
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-before-you-submit.svg" alt="Before You Submit" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 15px 0;">
-                You're submitting <strong style="color: #fff;">TWO files</strong> this week:
-            </p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">function_library.py</span> with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">display_numbered_list()</span> added</li>
-                <li style="margin-bottom: 8px;"><span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">lab-3-3.py</span> with <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">HAZARD_NAMES</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">get_random_hazard()</span>, sorted hazards, unique cities, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">save_trip_report()</span></li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Both files</strong> have proper docstrings with your name</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">All functions</strong> have docstrings</li>
-                <li><strong style="color: #fff;">No test files</strong> or temporary test code being submitted</li>
-            </ul>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-warning.svg" alt="Warning" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <strong style="color: #fff;">Scope Reminder:</strong> You may use <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.copy()</span>, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">.sort()</span>, and the <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #39ff14; font-size: 13px;">in</span> operator. <strong style="color: #FF1744;">Do NOT use</strong> list slicing <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">[start:end]</span>, list comprehensions, <span style="background: #2a2a2a; padding: 2px 6px; border-radius: 3px; font-family: 'Roboto Mono', monospace; color: #ff6b1a; font-size: 13px;">readlines()</span>, or sets (those are Module 4 topics).
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-warning.svg" alt="Warning" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <strong style="color: #fff;">MASTER Week Grading:</strong> This assignment includes <strong style="color: #fff;">15% manual grading</strong> for Solution Quality. The instructor will review your code organization, variable names, comments, and overall approach. Make your code clean and readable!
-            </p>
-
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-save-your-code.svg" alt="Save Your Code" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <strong style="color: #fff;">Keep BOTH files!</strong> In Module 4, you'll add dictionaries for city data and sets for tracking unique items more elegantly. Your function library will keep growing!
-            </p>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-permitted-techniques.svg" alt="Permitted Techniques" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;"><strong style="color: #fff;">Chapters 2-7:</strong></p>
-            <ul style="color: #B0B8C4; margin: 0 0 20px 0; padding-left: 25px;">
-                <li style="margin-bottom: 5px;">All previous techniques (variables, if/else, loops, functions, file I/O, lists)</li>
-                <li style="margin-bottom: 5px;">copy(), sort(), in operator</li>
-                <li style="margin-bottom: 5px;">Writing to text files for report generation</li>
-            </ul>
-            <p style="color: #ff6b1a; margin: 0 0 20px 0;"><strong>NOT permitted:</strong> list slicing, list comprehensions, readlines(), sets, dictionaries</p>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #FF1744;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-academic-integrity.svg" alt="Academic Integrity" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 10px 0;">
-                This assignment must be <strong style="color: #fff;">your own work</strong>. You may reference the textbook and BookEx examples. You may NOT copy code from others, use AI, or share your code.
-            </p>
-
-        </div>
+      </div>
     </div>
-</div>
-
-<div style="position: relative; margin-bottom: 30px; padding-bottom: 8px; padding-right: 8px;">
-    <div style="position: absolute; top: 8px; left: 8px; right: 0; bottom: 0; background: #000;"></div>
-    <div style="position: relative; border: 4px solid #000; background: linear-gradient(135deg, #BF40FF 0%, #2E0854 100%); padding: 8px 12px 12px 12px;">
-        
-        <div>
-            <img src="https://jfnewsom.github.io/is2053-assets/bangers-headers/header-need-help.svg" alt="Need Help?" style="height: 60px; margin-bottom: 2px; margin-left: -8px;">
-        </div>
-        <div style="display: inline-block; background: #FFCC00; padding: 4px 12px; border: 2px solid #000; font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px;">
-            Look No Further! We've Got You
-        </div>
-        
-        <div style="background: rgba(10, 10, 10, 0.85); border: 2px solid #333; margin-top: 15px; padding: 20px;">
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-if-you-get-stuck.svg" alt="If You Get Stuck" style="height: 18px; display: block;">
-            </div>
-            <ol style="color: #B0B8C4; margin: 0 0 25px 0; padding-left: 25px;">
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Re-read Program 7-2 and Section 7.5</strong> &mdash; the in operator and sort() patterns</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Test copy/sort in isolation</strong> &mdash; make sure .copy() works before using in your code</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Check your file output</strong> &mdash; open trip_report.txt in Notepad to see what's really there</li>
-                <li style="margin-bottom: 8px;"><strong style="color: #fff;">Submit to CodeGrade early</strong> &mdash; shows exactly which tests pass or fail</li>
-                <li><strong style="color: #fff;">Come to Zoom or office hours</strong> &mdash; screen share and debug together</li>
-            </ol>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-codegrade-tip.svg" alt="CodeGrade Tip" style="height: 18px; display: block;">
-            </div>
-            <p style="color: #B0B8C4; margin: 0 0 20px 0;">
-                <strong style="color: #fff;">Unlimited submissions!</strong> Submit early and often. CodeGrade will tell you exactly what's working and what needs fixing.
-            </p>
-            
-                        <div style="display: inline-block; padding: 8px 15px; border: 3px solid #000; margin-bottom: 12px; background: #BF40FF;">
-                <img src="https://jfnewsom.github.io/is2053-assets/h3-text-only/wht/h3-contact-and-resources.svg" alt="Contact &amp; Resources" style="height: 18px; display: block;">
-            </div>
-            
-                        <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Webcam-Video-Square.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Weekly Zoom Session</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Tuesdays at 6:00 PM CT &mdash; Live coding help and Q&amp;A</div>
-                    <a href="https://utsa.zoom.us/j/97617245124" style="color: #BF40FF; font-size: 13px;">https://utsa.zoom.us/j/97617245124</a>
-                </div>
-            </div>
-            
-                        <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Calendar-Mark.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Office Hours (by Appointment)</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Book a 15-minute slot for one-on-one help</div>
-                    <a href="https://calendly.com/john-newsom-utsa/student-meeting" style="color: #BF40FF; font-size: 13px;">https://calendly.com/john-newsom-utsa/student-meeting</a>
-                </div>
-            </div>
-            
-                        <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Customer-Support.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Discord Community</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Get help from classmates and share tips</div>
-                </div>
-            </div>
-            
-                        <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Mail-Send-Envelope.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Email</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">For private questions or concerns</div>
-                    <a href="/cdn-cgi/l/email-protection#eb81848385c5858e9c988486ab9e9f988ac58e8f9e" style="color: #BF40FF; font-size: 13px;"><span class="__cf_email__" data-cfemail="365c595e581858534145595b764342455718535243">[email&#160;protected]</span></a>
-                </div>
-            </div>
-            
-                        <div style="display: flex; gap: 15px; align-items: center;">
-                <div style="width: 40px; height: 40px; background: #BF40FF; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img style="width: 22px; height: 22px;" src="https://jfnewsom.github.io/is2053-assets/batcity-icons/Book.svg" alt="" role="presentation">
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 700;">Chapter 6 &amp; 7 BookEx Reference Guides</div>
-                    <div style="color: #B0B8C4; font-size: 14px;">Step-by-step breakdowns of every textbook example</div>
-                </div>
-            </div>
-            
-        </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>save_trip_report()</code> defined with all parameters and a docstring</li>
+      <li>Function uses <code>with open(REPORT_FILE, 'w')</code> — not the constant string directly</li>
+      <li>Report contains header, ROUTE, STATISTICS, and HAZARDS (A-Z) sections in that order</li>
+      <li>Escape rate is formatted to one decimal place and guards against division by zero</li>
+      <li>Player is prompted to save the report after the on-screen trip report displays</li>
+    </ol>
     </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">4</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add display_numbered_list() to function_library.py</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>The final piece: one new function in <code>function_library.py</code>. <code>display_numbered_list()</code> takes any list and a title string, prints the title with a separator, and displays each item with a number prefix. This is the last Module 3 library addition — after this week, the library has eight functions across four categories.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Open <code>function_library.py</code>. Add a new section comment at the bottom: <code># LIST UTILITY FUNCTIONS (Added in Lab 3-3)</code></li>
+      <li>Define <code>display_numbered_list(items, title)</code>. Give it a complete docstring that describes both parameters.</li>
+      <li>Inside the function: print the title string, then print a separator using <code>'-' * len(title)</code>.</li>
+      <li>Use <code>for i in range(len(items)):</code> to loop through the list by index. Print each item as <code>f'  {i + 1}. {items[i]}'</code>.</li>
+      <li>Print a blank line after the last item so the output has breathing room.</li>
+      <li>Back in <code>lab-3-3.py</code>, update the final trip report to use <code>function_library.display_numbered_list()</code> for displaying the visited cities route and the sorted hazards list.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <ol>
+      <li>Play a complete game from start to beach. Travel through at least two cities and trigger at least two hazards.</li>
+      <li>Verify the on-screen trip report shows a numbered city route and a sorted, numbered hazard list.</li>
+      <li>Choose to save the trip report. Open <code>trip_report.txt</code> in a text editor and confirm it matches the expected format.</li>
+      <li>Run the program again, load a saved game, play one more turn, and verify the full save-reload-play-report cycle works end to end.</li>
+      <li>Run <code>python3 function_library.py</code> in your terminal — it should produce no errors.</li>
+    </ol>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 7-12</strong>
+            — <code>drop_lowest_score.py</code>
+            (Step 1)
+            — Shows a function that accepts a list as a parameter and processes it — the same pattern as display_numbered_list().
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>display_numbered_list(items, title)</code> defined in <code>function_library.py</code> with a docstring</li>
+      <li>Function prints title, separator, numbered items using <code>range(len(items))</code>, and a trailing blank line</li>
+      <li>Trip report on screen uses <code>function_library.display_numbered_list()</code> for the route and hazard sections</li>
+      <li><code>trip_report.txt</code> is generated with the correct multi-section format</li>
+      <li>Both <code>lab-3-3.py</code> and <code>function_library.py</code> are ready to submit</li>
+    </ol>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--red">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Final Checklist</div>
+    <div class="lc-sub-banner">Check It Before You Wreck It</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3 lc-h3--yellow">Before You Submit</div>
+    <ul class="lc-checklist">
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">lab-3-3.py has a top-of-file comment block with your name, abc123, section number, and a description</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">function_library.py has display_numbered_list(items, title) with a complete docstring</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">HAZARD_NAMES list constant defined with at least six hazard strings</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">REPORT_FILE = 'trip_report.txt' constant defined and used in save_trip_report()</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">get_random_hazard() uses random index into HAZARD_NAMES — no if/elif chain</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Sorted hazard display uses .copy() then .sort() — original hazards_list is not modified</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Unique cities are calculated with a for loop and in operator — no sort() or set() on visited_cities</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">save_trip_report() writes all four sections: header, ROUTE, STATISTICS, HAZARDS (A-Z)</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Escape rate calculation guards against division by zero</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Player is offered the option to save the trip report at the end of the game</span>
+      </li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
+    <p>Chapter 7 list methods are all in scope: append(), sort(), copy(), remove(), index(), and len(). The with statement remains permitted for file operations. Do NOT use sets, dictionaries, classes, list comprehensions, or any Chapter 8+ features. The set() type is the Module 4 upgrade for unique tracking — use the for/in approach this week.</p>
+    <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
+    <div class="lc-permitted">
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–7 (all techniques from Chapters 2–6 plus full Chapter 7 list processing)</p>
+      <ul class="lc-permitted__list">
+      <li>list.copy() to duplicate a list before sorting</li>
+      <li>list.sort() to sort a list in place</li>
+      <li>for loop with range(len(list)) for indexed display</li>
+      <li>in operator to check membership and build unique lists</li>
+      <li>with open(filename, 'w') for file writing</li>
+      <li>random.randint(0, len(list) - 1) for random index generation</li>
+      </ul>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> set(), dict, classes, list comprehensions, sorted() built-in (use .sort() on a copy instead)</p>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Submit both lab-3-3.py and function_library.py. A missing function_library.py will fail the display_numbered_list() tests even if your main file is correct.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Do not call sort() directly on hazards_list or visited_cities in the game loop — only sort copies, and only in the report section.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
+    <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
+  </div>
+</div>
+<div class="lc-card lc-card--purple">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Need Help?</div>
+    <div class="lc-sub-banner">Look No Further!</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
+    <ul>
+      <li>If trip_report.txt looks wrong, add print statements inside save_trip_report() to trace what is being written before you open the file</li>
+      <li>Re-read Program 7-12 for the pattern of passing a list to a function and processing it — display_numbered_list() follows the same shape</li>
+      <li>Submit to CodeGrade early — it tests display_numbered_list() in isolation, so you will see immediately if the function signature or output format is off</li>
+      <li>Come to Zoom or office hours — MASTER week bugs are almost always a matter of tracking which variable holds the right data at the right moment</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
+    <div class="lc-contact-grid">
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Zoom Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br>
+          <a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Schedule a Meeting</div>
+        <div class="lc-contact-card__value">
+          <a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Email</div>
+        <div class="lc-contact-card__value">
+          <a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>
+          Include your section number and abc123
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">CodeGrade</div>
+        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div style="text-align: center; color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
-    <img style="height: 50px; margin-bottom: 15px;" src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
-    <div style="color: #b0b8c4; font-size: 13px;">IS2053 Programming I &mdash; UT San Antonio &mdash; Spring 2026</div>
-    <
+    <footer class="lc-footer">
+        <img src="../../branding/UTSanAntonio_H_Logo_Dual_TM_RGB.png" alt="The University of Texas at San Antonio">
+        <div class="lc-footer__citation">
+            <span class="lc-footer__citation-label">Textbook</span>
+            <span class="lc-footer__citation-text"><em>Starting Out with Python</em>, 6th Edition &nbsp;&middot;&nbsp; Tony Gaddis &nbsp;&middot;&nbsp; Pearson &nbsp;&middot;&nbsp; ISBN 978-0-13-787120-9</span>
+        </div>
+        <p class="lc-footer__copyright">&copy; 2026 The University of Texas at San Antonio. Developed by John Newsom for IS2053: Programming I (Python). All rights reserved.</p>
+    </footer>
+
+</div>
+<script src="https://jfnewsom.github.io/is2053-assets/nav.js"></script>
+</body>
+</html>
