@@ -385,20 +385,20 @@
           <div class="nav-dropdown">
             <div class="drop-label">Reading Guide</div>
             <div class="drop-sub">Module 1 &mdash; Ch. 2&ndash;3</div>
-            ${link('Chapter 2',  S + 'reading.html#ch02' + suffix, 'dd-orange')}
-            ${link('Chapter 3',  S + 'reading.html#ch03' + suffix, 'dd-orange')}
+            ${link('Chapter 2',  S + 'reading-ch02.html' + suffix, 'dd-orange')}
+            ${link('Chapter 3',  S + 'reading-ch03.html' + suffix, 'dd-orange')}
             <div class="drop-sub">Module 2 &mdash; Ch. 4&ndash;5</div>
-            ${link('Chapter 4',  S + 'reading.html#ch04' + suffix, 'dd-orange')}
-            ${link('Chapter 5',  S + 'reading.html#ch05' + suffix, 'dd-orange')}
+            ${link('Chapter 4',  S + 'reading-ch04.html' + suffix, 'dd-orange')}
+            ${link('Chapter 5',  S + 'reading-ch05.html' + suffix, 'dd-orange')}
             <div class="drop-sub">Module 3 &mdash; Ch. 6&ndash;7</div>
-            ${link('Chapter 6',  S + 'reading.html#ch06' + suffix, 'dd-orange')}
-            ${link('Chapter 7',  S + 'reading.html#ch07' + suffix, 'dd-orange')}
+            ${link('Chapter 6',  S + 'reading-ch06.html' + suffix, 'dd-orange')}
+            ${link('Chapter 7',  S + 'reading-ch07.html' + suffix, 'dd-orange')}
             <div class="drop-sub">Module 4 &mdash; Ch. 8&ndash;9</div>
-            ${link('Chapter 8',  S + 'reading.html#ch08' + suffix, 'dd-orange')}
-            ${link('Chapter 9',  S + 'reading.html#ch09' + suffix, 'dd-orange')}
+            ${link('Chapter 8',  S + 'reading-ch08.html' + suffix, 'dd-orange')}
+            ${link('Chapter 9',  S + 'reading-ch09.html' + suffix, 'dd-orange')}
             <div class="drop-sub">Module 5 &mdash; Ch. 10&ndash;11</div>
-            ${link('Chapter 10', S + 'reading.html#ch10' + suffix, 'dd-orange')}
-            ${link('Chapter 11', S + 'reading.html#ch11' + suffix, 'dd-orange')}
+            ${link('Chapter 10', S + 'reading-ch10.html' + suffix, 'dd-orange')}
+            ${link('Chapter 11', S + 'reading-ch11.html' + suffix, 'dd-orange')}
           </div>
         </div>
 
