@@ -276,7 +276,6 @@
   const navHTML = `
     <div class="nav-inner">
       <a class="nav-logo" href="${S}home.html">
-        <img src="${BASE}/branding/BatCity-logo-on-black.svg" alt="Bat City Collective">
         <span class="nav-logo-label">IS2053</span>
       </a>
 
