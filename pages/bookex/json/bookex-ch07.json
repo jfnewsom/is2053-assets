@@ -1,0 +1,282 @@
+{
+    "meta": {
+        "chapterId":    "bookex-ch07",
+        "chapter":      7,
+        "title":        "Lists and Tuples",
+        "programCount": 10,
+        "filename":     "10 individual .py files"
+    },
+    "overview": {
+        "body": "Work through each Gaddis program in order. Chapter 7 introduces lists \u2014 the most important data structure in the course. Type every program by hand. Lists unlock a whole new level of problem-solving, and the patterns here (append, iterate, accumulate, search, modify) show up in every Lab assignment from here on.",
+        "objectives": [
+            "Create a list with a fixed size using the repetition operator",
+            "Build a list dynamically using append() in a loop",
+            "Search a list using the in operator",
+            "Find an item's index using index() and handle ValueError with try-except",
+            "Add items at a specific position using insert()",
+            "Remove items using remove() and handle ValueError with try-except",
+            "Calculate a list average using both a manual accumulator and sum()",
+            "Combine functions that build, process, and return lists",
+            "Write a list to a file by looping and converting each item to a string",
+            "Read a file into a list using readlines() and convert each element"
+        ],
+        "keyConceptsText": "Chapter 7 covers list creation, indexing, the in operator, append(), insert(), remove(), index(), sum(), len(), min(), max(), passing lists to functions, returning lists from functions, and file I/O with lists.",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis \u2014 Chapter 7: Lists and Tuples",
+        "programRequirements": [
+            "Each program is saved as its own individual .py file",
+            "Each file uses the exact filename listed in the instructions",
+            "Run write_number_list.py before read_number_list.py",
+            "Each program runs without syntax errors and output matches the textbook"
+        ],
+        "filenameNote": "This chapter uses 10 individual files. Submit all 10 files together in your final CodeGrade submission. Note that read_number_list.py reads a file created by write_number_list.py \u2014 run Checkpoint 9 before Checkpoint 10."
+    },
+    "timeGuide": {
+        "totalTime": "90\u2013120 Minutes",
+        "rows": [
+            { "checkpoint": "sales_list.py",        "time": "10 min", "task": "Create a fixed-size list and fill it with user input" },
+            { "checkpoint": "in_list.py",            "time": "10 min", "task": "Search a list with the in operator" },
+            { "checkpoint": "list_append.py",        "time": "10 min", "task": "Build a list dynamically with append()" },
+            { "checkpoint": "index_list.py",         "time": "10 min", "task": "Find and replace an item using index()" },
+            { "checkpoint": "insert_list.py",        "time": "10 min", "task": "Add an item at a specific position with insert()" },
+            { "checkpoint": "remove_item.py",        "time": "10 min", "task": "Remove an item with remove()" },
+            { "checkpoint": "average_list.py",       "time": "10 min", "task": "Calculate an average with accumulator and sum()" },
+            { "checkpoint": "drop_lowest_score.py",  "time": "15 min", "task": "Combine functions that build and process a list" },
+            { "checkpoint": "write_number_list.py",  "time": "10 min", "task": "Write a list to a file" },
+            { "checkpoint": "read_number_list.py",   "time": "10 min", "task": "Read a file into a list with readlines()" }
+        ]
+    },
+    "checkpoints": [
+        {
+            "number": 1,
+            "filename": "sales_list.py",
+            "programRef": "Program 7-1 (6th Ed) \u2022 Program 7-1 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A program that creates a five-element list pre-filled with zeros using the repetition operator ([0] * NUM_DAYS), then uses a for loop with range(len(sales)) to collect a sales value for each index position. A second for loop displays all the values. This is the standard pattern for working with a list of known size." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 7-1.",
+                    "Create a new file named sales_list.py.",
+                    "Type the program as shown, including the NUM_DAYS constant.",
+                    "Run it and enter five sales values.",
+                    "Confirm all five values are displayed back correctly."
+                ]},
+                { "type": "callout", "variant": "tip", "title": "[0] * 5 Creates a List of Five Zeros",
+                  "body": "The expression [0] * NUM_DAYS creates a list with NUM_DAYS elements, each initialized to 0. This reserves the space before you fill it. The for loop then replaces each 0 with user input using the index: sales[index] = float(input(...))." }
+            ]
+        },
+        {
+            "number": 2,
+            "filename": "in_list.py",
+            "programRef": "Program 7-2 (6th Ed) \u2022 Program 7-2 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A product lookup program that stores a list of product numbers and uses the in operator to check whether a user's search value is in the list. If found, a found message appears; if not, a not-found message appears. Short program, but the in operator is one of the most useful tools in Python." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 7-2.",
+                    "Create a new file named in_list.py.",
+                    "Type the program as shown.",
+                    "Run it and search for V475 \u2014 confirm the found message appears.",
+                    "Run it again and search for X999 \u2014 confirm the not-found message appears."
+                ]},
+                { "type": "callout", "variant": "info", "title": "in Works with Any List",
+                  "body": "if search in prod_nums evaluates to True if search is anywhere in the list, False otherwise. This works with lists of strings, integers, or any type. It is much cleaner than looping through the list yourself to search for a match." }
+            ]
+        },
+        {
+            "number": 3,
+            "filename": "list_append.py",
+            "programRef": "Program 7-3 (6th Ed) \u2022 Program 7-3 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A program that starts with an empty list and builds it dynamically by appending user-entered names inside a sentinel loop. After the loop ends, a for loop displays every name in the list. This is the most common way to build a list when you don't know in advance how many items there will be." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 7-3.",
+                    "Create a new file named list_append.py.",
+                    "Type the program as shown.",
+                    "Run it and add three or four names, then stop.",
+                    "Confirm all names are displayed in the order you entered them."
+                ]},
+                { "type": "callout", "variant": "tip", "title": "append() Always Adds to the End",
+                  "body": "Each call to name_list.append(name) adds the new name after all existing items. The list grows by one element each time. Starting with an empty list [] and building with append() is the pattern you will use in almost every Lab that collects a variable number of items." }
+            ]
+        },
+        {
+            "number": 4,
+            "filename": "index_list.py",
+            "programRef": "Program 7-4 (6th Ed) \u2022 Program 7-4 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A program that lets the user change an item in a list by searching for it with index(), which returns the item's position. The program then gets a replacement value and overwrites the old item at that position. A try-except catches ValueError if the item isn't found." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 7-4.",
+                    "Create a new file named index_list.py.",
+                    "Type the program as shown including the try-except block.",
+                    "Run it and change 'Burgers' to 'Tacos' \u2014 confirm the list updates.",
+                    "Run it again and try to change 'Sushi' (not in the list) \u2014 confirm the error message appears."
+                ]},
+                { "type": "callout", "variant": "pitfall", "title": "index() Raises ValueError If the Item Is Not Found",
+                  "body": "If the item you're searching for isn't in the list, index() raises ValueError \u2014 which crashes your program if unhandled. The try-except block in this program catches that and prints a friendly message instead. Always protect index() calls with try-except or an in check first." }
+            ]
+        },
+        {
+            "number": 5,
+            "filename": "insert_list.py",
+            "programRef": "Program 7-5 (6th Ed) \u2022 Program 7-5 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A program that creates a list with three names, displays it, then inserts 'Joe' at position 0 (the very beginning) using insert(0, 'Joe'). All existing items shift one position to the right. The list is displayed again to show the result." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 7-5.",
+                    "Create a new file named insert_list.py.",
+                    "Type the program as shown.",
+                    "Run it and compare the before and after output.",
+                    "Try changing insert(0, 'Joe') to insert(1, 'Joe') and see where 'Joe' ends up."
+                ]},
+                { "type": "callout", "variant": "info", "title": "insert(index, item) Shifts Everything Right",
+                  "body": "insert(0, 'Joe') puts 'Joe' at the front and shifts 'James', 'Kathryn', and 'Bill' to positions 1, 2, and 3. insert(1, 'Joe') would put 'Joe' between 'James' and 'Kathryn'. Unlike append(), insert() can place an item anywhere." }
+            ]
+        },
+        {
+            "number": 6,
+            "filename": "remove_item.py",
+            "programRef": "Program 7-6 (6th Ed) \u2022 Program 7-6 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A program that lets the user remove an item from a food list by value. remove() finds the first matching item and deletes it, shortening the list by one. A try-except block handles the case where the item doesn't exist." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 7-6.",
+                    "Create a new file named remove_item.py.",
+                    "Type the program as shown including the try-except block.",
+                    "Run it and remove 'Chips' \u2014 confirm the list shortens.",
+                    "Run it again and try to remove 'Sushi' \u2014 confirm the error message appears."
+                ]},
+                { "type": "callout", "variant": "pitfall", "title": "remove() Raises ValueError If the Item Is Not Found",
+                  "body": "Just like index(), remove() raises ValueError if the item isn't in the list. The try-except block handles this gracefully. If you need to check first without raising an error, use if item in food: before calling remove()." }
+            ]
+        },
+        {
+            "number": 7,
+            "filename": "average_list.py",
+            "programRef": "Program 7-9 (6th Ed) \u2022 Program 7-9 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A program that calculates the average of a list of scores two different ways: first with a manual accumulator loop (total1), and then with the built-in sum() function (total2). Both produce the same result. This demonstrates that sum() is a clean shortcut for the accumulator pattern you already know." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 7-9.",
+                    "Create a new file named average_list.py.",
+                    "Type the program as shown, including both calculation approaches.",
+                    "Run it and confirm both averages are identical."
+                ]},
+                { "type": "callout", "variant": "tip", "title": "sum(), min(), max(), and len() Work on Any Numeric List",
+                  "body": "Python's built-in list functions are powerful shortcuts. sum(scores) replaces a for loop accumulator. len(scores) gives the count. min(scores) and max(scores) find the extremes. You will use all four of these in upcoming Lab assignments." }
+            ]
+        },
+        {
+            "number": 8,
+            "filename": "drop_lowest_score.py",
+            "programRef": "Program 7-12 (6th Ed) \u2022 Program 7-12 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A grade calculator spread across three functions: get_scores() builds a list of test scores using append() and returns it, get_total() accepts a list and returns the sum using an accumulator, and main() ties them together \u2014 calling min() to find the lowest score, dropping it from the total, and calculating the adjusted average. This is the most complex program in Chapter 7 and directly mirrors Lab assignment structure." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 7-12.",
+                    "Create a new file named drop_lowest_score.py.",
+                    "Type all three functions and the if __name__ == '__main__': guard.",
+                    "Run it and enter at least four test scores.",
+                    "Confirm the displayed average excludes the lowest score you entered."
+                ]},
+                { "type": "callout", "variant": "info", "title": "Functions Can Build and Return Lists",
+                  "body": "get_scores() creates an empty list, appends values inside a loop, and returns the finished list. main() stores that return value in scores. This is exactly the pattern used in Lab assignments where a helper function collects data and main() processes it. Lists are passed to and returned from functions just like any other value." }
+            ]
+        },
+        {
+            "number": 9,
+            "filename": "write_number_list.py",
+            "programRef": "Program 7-16 (6th Ed) \u2022 Program 7-16 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A program that creates a list of seven integers and writes them to numberlist.txt by looping through the list and calling write() on each item converted to a string with str(). Checkpoint 10 reads this file back into a list." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 7-16.",
+                    "Create a new file named write_number_list.py.",
+                    "Type the program as shown.",
+                    "Run it \u2014 no output appears, but numberlist.txt is created.",
+                    "Open numberlist.txt to confirm the seven numbers are each on their own line."
+                ]},
+                { "type": "callout", "variant": "tip", "title": "Loop Through the List and Convert Each Item",
+                  "body": "for item in numbers: outfile.write(str(item) + '\\n') is the standard pattern for writing a list to a file. Each element is converted to a string with str(), then written with a newline. Run this before Checkpoint 10 or read_number_list.py will fail." }
+            ]
+        },
+        {
+            "number": 10,
+            "filename": "read_number_list.py",
+            "programRef": "Program 7-17 (6th Ed) \u2022 Program 7-17 (5th Ed)",
+            "content": [
+                { "type": "h3", "label": "What You're Building" },
+                { "type": "text", "body": "A program that reads numberlist.txt back into a list using readlines(), which returns every line as a string in a list. A for loop with range(len(numbers)) then converts each string element to an integer in place by assigning back to numbers[index]. The finished list is printed." },
+                { "type": "h3", "label": "Step-by-Step Instructions" },
+                { "type": "instructions", "items": [
+                    "Open your textbook to Program 7-17.",
+                    "Create a new file named read_number_list.py.",
+                    "Type the program as shown.",
+                    "Make sure write_number_list.py has been run first to create numberlist.txt.",
+                    "Run it and confirm the list of integers prints correctly."
+                ]},
+                { "type": "callout", "variant": "info", "title": "readlines() Returns a List of Strings",
+                  "body": "infile.readlines() reads the entire file and returns a list where each element is one line as a string, including the trailing \\n. The conversion loop int(numbers[index]) strips the \\n automatically when it parses the string \u2014 the same behavior as int(readline()) from Chapter 6." }
+            ]
+        }
+    ],
+    "finalChecklist": {
+        "beforeYouSubmit": [
+            "sales_list.py runs and output matches the book",
+            "in_list.py runs and output matches the book",
+            "list_append.py runs and output matches the book",
+            "index_list.py runs and output matches the book",
+            "insert_list.py runs and output matches the book",
+            "remove_item.py runs and output matches the book",
+            "average_list.py runs and output matches the book",
+            "drop_lowest_score.py runs and output matches the book",
+            "write_number_list.py runs and creates numberlist.txt",
+            "read_number_list.py runs and displays the list of integers correctly"
+        ],
+        "submissionReminder": "CodeGrade only keeps your most recent submission. Your final upload must include all 10 files or you will lose credit for any that are missing.",
+        "scopeReminder": "These are Chapter 7 BookEx exercises. You are typing Gaddis programs exactly as written. All programs use the def main() and if __name__ == '__main__': structure from Chapter 5.",
+        "permittedTechniques": {
+            "chapters": "2\u20137",
+            "specific": [
+                "List creation: [], [0] * n, and literal lists",
+                "append(), insert(), remove(), index()",
+                "Iteration: for item in list and for index in range(len(list))",
+                "The in operator for membership testing",
+                "sum(), len(), min(), max() built-in functions",
+                "Passing lists to functions and returning lists from functions",
+                "Writing lists to files and reading files into lists with readlines()",
+                "try-except with ValueError for index() and remove()",
+                "All Chapter 2\u20136 techniques"
+            ],
+            "notPermitted": "list comprehensions, classes, anything from chapters not yet covered"
+        },
+        "warnings": []
+    },
+    "needHelp": {
+        "ifYouGetStuck": [
+            "If you get ValueError from index() or remove(), the item isn't in the list \u2014 check the try-except block and make sure it matches the book",
+            "If read_number_list.py fails with FileNotFoundError, run write_number_list.py first to create numberlist.txt",
+            "If your list output looks wrong, check whether you're iterating by value (for item in list) or by index (for index in range(len(list)))",
+            "Submit to CodeGrade early \u2014 it shows exactly which files pass and which need work",
+            "Post in the course Discord if you are stuck after two attempts (describe the error, do not post your code)",
+            "Come to Zoom or office hours if you are still stuck"
+        ],
+        "bookexResourceNote": "Chapter 7 BookEx Reference Guide \u2014 step-by-step breakdown of every program in this chapter"
+    }
+}
