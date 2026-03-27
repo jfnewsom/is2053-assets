@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookEx Chapter 8: More About Strings — IS2053</title>
+    <title>BookEx Chapter 8: More About Strings &mdash; IS2053</title>
     <link rel="stylesheet" href="../../labs.css">
 </head>
 <body>
@@ -30,40 +30,39 @@
     </table>
   </div>
   <div class="lc-panel">
-    <p>Work through each Gaddis program in order. Chapter 8 opens up a whole toolkit of string methods. Type every program by hand &mdash; the method names need to become second nature before you use them in Lab assignments.</p>
+    <p>Chapter 8 is where Python's string tools finally show up. You have been working around case sensitivity and whitespace since Module 1. Instead of typing <code>if answer == 'y' or answer == 'Y':</code> instead of just comparing one thing. These five programs introduce the methods that change that. Work through them in order. By Program 8-5 you will have the vocabulary to understand why <code>.upper()</code> collapses four comparisons into one.</p>
 
     <div class="lc-h3 lc-h3--yellow">Learning Objectives</div>
     <ul class="lc-objectives">
-      <li>Loop through a string character by character and count specific characters</li>
+      <li>Iterate through a string character by character using a for loop</li>
       <li>Concatenate strings and reassign string variables</li>
-      <li>Use string testing methods (isalnum, isdigit, isalpha, islower, isupper) in if statements</li>
-      <li>Split a string on whitespace to produce a list of words</li>
-      <li>Split a string on a custom delimiter to parse structured data like dates</li>
+      <li>Apply testing methods (.isdigit(), .isalpha(), .islower(), .isupper()) to validate input</li>
+      <li>Split a string into a list using .split() with no arguments</li>
+      <li>Split a string on a specific delimiter using .split(',')</li>
     </ul>
 
     <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
-    <p>Chapter 8 covers iterating through string characters, string concatenation and immutability, string testing methods, and the split() method with both default whitespace and custom delimiter arguments.</p>
+    <p>Chapter 8 covers string iteration (Section 8.1), string testing and manipulation methods (Section 8.3), and the split() method (Section 8.4). Programs 8-1 through 8-10 demonstrate these techniques progressively.</p>
 
     <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
-    <p>Starting Out with Python, 6th Edition by Tony Gaddis &mdash; Chapter 8: More About Strings</p>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis, Chapter 8</p>
 
     <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
     <ul>
-      <li>Each program is saved as its own individual .py file</li>
-      <li>Each file uses the exact filename listed in the instructions</li>
-      <li>Each program runs without syntax errors</li>
-      <li>Output matches what is shown in the textbook</li>
+      <li>All five programs are implemented and run without errors</li>
+      <li>Each program is in its own clearly commented section with a header comment</li>
+      <li>File has a top-of-file documentation header: Name, abc123, Section, Description</li>
     </ul>
 
     <div class="lc-h3 lc-h3--yellow">Filename</div>
-    <p>This chapter uses 5 individual files. Submit all 5 files together in your final CodeGrade submission.</p>
+    <p>Submit bookex-ch08.py with all five programs combined into one file.</p>
   </div>
 </div>
 
 <div class="lc-card lc-card--orange">
   <div class="lc-topper">
     <div class="lc-topper-title">Time Guide</div>
-    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 60&ndash;75 Minutes</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 45–60 Minutes</div>
   </div>
   <div class="lc-panel">
     <div class="lc-table-wrap">
@@ -72,11 +71,11 @@
           <tr><th>Checkpoint</th><th>Time</th><th>Task</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>count_Ts.py</strong></td><td>15 min</td><td>Character-by-character loop and counting</td></tr>
-          <tr><td><strong>concatenate.py</strong></td><td>10 min</td><td>String concatenation and reassignment</td></tr>
-          <tr><td><strong>string_test.py</strong></td><td>15 min</td><td>String testing methods in if statements</td></tr>
-          <tr><td><strong>string_split.py</strong></td><td>10 min</td><td>split() on whitespace</td></tr>
-          <tr><td><strong>split_date.py</strong></td><td>10 min</td><td>split() with custom delimiter</td></tr>
+          <tr><td><strong>Program 8-1</strong></td><td>8 min</td><td>Iterate through string characters, count specific letters</td></tr>
+          <tr><td><strong>Program 8-2</strong></td><td>7 min</td><td>String concatenation and variable reassignment</td></tr>
+          <tr><td><strong>Program 8-5</strong></td><td>12 min</td><td>String testing methods — isdigit, isalpha, islower, isupper</td></tr>
+          <tr><td><strong>Program 8-9</strong></td><td>8 min</td><td>Split on whitespace, result is a list</td></tr>
+          <tr><td><strong>Program 8-10</strong></td><td>10 min</td><td>Split on delimiter character, parse a date string</td></tr>
         </tbody>
       </table>
     </div>
@@ -89,105 +88,132 @@
     <div class="lc-sub-banner">5 Programs</div>
   </div>
   <div class="lc-panel">
-
-    <!-- CHECKPOINT 1 -->
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">1</div></div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">count_Ts.py</div>
-        <div class="lc-cp-subtitle">Program 8-1 (6th Ed) &bull; Program 8-1 (5th Ed)</div>
+        <div class="lc-cp-title">Program 8-1: count_Ts.py</div>
+        <div class="lc-cp-subtitle"></div>
       </div>
     </div>
     <div class="lc-cp-body">
+      <p><strong>Program 8-1</strong> — Iterating Through String Characters<br>This program counts how many times the letter T appears in a string. The key pattern: a <code>for</code> loop over a string gives you one character per iteration.</p>
       <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-      <p>A program that asks the user to type a sentence, then loops through every character in the string and counts how many times the letter T (uppercase or lowercase) appears. The <code>for ch in string</code> pattern is the standard way to visit every character one at a time.</p>
-      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
       <ol>
-        <li>Open your textbook to Program 8-1.</li>
-        <li>Create a new file named <code>count_Ts.py</code>.</li>
-        <li>Type the program exactly as shown, including the <code>def main()</code> and the <code>if __name__ == '__main__':</code> guard.</li>
-        <li>Run it and type a sentence containing several T's.</li>
-        <li>Confirm the count matches what you expect.</li>
+        <li>Initialize a counter variable <code>count = 0</code> before the loop.</li>
+        <li>Get a string from the user with <code>input()</code>.</li>
+        <li>Write a <code>for</code> loop that iterates through each character in the string. The loop variable takes one character at a time.</li>
+        <li>Inside the loop, check if the character equals <code>'T'</code> or <code>'t'</code>. If it does, increment the counter.</li>
+        <li>After the loop, print the total count using an f-string.</li>
       </ol>
-      <div class="lc-callout lc-callout--tip">
-        <div class="lc-callout__icon">
-        <span class="material-symbols-outlined">lightbulb</span>
-      </div>
-        <div class="lc-callout__bubble">
-          <div class="lc-callout__title">The or Checks Both Cases at Once</div>
-          <div class="lc-callout__body">
-            <p>The condition <code>if ch == 'T' or ch == 't':</code> catches both uppercase and lowercase in one check. You can't write <code>if ch == 'T' or 't':</code> &mdash; that always evaluates to True because a non-empty string is truthy.</p>
-          </div>
-        </div>
+      <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+      <p>Strings behave like sequences in Python. The same <code>for</code> loop that walks a list walks a string. This is the foundation for understanding why <code>.upper()</code> and testing methods work on every character, doing exactly this iteration internally.</p>
+      <div class="lc-h3 lc-h3--yellow">Tips and Pitfalls</div>
+      <div class="lc-table-wrap">
+        <table class="lc-table">
+          <thead><tr><th>Mistake</th><th>What Goes Wrong</th><th>Fix</th></tr></thead>
+          <tbody><tr><td>Only checking for 'T' uppercase</td><td>Misses lowercase 't'</td><td>Use 'or' to check both: if ch == 'T' or ch == 't'</td></tr>
+<tr><td>Initializing count inside the loop</td><td>Counter resets to 0 on every iteration</td><td>Initialize count = 0 before the loop starts</td></tr></tbody>
+        </table>
       </div>
     </div>
-
     <hr class="lc-cp-sep">
 
-    <!-- CHECKPOINT 2 -->
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">2</div></div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">concatenate.py</div>
-        <div class="lc-cp-subtitle">Program 8-2 (6th Ed) &bull; Program 8-2 (5th Ed)</div>
+        <div class="lc-cp-title">Program 8-2: concatenate.py</div>
+        <div class="lc-cp-subtitle"></div>
       </div>
     </div>
     <div class="lc-cp-body">
+      <p><strong>Program 8-2</strong> — String Concatenation<br>This short program demonstrates that strings can be joined with <code>+</code> and that reassigning a string variable creates a new string, not a modified version of the original.</p>
       <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-      <p>A program that creates a string variable, prints it, then concatenates a last name to it using <code>+</code> and reassigns the result back to the same variable. This demonstrates that strings are immutable &mdash; concatenation creates a new string and the variable is updated to point to it.</p>
-      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
       <ol>
-        <li>Open your textbook to Program 8-2.</li>
-        <li>Create a new file named <code>concatenate.py</code>.</li>
-        <li>Type the program including the <code>def main()</code> structure.</li>
-        <li>Run it and confirm both print statements produce the expected output.</li>
+        <li>Create a variable <code>name = 'Carmen'</code> and print it.</li>
+        <li>Concatenate <code>' Brown'</code> to the name using <code>+</code> and assign the result back to <code>name</code>.</li>
+        <li>Print <code>name</code> again to show the updated value.</li>
       </ol>
-      <div class="lc-callout lc-callout--info">
-        <div class="lc-callout__icon">
-        <span class="material-symbols-outlined">lightbulb</span>
-      </div>
-        <div class="lc-callout__bubble">
-          <div class="lc-callout__title">These Are All Independent if Statements</div>
-          <div class="lc-callout__body">
-            <p>This program uses six separate <code>if</code> statements, not <code>if-elif</code>. That means multiple messages can print for the same input. For example, <code>'abc'</code> prints both the alphanumeric and the alphabetic messages.</p>
-          </div>
-        </div>
-      </div>
+      <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+      <p>Strings are immutable in Python. When you write <code>name = name + ' Brown'</code>, Python creates a brand new string and assigns it to <code>name</code>. Nothing about the original <code>'Carmen'</code> string changes. This is why string methods like <code>.upper()</code> must be assigned back: <code>text = text.upper()</code>. Otherwise the result is discarded.</p>
     </div>
-
     <hr class="lc-cp-sep">
 
-    <!-- CHECKPOINT 4 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">3</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Program 8-5: string_test.py</div>
+        <div class="lc-cp-subtitle"></div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <p><strong>Program 8-5</strong> — String Testing Methods<br>This program demonstrates six methods that test the contents of a string and return <code>True</code> or <code>False</code>. These are the building blocks of input validation.</p>
+      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+      <ol>
+        <li>Get a string from the user.</li>
+        <li>Test it with <code>.isalnum()</code> and print a message if True.</li>
+        <li>Test it with <code>.isdigit()</code> and print a message if True.</li>
+        <li>Test it with <code>.isalpha()</code> and print a message if True.</li>
+        <li>Test it with <code>.isspace()</code> and print a message if True.</li>
+        <li>Test it with <code>.islower()</code> and print a message if True.</li>
+        <li>Test it with <code>.isupper()</code> and print a message if True.</li>
+        <li>Run the program several times with different inputs: try a number, a word, all caps, all spaces, and a mix.</li>
+      </ol>
+      <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+      <p>These testing methods are what make robust input validation possible without try/except. If you need to know whether a user typed a number before calling <code>int()</code>, <code>.isdigit()</code> is your first check. Note that multiple tests can be True at once. For example, <code>'HELLO'</code> passes both <code>.isalpha()</code> and <code>.isupper()</code>.</p>
+      <div class="lc-h3 lc-h3--yellow">Tips and Pitfalls</div>
+      <div class="lc-table-wrap">
+        <table class="lc-table">
+          <thead><tr><th>Method</th><th>True when</th><th>Watch out for</th></tr></thead>
+          <tbody><tr><td>.isdigit()</td><td>All characters are digits (0–9)</td><td>Fails on '3.14' because the dot is not a digit</td></tr>
+<tr><td>.isalpha()</td><td>All characters are letters</td><td>Fails on 'hello world' because the space is not a letter</td></tr>
+<tr><td>.islower()</td><td>All cased characters are lowercase</td><td>True for 'hello123' since digits do not count as cased</td></tr>
+<tr><td>.isupper()</td><td>All cased characters are uppercase</td><td>True for 'HELLO123' for the same reason</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <hr class="lc-cp-sep">
+
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">4</div></div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">string_split.py</div>
-        <div class="lc-cp-subtitle">Program 8-9 (6th Ed) &bull; Program 8-9 (5th Ed)</div>
+        <div class="lc-cp-title">Program 8-9: string_split.py</div>
+        <div class="lc-cp-subtitle"></div>
       </div>
     </div>
     <div class="lc-cp-body">
+      <p><strong>Program 8-9</strong> — Basic String Splitting<br>This program demonstrates <code>.split()</code> with no arguments, which splits a string on any whitespace and returns a list of words.</p>
       <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-      <p>A program that creates a string with multiple words, calls <code>split()</code> with no arguments to break it on whitespace, and prints the resulting list. This is the simplest form of <code>split()</code> and the foundation for any program that needs to process words individually.</p>
-      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
       <ol>
-        <li>Open your textbook to Program 8-9.</li>
-        <li>Create a new file named <code>string_split.py</code>.</li>
-        <li>Type the program including the <code>def main()</code> structure.</li>
-        <li>Run it and confirm the output shows a list of four words.</li>
+        <li>Create a string variable: <code>my_string = 'One two three four'</code>.</li>
+        <li>Call <code>my_string.split()</code> and store the result in <code>word_list</code>.</li>
+        <li>Print <code>word_list</code> to see the resulting list.</li>
       </ol>
-      <div class="lc-callout lc-callout--info">
-        <div class="lc-callout__icon">
-        <span class="material-symbols-outlined">lightbulb</span>
-      </div>
-        <div class="lc-callout__bubble">
-          <div class="lc-callout__title">The Delimiter Is Removed from the Results</div>
-          <div class="lc-callout__body">
-            <p><code>'11/26/2023'.split('/')</code> gives <code>['11', '26', '2023']</code> &mdash; the slashes are gone. Index 0 is month, 1 is day, 2 is year. This same pattern works for comma-separated data, file paths, or any structured string.</p>
-          </div>
-        </div>
+      <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+      <p><code>.split()</code> turns a string into a list. Once you have a list, you can loop through it, index into it, or pass it to <code>set()</code> to remove duplicates. This is the pattern behind reading CSV files. Each line is a string, <code>.split(',')</code> gives you individual values.</p>
+    </div>
+    <hr class="lc-cp-sep">
+
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">5</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Program 8-10: split_date.py</div>
+        <div class="lc-cp-subtitle"></div>
       </div>
     </div>
-
+    <div class="lc-cp-body">
+      <p><strong>Program 8-10</strong> — Split with a Delimiter<br>This program demonstrates <code>.split('/')</code> to parse a date string in MM/DD/YYYY format into its three components.</p>
+      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+      <ol>
+        <li>Create a date string: <code>date_string = '11/26/2019'</code>.</li>
+        <li>Call <code>date_string.split('/')</code> and store the result in <code>date_list</code>.</li>
+        <li>Access the month, day, and year by index: <code>date_list[0]</code>, <code>date_list[1]</code>, <code>date_list[2]</code>.</li>
+        <li>Print the three components in a labeled format.</li>
+      </ol>
+      <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+      <p>Passing a delimiter character to <code>.split()</code> gives you precise control over where the string breaks. The delimiter itself is consumed and does not appear in the resulting list. This is the standard pattern for parsing any structured string: dates, file paths, CSV records, or user input formatted with separators.</p>
+      <div class="lc-h3 lc-h3--yellow">Pro Tip</div>
+      <p>Try chaining strip and split together: <code>line.strip().split(',')</code>. When reading lines from a file, <code>.strip()</code> removes the trailing newline before <code>.split(',')</code> parses the values. Without the strip, the last value in each line will have a hidden <code>\n</code> attached.</p>
+    </div>
   </div>
 </div>
 
@@ -199,37 +225,34 @@
   <div class="lc-panel">
     <div class="lc-h3 lc-h3--yellow">Before You Submit</div>
     <ul class="lc-checklist">
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">count_Ts.py runs and output matches the book</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">concatenate.py runs and output matches the book</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">string_test.py runs and output matches the book</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">string_split.py runs and output matches the book</span></li>
-      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">split_date.py runs and output matches the book</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">bookex-ch08.py contains all five programs in order: count_Ts.py, concatenate.py, string_test.py, string_split.py, split_date.py</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">Each program is in its own section with a header comment: # Program 8-1: count_Ts.py</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">All five programs run without errors</span></li>
+      <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">File has a top-of-file documentation header: Name, abc123, Section, Description</span></li>
     </ul>
-    <div class="lc-callout lc-callout--warning">
+        <div class="lc-callout lc-callout--warning">
       <div class="lc-callout__icon">
         <span class="material-symbols-outlined">error</span>
       </div>
       <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Final Submission Must Include All 5 Files</div>
+        <div class="lc-callout__title">Final Submission Must Include All Files</div>
         <div class="lc-callout__body">
-          <p>CodeGrade only keeps your most recent submission. Your final upload must include all 5 files or you will lose credit for any that are missing.</p>
+          <p></p>
         </div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
-    <p>These are Chapter 8 BookEx exercises. You are typing Gaddis programs exactly as written. All programs use the <code>def main()</code> and <code>if __name__ == '__main__':</code> structure from Chapter 5.</p>
+    <p>Chapter 8 techniques: string iteration with for loops, concatenation with +, testing methods (.isdigit(), .isalpha(), .islower(), .isupper(), .isspace(), .isalnum()), and .split() with and without a delimiter. These are the techniques introduced this chapter.</p>
     <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
     <div class="lc-permitted">
-      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2&ndash;8</p>
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–8</p>
       <ul class="lc-permitted__list">
-        <li>String iteration with for loops</li>
-        <li>String testing methods: isalnum(), isdigit(), isalpha(), isspace(), islower(), isupper()</li>
-        <li>String concatenation and reassignment</li>
-        <li>split() with no argument and with a delimiter argument</li>
-        <li>List indexing to access split results</li>
-        <li>Functions with def main() and if __name__ == '__main__': guard</li>
+        <li>for loop over a string: for ch in my_string:</li>
+        <li>String testing: .isdigit(), .isalpha(), .islower(), .isupper(), .isspace(), .isalnum()</li>
+        <li>String concatenation: str1 + str2</li>
+        <li>Splitting: .split() and .split(delimiter)</li>
       </ul>
-      <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> classes, inheritance, anything from chapters not yet covered</p>
+      <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> list comprehensions, dictionaries, sets, classes</p>
     </div>
     <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
     <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
@@ -244,11 +267,10 @@
   <div class="lc-panel">
     <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
     <ul>
-      <li>Re-read the checkpoint and compare your code to the book line by line &mdash; a typo in a method name is the most common culprit in Chapter 8</li>
-      <li>Run the program with several different inputs to test all the conditions</li>
-      <li>Submit to CodeGrade early &mdash; it shows exactly which files pass and which need work</li>
-      <li>Post in the course Discord if you are stuck after two attempts (describe the error, do not post your code)</li>
-      <li>Come to Zoom or office hours if you are still stuck</li>
+      <li>Re-read the program's step-by-step breakdown in your Chapter 8 BookEx Reference Guide before looking at the code</li>
+      <li>Run the program with several different inputs. Some methods only return True for very specific input types</li>
+      <li>Submit to CodeGrade early to see which programs pass and which need more work</li>
+      <li>Come to Zoom or office hours with your specific question</li>
     </ul>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
@@ -257,7 +279,7 @@
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">BookEx Reference Guides</div>
         <div class="lc-callout__body">
-          <p>Chapter 8 BookEx Reference Guide &mdash; step-by-step breakdown of every program in this chapter</p>
+          <p>Chapter 8 BookEx Reference Guide: step-by-step breakdown of all five programs with key concept explanations</p>
         </div>
       </div>
     </div>

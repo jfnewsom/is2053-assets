@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookEx Chapter 6: Files and Exceptions — IS2053</title>
+    <title>BookEx Chapter 6: Files and Exceptions &mdash; IS2053</title>
     <link rel="stylesheet" href="../../labs.css">
 </head>
 <body>
 <div class="lc-wrapper">
 
-<!-- ============================================================ -->
-<!-- CARD 1: OVERVIEW (Blue) -->
-<!-- ============================================================ -->
 <div class="lc-card lc-card--blue">
   <div class="lc-topper">
     <table style="width: 100%; border-collapse: collapse;">
@@ -33,128 +30,393 @@
     </table>
   </div>
   <div class="lc-panel">
-    <p>Work through each Gaddis program in order. Chapter 6 is where your programs start talking to the file system. Type every program by hand and actually run each one &mdash; you need to see the files get created and read back. Programs 1 through 7 build the foundation; Programs 8 through 10 introduce the <code>with</code> statement, append mode, and exception handling.</p>
+    <p>Work through each Gaddis program in order. Chapter 6 is where your programs start talking to the file system. Type every program by hand and actually run each one — you need to see the files get created and read back. Programs 1 through 7 build the foundation; Programs 8 through 10 introduce the with statement, append mode, and exception handling.</p>
 
+    <div class="lc-h3 lc-h3--yellow">Learning Objectives</div>
+    <ul class="lc-objectives">
+      <li>Open a file in write mode and write strings with newline characters</li>
+      <li>Open a file in read mode and read its entire contents</li>
+      <li>Read a file one line at a time using readline()</li>
+      <li>Use rstrip() to remove newline characters from lines read from a file</li>
+      <li>Convert numbers to strings before writing, and strings back to numbers after reading</li>
+      <li>Use the with statement for automatic file closing</li>
+      <li>Open a file in append mode to add records without overwriting existing data</li>
+      <li>Use try-except to handle FileNotFoundError gracefully</li>
+    </ul>
+
+    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
+    <p>Chapter 6 covers file modes ('r', 'w', 'a'), write() and readline(), the end-of-file sentinel pattern, rstrip(), type conversion for file I/O, the with statement, and try-except for FileNotFoundError.</p>
+
+    <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 6: Files and Exceptions</p>
+
+    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
+    <ul>
+      <li>Each program is saved as its own individual .py file</li>
+      <li>Each file uses the exact filename listed in the instructions</li>
+      <li>Run programs in order — several programs read files created by earlier programs</li>
+      <li>Each program runs without syntax errors and output matches the textbook</li>
+    </ul>
+
+    <div class="lc-h3 lc-h3--yellow">Filename</div>
+    <p>This chapter uses 10 individual files. Submit all 10 files together in your final CodeGrade submission. Note that several programs depend on files created by earlier checkpoints — run them in order.</p>
+  </div>
+</div>
+
+<div class="lc-card lc-card--orange">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Time Guide</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 90–120 Minutes</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr><th>Checkpoint</th><th>Time</th><th>Task</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>file_write.py</strong></td><td>10 min</td><td>Write strings to a file in 'w' mode</td></tr>
+          <tr><td><strong>file_read.py</strong></td><td>10 min</td><td>Read entire file contents with read()</td></tr>
+          <tr><td><strong>line_read.py</strong></td><td>10 min</td><td>Read lines individually with readline()</td></tr>
+          <tr><td><strong>write_names.py</strong></td><td>10 min</td><td>Write user input to a file</td></tr>
+          <tr><td><strong>strip_newline.py</strong></td><td>10 min</td><td>Remove newlines with rstrip()</td></tr>
+          <tr><td><strong>write_numbers.py</strong></td><td>10 min</td><td>Convert numbers to strings before writing</td></tr>
+          <tr><td><strong>read_numbers.py</strong></td><td>10 min</td><td>Convert strings to numbers after reading</td></tr>
+          <tr><td><strong>add_coffee_record.py</strong></td><td>10 min</td><td>Append mode and the with statement</td></tr>
+          <tr><td><strong>show_coffee_records.py</strong></td><td>10 min</td><td>Read records in a loop until end of file</td></tr>
+          <tr><td><strong>display_file2.py</strong></td><td>10 min</td><td>try-except for FileNotFoundError</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="lc-card lc-card--green">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Programs</div>
+    <div class="lc-sub-banner">10 Programs</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">1</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">file_write.py</div>
+        <div class="lc-cp-subtitle">Program 6-1 (6th Ed) • Program 6-1 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that opens a file named philosophers.txt in write mode ('w'), writes three philosopher names to it (each followed by \n), and closes the file. After running it, you should find philosophers.txt in your working directory. Programs 2 and 3 read this file back.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-1.</li>
+        <li>Create a new file named file_write.py.</li>
+        <li>Type the program exactly as shown including the if __name__ == '__main__': guard.</li>
+        <li>Run it — no output appears in the terminal, but philosophers.txt is created.</li>
+        <li>Open philosophers.txt in VS Code to confirm all three names are there.</li>
+      </ol>
     <div class="lc-callout lc-callout--warning">
       <div class="lc-callout__icon">
-        <span class="material-symbols-outlined">lightbulb</span>
+        <span class="material-symbols-outlined">error</span>
       </div>
-        <div class="lc-callout__bubble">
-          <div class="lc-callout__title">write() Does Not Add Newlines Automatically</div>
-          <div class="lc-callout__body">
-            <p>Unlike <code>print()</code>, <code>write()</code> puts exactly what you give it and nothing more. If you write <code>name1</code> without <code>+ '\n'</code>, all three names end up on a single line in the file. Always append <code>'\n'</code> when you want each item on its own line.</p>
-          </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Mode 'w' Overwrites the Entire File</div>
+        <div class="lc-callout__body">
+          <p>Opening a file in 'w' mode destroys all existing content and starts fresh. If philosophers.txt already existed, it is gone. This is intentional here, but it is a dangerous habit to get into for data you want to keep. You will use append mode ('a') in Checkpoint 8 to add without overwriting.</p>
         </div>
       </div>
     </div>
-
+    </div>
     <hr class="lc-cp-sep">
 
-    <!-- CHECKPOINT 5 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">2</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">file_read.py</div>
+        <div class="lc-cp-subtitle">Program 6-2 (6th Ed) • Program 6-2 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that opens philosophers.txt in read mode ('r'), reads the entire file at once using read(), and prints the result. This is the simplest way to read a file — one call, everything returned as a single string.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-2.</li>
+        <li>Create a new file named file_read.py.</li>
+        <li>Type the program as shown.</li>
+        <li>Make sure file_write.py has been run first so philosophers.txt exists.</li>
+        <li>Run file_read.py and confirm all three names appear in the output.</li>
+      </ol>
+    <div class="lc-callout lc-callout--pitfall">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">warning</span>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">The File Must Exist Before You Read It</div>
+        <div class="lc-callout__body">
+          <p>Opening a file in 'r' mode raises FileNotFoundError if the file doesn't exist. Run file_write.py first to create philosophers.txt, then run file_read.py. You will learn how to handle this error gracefully in Checkpoint 10.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">3</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">line_read.py</div>
+        <div class="lc-cp-subtitle">Program 6-3 (6th Ed) • Program 6-3 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that reads philosophers.txt three times using readline() — once per name — storing each in a separate variable. Unlike read(), readline() fetches one line at a time and includes the \n character at the end.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-3.</li>
+        <li>Create a new file named line_read.py.</li>
+        <li>Type the program as shown.</li>
+        <li>Run it and observe the extra blank lines between names in the output.</li>
+        <li>Note why they appear — Checkpoint 5 fixes this.</li>
+      </ol>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">info</span>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">readline() Keeps the Newline Character</div>
+        <div class="lc-callout__body">
+          <p>Each readline() call returns the line including its trailing \n. When you then print() that string, print() adds its own newline on top — resulting in a blank line between each name. Checkpoint 5 shows how to strip that extra \n before printing.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">4</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">write_names.py</div>
+        <div class="lc-cp-subtitle">Program 6-4 (6th Ed) • Program 6-4 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that collects three friend names from the user using input() and writes them to friends.txt. The names are written with '\n' concatenated so each lands on its own line in the file.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-4.</li>
+        <li>Create a new file named write_names.py.</li>
+        <li>Type the program as shown.</li>
+        <li>Run it and enter three names.</li>
+        <li>Open friends.txt to confirm each name is on its own line.</li>
+      </ol>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">lightbulb</span>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">write() Does Not Add Newlines Automatically</div>
+        <div class="lc-callout__body">
+          <p>Unlike print(), write() puts exactly what you give it and nothing more. If you write name1 without + '\n', all three names end up on a single line in the file. Always append '\n' when you want each item on its own line.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">5</div></div>
       <div class="lc-cp-content">
         <div class="lc-cp-title">strip_newline.py</div>
-        <div class="lc-cp-subtitle">Program 6-5 (6th Ed) &bull; Program 6-5 (5th Ed)</div>
+        <div class="lc-cp-subtitle">Program 6-5 (6th Ed) • Program 6-5 (5th Ed)</div>
       </div>
     </div>
     <div class="lc-cp-body">
-      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-      <p>The same line-by-line read from Checkpoint 3, but with <code>rstrip('\n')</code> applied to each line before printing. This removes the trailing newline character that <code>readline()</code> includes, eliminating the extra blank lines in the output.</p>
-      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>The same line-by-line read from Checkpoint 3, but with rstrip('\n') applied to each line before printing. This removes the trailing newline character that readline() includes, eliminating the extra blank lines in the output.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
       <ol>
         <li>Open your textbook to Program 6-5.</li>
-        <li>Create a new file named <code>strip_newline.py</code>.</li>
-        <li>Type the program as shown, noting the three <code>rstrip('\n')</code> calls.</li>
+        <li>Create a new file named strip_newline.py.</li>
+        <li>Type the program as shown, noting the three rstrip('\n') calls.</li>
         <li>Run it and confirm the output no longer has extra blank lines between names.</li>
       </ol>
-      <div class="lc-callout lc-callout--tip">
-        <div class="lc-callout__icon">
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
         <span class="material-symbols-outlined">lightbulb</span>
       </div>
-        <div class="lc-callout__bubble">
-          <div class="lc-callout__title">rstrip('\n') Is Standard Practice for File Reading</div>
-          <div class="lc-callout__body">
-            <p>Almost every program that reads lines from a file needs <code>rstrip('\n')</code> or <code>strip()</code> to clean up the newline before using the data. Make it a habit: any time you call <code>readline()</code>, strip the result before you print it or compare it to anything.</p>
-          </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">rstrip('\n') Is Standard Practice for File Reading</div>
+        <div class="lc-callout__body">
+          <p>Almost every program that reads lines from a file needs rstrip('\n') or strip() to clean up the newline before using the data. Make it a habit: any time you call readline(), strip the result before you print it or compare it to anything.</p>
         </div>
       </div>
     </div>
-
+    </div>
     <hr class="lc-cp-sep">
 
-    <!-- CHECKPOINT 6 -->
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">6</div></div>
       <div class="lc-cp-content">
         <div class="lc-cp-title">write_numbers.py</div>
-        <div class="lc-cp-subtitle">Program 6-6 (6th Ed) &bull; Program 6-6 (5th Ed)</div>
+        <div class="lc-cp-subtitle">Program 6-6 (6th Ed) • Program 6-6 (5th Ed)</div>
       </div>
     </div>
     <div class="lc-cp-body">
-      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-      <p>A program that collects three integers from the user and writes them to <code>numbers.txt</code>. Because <code>write()</code> only accepts strings, each integer must be converted with <code>str()</code> before writing. Checkpoint 7 reads this file back and converts the strings to integers for math.</p>
-      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that collects three integers from the user and writes them to numbers.txt. Because write() only accepts strings, each integer must be converted with str() before writing. Checkpoint 7 reads this file back and converts the strings to integers for math.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
       <ol>
         <li>Open your textbook to Program 6-6.</li>
-        <li>Create a new file named <code>write_numbers.py</code>.</li>
+        <li>Create a new file named write_numbers.py.</li>
         <li>Type the program as shown.</li>
         <li>Run it and enter three numbers.</li>
-        <li>Open <code>numbers.txt</code> to confirm the numbers are stored one per line.</li>
+        <li>Open numbers.txt to confirm the numbers are stored one per line.</li>
       </ol>
-      <div class="lc-callout lc-callout--pitfall">
-        <div class="lc-callout__icon">
-        <span class="material-symbols-outlined">lightbulb</span>
+    <div class="lc-callout lc-callout--pitfall">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">warning</span>
       </div>
-        <div class="lc-callout__bubble">
-          <div class="lc-callout__title">with Closes the File Automatically</div>
-          <div class="lc-callout__body">
-            <p>When the <code>with</code> block ends (when the indentation returns to the <code>main()</code> level), Python closes the file automatically &mdash; even if an error occurs inside the block. This is the preferred way to handle files in Python and eliminates the need for a separate <code>close()</code> call.</p>
-          </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">write() Only Accepts Strings</div>
+        <div class="lc-callout__body">
+          <p>Trying to write an integer directly — outfile.write(num1) — raises a TypeError. Files store text, not numbers. Use str(num1) to convert first. When reading the number back in Checkpoint 7, you then reverse this with int().</p>
         </div>
       </div>
     </div>
-
+    </div>
     <hr class="lc-cp-sep">
 
-    <!-- CHECKPOINT 9 -->
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">7</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">read_numbers.py</div>
+        <div class="lc-cp-subtitle">Program 6-7 (6th Ed) • Program 6-7 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that reads the three numbers written by write_numbers.py and calculates their total. Each readline() call is wrapped in int() to convert the string back to an integer immediately. The total is then calculated and displayed.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-7.</li>
+        <li>Create a new file named read_numbers.py.</li>
+        <li>Type the program as shown.</li>
+        <li>Make sure write_numbers.py has been run first to create numbers.txt.</li>
+        <li>Run it and confirm the total matches the sum of the numbers you entered.</li>
+      </ol>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">info</span>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">int() and readline() Can Be Combined</div>
+        <div class="lc-callout__body">
+          <p>int(infile.readline()) reads a line and converts it to an integer in one step. This works because int() strips the trailing \n automatically when it parses the string. You could also do readline() then rstrip() then int() — same result, just more steps.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">8</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">add_coffee_record.py</div>
+        <div class="lc-cp-subtitle">Program 6-18 (6th Ed) • Program 6-15 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A coffee inventory program that uses two things introduced together: the with statement (which closes the file automatically when the block ends) and append mode ('a'), which adds records to the end of coffee.txt without erasing what's already there. A sentinel loop lets the user add multiple records.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-18 (6th Ed) or Program 6-15 (5th Ed).</li>
+        <li>Create a new file named add_coffee_record.py.</li>
+        <li>Type the program as shown, paying attention to the with block indentation.</li>
+        <li>Run it and add two or three coffee records.</li>
+        <li>Run it a second time and add one more record — confirm the earlier records are still there.</li>
+      </ol>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">lightbulb</span>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">with Closes the File Automatically</div>
+        <div class="lc-callout__body">
+          <p>When the with block ends (when the code indentation returns to the main() level), Python closes the file automatically — even if an error occurs inside the block. This is the preferred way to handle files in Python and eliminates the need for a separate close() call.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <hr class="lc-cp-sep">
+
     <div class="lc-cp-row">
       <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">9</div></div>
       <div class="lc-cp-content">
         <div class="lc-cp-title">show_coffee_records.py</div>
-        <div class="lc-cp-subtitle">Program 6-19 (6th Ed) &bull; Program 6-16 (5th Ed)</div>
+        <div class="lc-cp-subtitle">Program 6-19 (6th Ed) • Program 6-16 (5th Ed)</div>
       </div>
     </div>
     <div class="lc-cp-body">
-      <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-      <p>A program that reads <code>coffee.txt</code> and displays every record using the read-process-read loop pattern: read the first description before the loop, loop while the description is not an empty string, process the record inside the loop, then read the next description at the bottom of the loop. An empty string from <code>readline()</code> signals the end of the file.</p>
-      <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A program that reads coffee.txt and displays every record using the read-process-read loop pattern: read the first description before the loop, then loop while the description is not an empty string, process the record, and read the next description at the bottom of the loop. An empty string from readline() signals the end of the file.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
       <ol>
         <li>Open your textbook to Program 6-19 (6th Ed) or Program 6-16 (5th Ed).</li>
-        <li>Create a new file named <code>show_coffee_records.py</code>.</li>
-        <li>Type the program as shown, paying careful attention to where <code>readline()</code> is called.</li>
-        <li>Make sure <code>add_coffee_record.py</code> has been run first to create <code>coffee.txt</code>.</li>
+        <li>Create a new file named show_coffee_records.py.</li>
+        <li>Type the program as shown, paying careful attention to where readline() is called.</li>
+        <li>Make sure add_coffee_record.py has been run first to create coffee.txt.</li>
         <li>Run it and confirm all your coffee records appear.</li>
       </ol>
-      <div class="lc-callout lc-callout--pitfall">
-        <div class="lc-callout__icon">
-        <span class="material-symbols-outlined">lightbulb</span>
+    <div class="lc-callout lc-callout--pitfall">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">warning</span>
       </div>
-        <div class="lc-callout__bubble">
-          <div class="lc-callout__title">try-except Is How You Handle Predictable Errors</div>
-          <div class="lc-callout__body">
-            <p>Code in the <code>try</code> block runs normally. If a <code>FileNotFoundError</code> occurs, Python jumps to the <code>except</code> block instead of crashing. The program continues cleanly after the <code>except</code> block. This pattern works for any predictable error &mdash; not just file errors.</p>
-          </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">The Read-Process-Read Pattern Is Easy to Get Wrong</div>
+        <div class="lc-callout__body">
+          <p>The loop reads descr before the while, processes inside the loop, then reads the next descr at the bottom. If you move that last readline() outside the loop or forget it, you get an infinite loop or read the wrong data. The structure is: read → while not empty → process → read next.</p>
         </div>
       </div>
     </div>
+    </div>
+    <hr class="lc-cp-sep">
 
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge"><div class="lc-cp-badge__word">Checkpoint</div><div class="lc-cp-badge__num">10</div></div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">display_file2.py</div>
+        <div class="lc-cp-subtitle">Program 6-28 (6th Ed) • Program 6-25 (5th Ed)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+      <div class="lc-h3 lc-h3--yellow">What You'Re Building</div>
+      <p>A file viewer that asks the user for a filename, then uses try-except to attempt opening and displaying it. If the file doesn't exist, the except FileNotFoundError block catches the error and prints a friendly message instead of crashing. This is the standard pattern for any program that opens files by name.</p>
+      <div class="lc-h3 lc-h3--yellow">Step-By-Step Instructions</div>
+      <ol>
+        <li>Open your textbook to Program 6-28 (6th Ed) or Program 6-25 (5th Ed).</li>
+        <li>Create a new file named display_file2.py.</li>
+        <li>Type the program as shown.</li>
+        <li>Run it and enter philosophers.txt — confirm the contents appear.</li>
+        <li>Run it again and enter a filename that does not exist — confirm the error message appears instead of a crash.</li>
+      </ol>
+    <div class="lc-callout lc-callout--tip">
+      <div class="lc-callout__icon">
+        <span class="material-symbols-outlined">lightbulb</span>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">try-except Is How You Handle Predictable Errors</div>
+        <div class="lc-callout__body">
+          <p>Code in the try block runs normally. If a FileNotFoundError occurs, Python jumps to the except block instead of crashing. The program continues cleanly after the except block. This pattern works for any predictable error — not just file errors.</p>
+        </div>
+      </div>
+    </div>
+    </div>
   </div>
 </div>
 
-<!-- ============================================================ -->
-<!-- CARD 4: FINAL CHECKLIST (Red) -->
-<!-- ============================================================ -->
 <div class="lc-card lc-card--red">
   <div class="lc-topper">
     <div class="lc-topper-title">Final Checklist</div>
@@ -174,22 +436,22 @@
       <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">show_coffee_records.py runs and displays all coffee records</span></li>
       <li class="lc-checklist-item"><span class="lc-checklist__box"></span><span class="lc-checklist__label">display_file2.py handles both a found file and a missing file correctly</span></li>
     </ul>
-    <div class="lc-callout lc-callout--warning">
+        <div class="lc-callout lc-callout--warning">
       <div class="lc-callout__icon">
         <span class="material-symbols-outlined">error</span>
       </div>
       <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Final Submission Must Include All 10 Files</div>
+        <div class="lc-callout__title">Final Submission Must Include All Files</div>
         <div class="lc-callout__body">
-          <p>CodeGrade only keeps your most recent submission. Your final upload must include all 10 .py files or you will lose credit for any that are missing. Note: you do not need to submit the .txt data files &mdash; CodeGrade creates and reads those when it runs your programs.</p>
+          <p>CodeGrade only keeps your most recent submission. Your final upload must include all 10 files or you will lose credit for any that are missing.</p>
         </div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
-    <p>These are Chapter 6 BookEx exercises. You are typing Gaddis programs exactly as written. All programs use the <code>def main()</code> and <code>if __name__ == '__main__':</code> structure from Chapter 5.</p>
+    <p>These are Chapter 6 BookEx exercises. You are typing Gaddis programs exactly as written. All programs use the def main() and if __name__ == '__main__': structure from Chapter 5.</p>
     <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
     <div class="lc-permitted">
-      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2&ndash;6</p>
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–6</p>
       <ul class="lc-permitted__list">
         <li>open() with modes 'r', 'w', and 'a'</li>
         <li>write() with string arguments and '\n'</li>
@@ -198,7 +460,7 @@
         <li>str(), int(), float() for type conversion with file I/O</li>
         <li>The with statement for automatic file closing</li>
         <li>try-except with FileNotFoundError</li>
-        <li>All Chapter 2&ndash;5 techniques</li>
+        <li>All Chapter 2–5 techniques</li>
       </ul>
       <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> lists as data structures, classes, anything from chapters not yet covered</p>
     </div>
@@ -207,9 +469,6 @@
   </div>
 </div>
 
-<!-- ============================================================ -->
-<!-- CARD 5: NEED HELP (Purple) -->
-<!-- ============================================================ -->
 <div class="lc-card lc-card--purple">
   <div class="lc-topper">
     <div class="lc-topper-title">Need Help</div>
@@ -218,10 +477,10 @@
   <div class="lc-panel">
     <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
     <ul>
-      <li>If you get <code>FileNotFoundError</code>, check that the program that creates the file has been run first &mdash; several checkpoints depend on earlier ones</li>
-      <li>If your output has extra blank lines, you are missing <code>rstrip('\n')</code> &mdash; <code>readline()</code> includes the newline character</li>
-      <li>If you get <code>TypeError</code> on <code>write()</code>, you are trying to write a number directly &mdash; use <code>str()</code> to convert first</li>
-      <li>Submit to CodeGrade early &mdash; it shows exactly which files pass and which need work</li>
+      <li>If you get FileNotFoundError, check that the program that creates the file has been run first — several checkpoints depend on earlier ones</li>
+      <li>If your output has extra blank lines, you are missing rstrip('\n') — readline() includes the newline character</li>
+      <li>If you get TypeError on write(), you are trying to write a number directly — use str() to convert first</li>
+      <li>Submit to CodeGrade early — it shows exactly which files pass and which need work</li>
       <li>Post in the course Discord if you are stuck after two attempts (describe the error, do not post your code)</li>
       <li>Come to Zoom or office hours if you are still stuck</li>
     </ul>
@@ -232,7 +491,7 @@
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">BookEx Reference Guides</div>
         <div class="lc-callout__body">
-          <p>Chapter 6 BookEx Reference Guide &mdash; step-by-step breakdown of every program in this chapter</p>
+          <p>Chapter 6 BookEx Reference Guide — step-by-step breakdown of every program in this chapter</p>
         </div>
       </div>
     </div>
