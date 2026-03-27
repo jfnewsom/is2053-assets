@@ -87,81 +87,62 @@
     }
     .sp-zoom-meta__time .material-symbols-outlined {
       font-size: 16px;
-      color: var(--neon-green);
+      color: var(--neon-orange);
     }
     .sp-zoom-join {
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      color: var(--neon-green);
+      color: var(--neon-orange);
       text-decoration: none;
       padding: 5px 14px;
-      border: 1px solid rgba(57,255,20,0.3);
-      background: rgba(57,255,20,0.05);
+      border: 1px solid rgba(255,107,26,0.4);
+      background: rgba(255,107,26,0.07);
     }
     .sp-zoom-join:hover {
-      background: rgba(57,255,20,0.12);
+      background: rgba(255,107,26,0.15);
       text-decoration: none;
     }
 
-    /* Sessions grid */
-    .sp-sessions-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      border: 1px solid #1e1e1e;
-      overflow: hidden;
-    }
-    .sp-col-head {
-      background: #0d0d0d;
-      border-bottom: 1px solid #1e1e1e;
-      border-right: 1px solid #1e1e1e;
-      padding: 10px 12px;
-    }
-    .sp-col-head:last-child { border-right: none; }
-    .sp-col-head__mod {
-      display: block;
+    /* Sessions — row-based layout */
+    .sp-sessions-mod-label {
       font-family: var(--font-h2);
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--bat-yellow);
-      margin-bottom: 2px;
-    }
-    .sp-col-head__ch {
-      display: block;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      color: #3a3a3a;
-    }
-    .sp-session-cell {
-      padding: 10px 12px;
-      border-right: 1px solid #161616;
-      border-bottom: 1px solid #161616;
-    }
-    .sp-session-cell:nth-child(5n+1):not(.sp-col-head) {
-      border-left: none;
-    }
-    .sp-session-cell__week {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: #3a3a3a;
-      margin-bottom: 5px;
+      color: var(--bat-yellow);
+      margin: 16px 0 8px 0;
     }
-    .sp-session-cell__link a {
+    .sp-sessions-mod-label:first-child { margin-top: 0; }
+    .sp-sessions-row {
       display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 12px;
-      color: var(--neon-cyan);
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+    .sp-week-btn {
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      padding: 10px 18px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: #444;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.12s, color 0.12s;
+    }
+    .sp-week-btn--active {
+      border-color: var(--neon-orange);
+      color: var(--color-text);
+    }
+    .sp-week-btn--active:hover {
+      border-color: #fff;
+      color: #fff;
       text-decoration: none;
     }
-    .sp-session-cell__link .material-symbols-outlined { font-size: 14px; }
-    .sp-session-cell__link a:hover { text-decoration: underline; }
-    .sp-session-cell__empty { font-size: 12px; color: #2a2a2a; }
 
     /* Module overview table — uses lc-table-wrap + lc-table */
     .sp-mod-num {
@@ -319,7 +300,7 @@
   </div>
 
   <!-- ── Session recordings card ───────────────────────────── -->
-  <div class="lc-card lc-card--green" style="--lc-accent: #39FF14; --lc-accent-dk: #1a5c0a; --lc-halftone: #1a5c0a;">
+  <div class="lc-card lc-card--orange" style="--lc-accent: #FF6B1A; --lc-accent-dk: #803608; --lc-halftone: #803608;">
     <div class="lc-topper">
       <div class="lc-topper-title">Session Recordings</div>
       <div class="lc-sub-banner">Tuesdays at 6:00 PM CT</div>
@@ -490,47 +471,30 @@ const SESSIONS = [
 ];
 
 (function buildGrid() {
-  const MOD = {
-    1: { label: 'Module 1', ch: 'CH 2\u20133'   },
-    2: { label: 'Module 2', ch: 'CH 4\u20135'   },
-    3: { label: 'Module 3', ch: 'CH 6\u20137'   },
-    4: { label: 'Module 4', ch: 'CH 8\u20139'   },
-    5: { label: 'Module 5', ch: 'CH 10\u201311' },
+  const MOD_LABELS = {
+    1: 'Module 1 — CH 2–3',
+    2: 'Module 2 — CH 4–5',
+    3: 'Module 3 — CH 6–7',
+    4: 'Module 4 — CH 8–9',
+    5: 'Module 5 — CH 10–11',
   };
 
-  const byMod = {};
-  for (let m = 1; m <= 5; m++) byMod[m] = SESSIONS.filter(s => s.module === m);
-  const rows = Math.max(...Object.values(byMod).map(a => a.length));
-
-  let html = '<div class="sp-sessions-grid">';
-
+  let html = '';
   for (let m = 1; m <= 5; m++) {
-    html += `<div class="sp-col-head">
-      <span class="sp-col-head__mod">${MOD[m].label}</span>
-      <span class="sp-col-head__ch">${MOD[m].ch}</span>
-    </div>`;
-  }
-
-  for (let r = 0; r < rows; r++) {
-    for (let m = 1; m <= 5; m++) {
-      const s = byMod[m][r];
-      if (!s) { html += '<div class="sp-session-cell"></div>'; continue; }
-      html += `<div class="sp-session-cell">
-        <div class="sp-session-cell__week">Week ${s.week}</div>`;
+    const weeks = SESSIONS.filter(s => s.module === m);
+    html += `<div class="sp-sessions-mod-label">${MOD_LABELS[m]}</div>`;
+    html += '<div class="sp-sessions-row">';
+    for (const s of weeks) {
       if (s.url) {
-        html += `<div class="sp-session-cell__link">
-          <a href="${s.url}" target="_blank" rel="noopener">
-            <span class="material-symbols-outlined">play_circle</span>Watch
-          </a>
-        </div>`;
+        html += `<a class="sp-week-btn sp-week-btn--active"
+          href="${s.url}" target="_blank" rel="noopener">Week ${s.week}</a>`;
       } else {
-        html += '<div class="sp-session-cell__empty">&mdash;</div>';
+        html += `<span class="sp-week-btn">Week ${s.week}</span>`;
       }
-      html += '</div>';
     }
+    html += '</div>';
   }
 
-  html += '</div>';
   document.getElementById('sessions-container').innerHTML = html;
 })();
 </script>
