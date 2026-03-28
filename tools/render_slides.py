@@ -4,6 +4,8 @@ IS2053 Programming I | UT San Antonio
 
 Generates 1736x648 RGBA code and output PNGs for Keynote slide decks.
 Fonts are fetched automatically from the course GitHub repo if not found locally.
+They are stored in the repo as base64 text (tools/fonts/*.ttf.b64) and decoded on
+first use, then cached locally so subsequent renders in the same session are instant.
 
 PUBLIC API
 ----------
@@ -12,22 +14,24 @@ PUBLIC API
 
 USAGE IN A WEEK SCRIPT
 ----------------------
-    import sys
-    sys.path.insert(0, '/path/to/tools')   # or fetch render_slides.py from repo first
+    import sys, os
+    sys.path.insert(0, os.path.normpath(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), '..', '..', 'tools'
+    )))
     from render_slides import render_code, render_output
 
     OUT = '/home/claude/week11_pngs'
 
     render_code(
         code=\"\"\"print('Hello, Texas!')\"\"\",
-        label='Slide 3 – Hello World',
+        label='Slide 3 - Hello World',
         filename='slide03_hello.png',
         out_dir=OUT
     )
 
     render_output(
         text='Hello, Texas!',
-        label='Slide 3b – Expected Output',
+        label='Slide 3b - Expected Output',
         filename='slide03b_hello_output.png',
         out_dir=OUT
     )
@@ -44,7 +48,7 @@ from pygments import lex
 from pygments.lexers import Python3Lexer
 from pygments.token import Token
 
-# ── Canvas constants ──────────────────────────────────────────────
+# -- Canvas constants ----------------------------------------------
 W, H       = 1736, 648
 PAD_X      = 44
 PAD_Y      = 32
@@ -53,7 +57,7 @@ RADIUS     = 14
 FONT_SIZE  = 27
 LINE_H     = 40
 
-# ── Bat City Noir palette ─────────────────────────────────────────
+# -- Bat City Noir palette -----------------------------------------
 BG         = (0,   0,   0,   255)
 BORDER_CLR = (255, 204, 0,   255)   # #FFCC00
 DEFAULT    = (245, 245, 245)         # #F5F5F5
@@ -66,64 +70,74 @@ NUMBER     = (191, 64,  255)         # #BF40FF
 FSTRING_I  = (0,   255, 255)         # #00FFFF
 LABEL_CLR  = (106, 115, 125)         # #6A737D
 
-# ── Repo font paths ───────────────────────────────────────────────
-_REPO      = "jfnewsom/is2053-assets"
-_FONT_REG_REPO  = "tools/fonts/RobotoMono.ttf"
-_FONT_ITAL_REPO = "tools/fonts/RobotoMono-Italic.ttf"
-
-# Local cache (same directory as this script)
-_SCRIPT_DIR     = os.path.dirname(os.path.abspath(__file__))
+# -- Repo / font config --------------------------------------------
+_REPO        = "jfnewsom/is2053-assets"
+_SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
 _FONT_REG_LOCAL  = os.path.join(_SCRIPT_DIR, "fonts", "RobotoMono.ttf")
 _FONT_ITAL_LOCAL = os.path.join(_SCRIPT_DIR, "fonts", "RobotoMono-Italic.ttf")
+_FONT_REG_B64    = "tools/fonts/RobotoMono.ttf.b64"
+_FONT_ITAL_B64   = "tools/fonts/RobotoMono-Italic.ttf.b64"
 
 
-# ── Font bootstrap ────────────────────────────────────────────────
+# -- Font bootstrap ------------------------------------------------
 
-def _fetch_font_from_repo(repo_path, local_path):
-    """Fetch a binary file from GitHub via the API and save it locally."""
-    url = f"https://api.github.com/repos/{_REPO}/contents/{repo_path}"
-    req = urllib.request.Request(url, headers={"Accept": "application/vnd.github.v3+json"})
+def _fetch_text_from_repo(repo_path):
+    """Fetch a text file from the repo via blob HTML rawLines."""
+    url = f"https://github.com/{_REPO}/blob/main/{repo_path}"
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req) as resp:
-        data = json.loads(resp.read())
+        html = resp.read().decode("utf-8")
+    marker = '<script type="application/json" data-target="react-app.embeddedData">'
+    start = html.find(marker) + len(marker)
+    end   = html.find("</script>", start)
+    payload = json.loads(html[start:end])
+    lines = payload["payload"]["codeViewBlobLayoutRoute.StyledBlob"]["rawLines"]
+    return "\n".join(lines)
+
+
+def _fetch_font(b64_repo_path, local_path):
+    """Fetch a font stored as base64 in the repo, decode, and save locally."""
+    print(f"  Fetching {os.path.basename(local_path)} from repo...")
+    b64_text   = _fetch_text_from_repo(b64_repo_path)
+    font_bytes = base64.decodebytes(b64_text.encode("ascii"))
     os.makedirs(os.path.dirname(local_path), exist_ok=True)
     with open(local_path, "wb") as f:
-        f.write(base64.b64decode(data["content"]))
-    print(f"  fetched {os.path.basename(local_path)} from repo")
+        f.write(font_bytes)
+    print(f"  Cached  {os.path.basename(local_path)}  ({len(font_bytes):,} bytes)")
 
 
 def _ensure_fonts():
     """Return (font_reg_path, font_ital_path), fetching from repo if needed."""
-    for local, repo in [
-        (_FONT_REG_LOCAL,  _FONT_REG_REPO),
-        (_FONT_ITAL_LOCAL, _FONT_ITAL_REPO),
+    for local, b64_repo in [
+        (_FONT_REG_LOCAL,  _FONT_REG_B64),
+        (_FONT_ITAL_LOCAL, _FONT_ITAL_B64),
     ]:
         if not os.path.exists(local):
-            print(f"  Font not found locally, fetching from repo: {repo}")
-            _fetch_font_from_repo(repo, local)
+            _fetch_font(b64_repo, local)
     return _FONT_REG_LOCAL, _FONT_ITAL_LOCAL
 
 
-# ── Internal helpers ──────────────────────────────────────────────
+# -- Internal helpers ----------------------------------------------
 
 def _token_color(ttype):
     checks = [
-        (Token.Comment,                COMMENT),
-        (Token.Keyword,                KEYWORD),
-        (Token.Keyword.Namespace,      KEYWORD),
-        (Token.Name.Builtin,           BUILTIN),
-        (Token.Name.Builtin.Pseudo,    BUILTIN),
-        (Token.Name.Function,          FUNCTION),
-        (Token.Name.Function.Magic,    FUNCTION),
-        (Token.Name.Decorator,         FUNCTION),
-        (Token.Name.Class,             FUNCTION),
-        (Token.Literal.String,         STRING),
-        (Token.Literal.String.Affix,   STRING),
+        (Token.Comment,                 COMMENT),
+        (Token.Keyword,                 KEYWORD),
+        (Token.Keyword.Namespace,       KEYWORD),
+        (Token.Name.Builtin,            BUILTIN),
+        (Token.Name.Builtin.Pseudo,     BUILTIN),
+        (Token.Name.Function,           FUNCTION),
+        (Token.Name.Function.Magic,     FUNCTION),
+        (Token.Name.Decorator,          FUNCTION),
+        (Token.Name.Class,              FUNCTION),
+        (Token.Literal.String,          STRING),
+        (Token.Literal.String.Affix,    STRING),
         (Token.Literal.String.Interpol, FSTRING_I),
-        (Token.Literal.Number,         NUMBER),
-        (Token.Operator,               BUILTIN),
+        (Token.Literal.Number,          NUMBER),
+        (Token.Operator,                BUILTIN),
     ]
-    for base, color in checks:
-        if ttype is base or ttype in base:
+    for base_tok, color in checks:
+        if ttype is base_tok or ttype in base_tok:
             return color
     return DEFAULT
 
@@ -174,7 +188,7 @@ def _colorize_output_line(text):
     return segments if segments else [(DEFAULT, text)]
 
 
-# ── Public API ────────────────────────────────────────────────────
+# -- Public API ----------------------------------------------------
 
 def render_code(code, label, filename, out_dir):
     """
@@ -182,17 +196,17 @@ def render_code(code, label, filename, out_dir):
 
     Parameters
     ----------
-    code     : str   — Python source code to highlight
-    label    : str   — Slide label shown top-right (e.g. 'Slide 4a – .upper()')
-    filename : str   — Output filename (e.g. 'slide04a_upper.png')
-    out_dir  : str   — Directory to write the PNG into
+    code     : str  -- Python source code to highlight
+    label    : str  -- Slide label shown top-right (e.g. 'Slide 4a - .upper()')
+    filename : str  -- Output filename (e.g. 'slide04a_upper.png')
+    out_dir  : str  -- Directory to write the PNG into
     """
     os.makedirs(out_dir, exist_ok=True)
     font_reg_path, font_ital_path = _ensure_fonts()
 
-    font_reg   = ImageFont.truetype(font_reg_path,   FONT_SIZE)
-    font_ital  = ImageFont.truetype(font_ital_path,  FONT_SIZE)
-    font_label = ImageFont.truetype(font_reg_path,   16)
+    font_reg   = ImageFont.truetype(font_reg_path,  FONT_SIZE)
+    font_ital  = ImageFont.truetype(font_ital_path, FONT_SIZE)
+    font_label = ImageFont.truetype(font_reg_path,  16)
 
     img = _make_canvas()
     d   = ImageDraw.Draw(img)
@@ -227,10 +241,10 @@ def render_output(text, label, filename, out_dir):
 
     Parameters
     ----------
-    text     : str   — Program output text (newline-separated lines)
-    label    : str   — Slide label shown top-right
-    filename : str   — Output filename
-    out_dir  : str   — Directory to write the PNG into
+    text     : str  -- Program output text (newline-separated lines)
+    label    : str  -- Slide label shown top-right
+    filename : str  -- Output filename
+    out_dir  : str  -- Directory to write the PNG into
     """
     os.makedirs(out_dir, exist_ok=True)
     font_reg_path, _ = _ensure_fonts()
