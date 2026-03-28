@@ -450,6 +450,15 @@
     style.textContent = css;
     document.head.appendChild(style);
 
+    // Apple Touch Icon for Safari bookmarks/favorites
+    if (!document.querySelector('link[rel="apple-touch-icon"]')) {
+      const ati = document.createElement('link');
+      ati.rel = 'apple-touch-icon';
+      ati.setAttribute('sizes', '180x180');
+      ati.href = 'https://jfnewsom.github.io/is2053-assets/apple-touch-icon.png';
+      document.head.appendChild(ati);
+    }
+
     const nav = document.createElement('nav');
     nav.id = 'is2053-nav';
     nav.setAttribute('aria-label', 'Course navigation');
