@@ -378,12 +378,6 @@
             ${link('Grading Info',    S + 'grading-info.html' + suffix,    'dd-yellow')}
             ${link('Course Schedule', S + 'course-schedule.html' + suffix, 'dd-yellow')}
             ${link('Zoom Sessions',   S + 'zoom-sessions.html' + suffix,   'dd-yellow')}
-          </div>
-        </div>
-
-        <div class="nav-item">
-          <div class="nav-trigger">Resources <span class="nav-caret">&#9660;</span></div>
-          <div class="nav-dropdown">
             <div class="drop-label">Support Resources</div>
             ${link('Assignment Overview', S + 'assignment-overview.html' + suffix, 'dd-green')}
             ${link('CodeGrade Guide',     S + 'codegrade-guide.html' + suffix,     'dd-green')}
@@ -393,6 +387,10 @@
             ${link('Stretch Goals',       S + 'stretch-goals.html' + suffix,       'dd-green')}
             ${link('AI Policy',           S + 'ai-policy.html' + suffix,           'dd-green')}
             ${link('Practice Archive',    S + 'practice-archive.html' + suffix,    'dd-green')}
+            <div class="drop-label">External Tools</div>
+            ${link('Python Docs', 'https://www.python.org/downloads/',                    'dd-cyan', true)}
+            ${link('VS Code',     'https://code.visualstudio.com/download',               'dd-cyan', true)}
+            ${link('Calendly',    'https://calendly.com/john-newsom-utsa/student-meeting', 'dd-cyan', true)}
           </div>
         </div>
 
@@ -428,16 +426,6 @@
             <div class="drop-sub">Module 5 &mdash; Ch. 10&ndash;11</div>
             ${link('Chapter 10', S + 'reading-ch10.html' + suffix, 'dd-orange')}
             ${link('Chapter 11', S + 'reading-ch11.html' + suffix, 'dd-orange')}
-          </div>
-        </div>
-
-        <div class="nav-item">
-          <div class="nav-trigger">Tools <span class="nav-caret">&#9660;</span></div>
-          <div class="nav-dropdown">
-            <div class="drop-label">External Tools</div>
-            ${link('Python Docs', 'https://www.python.org/downloads/',                    'dd-cyan', true)}
-            ${link('VS Code',     'https://code.visualstudio.com/download',               'dd-cyan', true)}
-            ${link('Calendly',    'https://calendly.com/john-newsom-utsa/student-meeting', 'dd-cyan', true)}
           </div>
         </div>
 
