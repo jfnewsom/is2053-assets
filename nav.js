@@ -5,7 +5,7 @@
  * Context is determined by the ?context= query parameter in the URL:
  *
  *   No parameter (direct open)   → full nav (all sections + assignments)
- *   ?context=support             → slim nav (Course, Resources, The Game only)
+ *   ?context=support             → slim nav (Course, Bat City only)
  *   ?context=assignment          → no nav rendered at all
  *
  * This means the same HTML file behaves correctly whether opened
@@ -212,8 +212,8 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      background: #5865F2;
-      color: #ffffff !important;
+      background: #FFCC00;
+      color: #000000 !important;
       padding: 5px 12px;
       font-size: 12px;
       font-weight: 700;
@@ -224,7 +224,7 @@
       flex-shrink: 0;
       border-radius: 3px;
     }
-    #is2053-nav .nav-discord:hover { background: #4752C4; }
+    #is2053-nav .nav-discord:hover { background: #ffe033; }
 
     /* Dot color variants */
     .dd-yellow { background: #FFCC00; }
@@ -395,7 +395,7 @@
         </div>
 
         <div class="nav-item">
-          <div class="nav-trigger">The Game <span class="nav-caret">&#9660;</span></div>
+          <div class="nav-trigger">Bat City <span class="nav-caret">&#9660;</span></div>
           <div class="nav-dropdown">
             <div class="drop-label">Game World</div>
             ${link('The Scenario',      SC + 'the-scenario.html' + suffix,      'dd-orange')}
