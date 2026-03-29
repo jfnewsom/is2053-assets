@@ -207,6 +207,25 @@
       text-decoration: none !important;
     }
 
+    /* Discord button */
+    #is2053-nav .nav-discord {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #5865F2;
+      color: #ffffff !important;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: background 0.12s;
+      flex-shrink: 0;
+      border-radius: 3px;
+    }
+    #is2053-nav .nav-discord:hover { background: #4752C4; }
+
     /* Dot color variants */
     .dd-yellow { background: #FFCC00; }
     .dd-green  { background: #39FF14; }
@@ -425,6 +444,7 @@
       </div>
 
       <div class="nav-actions" id="is2053-nav-actions"></div>
+      <a class="nav-discord" href="${S}discord.html">Discord</a>
     </div>`;
 
   /* ── Zoom session time check ────────────────────────────── */
