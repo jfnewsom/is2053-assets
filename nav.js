@@ -353,9 +353,8 @@
         <div class="drop-sub">Module 4 &mdash; Ch. 8&ndash;9</div>
         ${link('Chapter 8',  BX + 'BookExCH08.html' + suffix, 'dd-purple')}
         ${link('Chapter 9',  BX + 'BookExCH09.html' + suffix, 'dd-purple')}
-        <div class="drop-sub">Module 5 &mdash; Ch. 10&ndash;11</div>
+        <div class="drop-sub">Module 5 &mdash; Ch. 10</div>
         ${link('Chapter 10', BX + 'BookExCH10.html' + suffix, 'dd-purple')}
-        ${link('Chapter 11', BX + 'BookExCH11.html' + suffix, 'dd-purple')}
       </div>
     </div>` : '';
 
@@ -422,9 +421,8 @@
             <div class="drop-sub">Module 4 &mdash; Ch. 8&ndash;9</div>
             ${link('Chapter 8',  S + 'reading-ch08.html' + suffix, 'dd-orange')}
             ${link('Chapter 9',  S + 'reading-ch09.html' + suffix, 'dd-orange')}
-            <div class="drop-sub">Module 5 &mdash; Ch. 10&ndash;11</div>
+            <div class="drop-sub">Module 5 &mdash; Ch. 10</div>
             ${link('Chapter 10', S + 'reading-ch10.html' + suffix, 'dd-orange')}
-            ${link('Chapter 11', S + 'reading-ch11.html' + suffix, 'dd-orange')}
           </div>
         </div>
 
