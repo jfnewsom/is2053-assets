@@ -332,7 +332,6 @@
         <div class="drop-sub">Module 5</div>
         ${link('Lab 5-1', L + 'lab-5-1.html' + suffix, 'dd-cyan')}
         ${link('Lab 5-2', L + 'lab-5-2.html' + suffix, 'dd-cyan')}
-        ${link('Lab 5-3', L + 'lab-5-3.html' + suffix, 'dd-cyan')}
       </div>
     </div>` : '';
 
