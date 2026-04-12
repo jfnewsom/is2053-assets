@@ -146,6 +146,32 @@
       color: #fff;
       text-decoration: none;
     }
+    .sp-week-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sp-lab-btn {
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      padding: 6px 18px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      color: #444;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.12s, color 0.12s;
+    }
+    .sp-lab-btn--active {
+      border-color: var(--neon-purple);
+      color: var(--color-text);
+    }
+    .sp-lab-btn--active:hover {
+      border-color: #fff;
+      color: #fff;
+      text-decoration: none;
+    }
 
     /* Module overview table — uses lc-table-wrap + lc-table */
     .sp-mod-num {
@@ -629,12 +655,13 @@
 <!-- ═══════════════════════════════════════════════════════════════
      ZOOM SESSION RECORDINGS — WEEKLY UPDATE POINT
      ─────────────────────────────────────────────────────────────
-     Each week: find the entry for the current week number and
-     paste the Panopto share URL as the "url" value.
-     Leave url as null until the recording is available.
+     Each week has a "url" (lesson recording) and an optional
+     "lab" object with a label and url (lab walkthrough recording).
+     Leave any url as null until the recording is ready to post.
 
-     Example — adding week 1:
-       { week: 1, module: 1, url: "https://utsa.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=XXXX" },
+     To add a lesson recording:   set url to the Panopto share URL
+     To add a lab recording:      set lab.url to the Panopto share URL
+     Weeks without a lab walkthrough omit the "lab" property entirely.
 ══════════════════════════════════════════════════════════════ -->
 <script>
 const SESSIONS = [
@@ -647,21 +674,26 @@ const SESSIONS = [
   { week:  7, module: 3, url: "https://utsa.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=d52ec744-6e01-4f5b-98c9-b403000cb690" },
   { week:  8, module: 3, url: "https://utsa.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=02f6255d-d19d-4922-8b8d-b4110001ab2e" },
   { week:  9, module: 3, url: "https://utsa.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=4a07f2d8-aae9-4ac3-a1b3-b4170183ee2d" },
-  { week: 10, module: 4, url: null },
-  { week: 11, module: 4, url: "https://utsa.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=15f3bf15-ef3d-4cca-bec6-b42a012928a4" },
-  { week: 12, module: 4, url: "https://utsa.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=8be3db85-2f40-4193-9a8c-b42a01306900" },
-  { week: 13, module: 5, url: null },
-  { week: 14, module: 5, url: null },
+  { week: 10, module: 4, url: null,
+    lab: { label: "Lab 4.1", url: null } },
+  { week: 11, module: 4, url: "https://utsa.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=15f3bf15-ef3d-4cca-bec6-b42a012928a4",
+    lab: { label: "Lab 4.2", url: null } },
+  { week: 12, module: 4, url: "https://utsa.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=8be3db85-2f40-4193-9a8c-b42a01306900",
+    lab: { label: "Lab 4.3", url: null } },
+  { week: 13, module: 5, url: null,
+    lab: { label: "Lab 5.1", url: null } },
+  { week: 14, module: 5, url: null,
+    lab: { label: "Lab 5.2", url: null } },
   { week: 15, module: 5, url: null },
 ];
 
 (function buildGrid() {
   const MOD_LABELS = {
-    1: 'Module 1 — CH 2–3',
-    2: 'Module 2 — CH 4–5',
-    3: 'Module 3 — CH 6–7',
-    4: 'Module 4 — CH 8–9',
-    5: 'Module 5 — CH 10–11',
+    1: 'Module 1 — CH 2–3',
+    2: 'Module 2 — CH 4–5',
+    3: 'Module 3 — CH 6–7',
+    4: 'Module 4 — CH 8–9',
+    5: 'Module 5 — CH 10',
   };
 
   let html = '';
@@ -670,12 +702,27 @@ const SESSIONS = [
     html += `<div class="sp-sessions-mod-label">${MOD_LABELS[m]}</div>`;
     html += '<div class="sp-sessions-row">';
     for (const s of weeks) {
+      html += '<div class="sp-week-cell">';
+
+      // Lesson button
       if (s.url) {
         html += `<a class="sp-week-btn sp-week-btn--active"
           href="${s.url}" target="_blank" rel="noopener">Week ${s.week}</a>`;
       } else {
         html += `<span class="sp-week-btn">Week ${s.week}</span>`;
       }
+
+      // Lab button (only rendered if the week has a lab property)
+      if (s.lab) {
+        if (s.lab.url) {
+          html += `<a class="sp-lab-btn sp-lab-btn--active"
+            href="${s.lab.url}" target="_blank" rel="noopener">${s.lab.label}</a>`;
+        } else {
+          html += `<span class="sp-lab-btn">${s.lab.label}</span>`;
+        }
+      }
+
+      html += '</div>'; // .sp-week-cell
     }
     html += '</div>';
   }
