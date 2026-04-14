@@ -41,7 +41,9 @@
             "<code>__str__</code> method returns a single-line summary of the player"
         ],
         "filenameNote": "Submit <code>city.py</code> (carried from 5.1), <code>player.py</code> (new this week), <code>lab-5-2.py</code> (provided -- do not modify), and <code>function_library.py</code> this week.",
-        "additionalFilesNote": "<code>lab-5-2.py</code> is provided in full on this page. Do not modify it. Read through it carefully -- every <code>player.</code> call tells you a method your <code>Player</code> class needs to implement."
+        "additionalFilesNote": "<code>lab-5-2.py</code> is provided in full on this page. Do not modify it. Read through it carefully -- every <code>player.</code> call tells you a method your <code>Player</code> class needs to implement.",
+        "keyConceptsText": "<strong>Chapter 10:</strong> <code>class</code> definition, <code>__init__</code> constructor, private attributes with double-underscore prefix, getter methods, state-updating methods, <code>__str__</code> special method, and list/set as class attributes.",
+        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 10"
     },
     "timeGuide": {
         "totalTime": "60-90 Minutes",
@@ -101,6 +103,10 @@
                     "body": "In <code>lab-5-1.py</code>, if you wanted to know the player's current city, you'd look at <code>current_city</code>. If you wanted their total miles, <code>total_miles</code>. Two different names, two different places. Now it's <code>player.get_current_city()</code> and <code>player.get_total_miles()</code>. Same object. Same place. Everything the player <em>is</em> lives in one place."
                 },
                 {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
                     "type": "callout",
                     "variant": "bookex",
                     "references": [
@@ -111,6 +117,13 @@
                             "description": "You built a CellPhone class with private attributes for manufacturer, model, and price. Player follows the same pattern -- more attributes, same structure. Copy your City class to player.py, rename the class, and replace the attributes using the architecture diagram above."
                         }
                     ]
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Tyler Nguyen",
+                    "role": "Junior Developer, Bat City Collective",
+                    "headshot": "Tyler-Nguyen.png",
+                    "quote": "When I first saw ten state variables in main() I thought that was just how games worked. Then Danny showed me a Player class and I literally said 'that's it?' One object. One place. Everything the player is, right there. I wish I'd learned this sooner."
                 },
                 {
                     "type": "h3",
@@ -206,6 +219,18 @@
                     "body": "Twelve getter methods that provide read access to the Player's private data. These are the methods <code>lab-5-2.py</code> calls to build the final report. Same pattern you used in City -- each getter just returns its attribute."
                 },
                 {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Getters enforce a contract: outside code never touches private data directly. <code>lab-5-2.py</code> doesn't reach into <code>player.__total_miles</code> — it calls <code>player.get_total_miles()</code>. That one layer of separation is what makes it safe to change how the Player stores data internally without breaking anything that uses it. Two of the getters — <code>get_unique_city_count()</code> and <code>get_unique_hazard_count()</code> — return <code>len()</code> instead of the raw attribute. The caller gets a number, not a set. That is encapsulation doing real work."
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
                     "type": "callout",
                     "variant": "bookex",
                     "references": [
@@ -216,6 +241,13 @@
                             "description": "You typed <code>get_manufact()</code>, <code>get_model()</code>, and <code>get_retail_price()</code> -- each just returned <code>self.__attribute</code>. All twelve Player getters follow exactly the same pattern."
                         }
                     ]
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Priya Venkatesh",
+                    "role": "Project Manager, Bat City Collective",
+                    "headshot": "Priya-Venkatesh.png",
+                    "quote": "Twelve getters sounds like a lot of repetition. But think of it as a public API. lab-5-2.py is the client. It only talks to Player through method calls. If we ever need to change how the Player stores miles internally, the client code doesn't change at all. That contract is worth writing twelve methods for."
                 },
                 {
                     "type": "h3",
@@ -256,6 +288,32 @@
                 },
                 {
                     "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": [
+                        "Common Mistake",
+                        "Why It Fails"
+                    ],
+                    "rows": [
+                        [
+                            "Returning the raw set instead of a copy: <code>return self.__unique_cities</code>",
+                            "The caller could modify the set directly. Use <code>return self.__unique_cities.copy()</code> to protect the original."
+                        ],
+                        [
+                            "Returning <code>self.__unique_cities</code> for the count getter",
+                            "<code>get_unique_city_count()</code> returns <code>len(self.__unique_cities)</code>, not the set itself."
+                        ],
+                        [
+                            "Missing a docstring on any getter",
+                            "CodeGrade checks documentation on every method. One missing docstring is a deduction."
+                        ]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
                     "label": "what_you_should_have"
                 },
                 {
@@ -279,6 +337,43 @@
                 {
                     "type": "text",
                     "body": "Three methods that replace the scattered update statements in <code>lab-5-1.py</code>'s main() function. Each method handles multiple related updates in one place. Instead of four lines of code to record travel, it's one method call: <code>player.travel_to(dest, distance)</code>."
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "In <code>lab-5-1.py</code>, recording a hazard meant four separate lines in <code>main()</code>: increment the counter, add to the set, check a boolean, maybe increment escaped. Now it is one call: <code>player.record_hazard(name, escaped)</code>. The Player knows how to update itself. The caller just says what happened. This is what object-oriented design means in practice — behavior lives with the data it operates on."
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Danny Cavanaugh",
+                    "role": "Lead Developer, Bat City Collective",
+                    "headshot": "Danny-Cavanaugh.png",
+                    "quote": "Three methods. travel_to(), record_hazard(), record_trivia(). Together they replace about twenty lines of scattered updates in main(). And next time we want to add a stat — say, a fuel tracker — we add one attribute and one method. We don't go hunting through main() trying to remember every place it touches."
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "10-12",
+                            "filename": "cellphone.py",
+                            "step": 1,
+                            "description": "The CellPhone class had a <code>set_retail_price()</code> method that updated <code>self.__retail_price</code>. Your <code>travel_to()</code>, <code>record_hazard()</code>, and <code>record_trivia()</code> methods follow the exact same pattern — a method that changes one or more private attributes based on what happened."
+                        },
+                        {
+                            "programId": "10-9",
+                            "filename": "bankaccount2.py",
+                            "step": 1,
+                            "description": "The BankAccount <code>deposit()</code> method did <code>self.__balance = self.__balance + amount</code>. Your <code>travel_to()</code> does the same thing with miles: <code>self.__total_miles = self.__total_miles + distance</code>."
+                        }
+                    ]
                 },
                 {
                     "type": "h3",
@@ -312,6 +407,10 @@
                 {
                     "type": "text",
                     "body": "Run <code>python test.py</code> from your project folder. All Player tests through the state-updating section should pass."
+                },
+                {
+                    "type": "output_block",
+                    "output": "# After player = Player('Maria', 'San Antonio')\n# then player.travel_to('Houston', 200)\n# then player.record_hazard(\"Speed trap!\", False)\n# then player.record_trivia(True)\n\nprint(player.get_current_city())   # Houston\nprint(player.get_total_miles())    # 200\nprint(player.get_unique_city_count())  # 2\nprint(player.get_hazards_faced())  # 1\nprint(player.get_hazards_escaped())  # 0\nprint(player.get_trivia_asked())   # 1\nprint(player.get_trivia_correct()) # 1"
                 },
                 {
                     "type": "h3",
@@ -367,6 +466,18 @@
                     "body": "The final methods: <code>get_route_string()</code> formats the travel history as a readable route, <code>get_trivia_accuracy()</code> calculates the accuracy percentage, and <code>__str__</code> gives a one-line summary of the player's current state."
                 },
                 {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Display methods are the Player's voice. <code>get_route_string()</code> and <code>get_trivia_accuracy()</code> transform raw stored data into something readable — the same work a report generator or dashboard does professionally. <code>__str__</code> is Python's protocol for making objects printable: implement it, and <code>print(player)</code> just works. These three methods complete the Player's public interface."
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
                     "type": "callout",
                     "variant": "bookex",
                     "references": [
@@ -377,6 +488,13 @@
                             "description": "You typed a <code>__str__</code> method that returned a formatted string. Python calls it automatically when you <code>print()</code> the object. Your Player's <code>__str__</code> should return something like <code>'Maria in Houston (450 miles)'</code>."
                         }
                     ]
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Terrence \"T-Bone\" Booker",
+                    "role": "QA Lead, Bat City Collective",
+                    "headshot": "Terrence-TBone-Booker.png",
+                    "quote": "Fifty-three tests. That's what test.py runs against your Player class. Every method, every edge case, zero-trivia-asked, escaped vs. not escaped. Run it after every checkpoint — not just at the end. A test that breaks at CP2 is a five-minute fix. The same break discovered at submission is a bad night."
                 },
                 {
                     "type": "h3",
@@ -414,6 +532,46 @@
                 {
                     "type": "output_block",
                     "output": "=======================================================\nFINAL TRIP REPORT\n=======================================================\nDriver:              Maria\nFinal City:          Corpus Christi\n\nROUTE:\n  San Antonio -> Houston -> Corpus Christi\n\nUNIQUE CITIES (3):\n  - Corpus Christi\n  - Houston\n  - San Antonio\n\nTRIVIA:\n  Asked: 2\n  Correct: 2\n  Accuracy: 100.0%\n\nHAZARDS:\n  Faced: 1\n  Escaped: 1\n  Unique types: 1\n\nSTATS:\n  Total Miles: 410"
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Run <code>python test.py</code> from your project folder. All 53 tests should pass. If any fail, the output tells you the method name and what it returned vs. what was expected.",
+                        "Run <code>python lab-5-2.py</code> and play a complete game. Travel to at least two cities, trigger at least one hazard, and reach a beach or win city.",
+                        "Verify <code>print(player)</code> inside the game loop outputs a clean one-line summary.",
+                        "Verify the final report shows a correct route string with arrows, accurate trivia percentage, and correct unique city and hazard counts.",
+                        "Check <code>get_trivia_accuracy()</code> with zero questions asked — quit before any trivia fires and confirm the report prints <code>0.0%</code> without crashing."
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": [
+                        "Common Mistake",
+                        "Why It Fails"
+                    ],
+                    "rows": [
+                        [
+                            "Returning <code>self.__visited_cities</code> directly in <code>get_route_string()</code>",
+                            "<code>' -> '.join()</code> needs the list, not the return value of a method. Write it as <code>' -> '.join(self.__visited_cities)</code> inside the method itself."
+                        ],
+                        [
+                            "Dividing before checking if <code>__trivia_asked</code> is zero",
+                            "If no trivia has been asked, <code>__trivia_asked</code> is 0. Guard with <code>if self.__trivia_asked == 0: return '0.0%'</code> before calculating."
+                        ],
+                        [
+                            "Forgetting the <code>%</code> sign in the accuracy string",
+                            "The return value should be a string like <code>'75.0%'</code> — include the percent sign."
+                        ]
+                    ],
+                    "accent": "green"
                 },
                 {
                     "type": "h3",

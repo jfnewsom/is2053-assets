@@ -114,6 +114,10 @@
                     "body": "Loading structured data from files into a list of dictionaries is everywhere in professional development. JSON APIs return lists of objects, database queries return lists of records, and configuration files store lists of settings. Master this pattern and you've unlocked how real applications manage data."
                 },
                 {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
                     "type": "callout",
                     "variant": "bookex",
                     "references": [
@@ -224,6 +228,34 @@
                 },
                 {
                     "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Input normalization is one of the first things real applications need. Every web form, every API, every command-line tool deals with the reality that users don't type consistently. <code>.strip().upper()</code> is the chapter-level introduction to a principle: clean your input at the boundary before your logic ever touches it. One method chain does what four <code>or</code> conditions used to do."
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "8-5",
+                            "filename": "string_test.py",
+                            "description": "Shows <code>.upper()</code> and <code>.lower()</code> being called on strings. The comparison pattern <code>if user_input.upper() == 'Y':</code> is exactly what you are implementing here."
+                        },
+                        {
+                            "programId": "8-10",
+                            "filename": "split_date.py",
+                            "description": "You used <code>.split('/')</code> on a string. <code>.strip()</code> and <code>.upper()</code> are from the same string method family — you are just calling them in a chain now."
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
                     "label": "step_by_step"
                 },
                 {
@@ -253,6 +285,10 @@
                 {
                     "type": "text",
                     "body": "Run your game and navigate to a dead end (Laredo or El Paso). When asked \"Return to San Antonio?\", try each of these inputs and confirm all three work: <code>y</code>, <code>Y</code>, and <code>&nbsp;&nbsp;y&nbsp;&nbsp;</code> (with spaces)."
+                },
+                {
+                    "type": "output_block",
+                    "output": "Return to San Antonio? (y/n): y\nHeading back to San Antonio...\n\nReturn to San Antonio? (y/n): Y\nHeading back to San Antonio...\n\nReturn to San Antonio? (y/n):    y   \nHeading back to San Antonio..."
                 },
                 {
                     "type": "mentor_quote",
@@ -312,6 +348,41 @@
                 },
                 {
                     "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "<code>random.choice()</code> on a list of dictionaries is the real-world pattern for selecting from structured data. Every game engine, every recommendation system, every A/B testing framework runs on some version of 'pick a random item from a structured list and act on its properties.' Your hazards list is a tiny database and <code>handle_hazard()</code> is your first query."
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Terrence \"T-Bone\" Booker",
+                    "role": "QA Lead, Bat City Collective",
+                    "headshot": "Terrence-TBone-Booker.png",
+                    "quote": "I test this stuff for a living. Random hazard selection sounds simple until you realize you have to verify that EVERY hazard can appear, BOTH coin outcomes work, and the return value is always a boolean. Test it in a loop, run it twenty times, make sure nothing surprises you."
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "9-1",
+                            "filename": "card_dealer.py",
+                            "description": "You built a dictionary with key-value pairs and accessed values by key. <code>handle_hazard()</code> does the same: <code>hazard['name']</code>, <code>hazard['heads']</code>, <code>hazard['tails']</code> — same pattern, different data."
+                        },
+                        {
+                            "programId": "5-24",
+                            "filename": "sale_price.py",
+                            "description": "Shows a function that returns a calculated value. <code>handle_hazard()</code> returns a boolean — same return statement pattern, just returning <code>True</code> or <code>False</code> instead of a number."
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
                     "label": "step_by_step"
                 },
                 {
@@ -341,6 +412,10 @@
                 {
                     "type": "text",
                     "body": "<strong>Step 2:</strong> Run several times. Verify you see different hazards and both HEADS and TAILS outcomes appearing across runs. <strong>Step 3:</strong> <strong><strong style=\"color:#FF6B1A;\">DELETE the DEBUG lines</strong></strong> before moving to Checkpoint 4."
+                },
+                {
+                    "type": "output_block",
+                    "output": "Testing hazard handling...\n*** HAZARD: Buc-ee's appears! ***\nCoin flip: HEADS\nYou resist the siren call of Buc-ee's and stay on schedule!\nEscaped: True\n\n*** HAZARD: Speed trap! ***\nCoin flip: TAILS\nYou lose 30 minutes to a speed trap!\nEscaped: False\n\n*** HAZARD: Armadillo crossing! ***\nCoin flip: HEADS\nThe armadillo waddles off the road. You're clear!\nEscaped: True"
                 },
                 {
                     "type": "h3",
@@ -393,6 +468,41 @@
                 },
                 {
                     "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "The travel system is where everything converges — the D20 roll from the library, the hazard system from CP3, the probability check from Module 2. Building it as a standalone function that returns a tuple keeps <code>main()</code> clean and readable. Tuple returns are how Python passes multiple values back from a function — a pattern you will use constantly in real code."
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Danny Cavanaugh",
+                    "role": "Lead Developer, Bat City Collective",
+                    "headshot": "Danny-Cavanaugh.png",
+                    "quote": "travel_to() is the most complex function you have written yet — a loop, a probability check, a function call inside a conditional, and a tuple return. Build it one line at a time. Get the D20 loop working first, then add the hazard check, then add the return. Don't try to write it all at once."
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "4-2",
+                            "filename": "temperature.py",
+                            "description": "You wrote a while loop that continued until a condition was met. The travel loop — <code>while remaining > 0:</code> — is the same structure: keep going until the distance is covered."
+                        },
+                        {
+                            "programId": "5-28",
+                            "filename": "hypotenuse.py",
+                            "description": "You wrote a function that returned a calculated value. <code>travel_to()</code> returns a tuple of three values — same <code>return</code> statement, just with parentheses around multiple items."
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
                     "label": "step_by_step"
                 },
                 {
@@ -442,6 +552,10 @@
                 {
                     "type": "text",
                     "body": "Play through the complete game and verify: D20 rolls determine progress (roll × 10 miles), hazards appear randomly on about 30% of turns, hazard outcomes depend on the coin flip, the final report shows hazards escaped vs. faced, and total miles matches the sum of all journeys."
+                },
+                {
+                    "type": "output_block",
+                    "output": "--- Traveling to Houston (200 miles) ---\nTurn 1: Rolled 14 — traveled 140 miles. (60 remaining)\n*** HAZARD: Speed trap! ***\nCoin flip: TAILS\nYou lose 30 minutes to a speed trap!\nTurn 2: Rolled 7 — traveled 60 miles. (0 remaining)\nYou have arrived in Houston!\n\n--- TRIP SUMMARY ---\nTotal Miles: 200\nHazards Faced: 1\nHazards Escaped: 0"
                 },
                 {
                     "type": "h3",
