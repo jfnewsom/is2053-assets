@@ -151,9 +151,12 @@ def render_overview_card(overview: dict, meta: dict) -> str:
             f_name = html_lib.escape(df.get("file", ""))
             f_fmt  = df.get("format", "")
             new_badge = ' <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span>' if df.get("new") else ""
-            if df.get("file", "").endswith(".txt"):
+            file_raw = df.get("file", "")
+            if file_raw.endswith((".txt", ".py")):
+                # Honor optional "path" override (e.g. "5-2/lab-5-2.py" for lab-specific files)
+                href_path = df.get("path") or f_name
                 download_cell = (
-                    f'<td><a href="data/{f_name}" download '
+                    f'<td><a href="data/{href_path}" download '
                     f'style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">'
                     f'&#11123; {f_name}</a></td>'
                 )
