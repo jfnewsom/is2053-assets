@@ -284,6 +284,7 @@ trivia <span class="sy-op">=</span> <span class="sy-op">{</span>
       <li>Append the question dict: <code>trivia[city].append({'question': question, 'answer': answer})</code></li>
       <li>Close the file and return the trivia dict</li>
     </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -318,6 +319,12 @@ trivia <span class="sy-op">=</span> load_trivia<span class="sy-op">(</span><span
 <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;First Houston Q:&#x27;</span><span class="sy-op">,</span> trivia<span class="sy-op">[</span><span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-num">0</span><span class="sy-op">]</span><span class="sy-op">)</span></pre>
     </div>
     <p><strong>Verify:</strong> Houston has multiple questions, and each is a dict with <code>'question'</code> and <code>'answer'</code> keys.</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Cities with trivia: 6
+Houston questions: 2
+First Houston Q: {&#x27;question&#x27;: &#x27;NASA Mission Control is in Houston, Texas.&#x27;, &#x27;answer&#x27;: &#x27;TRUE&#x27;}</pre>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
     <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
       <table class="lc-table">
@@ -364,7 +371,23 @@ trivia <span class="sy-op">=</span> load_trivia<span class="sy-op">(</span><span
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>The coin flip was pure luck — the player had no agency. Trivia replaces luck with skill. More importantly, <code>trivia_gate()</code> is the first function you have written where the return value drives the entire next branch of the game: destination, distance, and outcome all flow from one tuple. This is how real game engines work — functions determine not just results but which path the program takes next.</p>
     <p>A function that presents a trivia question, accepts TRUE/FALSE input (using <code>.strip().upper()</code>), and returns the final destination, distance, and whether the player got it correct.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"The client specifically asked for trivia because luck-based gates frustrate players. Skill-based gates keep them engaged. That design decision changed a coin flip into a whole system — a question, two possible paths, and stats to track. Scope creep? No. Better product."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Priya Venkatesh</div>
+        <div class="lc-mentor__role">Project Manager, Bat City Collective</div>
+      </div>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li>Define <code>trivia_gate(dest, trivia, all_dests, distances, current)</code></li>
@@ -378,6 +401,7 @@ trivia <span class="sy-op">=</span> load_trivia<span class="sy-op">(</span><span
     </ol>
     <div class="lc-h3 lc-h3--yellow">Pro Tip</div>
     <p>To get “other” destinations for the redirect, loop through <code>all_dests</code> and build a new list that skips the chosen destination. The pattern is the same one you used in Module 3 — loop, check a condition, and <code>.append()</code> if it passes.</p>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -418,6 +442,22 @@ trivia <span class="sy-op">=</span> load_trivia<span class="sy-op">(</span><span
       <li>A wrong answer redirects you to a different city</li>
       <li>T, TRUE, t, and true all work as inputs (thanks to <code>.upper()</code>)</li>
     </ol>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>--- TRIVIA TIME! ---
+Heading to Houston...
+
+TRUE or FALSE: NASA Mission Control is located in Houston, Texas.
+TRUE or FALSE? TRUE
+Correct! You&#x27;re heading to Houston.
+
+--- TRIVIA TIME! ---
+Heading to Austin...
+
+TRUE or FALSE: Austin is the largest city in Texas.
+TRUE or FALSE? TRUE
+Wrong! You&#x27;re being redirected to Laredo instead!</pre>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
     <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
       <table class="lc-table">
@@ -465,6 +505,8 @@ trivia <span class="sy-op">=</span> load_trivia<span class="sy-op">(</span><span
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Sets are not just a shorthand for lists with a duplicate check. They represent a different contract: membership, not sequence. When you only care whether something happened — not how many times or in what order — a set is the right tool. Unique cities and unique hazard types are inherently set-shaped problems. Using a list here would mean writing <code>if city not in visited_cities</code> every time. The set just handles it.</p>
     <p>Two sets: <code>unique_cities</code> for tracking which cities the player has visited (no repeats), and <code>unique_hazards</code> for tracking which hazard types they’ve encountered.</p>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
@@ -488,6 +530,7 @@ trivia <span class="sy-op">=</span> load_trivia<span class="sy-op">(</span><span
       <li>Update <code>handle_hazard()</code> to accept the unique hazards set as a parameter, then add the hazard’s name to it</li>
       <li>Update <code>travel_to()</code> to pass the unique hazards set to <code>handle_hazard()</code></li>
     </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -520,6 +563,19 @@ trivia <span class="sy-op">=</span> load_trivia<span class="sy-op">(</span><span
 <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Unique hazards: <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>unique_hazards<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
     </div>
     <p><strong>Verify:</strong> Visiting Houston twice still shows 1 in <code>unique_cities</code> (not 2).</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Unique cities: 1
+Unique hazards: 0
+
+[After traveling to Houston and hitting a Speed trap...]
+Unique cities: 2
+Unique hazards: 1
+
+[After visiting Houston again...]
+Unique cities: 2
+Unique hazards: 1</pre>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
     <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
       <table class="lc-table">
@@ -567,6 +623,8 @@ trivia <span class="sy-op">=</span> load_trivia<span class="sy-op">(</span><span
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>The final report is your deliverable — every data structure you have built this module converges here. Sets contribute unique counts. Lists contribute the route. Counters contribute stats. <code>sorted()</code> makes sets printable. This is the pattern behind every dashboard, report generator, and analytics export in professional software: collect structured data throughout, transform it into human-readable output at the end.</p>
     <p>A polished final report showing: route traveled (with arrows), unique cities visited (sorted alphabetically using <code>sorted()</code>), trivia performance, hazard statistics, and total miles.</p>
     <div class="lc-h3 lc-h3--yellow">Pro Tip</div>
     <p><strong>Important:</strong> Sets are unordered. To display them predictably, wrap them in <code>sorted()</code>:</p>
@@ -574,6 +632,20 @@ trivia <span class="sy-op">=</span> load_trivia<span class="sy-op">(</span><span
       <pre><span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;UNIQUE CITIES (<span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>unique_cities<span class="sy-op">)</span><span class="sy-op">}</span>):&#x27;<span class="sy-op">)</span>
 <span class="sy-kw">for</span> city <span class="sy-kw">in</span> <span class="sy-bi">sorted</span><span class="sy-op">(</span>unique_cities<span class="sy-op">)</span><span class="sy-op">:</span>
     <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  - <span class="sy-op">{</span>city<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    </div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"The client is going to look at this report. Every section needs to be there, the numbers need to be accurate, and the format needs to be consistent. The game can be buggy in a beta — the report cannot. This is what they are paying for."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Priya Venkatesh</div>
+        <div class="lc-mentor__role">Project Manager, Bat City Collective</div>
+      </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <p><strong>Your final report should include:</strong></p>
@@ -615,6 +687,7 @@ HAZARDS:
 STATS:
   Total Miles: 410</pre>
     </div>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -640,6 +713,14 @@ STATS:
         </div>
       </div>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <ol>
+      <li>Play a complete game from start to a beach or win city. Visit at least one city more than once and trigger at least two hazards.</li>
+      <li>Verify the report shows unique cities alphabetically — Houston should appear once even if visited twice.</li>
+      <li>Verify trivia stats: asked count matches how many destination choices you made; correct count is accurate.</li>
+      <li>Check unique hazard types — the count should be the number of different hazard names, not the total times hazards fired.</li>
+      <li>Guard against division by zero: quit after zero trivia questions and confirm the report still prints cleanly.</li>
+    </ol>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
     <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
       <table class="lc-table">
