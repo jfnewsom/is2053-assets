@@ -1,695 +1,826 @@
 {
-    "meta": {
-        "labId": "lab-2-3",
-        "title": "Road Trip Ready",
-        "module": 2,
-        "week": 3,
-        "weekType": "MASTER",
-        "chapters": "4–5",
-        "chapterTopics": "Input Validation and Sentinel Loops",
-        "filename": "lab-2-3.py",
-        "additionalFiles": [
-            "function_library.py"
-        ]
+  "meta": {
+    "labId": "lab-2-3",
+    "title": "Road Trip Ready",
+    "module": 2,
+    "week": 3,
+    "weekType": "MASTER",
+    "chapters": "4–5",
+    "chapterTopics": "Input Validation and Sentinel Loops",
+    "filename": "lab-2-3.py",
+    "additionalFiles": []
+  },
+  "overview": {
+    "body": "This is a <strong>MASTER</strong> week — the final polish on your Module 2 game! You'll expand your function library with <strong>input validation functions</strong>, wrap your game in a <strong>play again loop</strong>, and track cumulative session statistics. By the end, your road trip will be bulletproof and endlessly replayable.",
+    "mentorQuote": {
+      "character": "Tyler Nguyen",
+      "role": "Junior Developer, Bat City Collective",
+      "headshot": "Tyler-Nguyen.png",
+      "quote": "I learned this the hard way — users will type ANYTHING. Letters when you expect numbers, empty strings, even emojis. My first program crashed constantly until I learned input validation. Once you add those while loops that keep asking until they get valid input, your game becomes unbreakable!"
     },
-    "overview": {
-        "body": "This is a <strong>MASTER</strong> week — the final polish on your Module 2 game! You'll expand your function library with <strong>input validation functions</strong>, wrap your game in a <strong>play again loop</strong>, and track cumulative session statistics. By the end, your road trip will be bulletproof and endlessly replayable.",
-        "mentorQuote": {
-            "character": "Tyler Nguyen",
-            "role": "Junior Developer, Bat City Collective",
-            "headshot": "Tyler-Nguyen.png",
-            "quote": "I learned this the hard way — users will type ANYTHING. Letters when you expect numbers, empty strings, even emojis. My first program crashed constantly until I learned input validation. Once you add those while loops that keep asking until they get valid input, your game becomes unbreakable!"
-        },
-        "objectives": [
-            "Add <code>get_valid_int()</code> and <code>get_yes_no()</code> to <code>function_library.py</code> (5 functions total)",
-            "Replace raw menu input with your validation function — no more crashes from bad input",
-            "Wrap your game in a <strong>sentinel-controlled play again loop</strong>",
-            "Track cumulative <strong>session statistics</strong> across multiple games"
-        ],
-        "keyConceptsText": "<strong>Chapter 4:</strong> 4.5 (Sentinel Loops), 4.6 (Input Validation Loops)<br><strong>Chapter 5:</strong> 5.5 (Parameters), 5.8 (Return Values)",
-        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 4 & 5",
-        "programRequirements": [
-            "<code>function_library.py</code> <strong>MUST</strong> contain <strong>5 functions</strong>",
-            "<code>get_valid_int()</code> validates integer input within a range",
-            "<code>get_yes_no()</code> validates yes/no responses and returns True or False",
-            "Menu input must use your validation function",
-            "Game must be wrapped in a sentinel-controlled play again loop",
-            "Session statistics must track totals across multiple games"
-        ],
-        "filenameNote": "Submit <strong>two files</strong> this week: <code>function_library.py</code> (your expanded module — now 5 functions) and <code>lab-2-3.py</code> (your polished game).",
-        "additionalFilesNote": "CodeGrade tests your functions in isolation, so both files must be present in your submission.",
-        "saveYourCode": "Keep <strong>both files</strong> — in Module 3 you'll add lists to track visited cities and file I/O to save progress. Your function library keeps growing!"
-    },
-    "timeGuide": {
-        "totalTime": "60–75 Minutes",
-        "rows": [
-            {
-                "checkpoint": "CP1: Expand the Library",
-                "time": "15 min",
-                "task": "Add get_valid_int() to function_library.py"
-            },
-            {
-                "checkpoint": "CP2: Yes/No Validation",
-                "time": "10 min",
-                "task": "Add get_yes_no() to function_library.py"
-            },
-            {
-                "checkpoint": "CP3: Validate Menu Input",
-                "time": "10 min",
-                "task": "Replace raw input with get_valid_int()"
-            },
-            {
-                "checkpoint": "CP4: Play Again Loop",
-                "time": "20 min",
-                "task": "Wrap game in sentinel loop with get_yes_no()"
-            },
-            {
-                "checkpoint": "CP5: Session Statistics",
-                "time": "15 min",
-                "task": "Track cumulative stats across multiple plays"
-            }
-        ],
-        "strategy": "Test your validation functions in isolation first! Make sure get_valid_int() and get_yes_no() work perfectly before plugging them into your game."
-    },
-    "beforeYouBegin": {
-        "intro": "Here's how your finished program fits together. Checkpoints 1–2 expand function_library.py. Checkpoints 3–5 update lab-2-3.py. The [NEW] and [REPLACED] tags show what changes.",
-        "architecture": "# ---- function_library.py ----\n# (From Lab 2.2)\nflip_coin()               returns 'HEADS' or 'TAILS'\nroll_d20()                returns int 1-20\ncheck_percentage(chance)  returns True/False\n\n# (Added in Lab 2.3)\ndef get_valid_int(prompt, min_val, max_val):  [NEW-CP1]\n    priming read → validation while loop → return\ndef get_yes_no(prompt):                       [NEW-CP2]\n    priming read → validation while loop → return True/False\n\n# ---- lab-2-3.py ----\ndef main():\n│\n│── Welcome banner, get player_name\n│── games_played = 0                         [NEW-CP5]\n│── session_miles = 0                        [NEW-CP5]\n│── session_hazards = 0                      [NEW-CP5]\n│── keep_playing = True                      [NEW-CP4]\n│\n│   GAME LOOP:                               [NEW-CP4]\n│   while keep_playing:\n│   │\n│   │── Display destination menu\n│   │── choice = get_valid_int(...)          [REPLACED-CP3]\n│   │── Destination Gate (coin flip)\n│   │── Set distance_remaining, totals\n│   │\n│   │   TRAVEL LOOP: (unchanged from 2.2)\n│   │   while distance_remaining > 0:\n│   │   │── Roll D20, travel\n│   │   │── Hazard check\n│   │   └── (next turn)\n│   │\n│   │── Print TRIP SUMMARY\n│   │── Update session accumulators          [NEW-CP5]\n│   │── keep_playing = get_yes_no(...)       [NEW-CP4]\n│\n│── Print SESSION STATISTICS                 [NEW-CP5]\n│── Personalized goodbye\n\nif __name__ == '__main__':\n    main()"
-    },
-    "checkpoints": [
-        {
-            "number": 1,
-            "title": "Expand the Library",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "A new function called <code>get_valid_int()</code> that takes a prompt and a valid range, then keeps asking until the user enters a valid number. This is the <strong>input validation loop pattern</strong> from Chapter 4.6, wrapped in a reusable function!"
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "Right now, if someone enters \"6\" or \"banana\" at your menu, your game crashes. Real software <strong>never trusts user input</strong>. This function catches bad input and keeps asking until the user gets it right."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Open your <code>function_library.py</code> from Lab 2.2",
-                        "Add a comment: <code># VALIDATION FUNCTIONS (Added in Lab 2.3)</code>",
-                        "Define <code>get_valid_int(prompt, min_val, max_val)</code> with three parameters and a docstring explaining each",
-                        "<strong>Priming read:</strong> <code>value = int(input(prompt))</code>",
-                        "<strong>Validation loop:</strong> <code>while value &lt; min_val or value &gt; max_val:</code>",
-                        "Inside the loop: print an error message, then re-read with <code>value = int(input(prompt))</code>",
-                        "After the loop: <code>return value</code>"
-                    ]
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "4-21",
-                            "filename": "retail_with_validation.py",
-                            "description": "You practiced the input validation loop — priming read, while loop checks condition, re-read inside. Same pattern here, wrapped in a reusable function!"
-                        },
-                        {
-                            "programId": "5-7",
-                            "filename": "cups_to_ounces.py",
-                            "description": "Shows how to pass values into a function using parameters. Your get_valid_int() uses three parameters the same way."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 1:</strong> Add a <code>main()</code> function at the bottom of <code>function_library.py</code> for testing:"
-                },
-                {
-                    "type": "code_block",
-                    "code": "def main():\n    # Test get_valid_int()\n    print('Testing get_valid_int()')\n    result = get_valid_int('Pick a number (1-5): ', 1, 5)\n    print(f'You picked: {result}')\n\nif __name__ == '__main__':\n    main()"
-                },
-                {
-                    "type": "callout",
-                    "variant": "tip",
-                    "title": "Why if __name__ == '__main__'?",
-                    "body": "When you run <code>function_library.py</code> directly, <code>main()</code> runs your tests. When your game <em>imports</em> the module, the tests don't run. You can leave this code in permanently — no need to delete it!"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 2:</strong> Run <code>function_library.py</code> directly and test with invalid input:"
-                },
-                {
-                    "type": "output_block",
-                    "output": "Testing get_valid_int()\nPick a number (1-5): 7\nERROR: Enter a number between 1 and 5.\nPick a number (1-5): 0\nERROR: Enter a number between 1 and 5.\nPick a number (1-5): 3\nYou picked: 3"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 3:</strong> Verify these critical behaviors: too high (7) triggers error and re-prompts, too low (0) triggers error and re-prompts, valid (3) is accepted and returned, and the loop exits after valid input."
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Forgetting re-read inside loop",
-                            "Infinite loop! Value never changes"
-                        ],
-                        [
-                            "Using and instead of or",
-                            "Logic error: can't be BOTH < min AND > max at once"
-                        ],
-                        [
-                            "Returning inside the loop",
-                            "Returns before validation is complete — defeats the purpose!"
-                        ],
-                        [
-                            "Missing priming read before while",
-                            "NameError: 'value' not defined when loop checks condition"
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>function_library.py</code> with 4 functions (3 from 2.2 + <code>get_valid_int()</code>)",
-                        "<code>get_valid_int()</code> keeps asking until input is within range",
-                        "A <code>main()</code> function with <code>if __name__ == '__main__':</code> guard for local testing"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 2,
-            "title": "Add Yes/No Validation",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "A function called <code>get_yes_no()</code> that accepts 'y', 'Y', 'n', or 'N' and returns <code>True</code> for yes or <code>False</code> for no."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Define <code>get_yes_no(prompt)</code> with one parameter and a docstring",
-                        "<strong>Priming read:</strong> <code>answer = input(prompt)</code>",
-                        "<strong>Validation loop:</strong> continue while answer is NOT 'y', 'Y', 'n', or 'N'",
-                        "Inside the loop: print an error message, then re-read",
-                        "After the loop: return <code>True</code> if answer is 'y' or 'Y', otherwise return <code>False</code>"
-                    ]
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "4-21",
-                            "filename": "retail_with_validation.py",
-                            "description": "Same validation pattern, but checking for specific characters instead of a numeric range."
-                        },
-                        {
-                            "programId": "5-24",
-                            "filename": "sale_price.py",
-                            "description": "Shows how to return a value — here you return a boolean (True/False) instead of a number."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 1:</strong> Add tests for <code>get_yes_no()</code> to your <code>main()</code> function:"
-                },
-                {
-                    "type": "code_block",
-                    "code": "def main():\n    # Test get_valid_int()\n    print('Testing get_valid_int()')\n    result = get_valid_int('Pick a number (1-5): ', 1, 5)\n    print(f'You picked: {result}')\n\n    # Test get_yes_no()\n    print('\\nTesting get_yes_no()')\n    result = get_yes_no('Play again? (y/n): ')\n    print(f'Result: {result}')\n    print(f'Type: {type(result)}')"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 2:</strong> Run and test with various inputs:"
-                },
-                {
-                    "type": "output_block",
-                    "output": "Testing get_yes_no()\nPlay again? (y/n): maybe\nERROR: Please enter 'y' or 'n'.\nPlay again? (y/n): Y\nResult: True\nType: <class 'bool'>"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 3:</strong> Verify: 'maybe' triggers error and re-prompts, 'y' and 'Y' both return True, 'n' and 'N' both return False, and the return type is <code>bool</code> not string."
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Using and to check valid options",
-                            "Always rejects: can't equal 'y' AND 'n' AND 'Y' AND 'N' simultaneously"
-                        ],
-                        [
-                            "Forgetting uppercase 'Y' and 'N'",
-                            "Rejects valid input — users expect case-insensitivity"
-                        ],
-                        [
-                            "Returning 'y' instead of True",
-                            "Function should return a boolean for use in while conditions"
-                        ],
-                        [
-                            "Checking only lowercase in return",
-                            "Returns False for 'Y' even though it means yes"
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>function_library.py</code> with 5 functions total, all with docstrings",
-                        "<code>get_yes_no()</code> accepts y/Y/n/N and returns True or False",
-                        "<code>main()</code> tests both new validation functions"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 3,
-            "title": "Validate Menu Input",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "Your <code>lab-2-3.py</code> with bulletproof menu input. No more crashes from bad choices!"
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Copy your <code>lab-2-2.py</code> and rename it <code>lab-2-3.py</code>",
-                        "Update the docstring: \"Lab 2.3: Road Trip Ready\" and update the description",
-                        "Find: <code>choice = int(input('Enter your choice (1-3): '))</code>",
-                        "Replace with: <code>choice = function_library.get_valid_int('Enter your choice (1-3): ', 1, 3)</code>",
-                        "Test with invalid numbers like 0, 5, or 99"
-                    ]
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "5-28",
-                            "filename": "hypotenuse.py",
-                            "description": "You imported the math module and called math.sqrt(). Same pattern: call function_library.get_valid_int()."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "Run your game and try bad input at the menu. Verify this behavior:"
-                },
-                {
-                    "type": "output_block",
-                    "output": "Where would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n\nEnter your choice (1-3): 7\nERROR: Enter a number between 1 and 3.\nEnter your choice (1-3): 0\nERROR: Enter a number between 1 and 3.\nEnter your choice (1-3): 2\n\nFlipping to see if Texas cooperates..."
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Calling without module prefix",
-                            "NameError: must use function_library.get_valid_int()"
-                        ],
-                        [
-                            "Wrapping call in int()",
-                            "Redundant — function already returns an integer"
-                        ],
-                        [
-                            "Wrong min/max values",
-                            "Accepts invalid choices or rejects valid ones"
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>lab-2-3.py</code> with validated menu input",
-                        "Invalid menu choices no longer crash the game",
-                        "Game otherwise works exactly like Lab 2.2"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 4,
-            "title": "Play Again Loop",
-            "content": [
-                {
-                    "type": "mentor_quote",
-                    "character": "Danny Cavanaugh",
-                    "role": "Lead Developer, Bat City Collective",
-                    "headshot": "Danny-Cavanaugh.png",
-                    "quote": "Before you start this checkpoint, take a breath and look at the big picture. You're about to add a SECOND loop to your program. The travel loop from 2.2 — the one with D20 rolls and hazards — isn't going away. It's going INSIDE a bigger loop. Think of it like this: the outer loop controls the whole road trip. The inner loop controls one leg of the trip. Once you see how they nest, the rest clicks into place."
-                },
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "A <strong>sentinel-controlled loop</strong> that wraps your entire game, asking \"Play again?\" after each trip. Your program now has two loops that work together:"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Section",
-                        "What Happens",
-                        "How Often"
-                    ],
-                    "rows": [
-                        [
-                            "Welcome + Setup",
-                            "Print title, get player name, initialize totals, set keep_playing = True",
-                            "Once (before any loop)"
-                        ],
-                        [
-                            "Show menu + get choice",
-                            "Display destination options, use get_valid_int() for selection",
-                            "Once per leg (outer loop)"
-                        ],
-                        [
-                            "Destination Gate",
-                            "Coin flip — did Texas cooperate?",
-                            "Once per leg (outer loop)"
-                        ],
-                        [
-                            "Travel loop (D20 + hazards)",
-                            "Roll D20, move miles, check for hazards — same loop from Lab 2.2",
-                            "Every turn within each leg (inner loop)"
-                        ],
-                        [
-                            "Check outcome + play again",
-                            "Trip summary, then ask play again using get_yes_no()",
-                            "Once per leg (outer loop)"
-                        ],
-                        [
-                            "Session report",
-                            "Print accumulated stats from ALL legs",
-                            "Once (after game loop ends)"
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "callout",
-                    "variant": "info",
-                    "title": "Key insight",
-                    "body": "The travel loop from Lab 2.2 is <em>unchanged</em> — it just moves inside the game loop. Dice rolls and hazards happen every turn, on every leg. You are not replacing anything — you are wrapping it."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<strong>Before</strong> the menu, initialize: <code>keep_playing = True</code>",
-                        "Add <code>while keep_playing:</code> to wrap the game logic",
-                        "<strong>Indent</strong> all game code inside the while loop",
-                        "<strong>After</strong> the trip summary (inside the loop): <code>keep_playing = function_library.get_yes_no('Play again? (y/n): ')</code>",
-                        "\"Thanks for playing!\" message goes <strong>outside</strong> the loop"
-                    ]
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "4-1",
-                            "filename": "commission.py",
-                            "description": "You used a sentinel-controlled loop with keep_going = 'y'. Same pattern here, but using your get_yes_no() function to get a clean boolean sentinel!"
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Wrong indentation on game code",
-                            "Code runs once then exits, or doesn't run at all"
-                        ],
-                        [
-                            "Asking 'play again?' after every turn",
-                            "Prompt is inside the travel loop instead of after the trip summary"
-                        ],
-                        [
-                            "'Thanks for playing' inside the loop",
-                            "Message appears after every game, not just at the end"
-                        ],
-                        [
-                            "Using while keep_playing == True:",
-                            "Works but redundant — just use while keep_playing:"
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "Run your game, complete a full trip, and verify play again behavior:"
-                },
-                {
-                    "type": "output_block",
-                    "output": "==================================================\nTRIP SUMMARY\n==================================================\nDriver: Maria\nDestination: Houston\n...\n==================================================\n\nPlay again? (y/n): y\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n..."
-                },
-                {
-                    "type": "text",
-                    "body": "Verify: 'y' starts a new game, 'n' ends with goodbye message, the prompt appears once after the trip summary (not during travel), and goodbye appears only once at the very end."
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Game repeats on 'y' or 'Y'",
-                        "Game ends on 'n' or 'N'",
-                        "\"Thanks for playing!\" appears only once at the very end"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 5,
-            "title": "Session Statistics",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "Session-level accumulators that track totals across ALL games, plus a final \"Session Statistics\" display after the game loop ends."
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "4-17",
-                            "filename": "sum_numbers.py",
-                            "description": "You learned the accumulator pattern — initialize to 0 before the loop, add inside. Same pattern here, but your accumulators span multiple games."
-                        }
-                    ]
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Sasha Mireles",
-                    "role": "Creative Director, Bat City Collective",
-                    "headshot": "Sasha-Mireles.png",
-                    "quote": "Session statistics are your player's trophy case! Show them their total games played, all those miles traveled, every hazard survived. Use their name in the goodbye message — personalization makes users feel valued. This final screen should make them want to come back and beat their own records!"
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<strong>Before</strong> the play again loop, initialize: <code>games_played = 0</code>, <code>session_miles = 0</code>, <code>session_hazards = 0</code>",
-                        "<strong>Inside</strong> the loop, after each trip summary, update the accumulators: add 1 to <code>games_played</code>, add <code>total_miles</code> to <code>session_miles</code>, add <code>total_hazards</code> to <code>session_hazards</code>",
-                        "<strong>After</strong> the loop ends, display a \"SESSION STATISTICS\" block with all three totals",
-                        "Include the player's name in the final goodbye message"
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "Play 2 complete games, then quit. Verify session statistics appear:"
-                },
-                {
-                    "type": "output_block",
-                    "output": "Play again? (y/n): n\n\n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 2\nTotal Miles (All Games): 430\nTotal Hazards Faced: 3\nThanks for playing, Maria!\n=================================================="
-                },
-                {
-                    "type": "text",
-                    "body": "Verify: Games Played counts total trips, Total Miles is the sum across all games, Total Hazards accumulates across all games, and the player's name appears in the goodbye. Then play 3 games and verify the numbers add up correctly."
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Initializing accumulators inside loop",
-                            "Resets to 0 every game — only shows last game's stats"
-                        ],
-                        [
-                            "Displaying session stats inside loop",
-                            "Shows after every game instead of once at the end"
-                        ],
-                        [
-                            "Using wrong variable names",
-                            "Adding miles when game uses total_miles, etc."
-                        ],
-                        [
-                            "Forgetting games_played += 1",
-                            "Session stats show \"Games Played: 0\""
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Session statistics accumulate correctly across multiple games",
-                        "Final report shows total games, miles, and hazards",
-                        "Personalized goodbye message with player's name"
-                    ]
-                }
-            ]
-        }
+    "objectives": [
+      "Add <code>get_valid_int()</code> and <code>get_yes_no()</code> to <code>function_library.py</code> (5 functions total)",
+      "Replace raw menu input with your validation function — no more crashes from bad input",
+      "Wrap your game in a <strong>sentinel-controlled play again loop</strong>",
+      "Track cumulative <strong>session statistics</strong> across multiple games"
     ],
-    "finalChecklist": {
-        "beforeYouSubmit": [
-            "Submitting <strong>two files</strong>: <code>function_library.py</code> and <code>lab-2-3.py</code>",
-            "<code>function_library.py</code> has <strong>5 functions</strong>: <code>flip_coin()</code>, <code>roll_d20()</code>, <code>check_percentage()</code>, <code>get_valid_int()</code>, <code>get_yes_no()</code>",
-            "All 5 functions have docstrings",
-            "<code>function_library.py</code> has a <code>main()</code> with <code>if __name__ == '__main__':</code> guard for testing",
-            "<code>lab-2-3.py</code> has updated docstring with name, abc123, section, and description",
-            "Menu input uses <code>function_library.get_valid_int()</code>",
-            "Play again loop uses <code>function_library.get_yes_no()</code>",
-            "Session statistics accumulate across multiple games",
-            "Session report displays after the game loop ends"
-        ],
-        "scopeReminder": "Chapters 2–5 only. CodeGrade will flag code using techniques from later chapters.",
-        "permittedTechniques": {
-            "chapters": "Chapters 2–5",
-            "specific": [
-                "All previous techniques (variables, if/else, loops, functions)",
-                "While loops for input validation",
-                "Functions with parameters and return values",
-                "Importing from your own modules"
-            ],
-            "notPermitted": "lists, dictionaries, file I/O, or any Chapter 6+ techniques"
+    "keyConceptsText": "<strong>Chapter 4:</strong> 4.5 (Sentinel Loops), 4.6 (Input Validation Loops)<br><strong>Chapter 5:</strong> 5.5 (Parameters), 5.8 (Return Values)",
+    "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 4 & 5",
+    "programRequirements": [
+      "<code>function_library.py</code> <strong>MUST</strong> contain <strong>5 functions</strong>",
+      "<code>get_valid_int()</code> validates integer input within a range",
+      "<code>get_yes_no()</code> validates yes/no responses and returns True or False",
+      "Menu input must use your validation function",
+      "Game must be wrapped in a sentinel-controlled play again loop",
+      "Session statistics must track totals across multiple games"
+    ],
+    "filenameNote": "Submit <strong>two files</strong> this week: <code>function_library.py</code> (your expanded module — now 5 functions) and <code>lab-2-3.py</code> (your polished game).",
+    "additionalFilesNote": "CodeGrade tests your functions in isolation, so both files must be present in your submission.",
+    "dataFiles": [
+      {
+        "file": "function_library.py",
+        "format": "Your reusable function module &mdash; built in Lab 2.2, expanded this week with <code>get_valid_int()</code> and <code>get_yes_no()</code>. Submitted alongside <code>lab-2-3.py</code> for grading.",
+        "new": false,
+        "submitted": true
+      }
+    ],
+    "namedConstants": [
+      {
+        "name": "SAT_TO_CORPUS",
+        "description": "Distance from San Antonio to Corpus Christi (150 miles) &mdash; carried from Lab 2.2"
+      },
+      {
+        "name": "SAT_TO_HOUSTON",
+        "description": "Distance from San Antonio to Houston (200 miles) &mdash; carried from Lab 2.2"
+      },
+      {
+        "name": "SAT_TO_AUSTIN",
+        "description": "Distance from San Antonio to Austin (80 miles) &mdash; carried from Lab 2.2"
+      },
+      {
+        "name": "HOU_TO_GALVESTON",
+        "description": "Distance from Houston to Galveston (50 miles) &mdash; <strong>NEW this week</strong>. Houston's gateway to the beach."
+      },
+      {
+        "name": "HOU_TO_SAN_ANTONIO",
+        "description": "Distance from Houston back to San Antonio (200 miles) &mdash; <strong>NEW this week</strong>. The return path from Houston."
+      },
+      {
+        "name": "MILES_MULTIPLIER",
+        "description": "Multiplier for D20 rolls (10) &mdash; carried from Lab 2.2. A roll of 15 becomes 150 miles."
+      },
+      {
+        "name": "HAZARD_CHANCE",
+        "description": "Percentage chance of a hazard per turn (30) &mdash; carried from Lab 2.2. Passed to <code>check_percentage()</code>."
+      }
+    ]
+  },
+  "timeGuide": {
+    "totalTime": "60–75 Minutes",
+    "rows": [
+      {
+        "checkpoint": "CP1: Expand the Library",
+        "time": "15 min",
+        "task": "Add get_valid_int() to function_library.py"
+      },
+      {
+        "checkpoint": "CP2: Yes/No Validation",
+        "time": "10 min",
+        "task": "Add get_yes_no() to function_library.py"
+      },
+      {
+        "checkpoint": "CP3: Validate Menu Input",
+        "time": "10 min",
+        "task": "Replace raw input with get_valid_int()"
+      },
+      {
+        "checkpoint": "CP4: Play Again Loop",
+        "time": "20 min",
+        "task": "Wrap game in sentinel loop with get_yes_no()"
+      },
+      {
+        "checkpoint": "CP5: Session Statistics",
+        "time": "15 min",
+        "task": "Track cumulative stats across multiple plays"
+      }
+    ],
+    "strategy": "Test your validation functions in isolation first! Make sure get_valid_int() and get_yes_no() work perfectly before plugging them into your game."
+  },
+  "beforeYouBegin": {
+    "intro": "Here's how your finished program fits together. Checkpoints 1–2 expand function_library.py. Checkpoints 3–5 update lab-2-3.py. The [NEW] and [REPLACED] tags show what changes.",
+    "architecture": "# ---- function_library.py ----\n# (From Lab 2.2)\nflip_coin()               returns 'HEADS' or 'TAILS'\nroll_d20()                returns int 1-20\ncheck_percentage(chance)  returns True/False\n\n# (Added in Lab 2.3)\ndef get_valid_int(prompt, min_val, max_val):  [NEW-CP1]\n    priming read → validation while loop → return\ndef get_yes_no(prompt):                       [NEW-CP2]\n    priming read → validation while loop → return True/False\n\n# ---- lab-2-3.py ----\ndef main():\n│\n│── Welcome banner, get player_name\n│── games_played = 0                         [NEW-CP5]\n│── session_miles = 0                        [NEW-CP5]\n│── session_hazards = 0                      [NEW-CP5]\n│── keep_playing = True                      [NEW-CP4]\n│\n│   GAME LOOP:                               [NEW-CP4]\n│   while keep_playing:\n│   │\n│   │── Display destination menu\n│   │── choice = get_valid_int(...)          [REPLACED-CP3]\n│   │── Destination Gate (coin flip)\n│   │── Set distance_remaining, totals\n│   │\n│   │   TRAVEL LOOP: (unchanged from 2.2)\n│   │   while distance_remaining > 0:\n│   │   │── Roll D20, travel\n│   │   │── Hazard check\n│   │   └── (next turn)\n│   │\n│   │── Print TRIP SUMMARY\n│   │── Update session accumulators          [NEW-CP5]\n│   │── keep_playing = get_yes_no(...)       [NEW-CP4]\n│\n│── Print SESSION STATISTICS                 [NEW-CP5]\n│── Personalized goodbye\n\nif __name__ == '__main__':\n    main()"
+  },
+  "checkpoints": [
+    {
+      "number": 1,
+      "title": "Expand the Library",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
         },
-        "saveYourCode": "Keep both files — in Module 3 you'll add lists to track visited cities and file I/O to save progress. Your function library keeps growing!",
-        "warnings": []
+        {
+          "type": "text",
+          "body": "A new function called <code>get_valid_int()</code> that takes a prompt and a valid range, then keeps asking until the user enters a valid number. This is the <strong>input validation loop pattern</strong> from Chapter 4.6, wrapped in a reusable function!"
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Right now, if someone enters \"6\" or \"banana\" at your menu, your game crashes. Real software <strong>never trusts user input</strong>. This function catches bad input and keeps asking until the user gets it right."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Terrence \"T-Bone\" Booker",
+          "role": "QA Lead, Bat City Collective",
+          "headshot": "Terrence-Booker.png",
+          "quote": "Patch notes incoming. Back in Lab 1.3 I flagged that your roll prompt accepted anything the player typed. Then in Lab 2.1 we used 'default to Corpus' as a stopgap when someone picked an invalid menu option. Both gaps came from the same root cause: we had no way to make Python insist on valid input. That changes today. get_valid_int() is a validation loop wrapped in a function. Once you write it, every menu in the game gets the same bulletproof treatment, and we can stop apologizing for crashes when someone types 'banana'."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Open your <code>function_library.py</code> from Lab 2.2",
+            "Add a comment: <code># VALIDATION FUNCTIONS (Added in Lab 2.3)</code>",
+            "Define <code>get_valid_int(prompt, min_val, max_val)</code> with three parameters and a docstring explaining each",
+            "<strong>Priming read:</strong> <code>value = int(input(prompt))</code>",
+            "<strong>Validation loop:</strong> <code>while value &lt; min_val or value &gt; max_val:</code>",
+            "Inside the loop: print an error message, then re-read with <code>value = int(input(prompt))</code>",
+            "After the loop: <code>return value</code>"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "4-21",
+              "filename": "retail_with_validation.py",
+              "description": "You practiced the input validation loop — priming read, while loop checks condition, re-read inside. Same pattern here, wrapped in a reusable function!"
+            },
+            {
+              "programId": "5-7",
+              "filename": "cups_to_ounces.py",
+              "description": "Shows how to pass values into a function using parameters. Your get_valid_int() uses three parameters the same way."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 1:</strong> Add a <code>main()</code> function at the bottom of <code>function_library.py</code> for testing:"
+        },
+        {
+          "type": "code_block",
+          "code": "def main():\n    # Test get_valid_int()\n    print('Testing get_valid_int()')\n    result = get_valid_int('Pick a number (1-5): ', 1, 5)\n    print(f'You picked: {result}')\n\nif __name__ == '__main__':\n    main()"
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "Why if __name__ == '__main__'?",
+          "body": "When you run <code>function_library.py</code> directly, <code>main()</code> runs your tests. When your game <em>imports</em> the module, the tests don't run. You can leave this code in permanently — no need to delete it!"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 2:</strong> Run <code>function_library.py</code> directly and test with invalid input:"
+        },
+        {
+          "type": "output_block",
+          "output": "Testing get_valid_int()\nPick a number (1-5): 7\nERROR: Enter a number between 1 and 5.\nPick a number (1-5): 0\nERROR: Enter a number between 1 and 5.\nPick a number (1-5): 3\nYou picked: 3"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 3:</strong> Verify these critical behaviors: too high (7) triggers error and re-prompts, too low (0) triggers error and re-prompts, valid (3) is accepted and returned, and the loop exits after valid input."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Mistake",
+            "Why It Fails"
+          ],
+          "rows": [
+            [
+              "Forgetting re-read inside loop",
+              "Infinite loop! Value never changes"
+            ],
+            [
+              "Using and instead of or",
+              "Logic error: can't be BOTH < min AND > max at once"
+            ],
+            [
+              "Returning inside the loop",
+              "Returns before validation is complete — defeats the purpose!"
+            ],
+            [
+              "Missing priming read before while",
+              "NameError: 'value' not defined when loop checks condition"
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>function_library.py</code> with 4 functions (3 from 2.2 + <code>get_valid_int()</code>)",
+            "<code>get_valid_int()</code> keeps asking until input is within range",
+            "A <code>main()</code> function with <code>if __name__ == '__main__':</code> guard for local testing"
+          ]
+        }
+      ]
     },
-    "needHelp": {
-        "ifYouGetStuck": [
-            "Re-read Program 4-1 (commission.py) and Program 4-21 (retail_with_validation.py) — the sentinel loop and input validation patterns are exactly what you need",
-            "Test your validation functions in isolation — run function_library.py directly using main()",
-            "Check your indentation — the play again loop needs everything indented correctly inside it",
-            "Submit to CodeGrade early — it tests function_library.py in isolation, so you'll know immediately if a function is broken",
-            "Come to Zoom or office hours — screen share and debug together"
-        ],
-        "bookexResourceNote": "Chapter 4 & 5 BookEx Reference Guides — step-by-step breakdowns of every textbook example, your primary reference"
+    {
+      "number": 2,
+      "title": "Add Yes/No Validation",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "A function called <code>get_yes_no()</code> that accepts 'y', 'Y', 'n', or 'N' and returns <code>True</code> for yes or <code>False</code> for no."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "<code>get_yes_no()</code> returns a <strong>Boolean</strong>, not a string. That matters because in Checkpoint 4 you will use it as a sentinel condition: <code>keep_playing = function_library.get_yes_no(...)</code>. The function does the validation <em>and</em> the y/n &rarr; True/False conversion in one call, so your <code>while</code> loop stays clean."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Priya Venkatesh",
+          "role": "Project Manager, Bat City Collective",
+          "headshot": "Priya-Venkatesh.png",
+          "quote": "From a project standpoint, this is the second half of the validation story. get_valid_int() protects numeric menus. get_yes_no() protects the sentinel loop that decides whether the game keeps running. Together they cover every input path in the game. Two small functions, total coverage. That is the kind of cleanup that ships."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Define <code>get_yes_no(prompt)</code> with one parameter and a docstring",
+            "<strong>Priming read:</strong> <code>answer = input(prompt)</code>",
+            "<strong>Validation loop:</strong> continue while answer is NOT 'y', 'Y', 'n', or 'N'",
+            "Inside the loop: print an error message, then re-read",
+            "After the loop: return <code>True</code> if answer is 'y' or 'Y', otherwise return <code>False</code>"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "4-21",
+              "filename": "retail_with_validation.py",
+              "description": "Same validation pattern, but checking for specific characters instead of a numeric range."
+            },
+            {
+              "programId": "5-24",
+              "filename": "sale_price.py",
+              "description": "Shows how to return a value — here you return a boolean (True/False) instead of a number."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 1:</strong> Add tests for <code>get_yes_no()</code> to your <code>main()</code> function:"
+        },
+        {
+          "type": "code_block",
+          "code": "def main():\n    # Test get_valid_int()\n    print('Testing get_valid_int()')\n    result = get_valid_int('Pick a number (1-5): ', 1, 5)\n    print(f'You picked: {result}')\n\n    # Test get_yes_no()\n    print('\\nTesting get_yes_no()')\n    result = get_yes_no('Play again? (y/n): ')\n    print(f'Result: {result}')\n    print(f'Type: {type(result)}')"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 2:</strong> Run and test with various inputs:"
+        },
+        {
+          "type": "output_block",
+          "output": "Testing get_yes_no()\nPlay again? (y/n): maybe\nERROR: Please enter 'y' or 'n'.\nPlay again? (y/n): Y\nResult: True\nType: <class 'bool'>"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 3:</strong> Verify: 'maybe' triggers error and re-prompts, 'y' and 'Y' both return True, 'n' and 'N' both return False, and the return type is <code>bool</code> not string."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Mistake",
+            "Why It Fails"
+          ],
+          "rows": [
+            [
+              "Using and to check valid options",
+              "Always rejects: can't equal 'y' AND 'n' AND 'Y' AND 'N' simultaneously"
+            ],
+            [
+              "Forgetting uppercase 'Y' and 'N'",
+              "Rejects valid input — users expect case-insensitivity"
+            ],
+            [
+              "Returning 'y' instead of True",
+              "Function should return a boolean for use in while conditions"
+            ],
+            [
+              "Checking only lowercase in return",
+              "Returns False for 'Y' even though it means yes"
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>function_library.py</code> with 5 functions total, all with docstrings",
+            "<code>get_yes_no()</code> accepts y/Y/n/N and returns True or False",
+            "<code>main()</code> tests both new validation functions"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Validate Menu Input",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "Your <code>lab-2-3.py</code> with bulletproof menu input. No more crashes from bad choices!"
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "This is where your validation function pays off. One line changes: <code>int(input(...))</code> becomes <code>function_library.get_valid_int(...)</code>. Bad menu input no longer crashes your game. The next time you add a menu, you do not need to think about validation at all &mdash; the function already handles it."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Copy your <code>lab-2-2.py</code> and rename it <code>lab-2-3.py</code>",
+            "Update the docstring: \"Lab 2.3: Road Trip Ready\" and update the description",
+            "Find: <code>choice = int(input('Enter your choice (1-3): '))</code>",
+            "Replace with: <code>choice = function_library.get_valid_int('Enter your choice (1-3): ', 1, 3)</code>",
+            "Test with invalid numbers like 0, 5, or 99"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "5-28",
+              "filename": "hypotenuse.py",
+              "description": "You imported the math module and called math.sqrt(). Same pattern: call function_library.get_valid_int()."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Run your game and try bad input at the menu. Verify this behavior:"
+        },
+        {
+          "type": "output_block",
+          "output": "Where would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n\nEnter your choice (1-3): 7\nERROR: Enter a number between 1 and 3.\nEnter your choice (1-3): 0\nERROR: Enter a number between 1 and 3.\nEnter your choice (1-3): 2\n\nFlipping to see if Texas cooperates..."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Mistake",
+            "Why It Fails"
+          ],
+          "rows": [
+            [
+              "Calling without module prefix",
+              "NameError: must use function_library.get_valid_int()"
+            ],
+            [
+              "Wrapping call in int()",
+              "Redundant — function already returns an integer"
+            ],
+            [
+              "Wrong min/max values",
+              "Accepts invalid choices or rejects valid ones"
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>lab-2-3.py</code> with validated menu input",
+            "Invalid menu choices no longer crash the game",
+            "Game otherwise works exactly like Lab 2.2"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Play Again Loop",
+      "content": [
+        {
+          "type": "mentor_quote",
+          "character": "Danny Cavanaugh",
+          "role": "Lead Developer, Bat City Collective",
+          "headshot": "Danny-Cavanaugh.png",
+          "quote": "Before you start this checkpoint, take a breath and look at the big picture. You're about to add a SECOND loop to your program. The travel loop from 2.2 — the one with D20 rolls and hazards — isn't going away. It's going INSIDE a bigger loop. Think of it like this: the outer loop controls the whole road trip. The inner loop controls one leg of the trip. Once you see how they nest, the rest clicks into place."
+        },
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "A <strong>sentinel-controlled loop</strong> that wraps your entire game, asking \"Play again?\" after each trip. Your program now has two loops that work together:"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Section",
+            "What Happens",
+            "How Often"
+          ],
+          "rows": [
+            [
+              "Welcome + Setup",
+              "Print title, get player name, initialize totals, set keep_playing = True",
+              "Once (before any loop)"
+            ],
+            [
+              "Show menu + get choice",
+              "Display destination options, use get_valid_int() for selection",
+              "Once per leg (outer loop)"
+            ],
+            [
+              "Destination Gate",
+              "Coin flip — did Texas cooperate?",
+              "Once per leg (outer loop)"
+            ],
+            [
+              "Travel loop (D20 + hazards)",
+              "Roll D20, move miles, check for hazards — same loop from Lab 2.2",
+              "Every turn within each leg (inner loop)"
+            ],
+            [
+              "Check outcome + play again",
+              "Trip summary, then ask play again using get_yes_no()",
+              "Once per leg (outer loop)"
+            ],
+            [
+              "Session report",
+              "Print accumulated stats from ALL legs",
+              "Once (after game loop ends)"
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "callout",
+          "variant": "info",
+          "title": "Key insight",
+          "body": "The travel loop from Lab 2.2 is <em>unchanged</em> — it just moves inside the game loop. Dice rolls and hazards happen every turn, on every leg. You are not replacing anything — you are wrapping it."
+        },
+        {
+          "type": "code_block",
+          "code": "# CP4 structural skeleton — your sentinel loop wraps everything from Lab 2.2\nkeep_playing = True\n\nwhile keep_playing:\n    # Menu, Destination Gate, travel loop, hazards, trip summary\n    # (all your Lab 2.2 code goes here, indented)\n    \n    keep_playing = function_library.get_yes_no('Play again? (y/n): ')\n\nprint()\nprint(f'Thanks for playing, {player_name}!')"
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Lab 2.2 ended after one trip. Real games keep going until the player wants to stop. The <strong>sentinel loop</strong> pattern from Chapter 4.5 gives you exactly that &mdash; a Boolean flag that controls whether the outer loop runs again. You are not rewriting your game. You are wrapping it."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<strong>Before</strong> the menu, initialize: <code>keep_playing = True</code>",
+            "Add <code>while keep_playing:</code> to wrap the game logic",
+            "<strong>Indent</strong> all game code inside the while loop",
+            "<strong>After</strong> the trip summary (inside the loop): <code>keep_playing = function_library.get_yes_no('Play again? (y/n): ')</code>",
+            "\"Thanks for playing!\" message goes <strong>outside</strong> the loop"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "4-1",
+              "filename": "commission.py",
+              "description": "You used a sentinel-controlled loop with keep_going = 'y'. Same pattern here, but using your get_yes_no() function to get a clean boolean sentinel!"
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Run your game, complete a full trip, and verify play again behavior:"
+        },
+        {
+          "type": "output_block",
+          "output": "==================================================\nTRIP SUMMARY\n==================================================\nDriver: Maria\nDestination: Houston\n...\n==================================================\n\nPlay again? (y/n): y\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n..."
+        },
+        {
+          "type": "text",
+          "body": "Verify: 'y' starts a new game, 'n' ends with goodbye message, the prompt appears once after the trip summary (not during travel), and goodbye appears only once at the very end."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Mistake",
+            "Why It Fails"
+          ],
+          "rows": [
+            [
+              "Wrong indentation on game code",
+              "Code runs once then exits, or doesn't run at all"
+            ],
+            [
+              "Asking 'play again?' after every turn",
+              "Prompt is inside the travel loop instead of after the trip summary"
+            ],
+            [
+              "'Thanks for playing' inside the loop",
+              "Message appears after every game, not just at the end"
+            ],
+            [
+              "Using while keep_playing == True:",
+              "Works but redundant — just use while keep_playing:"
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Game repeats on 'y' or 'Y'",
+            "Game ends on 'n' or 'N'",
+            "\"Thanks for playing!\" appears only once at the very end"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Session Statistics",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "Session-level accumulators that track totals across ALL games, plus a final \"Session Statistics\" display after the game loop ends."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Single-game stats from Lab 2.2 tell you about <em>one trip</em>. Session stats tell you about a <em>whole play session</em>. The trick is <strong>where</strong> you initialize the accumulators: before the play-again loop, not inside it. Initialize inside, and you reset to zero every game. Initialize outside, and totals add up across all trips."
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "4-17",
+              "filename": "sum_numbers.py",
+              "description": "You learned the accumulator pattern — initialize to 0 before the loop, add inside. Same pattern here, but your accumulators span multiple games."
+            }
+          ]
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Sasha Mireles",
+          "role": "Creative Director, Bat City Collective",
+          "headshot": "Sasha-Mireles.png",
+          "quote": "Session statistics are your player's trophy case! Show them their total games played, all those miles traveled, every hazard survived. Use their name in the goodbye message — personalization makes users feel valued. This final screen should make them want to come back and beat their own records!"
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<strong>Before</strong> the play again loop, initialize: <code>games_played = 0</code>, <code>session_miles = 0</code>, <code>session_hazards = 0</code>",
+            "<strong>Inside</strong> the loop, after each trip summary, update the accumulators: add 1 to <code>games_played</code>, add <code>total_miles</code> to <code>session_miles</code>, add <code>total_hazards</code> to <code>session_hazards</code>",
+            "<strong>After</strong> the loop ends, display a \"SESSION STATISTICS\" block with all three totals",
+            "Include the player's name in the final goodbye message"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Play 2 complete games, then quit. Verify session statistics appear:"
+        },
+        {
+          "type": "output_block",
+          "output": "Play again? (y/n): n\n\n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 2\nTotal Miles (All Games): 430\nTotal Hazards Faced: 3\nThanks for playing, Maria!\n=================================================="
+        },
+        {
+          "type": "text",
+          "body": "Verify: Games Played counts total trips, Total Miles is the sum across all games, Total Hazards accumulates across all games, and the player's name appears in the goodbye. Then play 3 games and verify the numbers add up correctly."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Mistake",
+            "Why It Fails"
+          ],
+          "rows": [
+            [
+              "Initializing accumulators inside loop",
+              "Resets to 0 every game — only shows last game's stats"
+            ],
+            [
+              "Displaying session stats inside loop",
+              "Shows after every game instead of once at the end"
+            ],
+            [
+              "Using wrong variable names",
+              "Adding miles when game uses total_miles, etc."
+            ],
+            [
+              "Forgetting games_played += 1",
+              "Session stats show \"Games Played: 0\""
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Session statistics accumulate correctly across multiple games",
+            "Final report shows total games, miles, and hazards",
+            "Personalized goodbye message with player's name"
+          ]
+        }
+      ]
     }
+  ],
+  "finalChecklist": {
+    "beforeYouSubmit": [
+      "Submitting <strong>two files</strong>: <code>function_library.py</code> and <code>lab-2-3.py</code>",
+      "<code>function_library.py</code> has <strong>5 functions</strong>: <code>flip_coin()</code>, <code>roll_d20()</code>, <code>check_percentage()</code>, <code>get_valid_int()</code>, <code>get_yes_no()</code>",
+      "All 5 functions have docstrings",
+      "<code>function_library.py</code> has a <code>main()</code> with <code>if __name__ == '__main__':</code> guard for testing",
+      "<code>lab-2-3.py</code> has updated docstring with name, abc123, section, and description",
+      "Menu input uses <code>function_library.get_valid_int()</code>",
+      "Play again loop uses <code>function_library.get_yes_no()</code>",
+      "Session statistics accumulate across multiple games",
+      "Session report displays after the game loop ends"
+    ],
+    "scopeReminder": "Chapters 2–5 only. CodeGrade will flag code using techniques from later chapters.",
+    "permittedTechniques": {
+      "chapters": "Chapters 2–5",
+      "specific": [
+        "All previous techniques (variables, if/else, loops, functions)",
+        "While loops for input validation",
+        "Functions with parameters and return values",
+        "Importing from your own modules"
+      ],
+      "notPermitted": "lists, dictionaries, file I/O, or any Chapter 6+ techniques"
+    },
+    "saveYourCode": "Keep both files — in Module 3 you'll add lists to track visited cities and file I/O to save progress. Your function library keeps growing!",
+    "warnings": [],
+    "finalCheck": {
+      "expectedOutput": "==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nWhat is your name, traveler? TestPlayer\n\nWelcome, TestPlayer!\nYou are in San Antonio. Your goal: reach the beach!\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n\nChoice (1-3): 2\n\nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 15!\nYou travel 150 miles...\nMiles remaining: 50\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call.\n\n--- Turn 2 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Houston!\n\nContinue? (y/n): y\n\nFrom Houston, where would you like to go?\n  1. Galveston - 50 miles (BEACH!)\n  2. San Antonio - 200 miles\n\nChoice (1-2): 1\n\nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: TestPlayer\nFinal City: Galveston\nTotal Miles: 450\nTotal Turns: 3\nHazards Faced: 1\nHazards Escaped: 1\nStatus: BEACH WINNER!\n==================================================\n\nThanks for playing DEEP IN THE HEART!\nAn All My Eggses Live in Texas Production",
+      "expectedOutputNote": "This run uses inputs <code>TestPlayer</code> &rarr; <code>2</code> (Houston) &rarr; <code>y</code> (continue from Houston) &rarr; <code>1</code> (Galveston) with the deterministic CodeGrade test fixture. With real random, your specific rolls, coin flips, and hazards will differ &mdash; but the <em>structure</em> of the output must match: menu &rarr; gate &rarr; travel loop &rarr; hazard checks &rarr; trip summary &rarr; play-again prompt &rarr; final session report.",
+      "ifSomethingBreaks": [
+        {
+          "symptom": "<code>Choice (1-3): </code> accepts letters or crashes on bad input like <code>banana</code> or <code>99</code>",
+          "redirect": "Check <strong>CP1 (Expand the Library)</strong> and <strong>CP3 (Validate Menu Input)</strong> &mdash; <code>get_valid_int()</code> may be missing from <code>function_library.py</code>, or the menu is still using <code>int(input(...))</code> instead of <code>function_library.get_valid_int(...)</code>."
+        },
+        {
+          "symptom": "Game ends after one trip even when you answer <code>y</code> to play again",
+          "redirect": "Check <strong>CP4 (Play Again Loop)</strong> &mdash; either the <code>while keep_playing:</code> wrapper is missing, the game code is not indented inside it, or <code>keep_playing</code> is never reassigned after the trip summary."
+        },
+        {
+          "symptom": "Play-again prompt repeatedly prints <code>ERROR: Please enter 'y' or 'n'.</code> even when you type <code>y</code>",
+          "redirect": "Check <strong>CP2 (Add Yes/No Validation)</strong> &mdash; <code>get_yes_no()</code> may be using <code>and</code> instead of <code>or</code> in the validation condition, or comparing against the wrong characters. The condition should be: <em>continue while answer is NOT y AND NOT Y AND NOT n AND NOT N</em>."
+        },
+        {
+          "symptom": "Final session report shows <code>0</code> for total games, miles, or hazards",
+          "redirect": "Check <strong>CP5 (Session Statistics)</strong> &mdash; accumulators (<code>games_played</code>, <code>session_miles</code>, <code>session_hazards</code>) are likely initialized <em>inside</em> the <code>while keep_playing:</code> loop. They must be initialized <strong>before</strong> the loop so they persist across games."
+        },
+        {
+          "symptom": "<code>AttributeError: module 'function_library' has no attribute 'get_valid_int'</code>",
+          "redirect": "Check <strong>CP1 (Expand the Library)</strong> &mdash; <code>get_valid_int()</code> is missing from <code>function_library.py</code>, was saved with a different name, or was defined inside another function. Open the library and verify the function exists at the top level with the exact name."
+        }
+      ]
+    }
+  },
+  "needHelp": {
+    "ifYouGetStuck": [
+      "Re-read Program 4-1 (commission.py) and Program 4-21 (retail_with_validation.py) — the sentinel loop and input validation patterns are exactly what you need",
+      "Test your validation functions in isolation — run function_library.py directly using main()",
+      "Check your indentation — the play again loop needs everything indented correctly inside it",
+      "Submit to CodeGrade early — it tests function_library.py in isolation, so you'll know immediately if a function is broken",
+      "Come to Zoom or office hours — screen share and debug together"
+    ],
+    "bookexResourceNote": "Chapter 4 & 5 BookEx Reference Guides — step-by-step breakdowns of every textbook example, your primary reference"
+  }
 }
