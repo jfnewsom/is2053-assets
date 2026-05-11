@@ -10,7 +10,7 @@
         "filename": "lab-2-1.py"
     },
     "overview": {
-        "body": "In Module 1, you chose a destination from San Antonio — but never actually went anywhere! Time to hit the road. This week, you'll add a <strong>while loop</strong> that simulates driving toward your destination. Each turn you travel a fixed 50 miles until you arrive. This is your first taste of the <strong>accumulator pattern</strong> — keeping a running total as the loop repeats.",
+        "body": "In Module 1, you chose a destination from San Antonio &mdash; but never actually went anywhere! Time to hit the road. This week, you'll <strong>copy your Lab 1.3 code</strong>, trim out the parts that no longer fit (the dice roll, the Galveston detour, the win/short logic), and add a <strong>while loop</strong> that simulates driving toward your destination. Each turn you travel a fixed 50 miles until you arrive. This is your first taste of the <strong>accumulator pattern</strong> &mdash; keeping a running total as the loop repeats.",
         "mentorQuote": {
             "character": "Terrence \"T-Bone\" Booker",
             "role": "QA Lead, Bat City Collective",
@@ -18,6 +18,7 @@
             "quote": "The scariest bug in programming? An infinite loop. Before you write any while loop, I need you to answer one question: 'What makes this loop stop?' If you can't answer that clearly, you're not ready to code it yet. Test your exit condition first!"
         },
         "objectives": [
+            "<strong>Trim</strong> your Lab 1.3 code: remove the dice roll, Galveston, and win/short logic",
             "Simplify to <strong>3 destinations</strong> (Corpus Christi, Houston, Austin)",
             "Add a constant: <code>MILES_PER_TURN = 50</code>",
             "Use a <strong>while loop</strong> to travel until you arrive",
@@ -45,58 +46,234 @@
             }
         ],
         "programRequirements": [
+            "Your program <strong>MUST</strong> start from your Lab 1.3 code (trim the dice roll, Galveston, and win/short logic)",
             "Your program <strong>MUST</strong> use a while loop that continues while distance remaining is greater than 0",
             "Your program <strong>MUST</strong> implement the accumulator pattern for tracking total miles",
             "Your program <strong>MUST</strong> display turn-by-turn progress",
             "Your program <strong>MUST</strong> display a trip summary after arrival",
             "Your program <strong>MUST</strong> work for all 3 destination choices"
         ],
-        "filenameNote": "Submit <code>lab-2-1.py</code> this week.",
-        "saveYourCode": "Keep <code>lab-2-1.py</code> — Module 2.2 adds hazard checks and a for loop directly on top of this file."
+        "filenameNote": "Submit <code>lab-2-1.py</code> this week."
     },
     "timeGuide": {
-        "totalTime": "60–90 Minutes",
+        "totalTime": "75–90 Minutes",
         "rows": [
             {
-                "checkpoint": "CP1: Setup & Simplify",
+                "checkpoint": "CP1: Cleanup",
                 "time": "15 min",
-                "task": "Start fresh, simplify to 3 destinations"
+                "task": "Copy lab-1-3.py, trim the dice roll and Galveston logic, add MILES_PER_TURN"
             },
             {
-                "checkpoint": "CP2: Initialize Variables",
+                "checkpoint": "CP2: Setup & Simplify",
+                "time": "10 min",
+                "task": "Verify clean state, add invalid-choice default branch"
+            },
+            {
+                "checkpoint": "CP3: Initialize Tracking Variables",
                 "time": "10 min",
                 "task": "Set up tracking variables BEFORE the loop"
             },
             {
-                "checkpoint": "CP3: Build the while Loop",
+                "checkpoint": "CP4: Build the while Loop",
                 "time": "20 min",
                 "task": "The condition and basic structure"
             },
             {
-                "checkpoint": "CP4: Complete the Loop Body",
+                "checkpoint": "CP5: Complete the Loop Body",
                 "time": "20 min",
                 "task": "Turn display, distance updates, accumulator"
             },
             {
-                "checkpoint": "CP5: Arrival & Trip Summary",
+                "checkpoint": "CP6: Arrival & Trip Summary",
                 "time": "15 min",
                 "task": "What happens after the loop"
             },
             {
-                "checkpoint": "Testing & Polish",
+                "checkpoint": "Final Check & Submit",
                 "time": "10 min",
-                "task": "Test all 3 destinations, verify turn counts"
+                "task": "Run end-to-end test, verify all 3 destinations, submit to CodeGrade"
             }
         ],
         "strategy": "Build and test after EACH checkpoint! Don't write the entire program at once. Get each piece working before adding the next. This 'build a little, test a little' habit will save you hours of debugging."
     },
     "beforeYouBegin": {
-        "intro": "Here's how your finished program fits together. Everything here is new — you're starting fresh this module.",
-        "architecture": "# ---- CONSTANTS ----  [NEW]\nSAT_TO_CORPUS = 150\nSAT_TO_HOUSTON = 200\nSAT_TO_AUSTIN = 80\nMILES_PER_TURN = 50\n\n# ---- MAIN PROGRAM ----\ndef main():\n│\n│── Welcome banner, player name          [NEW-CP1]\n│── 3-choice menu, get choice            [NEW-CP1]\n│── if/elif/else → set destination,      [NEW-CP1]\n│                    distance\n│\n│── distance_remaining = distance        [NEW-CP2]\n│── total_miles = 0                      [NEW-CP2]\n│── turn = 1                             [NEW-CP2]\n│\n│── Print journey header                 [NEW-CP3]\n│\n│   TRAVEL LOOP:                         [NEW-CP3/4]\n│   while distance_remaining > 0:\n│   │── Display turn header\n│   │── Display miles remaining\n│   │── Display travel message\n│   │── distance_remaining -= MILES_PER_TURN\n│   │── total_miles += MILES_PER_TURN\n│   │── turn += 1\n│\n│── Arrival announcement                 [NEW-CP5]\n│── TRIP SUMMARY                         [NEW-CP5]\n│── Outcome message                      [NEW-CP5]\n\nif __name__ == '__main__':\n    main()"
+        "intro": "Here's how your finished program fits together. The <code>[TRASH]</code> tags show what to delete from your Lab 1.3 code in CP1. The <code>[NEW]</code> tags show what you add this week. Everything else is kept from Lab 1.3.",
+        "architecture": "# ---- CONSTANTS ----\nSAT_TO_CORPUS = 150           (keep from 1.3)\nSAT_TO_HOUSTON = 200          (keep from 1.3)\nSAT_TO_AUSTIN = 80            (keep from 1.3)\n# HOU_TO_GALVESTON = 50       [TRASH-CP1]\nMILES_PER_TURN = 50           [NEW-CP1]\n\n# ---- MAIN PROGRAM ----\ndef main():\n│\n│── Welcome banner, player name      (keep from 1.3)\n│── \"You are in San Antonio\" line    (keep from 1.3)\n│\n│── # \"Roll to see how far...\"      [TRASH-CP1]\n│── # roll = int(input(...))         [TRASH-CP1]\n│── # miles_rolled = roll * 10       [TRASH-CP1]\n│\n│── Display 3-choice menu             (keep from 1.3)\n│── choice = int(input('...'))      (keep from 1.3)\n│\n│── if choice == 1:                  (keep, but TRIM body)\n│       destination = 'Corpus Christi'\n│       distance = SAT_TO_CORPUS\n│── elif choice == 2:                (keep, but TRIM body)\n│       destination = 'Houston'\n│       distance = SAT_TO_HOUSTON\n│── elif choice == 3:                (keep, but TRIM body)\n│       destination = 'Austin'\n│       distance = SAT_TO_AUSTIN\n│── else:                            [NEW-CP1]\n│       default to Corpus + warning\n│\n│── distance_remaining = distance    [NEW-CP2]\n│── total_miles = 0                  [NEW-CP2]\n│── turn = 1                         [NEW-CP2]\n│\n│── Print journey header             [NEW-CP3]\n│\n│   TRAVEL LOOP:                       [NEW-CP3/4]\n│   while distance_remaining > 0:\n│   │── Display turn header\n│   │── Display miles remaining\n│   │── Display travel message\n│   │── distance_remaining -= MILES_PER_TURN\n│   │── total_miles += MILES_PER_TURN\n│   │── turn += 1\n│\n│── Arrival announcement             [NEW-CP5]\n│── TRIP SUMMARY                     [NEW-CP6]\n│       (different from 1.3: no Status,\n│        adds Total Turns and Total Miles)\n│── Outcome message                  [NEW-CP6]\n│       (different from 1.3: based on\n│        destination, not status)\n\nif __name__ == '__main__':\n    main()"
     },
     "checkpoints": [
         {
             "number": 1,
+            "title": "Cleanup",
+            "content": [
+                {
+                    "type": "h3",
+                    "label": "what_youre_building"
+                },
+                {
+                    "type": "text",
+                    "body": "A trimmed-down version of your Lab 1.3 code, ready for the while-loop journey. After this checkpoint, your file will have the banner, name input, menu, and destination/distance logic from Lab 1.3 &mdash; minus the dice roll, the Galveston detour, and the win/short outcome logic that no longer fits this week's mechanic."
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "Refactoring an existing file is how 90% of real software gets built. You're not throwing away working code &mdash; you're surgically removing what no longer fits and keeping what still works. The banner, name input, and menu pattern you wrote in Module 1 don't go anywhere. The dice roll and fall-short logic do, because we're modeling the trip as a journey instead of a single roll."
+                },
+                {
+                    "type": "h3",
+                    "label": "step_by_step"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Setup:</strong>"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Copy <code>lab-1-3.py</code> to <code>lab-2-1.py</code> (File &rarr; Save As, or your editor's equivalent)",
+                        "Update the docstring header: change the lab title to <code>Lab 2.1: Keep On Driving</code>, update the description, and change the Chapter 3 Concepts section to Chapter 4 (<code>while loop</code>, <code>Loop counter</code>, <code>Accumulator pattern</code>)"
+                    ]
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>TRASH (delete these from your code):</strong>"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "The <code>HOU_TO_GALVESTON</code> constant at the top of the file",
+                        "The entire dice roll block: the &quot;Roll to see how far you can travel.&quot; print statements, the URL print, the <code>roll = int(input(...))</code> line, the <code>miles_rolled = roll * 10</code> calculation, and the &quot;You rolled X! That gives you Y miles.&quot; print",
+                        "The initialize-defaults block before the if-elif-else (<code>destination = 'Nowhere'</code>, <code>total_distance = 0</code>, <code>miles_remaining = miles_rolled</code>, <code>status = 'ERROR'</code>, <code>message = 'Something went wrong!'</code>)",
+                        "Everything inside <code>if choice == 1:</code> EXCEPT the <code>destination = 'Corpus Christi'</code> line",
+                        "Everything inside <code>elif choice == 2:</code> (Houston) EXCEPT the <code>destination = 'Houston'</code> line &mdash; this includes the entire nested Galveston logic",
+                        "Everything inside <code>elif choice == 3:</code> (Austin) EXCEPT the <code>destination = 'Austin'</code> line",
+                        "Everything inside the original <code>else:</code> branch (we rebuild this branch from scratch in CP2)",
+                        "The entire OUTPUT SECTION: every line from the &quot;Display heading&quot; if-statement through the final <code>print(f'Miles to spare: {miles_remaining}')</code>",
+                        "In the TRIP SUMMARY: the <code>Miles Rolled:</code>, <code>Miles Remaining:</code>, and <code>Status:</code> lines",
+                        "The final if-elif-else that prints a closing message based on <code>status</code>"
+                    ]
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>KEEP (don't touch these):</strong>"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "The three distance constants: <code>SAT_TO_CORPUS</code>, <code>SAT_TO_HOUSTON</code>, <code>SAT_TO_AUSTIN</code>",
+                        "The <code>main()</code> structure and the <code>if __name__ == '__main__'</code> block",
+                        "The welcome banner (the five print statements with equal signs)",
+                        "The player name input and welcome message (<code>player_name = input(...)</code>, <code>print(f'Welcome, {player_name}!')</code>, <code>print('You are in San Antonio. Your goal: reach the beach!')</code>)",
+                        "The destination menu display (the five print statements showing the 3 choices)",
+                        "The <code>choice = int(input('Enter your choice (1-3): '))</code> line",
+                        "The <code>if choice == 1:</code>, <code>elif choice == 2:</code>, <code>elif choice == 3:</code> structure &mdash; you're trimming their bodies, not deleting the branches themselves",
+                        "The TRIP SUMMARY banner lines and the <code>Driver:</code>, <code>Destination:</code>, <code>Distance:</code> lines"
+                    ]
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>RENAME (small but important):</strong>"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Inside each branch, the variable that holds the distance to your destination was called <code>total_distance</code> in Lab 1.3. Rename it to <code>distance</code> throughout this file. You'll touch it in three places: the branches, and the <code>Distance:</code> line in the TRIP SUMMARY"
+                    ]
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>ADD (just one thing for now):</strong>"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "Add the new constant under your distance constants: <code>MILES_PER_TURN = 50</code>",
+                        "Add a comment above it: <code># Travel constant</code>"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
+                    "type": "callout",
+                    "variant": "info",
+                    "title": "What You're Keeping From Module 1",
+                    "body": "Every pattern you're keeping was introduced in a Module 1 BookEx and is still valid. The <code>input()</code> pattern (Program 2-13), the <code>if-elif-else</code> structure (Program 3-6), and f-string output (Program 2-20) all carry forward unchanged. You're not learning these again &mdash; you're reusing them."
+                },
+                {
+                    "type": "mentor_quote",
+                    "character": "Danny Cavanaugh",
+                    "role": "Lead Developer, Bat City Collective",
+                    "headshot": "Danny-Cavanaugh.png",
+                    "quote": "Patch Notes incoming. Look at the else branch you're about to add in CP2 &mdash; we're going to default invalid input to Corpus Christi and print a warning. That's not a real solution; that's a stopgap. T-Bone flagged the validation gap back in Lab 1.3, and we're still not fixing it this week. In Lab 2.3 we'll write get_valid_int() and finally close this hole. Until then, the door is still wide open. Notice every place we're working around input we can't trust &mdash; that's where the real refactoring lives."
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Run your program.</strong> After cleanup, it should still work &mdash; just truncated. You'll see the banner, the name prompt, the menu, the choice prompt, then &quot;Heading to {destination}!&quot; (which is leftover from Lab 1.3 and will get moved in CP2) and the trip summary header. The most important thing: no NameErrors from leftover Galveston or status references."
+                },
+                {
+                    "type": "callout",
+                    "variant": "warning",
+                    "title": "If you see NameError",
+                    "body": "<code>NameError: name 'miles_rolled' is not defined</code> means you missed a reference to the dice roll in some print statement. <code>NameError: name 'status' is not defined</code> means you missed a reference in the trip summary. Search your file for the broken name and delete the line that uses it."
+                },
+                {
+                    "type": "h3",
+                    "label": "tips_and_pitfalls"
+                },
+                {
+                    "type": "table",
+                    "headers": [
+                        "Mistake",
+                        "Why It Fails"
+                    ],
+                    "rows": [
+                        [
+                            "Deleting <code>destination = 'Corpus Christi'</code> by accident",
+                            "Trip summary will show <code>NameError</code> &mdash; keep the destination assignment in each branch"
+                        ],
+                        [
+                            "Leaving a <code>miles_remaining</code> reference in a print",
+                            "<code>NameError</code> as soon as the program reaches that line"
+                        ],
+                        [
+                            "Forgetting to rename <code>total_distance</code> &rarr; <code>distance</code>",
+                            "Lab 2.1 uses <code>distance</code> consistently. Mixing names will cause CodeGrade tests to fail"
+                        ],
+                        [
+                            "Deleting the if-elif-else branches entirely instead of trimming their bodies",
+                            "The structure stays the same &mdash; you keep the <code>if choice == N:</code> lines, you just trim what's inside each branch"
+                        ]
+                    ],
+                    "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "A <code>lab-2-1.py</code> file that runs without errors",
+                        "Three distance constants plus <code>MILES_PER_TURN = 50</code>",
+                        "Welcome banner, name input, &quot;You are in San Antonio&quot; line",
+                        "Destination menu and choice input (still using <code>int(input())</code> from Module 1)",
+                        "Three branches that set <code>destination</code> and <code>distance</code> only (no Galveston, no win/short, no status)",
+                        "Trip summary banner and Driver/Destination/Distance lines",
+                        "No NameErrors when you run the program"
+                    ]
+                }
+            ]
+        },
+        {
+            "number": 2,
             "title": "Setup & Simplify",
             "content": [
                 {
@@ -105,7 +282,7 @@
                 },
                 {
                     "type": "text",
-                    "body": "A streamlined starting point with welcome banner, player name input, a 3-choice destination menu, and the if-elif-else chain to set destination and distance."
+                    "body": "Confirmation that your cleanup from CP1 left you in a working state, plus the new <code>else:</code> branch that handles invalid menu input by defaulting to Corpus Christi."
                 },
                 {
                     "type": "h3",
@@ -113,7 +290,7 @@
                 },
                 {
                     "type": "text",
-                    "body": "We're simplifying to 3 destinations so you can focus on the new concept (while loops) without getting lost in complex branching. Keep it simple to learn the pattern!"
+                    "body": "Every working program needs a strategy for invalid input. Without an <code>else:</code> branch, choosing 4 or typing anything unexpected would leave your <code>destination</code> and <code>distance</code> variables undefined, crashing the while loop in CP4. The graceful-default pattern (assign valid values, print a warning) keeps the program running even when the user gives bad input."
                 },
                 {
                     "type": "h3",
@@ -122,14 +299,26 @@
                 {
                     "type": "instructions",
                     "items": [
-                        "Create a new file called <code>lab-2-1.py</code> with your standard docstring",
-                        "Add the <code>main()</code> structure (same pattern you used in Module 1)",
-                        "Define 3 distance constants: <code>SAT_TO_CORPUS = 150</code>, <code>SAT_TO_HOUSTON = 200</code>, <code>SAT_TO_AUSTIN = 80</code>",
-                        "Add the new travel constant: <code>MILES_PER_TURN = 50</code>",
-                        "Build a welcome banner and get the player's name",
-                        "Display a 3-choice menu: Corpus Christi (BEACH!), Houston, Austin",
-                        "Get the player's choice using <code>input()</code> — store as a string this week",
-                        "Use if-elif-else to set <code>destination</code> and <code>distance</code> based on choice"
+                        "Run your file from CP1 one more time. Choose 1, 2, and 3 in separate runs and verify each sets a different destination",
+                        "Try choosing <code>4</code> &mdash; the program may crash with <code>NameError</code> because no branch matched. That's what we're about to fix",
+                        "After the <code>elif choice == 3:</code> branch, add a new <code>else:</code> branch",
+                        "Inside the <code>else:</code> branch, set <code>destination = 'Corpus Christi'</code> and <code>distance = SAT_TO_CORPUS</code>",
+                        "Add a print line: <code>print('Invalid choice. Defaulting to Corpus Christi.')</code>"
+                    ]
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "3-6",
+                            "filename": "grader.py",
+                            "description": "The if-elif-else pattern with a catch-all else branch. You used this exact shape in Lab 1.2 and Lab 1.3 &mdash; the new else here serves the same purpose."
+                        }
                     ]
                 },
                 {
@@ -138,25 +327,25 @@
                 },
                 {
                     "type": "text",
-                    "body": "<strong>Step 1:</strong> Add this debug line at the end of your if-elif-else chain:"
+                    "body": "<strong>Step 1:</strong> Add a debug line at the end of your if-elif-else chain:"
                 },
                 {
                     "type": "code_block",
-                    "code": "    # DEBUG - DELETE BEFORE CHECKPOINT 2\n    print(f'DEBUG: destination={destination}, distance={distance}')"
+                    "code": "    # DEBUG - DELETE BEFORE CHECKPOINT 3\n    print(f'DEBUG: destination={destination}, distance={distance}')"
                 },
                 {
                     "type": "text",
-                    "body": "<strong>Step 2:</strong> Run three times with choices 1, 2, and 3. Verify:"
+                    "body": "<strong>Step 2:</strong> Run four times with choices 1, 2, 3, and 4. Verify:"
                 },
                 {
                     "type": "output_block",
-                    "output": "Choice 1: DEBUG: destination=Corpus Christi, distance=150\nChoice 2: DEBUG: destination=Houston, distance=200\nChoice 3: DEBUG: destination=Austin, distance=80"
+                    "output": "Choice 1: DEBUG: destination=Corpus Christi, distance=150\nChoice 2: DEBUG: destination=Houston, distance=200\nChoice 3: DEBUG: destination=Austin, distance=80\nChoice 4: Invalid choice. Defaulting to Corpus Christi.\n          DEBUG: destination=Corpus Christi, distance=150"
                 },
                 {
                     "type": "callout",
                     "variant": "pitfall",
                     "title": "Delete the debug line",
-                    "body": "Delete the debug line before moving to Checkpoint 2."
+                    "body": "Delete the debug line before moving to Checkpoint 3."
                 },
                 {
                     "type": "h3",
@@ -171,15 +360,15 @@
                     "rows": [
                         [
                             "Hardcoding distances instead of using constants",
-                            "CodeGrade checks for constants — use SAT_TO_CORPUS, not 150"
+                            "CodeGrade checks for constants &mdash; use <code>SAT_TO_CORPUS</code>, not <code>150</code>"
                         ],
                         [
                             "Swapping destination and distance values",
-                            "Houston is 200 miles, Corpus is 150 — test each choice carefully"
+                            "Houston is 200 miles, Corpus is 150 &mdash; test each choice carefully"
                         ],
                         [
-                            "Using int(input()) for the menu choice",
-                            "Keep it as a string and compare with '1', '2', '3' in your if-elif-else"
+                            "Forgetting the warning print in the else branch",
+                            "Player gets defaulted to Corpus silently, which is a worse user experience"
                         ]
                     ],
                     "accent": "green"
@@ -191,16 +380,15 @@
                 {
                     "type": "instructions",
                     "items": [
-                        "4 constants defined (3 distances + MILES_PER_TURN)",
-                        "Welcome banner and player name input",
-                        "3-choice menu displays correctly",
-                        "Choosing 1, 2, or 3 sets the correct destination and distance"
+                        "All four branches (choices 1, 2, 3, and else) setting <code>destination</code> and <code>distance</code>",
+                        "The else branch prints a warning before defaulting",
+                        "Choosing 4 (or any invalid input) doesn't crash &mdash; it shows the warning and defaults to Corpus Christi"
                     ]
                 }
             ]
         },
         {
-            "number": 2,
+            "number": 3,
             "title": "Initialize Tracking Variables",
             "content": [
                 {
@@ -218,6 +406,10 @@
                 {
                     "type": "text",
                     "body": "<strong>The #1 accumulator mistake is initializing inside the loop.</strong> If you set <code>total = 0</code> inside the loop, it resets to 0 every iteration! You must initialize BEFORE the loop."
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
                 },
                 {
                     "type": "callout",
@@ -321,7 +513,7 @@
             ]
         },
         {
-            "number": 3,
+            "number": 4,
             "title": "Build the while Loop",
             "content": [
                 {
@@ -331,6 +523,18 @@
                 {
                     "type": "text",
                     "body": "A while loop that continues as long as there's still distance to travel. Think of it as: \"Keep driving WHILE there are miles remaining.\""
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "The <code>while</code> condition is the most important decision in any loop. T-Bone said it in the overview: if you can't clearly answer &quot;what makes this loop stop?&quot; you're not ready to write it. Here the answer is concrete &mdash; <code>distance_remaining</code> decreases by <code>MILES_PER_TURN</code> every iteration until it hits zero or below. The condition guards against the loop running forever."
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
                 },
                 {
                     "type": "callout",
@@ -417,11 +621,23 @@
                         ]
                     ],
                     "accent": "green"
+                },
+                {
+                    "type": "h3",
+                    "label": "what_you_should_have"
+                },
+                {
+                    "type": "instructions",
+                    "items": [
+                        "A <code>while distance_remaining > 0:</code> loop in place",
+                        "The loop body is empty for now (you'll add the body in CP5)",
+                        "Or, if you wrote a placeholder body, verify it doesn't infinite-loop"
+                    ]
                 }
             ]
         },
         {
-            "number": 4,
+            "number": 5,
             "title": "Complete the Loop Body",
             "content": [
                 {
@@ -431,6 +647,14 @@
                 {
                     "type": "text",
                     "body": "The complete loop body that: shows turn info, travels 50 miles, updates <code>distance_remaining</code> so the loop eventually ends, accumulates <code>total_miles</code>, and increments the turn counter."
+                },
+                {
+                    "type": "h3",
+                    "label": "why_this_matters"
+                },
+                {
+                    "type": "text",
+                    "body": "The accumulator pattern (<code>total_miles = total_miles + MILES_PER_TURN</code>) is one of the most common shapes in all of programming. Shopping carts add prices. Game scores tally points. Fitness apps count steps. Every running total in every program you'll ever use is some version of this exact line."
                 },
                 {
                     "type": "h3",
@@ -450,6 +674,10 @@
                         "Update <code>total_miles</code> — ADD miles traveled (accumulator pattern!)",
                         "Increment <code>turn</code> — add 1 so next iteration shows Turn 2, Turn 3, etc."
                     ]
+                },
+                {
+                    "type": "h3",
+                    "label": "bookex_patterns"
                 },
                 {
                     "type": "callout",
@@ -538,7 +766,7 @@
             ]
         },
         {
-            "number": 5,
+            "number": 6,
             "title": "Arrival & Trip Summary",
             "content": [
                 {
@@ -590,6 +818,21 @@
                 },
                 {
                     "type": "h3",
+                    "label": "bookex_patterns"
+                },
+                {
+                    "type": "callout",
+                    "variant": "bookex",
+                    "references": [
+                        {
+                            "programId": "2-20",
+                            "filename": "f_string_no_formatting.py",
+                            "description": "F-string output with embedded variables &mdash; same pattern from Module 1, now used for the Total Turns and Total Miles lines in your trip summary."
+                        }
+                    ]
+                },
+                {
+                    "type": "h3",
                     "label": "expected_output"
                 },
                 {
@@ -603,6 +846,14 @@
                 {
                     "type": "text",
                     "body": "<strong>Also test all three destinations and verify turn counts:</strong> Choice 1 (Corpus Christi, 150 mi) → 3 turns, beach message. Choice 2 (Houston, 200 mi) → 4 turns, different message. Choice 3 (Austin, 80 mi) → 2 turns, no beach message."
+                },
+                {
+                    "type": "h3",
+                    "label": "test_your_code"
+                },
+                {
+                    "type": "text",
+                    "body": "<strong>Run your program through all three destinations.</strong> Corpus should take 3 turns (150 / 50 = 3). Houston should take 4 turns (200 / 50 = 4). Austin should take 2 turns (80 / 50 = 1.6 &rarr; 2). Compare against the Expected Output above. For the full submission check, see the <strong>Final Check &amp; Submit</strong> section below."
                 },
                 {
                     "type": "h3",
@@ -671,7 +922,40 @@
             "notPermitted": "for loops (save for 2.2), random module (Chapter 5), functions you define (Chapter 5), import statements, lists (Chapter 7)"
         },
         "warnings": [],
-        "saveYourCode": "Your lab-2-1.py is the starting point for Lab 2.2 — save it before you close out."
+        "saveYourCode": "Your lab-2-1.py is the starting point for Lab 2.2 — save it before you close out.",
+        "finalCheck": {
+            "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nWhat is your name, traveler? Maria\n\nWelcome, Maria!\nYou are in San Antonio. Your goal: reach the beach!\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n\nEnter your choice (1-3): 2\n\nHeading to Houston!\nDistance: 200 miles\nYou will travel 50 miles per turn.\n\n==================================================\nLET THE JOURNEY BEGIN!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou travel 50 miles...\nMiles remaining: 150\n\n--- Turn 2 ---\nMiles remaining: 150\nYou travel 50 miles...\nMiles remaining: 100\n\n--- Turn 3 ---\nMiles remaining: 100\nYou travel 50 miles...\nMiles remaining: 50\n\n--- Turn 4 ---\nMiles remaining: 50\nYou travel 50 miles...\n\nYou made it to Houston!\n\n==================================================\nTRIP SUMMARY\n==================================================\nDriver: Maria\nDestination: Houston\nDistance: 200 miles\nTotal Turns: 4\nTotal Miles: 200\n==================================================\n\nYou made it to Houston!\nGalveston is only 50 more miles away...\n\nThanks for playing!\n",
+            "ifSomethingBreaks": [
+                {
+                    "symptom": "<code>NameError: name 'miles_rolled'</code> or <code>'status'</code> <code>is not defined</code>",
+                    "redirect": "Check <strong>CP1 (Cleanup)</strong> &mdash; you missed a reference to a Lab 1.3 variable when trimming. Search your file for the broken name and delete the line that uses it."
+                },
+                {
+                    "symptom": "<code>NameError: name 'MILES_PER_TURN' is not defined</code>",
+                    "redirect": "Check <strong>CP1 (Cleanup)</strong> &mdash; the new constant is missing from the top of the file. Add <code>MILES_PER_TURN = 50</code> with your other constants."
+                },
+                {
+                    "symptom": "Output skips the <code>else:</code> default and crashes with <code>NameError: name 'destination' is not defined</code> when choosing 4",
+                    "redirect": "Check <strong>CP2 (Setup &amp; Simplify)</strong> &mdash; the else branch wasn't added. Every if-elif chain needs an else for invalid input."
+                },
+                {
+                    "symptom": "Program runs forever (infinite loop) when you start the journey",
+                    "redirect": "Check <strong>CP4 (Build the while Loop)</strong> &mdash; your loop body isn't decreasing <code>distance_remaining</code>. The line <code>distance_remaining = distance_remaining - MILES_PER_TURN</code> needs to be INSIDE the loop."
+                },
+                {
+                    "symptom": "Total Miles in the Trip Summary is 0 or the same as MILES_PER_TURN",
+                    "redirect": "Check <strong>CP3 (Initialize Tracking Variables)</strong> &mdash; you initialized <code>total_miles = 0</code> inside the loop instead of before it. The initialization resets every iteration. Move it to BEFORE the <code>while</code> line."
+                },
+                {
+                    "symptom": "Total Turns shows one more than expected (e.g., 5 for Houston instead of 4)",
+                    "redirect": "Check <strong>CP5 (Complete the Loop Body)</strong> &mdash; you're displaying <code>turn</code> after incrementing it. The fix is to use <code>turn - 1</code> in the trip summary, which the solution does intentionally."
+                },
+                {
+                    "symptom": "Trip Summary still shows the lines from Lab 1.3 (Miles Rolled, Miles Remaining, Status)",
+                    "redirect": "Check <strong>CP1 (Cleanup)</strong> &mdash; these three lines should have been trashed. Search the file for <code>Miles Rolled</code> and <code>Status:</code> and delete those print lines."
+                }
+            ]
+        }
     },
     "needHelp": {
         "ifYouGetStuck": [
