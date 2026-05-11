@@ -71,20 +71,53 @@
       <li>Your program <strong>MUST</strong> use D20 rolls for travel distance instead of fixed 50 miles</li>
       <li>Your program <strong>MUST</strong> implement hazard encounters with 30% chance per turn</li>
     </ul>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
-        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Save Your Code</div>
-        <div class="lc-callout__body">
-          <p>Keep <strong>both files</strong> — Lab 2.3 copies both and adds input validation functions to your library. Your toolkit keeps growing!</p>
-        </div>
-      </div>
+    <div class="lc-h3 lc-h3--yellow">Required Data Files</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Format</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr><td><code>function_library.py</code> <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span></td><td>Your reusable function module &mdash; built in CP1/CP2, submitted alongside <code>lab-2-2.py</code> for grading.</td><td><a href="data/function_library.py" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; function_library.py</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Named Constants</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table lc-named-constants__table">
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>SAT_TO_CORPUS</code></td>
+        <td>Distance from San Antonio to Corpus Christi (150 miles) &amp;mdash; carried from Lab 2.1</td>
+      </tr>
+      <tr>
+        <td><code>SAT_TO_HOUSTON</code></td>
+        <td>Distance from San Antonio to Houston (200 miles) &amp;mdash; carried from Lab 2.1</td>
+      </tr>
+      <tr>
+        <td><code>SAT_TO_AUSTIN</code></td>
+        <td>Distance from San Antonio to Austin (80 miles) &amp;mdash; carried from Lab 2.1</td>
+      </tr>
+      <tr>
+        <td><code>MILES_MULTIPLIER</code></td>
+        <td>Multiplier for D20 rolls (10) &amp;mdash; &lt;strong&gt;NEW this week&lt;/strong&gt;. A roll of 15 becomes 150 miles.</td>
+      </tr>
+      <tr>
+        <td><code>HAZARD_CHANCE</code></td>
+        <td>Percentage chance of a hazard per turn (30) &amp;mdash; &lt;strong&gt;NEW this week&lt;/strong&gt;. Passed to &lt;code&gt;check_percentage()&lt;/code&gt;.</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -92,7 +125,7 @@
 
   <div class="lc-topper">
     <div class="lc-topper-title">Time Guide</div>
-    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 60–90 Minutes</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 85–105 Minutes</div>
   </div>
 
   <div class="lc-panel">
@@ -137,9 +170,14 @@
         <td>20 min</td>
         <td>Random events with coin flip outcomes</td>
       </tr>
+      <tr>
+        <td><strong>Final Check &amp; Submit</strong></td>
+        <td>10 min</td>
+        <td>Run end-to-end test (Houston with hazard path), submit lab-2-2.py and function_library.py to CodeGrade</td>
+      </tr>
       <tr class="lc-table__total">
         <td colspan="2"><strong>Total Estimated Time</strong></td>
-        <td><strong>60–90 Minutes</strong></td>
+        <td><strong>85–105 Minutes</strong></td>
       </tr>
         </tbody>
       </table>
@@ -201,7 +239,7 @@ def <span class="lc-arch-fn">main()</span>:
 │   else: redirect to random other destination
 │
 │── distance_remaining, total_miles, turn = ...
-│── total_hazards = 0, total_escaped = 0                  <span class="lc-arch-new">[NEW-CP6]</span>
+│── hazards_faced = 0, hazards_escaped = 0                  <span class="lc-arch-new">[NEW-CP6]</span>
 │
 │   <span class="lc-arch-travel-loop">TRAVEL LOOP</span>:
 │   while distance_remaining &gt; 0:
@@ -250,6 +288,7 @@ if __name__ == &#x27;__main__&#x27;:
       <li>Define a function called <code>flip_coin()</code> with no parameters and a docstring explaining what it returns</li>
       <li>Inside <code>flip_coin()</code>: use <code>random.randint(0, 1)</code> to get 0 or 1, then use if/else to return the string <code>'HEADS'</code> for 1 or <code>'TAILS'</code> for 0</li>
     </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -364,6 +403,8 @@ if __name__ == &#x27;__main__&#x27;:
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <p>Two more functions: <code>roll_d20()</code> simulates a 20-sided die, and <code>check_percentage(chance)</code> determines if random events happen.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Three functions in one file. That doesn't feel like much until you realize you'll be calling these same functions in Lab 2.3, all of Module 3, and beyond. The <code>function_library.py</code> file is your personal Python toolkit &mdash; every function you write joins the library and stays available. Real developers do this exact thing across every project they work on.</p>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li>In <code>function_library.py</code>, define <code>roll_d20()</code> with no parameters and a docstring saying it returns an integer from 1 to 20</li>
@@ -371,6 +412,7 @@ if __name__ == &#x27;__main__&#x27;:
       <li>Define <code>check_percentage(chance)</code> with one parameter called <code>chance</code> and a docstring explaining the parameter and return value</li>
       <li>Inside: roll <code>random.randint(1, 100)</code> and return <code>True</code> if the roll is less than or equal to <code>chance</code>, otherwise <code>False</code></li>
     </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -484,6 +526,8 @@ Testing check_percentage(30):
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <p>Your <code>lab-2-2.py</code> file with updated imports, docstring, and new constants. The game should still work exactly like 2.1 after this checkpoint.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Two files now talk to each other. The <code>import function_library</code> line at the top of <code>lab-2-2.py</code> connects the main game to your library &mdash; every function you wrote in CP1/CP2 becomes callable here. This is how every modern Python project is organized: one main file orchestrates, supporting modules do specialized work.</p>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li>Copy your <code>lab-2-1.py</code> file and rename it <code>lab-2-2.py</code></li>
@@ -493,6 +537,7 @@ Testing check_percentage(30):
       <li>In your constants section, add: <code>MILES_MULTIPLIER = 10</code></li>
       <li>Add another constant: <code>HAZARD_CHANCE = 30</code></li>
     </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -614,6 +659,34 @@ DEEP IN THE HEART: A LONE STAR JOURNEY
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <p>After the player picks a destination, flip a coin. <strong>HEADS</strong> = you get your choice. <strong>TAILS</strong> = Texas redirects you to a random different destination!</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>The Destination Gate is your first feature that takes agency away from the player. They picked Houston; the coin says no. Games do this constantly &mdash; loot drops, random encounters, AI decisions &mdash; and they all work the same way: call a function, get a result, branch on it. <code>function_library.flip_coin()</code> returns a string, and your code makes a decision based on that string.</p>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 5-32</strong>
+            — <code>rectangle2.py</code>
+            
+            — Shows using a function's return value directly in an expression. Here, you call <code>flip_coin()</code> and use the returned string as the condition in your <code>if</code> statement. Same pattern as <code>print('The area is', area(width, length))</code> &mdash; call, get value, use immediately.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li>Find where you set <code>destination</code> and <code>distance</code> based on player choice</li>
@@ -681,6 +754,40 @@ You&#x27;re being redirected to Corpus Christi (150 miles)</pre>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <p>Instead of traveling exactly 50 miles per turn, roll a D20 &times; 10. Roll a 15? Travel 150 miles! Roll a 3? Only 30 miles.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Last week, every turn moved you exactly 50 miles. Predictable. Slightly boring. This week, <code>roll_d20()</code> returns a number from 1 to 20, and <code>roll * MILES_MULTIPLIER</code> turns that into 10 to 200 miles per turn. Suddenly the trip might take two turns or ten. That variability is what makes the game feel like a game instead of a calculation.</p>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 5-21</strong>
+            — <code>dice.py</code>
+            
+            — Uses <code>random.randint()</code> to simulate dice rolls. Your <code>roll_d20()</code> function wraps the same call in a reusable function &mdash; you abstracted the dice into a named operation, just like the textbook does for clarity.
+          </li>
+          <li>
+            <strong>Program 4-17</strong>
+            — <code>sum_numbers.py</code>
+            
+            — The accumulator pattern in action. Last week you added a fixed <code>MILES_PER_TURN</code>; this week you add a variable <code>miles_this_turn</code> that changes each iteration. Same shape, dynamic value.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li>Find where you calculate miles traveled inside your while loop</li>
@@ -748,14 +855,56 @@ You made it to Houston!</pre>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <p>30% chance per turn of hitting a hazard. When one triggers, flip a coin: HEADS = escape, TAILS = face the consequence.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Hazards make every game session different. Same destination, same player, but the obstacles vary &mdash; and the coin flip after each hazard means even the same hazard plays out differently every time. Layered randomness is how short games stay replayable. Your <code>check_percentage()</code> decides whether a hazard fires, <code>random.randint()</code> picks which one, and <code>flip_coin()</code> decides if you escape.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Patch Notes incoming. Look at how you're about to write the hazards: three of them, hardcoded into an if-elif-else, each with its own heads and tails messages baked right into your Python file. Want a fourth hazard? Edit the source. Want to tweak Buc-ee's message? Edit the source. That's fine for now &mdash; we only have three &mdash; but it doesn't scale. In Module 4 (Lab 4.2), we move all hazard data into <code>hazards.txt</code> and load it at runtime. After that, adding a fourth hazard is just adding a line to a text file. No code changes."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Tyler Nguyen</div>
+        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 5-21</strong>
+            — <code>dice.py</code>
+            
+            — Uses <code>random.randint()</code> with a small range to pick one option from a set. Same pattern here &mdash; <code>random.randint(1, 3)</code> picks which of the three hazards fires this turn.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>Before your while loop, add: <code>total_hazards = 0</code> and <code>total_escaped = 0</code></li>
+      <li>Before your while loop, add: <code>hazards_faced = 0</code> and <code>hazards_escaped = 0</code></li>
       <li>At the END of each loop iteration (after travel), call <code>function_library.check_percentage(HAZARD_CHANCE)</code></li>
       <li>If it returns <code>True</code>: a hazard occurs — generate a random hazard number (1–8) using <code>random.randint(1, 8)</code></li>
       <li>Use if-elif-else to display the hazard name from the reference table below</li>
       <li>Flip a coin: HEADS = print escape message, TAILS = print consequence message</li>
-      <li>Increment <code>total_hazards</code> every time a hazard fires, increment <code>total_escaped</code> only on HEADS</li>
+      <li>Increment <code>hazards_faced</code> every time a hazard fires, increment <code>hazards_escaped</code> only on HEADS</li>
       <li>Add hazard stats to your Trip Summary: Hazards Faced and Hazards Escaped</li>
     </ol>
     <p><strong>Texas Hazard Reference:</strong></p>
@@ -851,7 +1000,7 @@ Hazards Escaped: 1</pre>
       </tr>
       <tr>
         <td>Not incrementing both counters</td>
-        <td>Track total_hazards (every hazard) AND total_escaped (HEADS only)</td>
+        <td>Track hazards_faced (every hazard) AND hazards_escaped (HEADS only)</td>
       </tr>
       <tr>
         <td>Hardcoding a hazard number</td>
@@ -864,7 +1013,7 @@ Hazards Escaped: 1</pre>
     <ol>
       <li>30% hazard chance using <code>check_percentage()</code> inside the travel loop</li>
       <li>8 different hazards with HEADS/TAILS outcomes</li>
-      <li><code>total_hazards</code> and <code>total_escaped</code> tracking variables</li>
+      <li><code>hazards_faced</code> and <code>hazards_escaped</code> tracking variables</li>
       <li>Trip summary shows hazard stats</li>
     </ol>
     </div>
@@ -945,6 +1094,116 @@ Hazards Escaped: 1</pre>
           <p>Keep both files — Lab 2.3 copies both and adds input validation functions to your library. Your toolkit keeps growing!</p>
         </div>
       </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Run the Full Check</div>
+    <p>Before you submit, run your program end-to-end. Your output should match this exactly:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>
+==================================================
+DEEP IN THE HEART: A LONE STAR JOURNEY
+==================================================
+
+What is your name, traveler? TestPlayer
+
+Welcome, TestPlayer!
+You are in San Antonio. Your goal: reach the beach!
+
+Where would you like to go?
+  1. Corpus Christi - 150 miles (BEACH!)
+  2. Houston - 200 miles
+  3. Austin - 80 miles
+
+Enter your choice (1-3): 2
+
+Flipping to see if Texas cooperates...
+Result: HEADS!
+
+Texas says: &quot;Y&#x27;all come on through!&quot;
+You&#x27;re headed to Houston!
+Distance: 200 miles
+
+==================================================
+LET THE JOURNEY BEGIN!
+==================================================
+
+--- Turn 1 ---
+Miles remaining: 200
+You rolled a 15!
+You travel 150 miles...
+Miles remaining: 50
+
+*** HAZARD! ***
+Buc-ee&#x27;s appears!
+HEADS!
+You resist the beaver&#x27;s call.
+
+--- Turn 2 ---
+Miles remaining: 50
+You rolled a 15!
+You travel 150 miles...
+
+You made it to Houston!
+
+==================================================
+TRIP SUMMARY
+==================================================
+Driver: TestPlayer
+Destination: Houston
+Distance: 200 miles
+Total Turns: 2
+Total Miles: 300
+Hazards Faced: 1
+Hazards Escaped: 1
+==================================================
+
+You made it to Houston!
+Galveston is only 50 more miles away...
+
+Thanks for playing!
+</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">If Something Breaks</div>
+    <p>Common failure patterns and where they came from:</p>
+    <div class="lc-table-wrap" style="--lc-accent: #FF1744;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Symptom</th>
+            <th>Where to Look</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>ModuleNotFoundError: No module named 'function_library'</code></td>
+        <td>Check <strong>CP3 (Prepare the Main Game)</strong> &mdash; <code>function_library.py</code> must be in the same folder as <code>lab-2-2.py</code>. If you placed it elsewhere, move it. Also verify your import line: <code>import function_library</code>.</td>
+      </tr>
+      <tr>
+        <td><code>AttributeError: module 'function_library' has no attribute 'flip_coin'</code> (or roll_d20, or check_percentage)</td>
+        <td>Check <strong>CP1 (Create Your Function Library)</strong> and <strong>CP2 (Complete the Library)</strong> &mdash; the named function is missing or misspelled in your <code>function_library.py</code>. Open the library and verify all three functions exist with their exact names.</td>
+      </tr>
+      <tr>
+        <td>Gate result is always TAILS in CodeGrade tests</td>
+        <td>Check <strong>CP1 (Create Your Function Library)</strong> &mdash; you reversed the HEADS/TAILS mapping in <code>flip_coin()</code>. The correct mapping is <code>if result == 1: return 'HEADS'</code>, <code>else: return 'TAILS'</code>. Reversed mapping fails every IO test that expects HEADS.</td>
+      </tr>
+      <tr>
+        <td>Trip Summary shows <code>Hazards Faced: 0</code> after a long Houston trip</td>
+        <td>Check <strong>CP6 (Hazard Encounters)</strong> &mdash; you're not incrementing <code>hazards_faced</code> when a hazard fires. The increment line (<code>hazards_faced = hazards_faced + 1</code>) goes INSIDE the <code>if function_library.check_percentage(...):</code> block, right after you print <code>*** HAZARD! ***</code>.</td>
+      </tr>
+      <tr>
+        <td><code>NameError: name 'hazards_faced'</code> in the Trip Summary</td>
+        <td>Check <strong>CP5 (D20 Travel System)</strong> or wherever you initialized tracking variables &mdash; <code>hazards_faced = 0</code> and <code>hazards_escaped = 0</code> must be initialized BEFORE the while loop, alongside <code>total_miles</code> and <code>turn</code>.</td>
+      </tr>
+      <tr>
+        <td>Test 'Travel 150 miles' fails &mdash; output shows different mileage</td>
+        <td>Check <strong>CP5 (D20 Travel System)</strong> &mdash; make sure <code>miles_this_turn = roll * MILES_MULTIPLIER</code> and your print uses <code>miles_this_turn</code>. With the fixture roll of 15, the math is 15 &times; 10 = 150.</td>
+      </tr>
+      <tr>
+        <td>Program runs forever or hangs after one turn</td>
+        <td>Check <strong>CP5 (D20 Travel System)</strong> &mdash; you're not subtracting <code>miles_this_turn</code> from <code>distance_remaining</code>. The loop body MUST decrement <code>distance_remaining</code> each iteration or you've built an infinite loop.</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
     <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
