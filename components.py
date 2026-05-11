@@ -831,10 +831,75 @@ def render_final_checklist(checklist: dict) -> str:
     <p>{html_lib.escape(academic_integrity)}</p>
 """
 
+    # finalCheck block (v1.1 addition) — holistic end-to-end check
+    final_check = checklist.get("finalCheck", {})
+    final_check_block = render_final_check(final_check) if final_check else ""
+
     return f"""{card_open("red")}
 {topper("Final Checklist", "Check It Before You Wreck It")}
 {panel_open()}
-{submit_block}{scope_block}{permitted_block}{warnings_html}{save_block}{integrity_block}{panel_close()}{card_close()}"""
+{submit_block}{scope_block}{permitted_block}{warnings_html}{save_block}{final_check_block}{integrity_block}{panel_close()}{card_close()}"""
+
+
+# ============================================================
+# Final Check Block (v1.1) — holistic end-to-end test
+# ============================================================
+
+def render_final_check(final_check: dict) -> str:
+    """
+    Render the finalCheck subsection inside the Final Checklist card.
+    Added in JSON Schema v1.1 (May 11, 2026).
+
+    Reads:
+      - expectedOutput: full terminal output of a correct submission
+      - ifSomethingBreaks: array of {symptom, redirect} objects
+    """
+    expected_output = final_check.get("expectedOutput", "")
+    if_breaks = final_check.get("ifSomethingBreaks", [])
+
+    # Expected output renders as a code-style output block,
+    # reusing the existing lc-output styling
+    output_html = ""
+    if expected_output:
+        escaped = html_lib.escape(expected_output)
+        output_html = f"""    <div class="lc-h3 lc-h3--yellow">Run the Full Check</div>
+    <p>Before you submit, run your program end-to-end. Your output should match this exactly:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>{escaped}</pre>
+    </div>
+"""
+
+    # ifSomethingBreaks renders as a two-column table:
+    # symptom | redirect
+    breaks_html = ""
+    if if_breaks:
+        rows_html = ""
+        for entry in if_breaks:
+            symptom = entry.get("symptom", "")
+            redirect = entry.get("redirect", "")
+            rows_html += f"""      <tr>
+        <td>{symptom}</td>
+        <td>{redirect}</td>
+      </tr>
+"""
+        breaks_html = f"""    <div class="lc-h3 lc-h3--yellow">If Something Breaks</div>
+    <p>Common failure patterns and where they came from:</p>
+    <div class="lc-table-wrap" style="--lc-accent: #FF1744;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Symptom</th>
+            <th>Where to Look</th>
+          </tr>
+        </thead>
+        <tbody>
+{rows_html}        </tbody>
+      </table>
+    </div>
+"""
+
+    return output_html + breaks_html
 
 
 # ============================================================
