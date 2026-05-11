@@ -281,7 +281,7 @@ if __name__ == &#x27;__main__&#x27;:
           <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"Patch notes incoming. Back in Lab 1.3 I flagged that your roll prompt accepted anything the player typed. Then in Lab 2.1 we used 'default to Corpus' as a stopgap when someone picked an invalid menu option. Both gaps came from the same root cause: we had no way to make Python insist on valid input. That changes today. get_valid_int() is a validation loop wrapped in a function. Once you write it, every menu in the game gets the same bulletproof treatment, and we can stop apologizing for crashes when someone types 'banana'."</div>
+          <div class="lc-mentor__quote">"Patch notes incoming. Back in Lab 1.3 I flagged that your roll prompt accepted anything the player typed. Then in Lab 2.1 we used 'default to Corpus' as a stopgap when someone picked an invalid menu option. Both gaps came from the same root cause: we had no way to make Python insist on valid input. get_valid_int() is a validation loop wrapped in a function. Once you write it, every menu in the game refuses out-of-range numbers and keeps asking until it gets one it likes. Type-safety is a Module 4 problem and Tyler will tell you the rest in CP3, but range protection lands today."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
@@ -563,6 +563,20 @@ Type: &lt;class &#x27;bool&#x27;&gt;</pre>
       <li>Replace with: <code>choice = function_library.get_valid_int('Enter your choice (1-3): ', 1, 3)</code></li>
       <li>Test with invalid numbers like 0, 5, or 99</li>
     </ol>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Try this for me. Run your game and at the menu, type 'banana' instead of a number. Yeah, still crashes. get_valid_int() is doing everything it can right now: if you give it an integer outside the range, it asks again. But if you give it something that isn't even an integer, int(input(...)) blows up before our function ever sees the value. The fix lives in Chapter 8: string methods like .isdigit() will let us check the input is a number BEFORE we try to convert it. That is a Module 4 problem. For now, range protection is the win."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Tyler Nguyen</div>
+        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
+      </div>
+    </div>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
@@ -776,18 +790,24 @@ keep_playing <span class="sy-op">=</span> <span class="sy-kw">True</span>
     <p>Run your game, complete a full trip, and verify play again behavior:</p>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
-      <pre>==================================================
+      <pre>--------------------------------------------------
 TRIP SUMMARY
-==================================================
+--------------------------------------------------
 Driver: Maria
-Destination: Houston
-...
-==================================================
+Final City: Houston
+Total Miles: 240
+Total Turns: 3
+Hazards Faced: 1
+Hazards Escaped: 1
+Status: Trip Incomplete
+--------------------------------------------------
 
 Play again? (y/n): y
 
 Where would you like to go?
   1. Corpus Christi - 150 miles (BEACH!)
+  2. Houston - 200 miles
+  3. Austin - 80 miles
 ...</pre>
     </div>
     <p>Verify: 'y' starts a new game, 'n' ends with goodbye message, the prompt appears once after the trip summary (not during travel), and goodbye appears only once at the very end.</p>
@@ -885,7 +905,7 @@ Where would you like to go?
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li><strong>Before</strong> the play again loop, initialize: <code>games_played = 0</code>, <code>session_miles = 0</code>, <code>session_hazards = 0</code></li>
-      <li><strong>Inside</strong> the loop, after each trip summary, update the accumulators: add 1 to <code>games_played</code>, add <code>total_miles</code> to <code>session_miles</code>, add <code>total_hazards</code> to <code>session_hazards</code></li>
+      <li><strong>Inside</strong> the loop, after each trip summary, update the accumulators: add 1 to <code>games_played</code>, add <code>total_trip_miles</code> to <code>session_miles</code>, add <code>total_hazards</code> to <code>session_hazards</code></li>
       <li><strong>After</strong> the loop ends, display a "SESSION STATISTICS" block with all three totals</li>
       <li>Include the player's name in the final goodbye message</li>
     </ol>
@@ -899,10 +919,12 @@ Where would you like to go?
 SESSION STATISTICS
 ==================================================
 Games Played: 2
-Total Miles (All Games): 430
-Total Hazards Faced: 3
+Total Miles: 720
+Total Hazards: 3
+==================================================
+
 Thanks for playing, Maria!
-==================================================</pre>
+An All My Eggses Live in Texas Production</pre>
     </div>
     <p>Verify: Games Played counts total trips, Total Miles is the sum across all games, Total Hazards accumulates across all games, and the player's name appears in the goodbye. Then play 3 games and verify the numbers add up correctly.</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
@@ -925,7 +947,7 @@ Thanks for playing, Maria!
       </tr>
       <tr>
         <td>Using wrong variable names</td>
-        <td>Adding miles when game uses total_miles, etc.</td>
+        <td>Adding miles using the wrong name &mdash; the per-game variable is <code>total_trip_miles</code>, not <code>total_miles</code></td>
       </tr>
       <tr>
         <td>Forgetting games_played += 1</td>
@@ -1068,7 +1090,7 @@ You travel 150 miles...
 
 You made it to Houston!
 
-Continue? (y/n): y
+Keep going this trip? (y/n): y
 
 From Houston, where would you like to go?
   1. Galveston - 50 miles (BEACH!)
@@ -1098,9 +1120,10 @@ You made it to Galveston!
 CONGRATULATIONS! YOU REACHED THE BEACH!
 ==================================================
 
-==================================================
-FINAL TRIP REPORT
-==================================================
+
+--------------------------------------------------
+TRIP SUMMARY
+--------------------------------------------------
 Driver: TestPlayer
 Final City: Galveston
 Total Miles: 450
@@ -1108,9 +1131,19 @@ Total Turns: 3
 Hazards Faced: 1
 Hazards Escaped: 1
 Status: BEACH WINNER!
+--------------------------------------------------
+
+Play again? (y/n): n
+
+==================================================
+SESSION STATISTICS
+==================================================
+Games Played: 1
+Total Miles: 450
+Total Hazards: 1
 ==================================================
 
-Thanks for playing DEEP IN THE HEART!
+Thanks for playing, TestPlayer!
 An All My Eggses Live in Texas Production</pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">If Something Breaks</div>
@@ -1125,15 +1158,15 @@ An All My Eggses Live in Texas Production</pre>
         </thead>
         <tbody>
       <tr>
-        <td><code>Choice (1-3): </code> accepts letters or crashes on bad input like <code>banana</code> or <code>99</code></td>
-        <td>Check <strong>CP1 (Expand the Library)</strong> and <strong>CP3 (Validate Menu Input)</strong> &mdash; <code>get_valid_int()</code> may be missing from <code>function_library.py</code>, or the menu is still using <code>int(input(...))</code> instead of <code>function_library.get_valid_int(...)</code>.</td>
+        <td><code>Choice (1-3): </code> accepts out-of-range numbers like <code>9</code> or <code>99</code> instead of re-prompting</td>
+        <td>Check <strong>CP1 (Expand the Library)</strong> and <strong>CP3 (Validate Menu Input)</strong> &mdash; either <code>get_valid_int()</code> has a logic bug in its <code>while</code> condition (should be <code>while value &lt; min_val or value &gt; max_val:</code>, not <code>and</code>), or the menu is still using <code>int(input(...))</code> instead of <code>function_library.get_valid_int(...)</code>.</td>
       </tr>
       <tr>
-        <td>Game ends after one trip even when you answer <code>y</code> to play again</td>
+        <td>Game ends after one trip even when you answer <code>y</code> to <code>Play again? (y/n):</code></td>
         <td>Check <strong>CP4 (Play Again Loop)</strong> &mdash; either the <code>while keep_playing:</code> wrapper is missing, the game code is not indented inside it, or <code>keep_playing</code> is never reassigned after the trip summary.</td>
       </tr>
       <tr>
-        <td>Play-again prompt repeatedly prints <code>ERROR: Please enter 'y' or 'n'.</code> even when you type <code>y</code></td>
+        <td><code>Play again? (y/n):</code> prompt repeatedly prints <code>ERROR: Please enter 'y' or 'n'.</code> even when you type <code>y</code></td>
         <td>Check <strong>CP2 (Add Yes/No Validation)</strong> &mdash; <code>get_yes_no()</code> may be using <code>and</code> instead of <code>or</code> in the validation condition, or comparing against the wrong characters. The condition should be: <em>continue while answer is NOT y AND NOT Y AND NOT n AND NOT N</em>.</td>
       </tr>
       <tr>

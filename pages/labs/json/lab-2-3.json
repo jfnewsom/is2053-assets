@@ -136,7 +136,7 @@
           "character": "Terrence \"T-Bone\" Booker",
           "role": "QA Lead, Bat City Collective",
           "headshot": "Terrence-Booker.png",
-          "quote": "Patch notes incoming. Back in Lab 1.3 I flagged that your roll prompt accepted anything the player typed. Then in Lab 2.1 we used 'default to Corpus' as a stopgap when someone picked an invalid menu option. Both gaps came from the same root cause: we had no way to make Python insist on valid input. That changes today. get_valid_int() is a validation loop wrapped in a function. Once you write it, every menu in the game gets the same bulletproof treatment, and we can stop apologizing for crashes when someone types 'banana'."
+          "quote": "Patch notes incoming. Back in Lab 1.3 I flagged that your roll prompt accepted anything the player typed. Then in Lab 2.1 we used 'default to Corpus' as a stopgap when someone picked an invalid menu option. Both gaps came from the same root cause: we had no way to make Python insist on valid input. get_valid_int() is a validation loop wrapped in a function. Once you write it, every menu in the game refuses out-of-range numbers and keeps asking until it gets one it likes. Type-safety is a Module 4 problem and Tyler will tell you the rest in CP3, but range protection lands today."
         },
         {
           "type": "h3",
@@ -412,6 +412,13 @@
           ]
         },
         {
+          "type": "mentor_quote",
+          "character": "Tyler Nguyen",
+          "role": "Junior Developer, Bat City Collective",
+          "headshot": "Tyler-Nguyen.png",
+          "quote": "Try this for me. Run your game and at the menu, type 'banana' instead of a number. Yeah, still crashes. get_valid_int() is doing everything it can right now: if you give it an integer outside the range, it asks again. But if you give it something that isn't even an integer, int(input(...)) blows up before our function ever sees the value. The fix lives in Chapter 8: string methods like .isdigit() will let us check the input is a number BEFORE we try to convert it. That is a Module 4 problem. For now, range protection is the win."
+        },
+        {
           "type": "h3",
           "label": "bookex_patterns"
         },
@@ -595,7 +602,7 @@
         },
         {
           "type": "output_block",
-          "output": "==================================================\nTRIP SUMMARY\n==================================================\nDriver: Maria\nDestination: Houston\n...\n==================================================\n\nPlay again? (y/n): y\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n..."
+          "output": "--------------------------------------------------\nTRIP SUMMARY\n--------------------------------------------------\nDriver: Maria\nFinal City: Houston\nTotal Miles: 240\nTotal Turns: 3\nHazards Faced: 1\nHazards Escaped: 1\nStatus: Trip Incomplete\n--------------------------------------------------\n\nPlay again? (y/n): y\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n..."
         },
         {
           "type": "text",
@@ -695,7 +702,7 @@
           "type": "instructions",
           "items": [
             "<strong>Before</strong> the play again loop, initialize: <code>games_played = 0</code>, <code>session_miles = 0</code>, <code>session_hazards = 0</code>",
-            "<strong>Inside</strong> the loop, after each trip summary, update the accumulators: add 1 to <code>games_played</code>, add <code>total_miles</code> to <code>session_miles</code>, add <code>total_hazards</code> to <code>session_hazards</code>",
+            "<strong>Inside</strong> the loop, after each trip summary, update the accumulators: add 1 to <code>games_played</code>, add <code>total_trip_miles</code> to <code>session_miles</code>, add <code>total_hazards</code> to <code>session_hazards</code>",
             "<strong>After</strong> the loop ends, display a \"SESSION STATISTICS\" block with all three totals",
             "Include the player's name in the final goodbye message"
           ]
@@ -710,7 +717,7 @@
         },
         {
           "type": "output_block",
-          "output": "Play again? (y/n): n\n\n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 2\nTotal Miles (All Games): 430\nTotal Hazards Faced: 3\nThanks for playing, Maria!\n=================================================="
+          "output": "Play again? (y/n): n\n\n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 2\nTotal Miles: 720\nTotal Hazards: 3\n==================================================\n\nThanks for playing, Maria!\nAn All My Eggses Live in Texas Production"
         },
         {
           "type": "text",
@@ -737,7 +744,7 @@
             ],
             [
               "Using wrong variable names",
-              "Adding miles when game uses total_miles, etc."
+              "Adding miles using the wrong name &mdash; the per-game variable is <code>total_trip_miles</code>, not <code>total_miles</code>"
             ],
             [
               "Forgetting games_played += 1",
@@ -787,19 +794,19 @@
     "saveYourCode": "Keep both files — in Module 3 you'll add lists to track visited cities and file I/O to save progress. Your function library keeps growing!",
     "warnings": [],
     "finalCheck": {
-      "expectedOutput": "==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nWhat is your name, traveler? TestPlayer\n\nWelcome, TestPlayer!\nYou are in San Antonio. Your goal: reach the beach!\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n\nChoice (1-3): 2\n\nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 15!\nYou travel 150 miles...\nMiles remaining: 50\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call.\n\n--- Turn 2 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Houston!\n\nContinue? (y/n): y\n\nFrom Houston, where would you like to go?\n  1. Galveston - 50 miles (BEACH!)\n  2. San Antonio - 200 miles\n\nChoice (1-2): 1\n\nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: TestPlayer\nFinal City: Galveston\nTotal Miles: 450\nTotal Turns: 3\nHazards Faced: 1\nHazards Escaped: 1\nStatus: BEACH WINNER!\n==================================================\n\nThanks for playing DEEP IN THE HEART!\nAn All My Eggses Live in Texas Production",
-      "expectedOutputNote": "This run uses inputs <code>TestPlayer</code> &rarr; <code>2</code> (Houston) &rarr; <code>y</code> (continue from Houston) &rarr; <code>1</code> (Galveston) with the deterministic CodeGrade test fixture. With real random, your specific rolls, coin flips, and hazards will differ &mdash; but the <em>structure</em> of the output must match: menu &rarr; gate &rarr; travel loop &rarr; hazard checks &rarr; trip summary &rarr; play-again prompt &rarr; final session report.",
+      "expectedOutput": "==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nWhat is your name, traveler? TestPlayer\n\nWelcome, TestPlayer!\nYou are in San Antonio. Your goal: reach the beach!\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n\nChoice (1-3): 2\n\nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 15!\nYou travel 150 miles...\nMiles remaining: 50\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call.\n\n--- Turn 2 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Houston!\n\nKeep going this trip? (y/n): y\n\nFrom Houston, where would you like to go?\n  1. Galveston - 50 miles (BEACH!)\n  2. San Antonio - 200 miles\n\nChoice (1-2): 1\n\nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n--------------------------------------------------\nTRIP SUMMARY\n--------------------------------------------------\nDriver: TestPlayer\nFinal City: Galveston\nTotal Miles: 450\nTotal Turns: 3\nHazards Faced: 1\nHazards Escaped: 1\nStatus: BEACH WINNER!\n--------------------------------------------------\n\nPlay again? (y/n): n\n\n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 450\nTotal Hazards: 1\n==================================================\n\nThanks for playing, TestPlayer!\nAn All My Eggses Live in Texas Production",
+      "expectedOutputNote": "This run uses inputs <code>TestPlayer</code> &rarr; <code>2</code> (Houston) &rarr; <code>y</code> (keep going this trip) &rarr; <code>1</code> (Galveston) &rarr; <code>n</code> (don't play again) with the deterministic CodeGrade test fixture. With real random, your specific rolls, coin flips, and hazards will differ &mdash; but the <em>structure</em> of the output must match: menu &rarr; gate &rarr; travel loop &rarr; hazard checks &rarr; trip summary &rarr; play-again prompt &rarr; session statistics.",
       "ifSomethingBreaks": [
         {
-          "symptom": "<code>Choice (1-3): </code> accepts letters or crashes on bad input like <code>banana</code> or <code>99</code>",
-          "redirect": "Check <strong>CP1 (Expand the Library)</strong> and <strong>CP3 (Validate Menu Input)</strong> &mdash; <code>get_valid_int()</code> may be missing from <code>function_library.py</code>, or the menu is still using <code>int(input(...))</code> instead of <code>function_library.get_valid_int(...)</code>."
+          "symptom": "<code>Choice (1-3): </code> accepts out-of-range numbers like <code>9</code> or <code>99</code> instead of re-prompting",
+          "redirect": "Check <strong>CP1 (Expand the Library)</strong> and <strong>CP3 (Validate Menu Input)</strong> &mdash; either <code>get_valid_int()</code> has a logic bug in its <code>while</code> condition (should be <code>while value &lt; min_val or value &gt; max_val:</code>, not <code>and</code>), or the menu is still using <code>int(input(...))</code> instead of <code>function_library.get_valid_int(...)</code>."
         },
         {
-          "symptom": "Game ends after one trip even when you answer <code>y</code> to play again",
+          "symptom": "Game ends after one trip even when you answer <code>y</code> to <code>Play again? (y/n):</code>",
           "redirect": "Check <strong>CP4 (Play Again Loop)</strong> &mdash; either the <code>while keep_playing:</code> wrapper is missing, the game code is not indented inside it, or <code>keep_playing</code> is never reassigned after the trip summary."
         },
         {
-          "symptom": "Play-again prompt repeatedly prints <code>ERROR: Please enter 'y' or 'n'.</code> even when you type <code>y</code>",
+          "symptom": "<code>Play again? (y/n):</code> prompt repeatedly prints <code>ERROR: Please enter 'y' or 'n'.</code> even when you type <code>y</code>",
           "redirect": "Check <strong>CP2 (Add Yes/No Validation)</strong> &mdash; <code>get_yes_no()</code> may be using <code>and</code> instead of <code>or</code> in the validation condition, or comparing against the wrong characters. The condition should be: <em>continue while answer is NOT y AND NOT Y AND NOT n AND NOT N</em>."
         },
         {
