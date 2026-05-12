@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data-Driven Texas — IS2053</title>
+    <title>Trivia Challenge — IS2053</title>
     <link rel="icon" type="image/png" href="https://jfnewsom.github.io/is2053-assets/favicon.png">
     <link rel="stylesheet" href="../../labs.css">
 </head>
@@ -20,56 +20,63 @@
           </div>
         </td>
         <td style="vertical-align: bottom; padding: 0 0 0 16px;">
-          <div class="lc-topper-title">Data-Driven Texas</div>
+          <div class="lc-topper-title">Trivia Challenge</div>
         </td>
         <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">
           <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: 120px; width: auto; display: block;">
         </td>
       </tr>
-    <tr><td colspan="3" style="padding: 10px 0 0 0;"><div class="lc-sub-banner">MODULE 4 &bull; WEEK 3 &bull; MASTER &bull; CHAPTERS 8–9: SETS, TRIVIA GATE, FULL DATA-DRIVEN ARCHITECTURE</div></td></tr>
+    <tr><td colspan="3" style="padding: 10px 0 0 0;"><div class="lc-sub-banner">MODULE 4 &bull; WEEK 3 &bull; MASTER &bull; CHAPTERS 8–9: MORE ABOUT STRINGS, DICTIONARIES, SETS</div></td></tr>
     </table>
   </div>
   <div class="lc-panel">
     <div class="lc-h3 lc-h3--yellow">Overview</div>
     <img src="../../branding/AllMyEggses3D-Full.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
-    <p>Time to put it all together! This MASTER week introduces <strong>sets</strong> — collections that automatically remove duplicates. You’ll replace the coin flip gate with a <strong>trivia system</strong>, track unique cities and hazards with sets, and produce a comprehensive final report. This is Module 4’s capstone: data from files, dictionaries, sets, and polished output.</p>
+    <p>MASTER week. Two arrivals close Module 4. First, the coin-flip Destination Gate from Labs 3.x and 4.x retires entirely. A TRIVIA gate replaces it: players answer a TRUE/FALSE question about the city they want to visit, and a wrong answer triggers the same <code>get_redirect</code> detour that the old TAILS branch did. Second, <strong>sets</strong> arrive as the right tool for tracking unique cities and unique hazards across a game. The trip report grows a TRIVIA section with asked / correct / accuracy stats, and the HAZARDS display uses <code>sorted()</code> on a set to show each unique hazard exactly once. This is also the lab where Sasha drops the Module 5 Patch Note about the dictionary-of-dictionaries shape: it works, but it's starting to feel awkward. The fix is coming next module.</p>
     <div style="clear: both;"></div>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
-          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"Lists remember everything. Sets remember everything once. If you visited Houston three times, a list says Houston, Houston, Houston. A set just says Houston. That’s not a limitation — it’s a superpower for tracking unique things."</div>
+          <div class="lc-mentor__quote">"The trivia gate is the moment the game stops feeling like a coin-flip simulator and starts feeling like a road trip with friends. Anyone who has driven across Texas knows the deal: someone asks a question about the next stop, you either know it or you get rerouted. We are turning randomness into a small piece of agency. That is what good design feels like: the player earns the next mile."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Danny Cavanaugh</div>
-        <div class="lc-mentor__role">Lead Developer, Bat City Collective</div>
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Filename</div>
-    <p>Submit <code>lab-4-3.py</code> and your <code>function_library.py</code> this week. Start by copying your <code>lab-4-2.py</code> and renaming it.</p>
-    <p>CodeGrade tests <code>trivia_gate()</code> in isolation using your library, so both files must be present.</p>
+    <p>Submit <code>lab-4-3.py</code> and <code>function_library.py</code>. CodeGrade provides all four data files as fixtures.</p>
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <ul class="lc-objectives">
-      <li><code>load_trivia()</code> — Parse <code>trivia.txt</code> into a dict with list values</li>
-      <li><code>trivia_gate()</code> — TRUE/FALSE questions replace the coin flip</li>
-      <li>Sets — Track unique cities visited and unique hazards encountered</li>
-      <li><code>sorted()</code> — Display set contents in alphabetical order</li>
-      <li>Comprehensive report — Route, unique cities, trivia stats, and hazard stats</li>
+      <li>Copy <code>lab-4-2.py</code> forward to <code>lab-4-3.py</code></li>
+      <li>Add <code>load_trivia(filename)</code> to <code>function_library.py</code>: parse <code>trivia.txt</code> into a dictionary keyed by city, with each value a list of question/answer dicts</li>
+      <li>Write <code>trivia_gate(dest, trivia, current, distances)</code> as a <strong>lab-local</strong> function in <code>lab-4-3.py</code>: ask the player a TRUE/FALSE question about the destination; correct earns it, wrong triggers <code>get_redirect</code></li>
+      <li>Replace the coin-flip Destination Gate in the in-game loop with a call to <code>trivia_gate</code></li>
+      <li>Build <code>unique_cities = set()</code> and <code>unique_hazards = set()</code> at game start; <code>.add()</code> entries every time a city or hazard is recorded</li>
+      <li>Replace the post-game <code>'in' operator</code> uniqueness loop with <code>sorted(unique_cities)</code>; replace the <code>.copy().sort()</code> hazard sort with <code>sorted(unique_hazards)</code></li>
+      <li>Track <code>trivia_asked</code> and <code>trivia_correct</code> as per-game counters; add a TRIVIA section to the trip report showing asked, correct, and accuracy percentage</li>
+      <li>Drop a <strong>forward-facing Patch Note</strong> in CP8: Sasha flags that the dict-of-dicts city shape is starting to creak, and points to Module 5's class-based fix</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
-    <p><strong>Chapter 9:</strong> <code>set()</code>, <code>.add()</code>, <code>len()</code> on sets, <code>sorted()</code> for display, and dict with list values</p>
+    <p>A <strong>set</strong> in Python is a collection of unique items with O(1) membership testing. <code>my_set = set()</code> creates an empty set. <code>my_set.add(item)</code> inserts an item (or does nothing if it's already present). <code>len(my_set)</code> gives the unique count. <code>sorted(my_set)</code> returns a new sorted list. Sets are unordered, so iterate them via <code>sorted()</code> for stable display. The <strong>trivia data shape</strong> introduced this lab is a dictionary keyed by city, with each value a list of dicts: <code>trivia['Austin'] -> [{'question': '...', 'answer': 'TRUE'}, ...]</code>. This combines two patterns from CP1 of Lab 4.1 (dict lookup) and CP1 of Lab 4.2 (list of dicts) into one structure.</p>
     <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
-    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 8 &amp; 9</p>
+    <p>Chapter 9 sets section (Programs 9–18 through 9–23) covers set creation, &lt;code&gt;.add()&lt;/code&gt;, membership testing, and iteration. &lt;code&gt;sorted()&lt;/code&gt; on a set is shown in Program 9–21.</p>
     <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
     <ul>
-      <li>Your program <strong>MUST</strong> use sets to track unique cities and hazards</li>
-      <li>Your program <strong>MUST</strong> load trivia from <code>trivia.txt</code></li>
-      <li>Your program <strong>MUST</strong> use <code>sorted()</code> when displaying set contents</li>
-      <li>Your program <strong>MUST</strong> include trivia statistics in the final report</li>
-      <li>Your program <strong>MUST</strong> track and display unique hazard types encountered</li>
+      <li>Submit <code>lab-4-3.py</code> and <code>function_library.py</code></li>
+      <li>Top-of-file comment block on both files</li>
+      <li>Docstring on every function, including the lab-local <code>trivia_gate</code></li>
+      <li>Four data files loaded at startup: <code>city_distances.txt</code>, <code>city_info.txt</code>, <code>hazards.txt</code>, <code>trivia.txt</code></li>
+      <li>Three-loop architecture preserved (main menu, play-again, in-game)</li>
+      <li>D20 travel mechanic preserved</li>
+      <li>Coin-flip Destination Gate is REPLACED by <code>trivia_gate</code>; no <code>flip_coin()</code> call remains in the gate position</li>
+      <li><code>unique_cities</code> and <code>unique_hazards</code> are <code>set</code> objects, NOT lists or <code>in</code>-operator loops</li>
+      <li>Trip report (both on-screen and <code>trip_report.txt</code>) includes a TRIVIA section with asked, correct, and accuracy</li>
+      <li>Save format is unchanged from Lab 3.2; trivia stats are session-only and reset on resume</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Required Data Files</div>
     <div class="lc-table-wrap">
@@ -82,27 +89,54 @@
           </tr>
         </thead>
         <tbody>
-      <tr><td><code>city_distances.txt</code></td><td>Same as 4.1/4.2</td><td><a href="data/city_distances.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_distances.txt</a></td></tr>
-      <tr><td><code>city_info.txt</code></td><td>Same as 4.1/4.2</td><td><a href="data/city_info.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_info.txt</a></td></tr>
-      <tr><td><code>hazards.txt</code></td><td>Same as 4.2</td><td><a href="data/hazards.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; hazards.txt</a></td></tr>
-      <tr><td><code>trivia.txt</code> <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span></td><td>city,question,TRUE/FALSE</td><td><a href="data/trivia.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; trivia.txt</a></td></tr>
+      <tr><td><code>city_distances.txt</code></td><td>city1,city2,distance (carried over from 4.2)</td><td><a href="data/4-3/city_distances.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_distances.txt</a></td></tr>
+      <tr><td><code>city_info.txt</code></td><td>city,type,tagline (carried over from 4.2)</td><td><a href="data/4-3/city_info.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_info.txt</a></td></tr>
+      <tr><td><code>hazards.txt</code></td><td>name,heads_message,tails_message (carried over from 4.2)</td><td><a href="data/4-3/hazards.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; hazards.txt</a></td></tr>
+      <tr><td><code>trivia.txt</code> <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span></td><td>city,question,answer (new this week)</td><td><a href="data/4-3/trivia.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; trivia.txt</a></td></tr>
+      <tr><td><code>function_library.py</code></td><td>Shared function library, extended this week with load_trivia</td><td><a href="data/function_library.py" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; function_library.py</a></td></tr>
         </tbody>
       </table>
     </div>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
-        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Save Your Code</div>
-        <div class="lc-callout__body">
-          <p>This is the Module 4 capstone. Module 5 starts fresh with classes. Save <code>lab-4-3.py</code> as your personal reference for the data-driven architecture.</p>
-        </div>
-      </div>
+    <div class="lc-h3 lc-h3--yellow">Named Constants</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table lc-named-constants__table">
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>DISTANCES_FILE</code></td>
+        <td>City distances text file</td>
+      </tr>
+      <tr>
+        <td><code>INFO_FILE</code></td>
+        <td>City info text file</td>
+      </tr>
+      <tr>
+        <td><code>HAZARDS_FILE</code></td>
+        <td>Hazards text file</td>
+      </tr>
+      <tr>
+        <td><code>TRIVIA_FILE</code></td>
+        <td>Trivia text file (new this week)</td>
+      </tr>
+      <tr>
+        <td><code>REPORT_FILE</code></td>
+        <td>Trip report output file</td>
+      </tr>
+      <tr>
+        <td><code>MILES_MULTIPLIER</code></td>
+        <td>Multiplier applied to each D20 roll</td>
+      </tr>
+      <tr>
+        <td><code>HAZARD_CHANCE</code></td>
+        <td>Percent chance per turn of a hazard event</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -110,7 +144,7 @@
 
   <div class="lc-topper">
     <div class="lc-topper-title">Time Guide</div>
-    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 120–150 Minutes</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 90–120 Minutes</div>
   </div>
 
   <div class="lc-panel">
@@ -126,49 +160,56 @@
         </thead>
         <tbody>
       <tr>
-        <td><strong>CP1: Load Trivia</strong></td>
-        <td>25–30 min</td>
-        <td>Dict with list values structure</td>
+        <td><strong>CP1: Copy 4.2 + Load Trivia</strong></td>
+        <td>10 min</td>
+        <td>Copy lab-4-2.py forward and add load_trivia to the library</td>
       </tr>
       <tr>
-        <td><strong>CP2: Trivia Gate</strong></td>
-        <td>30–35 min</td>
-        <td>TRUE/FALSE question system</td>
+        <td><strong>CP2: Trivia Gate (lab-local)</strong></td>
+        <td>20 min</td>
+        <td>Write the trivia_gate function in lab-4-3.py</td>
       </tr>
       <tr>
-        <td><strong>CP3: Add Sets</strong></td>
-        <td>25–30 min</td>
-        <td>Unique cities and hazards tracking</td>
+        <td><strong>CP3: Wire the Trivia Gate</strong></td>
+        <td>10 min</td>
+        <td>Replace the coin-flip Destination Gate with trivia_gate</td>
       </tr>
       <tr>
-        <td><strong>CP4: Final Report</strong></td>
-        <td>30–35 min</td>
-        <td>Comprehensive stats display</td>
+        <td><strong>CP4: Sets - Unique Cities</strong></td>
+        <td>10 min</td>
+        <td>Build unique_cities as a set; .add() at every visit</td>
+      </tr>
+      <tr>
+        <td><strong>CP5: Sets - Unique Hazards</strong></td>
+        <td>10 min</td>
+        <td>Build unique_hazards as a set; .add() in the hazard branch</td>
+      </tr>
+      <tr>
+        <td><strong>CP6: sorted() on Sets</strong></td>
+        <td>10 min</td>
+        <td>Replace .copy().sort() and the in-operator loop with sorted(set)</td>
+      </tr>
+      <tr>
+        <td><strong>CP7: Trivia Stats in Report</strong></td>
+        <td>10 min</td>
+        <td>Add trivia_asked/trivia_correct counters and TRIVIA section to trip report</td>
+      </tr>
+      <tr>
+        <td><strong>CP8: Module 5 Tease (Patch Note)</strong></td>
+        <td>5 min</td>
+        <td>Sasha drops a forward-facing Patch Note: city dicts will become classes</td>
+      </tr>
+      <tr>
+        <td><strong>Final Check &amp; Submit</strong></td>
+        <td>10 min</td>
+        <td>Full play-through + a wrong-trivia path, then upload to CodeGrade</td>
       </tr>
       <tr class="lc-table__total">
         <td colspan="2"><strong>Total Estimated Time</strong></td>
-        <td><strong>120–150 Minutes</strong></td>
+        <td><strong>90–120 Minutes</strong></td>
       </tr>
         </tbody>
       </table>
-    </div>
-    <div class="lc-callout lc-callout--tip">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
-                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="19" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Strategy</div>
-        <div class="lc-callout__body">
-          <p>This is the MASTER week — take your time! Start by copying lab-4-2.py and work through each checkpoint carefully. The trivia gate is the most complex new feature.</p>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -178,56 +219,68 @@
     <div class="lc-sub-banner">Program Architecture</div>
   </div>
   <div class="lc-panel">
-    <p class="lc-arch-intro">Here’s how your finished program fits together. The [NEW] tags show what you’re adding. The [REPLACED] tags show what changes from your 4.2 code. The section at the bottom runs after the game loop ends.</p>
+    <p class="lc-arch-intro">Lab 4.3 is the MASTER week. About half the work is in the lab file this time: the library gets one new function (&lt;code&gt;load_trivia&lt;/code&gt;), but the lab file changes in five places: constants, startup, in-game gate, per-game state, and the trip report. &lt;code&gt;[NEW]&lt;/code&gt; tags show what&#x27;s added. &lt;code&gt;[REPLACED]&lt;/code&gt; tags show what swaps out. &lt;code&gt;[RETIRED]&lt;/code&gt; tags show what gets deleted entirely.</p>
     <div class="lc-arch">
-      <pre># ---- DATA LOADING FUNCTIONS ----
-<span class="lc-arch-fn">load_city_distances()</span>   reads city_distances.txt -&gt; nested dict
-<span class="lc-arch-fn">load_city_info()</span>        reads city_info.txt -&gt; dict of dicts
-<span class="lc-arch-fn">load_hazards()</span>          reads hazards.txt -&gt; list of dicts
-<span class="lc-arch-fn">load_trivia()</span>           reads trivia.txt -&gt; dict of lists  <span class="lc-arch-new">[NEW]</span>
+      <pre># ---- IN function_library.py ----
+all 4.2 functions                                           [KEEP from 4.2]
+<span class="lc-arch-fn">load_trivia(filename)</span> -&gt; dict[city] -&gt; list of Q/A dicts    <span class="lc-arch-new">[NEW-CP1]</span>
 
-# ---- GAME FUNCTIONS ----
-<span class="lc-arch-fn">display_destinations()</span>  shows menu from dict
-<span class="lc-arch-fn">get_destination_choice()</span>  validates user pick
-<span class="lc-arch-fn">trivia_gate(dest, trivia, all_dests, distances, current)</span>  TRUE/FALSE question  <span class="lc-arch-new">[NEW]</span>
-<span class="lc-arch-fn">handle_hazard(hazards)</span>  random hazard + coin flip
-<span class="lc-arch-fn">travel_to(distance)</span>    D20 travel + hazard checks
+# ---- IN lab-4-3.py ----
 
-# ---- MAIN PROGRAM ----
-Load ALL data files (distances, info, hazards, trivia)
-Get player name
-current_city = &#x27;San Antonio&#x27;
-unique_cities = <span class="lc-arch-fn">set()</span>  <span class="lc-arch-new">[NEW]</span>
-unique_hazards = <span class="lc-arch-fn">set()</span>  <span class="lc-arch-new">[NEW]</span>
+# ---- CONSTANTS ----
+DISTANCES_FILE, INFO_FILE, HAZARDS_FILE, REPORT_FILE        [KEEP from 4.2]
+TRIVIA_FILE = &#x27;trivia.txt&#x27;                                  <span class="lc-arch-new">[NEW-CP1]</span>
+MILES_MULTIPLIER, HAZARD_CHANCE                             [KEEP from 4.2]
 
-<span class="lc-arch-game-loop">GAME LOOP</span> (each pass is one leg):
-|
-|-- <span class="lc-arch-fn">unique_cities.add(current_city)</span>  <span class="lc-arch-new">[NEW]</span>
-|-- Display city info, show destinations
-|-- Get choice with .<span class="lc-arch-fn">strip()</span>.<span class="lc-arch-fn">upper()</span>
-|-- <span class="lc-arch-fn">trivia_gate()</span>  <span class="lc-arch-replaced">[REPLACED]</span> was coin flip
-|
-|   <span class="lc-arch-travel-loop">TRAVEL LOOP</span> (D20 rolls):
-|   |-- Roll D20, move miles
-|   |-- 30% chance: <span class="lc-arch-fn">handle_hazard()</span> -&gt; <span class="lc-arch-fn">unique_hazards.add()</span>  <span class="lc-arch-new">[NEW]</span>
-|   |-- Repeat until you arrive
-|
-|-- Update trip totals + trivia stats  <span class="lc-arch-new">[NEW]</span>
-|-- Check outcome: beach / dead end / continue
+<span class="lc-arch-fn">trivia_gate(dest, trivia, current, distances)</span>               <span class="lc-arch-new">[NEW-CP2]</span>
+<span class="lc-arch-fn">save_trip_report(...)</span> +trivia_asked +trivia_correct         <span class="lc-arch-replaced">[REPLACED-CP7]</span>
 
-=== FINAL TRIP REPORT ===  <span class="lc-arch-new">[NEW]</span>
-| Route: city -&gt; city -&gt; city (from visited list)
-| Unique cities: <span class="lc-arch-fn">sorted(unique_cities)</span>
-| Unique hazards: <span class="lc-arch-fn">sorted(unique_hazards)</span>
-| Trivia: correct / total
-| Trip stats: miles, turns, hazards</pre>
+# ---- <span class="lc-arch-fn">main()</span> ----
+distances = <span class="lc-arch-fn">load_city_distances(...)</span>                        [KEEP from 4.2]
+city_info = <span class="lc-arch-fn">load_city_info(...)</span>                             [KEEP from 4.2]
+hazards   = <span class="lc-arch-fn">load_hazards(...)</span>                               [KEEP from 4.2]
+trivia    = <span class="lc-arch-fn">load_trivia(TRIVIA_FILE)</span>                        <span class="lc-arch-new">[NEW-CP1]</span>
+
+MAIN MENU LOOP                                              [KEEP from 4.2]
+  PLAY-AGAIN LOOP                                           [KEEP from 4.2]
+    │
+    │─ Per-game init:
+    │     trivia_asked = 0, trivia_correct = 0           <span class="lc-arch-new">[NEW-CP7]</span>
+    │     unique_cities = <span class="lc-arch-fn">set(visited_cities)</span>             <span class="lc-arch-new">[NEW-CP4]</span>
+    │     unique_hazards = <span class="lc-arch-fn">set(hazards_list)</span>              <span class="lc-arch-new">[NEW-CP5]</span>
+    │
+    IN-<span class="lc-arch-game-loop">GAME LOOP</span>                                            [KEEP from 4.2]
+      │
+      │─ Coin-flip Destination Gate                    [RETIRED-CP3]
+      │─ destination, distance, correct =
+      │     <span class="lc-arch-fn">trivia_gate(wanted, trivia, ...)</span>             <span class="lc-arch-new">[NEW-CP3]</span>
+      │     trivia_asked += 1, trivia_correct += correct
+      │
+      │─ D20 travel loop
+      │     │─ if hazard: handle_hazard            [KEEP from 4.2]
+      │     │     <span class="lc-arch-fn">hazards_list.append(name)</span>
+      │     │     <span class="lc-arch-fn">unique_hazards.add(name)</span>            <span class="lc-arch-new">[NEW-CP5]</span>
+      │
+      │─ Arrival:
+      │     <span class="lc-arch-fn">visited_cities.append(current_city)</span>
+      │     <span class="lc-arch-fn">unique_cities.add(current_city)</span>              <span class="lc-arch-new">[NEW-CP4]</span>
+      │
+      │─ Continue / Save &amp; quit / Quit               [KEEP from 4.2]
+    
+    Trip report on screen + trip_report.txt:
+      ROUTE                                                 [KEEP from 4.2]
+      Unique cities = <span class="lc-arch-fn">len(unique_cities)</span>                    <span class="lc-arch-replaced">[REPLACED-CP6]</span>
+      HAZARDS = <span class="lc-arch-fn">sorted(unique_hazards)</span>                      <span class="lc-arch-replaced">[REPLACED-CP6]</span>
+      STATISTICS                                            [KEEP from 4.2]
+      TRIVIA: asked / correct / accuracy                    <span class="lc-arch-new">[NEW-CP7]</span>
+</pre>
     </div>
   </div>
 </div>
 <div class="lc-card lc-card--green">
   <div class="lc-topper">
     <div class="lc-topper-title">Checkpoints</div>
-    <div class="lc-sub-banner">4 Checkpoints</div>
+    <div class="lc-sub-banner">8 Checkpoints</div>
   </div>
   <div class="lc-panel">
     <div class="lc-cp-row">
@@ -236,53 +289,41 @@ unique_hazards = <span class="lc-arch-fn">set()</span>  <span class="lc-arch-new
         <div class="lc-cp-badge__num">1</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Load Trivia</div>
-        <div class="lc-sub-banner">Parse trivia.txt and build a dictionary where each city maps to a list of question dicts.</div>
+        <div class="lc-cp-title">Copy 4.2 + Load Trivia</div>
       </div>
     </div>
     <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>A clean starting point for Lab 4.3. Copy <code>lab-4-2.py</code> to <code>lab-4-3.py</code>, update the docstring, and add one new function to <code>function_library.py</code>: <code>load_trivia(filename)</code>. It reads <code>trivia.txt</code> line-by-line and groups questions by city, returning a dictionary where each value is a list of question/answer dicts.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Trivia is the foundation for the new Destination Gate. Loading it once at startup and indexing by city means the gate function in CP2 can ask <code>trivia['Austin']</code> and immediately get back the question pool for Austin. The grouping happens in the loader, not the gate. This is the same Module 4 pattern you have seen twice now: parse once at startup, index forever after.</p>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
-          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
+          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"This is the big one. Trivia replaces the coin flip, sets handle your unique tracking, and sorted() makes your report look clean. The game loop barely changes — you’re mostly adding smarter pieces around it."</div>
+          <div class="lc-mentor__quote">"Look at the three loaders side-by-side after this CP: city_distances returns nested dicts, city_info returns dict-of-dicts, hazards returns a list of dicts, trivia returns a dict-of-lists-of-dicts. Each one matches the access pattern the game needs. Distances need a graph; info needs a table; hazards need random sampling; trivia needs grouping by key. Pick the shape that makes the consumer code easiest to read."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Tyler Nguyen</div>
-        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
+        <div class="lc-mentor__name">Priya Venkatesh</div>
+        <div class="lc-mentor__role">Project Manager, Bat City Collective</div>
       </div>
-    </div>
-    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>A function that reads <code>trivia.txt</code> where each city can have <strong>multiple</strong> trivia questions. Structure: <code>trivia['Houston']</code> returns a <strong>list</strong> of question dicts.</p>
-    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p>This is the most sophisticated data structure you’ve built yet: a <strong>dictionary of lists of dictionaries</strong>. Real applications use nested structures like this constantly — think of a playlist app where each artist maps to a list of album objects. Mastering this pattern unlocks serious programming power.</p>
-    <div class="lc-h3 lc-h3--yellow">Pro Tip</div>
-    <div class="lc-code-block">
-      <pre><span class="sy-cm"># The structure you&#x27;re building:</span>
-trivia <span class="sy-op">=</span> <span class="sy-op">{</span>
-    <span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">:</span> <span class="sy-op">[</span>
-        <span class="sy-op">{</span><span class="sy-str">&#x27;question&#x27;</span><span class="sy-op">:</span> <span class="sy-str">&#x27;NASA is in Houston&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;answer&#x27;</span><span class="sy-op">:</span> <span class="sy-str">&#x27;TRUE&#x27;</span><span class="sy-op">}</span><span class="sy-op">,</span>
-        <span class="sy-op">{</span><span class="sy-str">&#x27;question&#x27;</span><span class="sy-op">:</span> <span class="sy-str">&#x27;Houston is the capital&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;answer&#x27;</span><span class="sy-op">:</span> <span class="sy-str">&#x27;FALSE&#x27;</span><span class="sy-op">}</span>
-    <span class="sy-op">]</span><span class="sy-op">,</span>
-    <span class="sy-str">&#x27;Austin&#x27;</span><span class="sy-op">:</span> <span class="sy-op">[</span>
-        <span class="sy-op">{</span><span class="sy-str">&#x27;question&#x27;</span><span class="sy-op">:</span> <span class="sy-str">&#x27;Austin has bats&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;answer&#x27;</span><span class="sy-op">:</span> <span class="sy-str">&#x27;TRUE&#x27;</span><span class="sy-op">}</span>
-    <span class="sy-op">]</span>
-<span class="sy-op">}</span></pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>Copy <code>lab-4-2.py</code> and rename it to <code>lab-4-3.py</code></li>
-      <li>Update the top-of-file docstring to describe Lab 4.3</li>
-      <li>Define <code>load_trivia(filename)</code></li>
-      <li>Create an empty dict: <code>trivia = {}</code></li>
-      <li>Open the file and loop through lines: use <code>line.strip().split(',')</code></li>
-      <li>Extract parts: <code>city = parts[0]</code>, <code>question = parts[1]</code>, <code>answer = parts[2]</code></li>
-      <li>Check if the city key exists: <code>if city not in trivia: trivia[city] = []</code></li>
-      <li>Append the question dict: <code>trivia[city].append({'question': question, 'answer': answer})</code></li>
-      <li>Close the file and return the trivia dict</li>
+      <li><strong>Copy</strong> <code>lab-4-2.py</code> to <code>lab-4-3.py</code>.</li>
+      <li><strong>Update the docstring</strong> at the top of <code>lab-4-3.py</code>: title becomes <code>Lab 4.3: Trivia Challenge</code> and the description should mention the trivia gate and sets.</li>
+      <li>Add <code>TRIVIA_FILE = 'trivia.txt'</code> to the constants block alongside the other file constants.</li>
+      <li>In <code>function_library.py</code>, add a new section header comment block titled <code>TRIVIA FUNCTIONS (Added in Lab 4-3)</code>. Place it after the <code>HAZARD FUNCTIONS</code> section.</li>
+      <li>Define <code>load_trivia(filename)</code> with a full docstring describing the dict-of-lists-of-dicts return shape.</li>
+      <li>Inside the function, create an empty dictionary called <code>trivia</code>.</li>
+      <li>Open the file and loop: <code>for line in infile:</code>. Call <code>parts = line.strip().split(',')</code>.</li>
+      <li>Pull out <code>city = parts[0]</code>, <code>question = parts[1]</code>, <code>answer = parts[2]</code>.</li>
+      <li>If <code>city not in trivia:</code>, initialize <code>trivia[city] = []</code>. Then <code>trivia[city].append({'question': question, 'answer': answer})</code>.</li>
+      <li>Close the file and return <code>trivia</code>.</li>
+      <li>In <code>main()</code>, add <code>trivia = function_library.load_trivia(TRIVIA_FILE)</code> after the hazards load. Print a load banner: <code>print(f'Loaded {total_questions} trivia questions across {len(trivia)} cities.')</code></li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
@@ -301,61 +342,77 @@ trivia <span class="sy-op">=</span> <span class="sy-op">{</span>
         <div class="lc-callout__body">
           <ul>
           <li>
-            <strong>Program 9-1</strong>
-            — <code>card_dealer.py</code>
-            (Step 1)
-            — Your Lab 4.1 <code>load_city_distances()</code> pattern applies here — same file-reading loop, but now you’re appending to lists instead of storing single values. Program 9-1 also shows dictionary creation with key-value pairs; your trivia dict adds a twist where each value is a list that can hold multiple items.
+            <strong>Program 9-10</strong>
+            — <code>list_of_dicts.py</code>
+            
+            — Each line builds one Q/A dict, just like a hazard dict in 4.2. The difference is that they're grouped under city keys instead of appended to a flat list.
+          </li>
+          <li>
+            <strong>Program 9-13</strong>
+            — <code>phone_book.py</code>
+            
+            — <code>if key not in d: d[key] = []</code> followed by <code>d[key].append(value)</code>: the canonical 'group items by key' pattern in Python.
           </li>
           </ul>
         </div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Add a DEBUG block under <code>if __name__ == '__main__':</code> in <code>function_library.py</code> that prints the trivia structure. Delete it before moving on.</p>
     <div class="lc-code-block">
       <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 2</span>
 trivia <span class="sy-op">=</span> load_trivia<span class="sy-op">(</span><span class="sy-str">&#x27;trivia.txt&#x27;</span><span class="sy-op">)</span>
 <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Cities with trivia: <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>trivia<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Houston questions:&#x27;</span><span class="sy-op">,</span> <span class="sy-bi">len</span><span class="sy-op">(</span>trivia<span class="sy-op">[</span><span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;First Houston Q:&#x27;</span><span class="sy-op">,</span> trivia<span class="sy-op">[</span><span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-num">0</span><span class="sy-op">]</span><span class="sy-op">)</span></pre>
+<span class="sy-kw">for</span> city <span class="sy-kw">in</span> <span class="sy-bi">sorted</span><span class="sy-op">(</span>trivia<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  <span class="sy-op">{</span>city<span class="sy-op">}</span>: <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>trivia<span class="sy-op">[</span>city<span class="sy-op">]</span><span class="sy-op">)</span><span class="sy-op">}</span> questions&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Sample Austin question:&#x27;</span><span class="sy-op">,</span> trivia<span class="sy-op">[</span><span class="sy-str">&#x27;Austin&#x27;</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-num">0</span><span class="sy-op">]</span><span class="sy-op">)</span></pre>
     </div>
-    <p><strong>Verify:</strong> Houston has multiple questions, and each is a dict with <code>'question'</code> and <code>'answer'</code> keys.</p>
+    <div class="lc-h3 lc-h3--yellow">Expected Output</div>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
-      <pre>Cities with trivia: 6
-Houston questions: 2
-First Houston Q: {&#x27;question&#x27;: &#x27;NASA Mission Control is in Houston, Texas.&#x27;, &#x27;answer&#x27;: &#x27;TRUE&#x27;}</pre>
+      <pre>Cities with trivia: 10
+  Austin: 3 questions
+  Corpus Christi: 1 questions
+  Dallas: 2 questions
+  El Paso: 1 questions
+  Fort Worth: 2 questions
+  Galveston: 1 questions
+  Houston: 4 questions
+  Laredo: 1 questions
+  San Antonio: 4 questions
+  Texarkana: 1 questions
+Sample Austin question: {&#x27;question&#x27;: &#x27;Austin is the capital of Texas&#x27;, &#x27;answer&#x27;: &#x27;TRUE&#x27;}</pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+    <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Forgetting to check if the city key exists before appending</td>
-        <td>KeyError — you can’t append to a list that doesn’t exist yet</td>
+        <td>Forgetting the <code>if city not in trivia:</code> guard</td>
+        <td>Without it, every line overwrites the previous question for that city. Cities with multiple questions end up holding only the last one.</td>
       </tr>
       <tr>
-        <td>Using trivia[city] = question_dict instead of .append()</td>
-        <td>Each new question overwrites the previous one instead of adding to the list</td>
+        <td>Storing questions as a flat list instead of grouped by city</td>
+        <td>Flat lists work, but the gate function in CP2 would then have to scan every entry. The grouped shape makes the lookup O(1).</td>
       </tr>
       <tr>
-        <td>Splitting on the wrong delimiter</td>
-        <td>Check trivia.txt — what character separates city, question, and answer?</td>
+        <td>Hardcoding <code>'trivia.txt'</code> in the load call</td>
+        <td>Use the <code>TRIVIA_FILE</code> constant: <code>function_library.load_trivia(TRIVIA_FILE)</code>. Constants live at the top of the file for a reason.</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li><code>load_trivia()</code> function defined</li>
-      <li>Returns a dictionary where values are lists</li>
-      <li>Each city can have multiple questions</li>
-      <li>Debug print shows correct city count</li>
+      <li><code>lab-4-3.py</code> exists and plays identically to 4.2 at this point</li>
+      <li><code>TRIVIA_FILE</code> constant is declared in <code>lab-4-3.py</code></li>
+      <li><code>function_library.py</code> has a new <code>TRIVIA FUNCTIONS</code> section with <code>load_trivia</code> inside</li>
+      <li>Load banner at startup reports 20 questions across 10 cities</li>
+      <li>DEBUG block is removed before moving on</li>
     </ol>
     </div>
     <hr class="lc-cp-sep">
@@ -365,42 +422,38 @@ First Houston Q: {&#x27;question&#x27;: &#x27;NASA Mission Control is in Houston
         <div class="lc-cp-badge__num">2</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Trivia Gate</div>
-        <div class="lc-sub-banner">Replace the coin flip with a TRUE/FALSE question system that returns destination, distance, and result.</div>
+        <div class="lc-cp-title">Trivia Gate (lab-local)</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p><code>trivia_gate(dest, trivia, current, distances)</code> defined in <strong><code>lab-4-3.py</code></strong>: the lab file, not the library. The function looks up trivia for the destination city, picks a random question, prompts the player for TRUE or FALSE, and returns a 3-tuple <code>(final_dest, distance, correct)</code>. A correct answer returns the chosen destination; a wrong answer calls <code>function_library.get_redirect</code> to detour the player elsewhere.</p>
     <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p>The coin flip was pure luck — the player had no agency. Trivia replaces luck with skill. More importantly, <code>trivia_gate()</code> is the first function you have written where the return value drives the entire next branch of the game: destination, distance, and outcome all flow from one tuple. This is how real game engines work — functions determine not just results but which path the program takes next.</p>
-    <p>A function that presents a trivia question, accepts TRUE/FALSE input (using <code>.strip().upper()</code>), and returns the final destination, distance, and whether the player got it correct.</p>
+    <p>Think about which functions belong in the library and which belong in the lab file. The library holds <em>general-purpose</em> helpers: data loaders, dice rolls, input cleaning, things that any future game could reuse. The lab file holds <em>game-specific</em> orchestration. <code>trivia_gate</code> is the second category: it knows the game's TRUE/FALSE answer format, the banners it prints, and the exact way it routes a wrong answer through <code>get_redirect</code>. None of that is reusable for the next game. Putting it in the lab file keeps the boundary clean.</p>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
-          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"The client specifically asked for trivia because luck-based gates frustrate players. Skill-based gates keep them engaged. That design decision changed a coin flip into a whole system — a question, two possible paths, and stats to track. Scope creep? No. Better product."</div>
+          <div class="lc-mentor__quote">"This is the heart of the new game feel. The player picks a destination, gets a question, and earns the next leg. Wrong answers are not a punishment; they are a detour, the same way <code>get_redirect</code> rerouted them on a TAILS flip in Module 3. Same mechanical outcome; entirely different feeling at the keyboard. Take care with the messaging on both branches. <strong>'WRONG. The answer was X. Detour to Y instead.'</strong> reads as 'oh well, on we go.' That is the tone we want."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Priya Venkatesh</div>
-        <div class="lc-mentor__role">Project Manager, Bat City Collective</div>
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>Define <code>trivia_gate(dest, trivia, all_dests, distances, current)</code></li>
-      <li>Print a header: <code>--- TRIVIA TIME! ---</code> and announce the destination</li>
-      <li>Get a question: if <code>dest</code> has trivia, use <code>random.choice(trivia[dest])</code>; otherwise pick from any city in the dict</li>
-      <li>Display the question and prompt for an answer</li>
-      <li>Get input: <code>answer = input('TRUE or FALSE? ').strip().upper()</code></li>
-      <li>Normalize the answer: accept T/TRUE as <code>'TRUE'</code>, F/FALSE as <code>'FALSE'</code>; anything else is invalid</li>
-      <li>If correct: return <code>(dest, distance, True)</code></li>
-      <li>If wrong: pick a random other destination and return <code>(redirect, new_distance, False)</code></li>
+      <li>In <code>lab-4-3.py</code>, define <code>trivia_gate</code> at the top of the file, after the constants but before <code>save_trip_report</code>. Include a full docstring describing the four parameters and the 3-tuple return.</li>
+      <li>Pick a random question for the destination: <code>q = random.choice(trivia[dest])</code>. You will need <code>import random</code> at the top of the lab file (the library already imports it for itself).</li>
+      <li>Print the banner: <code>'--- TRIVIA TIME! ---'</code>, then <code>f'To reach {dest}, answer this question:'</code>, then a blank line, then <code>f'  {q["question"]}'</code>.</li>
+      <li>Read the player's answer: <code>answer = function_library.clean_input('TRUE or FALSE? ')</code>. <code>clean_input</code> handles case and whitespace.</li>
+      <li>Normalize the answer. Accept <code>'T'</code> or <code>'TRUE'</code> as TRUE, <code>'F'</code> or <code>'FALSE'</code> as FALSE. Anything else counts as wrong: print <code>'Invalid answer! Counting as wrong.'</code> and set <code>player_answer = 'INVALID'</code>.</li>
+      <li>Compare: <code>if player_answer == q['answer']:</code> print the correct-answer banner and return <code>(dest, distances[current][dest], True)</code>.</li>
+      <li>Otherwise print the wrong-answer banner including the correct answer, call <code>function_library.get_redirect(current, distances, dest)</code> to pick a detour, print the detour, and return <code>(redirect, redirect_miles, False)</code>.</li>
     </ol>
-    <div class="lc-h3 lc-h3--yellow">Pro Tip</div>
-    <p>To get “other” destinations for the redirect, loop through <code>all_dests</code> and build a new list that skips the chosen destination. The pattern is the same one you used in Module 3 — loop, check a condition, and <code>.append()</code> if it passes.</p>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
@@ -418,78 +471,64 @@ First Houston Q: {&#x27;question&#x27;: &#x27;NASA Mission Control is in Houston
         <div class="lc-callout__body">
           <ul>
           <li>
-            <strong>Program 9-1</strong>
-            — <code>card_dealer.py</code>
-            (Step 1)
-            — Your Lab 4.2 <code>.strip().upper()</code> pattern for input cleaning works perfectly here for TRUE/FALSE answers. Accessing <code>trivia[city]</code> gives you a list, then <code>random.choice()</code> picks one question from it.
+            <strong>Program 9-13</strong>
+            — <code>phone_book.py</code>
+            
+            — <code>trivia[dest]</code> is a dictionary lookup; <code>random.choice</code> on the resulting list picks one Q/A dict.
+          </li>
+          <li>
+            <strong>Program 8-6</strong>
+            — <code>upper_lower.py</code>
+            
+            — <code>clean_input</code> normalizes the answer to uppercase, so a single check covers <code>true</code> / <code>True</code> / <code>TRUE</code> / <code> True </code>.
           </li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <p><strong>Update main() to use trivia_gate:</strong></p>
-    <ol>
-      <li>Load trivia data alongside the other data files</li>
-      <li>After the player chooses a destination, call <code>trivia_gate()</code></li>
-      <li>Use the returned values <code>(final_dest, dist, correct)</code> to update game state</li>
-      <li>Track <code>trivia_asked</code> and <code>trivia_correct</code> counters for the final report</li>
-    </ol>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <ol>
-      <li>Play the game and verify a trivia question appears after choosing a destination</li>
-      <li>A correct answer sends you to your chosen city</li>
-      <li>A wrong answer redirects you to a different city</li>
-      <li>T, TRUE, t, and true all work as inputs (thanks to <code>.upper()</code>)</li>
-    </ol>
-    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
-      <pre>--- TRIVIA TIME! ---
-Heading to Houston...
-
-TRUE or FALSE: NASA Mission Control is located in Houston, Texas.
-TRUE or FALSE? TRUE
-Correct! You&#x27;re heading to Houston.
-
---- TRIVIA TIME! ---
-Heading to Austin...
-
-TRUE or FALSE: Austin is the largest city in Texas.
-TRUE or FALSE? TRUE
-Wrong! You&#x27;re being redirected to Laredo instead!</pre>
+    <p>Add a temporary call at the very top of <code>main()</code> (before the main menu loop) to exercise <code>trivia_gate</code> directly. Try answering correctly once, incorrectly once, and with junk input once. Confirm the return tuple matches the expected shape each time. Delete the temporary call before moving on.</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 3</span>
+trivia <span class="sy-op">=</span> function_library<span class="sy-op">.</span>load_trivia<span class="sy-op">(</span>TRIVIA_FILE<span class="sy-op">)</span>
+distances <span class="sy-op">=</span> function_library<span class="sy-op">.</span>load_city_distances<span class="sy-op">(</span>DISTANCES_FILE<span class="sy-op">)</span>
+result <span class="sy-op">=</span> trivia_gate<span class="sy-op">(</span><span class="sy-str">&#x27;Austin&#x27;</span><span class="sy-op">,</span> trivia<span class="sy-op">,</span> <span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">,</span> distances<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Return:&#x27;</span><span class="sy-op">,</span> result<span class="sy-op">)</span></pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+    <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Comparing to lowercase 'true' instead of 'TRUE'</td>
-        <td>If you use .upper(), compare to uppercase strings only</td>
+        <td>Putting <code>trivia_gate</code> in <code>function_library.py</code></td>
+        <td>It does game-specific work (TRUE/FALSE prompts, on-screen banners, redirect orchestration). Library functions stay general-purpose. Lab-local stays lab-local.</td>
       </tr>
       <tr>
-        <td>Returning just True/False instead of (dest, dist, correct)</td>
-        <td>main() needs all three values to update game state properly</td>
+        <td>Forgetting to <code>import random</code> in the lab file</td>
+        <td>The library imports <code>random</code> for itself, but <code>random.choice</code> in the lab file needs its own import. Add it at the top with the other imports.</td>
       </tr>
       <tr>
-        <td>Forgetting to handle cities with no trivia</td>
-        <td>Use 'if dest in trivia' before accessing, or use .get() with a fallback city</td>
+        <td>Returning a 2-tuple instead of a 3-tuple</td>
+        <td>The caller in CP3 needs the boolean <code>correct</code> flag to increment <code>trivia_correct</code>. Always return three values: destination, distance, correct.</td>
+      </tr>
+      <tr>
+        <td>Hardcoding the redirect city</td>
+        <td>Use <code>function_library.get_redirect(current, distances, dest)</code>. It picks a different valid destination from the current city, avoiding the one the player got wrong.</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li><code>trivia_gate()</code> function defined with correct parameters</li>
-      <li>Displays a trivia question from loaded data</li>
-      <li>Accepts T/TRUE/F/FALSE (case-insensitive)</li>
-      <li>Returns a tuple: <code>(destination, distance, was_correct)</code></li>
-      <li>Wrong answer redirects to a different city</li>
+      <li><code>trivia_gate</code> defined in <code>lab-4-3.py</code> with a full docstring</li>
+      <li>Correct answers return the chosen destination plus its true distance</li>
+      <li>Wrong answers (and invalid answers) return a detour destination from <code>get_redirect</code></li>
+      <li>Banners and tone match the mentor quote: detours feel like 'oh well, on we go', not punitive</li>
+      <li>DEBUG call at the top of <code>main()</code> is removed before moving on</li>
     </ol>
     </div>
     <hr class="lc-cp-sep">
@@ -499,115 +538,68 @@ Wrong! You&#x27;re being redirected to Laredo instead!</pre>
         <div class="lc-cp-badge__num">3</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Add Sets</div>
-        <div class="lc-sub-banner">Track unique cities visited and unique hazard types using sets — duplicates vanish automatically.</div>
+        <div class="lc-cp-title">Wire the Trivia Gate</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>The integration step. In the in-game loop, the coin-flip Destination Gate block from Lab 4.2 disappears entirely. Replace it with a call to <code>trivia_gate</code> and unpack the 3-tuple return. Increment <code>trivia_asked</code> on every call; increment <code>trivia_correct</code> only when the gate reports a correct answer.</p>
     <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p>Sets are not just a shorthand for lists with a duplicate check. They represent a different contract: membership, not sequence. When you only care whether something happened — not how many times or in what order — a set is the right tool. Unique cities and unique hazard types are inherently set-shaped problems. Using a list here would mean writing <code>if city not in visited_cities</code> every time. The set just handles it.</p>
-    <p>Two sets: <code>unique_cities</code> for tracking which cities the player has visited (no repeats), and <code>unique_hazards</code> for tracking which hazard types they’ve encountered.</p>
+    <p>This is where the gate retirement happens. The 12-line coin-flip-then-branch block from 4.2 collapses to about 4 lines. The lab file gets shorter; the interesting logic lives in the lab-local <code>trivia_gate</code> function from CP2.</p>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
-          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"With a list, you’d have to check <code>if city not in visited</code> before adding. With a set? Just <code>.add()</code> it. Duplicates vanish automatically. Less code, fewer bugs — that’s the kind of shortcut I wish I’d known sooner!"</div>
+          <div class="lc-mentor__quote">"Look at the diff after this CP lands. The in-game loop's gate section becomes four lines: get the wanted destination, run the gate, count the question, count the right answer if any. Twelve lines became four because we moved the decision logic into a function that names what it does. Naming is the cheapest, highest-impact refactor you have access to. Use it constantly."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Tyler Nguyen</div>
-        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Lead Developer, Bat City Collective</div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>In <code>main()</code>, create two empty sets using <code>set()</code>: one for unique cities, one for unique hazards</li>
-      <li>Add the starting city to your unique cities set right after creating it</li>
-      <li>After each city visit, use <code>.add()</code> to include the destination in your unique cities set</li>
-      <li>Update <code>handle_hazard()</code> to accept the unique hazards set as a parameter, then add the hazard’s name to it</li>
-      <li>Update <code>travel_to()</code> to pass the unique hazards set to <code>handle_hazard()</code></li>
+      <li>In <code>lab-4-3.py</code>, find the coin-flip Destination Gate block in the in-game loop. It currently has <code>print('Flipping to see if Texas cooperates...')</code> through the <code>print(f'Distance: {distance} miles')</code> line.</li>
+      <li>Delete every line from <code>print('Flipping...')</code> through the <code>else:</code> branch's <code>destination, distance = function_library.get_redirect(...)</code>. The HEADS/TAILS branching is gone entirely.</li>
+      <li>Keep the line <code>print(f'You're headed to {destination}!')</code> and <code>print(f'Distance: {distance} miles')</code>. They still display the result.</li>
+      <li>Just before the print statements, add the trivia gate call. Get the wanted destination first: <code>wanted, _ = function_library.get_destination(current_city, distances, choice)</code>. Then call <code>destination, distance, correct = trivia_gate(wanted, trivia, current_city, distances)</code>.</li>
+      <li>Increment <code>trivia_asked = trivia_asked + 1</code> after the gate. If <code>correct:</code> then <code>trivia_correct = trivia_correct + 1</code>.</li>
+      <li>Run the program and play a full game. Confirm the coin-flip banner is gone, the trivia banner appears, and the game still travels to a destination (correct answer) or a detour (wrong answer).</li>
     </ol>
-    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
-    <div class="lc-callout lc-callout--bookex">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">BookEx Patterns</div>
-        <div class="lc-callout__body">
-          <ul>
-          <li>
-            <strong>Program 9-3</strong>
-            — <code>sets.py</code>
-            (Step 1)
-            — Shows set creation with <code>set()</code> and the <code>.add()</code> method. Same pattern here — create an empty set, add items as you encounter them.
-          </li>
-          </ul>
-        </div>
-      </div>
-    </div>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <div class="lc-code-block">
-      <pre><span class="sy-cm"># DEBUG - Add at end of game loop iteration</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Unique cities: <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>unique_cities<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Unique hazards: <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>unique_hazards<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
-    </div>
-    <p><strong>Verify:</strong> Visiting Houston twice still shows 1 in <code>unique_cities</code> (not 2).</p>
-    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
-      <pre>Unique cities: 1
-Unique hazards: 0
-
-[After traveling to Houston and hitting a Speed trap...]
-Unique cities: 2
-Unique hazards: 1
-
-[After visiting Houston again...]
-Unique cities: 2
-Unique hazards: 1</pre>
-    </div>
+    <p>Two test paths to walk through: pick Corpus Christi from San Antonio, answer TRUE (correct) and confirm you arrive at Corpus Christi. Start a new game, pick Corpus Christi again, answer FALSE (wrong), and confirm you end up at one of the other San Antonio destinations (Houston, Austin, Laredo, or El Paso).</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+    <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Creating a set with {} instead of set()</td>
-        <td>{} creates an empty dictionary, not a set</td>
+        <td>Leaving the <code>flip_coin()</code> call in</td>
+        <td>The whole coin-flip section is retired. If the program still flips a coin at the gate, the rewrite did not land. Search the file for <code>flip_coin</code> to confirm.</td>
       </tr>
       <tr>
-        <td>Using .append() instead of .add()</td>
-        <td>Sets use .add(), lists use .append() — don’t mix them up</td>
+        <td>Forgetting to compute <code>wanted</code></td>
+        <td><code>trivia_gate</code> needs to know the destination the player chose. Call <code>get_destination</code> once to translate the menu choice into a city name, then pass it to <code>trivia_gate</code>.</td>
       </tr>
       <tr>
-        <td>Forgetting to pass unique_hazards to handle_hazard()</td>
-        <td>The set won’t track hazards if the function can’t access it</td>
+        <td>Incrementing <code>trivia_asked</code> conditionally</td>
+        <td>Every gate invocation counts as a question asked, regardless of outcome. Increment unconditionally; only <code>trivia_correct</code> is gated on the <code>correct</code> flag.</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li>Two sets created: <code>unique_cities</code> and <code>unique_hazards</code></li>
-      <li>Starting city added to <code>unique_cities</code></li>
-      <li>Each destination added with <code>.add()</code></li>
-      <li><code>handle_hazard()</code> tracks unique hazard names</li>
-      <li>Debug shows set counts staying unique (no duplicates)</li>
+      <li>Coin-flip Destination Gate is gone (no <code>flip_coin()</code> at the gate)</li>
+      <li><code>trivia_gate</code> is called for every destination choice</li>
+      <li><code>trivia_asked</code> and <code>trivia_correct</code> increment correctly</li>
+      <li>Correct-answer path lands at the chosen destination; wrong-answer path lands at a detour city</li>
     </ol>
     </div>
     <hr class="lc-cp-sep">
@@ -617,29 +609,21 @@ Unique hazards: 1</pre>
         <div class="lc-cp-badge__num">4</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Final Report</div>
-        <div class="lc-sub-banner">Build the comprehensive trip report with route, unique sets displayed via sorted(), trivia stats, and totals.</div>
+        <div class="lc-cp-title">Sets - Unique Cities</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p><code>unique_cities = set(visited_cities)</code> as part of per-game state initialization. <code>unique_cities.add(current_city)</code> every time the player arrives somewhere new, including the dead-end return-to-San-Antonio case. This replaces the post-game <code>in</code>-operator loop that built a deduplicated list in Lab 4.2.</p>
     <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p>The final report is your deliverable — every data structure you have built this module converges here. Sets contribute unique counts. Lists contribute the route. Counters contribute stats. <code>sorted()</code> makes sets printable. This is the pattern behind every dashboard, report generator, and analytics export in professional software: collect structured data throughout, transform it into human-readable output at the end.</p>
-    <p>A polished final report showing: route traveled (with arrows), unique cities visited (sorted alphabetically using <code>sorted()</code>), trivia performance, hazard statistics, and total miles.</p>
-    <div class="lc-h3 lc-h3--yellow">Pro Tip</div>
-    <p><strong>Important:</strong> Sets are unordered. To display them predictably, wrap them in <code>sorted()</code>:</p>
-    <div class="lc-code-block">
-      <pre><span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;UNIQUE CITIES (<span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>unique_cities<span class="sy-op">)</span><span class="sy-op">}</span>):&#x27;<span class="sy-op">)</span>
-<span class="sy-kw">for</span> city <span class="sy-kw">in</span> <span class="sy-bi">sorted</span><span class="sy-op">(</span>unique_cities<span class="sy-op">)</span><span class="sy-op">:</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  - <span class="sy-op">{</span>city<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
-    </div>
+    <p>Lab 4.2 ended every game with a loop that scanned <code>visited_cities</code> and used <code>if city not in unique_cities:</code> to deduplicate. That works, but it's O(n) per check, O(n²) total, and the code reads like a workaround for the right data structure. <code>set</code> is the right data structure: uniqueness is enforced on insertion, membership is O(1), and the post-game code becomes a single <code>len(unique_cities)</code> call.</p>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
           <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"The client is going to look at this report. Every section needs to be there, the numbers need to be accurate, and the format needs to be consistent. The game can be buggy in a beta — the report cannot. This is what they are paying for."</div>
+          <div class="lc-mentor__quote">"Notice we are INITIALIZING the set from <code>visited_cities</code>, not just <code>set()</code>. On a fresh game the visited list is just <code>['San Antonio']</code> and the set comes out as <code>{'San Antonio'}</code>. On a resumed game, the loaded visited list might have several cities in it, and the set rebuilds with all of them. Both cases handled with one line. That's why <code>set(iterable)</code> exists."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
@@ -648,45 +632,12 @@ Unique hazards: 1</pre>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <p><strong>Your final report should include:</strong></p>
     <ol>
-      <li><strong>Header:</strong> "FINAL TRIP REPORT" with driver name and final city</li>
-      <li><strong>ROUTE:</strong> The visited list joined with <code>" -> "</code></li>
-      <li><strong>UNIQUE CITIES:</strong> Count and sorted list from set</li>
-      <li><strong>TRIVIA:</strong> Asked, Correct, Accuracy percentage</li>
-      <li><strong>HAZARDS:</strong> Faced, Escaped, Unique types count</li>
-      <li><strong>STATS:</strong> Total Miles</li>
+      <li>In <code>lab-4-3.py</code>, find the per-game state initialization block at the top of the play-again loop. It currently sets <code>current_city</code>, <code>total_miles</code>, etc.</li>
+      <li>Just after the <code>if not resumed_game:</code> block (the one that resets the per-game counters), add: <code>unique_cities = set(visited_cities)</code>. This runs every iteration, including the resume case, and is correct in both: a fresh game starts with a 1-element set, a resume starts with as many elements as the loaded visited_cities list had.</li>
+      <li>Find every site where <code>visited_cities.append(...)</code> is called. There are three: arrival at a new destination, the dead-end return-to-SA branch, and (transitively) any other spot you've added cities. Mirror each <code>append</code> with <code>unique_cities.add(...)</code> right after it.</li>
+      <li>Run the program. Play a multi-city game that includes a dead-end retreat (pick Laredo or Texarkana, then choose to return). Confirm the post-game <code>Unique cities visited:</code> count includes the dead-end city even though the player returned.</li>
     </ol>
-    <div class="lc-h3 lc-h3--yellow">Expected Output</div>
-    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
-      <pre>==================================================
-FINAL TRIP REPORT
-==================================================
-Driver: Alex
-Final City: Corpus Christi
-
-ROUTE:
-  San Antonio -&gt; Houston -&gt; Houston -&gt; Corpus Christi
-
-UNIQUE CITIES (3):
-  - Corpus Christi
-  - Houston
-  - San Antonio
-
-TRIVIA:
-  Asked: 3
-  Correct: 2
-  Accuracy: 66.7%
-
-HAZARDS:
-  Faced: 4
-  Escaped: 2
-  Unique types: 3
-
-STATS:
-  Total Miles: 410</pre>
-    </div>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
@@ -704,56 +655,368 @@ STATS:
         <div class="lc-callout__body">
           <ul>
           <li>
-            <strong>Program 9-3</strong>
-            — <code>sets.py</code>
-            (Step 1)
-            — The <code>sorted()</code> function works on sets, returning a sorted list you can iterate through. Your Lab 3.3 trip report pattern returns here — now with sets for unique tracking and trivia statistics added.
+            <strong>Program 9-19</strong>
+            — <code>set_create.py</code>
+            
+            — <code>set(iterable)</code> takes any iterable and builds a set from its unique elements. Same idea here: build a set from <code>visited_cities</code>.
+          </li>
+          <li>
+            <strong>Program 9-20</strong>
+            — <code>set_add.py</code>
+            
+            — <code>my_set.add(item)</code> inserts an item; duplicates are silently ignored. This is what makes the dead-end return-to-SA case work without extra checks.
           </li>
           </ul>
         </div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <ol>
-      <li>Play a complete game from start to a beach or win city. Visit at least one city more than once and trigger at least two hazards.</li>
-      <li>Verify the report shows unique cities alphabetically — Houston should appear once even if visited twice.</li>
-      <li>Verify trivia stats: asked count matches how many destination choices you made; correct count is accurate.</li>
-      <li>Check unique hazard types — the count should be the number of different hazard names, not the total times hazards fired.</li>
-      <li>Guard against division by zero: quit after zero trivia questions and confirm the report still prints cleanly.</li>
-    </ol>
+    <p>Run a game where the player visits San Antonio, then Corpus Christi (a beach win). Confirm <code>Unique cities visited:</code> reports <code>2</code>. Then play a game where the player visits SA, Laredo (a dead end), and returns to SA, then quits. Confirm the count is <code>2</code>, not <code>3</code> (SA and Laredo are the unique ones; the return-to-SA doesn't double-count).</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+    <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Printing the set directly without sorted()</td>
-        <td>Output order is unpredictable — CodeGrade expects alphabetical</td>
+        <td>Initializing with <code>set()</code> instead of <code>set(visited_cities)</code></td>
+        <td>Resume case breaks. A resumed game has cities in <code>visited_cities</code> already; the set must rebuild from them, not start empty.</td>
       </tr>
       <tr>
-        <td>Dividing by trivia_asked when it might be 0</td>
-        <td>ZeroDivisionError if the player quits before any trivia fires — check first</td>
+        <td>Forgetting one of the <code>.add()</code> sites</td>
+        <td>Easiest to find them all by searching for <code>visited_cities.append</code>. Every append site needs a mirroring add. There are usually 2 or 3.</td>
       </tr>
       <tr>
-        <td>Missing report sections</td>
-        <td>CodeGrade checks for all required sections — match the expected output format</td>
+        <td>Putting the set initialization inside <code>if not resumed_game:</code></td>
+        <td>Then it never runs on a resumed game, and <code>unique_cities</code> is undefined. The set init runs every iteration of the play-again loop; the <code>if not resumed_game:</code> guard is only for the counters that should reset.</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li>Report header with driver name and final city</li>
-      <li>Route showing all cities visited with arrows</li>
-      <li>Unique cities displayed alphabetically using <code>sorted()</code></li>
-      <li>Trivia stats: asked, correct, accuracy percentage</li>
-      <li>Hazard stats including unique types count</li>
-      <li>Total miles displayed</li>
+      <li><code>unique_cities = set(visited_cities)</code> initialized at the top of every play-again iteration</li>
+      <li><code>unique_cities.add(current_city)</code> mirrors every <code>visited_cities.append(...)</code> site</li>
+      <li>Beach win after SA -> Corpus Christi reports 2 unique cities</li>
+      <li>Dead-end retreat (SA -> Laredo -> SA -> quit) reports 2 unique cities</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">5</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Sets - Unique Hazards</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p><code>unique_hazards = set(hazards_list)</code> as part of per-game state initialization, and <code>unique_hazards.add(hazard_name)</code> in the hazard branch of the D20 loop. Same pattern as CP4, applied to hazards.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p><code>hazards_list</code> records every hazard encounter, including duplicates (if the player faces Buc-ee's three times, the list has three entries). For the trip report's HAZARDS section, the interesting question isn't how many encounters there were (that's <code>total_hazards</code>) but which distinct hazards appeared. Sets handle that uniqueness automatically.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>In the per-game state init block, right next to where you added <code>unique_cities</code>, add: <code>unique_hazards = set(hazards_list)</code>.</li>
+      <li>In the D20 hazard branch (where <code>hazards_list.append(hazard_name)</code> already runs), add <code>unique_hazards.add(hazard_name)</code> right after it.</li>
+      <li>Run the program. Play a game with multiple turns so you're likely to face several hazards. Confirm no crashes.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-20</strong>
+            — <code>set_add.py</code>
+            
+            — <code>.add()</code> is idempotent &mdash; calling it twice with the same value still results in one entry. This is what gives the trip report its uniqueness for free.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Play a long game (pick El Paso from SA &mdash; 550 miles, lots of D20 turns, lots of hazard chances). The hazards section of the trip report should show fewer entries than <code>Hazards Faced:</code> when the same hazard fires more than once.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Only adding to <code>unique_hazards</code> on escape</td>
+        <td>Both outcomes count. The hazard appeared, period; whether the player escaped is tracked separately in <code>total_escaped</code>. Add to the set regardless.</td>
+      </tr>
+      <tr>
+        <td>Initializing with <code>set()</code> instead of <code>set(hazards_list)</code></td>
+        <td>Same issue as CP4. A resumed game has hazards_list populated; the set must rebuild from it.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>unique_hazards = set(hazards_list)</code> initialized every play-again iteration</li>
+      <li><code>unique_hazards.add(name)</code> mirrors the <code>hazards_list.append(name)</code> call</li>
+      <li>Long games show fewer unique hazards than total encounters when duplicates fire</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">6</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">sorted() on Sets</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Replace the post-game <code>'in' operator</code> uniqueness loop (for cities) and the <code>hazards_list.copy(); .sort()</code> pattern (for hazards) with <code>sorted()</code> calls on the sets you built in CP4 and CP5. The trip report's HAZARDS section now reads <code>HAZARDS ENCOUNTERED (Unique, A-Z)</code>.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Sets are unordered. <code>sorted(my_set)</code> returns a new list with the elements in alphabetical order. This replaces two earlier patterns: the Lab 4.2 hazard sort (<code>.copy().sort()</code>) and the Lab 4.2 city uniqueness loop (<code>if city not in unique_cities:</code>). The cleanup is significant: about 8 lines of bookkeeping become 2.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"<code>sorted()</code> is a great general utility. It works on lists, on sets, on tuples, on anything iterable. It always returns a new list, so you don't have to think about whether to <code>.copy()</code> first. When you see the <code>.copy().sort()</code> pattern in your own code, that's usually a sign <code>sorted()</code> would be cleaner."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Lead Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>In <code>lab-4-3.py</code>, find the post-game trip report block (right before the on-screen FINAL TRIP REPORT printout).</li>
+      <li>Delete the <code>sorted_hazards = hazards_list.copy(); sorted_hazards.sort()</code> two-liner.</li>
+      <li>Delete the <code>unique_cities = []; for city in visited_cities: if city not in unique_cities: unique_cities.append(city)</code> loop.</li>
+      <li>Add two new one-liners: <code>sorted_unique_cities = sorted(unique_cities)</code> and <code>sorted_unique_hazards = sorted(unique_hazards)</code>.</li>
+      <li>Update the on-screen HAZARDS display to use <code>sorted_unique_hazards</code> and the title <code>'HAZARDS ENCOUNTERED (Unique, A-Z)'</code>.</li>
+      <li>Update the <code>save_trip_report</code> call to pass <code>sorted_unique_cities</code> and <code>sorted_unique_hazards</code> in place of the old variables.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-21</strong>
+            — <code>set_sorted.py</code>
+            
+            — <code>sorted(my_set)</code> returns a sorted list of the set's elements.
+          </li>
+          <li>
+            <strong>Program 7-16</strong>
+            — <code>sort_grades.py</code>
+            
+            — Compare against the .copy().sort() pattern this is replacing. Both produce the same end result; <code>sorted()</code> is cleaner and works on any iterable.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Play a game with at least two distinct hazards. Confirm the on-screen HAZARDS section reads <code>HAZARDS ENCOUNTERED (Unique, A-Z)</code> and lists each hazard exactly once, alphabetically.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Calling <code>.sort()</code> on a set</td>
+        <td>Sets are unordered and have no <code>.sort()</code> method. Use <code>sorted(my_set)</code>, which returns a new list.</td>
+      </tr>
+      <tr>
+        <td>Forgetting to update the on-screen banner</td>
+        <td>The title <code>'HAZARDS ENCOUNTERED (A-Z)'</code> becomes <code>'HAZARDS ENCOUNTERED (Unique, A-Z)'</code> &mdash; the 'Unique' word matters because each hazard now appears at most once.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>.copy().sort()</code> pattern is gone for hazards</li>
+      <li><code>in</code>-operator uniqueness loop is gone for cities</li>
+      <li>Two <code>sorted(set)</code> calls produce the display lists</li>
+      <li>On-screen banner reads <code>HAZARDS ENCOUNTERED (Unique, A-Z)</code></li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">7</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Trivia Stats in Report</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Extend the trip report with a TRIVIA section. Both the on-screen report and <code>trip_report.txt</code> grow a new block right after STATISTICS that shows Questions Asked, Answered Correct, and (when asked > 0) Accuracy as a percentage. <code>save_trip_report</code>'s signature grows by two parameters (<code>trivia_asked</code>, <code>trivia_correct</code>).</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>QA pass. The trip report is the player's takeaway from the run. STATISTICS covered the mileage and hazard escape rate; TRIVIA closes the loop on the new gate mechanic. Without it, the player has no record of how their trivia performance shaped the trip.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"The trip report and <code>trip_report.txt</code> have to be byte-identical where they overlap. If the TRIVIA section shows up on screen but not in the file, or vice versa, that's a regression I'll flag. Update both code paths in the same pass. And when accuracy is 100%, write <code>100.0%</code>, not <code>100%</code>; consistency matters."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
+        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>In <code>lab-4-3.py</code>, in the per-game state init block, add <code>trivia_asked = 0</code> and <code>trivia_correct = 0</code> alongside the other resettable counters. Note that these are session-only and reset on resume; a comment near the init can make this explicit.</li>
+      <li>Extend the <code>save_trip_report</code> function signature to accept <code>trivia_asked</code> and <code>trivia_correct</code> as new parameters (between <code>sorted_hazards</code> and <code>status</code>).</li>
+      <li>Inside <code>save_trip_report</code>, after the STATISTICS block, write a new TRIVIA block: <code>'TRIVIA:'</code>, then <code>f'  Questions Asked: {trivia_asked}'</code>, <code>f'  Answered Correct: {trivia_correct}'</code>, and a conditional <code>f'  Accuracy: {accuracy:.1f}%'</code> when <code>trivia_asked > 0</code>.</li>
+      <li>Mirror the same TRIVIA block in the on-screen report between the STATISTICS block and the closing <code>=====</code> banner.</li>
+      <li>Update the call site to pass the two new arguments: <code>save_trip_report(..., trivia_asked, trivia_correct, status)</code>.</li>
+      <li>Update the docstring on <code>save_trip_report</code> to describe the new parameters.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 2-13</strong>
+            — <code>format_percent.py</code>
+            
+            — <code>f'{value:.1f}%'</code> formats a float with one decimal place and a percent suffix. Same format used for the existing Escape Rate display.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Play a beach-win game with one correct trivia answer. Confirm both the on-screen TRIVIA section and <code>trip_report.txt</code>'s TRIVIA block show <code>Questions Asked: 1, Answered Correct: 1, Accuracy: 100.0%</code>. Play a second game with one wrong answer. Confirm accuracy reads <code>0.0%</code>.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Updating only the on-screen report, not <code>trip_report.txt</code></td>
+        <td>Both code paths need the new TRIVIA block. They are separate writes; keep them in sync.</td>
+      </tr>
+      <tr>
+        <td>Crashing when <code>trivia_asked</code> is 0</td>
+        <td>The accuracy line is conditional on <code>trivia_asked &gt; 0</code> to avoid a division-by-zero. Don't always print it.</td>
+      </tr>
+      <tr>
+        <td>Mixing up the parameter order in <code>save_trip_report</code></td>
+        <td>Order matters for positional arguments. New parameters go between <code>sorted_hazards</code> and <code>status</code>. The call site has to match the signature.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li>On-screen TRIVIA section shows Asked, Correct, and conditionally Accuracy</li>
+      <li><code>trip_report.txt</code> matches the on-screen TRIVIA section</li>
+      <li>Accuracy displays as <code>100.0%</code> for one-for-one, not <code>100%</code></li>
+      <li>Accuracy line is skipped entirely when the player faced no trivia gates (impossible in normal play, but defensive)</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">8</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Module 5 Tease (Patch Note)</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>A small but consequential comment block in <code>lab-4-3.py</code>: Sasha's Patch Note about the dict-of-dicts city shape. No code changes; this CP is <strong>discovery</strong>, not implementation. Read the comment, recognize the limitation, and look forward to Module 5 where you'll fix it.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Every Module has a Patch Note that closes a previous one. Module 2 dropped Tyler's hazard parallel-list note (closed in 4.2). Module 2 also dropped Tyler's int validation note (closed in 4.2). This is the Module 4 -> 5 Patch Note: Sasha flags that the dict-of-dicts city representation has gotten awkward, and Module 5 introduces classes as the cleaner replacement.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"<strong>PATCH NOTE [Module 5]:</strong> The dict-of-dicts city shape works, but every helper that needs city data takes both <code>city_info</code> and <code>distances</code> as parameters. <code>is_win_city(city, city_info)</code>, <code>get_destination(city, distances, choice)</code>, every <code>is_dead_end(city, city_info)</code>. The data is in two places; the functions juggle both. Module 5 introduces a <code>City</code> class that carries its own info AND its connections, so the calls become <code>city.is_win()</code>, <code>city.get_destination(choice)</code>. Half as many parameters; the data and the behavior live together."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Open <code>lab-4-3.py</code>. Find the existing comment block at the top of the file (the docstring that describes the lab).</li>
+      <li>Just below the docstring, add a clearly-marked Patch Note comment block. Format: <code># PATCH NOTE [Module 5]:</code> on its own line, followed by Sasha's full text from the mentor quote above. End the block with <code># Module 5 will introduce a City class to fix this.</code></li>
+      <li>Save the file. There are no functional changes this CP; just documentation.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>No code changes; nothing to test functionally. Confirm the program still runs end-to-end without errors.</p>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li>Patch Note comment block present at the top of <code>lab-4-3.py</code></li>
+      <li>Block identifies the dict-of-dicts limitation specifically (parameters in two places)</li>
+      <li>Block points to Module 5's City class as the upcoming fix</li>
+      <li>Program still runs end-to-end with no functional changes</li>
     </ol>
     </div>
   </div>
@@ -771,52 +1034,380 @@ STATS:
     <ul class="lc-checklist">
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">File is named exactly <code>lab-4-3.py</code></span>
+        <span class="lc-checklist__label">Submitting <strong>two files</strong>: <code>lab-4-3.py</code> and <code>function_library.py</code></span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Docstring updated to describe Lab 4.3</span>
+        <span class="lc-checklist__label"><code>function_library.py</code> gained <strong>one</strong> function (<code>load_trivia</code>); no other library changes this week</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Uses sets for <code>unique_cities</code> AND <code>unique_hazards</code></span>
+        <span class="lc-checklist__label"><code>lab-4-3.py</code> defines <strong>seven</strong> module-level constants including the new <code>TRIVIA_FILE</code></span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Uses <code>sorted()</code> when displaying set contents</span>
+        <span class="lc-checklist__label"><code>trivia_gate</code> is <strong>defined in <code>lab-4-3.py</code></strong> (lab-local), NOT in the library</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label"><code>load_trivia()</code> returns a dict with list values</span>
+        <span class="lc-checklist__label"><code>main()</code> loads <strong>four</strong> data files at startup; the load banner reports 10 cities, 10 info records, 8 hazards, and 20 trivia questions across 10 cities</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label"><code>trivia_gate()</code> handles TRUE/FALSE with <code>.strip().upper()</code></span>
+        <span class="lc-checklist__label">The coin-flip Destination Gate is gone entirely: no <code>flip_coin()</code> call remains at the gate position</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Final report includes all required sections</span>
+        <span class="lc-checklist__label"><code>unique_cities</code> and <code>unique_hazards</code> are <code>set()</code> objects, initialized at every game start (including the resume path)</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">All debug/test code has been removed</span>
+        <span class="lc-checklist__label">Trip report's HAZARDS section reads <code>HAZARDS ENCOUNTERED (Unique, A-Z)</code> and shows each hazard at most once</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Trip report includes a TRIVIA section with Questions Asked, Answered Correct, and (when asked > 0) Accuracy %</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>trip_report.txt</code> matches the on-screen report line-for-line</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Wrong trivia answer triggers <code>get_redirect</code> and the player ends up at a different destination</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Top-of-file comment block present on both files; docstrings on every function</span>
       </li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
-    <p>Chapters 2–9 ONLY. This is the capstone — use everything you’ve learned! Sets, dictionaries with list values, try/except, string methods, file I/O, and all functions from Chapters 2–8 are all fair game.</p>
+    <p>Module 4.3 introduces &lt;code&gt;set()&lt;/code&gt;, &lt;code&gt;.add()&lt;/code&gt;, &lt;code&gt;sorted()&lt;/code&gt; on sets, and the dict-keyed-by-city-with-list-of-dicts trivia shape. The City class and inheritance are saved for Module 5.</p>
     <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
     <div class="lc-permitted">
-      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–9 (all techniques from Chapters 2–8 fully permitted; Chapter 9 dictionaries and sets as introduced this module)</p>
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> Chapters 1–9 in full</p>
       <ul class="lc-permitted__list">
-      <li>Set creation: unique_cities = set()</li>
-      <li>Set addition: unique_cities.add(city)</li>
-      <li>Set membership: city in unique_cities</li>
-      <li>sorted() on a set: sorted(unique_cities)</li>
-      <li>Dictionary with list values: trivia[city] = []</li>
-      <li>File reading with with/open</li>
-      <li>try/except (learned in Chapter 6)</li>
+      <li>C</li>
+      <li>h</li>
+      <li>a</li>
+      <li>p</li>
+      <li>t</li>
+      <li>e</li>
+      <li>r</li>
+      <li> </li>
+      <li>8</li>
+      <li> </li>
+      <li>s</li>
+      <li>t</li>
+      <li>r</li>
+      <li>i</li>
+      <li>n</li>
+      <li>g</li>
+      <li> </li>
+      <li>m</li>
+      <li>e</li>
+      <li>t</li>
+      <li>h</li>
+      <li>o</li>
+      <li>d</li>
+      <li>s</li>
+      <li> </li>
+      <li>(</li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li>u</li>
+      <li>p</li>
+      <li>p</li>
+      <li>e</li>
+      <li>r</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li>i</li>
+      <li>s</li>
+      <li>d</li>
+      <li>i</li>
+      <li>g</li>
+      <li>i</li>
+      <li>t</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li>e</li>
+      <li>t</li>
+      <li>c</li>
+      <li>.</li>
+      <li>)</li>
+      <li> </li>
+      <li>f</li>
+      <li>r</li>
+      <li>o</li>
+      <li>m</li>
+      <li> </li>
+      <li>L</li>
+      <li>a</li>
+      <li>b</li>
+      <li> </li>
+      <li>4</li>
+      <li>.</li>
+      <li>2</li>
+      <li> </li>
+      <li>c</li>
+      <li>a</li>
+      <li>r</li>
+      <li>r</li>
+      <li>y</li>
+      <li> </li>
+      <li>f</li>
+      <li>o</li>
+      <li>r</li>
+      <li>w</li>
+      <li>a</li>
+      <li>r</li>
+      <li>d</li>
+      <li>.</li>
+      <li> </li>
+      <li>C</li>
+      <li>h</li>
+      <li>a</li>
+      <li>p</li>
+      <li>t</li>
+      <li>e</li>
+      <li>r</li>
+      <li> </li>
+      <li>9</li>
+      <li>:</li>
+      <li> </li>
+      <li><</li>
+      <li>s</li>
+      <li>t</li>
+      <li>r</li>
+      <li>o</li>
+      <li>n</li>
+      <li>g</li>
+      <li>></li>
+      <li>s</li>
+      <li>e</li>
+      <li>t</li>
+      <li>s</li>
+      <li><</li>
+      <li>/</li>
+      <li>s</li>
+      <li>t</li>
+      <li>r</li>
+      <li>o</li>
+      <li>n</li>
+      <li>g</li>
+      <li>></li>
+      <li> </li>
+      <li>w</li>
+      <li>i</li>
+      <li>t</li>
+      <li>h</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>s</li>
+      <li>e</li>
+      <li>t</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li>a</li>
+      <li>d</li>
+      <li>d</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>i</li>
+      <li>n</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li> </li>
+      <li>m</li>
+      <li>e</li>
+      <li>m</li>
+      <li>b</li>
+      <li>e</li>
+      <li>r</li>
+      <li>s</li>
+      <li>h</li>
+      <li>i</li>
+      <li>p</li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>l</li>
+      <li>e</li>
+      <li>n</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>s</li>
+      <li>o</li>
+      <li>r</li>
+      <li>t</li>
+      <li>e</li>
+      <li>d</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li> </li>
+      <li>E</li>
+      <li>v</li>
+      <li>e</li>
+      <li>r</li>
+      <li>y</li>
+      <li>t</li>
+      <li>h</li>
+      <li>i</li>
+      <li>n</li>
+      <li>g</li>
+      <li> </li>
+      <li>f</li>
+      <li>r</li>
+      <li>o</li>
+      <li>m</li>
+      <li> </li>
+      <li>M</li>
+      <li>o</li>
+      <li>d</li>
+      <li>u</li>
+      <li>l</li>
+      <li>e</li>
+      <li>s</li>
+      <li> </li>
+      <li>1</li>
+      <li>–</li>
+      <li>3</li>
+      <li> </li>
+      <li>a</li>
+      <li>n</li>
+      <li>d</li>
+      <li> </li>
+      <li>L</li>
+      <li>a</li>
+      <li>b</li>
+      <li>s</li>
+      <li> </li>
+      <li>4</li>
+      <li>.</li>
+      <li>1</li>
+      <li>–</li>
+      <li>4</li>
+      <li>.</li>
+      <li>2</li>
+      <li> </li>
+      <li>c</li>
+      <li>a</li>
+      <li>r</li>
+      <li>r</li>
+      <li>i</li>
+      <li>e</li>
+      <li>s</li>
+      <li> </li>
+      <li>f</li>
+      <li>o</li>
+      <li>r</li>
+      <li>w</li>
+      <li>a</li>
+      <li>r</li>
+      <li>d</li>
+      <li>.</li>
       </ul>
-    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> list comprehensions, classes, inheritance, any Chapter 10+ features</p>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> Set comprehensions (&lt;code&gt;{x for x in items}&lt;/code&gt;) are out of scope. Stick to &lt;code&gt;set()&lt;/code&gt; + &lt;code&gt;.add()&lt;/code&gt;. Classes, methods, and &lt;code&gt;__init__&lt;/code&gt; are saved for Module 5. The City class fix that Sasha hints at in CP8 is not implemented this week.</p>
     </div>
     <div class="lc-callout lc-callout--warning">
       <div class="lc-callout__icon">
@@ -829,7 +1420,7 @@ STATS:
       </div>
       <div class="lc-callout__bubble">
         <div class="lc-callout__body">
-          <p>MASTER Week: Submit to CodeGrade early and often. The trivia gate test uses a controlled trivia.txt — make sure your load_trivia() function parses the file format correctly.</p>
+          <p>Do not put <code>trivia_gate</code> in <code>function_library.py</code>. It is lab-local: it knows about the game's specific TRUE/FALSE answer format and the on-screen banners. Library functions stay general; lab functions hold game-specific logic.</p>
         </div>
       </div>
     </div>
@@ -844,7 +1435,7 @@ STATS:
       </div>
       <div class="lc-callout__bubble">
         <div class="lc-callout__body">
-          <p>Make sure to upload all FOUR data files with your submission: city_distances.txt, city_info.txt, hazards.txt, and trivia.txt.</p>
+          <p>Do not invent a fallback for cities without trivia. The data file is the source of truth. If a future data update leaves a city without a trivia entry, you want the error to surface, not silently skip the gate.</p>
         </div>
       </div>
     </div>
@@ -859,9 +1450,182 @@ STATS:
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">Save Your Code</div>
         <div class="lc-callout__body">
-          <p>This is the Module 4 capstone. Save lab-4-3.py as a reference. The data-driven architecture, trivia gate pattern, and set-based tracking are patterns you will see again in real projects.</p>
+          <p>Save <code>lab-4-3.py</code> as <code>lab-4-3-backup.py</code> before starting Module 5. Lab 5.1 starts by copying 4.3 forward and refactoring the city data into a <code>City</code> class.</p>
         </div>
       </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Run the Full Check</div>
+    <p>Before you submit, run your program end-to-end. Your output should match this exactly:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>==================================================
+DEEP IN THE HEART: A LONE STAR JOURNEY
+==================================================
+
+Loading city data...
+Loaded 10 cities with travel routes.
+Loaded 10 city info records.
+Loaded 8 possible hazards.
+Loaded 20 trivia questions across 10 cities.
+
+MAIN MENU
+--------------------
+1. New Game
+2. Load Saved Game
+3. Quit
+
+Choice (1-3): 
+What is your name, traveler? 
+Welcome, Test Player!
+You are in San Antonio. Your goal: reach the beach!
+Beach cities: Corpus Christi and Galveston.
+
+You are in: San Antonio
+  &quot;Home of the Alamo&quot;
+
+From San Antonio, you can travel to:
+  1. Corpus Christi - 150 miles
+  2. Houston - 200 miles
+  3. Austin - 80 miles
+  4. Laredo - 160 miles
+  5. El Paso - 550 miles
+
+Choice (1-5): 
+
+--- TRIVIA TIME! ---
+To reach Corpus Christi, answer this question:
+
+  Selena was from Corpus Christi
+
+TRUE or FALSE? CORRECT! You earned your destination.
+You&#x27;re headed to Corpus Christi!
+Distance: 150 miles
+
+==================================================
+TRAVELING TO CORPUS CHRISTI!
+==================================================
+
+--- Turn 1 ---
+Miles remaining: 150
+You rolled a 1!
+You travel 10 miles...
+Miles remaining: 140
+
+--- Turn 2 ---
+Miles remaining: 140
+You rolled a 9!
+You travel 90 miles...
+Miles remaining: 50
+
+--- Turn 3 ---
+Miles remaining: 50
+You rolled a 8!
+You travel 80 miles...
+
+You made it to Corpus Christi!
+
+==================================================
+CONGRATULATIONS! YOU REACHED THE BEACH!
+==================================================
+
+
+==================================================
+FINAL TRIP REPORT
+==================================================
+Driver: Test Player
+Final City: Corpus Christi
+Status: BEACH WINNER!
+
+YOUR ROUTE
+----------
+  1. San Antonio
+  2. Corpus Christi
+
+Unique cities visited: 2
+
+HAZARDS ENCOUNTERED (Unique, A-Z)
+---------------------------------
+  None - Lucky traveler!
+
+STATISTICS
+----------
+  Total Miles: 180
+  Total Turns: 3
+  Hazards Faced: 0
+  Hazards Escaped: 0
+
+TRIVIA
+------
+  Questions Asked: 1
+  Answered Correct: 1
+  Accuracy: 100.0%
+
+==================================================
+
+Trip report saved to trip_report.txt.
+
+Play again? (y/n): 
+==================================================
+SESSION STATISTICS
+==================================================
+Games Played: 1
+Total Miles: 180
+Total Hazards: 0
+==================================================
+
+Thanks for playing, Test Player!
+An All My Eggses Live in Texas Production
+
+MAIN MENU
+--------------------
+1. New Game
+2. Load Saved Game
+3. Quit
+
+Choice (1-3): 
+Thanks for playing!</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">If Something Breaks</div>
+    <p>Common failure patterns and where they came from:</p>
+    <div class="lc-table-wrap" style="--lc-accent: #FF1744;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Symptom</th>
+            <th>Where to Look</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>FileNotFoundError: trivia.txt</code></td>
+        <td>Check CP1 (Copy + Load Trivia). The data file must be in the same folder as <code>lab-4-3.py</code>. CodeGrade provides it as a fixture.</td>
+      </tr>
+      <tr>
+        <td><code>KeyError: 'Corpus Christi'</code> at the trivia gate</td>
+        <td>Check CP1. <code>load_trivia</code> is grouping by city but the dictionary lookup is happening with the wrong key. Verify <code>trivia[dest]</code> uses the exact city-name string.</td>
+      </tr>
+      <tr>
+        <td>The coin-flip Destination Gate banner still prints during play</td>
+        <td>Check CP3 (Wire the Trivia Gate). The old gate code wasn't replaced, only commented out, or a duplicate copy remained. Delete the <code>flip_coin()</code> + HEADS/TAILS branching entirely.</td>
+      </tr>
+      <tr>
+        <td>Trip report shows <code>Unique cities visited: 0</code> even after a multi-city game</td>
+        <td>Check CP4 (Sets - Unique Cities). The set is being created but <code>.add()</code> is never called, OR the set is being reinitialized inside the in-game loop instead of once per game.</td>
+      </tr>
+      <tr>
+        <td>HAZARDS section shows duplicate entries (e.g., 'Buc-ee\'s appears!' twice)</td>
+        <td>Check CP5 + CP6. Either the post-game display is reading <code>hazards_list</code> (which has duplicates) instead of <code>unique_hazards</code> (a set), or the sort is happening on the wrong source.</td>
+      </tr>
+      <tr>
+        <td>Wrong trivia answer produces 'CORRECT! You earned your destination.'</td>
+        <td>Check CP2. The comparison in <code>trivia_gate</code> is reversed: confirm <code>if player_answer == q['answer']:</code> branches to the correct-answer message, not the wrong-answer one.</td>
+      </tr>
+      <tr>
+        <td>TRIVIA section shows <code>Accuracy: 0.0%</code> after every correct answer</td>
+        <td>Check CP7. <code>trivia_correct</code> is initialized but never incremented. Verify the post-trivia_gate code does <code>if correct: trivia_correct = trivia_correct + 1</code>.</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
     <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
@@ -878,11 +1642,11 @@ STATS:
 
     <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
     <ul>
-      <li>Review the Chapter 9 Sets section: set(), .add(), and sorted()</li>
-      <li>Test load_trivia() first — verify the structure before building trivia_gate()</li>
-      <li>Remember: sets ignore duplicates automatically — just .add() and let the set handle it</li>
-      <li>Print intermediate values — debug prints are your friend</li>
-      <li>Submit to CodeGrade early — it shows exactly which tests pass or fail</li>
+      <li>Test <code>load_trivia</code> in isolation before wiring it in. Run <code>python3 function_library.py</code> with a DEBUG block. You should see 20 questions across 10 cities</li>
+      <li>Test <code>trivia_gate</code> in isolation by adding a temporary call at the top of <code>main()</code> before the main menu loop. Pass a hardcoded destination and confirm both the correct-answer path and the wrong-answer path behave</li>
+      <li>If your trip report mixes the new TRIVIA section into the wrong place, look at the order of the screen-print block. STATISTICS comes before TRIVIA, and TRIVIA comes before the final <code>=====</code> banner</li>
+      <li>Set membership and uniqueness: <code>s = set(); s.add('x'); s.add('x'); len(s)</code> is <code>1</code>. This is the property you're leaning on for unique_cities and unique_hazards</li>
+      <li>Post in <code>#labs</code> on Discord with your specific error message. Include the line number. Anjali monitors the channel and surfaces patterns to the instructor</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
     <div class="lc-contact-grid">

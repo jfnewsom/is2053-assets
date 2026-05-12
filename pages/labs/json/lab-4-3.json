@@ -1,666 +1,1015 @@
 {
-    "meta": {
-        "labId": "lab-4-3",
-        "title": "Data-Driven Texas",
-        "module": 4,
-        "week": 3,
-        "weekType": "MASTER",
-        "chapters": "8–9",
-        "chapterTopics": "Sets, trivia gate, full data-driven architecture",
-        "filename": "lab-4-3.py",
-        "additionalFiles": [
-            "function_library.py"
-        ]
+  "meta": {
+    "labId": "lab-4-3",
+    "title": "Trivia Challenge",
+    "module": 4,
+    "week": 3,
+    "weekType": "MASTER",
+    "chapters": "8\u20139",
+    "chapterTopics": "More About Strings, Dictionaries, Sets",
+    "filename": "lab-4-3.py",
+    "additionalFiles": []
+  },
+  "overview": {
+    "body": "MASTER week. Two arrivals close Module 4. First, the coin-flip Destination Gate from Labs 3.x and 4.x retires entirely. A TRIVIA gate replaces it: players answer a TRUE/FALSE question about the city they want to visit, and a wrong answer triggers the same <code>get_redirect</code> detour that the old TAILS branch did. Second, <strong>sets</strong> arrive as the right tool for tracking unique cities and unique hazards across a game. The trip report grows a TRIVIA section with asked / correct / accuracy stats, and the HAZARDS display uses <code>sorted()</code> on a set to show each unique hazard exactly once. This is also the lab where Sasha drops the Module 5 Patch Note about the dictionary-of-dictionaries shape: it works, but it's starting to feel awkward. The fix is coming next module.",
+    "mentorQuote": {
+      "character": "Sasha Mireles",
+      "role": "Creative Director, Bat City Collective",
+      "headshot": "Sasha-Mireles.png",
+      "quote": "The trivia gate is the moment the game stops feeling like a coin-flip simulator and starts feeling like a road trip with friends. Anyone who has driven across Texas knows the deal: someone asks a question about the next stop, you either know it or you get rerouted. We are turning randomness into a small piece of agency. That is what good design feels like: the player earns the next mile."
     },
-    "overview": {
-        "body": "Time to put it all together! This MASTER week introduces <strong>sets</strong> — collections that automatically remove duplicates. You’ll replace the coin flip gate with a <strong>trivia system</strong>, track unique cities and hazards with sets, and produce a comprehensive final report. This is Module 4’s capstone: data from files, dictionaries, sets, and polished output.",
-        "mentorQuote": {
-            "character": "Danny Cavanaugh",
-            "role": "Lead Developer, Bat City Collective",
-            "headshot": "Danny-Cavanaugh.png",
-            "quote": "Lists remember everything. Sets remember everything once. If you visited Houston three times, a list says Houston, Houston, Houston. A set just says Houston. That’s not a limitation — it’s a superpower for tracking unique things."
-        },
-        "objectives": [
-            "<code>load_trivia()</code> — Parse <code>trivia.txt</code> into a dict with list values",
-            "<code>trivia_gate()</code> — TRUE/FALSE questions replace the coin flip",
-            "Sets — Track unique cities visited and unique hazards encountered",
-            "<code>sorted()</code> — Display set contents in alphabetical order",
-            "Comprehensive report — Route, unique cities, trivia stats, and hazard stats"
-        ],
-        "keyConceptsText": "<strong>Chapter 9:</strong> <code>set()</code>, <code>.add()</code>, <code>len()</code> on sets, <code>sorted()</code> for display, and dict with list values",
-        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 8 & 9",
-        "programRequirements": [
-            "Your program <strong>MUST</strong> use sets to track unique cities and hazards",
-            "Your program <strong>MUST</strong> load trivia from <code>trivia.txt</code>",
-            "Your program <strong>MUST</strong> use <code>sorted()</code> when displaying set contents",
-            "Your program <strong>MUST</strong> include trivia statistics in the final report",
-            "Your program <strong>MUST</strong> track and display unique hazard types encountered"
-        ],
-        "filenameNote": "Submit <code>lab-4-3.py</code> and your <code>function_library.py</code> this week. Start by copying your <code>lab-4-2.py</code> and renaming it.",
-        "additionalFilesNote": "CodeGrade tests <code>trivia_gate()</code> in isolation using your library, so both files must be present.",
-        "saveYourCode": "This is the Module 4 capstone. Module 5 starts fresh with classes. Save <code>lab-4-3.py</code> as your personal reference for the data-driven architecture.",
-        "dataFiles": [
-            {
-                "file": "city_distances.txt",
-                "format": "Same as 4.1/4.2"
-            },
-            {
-                "file": "city_info.txt",
-                "format": "Same as 4.1/4.2"
-            },
-            {
-                "file": "hazards.txt",
-                "format": "Same as 4.2"
-            },
-            {
-                "file": "trivia.txt",
-                "format": "city,question,TRUE/FALSE",
-                "new": true
-            }
-        ]
-    },
-    "timeGuide": {
-        "totalTime": "120–150 Minutes",
-        "rows": [
-            {
-                "checkpoint": "CP1: Load Trivia",
-                "time": "25–30 min",
-                "task": "Dict with list values structure"
-            },
-            {
-                "checkpoint": "CP2: Trivia Gate",
-                "time": "30–35 min",
-                "task": "TRUE/FALSE question system"
-            },
-            {
-                "checkpoint": "CP3: Add Sets",
-                "time": "25–30 min",
-                "task": "Unique cities and hazards tracking"
-            },
-            {
-                "checkpoint": "CP4: Final Report",
-                "time": "30–35 min",
-                "task": "Comprehensive stats display"
-            }
-        ],
-        "strategy": "This is the MASTER week — take your time! Start by copying lab-4-2.py and work through each checkpoint carefully. The trivia gate is the most complex new feature."
-    },
-    "beforeYouBegin": {
-        "intro": "Here’s how your finished program fits together. The [NEW] tags show what you’re adding. The [REPLACED] tags show what changes from your 4.2 code. The section at the bottom runs after the game loop ends.",
-        "architecture": "# ---- DATA LOADING FUNCTIONS ----\nload_city_distances()   reads city_distances.txt -> nested dict\nload_city_info()        reads city_info.txt -> dict of dicts\nload_hazards()          reads hazards.txt -> list of dicts\nload_trivia()           reads trivia.txt -> dict of lists  [NEW]\n\n# ---- GAME FUNCTIONS ----\ndisplay_destinations()  shows menu from dict\nget_destination_choice()  validates user pick\ntrivia_gate(dest, trivia, all_dests, distances, current)  TRUE/FALSE question  [NEW]\nhandle_hazard(hazards)  random hazard + coin flip\ntravel_to(distance)    D20 travel + hazard checks\n\n# ---- MAIN PROGRAM ----\nLoad ALL data files (distances, info, hazards, trivia)\nGet player name\ncurrent_city = 'San Antonio'\nunique_cities = set()  [NEW]\nunique_hazards = set()  [NEW]\n\nGAME LOOP (each pass is one leg):\n|\n|-- unique_cities.add(current_city)  [NEW]\n|-- Display city info, show destinations\n|-- Get choice with .strip().upper()\n|-- trivia_gate()  [REPLACED] was coin flip\n|\n|   TRAVEL LOOP (D20 rolls):\n|   |-- Roll D20, move miles\n|   |-- 30% chance: handle_hazard() -> unique_hazards.add()  [NEW]\n|   |-- Repeat until you arrive\n|\n|-- Update trip totals + trivia stats  [NEW]\n|-- Check outcome: beach / dead end / continue\n\n=== FINAL TRIP REPORT ===  [NEW]\n| Route: city -> city -> city (from visited list)\n| Unique cities: sorted(unique_cities)\n| Unique hazards: sorted(unique_hazards)\n| Trivia: correct / total\n| Trip stats: miles, turns, hazards"
-    },
-    "checkpoints": [
-        {
-            "number": 1,
-            "title": "Load Trivia",
-            "subtitle": "Parse trivia.txt and build a dictionary where each city maps to a list of question dicts.",
-            "content": [
-                {
-                    "type": "mentor_quote",
-                    "character": "Tyler Nguyen",
-                    "role": "Junior Developer, Bat City Collective",
-                    "headshot": "Tyler-Nguyen.png",
-                    "quote": "This is the big one. Trivia replaces the coin flip, sets handle your unique tracking, and sorted() makes your report look clean. The game loop barely changes — you’re mostly adding smarter pieces around it."
-                },
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "A function that reads <code>trivia.txt</code> where each city can have <strong>multiple</strong> trivia questions. Structure: <code>trivia['Houston']</code> returns a <strong>list</strong> of question dicts."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "This is the most sophisticated data structure you’ve built yet: a <strong>dictionary of lists of dictionaries</strong>. Real applications use nested structures like this constantly — think of a playlist app where each artist maps to a list of album objects. Mastering this pattern unlocks serious programming power."
-                },
-                {
-                    "type": "h3",
-                    "label": "pro_tip"
-                },
-                {
-                    "type": "code_block",
-                    "code": "# The structure you're building:\ntrivia = {\n    'Houston': [\n        {'question': 'NASA is in Houston', 'answer': 'TRUE'},\n        {'question': 'Houston is the capital', 'answer': 'FALSE'}\n    ],\n    'Austin': [\n        {'question': 'Austin has bats', 'answer': 'TRUE'}\n    ]\n}"
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Copy <code>lab-4-2.py</code> and rename it to <code>lab-4-3.py</code>",
-                        "Update the top-of-file docstring to describe Lab 4.3",
-                        "Define <code>load_trivia(filename)</code>",
-                        "Create an empty dict: <code>trivia = {}</code>",
-                        "Open the file and loop through lines: use <code>line.strip().split(',')</code>",
-                        "Extract parts: <code>city = parts[0]</code>, <code>question = parts[1]</code>, <code>answer = parts[2]</code>",
-                        "Check if the city key exists: <code>if city not in trivia: trivia[city] = []</code>",
-                        "Append the question dict: <code>trivia[city].append({'question': question, 'answer': answer})</code>",
-                        "Close the file and return the trivia dict"
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "9-1",
-                            "filename": "card_dealer.py",
-                            "step": 1,
-                            "description": "Your Lab 4.1 <code>load_city_distances()</code> pattern applies here — same file-reading loop, but now you’re appending to lists instead of storing single values. Program 9-1 also shows dictionary creation with key-value pairs; your trivia dict adds a twist where each value is a list that can hold multiple items."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "code_block",
-                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\ntrivia = load_trivia('trivia.txt')\nprint(f'Cities with trivia: {len(trivia)}')\nprint('Houston questions:', len(trivia['Houston']))\nprint('First Houston Q:', trivia['Houston'][0])"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Verify:</strong> Houston has multiple questions, and each is a dict with <code>'question'</code> and <code>'answer'</code> keys."
-                },
-                {
-                    "type": "output_block",
-                    "output": "Cities with trivia: 6\nHouston questions: 2\nFirst Houston Q: {'question': 'NASA Mission Control is in Houston, Texas.', 'answer': 'TRUE'}"
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Forgetting to check if the city key exists before appending",
-                            "KeyError — you can’t append to a list that doesn’t exist yet"
-                        ],
-                        [
-                            "Using trivia[city] = question_dict instead of .append()",
-                            "Each new question overwrites the previous one instead of adding to the list"
-                        ],
-                        [
-                            "Splitting on the wrong delimiter",
-                            "Check trivia.txt — what character separates city, question, and answer?"
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>load_trivia()</code> function defined",
-                        "Returns a dictionary where values are lists",
-                        "Each city can have multiple questions",
-                        "Debug print shows correct city count"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 2,
-            "title": "Trivia Gate",
-            "subtitle": "Replace the coin flip with a TRUE/FALSE question system that returns destination, distance, and result.",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "The coin flip was pure luck — the player had no agency. Trivia replaces luck with skill. More importantly, <code>trivia_gate()</code> is the first function you have written where the return value drives the entire next branch of the game: destination, distance, and outcome all flow from one tuple. This is how real game engines work — functions determine not just results but which path the program takes next."
-                },
-                {
-                    "type": "text",
-                    "body": "A function that presents a trivia question, accepts TRUE/FALSE input (using <code>.strip().upper()</code>), and returns the final destination, distance, and whether the player got it correct."
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Priya Venkatesh",
-                    "role": "Project Manager, Bat City Collective",
-                    "headshot": "Priya-Venkatesh.png",
-                    "quote": "The client specifically asked for trivia because luck-based gates frustrate players. Skill-based gates keep them engaged. That design decision changed a coin flip into a whole system — a question, two possible paths, and stats to track. Scope creep? No. Better product."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Define <code>trivia_gate(dest, trivia, all_dests, distances, current)</code>",
-                        "Print a header: <code>--- TRIVIA TIME! ---</code> and announce the destination",
-                        "Get a question: if <code>dest</code> has trivia, use <code>random.choice(trivia[dest])</code>; otherwise pick from any city in the dict",
-                        "Display the question and prompt for an answer",
-                        "Get input: <code>answer = input('TRUE or FALSE? ').strip().upper()</code>",
-                        "Normalize the answer: accept T/TRUE as <code>'TRUE'</code>, F/FALSE as <code>'FALSE'</code>; anything else is invalid",
-                        "If correct: return <code>(dest, distance, True)</code>",
-                        "If wrong: pick a random other destination and return <code>(redirect, new_distance, False)</code>"
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "pro_tip"
-                },
-                {
-                    "type": "text",
-                    "body": "To get “other” destinations for the redirect, loop through <code>all_dests</code> and build a new list that skips the chosen destination. The pattern is the same one you used in Module 3 — loop, check a condition, and <code>.append()</code> if it passes."
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "9-1",
-                            "filename": "card_dealer.py",
-                            "step": 1,
-                            "description": "Your Lab 4.2 <code>.strip().upper()</code> pattern for input cleaning works perfectly here for TRUE/FALSE answers. Accessing <code>trivia[city]</code> gives you a list, then <code>random.choice()</code> picks one question from it."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Update main() to use trivia_gate:</strong>"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Load trivia data alongside the other data files",
-                        "After the player chooses a destination, call <code>trivia_gate()</code>",
-                        "Use the returned values <code>(final_dest, dist, correct)</code> to update game state",
-                        "Track <code>trivia_asked</code> and <code>trivia_correct</code> counters for the final report"
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Play the game and verify a trivia question appears after choosing a destination",
-                        "A correct answer sends you to your chosen city",
-                        "A wrong answer redirects you to a different city",
-                        "T, TRUE, t, and true all work as inputs (thanks to <code>.upper()</code>)"
-                    ]
-                },
-                {
-                    "type": "output_block",
-                    "output": "--- TRIVIA TIME! ---\nHeading to Houston...\n\nTRUE or FALSE: NASA Mission Control is located in Houston, Texas.\nTRUE or FALSE? TRUE\nCorrect! You're heading to Houston.\n\n--- TRIVIA TIME! ---\nHeading to Austin...\n\nTRUE or FALSE: Austin is the largest city in Texas.\nTRUE or FALSE? TRUE\nWrong! You're being redirected to Laredo instead!"
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Comparing to lowercase 'true' instead of 'TRUE'",
-                            "If you use .upper(), compare to uppercase strings only"
-                        ],
-                        [
-                            "Returning just True/False instead of (dest, dist, correct)",
-                            "main() needs all three values to update game state properly"
-                        ],
-                        [
-                            "Forgetting to handle cities with no trivia",
-                            "Use 'if dest in trivia' before accessing, or use .get() with a fallback city"
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>trivia_gate()</code> function defined with correct parameters",
-                        "Displays a trivia question from loaded data",
-                        "Accepts T/TRUE/F/FALSE (case-insensitive)",
-                        "Returns a tuple: <code>(destination, distance, was_correct)</code>",
-                        "Wrong answer redirects to a different city"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 3,
-            "title": "Add Sets",
-            "subtitle": "Track unique cities visited and unique hazard types using sets — duplicates vanish automatically.",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "Sets are not just a shorthand for lists with a duplicate check. They represent a different contract: membership, not sequence. When you only care whether something happened — not how many times or in what order — a set is the right tool. Unique cities and unique hazard types are inherently set-shaped problems. Using a list here would mean writing <code>if city not in visited_cities</code> every time. The set just handles it."
-                },
-                {
-                    "type": "text",
-                    "body": "Two sets: <code>unique_cities</code> for tracking which cities the player has visited (no repeats), and <code>unique_hazards</code> for tracking which hazard types they’ve encountered."
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Tyler Nguyen",
-                    "role": "Junior Developer, Bat City Collective",
-                    "headshot": "Tyler-Nguyen.png",
-                    "quote": "With a list, you’d have to check <code>if city not in visited</code> before adding. With a set? Just <code>.add()</code> it. Duplicates vanish automatically. Less code, fewer bugs — that’s the kind of shortcut I wish I’d known sooner!"
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "In <code>main()</code>, create two empty sets using <code>set()</code>: one for unique cities, one for unique hazards",
-                        "Add the starting city to your unique cities set right after creating it",
-                        "After each city visit, use <code>.add()</code> to include the destination in your unique cities set",
-                        "Update <code>handle_hazard()</code> to accept the unique hazards set as a parameter, then add the hazard’s name to it",
-                        "Update <code>travel_to()</code> to pass the unique hazards set to <code>handle_hazard()</code>"
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "9-3",
-                            "filename": "sets.py",
-                            "step": 1,
-                            "description": "Shows set creation with <code>set()</code> and the <code>.add()</code> method. Same pattern here — create an empty set, add items as you encounter them."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "code_block",
-                    "code": "# DEBUG - Add at end of game loop iteration\nprint(f'Unique cities: {len(unique_cities)}')\nprint(f'Unique hazards: {len(unique_hazards)}')"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Verify:</strong> Visiting Houston twice still shows 1 in <code>unique_cities</code> (not 2)."
-                },
-                {
-                    "type": "output_block",
-                    "output": "Unique cities: 1\nUnique hazards: 0\n\n[After traveling to Houston and hitting a Speed trap...]\nUnique cities: 2\nUnique hazards: 1\n\n[After visiting Houston again...]\nUnique cities: 2\nUnique hazards: 1"
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Creating a set with {} instead of set()",
-                            "{} creates an empty dictionary, not a set"
-                        ],
-                        [
-                            "Using .append() instead of .add()",
-                            "Sets use .add(), lists use .append() — don’t mix them up"
-                        ],
-                        [
-                            "Forgetting to pass unique_hazards to handle_hazard()",
-                            "The set won’t track hazards if the function can’t access it"
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Two sets created: <code>unique_cities</code> and <code>unique_hazards</code>",
-                        "Starting city added to <code>unique_cities</code>",
-                        "Each destination added with <code>.add()</code>",
-                        "<code>handle_hazard()</code> tracks unique hazard names",
-                        "Debug shows set counts staying unique (no duplicates)"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 4,
-            "title": "Final Report",
-            "subtitle": "Build the comprehensive trip report with route, unique sets displayed via sorted(), trivia stats, and totals.",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "The final report is your deliverable — every data structure you have built this module converges here. Sets contribute unique counts. Lists contribute the route. Counters contribute stats. <code>sorted()</code> makes sets printable. This is the pattern behind every dashboard, report generator, and analytics export in professional software: collect structured data throughout, transform it into human-readable output at the end."
-                },
-                {
-                    "type": "text",
-                    "body": "A polished final report showing: route traveled (with arrows), unique cities visited (sorted alphabetically using <code>sorted()</code>), trivia performance, hazard statistics, and total miles."
-                },
-                {
-                    "type": "h3",
-                    "label": "pro_tip"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Important:</strong> Sets are unordered. To display them predictably, wrap them in <code>sorted()</code>:"
-                },
-                {
-                    "type": "code_block",
-                    "code": "print(f'UNIQUE CITIES ({len(unique_cities)}):')\nfor city in sorted(unique_cities):\n    print(f'  - {city}')"
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Priya Venkatesh",
-                    "role": "Project Manager, Bat City Collective",
-                    "headshot": "Priya-Venkatesh.png",
-                    "quote": "The client is going to look at this report. Every section needs to be there, the numbers need to be accurate, and the format needs to be consistent. The game can be buggy in a beta — the report cannot. This is what they are paying for."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Your final report should include:</strong>"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<strong>Header:</strong> \"FINAL TRIP REPORT\" with driver name and final city",
-                        "<strong>ROUTE:</strong> The visited list joined with <code>\" -> \"</code>",
-                        "<strong>UNIQUE CITIES:</strong> Count and sorted list from set",
-                        "<strong>TRIVIA:</strong> Asked, Correct, Accuracy percentage",
-                        "<strong>HAZARDS:</strong> Faced, Escaped, Unique types count",
-                        "<strong>STATS:</strong> Total Miles"
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "expected_output"
-                },
-                {
-                    "type": "output_block",
-                    "output": "==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Alex\nFinal City: Corpus Christi\n\nROUTE:\n  San Antonio -> Houston -> Houston -> Corpus Christi\n\nUNIQUE CITIES (3):\n  - Corpus Christi\n  - Houston\n  - San Antonio\n\nTRIVIA:\n  Asked: 3\n  Correct: 2\n  Accuracy: 66.7%\n\nHAZARDS:\n  Faced: 4\n  Escaped: 2\n  Unique types: 3\n\nSTATS:\n  Total Miles: 410"
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "9-3",
-                            "filename": "sets.py",
-                            "step": 1,
-                            "description": "The <code>sorted()</code> function works on sets, returning a sorted list you can iterate through. Your Lab 3.3 trip report pattern returns here — now with sets for unique tracking and trivia statistics added."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Play a complete game from start to a beach or win city. Visit at least one city more than once and trigger at least two hazards.",
-                        "Verify the report shows unique cities alphabetically — Houston should appear once even if visited twice.",
-                        "Verify trivia stats: asked count matches how many destination choices you made; correct count is accurate.",
-                        "Check unique hazard types — the count should be the number of different hazard names, not the total times hazards fired.",
-                        "Guard against division by zero: quit after zero trivia questions and confirm the report still prints cleanly."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Printing the set directly without sorted()",
-                            "Output order is unpredictable — CodeGrade expects alphabetical"
-                        ],
-                        [
-                            "Dividing by trivia_asked when it might be 0",
-                            "ZeroDivisionError if the player quits before any trivia fires — check first"
-                        ],
-                        [
-                            "Missing report sections",
-                            "CodeGrade checks for all required sections — match the expected output format"
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Report header with driver name and final city",
-                        "Route showing all cities visited with arrows",
-                        "Unique cities displayed alphabetically using <code>sorted()</code>",
-                        "Trivia stats: asked, correct, accuracy percentage",
-                        "Hazard stats including unique types count",
-                        "Total miles displayed"
-                    ]
-                }
-            ]
-        }
+    "objectives": [
+      "Copy <code>lab-4-2.py</code> forward to <code>lab-4-3.py</code>",
+      "Add <code>load_trivia(filename)</code> to <code>function_library.py</code>: parse <code>trivia.txt</code> into a dictionary keyed by city, with each value a list of question/answer dicts",
+      "Write <code>trivia_gate(dest, trivia, current, distances)</code> as a <strong>lab-local</strong> function in <code>lab-4-3.py</code>: ask the player a TRUE/FALSE question about the destination; correct earns it, wrong triggers <code>get_redirect</code>",
+      "Replace the coin-flip Destination Gate in the in-game loop with a call to <code>trivia_gate</code>",
+      "Build <code>unique_cities = set()</code> and <code>unique_hazards = set()</code> at game start; <code>.add()</code> entries every time a city or hazard is recorded",
+      "Replace the post-game <code>'in' operator</code> uniqueness loop with <code>sorted(unique_cities)</code>; replace the <code>.copy().sort()</code> hazard sort with <code>sorted(unique_hazards)</code>",
+      "Track <code>trivia_asked</code> and <code>trivia_correct</code> as per-game counters; add a TRIVIA section to the trip report showing asked, correct, and accuracy percentage",
+      "Drop a <strong>forward-facing Patch Note</strong> in CP8: Sasha flags that the dict-of-dicts city shape is starting to creak, and points to Module 5's class-based fix"
     ],
-    "finalChecklist": {
-        "beforeYouSubmit": [
-            "File is named exactly <code>lab-4-3.py</code>",
-            "Docstring updated to describe Lab 4.3",
-            "Uses sets for <code>unique_cities</code> AND <code>unique_hazards</code>",
-            "Uses <code>sorted()</code> when displaying set contents",
-            "<code>load_trivia()</code> returns a dict with list values",
-            "<code>trivia_gate()</code> handles TRUE/FALSE with <code>.strip().upper()</code>",
-            "Final report includes all required sections",
-            "All debug/test code has been removed"
-        ],
-        "scopeReminder": "Chapters 2–9 ONLY. This is the capstone — use everything you’ve learned! Sets, dictionaries with list values, try/except, string methods, file I/O, and all functions from Chapters 2–8 are all fair game.",
-        "permittedTechniques": {
-            "chapters": "2–9 (all techniques from Chapters 2–8 fully permitted; Chapter 9 dictionaries and sets as introduced this module)",
-            "specific": [
-                "Set creation: unique_cities = set()",
-                "Set addition: unique_cities.add(city)",
-                "Set membership: city in unique_cities",
-                "sorted() on a set: sorted(unique_cities)",
-                "Dictionary with list values: trivia[city] = []",
-                "File reading with with/open",
-                "try/except (learned in Chapter 6)"
-            ],
-            "notPermitted": "list comprehensions, classes, inheritance, any Chapter 10+ features"
+    "keyConceptsText": "A <strong>set</strong> in Python is a collection of unique items with O(1) membership testing. <code>my_set = set()</code> creates an empty set. <code>my_set.add(item)</code> inserts an item (or does nothing if it's already present). <code>len(my_set)</code> gives the unique count. <code>sorted(my_set)</code> returns a new sorted list. Sets are unordered, so iterate them via <code>sorted()</code> for stable display. The <strong>trivia data shape</strong> introduced this lab is a dictionary keyed by city, with each value a list of dicts: <code>trivia['Austin'] -> [{'question': '...', 'answer': 'TRUE'}, ...]</code>. This combines two patterns from CP1 of Lab 4.1 (dict lookup) and CP1 of Lab 4.2 (list of dicts) into one structure.",
+    "textbookReference": "Chapter 9 sets section (Programs 9\u201318 through 9\u201323) covers set creation, <code>.add()</code>, membership testing, and iteration. <code>sorted()</code> on a set is shown in Program 9\u201321.",
+    "programRequirements": [
+      "Submit <code>lab-4-3.py</code> and <code>function_library.py</code>",
+      "Top-of-file comment block on both files",
+      "Docstring on every function, including the lab-local <code>trivia_gate</code>",
+      "Four data files loaded at startup: <code>city_distances.txt</code>, <code>city_info.txt</code>, <code>hazards.txt</code>, <code>trivia.txt</code>",
+      "Three-loop architecture preserved (main menu, play-again, in-game)",
+      "D20 travel mechanic preserved",
+      "Coin-flip Destination Gate is REPLACED by <code>trivia_gate</code>; no <code>flip_coin()</code> call remains in the gate position",
+      "<code>unique_cities</code> and <code>unique_hazards</code> are <code>set</code> objects, NOT lists or <code>in</code>-operator loops",
+      "Trip report (both on-screen and <code>trip_report.txt</code>) includes a TRIVIA section with asked, correct, and accuracy",
+      "Save format is unchanged from Lab 3.2; trivia stats are session-only and reset on resume"
+    ],
+    "namedConstants": [
+      {
+        "name": "DISTANCES_FILE",
+        "description": "City distances text file"
+      },
+      {
+        "name": "INFO_FILE",
+        "description": "City info text file"
+      },
+      {
+        "name": "HAZARDS_FILE",
+        "description": "Hazards text file"
+      },
+      {
+        "name": "TRIVIA_FILE",
+        "description": "Trivia text file (new this week)"
+      },
+      {
+        "name": "REPORT_FILE",
+        "description": "Trip report output file"
+      },
+      {
+        "name": "MILES_MULTIPLIER",
+        "description": "Multiplier applied to each D20 roll"
+      },
+      {
+        "name": "HAZARD_CHANCE",
+        "description": "Percent chance per turn of a hazard event"
+      }
+    ],
+    "filenameNote": "Submit <code>lab-4-3.py</code> and <code>function_library.py</code>. CodeGrade provides all four data files as fixtures.",
+    "dataFiles": [
+      {
+        "file": "city_distances.txt",
+        "path": "4-3/city_distances.txt",
+        "format": "city1,city2,distance (carried over from 4.2)",
+        "submitted": false
+      },
+      {
+        "file": "city_info.txt",
+        "path": "4-3/city_info.txt",
+        "format": "city,type,tagline (carried over from 4.2)",
+        "submitted": false
+      },
+      {
+        "file": "hazards.txt",
+        "path": "4-3/hazards.txt",
+        "format": "name,heads_message,tails_message (carried over from 4.2)",
+        "submitted": false
+      },
+      {
+        "file": "trivia.txt",
+        "path": "4-3/trivia.txt",
+        "format": "city,question,answer (new this week)",
+        "new": true,
+        "submitted": false
+      },
+      {
+        "file": "function_library.py",
+        "format": "Shared function library, extended this week with load_trivia",
+        "submitted": true
+      }
+    ]
+  },
+  "timeGuide": {
+    "totalTime": "90\u2013120 Minutes",
+    "rows": [
+      {
+        "checkpoint": "CP1: Copy 4.2 + Load Trivia",
+        "time": "10 min",
+        "task": "Copy lab-4-2.py forward and add load_trivia to the library"
+      },
+      {
+        "checkpoint": "CP2: Trivia Gate (lab-local)",
+        "time": "20 min",
+        "task": "Write the trivia_gate function in lab-4-3.py"
+      },
+      {
+        "checkpoint": "CP3: Wire the Trivia Gate",
+        "time": "10 min",
+        "task": "Replace the coin-flip Destination Gate with trivia_gate"
+      },
+      {
+        "checkpoint": "CP4: Sets - Unique Cities",
+        "time": "10 min",
+        "task": "Build unique_cities as a set; .add() at every visit"
+      },
+      {
+        "checkpoint": "CP5: Sets - Unique Hazards",
+        "time": "10 min",
+        "task": "Build unique_hazards as a set; .add() in the hazard branch"
+      },
+      {
+        "checkpoint": "CP6: sorted() on Sets",
+        "time": "10 min",
+        "task": "Replace .copy().sort() and the in-operator loop with sorted(set)"
+      },
+      {
+        "checkpoint": "CP7: Trivia Stats in Report",
+        "time": "10 min",
+        "task": "Add trivia_asked/trivia_correct counters and TRIVIA section to trip report"
+      },
+      {
+        "checkpoint": "CP8: Module 5 Tease (Patch Note)",
+        "time": "5 min",
+        "task": "Sasha drops a forward-facing Patch Note: city dicts will become classes"
+      },
+      {
+        "checkpoint": "Final Check & Submit",
+        "time": "10 min",
+        "task": "Full play-through + a wrong-trivia path, then upload to CodeGrade"
+      }
+    ]
+  },
+  "beforeYouBegin": {
+    "intro": "Lab 4.3 is the MASTER week. About half the work is in the lab file this time: the library gets one new function (<code>load_trivia</code>), but the lab file changes in five places: constants, startup, in-game gate, per-game state, and the trip report. <code>[NEW]</code> tags show what's added. <code>[REPLACED]</code> tags show what swaps out. <code>[RETIRED]</code> tags show what gets deleted entirely.",
+    "architecture": "# ---- IN function_library.py ----\nall 4.2 functions                                           [KEEP from 4.2]\nload_trivia(filename) -> dict[city] -> list of Q/A dicts    [NEW-CP1]\n\n# ---- IN lab-4-3.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE, INFO_FILE, HAZARDS_FILE, REPORT_FILE        [KEEP from 4.2]\nTRIVIA_FILE = 'trivia.txt'                                  [NEW-CP1]\nMILES_MULTIPLIER, HAZARD_CHANCE                             [KEEP from 4.2]\n\ntrivia_gate(dest, trivia, current, distances)               [NEW-CP2]\nsave_trip_report(...) +trivia_asked +trivia_correct         [REPLACED-CP7]\n\n# ---- main() ----\ndistances = load_city_distances(...)                        [KEEP from 4.2]\ncity_info = load_city_info(...)                             [KEEP from 4.2]\nhazards   = load_hazards(...)                               [KEEP from 4.2]\ntrivia    = load_trivia(TRIVIA_FILE)                        [NEW-CP1]\n\nMAIN MENU LOOP                                              [KEEP from 4.2]\n  PLAY-AGAIN LOOP                                           [KEEP from 4.2]\n    \u2502\n    \u2502\u2500 Per-game init:\n    \u2502     trivia_asked = 0, trivia_correct = 0           [NEW-CP7]\n    \u2502     unique_cities = set(visited_cities)             [NEW-CP4]\n    \u2502     unique_hazards = set(hazards_list)              [NEW-CP5]\n    \u2502\n    IN-GAME LOOP                                            [KEEP from 4.2]\n      \u2502\n      \u2502\u2500 Coin-flip Destination Gate                    [RETIRED-CP3]\n      \u2502\u2500 destination, distance, correct =\n      \u2502     trivia_gate(wanted, trivia, ...)             [NEW-CP3]\n      \u2502     trivia_asked += 1, trivia_correct += correct\n      \u2502\n      \u2502\u2500 D20 travel loop\n      \u2502     \u2502\u2500 if hazard: handle_hazard            [KEEP from 4.2]\n      \u2502     \u2502     hazards_list.append(name)\n      \u2502     \u2502     unique_hazards.add(name)            [NEW-CP5]\n      \u2502\n      \u2502\u2500 Arrival:\n      \u2502     visited_cities.append(current_city)\n      \u2502     unique_cities.add(current_city)              [NEW-CP4]\n      \u2502\n      \u2502\u2500 Continue / Save & quit / Quit               [KEEP from 4.2]\n    \n    Trip report on screen + trip_report.txt:\n      ROUTE                                                 [KEEP from 4.2]\n      Unique cities = len(unique_cities)                    [REPLACED-CP6]\n      HAZARDS = sorted(unique_hazards)                      [REPLACED-CP6]\n      STATISTICS                                            [KEEP from 4.2]\n      TRIVIA: asked / correct / accuracy                    [NEW-CP7]\n"
+  },
+  "checkpoints": [
+    {
+      "title": "Copy 4.2 + Load Trivia",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
         },
-        "warnings": [
-            "MASTER Week: Submit to CodeGrade early and often. The trivia gate test uses a controlled trivia.txt — make sure your load_trivia() function parses the file format correctly.",
-            "Make sure to upload all FOUR data files with your submission: city_distances.txt, city_info.txt, hazards.txt, and trivia.txt."
-        ],
-        "saveYourCode": "This is the Module 4 capstone. Save lab-4-3.py as a reference. The data-driven architecture, trivia gate pattern, and set-based tracking are patterns you will see again in real projects."
+        {
+          "type": "text",
+          "body": "A clean starting point for Lab 4.3. Copy <code>lab-4-2.py</code> to <code>lab-4-3.py</code>, update the docstring, and add one new function to <code>function_library.py</code>: <code>load_trivia(filename)</code>. It reads <code>trivia.txt</code> line-by-line and groups questions by city, returning a dictionary where each value is a list of question/answer dicts."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Trivia is the foundation for the new Destination Gate. Loading it once at startup and indexing by city means the gate function in CP2 can ask <code>trivia['Austin']</code> and immediately get back the question pool for Austin. The grouping happens in the loader, not the gate. This is the same Module 4 pattern you have seen twice now: parse once at startup, index forever after."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Priya Venkatesh",
+          "role": "Project Manager, Bat City Collective",
+          "headshot": "Priya-Venkatesh.png",
+          "quote": "Look at the three loaders side-by-side after this CP: city_distances returns nested dicts, city_info returns dict-of-dicts, hazards returns a list of dicts, trivia returns a dict-of-lists-of-dicts. Each one matches the access pattern the game needs. Distances need a graph; info needs a table; hazards need random sampling; trivia needs grouping by key. Pick the shape that makes the consumer code easiest to read."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<strong>Copy</strong> <code>lab-4-2.py</code> to <code>lab-4-3.py</code>.",
+            "<strong>Update the docstring</strong> at the top of <code>lab-4-3.py</code>: title becomes <code>Lab 4.3: Trivia Challenge</code> and the description should mention the trivia gate and sets.",
+            "Add <code>TRIVIA_FILE = 'trivia.txt'</code> to the constants block alongside the other file constants.",
+            "In <code>function_library.py</code>, add a new section header comment block titled <code>TRIVIA FUNCTIONS (Added in Lab 4-3)</code>. Place it after the <code>HAZARD FUNCTIONS</code> section.",
+            "Define <code>load_trivia(filename)</code> with a full docstring describing the dict-of-lists-of-dicts return shape.",
+            "Inside the function, create an empty dictionary called <code>trivia</code>.",
+            "Open the file and loop: <code>for line in infile:</code>. Call <code>parts = line.strip().split(',')</code>.",
+            "Pull out <code>city = parts[0]</code>, <code>question = parts[1]</code>, <code>answer = parts[2]</code>.",
+            "If <code>city not in trivia:</code>, initialize <code>trivia[city] = []</code>. Then <code>trivia[city].append({'question': question, 'answer': answer})</code>.",
+            "Close the file and return <code>trivia</code>.",
+            "In <code>main()</code>, add <code>trivia = function_library.load_trivia(TRIVIA_FILE)</code> after the hazards load. Print a load banner: <code>print(f'Loaded {total_questions} trivia questions across {len(trivia)} cities.')</code>"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "9-10",
+              "filename": "list_of_dicts.py",
+              "description": "Each line builds one Q/A dict, just like a hazard dict in 4.2. The difference is that they're grouped under city keys instead of appended to a flat list."
+            },
+            {
+              "programId": "9-13",
+              "filename": "phone_book.py",
+              "description": "<code>if key not in d: d[key] = []</code> followed by <code>d[key].append(value)</code>: the canonical 'group items by key' pattern in Python."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Add a DEBUG block under <code>if __name__ == '__main__':</code> in <code>function_library.py</code> that prints the trivia structure. Delete it before moving on."
+        },
+        {
+          "type": "code_block",
+          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\ntrivia = load_trivia('trivia.txt')\nprint(f'Cities with trivia: {len(trivia)}')\nfor city in sorted(trivia):\n    print(f'  {city}: {len(trivia[city])} questions')\nprint('Sample Austin question:', trivia['Austin'][0])"
+        },
+        {
+          "type": "h3",
+          "label": "expected_output"
+        },
+        {
+          "type": "output_block",
+          "output": "Cities with trivia: 10\n  Austin: 3 questions\n  Corpus Christi: 1 questions\n  Dallas: 2 questions\n  El Paso: 1 questions\n  Fort Worth: 2 questions\n  Galveston: 1 questions\n  Houston: 4 questions\n  Laredo: 1 questions\n  San Antonio: 4 questions\n  Texarkana: 1 questions\nSample Austin question: {'question': 'Austin is the capital of Texas', 'answer': 'TRUE'}"
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Forgetting the <code>if city not in trivia:</code> guard",
+              "Without it, every line overwrites the previous question for that city. Cities with multiple questions end up holding only the last one."
+            ],
+            [
+              "Storing questions as a flat list instead of grouped by city",
+              "Flat lists work, but the gate function in CP2 would then have to scan every entry. The grouped shape makes the lookup O(1)."
+            ],
+            [
+              "Hardcoding <code>'trivia.txt'</code> in the load call",
+              "Use the <code>TRIVIA_FILE</code> constant: <code>function_library.load_trivia(TRIVIA_FILE)</code>. Constants live at the top of the file for a reason."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>lab-4-3.py</code> exists and plays identically to 4.2 at this point",
+            "<code>TRIVIA_FILE</code> constant is declared in <code>lab-4-3.py</code>",
+            "<code>function_library.py</code> has a new <code>TRIVIA FUNCTIONS</code> section with <code>load_trivia</code> inside",
+            "Load banner at startup reports 20 questions across 10 cities",
+            "DEBUG block is removed before moving on"
+          ]
+        }
+      ]
     },
-    "needHelp": {
-        "chapterResource": "Chapter 8 & 9 BookEx Reference Guides — step-by-step breakdowns of every textbook example; your primary reference for this lab",
-        "ifYouGetStuck": [
-            "Review the Chapter 9 Sets section: set(), .add(), and sorted()",
-            "Test load_trivia() first — verify the structure before building trivia_gate()",
-            "Remember: sets ignore duplicates automatically — just .add() and let the set handle it",
-            "Print intermediate values — debug prints are your friend",
-            "Submit to CodeGrade early — it shows exactly which tests pass or fail"
-        ],
-        "zoomLink": "https://utsa.zoom.us/j/97617245124",
-        "calendlyLink": "https://calendly.com/john-newsom-utsa/student-meeting",
-        "discordNote": "Post in the course Discord with your checkpoint number, what you expected to happen, and what actually happened. Include the specific error message if you have one."
+    {
+      "title": "Trivia Gate (lab-local)",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "<code>trivia_gate(dest, trivia, current, distances)</code> defined in <strong><code>lab-4-3.py</code></strong>: the lab file, not the library. The function looks up trivia for the destination city, picks a random question, prompts the player for TRUE or FALSE, and returns a 3-tuple <code>(final_dest, distance, correct)</code>. A correct answer returns the chosen destination; a wrong answer calls <code>function_library.get_redirect</code> to detour the player elsewhere."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Think about which functions belong in the library and which belong in the lab file. The library holds <em>general-purpose</em> helpers: data loaders, dice rolls, input cleaning, things that any future game could reuse. The lab file holds <em>game-specific</em> orchestration. <code>trivia_gate</code> is the second category: it knows the game's TRUE/FALSE answer format, the banners it prints, and the exact way it routes a wrong answer through <code>get_redirect</code>. None of that is reusable for the next game. Putting it in the lab file keeps the boundary clean."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Sasha Mireles",
+          "role": "Creative Director, Bat City Collective",
+          "headshot": "Sasha-Mireles.png",
+          "quote": "This is the heart of the new game feel. The player picks a destination, gets a question, and earns the next leg. Wrong answers are not a punishment; they are a detour, the same way <code>get_redirect</code> rerouted them on a TAILS flip in Module 3. Same mechanical outcome; entirely different feeling at the keyboard. Take care with the messaging on both branches. <strong>'WRONG. The answer was X. Detour to Y instead.'</strong> reads as 'oh well, on we go.' That is the tone we want."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>lab-4-3.py</code>, define <code>trivia_gate</code> at the top of the file, after the constants but before <code>save_trip_report</code>. Include a full docstring describing the four parameters and the 3-tuple return.",
+            "Pick a random question for the destination: <code>q = random.choice(trivia[dest])</code>. You will need <code>import random</code> at the top of the lab file (the library already imports it for itself).",
+            "Print the banner: <code>'--- TRIVIA TIME! ---'</code>, then <code>f'To reach {dest}, answer this question:'</code>, then a blank line, then <code>f'  {q[\"question\"]}'</code>.",
+            "Read the player's answer: <code>answer = function_library.clean_input('TRUE or FALSE? ')</code>. <code>clean_input</code> handles case and whitespace.",
+            "Normalize the answer. Accept <code>'T'</code> or <code>'TRUE'</code> as TRUE, <code>'F'</code> or <code>'FALSE'</code> as FALSE. Anything else counts as wrong: print <code>'Invalid answer! Counting as wrong.'</code> and set <code>player_answer = 'INVALID'</code>.",
+            "Compare: <code>if player_answer == q['answer']:</code> print the correct-answer banner and return <code>(dest, distances[current][dest], True)</code>.",
+            "Otherwise print the wrong-answer banner including the correct answer, call <code>function_library.get_redirect(current, distances, dest)</code> to pick a detour, print the detour, and return <code>(redirect, redirect_miles, False)</code>."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "9-13",
+              "filename": "phone_book.py",
+              "description": "<code>trivia[dest]</code> is a dictionary lookup; <code>random.choice</code> on the resulting list picks one Q/A dict."
+            },
+            {
+              "programId": "8-6",
+              "filename": "upper_lower.py",
+              "description": "<code>clean_input</code> normalizes the answer to uppercase, so a single check covers <code>true</code> / <code>True</code> / <code>TRUE</code> / <code> True </code>."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Add a temporary call at the very top of <code>main()</code> (before the main menu loop) to exercise <code>trivia_gate</code> directly. Try answering correctly once, incorrectly once, and with junk input once. Confirm the return tuple matches the expected shape each time. Delete the temporary call before moving on."
+        },
+        {
+          "type": "code_block",
+          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 3\ntrivia = function_library.load_trivia(TRIVIA_FILE)\ndistances = function_library.load_city_distances(DISTANCES_FILE)\nresult = trivia_gate('Austin', trivia, 'San Antonio', distances)\nprint('Return:', result)"
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Putting <code>trivia_gate</code> in <code>function_library.py</code>",
+              "It does game-specific work (TRUE/FALSE prompts, on-screen banners, redirect orchestration). Library functions stay general-purpose. Lab-local stays lab-local."
+            ],
+            [
+              "Forgetting to <code>import random</code> in the lab file",
+              "The library imports <code>random</code> for itself, but <code>random.choice</code> in the lab file needs its own import. Add it at the top with the other imports."
+            ],
+            [
+              "Returning a 2-tuple instead of a 3-tuple",
+              "The caller in CP3 needs the boolean <code>correct</code> flag to increment <code>trivia_correct</code>. Always return three values: destination, distance, correct."
+            ],
+            [
+              "Hardcoding the redirect city",
+              "Use <code>function_library.get_redirect(current, distances, dest)</code>. It picks a different valid destination from the current city, avoiding the one the player got wrong."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>trivia_gate</code> defined in <code>lab-4-3.py</code> with a full docstring",
+            "Correct answers return the chosen destination plus its true distance",
+            "Wrong answers (and invalid answers) return a detour destination from <code>get_redirect</code>",
+            "Banners and tone match the mentor quote: detours feel like 'oh well, on we go', not punitive",
+            "DEBUG call at the top of <code>main()</code> is removed before moving on"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Wire the Trivia Gate",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "The integration step. In the in-game loop, the coin-flip Destination Gate block from Lab 4.2 disappears entirely. Replace it with a call to <code>trivia_gate</code> and unpack the 3-tuple return. Increment <code>trivia_asked</code> on every call; increment <code>trivia_correct</code> only when the gate reports a correct answer."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "This is where the gate retirement happens. The 12-line coin-flip-then-branch block from 4.2 collapses to about 4 lines. The lab file gets shorter; the interesting logic lives in the lab-local <code>trivia_gate</code> function from CP2."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Danny Cavanaugh",
+          "role": "Lead Developer, Bat City Collective",
+          "headshot": "Danny-Cavanaugh.png",
+          "quote": "Look at the diff after this CP lands. The in-game loop's gate section becomes four lines: get the wanted destination, run the gate, count the question, count the right answer if any. Twelve lines became four because we moved the decision logic into a function that names what it does. Naming is the cheapest, highest-impact refactor you have access to. Use it constantly."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>lab-4-3.py</code>, find the coin-flip Destination Gate block in the in-game loop. It currently has <code>print('Flipping to see if Texas cooperates...')</code> through the <code>print(f'Distance: {distance} miles')</code> line.",
+            "Delete every line from <code>print('Flipping...')</code> through the <code>else:</code> branch's <code>destination, distance = function_library.get_redirect(...)</code>. The HEADS/TAILS branching is gone entirely.",
+            "Keep the line <code>print(f'You're headed to {destination}!')</code> and <code>print(f'Distance: {distance} miles')</code>. They still display the result.",
+            "Just before the print statements, add the trivia gate call. Get the wanted destination first: <code>wanted, _ = function_library.get_destination(current_city, distances, choice)</code>. Then call <code>destination, distance, correct = trivia_gate(wanted, trivia, current_city, distances)</code>.",
+            "Increment <code>trivia_asked = trivia_asked + 1</code> after the gate. If <code>correct:</code> then <code>trivia_correct = trivia_correct + 1</code>.",
+            "Run the program and play a full game. Confirm the coin-flip banner is gone, the trivia banner appears, and the game still travels to a destination (correct answer) or a detour (wrong answer)."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Two test paths to walk through: pick Corpus Christi from San Antonio, answer TRUE (correct) and confirm you arrive at Corpus Christi. Start a new game, pick Corpus Christi again, answer FALSE (wrong), and confirm you end up at one of the other San Antonio destinations (Houston, Austin, Laredo, or El Paso)."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Leaving the <code>flip_coin()</code> call in",
+              "The whole coin-flip section is retired. If the program still flips a coin at the gate, the rewrite did not land. Search the file for <code>flip_coin</code> to confirm."
+            ],
+            [
+              "Forgetting to compute <code>wanted</code>",
+              "<code>trivia_gate</code> needs to know the destination the player chose. Call <code>get_destination</code> once to translate the menu choice into a city name, then pass it to <code>trivia_gate</code>."
+            ],
+            [
+              "Incrementing <code>trivia_asked</code> conditionally",
+              "Every gate invocation counts as a question asked, regardless of outcome. Increment unconditionally; only <code>trivia_correct</code> is gated on the <code>correct</code> flag."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Coin-flip Destination Gate is gone (no <code>flip_coin()</code> at the gate)",
+            "<code>trivia_gate</code> is called for every destination choice",
+            "<code>trivia_asked</code> and <code>trivia_correct</code> increment correctly",
+            "Correct-answer path lands at the chosen destination; wrong-answer path lands at a detour city"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Sets - Unique Cities",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "<code>unique_cities = set(visited_cities)</code> as part of per-game state initialization. <code>unique_cities.add(current_city)</code> every time the player arrives somewhere new, including the dead-end return-to-San-Antonio case. This replaces the post-game <code>in</code>-operator loop that built a deduplicated list in Lab 4.2."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Lab 4.2 ended every game with a loop that scanned <code>visited_cities</code> and used <code>if city not in unique_cities:</code> to deduplicate. That works, but it's O(n) per check, O(n\u00b2) total, and the code reads like a workaround for the right data structure. <code>set</code> is the right data structure: uniqueness is enforced on insertion, membership is O(1), and the post-game code becomes a single <code>len(unique_cities)</code> call."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Priya Venkatesh",
+          "role": "Project Manager, Bat City Collective",
+          "headshot": "Priya-Venkatesh.png",
+          "quote": "Notice we are INITIALIZING the set from <code>visited_cities</code>, not just <code>set()</code>. On a fresh game the visited list is just <code>['San Antonio']</code> and the set comes out as <code>{'San Antonio'}</code>. On a resumed game, the loaded visited list might have several cities in it, and the set rebuilds with all of them. Both cases handled with one line. That's why <code>set(iterable)</code> exists."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>lab-4-3.py</code>, find the per-game state initialization block at the top of the play-again loop. It currently sets <code>current_city</code>, <code>total_miles</code>, etc.",
+            "Just after the <code>if not resumed_game:</code> block (the one that resets the per-game counters), add: <code>unique_cities = set(visited_cities)</code>. This runs every iteration, including the resume case, and is correct in both: a fresh game starts with a 1-element set, a resume starts with as many elements as the loaded visited_cities list had.",
+            "Find every site where <code>visited_cities.append(...)</code> is called. There are three: arrival at a new destination, the dead-end return-to-SA branch, and (transitively) any other spot you've added cities. Mirror each <code>append</code> with <code>unique_cities.add(...)</code> right after it.",
+            "Run the program. Play a multi-city game that includes a dead-end retreat (pick Laredo or Texarkana, then choose to return). Confirm the post-game <code>Unique cities visited:</code> count includes the dead-end city even though the player returned."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "9-19",
+              "filename": "set_create.py",
+              "description": "<code>set(iterable)</code> takes any iterable and builds a set from its unique elements. Same idea here: build a set from <code>visited_cities</code>."
+            },
+            {
+              "programId": "9-20",
+              "filename": "set_add.py",
+              "description": "<code>my_set.add(item)</code> inserts an item; duplicates are silently ignored. This is what makes the dead-end return-to-SA case work without extra checks."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Run a game where the player visits San Antonio, then Corpus Christi (a beach win). Confirm <code>Unique cities visited:</code> reports <code>2</code>. Then play a game where the player visits SA, Laredo (a dead end), and returns to SA, then quits. Confirm the count is <code>2</code>, not <code>3</code> (SA and Laredo are the unique ones; the return-to-SA doesn't double-count)."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Initializing with <code>set()</code> instead of <code>set(visited_cities)</code>",
+              "Resume case breaks. A resumed game has cities in <code>visited_cities</code> already; the set must rebuild from them, not start empty."
+            ],
+            [
+              "Forgetting one of the <code>.add()</code> sites",
+              "Easiest to find them all by searching for <code>visited_cities.append</code>. Every append site needs a mirroring add. There are usually 2 or 3."
+            ],
+            [
+              "Putting the set initialization inside <code>if not resumed_game:</code>",
+              "Then it never runs on a resumed game, and <code>unique_cities</code> is undefined. The set init runs every iteration of the play-again loop; the <code>if not resumed_game:</code> guard is only for the counters that should reset."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>unique_cities = set(visited_cities)</code> initialized at the top of every play-again iteration",
+            "<code>unique_cities.add(current_city)</code> mirrors every <code>visited_cities.append(...)</code> site",
+            "Beach win after SA -> Corpus Christi reports 2 unique cities",
+            "Dead-end retreat (SA -> Laredo -> SA -> quit) reports 2 unique cities"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Sets - Unique Hazards",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "<code>unique_hazards = set(hazards_list)</code> as part of per-game state initialization, and <code>unique_hazards.add(hazard_name)</code> in the hazard branch of the D20 loop. Same pattern as CP4, applied to hazards."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "<code>hazards_list</code> records every hazard encounter, including duplicates (if the player faces Buc-ee's three times, the list has three entries). For the trip report's HAZARDS section, the interesting question isn't how many encounters there were (that's <code>total_hazards</code>) but which distinct hazards appeared. Sets handle that uniqueness automatically."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In the per-game state init block, right next to where you added <code>unique_cities</code>, add: <code>unique_hazards = set(hazards_list)</code>.",
+            "In the D20 hazard branch (where <code>hazards_list.append(hazard_name)</code> already runs), add <code>unique_hazards.add(hazard_name)</code> right after it.",
+            "Run the program. Play a game with multiple turns so you're likely to face several hazards. Confirm no crashes."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "9-20",
+              "filename": "set_add.py",
+              "description": "<code>.add()</code> is idempotent &mdash; calling it twice with the same value still results in one entry. This is what gives the trip report its uniqueness for free."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Play a long game (pick El Paso from SA &mdash; 550 miles, lots of D20 turns, lots of hazard chances). The hazards section of the trip report should show fewer entries than <code>Hazards Faced:</code> when the same hazard fires more than once."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Only adding to <code>unique_hazards</code> on escape",
+              "Both outcomes count. The hazard appeared, period; whether the player escaped is tracked separately in <code>total_escaped</code>. Add to the set regardless."
+            ],
+            [
+              "Initializing with <code>set()</code> instead of <code>set(hazards_list)</code>",
+              "Same issue as CP4. A resumed game has hazards_list populated; the set must rebuild from it."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>unique_hazards = set(hazards_list)</code> initialized every play-again iteration",
+            "<code>unique_hazards.add(name)</code> mirrors the <code>hazards_list.append(name)</code> call",
+            "Long games show fewer unique hazards than total encounters when duplicates fire"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "sorted() on Sets",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "Replace the post-game <code>'in' operator</code> uniqueness loop (for cities) and the <code>hazards_list.copy(); .sort()</code> pattern (for hazards) with <code>sorted()</code> calls on the sets you built in CP4 and CP5. The trip report's HAZARDS section now reads <code>HAZARDS ENCOUNTERED (Unique, A-Z)</code>."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Sets are unordered. <code>sorted(my_set)</code> returns a new list with the elements in alphabetical order. This replaces two earlier patterns: the Lab 4.2 hazard sort (<code>.copy().sort()</code>) and the Lab 4.2 city uniqueness loop (<code>if city not in unique_cities:</code>). The cleanup is significant: about 8 lines of bookkeeping become 2."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Danny Cavanaugh",
+          "role": "Lead Developer, Bat City Collective",
+          "headshot": "Danny-Cavanaugh.png",
+          "quote": "<code>sorted()</code> is a great general utility. It works on lists, on sets, on tuples, on anything iterable. It always returns a new list, so you don't have to think about whether to <code>.copy()</code> first. When you see the <code>.copy().sort()</code> pattern in your own code, that's usually a sign <code>sorted()</code> would be cleaner."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>lab-4-3.py</code>, find the post-game trip report block (right before the on-screen FINAL TRIP REPORT printout).",
+            "Delete the <code>sorted_hazards = hazards_list.copy(); sorted_hazards.sort()</code> two-liner.",
+            "Delete the <code>unique_cities = []; for city in visited_cities: if city not in unique_cities: unique_cities.append(city)</code> loop.",
+            "Add two new one-liners: <code>sorted_unique_cities = sorted(unique_cities)</code> and <code>sorted_unique_hazards = sorted(unique_hazards)</code>.",
+            "Update the on-screen HAZARDS display to use <code>sorted_unique_hazards</code> and the title <code>'HAZARDS ENCOUNTERED (Unique, A-Z)'</code>.",
+            "Update the <code>save_trip_report</code> call to pass <code>sorted_unique_cities</code> and <code>sorted_unique_hazards</code> in place of the old variables."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "9-21",
+              "filename": "set_sorted.py",
+              "description": "<code>sorted(my_set)</code> returns a sorted list of the set's elements."
+            },
+            {
+              "programId": "7-16",
+              "filename": "sort_grades.py",
+              "description": "Compare against the .copy().sort() pattern this is replacing. Both produce the same end result; <code>sorted()</code> is cleaner and works on any iterable."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Play a game with at least two distinct hazards. Confirm the on-screen HAZARDS section reads <code>HAZARDS ENCOUNTERED (Unique, A-Z)</code> and lists each hazard exactly once, alphabetically."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Calling <code>.sort()</code> on a set",
+              "Sets are unordered and have no <code>.sort()</code> method. Use <code>sorted(my_set)</code>, which returns a new list."
+            ],
+            [
+              "Forgetting to update the on-screen banner",
+              "The title <code>'HAZARDS ENCOUNTERED (A-Z)'</code> becomes <code>'HAZARDS ENCOUNTERED (Unique, A-Z)'</code> &mdash; the 'Unique' word matters because each hazard now appears at most once."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>.copy().sort()</code> pattern is gone for hazards",
+            "<code>in</code>-operator uniqueness loop is gone for cities",
+            "Two <code>sorted(set)</code> calls produce the display lists",
+            "On-screen banner reads <code>HAZARDS ENCOUNTERED (Unique, A-Z)</code>"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Trivia Stats in Report",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "Extend the trip report with a TRIVIA section. Both the on-screen report and <code>trip_report.txt</code> grow a new block right after STATISTICS that shows Questions Asked, Answered Correct, and (when asked > 0) Accuracy as a percentage. <code>save_trip_report</code>'s signature grows by two parameters (<code>trivia_asked</code>, <code>trivia_correct</code>)."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "QA pass. The trip report is the player's takeaway from the run. STATISTICS covered the mileage and hazard escape rate; TRIVIA closes the loop on the new gate mechanic. Without it, the player has no record of how their trivia performance shaped the trip."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Terrence \"T-Bone\" Booker",
+          "role": "QA Lead, Bat City Collective",
+          "headshot": "Terrence-Booker.png",
+          "quote": "The trip report and <code>trip_report.txt</code> have to be byte-identical where they overlap. If the TRIVIA section shows up on screen but not in the file, or vice versa, that's a regression I'll flag. Update both code paths in the same pass. And when accuracy is 100%, write <code>100.0%</code>, not <code>100%</code>; consistency matters."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>lab-4-3.py</code>, in the per-game state init block, add <code>trivia_asked = 0</code> and <code>trivia_correct = 0</code> alongside the other resettable counters. Note that these are session-only and reset on resume; a comment near the init can make this explicit.",
+            "Extend the <code>save_trip_report</code> function signature to accept <code>trivia_asked</code> and <code>trivia_correct</code> as new parameters (between <code>sorted_hazards</code> and <code>status</code>).",
+            "Inside <code>save_trip_report</code>, after the STATISTICS block, write a new TRIVIA block: <code>'TRIVIA:'</code>, then <code>f'  Questions Asked: {trivia_asked}'</code>, <code>f'  Answered Correct: {trivia_correct}'</code>, and a conditional <code>f'  Accuracy: {accuracy:.1f}%'</code> when <code>trivia_asked > 0</code>.",
+            "Mirror the same TRIVIA block in the on-screen report between the STATISTICS block and the closing <code>=====</code> banner.",
+            "Update the call site to pass the two new arguments: <code>save_trip_report(..., trivia_asked, trivia_correct, status)</code>.",
+            "Update the docstring on <code>save_trip_report</code> to describe the new parameters."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "2-13",
+              "filename": "format_percent.py",
+              "description": "<code>f'{value:.1f}%'</code> formats a float with one decimal place and a percent suffix. Same format used for the existing Escape Rate display."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Play a beach-win game with one correct trivia answer. Confirm both the on-screen TRIVIA section and <code>trip_report.txt</code>'s TRIVIA block show <code>Questions Asked: 1, Answered Correct: 1, Accuracy: 100.0%</code>. Play a second game with one wrong answer. Confirm accuracy reads <code>0.0%</code>."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Updating only the on-screen report, not <code>trip_report.txt</code>",
+              "Both code paths need the new TRIVIA block. They are separate writes; keep them in sync."
+            ],
+            [
+              "Crashing when <code>trivia_asked</code> is 0",
+              "The accuracy line is conditional on <code>trivia_asked &gt; 0</code> to avoid a division-by-zero. Don't always print it."
+            ],
+            [
+              "Mixing up the parameter order in <code>save_trip_report</code>",
+              "Order matters for positional arguments. New parameters go between <code>sorted_hazards</code> and <code>status</code>. The call site has to match the signature."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "On-screen TRIVIA section shows Asked, Correct, and conditionally Accuracy",
+            "<code>trip_report.txt</code> matches the on-screen TRIVIA section",
+            "Accuracy displays as <code>100.0%</code> for one-for-one, not <code>100%</code>",
+            "Accuracy line is skipped entirely when the player faced no trivia gates (impossible in normal play, but defensive)"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Module 5 Tease (Patch Note)",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "A small but consequential comment block in <code>lab-4-3.py</code>: Sasha's Patch Note about the dict-of-dicts city shape. No code changes; this CP is <strong>discovery</strong>, not implementation. Read the comment, recognize the limitation, and look forward to Module 5 where you'll fix it."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Every Module has a Patch Note that closes a previous one. Module 2 dropped Tyler's hazard parallel-list note (closed in 4.2). Module 2 also dropped Tyler's int validation note (closed in 4.2). This is the Module 4 -> 5 Patch Note: Sasha flags that the dict-of-dicts city representation has gotten awkward, and Module 5 introduces classes as the cleaner replacement."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Sasha Mireles",
+          "role": "Creative Director, Bat City Collective",
+          "headshot": "Sasha-Mireles.png",
+          "quote": "<strong>PATCH NOTE [Module 5]:</strong> The dict-of-dicts city shape works, but every helper that needs city data takes both <code>city_info</code> and <code>distances</code> as parameters. <code>is_win_city(city, city_info)</code>, <code>get_destination(city, distances, choice)</code>, every <code>is_dead_end(city, city_info)</code>. The data is in two places; the functions juggle both. Module 5 introduces a <code>City</code> class that carries its own info AND its connections, so the calls become <code>city.is_win()</code>, <code>city.get_destination(choice)</code>. Half as many parameters; the data and the behavior live together."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Open <code>lab-4-3.py</code>. Find the existing comment block at the top of the file (the docstring that describes the lab).",
+            "Just below the docstring, add a clearly-marked Patch Note comment block. Format: <code># PATCH NOTE [Module 5]:</code> on its own line, followed by Sasha's full text from the mentor quote above. End the block with <code># Module 5 will introduce a City class to fix this.</code>",
+            "Save the file. There are no functional changes this CP; just documentation."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "No code changes; nothing to test functionally. Confirm the program still runs end-to-end without errors."
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Patch Note comment block present at the top of <code>lab-4-3.py</code>",
+            "Block identifies the dict-of-dicts limitation specifically (parameters in two places)",
+            "Block points to Module 5's City class as the upcoming fix",
+            "Program still runs end-to-end with no functional changes"
+          ]
+        }
+      ]
     }
+  ],
+  "finalChecklist": {
+    "beforeYouSubmit": [
+      "Submitting <strong>two files</strong>: <code>lab-4-3.py</code> and <code>function_library.py</code>",
+      "<code>function_library.py</code> gained <strong>one</strong> function (<code>load_trivia</code>); no other library changes this week",
+      "<code>lab-4-3.py</code> defines <strong>seven</strong> module-level constants including the new <code>TRIVIA_FILE</code>",
+      "<code>trivia_gate</code> is <strong>defined in <code>lab-4-3.py</code></strong> (lab-local), NOT in the library",
+      "<code>main()</code> loads <strong>four</strong> data files at startup; the load banner reports 10 cities, 10 info records, 8 hazards, and 20 trivia questions across 10 cities",
+      "The coin-flip Destination Gate is gone entirely: no <code>flip_coin()</code> call remains at the gate position",
+      "<code>unique_cities</code> and <code>unique_hazards</code> are <code>set()</code> objects, initialized at every game start (including the resume path)",
+      "Trip report's HAZARDS section reads <code>HAZARDS ENCOUNTERED (Unique, A-Z)</code> and shows each hazard at most once",
+      "Trip report includes a TRIVIA section with Questions Asked, Answered Correct, and (when asked > 0) Accuracy %",
+      "<code>trip_report.txt</code> matches the on-screen report line-for-line",
+      "Wrong trivia answer triggers <code>get_redirect</code> and the player ends up at a different destination",
+      "Top-of-file comment block present on both files; docstrings on every function"
+    ],
+    "scopeReminder": "Module 4.3 introduces <code>set()</code>, <code>.add()</code>, <code>sorted()</code> on sets, and the dict-keyed-by-city-with-list-of-dicts trivia shape. The City class and inheritance are saved for Module 5.",
+    "permittedTechniques": {
+      "chapters": "Chapters 1\u20139 in full",
+      "specific": "Chapter 8 string methods (<code>.upper()</code>, <code>.isdigit()</code>, etc.) from Lab 4.2 carry forward. Chapter 9: <strong>sets</strong> with <code>set()</code>, <code>.add()</code>, <code>in</code> membership, <code>len()</code>, <code>sorted()</code>. Everything from Modules 1\u20133 and Labs 4.1\u20134.2 carries forward.",
+      "notPermitted": "Set comprehensions (<code>{x for x in items}</code>) are out of scope. Stick to <code>set()</code> + <code>.add()</code>. Classes, methods, and <code>__init__</code> are saved for Module 5. The City class fix that Sasha hints at in CP8 is not implemented this week."
+    },
+    "warnings": [
+      "Do not put <code>trivia_gate</code> in <code>function_library.py</code>. It is lab-local: it knows about the game's specific TRUE/FALSE answer format and the on-screen banners. Library functions stay general; lab functions hold game-specific logic.",
+      "Do not invent a fallback for cities without trivia. The data file is the source of truth. If a future data update leaves a city without a trivia entry, you want the error to surface, not silently skip the gate."
+    ],
+    "saveYourCode": "Save <code>lab-4-3.py</code> as <code>lab-4-3-backup.py</code> before starting Module 5. Lab 5.1 starts by copying 4.3 forward and refactoring the city data into a <code>City</code> class.",
+    "finalCheck": {
+      "expectedOutput": "==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\nLoaded 20 trivia questions across 10 cities.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Test Player!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \n\n--- TRIVIA TIME! ---\nTo reach Corpus Christi, answer this question:\n\n  Selena was from Corpus Christi\n\nTRUE or FALSE? CORRECT! You earned your destination.\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 1!\nYou travel 10 miles...\nMiles remaining: 140\n\n--- Turn 2 ---\nMiles remaining: 140\nYou rolled a 9!\nYou travel 90 miles...\nMiles remaining: 50\n\n--- Turn 3 ---\nMiles remaining: 50\nYou rolled a 8!\nYou travel 80 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Test Player\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (Unique, A-Z)\n---------------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 180\n  Total Turns: 3\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\nTRIVIA\n------\n  Questions Asked: 1\n  Answered Correct: 1\n  Accuracy: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 180\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Test Player!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!",
+      "ifSomethingBreaks": [
+        {
+          "symptom": "<code>FileNotFoundError: trivia.txt</code>",
+          "redirect": "Check CP1 (Copy + Load Trivia). The data file must be in the same folder as <code>lab-4-3.py</code>. CodeGrade provides it as a fixture."
+        },
+        {
+          "symptom": "<code>KeyError: 'Corpus Christi'</code> at the trivia gate",
+          "redirect": "Check CP1. <code>load_trivia</code> is grouping by city but the dictionary lookup is happening with the wrong key. Verify <code>trivia[dest]</code> uses the exact city-name string."
+        },
+        {
+          "symptom": "The coin-flip Destination Gate banner still prints during play",
+          "redirect": "Check CP3 (Wire the Trivia Gate). The old gate code wasn't replaced, only commented out, or a duplicate copy remained. Delete the <code>flip_coin()</code> + HEADS/TAILS branching entirely."
+        },
+        {
+          "symptom": "Trip report shows <code>Unique cities visited: 0</code> even after a multi-city game",
+          "redirect": "Check CP4 (Sets - Unique Cities). The set is being created but <code>.add()</code> is never called, OR the set is being reinitialized inside the in-game loop instead of once per game."
+        },
+        {
+          "symptom": "HAZARDS section shows duplicate entries (e.g., 'Buc-ee\\'s appears!' twice)",
+          "redirect": "Check CP5 + CP6. Either the post-game display is reading <code>hazards_list</code> (which has duplicates) instead of <code>unique_hazards</code> (a set), or the sort is happening on the wrong source."
+        },
+        {
+          "symptom": "Wrong trivia answer produces 'CORRECT! You earned your destination.'",
+          "redirect": "Check CP2. The comparison in <code>trivia_gate</code> is reversed: confirm <code>if player_answer == q['answer']:</code> branches to the correct-answer message, not the wrong-answer one."
+        },
+        {
+          "symptom": "TRIVIA section shows <code>Accuracy: 0.0%</code> after every correct answer",
+          "redirect": "Check CP7. <code>trivia_correct</code> is initialized but never incremented. Verify the post-trivia_gate code does <code>if correct: trivia_correct = trivia_correct + 1</code>."
+        }
+      ]
+    }
+  },
+  "needHelp": {
+    "ifYouGetStuck": [
+      "Test <code>load_trivia</code> in isolation before wiring it in. Run <code>python3 function_library.py</code> with a DEBUG block. You should see 20 questions across 10 cities",
+      "Test <code>trivia_gate</code> in isolation by adding a temporary call at the top of <code>main()</code> before the main menu loop. Pass a hardcoded destination and confirm both the correct-answer path and the wrong-answer path behave",
+      "If your trip report mixes the new TRIVIA section into the wrong place, look at the order of the screen-print block. STATISTICS comes before TRIVIA, and TRIVIA comes before the final <code>=====</code> banner",
+      "Set membership and uniqueness: <code>s = set(); s.add('x'); s.add('x'); len(s)</code> is <code>1</code>. This is the property you're leaning on for unique_cities and unique_hazards",
+      "Post in <code>#labs</code> on Discord with your specific error message. Include the line number. Anjali monitors the channel and surfaces patterns to the instructor"
+    ],
+    "officeHours": "Zoom Tuesdays 6 PM: <a href='https://utsa.zoom.us/j/97617245124'>https://utsa.zoom.us/j/97617245124</a>. Book a 1-on-1 with Prof. Newsom: <a href='https://calendly.com/john-newsom-utsa/student-meeting'>calendly.com/john-newsom-utsa/student-meeting</a>."
+  }
 }

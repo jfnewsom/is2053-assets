@@ -32,7 +32,7 @@
   <div class="lc-panel">
     <div class="lc-h3 lc-h3--yellow">Overview</div>
     <img src="../../branding/AllMyEggses3D-Full.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
-    <p>Remember all those distance constants? <code>SAT_TO_CORPUS = 150</code>, <code>SAT_TO_HOUSTON = 200</code>, on and on? And those long if-elif chains for hazards? This week, all that hardcoded data moves into <strong>external files</strong> and gets loaded into <strong>dictionaries</strong>. One data file, one function to load it, and suddenly adding 50 more cities is just adding 50 lines to a text file. <em>This</em> is how real programs work.</p>
+    <p>BUILD week. Module 4 opens by killing the hardest pain point from Module 3: those long lists of distance constants and parallel destination lists for every city. The city graph moves out of code and into <strong>two text files</strong>, loaded into <strong>dictionaries</strong> at startup. <code>distances['San Antonio']['Houston']</code> returns <code>200</code>. Adding ten more cities means adding ten more lines to a text file, not touching code. Everything else from Lab 3.3 carries forward unchanged: the main-menu loop, save and load, the play-again loop, the D20 travel mechanic, the hazard system, and the trip report file. Same game, smarter data shape.</p>
     <div style="clear: both;"></div>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
@@ -40,7 +40,7 @@
           <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"If I asked you to add 20 new cities to the game using constants, how long would it take? Now imagine it's just adding 20 lines to a text file. That's why we use data files. Dictionaries let your code work with data that doesn't exist when you write it."</div>
+          <div class="lc-mentor__quote">"Real codebases keep data and code in separate places. If you have to edit a function every time the business changes its mind about a city, the design is wrong. Move the data into a file, load it once at startup, and let the code stay still. That is the whole point of Module 4."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
@@ -49,27 +49,29 @@
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Filename</div>
-    <p>Submit <code>lab-4-1.py</code> and your <code>function_library.py</code> this week.</p>
-    <p>CodeGrade tests your functions in isolation, so both files must be present.</p>
+    <p>Submit <code>lab-4-1.py</code> and <code>function_library.py</code> this week. CodeGrade provides the data files (<code>city_distances.txt</code>, <code>city_info.txt</code>) as fixtures, so you do not upload them. Test locally with the copies you download from this page.</p>
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <ul class="lc-objectives">
-      <li>Write <code>load_city_distances()</code> to parse <code>city_distances.txt</code> into a nested dictionary</li>
-      <li>Write <code>load_city_info()</code> to parse <code>city_info.txt</code> into a dictionary with nested data</li>
-      <li>Display destinations and distances from dictionaries, not hardcoded values</li>
-      <li>Use <code>.strip()</code> and <code>.split(',')</code> to clean and parse file input</li>
-      <li>Wire all functions into a complete game loop with win detection and a coin flip gate</li>
+      <li>Add <code>load_city_distances(filename)</code> to <code>function_library.py</code> that parses CSV lines with <code>.strip()</code> and <code>.split(',')</code> into a nested dictionary</li>
+      <li>Add <code>load_city_info(filename)</code> that parses CSV lines into a dictionary of dictionaries with <code>type</code> and <code>tagline</code> keys</li>
+      <li>Refactor <code>display_destinations</code>, <code>get_destination</code>, and <code>get_redirect</code> in the library to take <code>(city, distances)</code> instead of parallel lists. Same function names, smarter data shape</li>
+      <li>Add <code>is_win_city</code> and <code>is_dead_end</code> helpers that read from the city info dictionary</li>
+      <li>Rebuild <code>lab-4-1.py</code> so the city graph is loaded from text files at startup. Keep the three-loop architecture (main menu, play-again, in-game), keep the D20 mechanic, keep the parallel-list hazards inline for now (they move to a file in Lab 4.2)</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
-    <p><strong>Chapter 8:</strong> String methods (<code>.strip()</code>, <code>.split()</code>) for parsing CSV data<br><strong>Chapter 9:</strong> Dictionaries and nested dictionaries for structured data</p>
+    <p>Two new tools arrive together. <code>.strip().split(',')</code> is the standard CSV-parsing pattern from Chapter 8: <code>.strip()</code> removes the newline at the end of each line, <code>.split(',')</code> breaks the comma-separated values into a list of fields. Dictionaries (Chapter 9) replace parallel lists for any data shape where the keys are meaningful. A <em>nested</em> dictionary is just a dictionary whose values are themselves dictionaries: <code>distances['San Antonio']</code> is itself a dictionary mapping destinations to miles. The <code>in</code> operator works on dictionaries too. <code>'Houston' in distances</code> checks if Houston is a key. This is how the loader builds the nested structure: it checks <code>if city1 not in distances:</code> before creating the inner dictionary.</p>
     <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
-    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 8 &amp; 9</p>
+    <p>Chapter 8 covers the string methods. Programs 8–1 through 8–14 demonstrate &lt;code&gt;.strip()&lt;/code&gt;, &lt;code&gt;.split()&lt;/code&gt;, and string traversal. Chapter 9 covers dictionaries. Programs 9–1 through 9–7 cover dictionary creation, access, the &lt;code&gt;in&lt;/code&gt; operator with dictionaries, and looping through keys.</p>
     <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
     <ul>
-      <li>Your program <strong>MUST</strong> load city data from external files, not hardcoded constants</li>
-      <li>Your program <strong>MUST</strong> use <code>.strip()</code> and <code>.split(',')</code> to parse file data</li>
-      <li>Your program <strong>MUST</strong> use dictionaries to store city distances and city info</li>
-      <li>Your program <strong>MUST</strong> use <code>function_library.py</code> for random functions and input validation</li>
-      <li>Your program <strong>MUST</strong> include a top-of-file docstring with name, abc123, section, and description</li>
+      <li>Submit <code>lab-4-1.py</code> and <code>function_library.py</code></li>
+      <li>Top-of-file comment block on both files: Name, abc123, Section, Description</li>
+      <li>Docstring on every function</li>
+      <li>Load both data files at startup in <code>main()</code> using the new library functions</li>
+      <li>Three-loop architecture preserved: main menu, play-again, in-game (carried forward from Lab 3.3)</li>
+      <li>D20 mechanic preserved: each turn the player rolls a d20 and moves <code>roll * MILES_MULTIPLIER</code> miles</li>
+      <li>Inline parallel-list hazards still live in <code>lab-4-1.py</code> for this lab; <code>hazards.txt</code> arrives in Lab 4.2</li>
+      <li>Trip report saved to <code>trip_report.txt</code> at the end of every completed game</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Required Data Files</div>
     <div class="lc-table-wrap">
@@ -82,26 +84,44 @@
           </tr>
         </thead>
         <tbody>
-      <tr><td><code>city_distances.txt</code></td><td>city1,city2,distance (e.g., San Antonio,Houston,200)</td><td><a href="data/city_distances.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_distances.txt</a></td></tr>
-      <tr><td><code>city_info.txt</code></td><td>city,type,tagline (e.g., Houston,GATEWAY,Space City)</td><td><a href="data/city_info.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_info.txt</a></td></tr>
-      <tr><td><code>function_library.py</code></td><td>Your shared function library from Module 3</td><td style="color:#555; font-size:12px;">—</td></tr>
+      <tr><td><code>city_distances.txt</code> <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span></td><td>city1,city2,distance (e.g., <code>San Antonio,Houston,200</code>)</td><td><a href="data/4-1/city_distances.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_distances.txt</a></td></tr>
+      <tr><td><code>city_info.txt</code> <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span></td><td>city,type,tagline (e.g., <code>Houston,GATEWAY,Space City</code>)</td><td><a href="data/4-1/city_info.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_info.txt</a></td></tr>
+      <tr><td><code>function_library.py</code></td><td>Your shared function library, carried over from Module 3 and extended this week</td><td><a href="data/function_library.py" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; function_library.py</a></td></tr>
         </tbody>
       </table>
     </div>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
-        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Save Your Code</div>
-        <div class="lc-callout__body">
-          <p>Keep <code>lab-4-1.py</code> — Module 4.2 adds string method input handling directly on top of your file-loading foundation.</p>
-        </div>
-      </div>
+    <div class="lc-h3 lc-h3--yellow">Named Constants</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table lc-named-constants__table">
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>DISTANCES_FILE</code></td>
+        <td>Name of the city distances text file</td>
+      </tr>
+      <tr>
+        <td><code>INFO_FILE</code></td>
+        <td>Name of the city info text file</td>
+      </tr>
+      <tr>
+        <td><code>REPORT_FILE</code></td>
+        <td>Name of the trip report output file</td>
+      </tr>
+      <tr>
+        <td><code>MILES_MULTIPLIER</code></td>
+        <td>Multiplier applied to each D20 roll: &lt;code&gt;roll * 10&lt;/code&gt; miles per turn</td>
+      </tr>
+      <tr>
+        <td><code>HAZARD_CHANCE</code></td>
+        <td>Percent chance per turn of a hazard event (30)</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -126,23 +146,38 @@
         <tbody>
       <tr>
         <td><strong>CP1: Load City Distances</strong></td>
-        <td>25–30 min</td>
-        <td>Parse file into nested dictionary</td>
+        <td>15 min</td>
+        <td>Add load_city_distances to function_library.py</td>
       </tr>
       <tr>
         <td><strong>CP2: Load City Info</strong></td>
-        <td>20–25 min</td>
-        <td>Parse file into dictionary with nested data</td>
+        <td>10 min</td>
+        <td>Add load_city_info using the same parsing pattern</td>
       </tr>
       <tr>
-        <td><strong>CP3: Data-Driven Display</strong></td>
-        <td>20–25 min</td>
-        <td>Display destinations from dictionary</td>
+        <td><strong>CP3: Graph Helpers</strong></td>
+        <td>20 min</td>
+        <td>Refactor display_destinations / get_destination / get_redirect to dict shape; add is_win_city and is_dead_end</td>
       </tr>
       <tr>
-        <td><strong>CP4: Complete Game Loop</strong></td>
-        <td>25–30 min</td>
-        <td>Integrate all functions, clean input</td>
+        <td><strong>CP4: Lab Skeleton + Main Menu</strong></td>
+        <td>15 min</td>
+        <td>Start lab-4-1.py, load data files in main(), keep the main-menu loop</td>
+      </tr>
+      <tr>
+        <td><strong>CP5: Coin Gate + D20 Travel</strong></td>
+        <td>20 min</td>
+        <td>In-game loop with coin-flip Destination Gate, D20 movement, dead-end handling</td>
+      </tr>
+      <tr>
+        <td><strong>CP6: Trip Report + Session Totals</strong></td>
+        <td>15 min</td>
+        <td>Trip report on screen plus trip_report.txt write, session accumulators</td>
+      </tr>
+      <tr>
+        <td><strong>Final Check &amp; Submit</strong></td>
+        <td>10 min</td>
+        <td>Full play-through, then upload both files to CodeGrade</td>
       </tr>
       <tr class="lc-table__total">
         <td colspan="2"><strong>Total Estimated Time</strong></td>
@@ -150,24 +185,6 @@
       </tr>
         </tbody>
       </table>
-    </div>
-    <div class="lc-callout lc-callout--tip">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
-                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="19" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Strategy</div>
-        <div class="lc-callout__body">
-          <p>This is a BUILD week — focus on getting the data structure right before wiring it into the game. Test each loader function in isolation before moving to the next checkpoint.</p>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -177,45 +194,69 @@
     <div class="lc-sub-banner">Program Architecture</div>
   </div>
   <div class="lc-panel">
-    <p class="lc-arch-intro">Here&#x27;s how your finished program fits together. The [NEW] tags show what you&#x27;re adding. [REPLACED] tags show what changes from your 3.3 code.</p>
+    <p class="lc-arch-intro">Here is what your finished program looks like. &lt;code&gt;[NEW]&lt;/code&gt; tags show what gets added this week. &lt;code&gt;[REPLACED]&lt;/code&gt; tags show what changes shape but keeps the same function name. &lt;code&gt;[KEEP]&lt;/code&gt; tags show what carries forward from Lab 3.3 untouched.</p>
     <div class="lc-arch">
-      <pre># ---- DATA LOADING FUNCTIONS ----  <span class="lc-arch-new">[NEW]</span>
-<span class="lc-arch-fn">load_city_distances()</span>   reads city_distances.txt → nested dict
-<span class="lc-arch-fn">load_city_info()</span>        reads city_info.txt → dict of dicts
+      <pre># ---- IN function_library.py ----
+<span class="lc-arch-fn">flip_coin()</span>, <span class="lc-arch-fn">roll_d20()</span>, <span class="lc-arch-fn">check_percentage()</span>                 [KEEP from 2.2]
+<span class="lc-arch-fn">get_valid_int()</span>, <span class="lc-arch-fn">get_yes_no()</span>                               [KEEP from 2.3]
+<span class="lc-arch-fn">save_game(...)</span>, <span class="lc-arch-fn">load_game()</span>                                 [KEEP from 3.2]
+<span class="lc-arch-fn">display_numbered_list(items, title)</span>                         [KEEP from 3.2]
+<span class="lc-arch-fn">get_random_hazard(names, heads_msgs, tails_msgs)</span>            [KEEP from 3.3]
 
-# ---- NAVIGATION FUNCTIONS ----  <span class="lc-arch-new">[NEW]</span>
-<span class="lc-arch-fn">display_destinations(city, distances)</span>      shows menu from dict
-<span class="lc-arch-fn">get_destination_by_number(city, distances)</span> validates user pick
+<span class="lc-arch-fn">load_city_distances(filename)</span> -&gt; nested dict                <span class="lc-arch-new">[NEW-CP1]</span>
+<span class="lc-arch-fn">load_city_info(filename)</span> -&gt; dict of dicts                   <span class="lc-arch-new">[NEW-CP2]</span>
+<span class="lc-arch-fn">display_destinations(city, distances)</span>                       <span class="lc-arch-replaced">[REPLACED-CP3]</span> was parallel lists
+<span class="lc-arch-fn">get_destination(city, distances, choice)</span>                    <span class="lc-arch-replaced">[REPLACED-CP3]</span> was parallel lists
+<span class="lc-arch-fn">get_redirect(city, distances, avoid)</span>                        <span class="lc-arch-replaced">[REPLACED-CP3]</span> was parallel lists
+<span class="lc-arch-fn">is_win_city(city, city_info)</span>                                <span class="lc-arch-new">[NEW-CP3]</span>
+<span class="lc-arch-fn">is_dead_end(city, city_info)</span>                                <span class="lc-arch-new">[NEW-CP3]</span>
 
-# ---- MAIN PROGRAM ----
-Load data files into dictionaries  <span class="lc-arch-new">[NEW]</span>
-Get player name
-current_city = &#x27;San Antonio&#x27;
+# ---- IN lab-4-1.py ----
 
-<span class="lc-arch-game-loop">GAME LOOP</span> (each pass is one leg):
-│
-│── Display city info from city_info dict  <span class="lc-arch-replaced">[REPLACED]</span> was hardcoded
-│── Show destinations from distances dict  <span class="lc-arch-replaced">[REPLACED]</span> was if/elif menu
-│── Destination Gate (coin flip)
-│
-│   <span class="lc-arch-travel-loop">TRAVEL LOOP</span> (each pass is one turn):
-│   │── Fixed 50-mile travel, check for hazard
-│   │── Repeat until you arrive
-│
-│── Update trip totals
-│── Check outcome: beach / dead end / continue
-│── Save and quit option
+# ---- CONSTANTS ----
+DISTANCES_FILE = &#x27;city_distances.txt&#x27;                       <span class="lc-arch-new">[NEW-CP4]</span>
+INFO_FILE      = &#x27;city_info.txt&#x27;                            <span class="lc-arch-new">[NEW-CP4]</span>
+REPORT_FILE    = &#x27;trip_report.txt&#x27;                          [KEEP from 3.3]
+MILES_MULTIPLIER = 10                                       [KEEP from 3.3]
+HAZARD_CHANCE    = 30                                       [KEEP from 3.3]
 
-# ---- AFTER THE LOOP ----
-Print trip summary
-&quot;Thanks for playing!&quot;</pre>
+# ---- HAZARD DATA (still inline; moves to file in Lab 4.2) ----
+HAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [KEEP from 3.3]
+
+# ---- LAB-LOCAL HELPER ----
+<span class="lc-arch-fn">save_trip_report(filename, ...)</span>                             [KEEP from 3.3]
+
+# ---- <span class="lc-arch-fn">main()</span> ----
+Load data files: distances = <span class="lc-arch-fn">load_city_distances(...)</span>       <span class="lc-arch-new">[NEW-CP4]</span>
+                 city_info = <span class="lc-arch-fn">load_city_info(...)</span>            <span class="lc-arch-new">[NEW-CP4]</span>
+
+MAIN MENU LOOP                                              [KEEP from 3.3]
+  1. New Game  2. Load Saved Game  3. Quit
+  │
+  │   PLAY-AGAIN LOOP                                       [KEEP from 3.3]
+  │   │
+  │   │   IN-<span class="lc-arch-game-loop">GAME LOOP</span>                                       [KEEP from 3.3]
+  │   │   │─ Show current city + tagline from city_info     <span class="lc-arch-new">[NEW-CP5]</span>
+  │   │   │─ <span class="lc-arch-fn">display_destinations(current_city, distances)</span>  <span class="lc-arch-replaced">[REPLACED-CP5]</span>
+  │   │   │─ Coin-flip Destination Gate                     [KEEP from 3.3]
+  │   │   │─ D20 travel loop with hazard check              [KEEP from 3.3]
+  │   │   │─ is_win_city / is_dead_end branching            <span class="lc-arch-new">[NEW-CP5]</span>
+  │   │   │─ Continue / Save &amp; quit / Quit                  [KEEP from 3.3]
+  │   │
+  │   │─ Trip report on screen + trip_report.txt              [KEEP-CP6 from 3.3]
+  │   │─ Session accumulators update                          [KEEP-CP6 from 3.3]
+  │   │─ Play again? (y/n)                                    [KEEP from 3.3]
+  │
+  │─ Session statistics block                                  [KEEP from 3.3]
+  │─ Back to main menu
+</pre>
     </div>
   </div>
 </div>
 <div class="lc-card lc-card--green">
   <div class="lc-topper">
     <div class="lc-topper-title">Checkpoints</div>
-    <div class="lc-sub-banner">4 Checkpoints</div>
+    <div class="lc-sub-banner">6 Checkpoints</div>
   </div>
   <div class="lc-panel">
     <div class="lc-cp-row">
@@ -225,28 +266,69 @@ Print trip summary
       </div>
       <div class="lc-cp-content">
         <div class="lc-cp-title">Load City Distances</div>
-        <div class="lc-sub-banner">Parse the city_distances.txt file and build a nested dictionary structure.</div>
       </div>
     </div>
     <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>A new function in <code>function_library.py</code> named <code>load_city_distances(filename)</code>. It opens the named text file, reads it one line at a time, parses each line into a city pair plus a distance, and builds a <strong>nested dictionary</strong> where the outer key is the starting city, the inner key is the destination, and the inner value is the distance in miles.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Lab 3.3 declared one constant per route at the top of <code>lab-3-3.py</code>: <code>SAT_TO_CORPUS = 150</code>, <code>SAT_TO_HOUSTON = 200</code>, and so on. That works for three cities and ten edges. It does not work for ten cities and twenty-four edges, which is what Module 4 hands you. The fix is to keep the data in a text file and write one function that reads it. Adding a city later means adding a line to the text file, not editing code. Same data, different storage shape, dramatically less work downstream.</p>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
-          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"Your 3.3 game works, but all that city data is baked into the code. This week you're pulling it OUT into text files and loading it INTO dictionaries. Two new functions, one big refactor of your menu—and suddenly your game can handle any number of cities."</div>
+          <div class="lc-mentor__quote">"If you had to add twenty more cities to this game next week, how long would it take? If the answer is <em>'just add twenty lines to a text file'</em>, the design is right. If the answer is <em>'edit the code in five places'</em>, the design is wrong. Pick the data shape that makes the next change small."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
-        <div class="lc-mentor__role">Senior Developer, Bat City Collective</div>
+        <div class="lc-mentor__name">Priya Venkatesh</div>
+        <div class="lc-mentor__role">Project Manager, Bat City Collective</div>
       </div>
     </div>
-    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>A function that reads <code>city_distances.txt</code> and creates a nested dictionary where you can look up distances like <code>distances['San Antonio']['Houston']</code> → <code>200</code>.</p>
-    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p>In Modules 1–3, you had 20+ constants like <code>SAT_TO_HOUSTON = 200</code>. Adding a new city meant adding 5+ new constants AND updating multiple if-elif chains. With a nested dictionary loaded from a file, adding a city is just adding lines to the data file. Your code doesn't change at all.</p>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">How the road network is modeled</div>
+        <div class="lc-callout__body">
+        <p>The 24 routes in <code>city_distances.txt</code> are the cities and distances you can drive on a Texas interstate. San Antonio reaches Houston (I-10), Austin (I-35), Laredo (I-35), El Paso (I-10), and Corpus Christi (I-37). Houston reaches Galveston (I-45) and Dallas (I-45). Austin reaches Dallas and Fort Worth via the I-35E and I-35W split. Dallas and Fort Worth connect via I-30; Dallas reaches Texarkana via I-30; Fort Worth reaches El Paso via I-20 and I-10. There is no interstate between Austin and Houston, between Laredo and El Paso, or between Corpus Christi and Laredo, so those routes do not appear in the data. To get between two cities that aren't connected directly, the player has to drive through an intermediate city &mdash; usually San Antonio.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">How the road network is modeled</div>
+        <div class="lc-callout__body">
+        <p>The city graph in <code>city_distances.txt</code> only includes pairs of cities connected by a single continuous interstate corridor. San Antonio to Houston is on the menu because I-10 runs between them. Austin to Houston is <em>not</em> on the menu, even though the cities are 165 miles apart, because the natural route is US-290 &mdash; a state highway, not an interstate. Laredo and Corpus Christi only connect back to San Antonio for the same reason: no direct interstate between them and the rest of the network. If a route feels missing, that's the constraint at work, not a bug in the data file.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Open <code>function_library.py</code>. At the bottom, add a new section header comment block titled <code>CITY DATA LOADERS</code>.</li>
+      <li>Define <code>load_city_distances(filename)</code> with a full docstring describing what it returns.</li>
+      <li>Inside the function, create an empty dictionary called <code>distances</code>.</li>
+      <li>Open the file with <code>infile = open(filename, 'r')</code>.</li>
+      <li>Loop through the file with <code>for line in infile:</code>. For each line, call <code>parts = line.strip().split(',')</code> to split it into a list of three strings.</li>
+      <li>Assign <code>city1 = parts[0]</code>, <code>city2 = parts[1]</code>, and <code>miles = int(parts[2])</code>. Only the third part needs <code>int()</code> &mdash; the first two are city names.</li>
+      <li>If <code>city1</code> is not yet a key in <code>distances</code>, set <code>distances[city1] = {}</code>. Then set <code>distances[city1][city2] = miles</code>.</li>
+      <li>After the loop, close the file with <code>infile.close()</code> and <code>return distances</code>.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -266,90 +348,67 @@ Print trip summary
             <strong>Program 8-10</strong>
             — <code>split_date.py</code>
             
-            — You used .split('/') to break a date string into parts. Now use .split(',') to break each CSV line into city1, city2, and distance.
+            — You used <code>.split('/')</code> to break a date string into parts. Same idea here, but split on <code>','</code> instead. The result is a list of strings you can index by position.
           </li>
           <li>
             <strong>Program 9-1</strong>
-            — <code>card_dealer.py</code>
+            — <code>phone_book.py</code>
             
-            — You created a dictionary with key-value pairs. Now you're building a nested dictionary where each city maps to another dictionary of destinations.
+            — You created a dictionary mapping names to phone numbers. Same idea, but the outer dictionary's values are themselves dictionaries: <code>distances[city1][city2] = miles</code>.
           </li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li>Create a new file called <code>lab-4-1.py</code> with your standard docstring.</li>
-      <li>Add imports: <code>import random</code> and <code>import function_library</code>.</li>
-      <li>Define <code>load_city_distances(filename)</code> that takes a filename parameter.</li>
-      <li>Create an empty dictionary inside the function: <code>distances = {}</code>.</li>
-      <li>Open the file and loop through each line.</li>
-      <li>For each line: use <code>line.strip().split(',')</code> to get a list of parts.</li>
-      <li>Extract: <code>city1 = parts[0]</code>, <code>city2 = parts[1]</code>, <code>distance = int(parts[2])</code>.</li>
-      <li>Check if city1 is already a key; if not, create an empty dictionary for it: <code>if city1 not in distances: distances[city1] = {}</code>.</li>
-      <li>Add the destination: <code>distances[city1][city2] = distance</code>.</li>
-      <li>Close the file and return the distances dictionary.</li>
-    </ol>
-    <div class="lc-mentor">
-      <div class="lc-mentor__inner">
-        <div class="lc-mentor__avatar">
-          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
-        </div>
-        <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"When testing file-loaded data, I always check three things: Does the file load correctly? Is the data structured right? What happens if the file is malformed? Print your dictionary right after loading it — if the keys and values look right, your parsing worked. If not, you found the bug early."</div>
-        </div>
-      </div>
-      <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
-        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
-      </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Add a temporary test block at the bottom of <code>function_library.py</code> under the <code>if __name__ == '__main__':</code> guard. Run the library directly with <code>python3 function_library.py</code> and confirm the dictionary loads correctly. Delete the test block before you submit.</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 2</span>
+distances <span class="sy-op">=</span> load_city_distances<span class="sy-op">(</span><span class="sy-str">&#x27;city_distances.txt&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Cities with outgoing routes:&#x27;</span><span class="sy-op">,</span> <span class="sy-bi">list</span><span class="sy-op">(</span>distances<span class="sy-op">.</span>keys<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">)</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;From San Antonio:&#x27;</span><span class="sy-op">,</span> distances<span class="sy-op">[</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;SA to Houston:&#x27;</span><span class="sy-op">,</span> distances<span class="sy-op">[</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span></pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Expected Output</div>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Cities with outgoing routes: [&#x27;San Antonio&#x27;, &#x27;Houston&#x27;, &#x27;Austin&#x27;, &#x27;Dallas&#x27;, &#x27;Fort Worth&#x27;, &#x27;El Paso&#x27;, &#x27;Laredo&#x27;, &#x27;Texarkana&#x27;, &#x27;Corpus Christi&#x27;, &#x27;Galveston&#x27;]
+From San Antonio: {&#x27;Corpus Christi&#x27;: 150, &#x27;Houston&#x27;: 200, &#x27;Austin&#x27;: 80, &#x27;Laredo&#x27;: 160, &#x27;El Paso&#x27;: 550}
+SA to Houston: 200</pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+    <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Fix</th>
           </tr>
         </thead>
         <tbody>
       <tr>
         <td>Forgetting <code>.strip()</code></td>
-        <td>Lines have <code>\n</code> at the end. Use <code>line.strip()</code> first.</td>
+        <td>Each line ends with a newline character. Without <code>.strip()</code>, your last 'destination' key has a hidden <code>\n</code> on the end, and every lookup mysteriously fails.</td>
       </tr>
       <tr>
-        <td>KeyError when adding to nested dict</td>
-        <td>Check if city1 exists first: <code>if city1 not in distances:</code></td>
+        <td>Casting <code>parts[0]</code> or <code>parts[1]</code> to <code>int</code></td>
+        <td>Only the distance is a number. City names are strings. Doing <code>int(parts[0])</code> throws <code>ValueError</code> the moment you hit a non-numeric city name.</td>
       </tr>
       <tr>
-        <td>Forgetting to convert distance to int</td>
-        <td>Use <code>int(parts[2])</code> — <code>split()</code> returns strings.</td>
+        <td>Skipping the <code>if city1 not in distances:</code> guard</td>
+        <td>Without it, the very first time you see a city you also try to assign <code>distances[city1][city2]</code>, which fails because <code>distances[city1]</code> does not exist yet.</td>
+      </tr>
+      <tr>
+        <td>Trying to use <code>with open(...) as ...</code></td>
+        <td><code>with</code> statements are not in scope for this lab. Use the plain <code>open()</code>/<code>close()</code> pattern from Chapter 6.</td>
       </tr>
         </tbody>
       </table>
     </div>
-    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p><strong>Step 1:</strong> Add this test harness at the bottom of your file:</p>
-    <div class="lc-code-block">
-      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 2</span>
-distances <span class="sy-op">=</span> load_city_distances<span class="sy-op">(</span><span class="sy-str">&#x27;city_distances.txt&#x27;</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Loaded cities:&#x27;</span><span class="sy-op">,</span> <span class="sy-bi">list</span><span class="sy-op">(</span>distances<span class="sy-op">.</span>keys<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">)</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;San Antonio to Houston:&#x27;</span><span class="sy-op">,</span> distances<span class="sy-op">[</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Houston destinations:&#x27;</span><span class="sy-op">,</span> distances<span class="sy-op">[</span><span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span></pre>
-    </div>
-    <p><strong>Step 2:</strong> Run and verify this output:</p>
-    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
-      <pre>Loaded cities: [&#x27;San Antonio&#x27;, &#x27;Houston&#x27;, &#x27;Austin&#x27;, &#x27;Dallas&#x27;, ...]
-San Antonio to Houston: 200
-Houston destinations: {&#x27;Galveston&#x27;: 50, &#x27;Dallas&#x27;: 240, &#x27;San Antonio&#x27;: 200}</pre>
-    </div>
-    <p><strong>Step 3:</strong> Verify the distance is an <code>int</code> (200) not a <code>string</code> ('200').</p>
-    <p><strong>Step 4:</strong> <strong style="color:#FF6B1A;">DELETE the DEBUG lines</strong> before moving to Checkpoint 2.</p>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
-    <p><ul><li>Docstring with your name, ID, section, and description</li><li><code>load_city_distances()</code> function that returns a nested dictionary</li><li>Uses <code>.strip()</code> and <code>.split(',')</code> to parse each line</li><li>Can access any distance with <code>distances[city1][city2]</code></li></ul></p>
+    <ol>
+      <li><code>function_library.py</code> contains a new function <code>load_city_distances(filename)</code> with a full docstring</li>
+      <li>Running the library directly prints all ten cities and the expected San Antonio routes</li>
+      <li>The DEBUG block is removed before moving on to CP2</li>
+    </ol>
     </div>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
@@ -359,12 +418,37 @@ Houston destinations: {&#x27;Galveston&#x27;: 50, &#x27;Dallas&#x27;: 240, &#x27
       </div>
       <div class="lc-cp-content">
         <div class="lc-cp-title">Load City Info</div>
-        <div class="lc-sub-banner">Parse the city_info.txt file and build a dictionary with nested city data.</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>A function that reads <code>city_info.txt</code> and creates a dictionary where each city maps to <em>another dictionary</em> containing its type and tagline. Like this: <code>city_info['Houston']['tagline']</code> → <code>'Space City'</code>.</p>
+    <p>A second loader function, <code>load_city_info(filename)</code>, that parses <code>city_info.txt</code> into a <strong>dictionary of dictionaries</strong>: each city name maps to an inner dictionary with two keys, <code>'type'</code> (one of <code>START</code>, <code>HUB</code>, <code>GATEWAY</code>, <code>CORRIDOR</code>, <code>WRONG_WAY</code>, <code>DEAD_END</code>, <code>WIN</code>) and <code>'tagline'</code> (the city's short slogan).</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>City info is the metadata that drives game logic. <code>'WIN'</code> cities end the trip with a beach celebration. <code>'DEAD_END'</code> and <code>'WRONG_WAY'</code> cities prompt the player to return to San Antonio. <code>'GATEWAY'</code>, <code>'HUB'</code>, <code>'CORRIDOR'</code> are all just intermediate cities for now. Bundling all of this into one dictionary keyed by city name means the lab file does not need branching logic per city; it just asks the info dictionary what to do.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Notice that the loader pattern is identical to the one you wrote ten minutes ago. Same <code>.strip().split(',')</code>. Same per-line dictionary assignment. Different data shape on the output side, same parsing pattern on the input side. That is what good design feels like. The boring part is reusable."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Priya Venkatesh</div>
+        <div class="lc-mentor__role">Project Manager, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Below <code>load_city_distances</code> in <code>function_library.py</code>, define <code>load_city_info(filename)</code> with a full docstring.</li>
+      <li>Create an empty dictionary called <code>info</code>.</li>
+      <li>Open the file with <code>open(filename, 'r')</code> and loop with <code>for line in infile:</code>.</li>
+      <li>Inside the loop, call <code>parts = line.strip().split(',')</code> and assign <code>city = parts[0]</code>, <code>city_type = parts[1]</code>, <code>tagline = parts[2]</code>.</li>
+      <li>Assign <code>info[city] = {'type': city_type, 'tagline': tagline}</code> &mdash; one statement creates the inner dictionary inline.</li>
+      <li>Close the file and return <code>info</code>.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -382,68 +466,59 @@ Houston destinations: {&#x27;Galveston&#x27;: 50, &#x27;Dallas&#x27;: 240, &#x27
           <ul>
           <li>
             <strong>Program 9-1</strong>
-            — <code>card_dealer.py</code>
+            — <code>phone_book.py</code>
             
-            — You built a dictionary where card names map to values. Now build a dictionary where city names map to dictionaries of attributes.
+            — Same dictionary-creation pattern. The only difference: the value associated with each key is itself a dictionary, not a scalar. That is what makes this a 'dictionary of dictionaries.'
           </li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li>Define <code>load_city_info(filename)</code> that takes a filename parameter.</li>
-      <li>Create an empty dictionary: <code>info = {}</code>.</li>
-      <li>Open the file and loop through each line.</li>
-      <li>For each line: use <code>line.strip().split(',')</code> to get a list of parts.</li>
-      <li>Extract: <code>city = parts[0]</code>, <code>city_type = parts[1]</code>, <code>tagline = parts[2]</code>.</li>
-      <li>Create the nested entry: <code>info[city] = {'type': city_type, 'tagline': tagline}</code>.</li>
-      <li>Close the file and return the <code>info</code> dictionary.</li>
-    </ol>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p><strong>Step 1:</strong> Add this test harness:</p>
+    <p>Add a DEBUG block under the <code>if __name__ == '__main__':</code> guard in <code>function_library.py</code> that loads <code>city_info.txt</code> and prints three lookups. Delete it before moving on.</p>
     <div class="lc-code-block">
       <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 3</span>
-city_info <span class="sy-op">=</span> load_city_info<span class="sy-op">(</span><span class="sy-str">&#x27;city_info.txt&#x27;</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Houston type:&#x27;</span><span class="sy-op">,</span> city_info<span class="sy-op">[</span><span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-str">&#x27;type&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Houston tagline:&#x27;</span><span class="sy-op">,</span> city_info<span class="sy-op">[</span><span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-str">&#x27;tagline&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Corpus Christi type:&#x27;</span><span class="sy-op">,</span> city_info<span class="sy-op">[</span><span class="sy-str">&#x27;Corpus Christi&#x27;</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-str">&#x27;type&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span></pre>
+info <span class="sy-op">=</span> load_city_info<span class="sy-op">(</span><span class="sy-str">&#x27;city_info.txt&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;San Antonio type:&#x27;</span><span class="sy-op">,</span> info<span class="sy-op">[</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-str">&#x27;type&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Corpus Christi tagline:&#x27;</span><span class="sy-op">,</span> info<span class="sy-op">[</span><span class="sy-str">&#x27;Corpus Christi&#x27;</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-str">&#x27;tagline&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Laredo type:&#x27;</span><span class="sy-op">,</span> info<span class="sy-op">[</span><span class="sy-str">&#x27;Laredo&#x27;</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-str">&#x27;type&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span></pre>
     </div>
-    <p><strong>Step 2:</strong> Run and verify this output:</p>
+    <div class="lc-h3 lc-h3--yellow">Expected Output</div>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
-      <pre>Houston type: GATEWAY
-Houston tagline: Space City
-Corpus Christi type: WIN</pre>
+      <pre>San Antonio type: START
+Corpus Christi tagline: Sparkling City by the Sea
+Laredo type: DEAD_END</pre>
     </div>
-    <p><strong>Step 3:</strong> <strong style="color:#FF6B1A;">DELETE the DEBUG lines</strong> before moving to Checkpoint 3.</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+    <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Using <code>city_info['type']</code> directly</td>
-        <td>Need TWO keys: <code>city_info[city_name]['type']</code></td>
+        <td>Putting the type and tagline at the same level as the city</td>
+        <td><code>info[city] = type</code> overwrites with a string, not a dictionary. You need <code>info[city] = {'type': city_type, 'tagline': tagline}</code> &mdash; note the curly braces inside.</td>
       </tr>
       <tr>
-        <td>Inconsistent key names</td>
-        <td>Use exact keys: <code>'type'</code> and <code>'tagline'</code> (lowercase)</td>
+        <td>Quoting the type values as <code>'win'</code></td>
+        <td>The file uses uppercase <code>WIN</code>. String comparisons are case-sensitive. Match exactly or use <code>.upper()</code> when you compare in CP3 (preview: you will not need <code>.upper()</code> until Lab 4.2).</td>
       </tr>
       <tr>
-        <td>Forgetting to return the dictionary</td>
-        <td>Function must <code>return info</code> at the end</td>
+        <td>Splitting on the wrong delimiter</td>
+        <td>The file is comma-separated, not tab- or space-separated. <code>.split(',')</code> exactly.</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
-    <p><ul><li><code>load_city_info()</code> function that returns a dictionary of dictionaries</li><li>Each city maps to <code>{'type': ..., 'tagline': ...}</code></li><li>Can access city attributes with <code>city_info[city]['type']</code></li></ul></p>
+    <ol>
+      <li><code>load_city_info</code> defined in the same <code>CITY DATA LOADERS</code> section as <code>load_city_distances</code></li>
+      <li>DEBUG print confirms all three lookups produce the expected values</li>
+      <li>DEBUG block removed before moving on</li>
+    </ol>
     </div>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
@@ -452,81 +527,138 @@ Corpus Christi type: WIN</pre>
         <div class="lc-cp-badge__num">3</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Data-Driven Display</div>
-        <div class="lc-sub-banner">Create helper functions that use dictionaries to display destinations and look up information.</div>
+        <div class="lc-cp-title">Graph Helpers + Type Checks</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>Functions that display available destinations from a city and help with navigation — all driven by your dictionaries, not hardcoded values.</p>
+    <p>The library's destination helpers from Lab 3.2 take parallel lists <code>(destinations, distances, notes)</code>. Now they take <code>(city, distances)</code> &mdash; the city name plus the loaded nested dictionary. Same function names, same return shape, smarter data. You will also add two new type-check helpers, <code>is_win_city</code> and <code>is_dead_end</code>, that read from the city info dictionary.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Keeping the function names stable across a data-shape refactor is a real-world discipline. The rest of the lab file calls <code>display_destinations(...)</code> the same way it always has. What changes is what you pass in. That is one of the few ways a working program can absorb a new data shape without rewriting everything that uses it. The new <code>is_win_city</code> and <code>is_dead_end</code> helpers move the game's branching logic out of the lab file and into named, testable functions.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"When you refactor a function, keep the public name and shape stable if you can. The callers do not care what the function does inside &mdash; they care what they pass in and what they get back. <code>display_destinations</code> still prints a numbered menu and returns a count. The shape that gets passed in is different now. The shape that comes out is the same. That is the kind of change that does not break the rest of your code."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Lead Developer, Bat City Collective</div>
+      </div>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>Create <code>display_destinations(city, distances)</code> that takes the current city name and the distances dictionary.</li>
-      <li>Loop through the destinations using a counter variable to number each option (1, 2, 3…).</li>
-      <li>Print each option: number, destination name, and distance.</li>
-      <li>Create <code>get_destination_by_number(city, distances, choice)</code>.</li>
-      <li>Convert dict keys to a list: <code>destinations = list(distances[city].keys())</code>.</li>
-      <li>Return the destination at index <code>choice - 1</code> (user picks 1, but list index is 0).</li>
-      <li>Create <code>is_win_city(city, city_info)</code> that checks if <code>city_info[city]['type']</code> equals <code>'WIN'</code>.</li>
-      <li>Create <code>is_dead_end(city, city_info)</code> that checks if the type is <code>'DEAD_END'</code> or <code>'WRONG_WAY'</code>.</li>
+      <li>In <code>function_library.py</code>, find the <code>DESTINATION HELPERS</code> section from Lab 3.2.</li>
+      <li><strong>Rewrite</strong> <code>display_destinations</code>. New signature: <code>display_destinations(city, distances)</code>. Inside, loop over <code>distances[city]</code> with a 1-based counter, printing <code>{n}. {dest} - {miles} miles</code>. Return the number of destinations shown.</li>
+      <li><strong>Rewrite</strong> <code>get_destination</code>. New signature: <code>get_destination(city, distances, choice)</code>. Build a list of destination names from <code>list(distances[city].keys())</code>, index it with <code>choice - 1</code>, and return a tuple <code>(dest, distances[city][dest])</code>.</li>
+      <li><strong>Rewrite</strong> <code>get_redirect</code>. New signature: <code>get_redirect(city, distances, avoid)</code>. Build the options list the same way, remove <code>avoid</code> if present, pick a random remaining option, and return <code>(dest, distances[city][dest])</code>.</li>
+      <li>Add a new section header comment <code>CITY-INFO TYPE CHECKS</code>.</li>
+      <li>Define <code>is_win_city(city, city_info)</code>: return <code>True</code> if <code>city_info[city]['type'] == 'WIN'</code>.</li>
+      <li>Define <code>is_dead_end(city, city_info)</code>: return <code>True</code> if the city's type is <code>'DEAD_END'</code> or <code>'WRONG_WAY'</code>. Both count as dead ends for gameplay purposes.</li>
     </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-3</strong>
+            — <code>loop_phonebook.py</code>
+            
+            — You looped through a dictionary with <code>for key in dict:</code>. Same pattern in <code>display_destinations</code>: iterate over the inner dictionary <code>distances[city]</code>.
+          </li>
+          <li>
+            <strong>Program 9-5</strong>
+            — <code>in_phonebook.py</code>
+            
+            — You used <code>in</code> to check for a key. <code>is_win_city</code> and <code>is_dead_end</code> use the same idea: ask the dictionary whether a city's type matches the expected value.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p><strong>Step 1:</strong> Add this test harness:</p>
+    <p>Add a DEBUG block in <code>function_library.py</code> that loads both files and exercises all five rewrites. Delete the block before moving on.</p>
     <div class="lc-code-block">
       <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 4</span>
 distances <span class="sy-op">=</span> load_city_distances<span class="sy-op">(</span><span class="sy-str">&#x27;city_distances.txt&#x27;</span><span class="sy-op">)</span>
-city_info <span class="sy-op">=</span> load_city_info<span class="sy-op">(</span><span class="sy-str">&#x27;city_info.txt&#x27;</span><span class="sy-op">)</span>
+info <span class="sy-op">=</span> load_city_info<span class="sy-op">(</span><span class="sy-str">&#x27;city_info.txt&#x27;</span><span class="sy-op">)</span>
 
-display_destinations<span class="sy-op">(</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">,</span> distances<span class="sy-op">)</span>
-dest <span class="sy-op">=</span> get_destination_by_number<span class="sy-op">(</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">,</span> distances<span class="sy-op">,</span> <span class="sy-num">2</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Choice 2 is:&#x27;</span><span class="sy-op">,</span> dest<span class="sy-op">)</span>
+n <span class="sy-op">=</span> display_destinations<span class="sy-op">(</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">,</span> distances<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Total destinations from SA: <span class="sy-op">{</span>n<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
 
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Corpus Christi is win?&#x27;</span><span class="sy-op">,</span> is_win_city<span class="sy-op">(</span><span class="sy-str">&#x27;Corpus Christi&#x27;</span><span class="sy-op">,</span> city_info<span class="sy-op">)</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Laredo is dead end?&#x27;</span><span class="sy-op">,</span> is_dead_end<span class="sy-op">(</span><span class="sy-str">&#x27;Laredo&#x27;</span><span class="sy-op">,</span> city_info<span class="sy-op">)</span><span class="sy-op">)</span></pre>
+dest<span class="sy-op">,</span> miles <span class="sy-op">=</span> get_destination<span class="sy-op">(</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">,</span> distances<span class="sy-op">,</span> <span class="sy-num">2</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Choice 2 from SA -&gt; <span class="sy-op">{</span>dest<span class="sy-op">}</span> (<span class="sy-op">{</span>miles<span class="sy-op">}</span> miles)&#x27;<span class="sy-op">)</span>
+
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Corpus Christi is a WIN:&#x27;</span><span class="sy-op">,</span> is_win_city<span class="sy-op">(</span><span class="sy-str">&#x27;Corpus Christi&#x27;</span><span class="sy-op">,</span> info<span class="sy-op">)</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Laredo is a dead end:&#x27;</span><span class="sy-op">,</span> is_dead_end<span class="sy-op">(</span><span class="sy-str">&#x27;Laredo&#x27;</span><span class="sy-op">,</span> info<span class="sy-op">)</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;El Paso is a dead end:&#x27;</span><span class="sy-op">,</span> is_dead_end<span class="sy-op">(</span><span class="sy-str">&#x27;El Paso&#x27;</span><span class="sy-op">,</span> info<span class="sy-op">)</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;San Antonio is a dead end:&#x27;</span><span class="sy-op">,</span> is_dead_end<span class="sy-op">(</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">,</span> info<span class="sy-op">)</span><span class="sy-op">)</span></pre>
     </div>
-    <p><strong>Step 2:</strong> Run and verify this output:</p>
+    <div class="lc-h3 lc-h3--yellow">Expected Output</div>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
       <pre>From San Antonio, you can travel to:
-
   1. Corpus Christi - 150 miles
   2. Houston - 200 miles
   3. Austin - 80 miles
   4. Laredo - 160 miles
   5. El Paso - 550 miles
-
-Choice 2 is: Houston
-Corpus Christi is win? True
-Laredo is dead end? True</pre>
+Total destinations from SA: 5
+Choice 2 from SA -&gt; Houston (200 miles)
+Corpus Christi is a WIN: True
+Laredo is a dead end: True
+El Paso is a dead end: True
+San Antonio is a dead end: False</pre>
     </div>
-    <p><strong>Step 3:</strong> <strong style="color:#FF6B1A;">DELETE the DEBUG lines</strong> before moving to Checkpoint 4.</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+    <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Using <code>choice</code> as index directly</td>
-        <td>User enters 1 for first item, but <code>list(dict.keys())[0]</code> is index 0. Use <code>choice - 1</code>.</td>
+        <td>Old-style function call from the lab file</td>
+        <td><code>display_destinations(SA_DESTINATIONS, SA_DISTANCES, SA_NOTES)</code> is the Lab 3.2 signature. The new signature is <code>display_destinations(current_city, distances)</code>. Update every call site in CP5.</td>
       </tr>
       <tr>
-        <td>Checking type with <code>== 'win'</code> (lowercase)</td>
-        <td>Types are uppercase: <code>'WIN'</code>, <code>'DEAD_END'</code>, <code>'GATEWAY'</code>.</td>
+        <td>Forgetting to return the count</td>
+        <td><code>display_destinations</code> still returns the number of destinations shown. The lab uses that count in the <code>get_valid_int(f'Choice (1-{n}): ', 1, n)</code> call.</td>
       </tr>
       <tr>
-        <td>Forgetting <code>'WRONG_WAY'</code> in <code>is_dead_end()</code></td>
-        <td>Both <code>'DEAD_END'</code> and <code>'WRONG_WAY'</code> end the game.</td>
+        <td>Treating <code>WRONG_WAY</code> as different from <code>DEAD_END</code></td>
+        <td>Gameplay-wise they behave identically: prompt the player to return to San Antonio. <code>is_dead_end</code> returns True for both.</td>
+      </tr>
+      <tr>
+        <td>Removing 'avoid' from the dictionary itself</td>
+        <td><code>get_redirect</code> builds a <em>list</em> of options and removes <code>avoid</code> from that list. The original dictionary stays untouched. Otherwise you destroy the loaded game state.</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
-    <p><ul><li><code>display_destinations()</code> shows a numbered menu from the dictionary</li><li><code>get_destination_by_number()</code> converts user choice to destination name</li><li><code>is_win_city()</code> returns <code>True</code> for WIN cities</li><li><code>is_dead_end()</code> returns <code>True</code> for DEAD_END or WRONG_WAY cities</li></ul></p>
+    <ol>
+      <li>Three rewritten helpers (<code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>) with new <code>(city, distances)</code> signatures</li>
+      <li>Two new type-check helpers (<code>is_win_city</code>, <code>is_dead_end</code>) in a new <code>CITY-INFO TYPE CHECKS</code> section</li>
+      <li>All five functions have docstrings</li>
+      <li>DEBUG block removed</li>
+    </ol>
     </div>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
@@ -535,80 +667,317 @@ Laredo is dead end? True</pre>
         <div class="lc-cp-badge__num">4</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Complete Game Loop</div>
-        <div class="lc-sub-banner">Wire everything together into a complete road trip game with the main() function.</div>
+        <div class="lc-cp-title">Lab Skeleton + Main Menu</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>A complete game that loads data, gets the player's name, displays current city info, lets the player choose destinations, uses a coin flip gate, and tracks the route until they reach the beach or a dead end.</p>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li>Create a <code>main()</code> function with a welcome banner.</li>
-      <li>Load both data files using your two loading functions.</li>
-      <li>Get the player's name: use <code>input().strip()</code> to clean whitespace.</li>
-      <li>Initialize game state: <code>current_city = 'San Antonio'</code>, <code>total_miles = 0</code>, <code>visited = [current_city]</code>.</li>
-      <li>Start the game loop: <code>while playing:</code>.</li>
-      <li>Show the current city name and its tagline from <code>city_info</code>.</li>
-      <li>Check for a win (<code>is_win_city</code>) or dead end (<code>is_dead_end</code>).</li>
-      <li>Display destinations and get the player's choice using <code>function_library.get_valid_int()</code>.</li>
-      <li>Use the coin flip gate: HEADS = go to chosen city, TAILS = random redirect.</li>
-      <li>Update state: <code>current_city</code>, <code>total_miles</code>, and the <code>visited</code> list.</li>
-      <li>After the loop ends, print the final trip report.</li>
-    </ol>
-    <div class="lc-callout lc-callout--tip">
+    <p>Start <code>lab-4-1.py</code>. The file imports <code>function_library</code>, declares the five module-level constants, declares the inline hazard parallel lists (carried forward from Lab 3.3), defines <code>save_trip_report</code> as a lab-local helper (also carried forward), and opens <code>main()</code> with the file loads and the main-menu loop from Lab 3.3.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>The main-menu loop is the outermost structure that lets the player choose New Game, Load Saved Game, or Quit. It was working in Lab 3.3. The only thing that changes here is that the city graph data is loaded from text files <em>before</em> the main-menu loop starts. After that, the menu logic, save/load logic, and welcome banner all stay the same.</p>
+    <div class="lc-callout lc-callout--info">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
-                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="19" r="1.5" fill="#000"/>
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
     </svg>
       </div>
       <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Input Validation Is Data-Driven Too</div>
+        <div class="lc-callout__title">How the Road Network Is Modeled</div>
         <div class="lc-callout__body">
-        <p>Use <code>function_library.get_valid_int(prompt, min, max)</code> for the destination choice. The upper bound is <code>len(distances[current_city])</code> — no hardcoding required.</p>
+        <p>The game's road network models <strong>interstate connections only</strong>. Austin connects to San Antonio, Dallas, and Fort Worth (all on the I-35 corridor) but not directly to Houston, because the Austin–Houston route is US-290, a US highway. Laredo and Corpus Christi each connect back to San Antonio only, since neither has an interstate link to anywhere else in the graph. El Paso is reachable from San Antonio (I-10) or Fort Worth (I-20 to I-10), but not from Laredo. Adding a city to <code>city_distances.txt</code> means committing to the same standard: if there's a clean interstate between the two cities, the edge belongs in the file; otherwise it does not.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Create <code>lab-4-1.py</code> with a top-of-file comment block (Name, abc123, Section, Description) and a module docstring.</li>
+      <li><code>import function_library</code> at the top.</li>
+      <li>Declare module-level constants: <code>DISTANCES_FILE = 'city_distances.txt'</code>, <code>INFO_FILE = 'city_info.txt'</code>, <code>REPORT_FILE = 'trip_report.txt'</code>, <code>MILES_MULTIPLIER = 10</code>, <code>HAZARD_CHANCE = 30</code>.</li>
+      <li>Copy the three parallel hazard lists (<code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code>) from Lab 3.3.</li>
+      <li>Copy <code>save_trip_report</code> from Lab 3.3 into the lab file unchanged.</li>
+      <li>Define <code>main()</code>. The first thing it does is print the welcome banner and load the data files: <code>distances = function_library.load_city_distances(DISTANCES_FILE)</code> and <code>city_info = function_library.load_city_info(INFO_FILE)</code>. Print the load counts so the player sees the game started cleanly.</li>
+      <li>Add the main-menu loop from Lab 3.3 unchanged: a <code>while in_program:</code> loop offering New Game (1), Load Saved Game (2), or Quit (3). Handle Quit and the load-from-file branch exactly like 3.3.</li>
+      <li>Add the <code>if __name__ == '__main__':</code> guard at the bottom calling <code>main()</code>.</li>
+      <li>Run the program. Confirm the welcome banner shows the loaded counts. Choose 3 to quit immediately and verify the program exits cleanly.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-2</strong>
+            — <code>phonebook_use.py</code>
+            
+            — Same idea: load a dictionary at program startup, then use it through the rest of the program. The loading happens once; everything downstream reads the loaded dictionary.
+          </li>
+          </ul>
         </div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p><strong>Step 1:</strong> Add the main guard at the bottom of your file:</p>
-    <div class="lc-code-block">
-      <pre><span class="sy-kw">if</span> __name__ <span class="sy-op">==</span> <span class="sy-str">&#x27;__main__&#x27;</span><span class="sy-op">:</span>
-    main<span class="sy-op">(</span><span class="sy-op">)</span></pre>
+    <p>Run the program. Expected behavior at this checkpoint: welcome banner, load counts print (10 cities, 10 info records), main menu shows, choosing 3 exits cleanly. Choosing 1 or 2 will not work yet because the play-again loop is built in CP5.</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>==================================================
+DEEP IN THE HEART: A LONE STAR JOURNEY
+==================================================
+
+Loading city data...
+Loaded 10 cities with travel routes.
+Loaded 10 city info records.
+
+MAIN MENU
+--------------------
+1. New Game
+2. Load Saved Game
+3. Quit
+
+Choice (1-3): 3
+
+Thanks for playing!</pre>
     </div>
-    <p><strong>Step 2:</strong> Play through the game and verify:</p>
-    <p><ul><li>Data loads correctly (shows number of cities)</li><li>Current city shows tagline from the data file</li><li>Destination menu shows all options from the dictionary</li><li>Coin flip works (HEADS = choice, TAILS = random)</li><li>Reaching Corpus Christi or Galveston shows a win</li><li>Final report shows route and total miles</li></ul></p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+    <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Data files not in the same folder as the script</td>
-        <td>Python looks for files relative to where the script runs. Keep all .txt files with lab-4-1.py.</td>
+        <td>Loading inside the main-menu loop</td>
+        <td>Load the data files ONCE, before the loop. Loading inside the loop re-reads the files every iteration.</td>
       </tr>
       <tr>
-        <td>Not calling loading functions before using data</td>
-        <td>Call <code>load_city_distances()</code> and <code>load_city_info()</code> at the start of <code>main()</code>.</td>
+        <td>Hardcoding file names</td>
+        <td>Use the <code>DISTANCES_FILE</code> and <code>INFO_FILE</code> constants. CodeGrade looks for those exact names.</td>
       </tr>
       <tr>
-        <td>Missing <code>if __name__ == '__main__':</code></td>
-        <td>Without this guard, <code>main()</code> runs when the module is imported, which breaks CodeGrade.</td>
+        <td>Forgetting <code>if __name__ == '__main__':</code></td>
+        <td>Without it, <code>main()</code> runs at import time, which breaks CodeGrade's test harness.</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
-    <p><ul><li>Complete <code>main()</code> function with game loop</li><li>All data comes from files (no hardcoded constants for cities)</li><li>Clean input with <code>.strip()</code></li><li>Uses <code>function_library</code> for coin flip and input validation</li><li>Complete trip report at the end</li></ul></p>
+    <ol>
+      <li><code>lab-4-1.py</code> with top-of-file comment, docstring, imports, constants, hazard lists, <code>save_trip_report</code>, <code>main()</code></li>
+      <li>Running the program shows the welcome banner, loads 10 cities and 10 info records, displays the main menu</li>
+      <li>Choosing 3 exits cleanly with a thank-you message</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">5</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Coin Gate + D20 Travel + Dead Ends</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Drop the play-again loop and the in-game loop from Lab 3.3 into <code>main()</code>. Update every call site to use the new dict-shape helpers: <code>display_destinations(current_city, distances)</code>, <code>get_destination(current_city, distances, choice)</code>, and <code>get_redirect(current_city, distances, wanted)</code>. Replace the hardcoded <code>if current_city in ('Corpus Christi', 'Galveston')</code> and <code>elif current_city == 'Austin'</code> branches with calls to <code>is_win_city</code> and <code>is_dead_end</code>.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>The in-game loop is identical in structure to Lab 3.3: pick a destination, flip the coin gate, travel by D20, check for hazards, check arrival type, decide next action. What changes is that every reference to a hardcoded city name moves out into the <code>city_info</code> dictionary lookup. A new city in the data file does not need any code changes here. That is the win.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Inside the main-menu loop's New Game branch, initialize: <code>current_city = 'San Antonio'</code>, <code>games_played = 0</code>, <code>session_miles = 0</code>, <code>session_hazards = 0</code>.</li>
+      <li>Open the play-again loop with <code>play_again = True</code>; <code>while play_again:</code>. Inside, reinitialize per-game state (<code>total_miles</code>, <code>total_turns</code>, <code>total_hazards</code>, <code>total_escaped</code>, <code>visited_cities</code>, <code>hazards_list</code>) unless this iteration is resuming a save.</li>
+      <li>Open the in-game loop with <code>playing = True</code>; <code>while playing:</code>. Inside, fetch the current city's info, print it with its tagline, then call <code>function_library.display_destinations(current_city, distances)</code>.</li>
+      <li>Use <code>function_library.get_valid_int</code> to read the player's menu choice. Then flip the Destination Gate coin: on HEADS call <code>get_destination</code>, on TAILS call <code>get_destination</code> first to capture the wanted destination, then call <code>get_redirect</code> to pick a different destination instead.</li>
+      <li>Drop in the D20 travel loop from Lab 3.3 unchanged. Each turn: <code>roll = function_library.roll_d20()</code>, <code>miles_this_turn = roll * MILES_MULTIPLIER</code>, decrement <code>miles_remaining</code>, add to <code>total_miles</code>, and check for hazards via <code>function_library.check_percentage(HAZARD_CHANCE)</code>.</li>
+      <li>After arrival, update <code>current_city</code>, append to <code>visited_cities</code>, and check what kind of city you arrived at: if <code>is_win_city(current_city, city_info)</code> you reached the beach (set <code>reached_beach = True</code>, exit the in-game loop). If <code>is_dead_end(current_city, city_info)</code>, print the dead-end message and use <code>function_library.get_yes_no</code> to ask 'Return to San Antonio?'.</li>
+      <li>Otherwise print the 1/2/3 Continue / Save & quit / Quit without saving menu and dispatch accordingly. Save & quit calls <code>function_library.save_game(...)</code> with the 11-tuple.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-5</strong>
+            — <code>in_phonebook.py</code>
+            
+            — <code>'Corpus Christi' in distances</code> works the same way as your earlier <code>in</code> checks. But you do not need to write the city names by hand &mdash; <code>is_win_city</code> and <code>is_dead_end</code> wrap the comparison.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Run a full happy-path play-through: New Game, enter your name, pick Corpus Christi (choice 1), let the coin flip however it lands, and ride the D20 mechanic to the beach. Then play a dead-end path: pick Laredo (choice 4), say no to the return-home prompt, and confirm the game ends with a 'Dead End' status.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Skipping the redirect path on TAILS</td>
+        <td>When the gate is TAILS, you still need to know what the player <em>wanted</em>. Call <code>get_destination</code> first to capture the wanted dest, then call <code>get_redirect</code> to pick something else.</td>
+      </tr>
+      <tr>
+        <td>Forgetting to append to <code>visited_cities</code> after a return-to-SA</td>
+        <td>If the player is at Laredo and chooses to return, <code>current_city = 'San Antonio'</code> and <code>visited_cities.append('San Antonio')</code>. Otherwise the route looks wrong.</td>
+      </tr>
+      <tr>
+        <td>Hardcoding 'Corpus Christi' or 'Galveston' as win cities</td>
+        <td>Use <code>is_win_city(current_city, city_info)</code> instead. Same outcome, future-proof.</td>
+      </tr>
+      <tr>
+        <td>Not resetting per-game state inside the play-again loop</td>
+        <td>After 'Play again? y', you need a fresh <code>total_miles</code>, <code>visited_cities</code>, etc. Only the session-level counters carry across games.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li>Working three-loop architecture (main menu, play-again, in-game) reading from the loaded dictionaries</li>
+      <li>Coin-flip Destination Gate working with the new dict-shape helpers</li>
+      <li>D20 travel loop working with hazards</li>
+      <li>Dead-end (Laredo, Texarkana, El Paso) and WIN (Corpus Christi, Galveston) handling via <code>is_dead_end</code> and <code>is_win_city</code></li>
+      <li>Save & quit writes <code>savegame.txt</code>; loading from that save resumes correctly</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">6</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Trip Report + Session Totals</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Drop the Lab 3.3 final trip report block in below the in-game loop. Sort the hazards alphabetically with <code>.copy().sort()</code>. Build the unique-cities list using the <code>in</code> operator (sets arrive in Lab 4.3). Call the lab-local <code>save_trip_report</code> to write <code>trip_report.txt</code>. Update the session accumulators. Then ask 'Play again?' to close the play-again loop. After the loop, print the session statistics block from 3.3 unchanged.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>The trip report is the player's souvenir. It carries forward from Lab 3.3 because the game's identity, the shape of the data players hold on to, has not changed this week. Module 4 is about how the game's <em>code</em> reads its data, not what the player experiences. The session statistics show that the play-again loop is doing its job: totals accumulate across multiple games in a single sitting.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Test the trip report end-to-end. Run a quick game to the beach, run a dead-end game, run a save-and-quit, run a quit-without-saving. Each one should produce a different status string in the report. If they all say 'BEACH WINNER!' regardless of outcome, the status logic broke and you'll find it in the conditional chain right after the in-game loop. Status strings are the easiest part of this CP to test and the easiest part to get wrong."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
+        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Immediately after the in-game loop, check the four flags from CP5 (<code>reached_beach</code>, <code>hit_dead_end</code>, <code>saved_and_quit</code>, <code>quit_without_saving</code>) and assign a <code>status</code> string accordingly. The four allowed values are <code>'BEACH WINNER!'</code>, <code>'Dead End'</code>, <code>'Quit without saving'</code>, and <code>'Trip Incomplete'</code>.</li>
+      <li>If the player saved and quit, do not write the trip report; instead break out of the play-again loop with <code>play_again = False</code>.</li>
+      <li>Otherwise, build <code>sorted_hazards = hazards_list.copy()</code> then <code>sorted_hazards.sort()</code>.</li>
+      <li>Build <code>unique_cities</code> by iterating <code>visited_cities</code> and appending each city that is not already <code>in</code> <code>unique_cities</code>. This is the same pattern as Lab 3.3 &mdash; sets arrive in 4.3.</li>
+      <li>Print the trip report block from Lab 3.3: title banner, driver, final city, status, route via <code>display_numbered_list</code>, unique count, hazards (sorted) via <code>display_numbered_list</code> or a 'None' fallback, and the STATISTICS block (miles, turns, hazards faced/escaped, escape rate).</li>
+      <li>Call <code>save_trip_report(REPORT_FILE, ...)</code> to write the same content to disk.</li>
+      <li>Update the session accumulators: <code>games_played += 1</code>, <code>session_miles += total_miles</code>, <code>session_hazards += total_hazards</code>.</li>
+      <li>Ask <code>play_again = function_library.get_yes_no('Play again? (y/n): ')</code>. The play-again loop continues while this stays True.</li>
+      <li>After the play-again loop exits, print the SESSION STATISTICS banner from 3.3 if the player did not save-and-quit.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 7-9</strong>
+            — <code>remove_duplicates.py</code>
+            
+            — The <code>in</code> operator on a list, the same one you used in Lab 3.3 to build unique-city lists. Carries forward unchanged here. Sets arrive in Lab 4.3 and clean this pattern up.
+          </li>
+          <li>
+            <strong>Program 7-16</strong>
+            — <code>sort_grades.py</code>
+            
+            — <code>.sort()</code> sorts a list in place. Pair with <code>.copy()</code> to keep the original list's order intact (you still want <code>visited_cities</code> in chronological order for the route display).
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Run all four outcome paths: (1) beach via Corpus Christi, (2) dead-end at Laredo by saying no to the return-home prompt, (3) save and quit at a non-beach city, (4) quit without saving at a non-beach city. Each should produce the correct status. Then play two consecutive games in one session (beach + dead-end) and verify the SESSION STATISTICS at the end show <code>Games Played: 2</code>.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Calling <code>hazards_list.sort()</code> directly</td>
+        <td>That mutates the original. Use <code>sorted_hazards = hazards_list.copy()</code> first, then sort the copy. The trip report wants sorted, the save format wants chronological.</td>
+      </tr>
+      <tr>
+        <td>Updating session accumulators inside the in-game loop</td>
+        <td>Wait until <em>after</em> the in-game loop exits. Otherwise totals get added to mid-game and the accounting drifts.</td>
+      </tr>
+      <tr>
+        <td>Writing the trip report on save-and-quit</td>
+        <td>On save-and-quit, the player wants to come back later. Skip the report so they do not get a partial souvenir.</td>
+      </tr>
+      <tr>
+        <td>Forgetting to include both screen and file output</td>
+        <td>The trip report runs twice: once to the screen (<code>print</code> statements) and once to the file (<code>save_trip_report</code>). Same content, two destinations.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li>Four distinct status strings produced by the four outcome paths</li>
+      <li><code>trip_report.txt</code> written every completed game (not on save-and-quit)</li>
+      <li>Session accumulators correctly summing across multiple plays</li>
+      <li>Play-again loop transitions cleanly back to the main menu when the player says no</li>
+    </ol>
     </div>
   </div>
 </div>
@@ -625,45 +994,380 @@ Laredo is dead end? True</pre>
     <ul class="lc-checklist">
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">File is named exactly <code>lab-4-1.py</code></span>
+        <span class="lc-checklist__label">Submitting <strong>two files</strong>: <code>lab-4-1.py</code> and <code>function_library.py</code></span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Docstring includes your name, abc123, section, and description</span>
+        <span class="lc-checklist__label"><code>function_library.py</code> grew by <strong>seven</strong> entries this week: two loaders (<code>load_city_distances</code>, <code>load_city_info</code>), three rewritten helpers (<code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>), and two new type checks (<code>is_win_city</code>, <code>is_dead_end</code>)</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Uses <code>.strip()</code> and <code>.split(',')</code> to parse file data</span>
+        <span class="lc-checklist__label"><code>lab-4-1.py</code> defines five constants at module level: <code>DISTANCES_FILE</code>, <code>INFO_FILE</code>, <code>REPORT_FILE</code>, <code>MILES_MULTIPLIER</code>, <code>HAZARD_CHANCE</code></span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Uses dictionaries (not hardcoded constants) to store city data</span>
+        <span class="lc-checklist__label"><code>main()</code> loads both data files at startup using the new library functions; the loaded <code>distances</code> and <code>city_info</code> dictionaries flow through the rest of the game</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Uses <code>function_library</code> for <code>flip_coin</code> and <code>get_valid_int</code></span>
+        <span class="lc-checklist__label">Three-loop architecture from Lab 3.3 is preserved: main menu, play-again, in-game</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">All DEBUG/test code has been removed</span>
+        <span class="lc-checklist__label">D20 travel mechanic from Lab 3.3 is preserved: each turn rolls a d20 and moves <code>roll * MILES_MULTIPLIER</code> miles</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">No syntax errors when you run the program</span>
+        <span class="lc-checklist__label"><code>save_trip_report</code> still lives in <code>lab-4-1.py</code> as a lab-local helper and writes <code>trip_report.txt</code> at the end of every completed game</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Top-of-file comment block present on both files: Name, abc123, Section, Description</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Docstring on every function</span>
       </li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
-    <p>Chapters 2–9 only. String methods like .strip() and .split() are the Chapter 8 focus this week. .upper() and .lower() are saved for Module 4.2. Sets are saved for Module 4.3. CodeGrade will flag code using techniques from later chapters.</p>
+    <p>Module 4.1 introduces file parsing (.strip(), .split()) and dictionaries (creation, access, nested, .keys(), &#x27;in&#x27; operator). Sets and the .upper() input-cleaning relief are held back for Labs 4.2 and 4.3.</p>
     <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
     <div class="lc-permitted">
-      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–9 (Chapters 2–7 fully permitted from previous modules; Chapter 8 string methods .strip() and .split() as introduced this week; Chapter 9 dictionaries and nested dictionaries)</p>
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> Chapters 1–9 (Strings + Dictionaries arrive this week)</p>
       <ul class="lc-permitted__list">
-      <li>String methods: <code>.strip()</code>, <code>.split(',')</code></li>
-      <li>File I/O: <code>open(filename)</code>, reading lines in a loop</li>
-      <li>Dictionaries: creation, key access, nested dicts</li>
-      <li><code>import random</code>, <code>import function_library</code></li>
+      <li>C</li>
+      <li>h</li>
+      <li>a</li>
+      <li>p</li>
+      <li>t</li>
+      <li>e</li>
+      <li>r</li>
+      <li> </li>
+      <li>8</li>
+      <li>:</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li>s</li>
+      <li>t</li>
+      <li>r</li>
+      <li>i</li>
+      <li>p</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li>s</li>
+      <li>p</li>
+      <li>l</li>
+      <li>i</li>
+      <li>t</li>
+      <li>(</li>
+      <li>'</li>
+      <li>,</li>
+      <li>'</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li> </li>
+      <li>f</li>
+      <li>o</li>
+      <li>r</li>
+      <li> </li>
+      <li>f</li>
+      <li>i</li>
+      <li>l</li>
+      <li>e</li>
+      <li> </li>
+      <li>p</li>
+      <li>a</li>
+      <li>r</li>
+      <li>s</li>
+      <li>i</li>
+      <li>n</li>
+      <li>g</li>
+      <li>.</li>
+      <li> </li>
+      <li>C</li>
+      <li>h</li>
+      <li>a</li>
+      <li>p</li>
+      <li>t</li>
+      <li>e</li>
+      <li>r</li>
+      <li> </li>
+      <li>9</li>
+      <li>:</li>
+      <li> </li>
+      <li>d</li>
+      <li>i</li>
+      <li>c</li>
+      <li>t</li>
+      <li>i</li>
+      <li>o</li>
+      <li>n</li>
+      <li>a</li>
+      <li>r</li>
+      <li>y</li>
+      <li> </li>
+      <li>c</li>
+      <li>r</li>
+      <li>e</li>
+      <li>a</li>
+      <li>t</li>
+      <li>i</li>
+      <li>o</li>
+      <li>n</li>
+      <li> </li>
+      <li>w</li>
+      <li>i</li>
+      <li>t</li>
+      <li>h</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>{</li>
+      <li>}</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li>d</li>
+      <li>i</li>
+      <li>c</li>
+      <li>t</li>
+      <li>i</li>
+      <li>o</li>
+      <li>n</li>
+      <li>a</li>
+      <li>r</li>
+      <li>y</li>
+      <li> </li>
+      <li>a</li>
+      <li>c</li>
+      <li>c</li>
+      <li>e</li>
+      <li>s</li>
+      <li>s</li>
+      <li> </li>
+      <li>w</li>
+      <li>i</li>
+      <li>t</li>
+      <li>h</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>d</li>
+      <li>i</li>
+      <li>c</li>
+      <li>t</li>
+      <li>[</li>
+      <li>k</li>
+      <li>e</li>
+      <li>y</li>
+      <li>]</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li>n</li>
+      <li>e</li>
+      <li>s</li>
+      <li>t</li>
+      <li>e</li>
+      <li>d</li>
+      <li> </li>
+      <li>d</li>
+      <li>i</li>
+      <li>c</li>
+      <li>t</li>
+      <li>i</li>
+      <li>o</li>
+      <li>n</li>
+      <li>a</li>
+      <li>r</li>
+      <li>i</li>
+      <li>e</li>
+      <li>s</li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>'</li>
+      <li>i</li>
+      <li>n</li>
+      <li>'</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li> </li>
+      <li>w</li>
+      <li>i</li>
+      <li>t</li>
+      <li>h</li>
+      <li> </li>
+      <li>d</li>
+      <li>i</li>
+      <li>c</li>
+      <li>t</li>
+      <li>i</li>
+      <li>o</li>
+      <li>n</li>
+      <li>a</li>
+      <li>r</li>
+      <li>i</li>
+      <li>e</li>
+      <li>s</li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li>k</li>
+      <li>e</li>
+      <li>y</li>
+      <li>s</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li>l</li>
+      <li>o</li>
+      <li>o</li>
+      <li>p</li>
+      <li>i</li>
+      <li>n</li>
+      <li>g</li>
+      <li> </li>
+      <li>t</li>
+      <li>h</li>
+      <li>r</li>
+      <li>o</li>
+      <li>u</li>
+      <li>g</li>
+      <li>h</li>
+      <li> </li>
+      <li>d</li>
+      <li>i</li>
+      <li>c</li>
+      <li>t</li>
+      <li>i</li>
+      <li>o</li>
+      <li>n</li>
+      <li>a</li>
+      <li>r</li>
+      <li>i</li>
+      <li>e</li>
+      <li>s</li>
+      <li>.</li>
+      <li> </li>
+      <li>E</li>
+      <li>v</li>
+      <li>e</li>
+      <li>r</li>
+      <li>y</li>
+      <li>t</li>
+      <li>h</li>
+      <li>i</li>
+      <li>n</li>
+      <li>g</li>
+      <li> </li>
+      <li>f</li>
+      <li>r</li>
+      <li>o</li>
+      <li>m</li>
+      <li> </li>
+      <li>M</li>
+      <li>o</li>
+      <li>d</li>
+      <li>u</li>
+      <li>l</li>
+      <li>e</li>
+      <li>s</li>
+      <li> </li>
+      <li>1</li>
+      <li>–</li>
+      <li>3</li>
+      <li> </li>
+      <li>c</li>
+      <li>a</li>
+      <li>r</li>
+      <li>r</li>
+      <li>i</li>
+      <li>e</li>
+      <li>s</li>
+      <li> </li>
+      <li>f</li>
+      <li>o</li>
+      <li>r</li>
+      <li>w</li>
+      <li>a</li>
+      <li>r</li>
+      <li>d</li>
+      <li>.</li>
       </ul>
-    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> Classes (Chapter 10), inheritance (Chapter 11), sets (Module 4.3), .upper() and .lower() (Module 4.2), list comprehensions</p>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> &lt;code&gt;.upper()&lt;/code&gt; and &lt;code&gt;.lower()&lt;/code&gt; on user input (saved for Lab 4.2). Sets (saved for Lab 4.3). Trivia gate (saved for Lab 4.3). Dictionary comprehensions (not covered this semester).</p>
     </div>
     <div class="lc-callout lc-callout--warning">
       <div class="lc-callout__icon">
@@ -676,7 +1380,22 @@ Laredo is dead end? True</pre>
       </div>
       <div class="lc-callout__bubble">
         <div class="lc-callout__body">
-          <p>Do not use <code>.upper()</code> or <code>.lower()</code> yet — those are the Module 4.2 reveal. CodeGrade's scope check will flag premature use.</p>
+          <p>Do not paste the data files into the top of <code>lab-4-1.py</code> as Python literals. The whole point of this week is that the data lives in text files, not in code.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Do not delete the inline hazard parallel lists from <code>lab-4-1.py</code>. They stay this week; <code>hazards.txt</code> arrives in Lab 4.2.</p>
         </div>
       </div>
     </div>
@@ -691,9 +1410,167 @@ Laredo is dead end? True</pre>
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">Save Your Code</div>
         <div class="lc-callout__body">
-          <p>Keep <code>lab-4-1.py</code> — Module 4.2 adds string method input handling directly on top of your file-loading foundation. You will copy this file and build on it.</p>
+          <p>Save a copy of <code>lab-4-1.py</code> as <code>lab-4-1-backup.py</code> before you start Lab 4.2. Lab 4.2 starts by copying 4.1 forward, so you want a clean baseline to fall back to if the 4.2 changes break something.</p>
         </div>
       </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Run the Full Check</div>
+    <p>Before you submit, run your program end-to-end. Your output should match this exactly:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>==================================================
+DEEP IN THE HEART: A LONE STAR JOURNEY
+==================================================
+
+Loading city data...
+Loaded 10 cities with travel routes.
+Loaded 10 city info records.
+
+MAIN MENU
+--------------------
+1. New Game
+2. Load Saved Game
+3. Quit
+
+Choice (1-3): 
+What is your name, traveler? 
+Welcome, Tester!
+You are in San Antonio. Your goal: reach the beach!
+Beach cities: Corpus Christi and Galveston.
+
+You are in: San Antonio
+  &quot;Home of the Alamo&quot;
+
+From San Antonio, you can travel to:
+  1. Corpus Christi - 150 miles
+  2. Houston - 200 miles
+  3. Austin - 80 miles
+  4. Laredo - 160 miles
+  5. El Paso - 550 miles
+
+Choice (1-5): 
+Flipping to see if Texas cooperates...
+Result: HEADS!
+
+Texas says: &quot;Y&#x27;all come on through!&quot;
+You&#x27;re headed to Corpus Christi!
+Distance: 150 miles
+
+==================================================
+TRAVELING TO CORPUS CHRISTI!
+==================================================
+
+--- Turn 1 ---
+Miles remaining: 150
+You rolled a 1!
+You travel 10 miles...
+Miles remaining: 140
+
+--- Turn 2 ---
+Miles remaining: 140
+You rolled a 9!
+You travel 90 miles...
+Miles remaining: 50
+
+--- Turn 3 ---
+Miles remaining: 50
+You rolled a 8!
+You travel 80 miles...
+
+You made it to Corpus Christi!
+
+==================================================
+CONGRATULATIONS! YOU REACHED THE BEACH!
+==================================================
+
+
+==================================================
+FINAL TRIP REPORT
+==================================================
+Driver: Tester
+Final City: Corpus Christi
+Status: BEACH WINNER!
+
+YOUR ROUTE
+----------
+  1. San Antonio
+  2. Corpus Christi
+
+Unique cities visited: 2
+
+HAZARDS ENCOUNTERED (A-Z)
+-------------------------
+  None - Lucky traveler!
+
+STATISTICS
+----------
+  Total Miles: 180
+  Total Turns: 3
+  Hazards Faced: 0
+  Hazards Escaped: 0
+
+==================================================
+
+Trip report saved to trip_report.txt.
+
+Play again? (y/n): 
+==================================================
+SESSION STATISTICS
+==================================================
+Games Played: 1
+Total Miles: 180
+Total Hazards: 0
+==================================================
+
+Thanks for playing, Tester!
+An All My Eggses Live in Texas Production
+
+MAIN MENU
+--------------------
+1. New Game
+2. Load Saved Game
+3. Quit
+
+Choice (1-3): 
+Thanks for playing!</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">If Something Breaks</div>
+    <p>Common failure patterns and where they came from:</p>
+    <div class="lc-table-wrap" style="--lc-accent: #FF1744;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Symptom</th>
+            <th>Where to Look</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>KeyError: 'San Antonio'</code> on the first menu display</td>
+        <td>Check CP1 (Load City Distances) — the loader is not inserting <code>'San Antonio'</code> as a top-level key. Verify the <code>if city1 not in distances:</code> guard.</td>
+      </tr>
+      <tr>
+        <td><code>FileNotFoundError: city_distances.txt</code></td>
+        <td>Check CP4 (Lab Skeleton). The data files must be in the same folder as <code>lab-4-1.py</code> when you run it locally. CodeGrade provides them as fixtures.</td>
+      </tr>
+      <tr>
+        <td>Menu shows distances but the wrong destinations (Houston instead of Corpus Christi, etc.)</td>
+        <td>Check CP3 (Graph Helpers). Verify <code>display_destinations</code> iterates <code>distances[city]</code> in order and prints both the destination key and the value.</td>
+      </tr>
+      <tr>
+        <td>Dead-end prompt fires at the wrong cities (or never fires)</td>
+        <td>Check CP3 (<code>is_dead_end</code>). Both <code>'DEAD_END'</code> and <code>'WRONG_WAY'</code> count as dead ends. Compare exact uppercase strings.</td>
+      </tr>
+      <tr>
+        <td>Trip report does not appear at the end of the game</td>
+        <td>Check CP6. The trip report runs after the in-game loop exits naturally. If the player saves and quits, the report is intentionally skipped (that's the save path, not the report path).</td>
+      </tr>
+      <tr>
+        <td><code>ValueError: invalid literal for int()</code> when loading distances</td>
+        <td>Check CP1. After <code>parts = line.strip().split(',')</code>, only <code>parts[2]</code> gets cast to <code>int</code>. <code>parts[0]</code> and <code>parts[1]</code> stay as strings.</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
     <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
@@ -710,11 +1587,11 @@ Laredo is dead end? True</pre>
 
     <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
     <ul>
-      <li>Re-read Program 8-10 (split_date.py) — the pattern for splitting CSV data is exactly what you need here</li>
-      <li>Re-read Program 9-1 (card_dealer.py) — creating and accessing dictionaries</li>
-      <li>Test each loading function independently — get <code>load_city_distances()</code> working before you start <code>load_city_info()</code></li>
-      <li>Use DEBUG prints — print what you're parsing from each line to verify it's correct</li>
-      <li>Submit to CodeGrade early — it shows exactly which tests pass or fail</li>
+      <li>Re-read Programs 8–10 (<code>.split('/')</code>) and 9–1 (basic dictionaries) before you start. The CSV parsing pattern (<code>line.strip().split(',')</code>) is the lab's most common bug source</li>
+      <li>Print the loaded dictionaries during development. After <code>distances = load_city_distances(...)</code>, add <code>print(distances)</code> to confirm the shape before you use it. Delete the print before submitting</li>
+      <li>If <code>display_destinations</code> shows nothing, you probably passed the wrong arguments. The new signature is <code>(city, distances)</code> &mdash; the city is a string, the distances is the whole nested dictionary</li>
+      <li>Save / load was working in Lab 3.3 and should still work here unchanged. If it stops working, you probably touched the library save/load functions accidentally. Roll those back to the Module 3 version</li>
+      <li>Post questions in <code>#labs</code> on Discord. Include your error message and the line number, not a screenshot of the whole file</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
     <div class="lc-contact-grid">

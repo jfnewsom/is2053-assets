@@ -26,50 +26,54 @@
           <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: 120px; width: auto; display: block;">
         </td>
       </tr>
-    <tr><td colspan="3" style="padding: 10px 0 0 0;"><div class="lc-sub-banner">MODULE 4 &bull; WEEK 2 &bull; ENHANCE &bull; CHAPTERS 8–9: STRING METHODS, LISTS OF DICTIONARIES</div></td></tr>
+    <tr><td colspan="3" style="padding: 10px 0 0 0;"><div class="lc-sub-banner">MODULE 4 &bull; WEEK 2 &bull; ENHANCE &bull; CHAPTERS 8–9: MORE ABOUT STRINGS, DICTIONARIES</div></td></tr>
     </table>
   </div>
   <div class="lc-panel">
     <div class="lc-h3 lc-h3--yellow">Overview</div>
     <img src="../../branding/AllMyEggses3D-Full.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
-    <p>Remember writing <code>if choice == 'y' or choice == 'Y':</code> over and over? Those days are <strong>OVER</strong>. This week you'll discover <code>.upper()</code> and <code>.strip()</code> — string methods that clean and normalize input in one line. You'll also add <strong>hazards</strong> loaded from a data file and a <strong>D20 travel system</strong> where dice rolls determine how far you go each turn.</p>
+    <p>ENHANCE week. Two big wins land together. First, hazards move out of <code>lab-4-2.py</code> and into <code>hazards.txt</code>, loaded into a list of dictionaries with a third loader function. Second, <code>.upper()</code> finally arrives. A new <code>clean_input()</code> helper strips whitespace and uppercases the result, collapsing every <code>y/Y/n/N</code> comparison into a single Y/N check. <code>get_valid_int</code> also gets smarter, using <code>.isdigit()</code> so typing <code>abc</code> at a numeric prompt no longer crashes the program. Two Patch Notes Tyler dropped back in Module 2 finally close this week.</p>
     <div style="clear: both;"></div>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
-          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"I spent SO much time writing <code>if choice == 'y' or choice == 'Y'</code> everywhere. When someone showed me <code>choice.upper() == 'Y'</code>, I was like... wait, that’s IT? One method fixes ALL my case problems? Now I <code>.upper()</code> or <code>.lower()</code> every string comparison!"</div>
+          <div class="lc-mentor__quote">"The player should never lose to bad input. They typed <code>y</code> instead of <code>Y</code>, the game crashed, they reload, they're annoyed. That's a design failure, not a player failure. <code>clean_input()</code> means we accept whatever the player types, uppercase, lowercase, with a stray space, and meet them where they are. That's what good interfaces feel like: invisible."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Tyler Nguyen</div>
-        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Filename</div>
-    <p>Submit <code>lab-4-2.py</code> and your <code>function_library.py</code> this week. Start by copying your <code>lab-4-1.py</code> and renaming it.</p>
-    <p>CodeGrade tests your functions in isolation, so both files must be present.</p>
+    <p>Submit <code>lab-4-2.py</code> and <code>function_library.py</code>. CodeGrade provides all three data files as fixtures.</p>
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <ul class="lc-objectives">
-      <li>Write <code>load_hazards()</code> to parse <code>hazards.txt</code> into a list of dictionaries</li>
-      <li>Replace all <code>or</code> case-handling patterns with <code>.strip().upper()</code></li>
-      <li>Write <code>handle_hazard()</code> to pick a random hazard and flip a coin for the outcome</li>
-      <li>Write <code>travel_to()</code> with D20-based progression and a 30% hazard chance per turn</li>
-      <li>Track hazards faced and escaped in the final trip report</li>
+      <li>Add <code>clean_input(prompt)</code> to <code>function_library.py</code>: <code>return input(prompt).strip().upper()</code></li>
+      <li>Rewrite <code>get_valid_int</code> in the library to use <code>.isdigit()</code> so non-numeric input is caught with a friendly error message instead of crashing with <code>ValueError</code> (closes Tyler's Patch Note from Lab 2-3, CP3)</li>
+      <li>Rewrite <code>get_yes_no</code> in the library to use <code>clean_input</code>. The 4-way <code>'y'/'Y'/'n'/'N'</code> comparison collapses to a single Y/N check</li>
+      <li>Add <code>load_hazards(filename)</code> to the library, parsing <code>hazards.txt</code> into a list of dictionaries (closes Tyler's Patch Note from Lab 2-2, CP6)</li>
+      <li>Add <code>handle_hazard(hazards)</code> to the library: picks a random hazard, prints the encounter, flips the escape coin, returns a tuple <code>(name, escaped)</code></li>
+      <li>In <code>lab-4-2.py</code>: copy 4.1 forward, delete the inline hazard parallel lists, load <code>hazards.txt</code> at startup, replace the inline hazard block in the travel loop with a single <code>handle_hazard</code> call, and retire <code>get_random_hazard</code> entirely</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
-    <p><strong>Chapter 8:</strong> <code>.upper()</code>, <code>.lower()</code>, <code>.strip()</code>, and method chaining<br><strong>Chapter 9:</strong> List of dictionaries, <code>random.choice()</code> with a list of dicts</p>
+    <p><code>.upper()</code> and <code>.strip()</code> compose elegantly. <code>input(prompt).strip().upper()</code> reads from the user, removes any surrounding whitespace, and converts the result to uppercase, all in one expression. Wrapping that pattern in <code>clean_input()</code> means every input cleanup in the game looks the same. <code>.isdigit()</code> checks whether a string consists entirely of decimal digits, which is the right test for 'is this a non-negative whole number?' before calling <code>int()</code>. List of dictionaries is the third dictionary shape you've seen this module: a list whose items happen to be dicts. <code>random.choice(hazards)</code> returns one of those dicts, and <code>hazard['name']</code> retrieves a field.</p>
     <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
-    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 8 &amp; 9</p>
+    <p>Chapter 8: Programs 8–1 through 8–14 cover string methods. &lt;code&gt;.upper()&lt;/code&gt; and &lt;code&gt;.isdigit()&lt;/code&gt; are demonstrated in Programs 8–6 and 8–7. Chapter 9 Program 9–10 shows a list of dictionaries.</p>
     <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
     <ul>
-      <li>Your program <strong>MUST</strong> use <code>.strip().upper()</code> for all yes/no input handling</li>
-      <li>Your program <strong>MUST</strong> load hazards from <code>hazards.txt</code> into a list of dictionaries</li>
-      <li>Your program <strong>MUST</strong> use D20 rolls for travel distance (roll × 10 miles per turn)</li>
-      <li>Your program <strong>MUST</strong> use <code>function_library.py</code> for <code>roll_d20</code>, <code>flip_coin</code>, and <code>check_percentage</code></li>
-      <li>Your program <strong>MUST</strong> track and display hazards faced and escaped in the final report</li>
+      <li>Submit <code>lab-4-2.py</code> and <code>function_library.py</code></li>
+      <li>Top-of-file comment block on both files: Name, abc123, Section, Description</li>
+      <li>Docstring on every function</li>
+      <li>Load all three data files at startup: <code>city_distances.txt</code>, <code>city_info.txt</code>, <code>hazards.txt</code></li>
+      <li>Three-loop architecture preserved from 4.1: main menu, play-again, in-game</li>
+      <li>D20 travel mechanic preserved from 4.1</li>
+      <li>Hazards loaded from <code>hazards.txt</code>; no inline hazard parallel lists in <code>lab-4-2.py</code></li>
+      <li><code>get_random_hazard</code> retired from the library</li>
+      <li>Trip report still saved to <code>trip_report.txt</code> at the end of every completed game</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Required Data Files</div>
     <div class="lc-table-wrap">
@@ -82,27 +86,49 @@
           </tr>
         </thead>
         <tbody>
-      <tr><td><code>city_distances.txt</code></td><td>Same as Lab 4.1</td><td><a href="data/city_distances.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_distances.txt</a></td></tr>
-      <tr><td><code>city_info.txt</code></td><td>Same as Lab 4.1</td><td><a href="data/city_info.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_info.txt</a></td></tr>
-      <tr><td><code>hazards.txt</code> <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span></td><td>name,heads_message,tails_message</td><td><a href="data/hazards.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; hazards.txt</a></td></tr>
-      <tr><td><code>function_library.py</code></td><td>Your shared function library from Module 3</td><td><a href="data/function_library.py" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; function_library.py</a></td></tr>
+      <tr><td><code>city_distances.txt</code></td><td>city1,city2,distance (carried over from Lab 4.1)</td><td><a href="data/4-2/city_distances.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_distances.txt</a></td></tr>
+      <tr><td><code>city_info.txt</code></td><td>city,type,tagline (carried over from Lab 4.1)</td><td><a href="data/4-2/city_info.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_info.txt</a></td></tr>
+      <tr><td><code>hazards.txt</code> <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span></td><td>name,heads_message,tails_message</td><td><a href="data/4-2/hazards.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; hazards.txt</a></td></tr>
+      <tr><td><code>function_library.py</code></td><td>Shared function library, extended this week with clean_input, load_hazards, and handle_hazard</td><td><a href="data/function_library.py" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; function_library.py</a></td></tr>
         </tbody>
       </table>
     </div>
-    <div class="lc-callout lc-callout--success">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
-        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Save Your Code</div>
-        <div class="lc-callout__body">
-          <p>Keep <code>lab-4-2.py</code> — Module 4.3 adds sets and a visited-cities tracker directly on top of this foundation.</p>
-        </div>
-      </div>
+    <div class="lc-h3 lc-h3--yellow">Named Constants</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table lc-named-constants__table">
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>DISTANCES_FILE</code></td>
+        <td>Name of the city distances text file</td>
+      </tr>
+      <tr>
+        <td><code>INFO_FILE</code></td>
+        <td>Name of the city info text file</td>
+      </tr>
+      <tr>
+        <td><code>HAZARDS_FILE</code></td>
+        <td>Name of the hazards text file (new this week)</td>
+      </tr>
+      <tr>
+        <td><code>REPORT_FILE</code></td>
+        <td>Name of the trip report output file</td>
+      </tr>
+      <tr>
+        <td><code>MILES_MULTIPLIER</code></td>
+        <td>Multiplier applied to each D20 roll</td>
+      </tr>
+      <tr>
+        <td><code>HAZARD_CHANCE</code></td>
+        <td>Percent chance per turn of a hazard event</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -126,24 +152,44 @@
         </thead>
         <tbody>
       <tr>
-        <td><strong>CP1: Copy &amp; Load Hazards</strong></td>
-        <td>20–25 min</td>
-        <td>Copy lab-4-1.py, add load_hazards()</td>
+        <td><strong>CP1: Copy 4.1 + Load Hazards</strong></td>
+        <td>10 min</td>
+        <td>Copy lab-4-1.py forward and add load_hazards to the library</td>
       </tr>
       <tr>
-        <td><strong>CP2: The .upper() Relief</strong></td>
-        <td>15–20 min</td>
-        <td>Clean input with string methods</td>
+        <td><strong>CP2: clean_input (the .upper() relief)</strong></td>
+        <td>10 min</td>
+        <td>Add clean_input to the library: strip + upper</td>
       </tr>
       <tr>
-        <td><strong>CP3: Handle Hazards</strong></td>
-        <td>20–25 min</td>
-        <td>Random hazard selection and outcomes</td>
+        <td><strong>CP3: Smarter get_valid_int</strong></td>
+        <td>15 min</td>
+        <td>Rewrite get_valid_int with .isdigit() so non-numeric input no longer crashes</td>
       </tr>
       <tr>
-        <td><strong>CP4: D20 Travel System</strong></td>
-        <td>30–35 min</td>
-        <td>Roll-based travel with hazard checks</td>
+        <td><strong>CP4: Smarter get_yes_no</strong></td>
+        <td>10 min</td>
+        <td>Rewrite get_yes_no on top of clean_input</td>
+      </tr>
+      <tr>
+        <td><strong>CP5: handle_hazard in the Library</strong></td>
+        <td>15 min</td>
+        <td>Promote hazard handling to a library function returning (name, escaped)</td>
+      </tr>
+      <tr>
+        <td><strong>CP6: Wire It All Together</strong></td>
+        <td>20 min</td>
+        <td>Delete inline hazard lists from lab-4-2.py, load hazards.txt, swap in handle_hazard</td>
+      </tr>
+      <tr>
+        <td><strong>CP7: Updated Trip Report</strong></td>
+        <td>10 min</td>
+        <td>Verify the trip report still shows hazards correctly with the new dict-shape data</td>
+      </tr>
+      <tr>
+        <td><strong>Final Check &amp; Submit</strong></td>
+        <td>10 min</td>
+        <td>Full play-through, then upload both files to CodeGrade</td>
       </tr>
       <tr class="lc-table__total">
         <td colspan="2"><strong>Total Estimated Time</strong></td>
@@ -151,24 +197,6 @@
       </tr>
         </tbody>
       </table>
-    </div>
-    <div class="lc-callout lc-callout--tip">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
-                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="19" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Strategy</div>
-        <div class="lc-callout__body">
-          <p>This is an ENHANCE week — you already have the dictionary foundation from 4.1. Focus on getting &lt;code&gt;.strip().upper()&lt;/code&gt; working everywhere before adding hazards and travel.</p>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -178,49 +206,64 @@
     <div class="lc-sub-banner">Program Architecture</div>
   </div>
   <div class="lc-panel">
-    <p class="lc-arch-intro">Here&#x27;s how your finished program fits together. The [NEW] tags show what you&#x27;re adding. [REPLACED] tags show what changes from your 4.1 code.</p>
+    <p class="lc-arch-intro">Lab 4.2 is mostly library work. The lab file changes in two places: the startup loads one more file, and the in-game hazard block collapses to a single function call. Everything else carries forward from 4.1. &lt;code&gt;[NEW]&lt;/code&gt; tags show what&#x27;s added this week. &lt;code&gt;[REPLACED]&lt;/code&gt; tags show what swaps out. &lt;code&gt;[RETIRED]&lt;/code&gt; tags show what gets deleted. &lt;code&gt;[KEEP]&lt;/code&gt; tags show what carries forward.</p>
     <div class="lc-arch">
-      <pre># ---- DATA LOADING FUNCTIONS ----
-<span class="lc-arch-fn">load_city_distances()</span>   reads city_distances.txt → nested dict
-<span class="lc-arch-fn">load_city_info()</span>        reads city_info.txt → dict of dicts
-<span class="lc-arch-fn">load_hazards()</span>          reads hazards.txt → list of dicts     <span class="lc-arch-new">[NEW]</span>
+      <pre># ---- IN function_library.py ----
+<span class="lc-arch-fn">flip_coin()</span>, <span class="lc-arch-fn">roll_d20()</span>, <span class="lc-arch-fn">check_percentage()</span>                 [KEEP from 2.2]
+<span class="lc-arch-fn">save_game(...)</span>, <span class="lc-arch-fn">load_game()</span>                                 [KEEP from 3.2]
+<span class="lc-arch-fn">display_destinations(city, distances)</span>                       [KEEP from 4.1]
+<span class="lc-arch-fn">get_destination(city, distances, choice)</span>                    [KEEP from 4.1]
+<span class="lc-arch-fn">get_redirect(city, distances, avoid)</span>                        [KEEP from 4.1]
+<span class="lc-arch-fn">is_win_city(city, city_info)</span>                                [KEEP from 4.1]
+<span class="lc-arch-fn">is_dead_end(city, city_info)</span>                                [KEEP from 4.1]
+<span class="lc-arch-fn">load_city_distances(filename)</span>, <span class="lc-arch-fn">load_city_info(filename)</span>     [KEEP from 4.1]
+<span class="lc-arch-fn">display_numbered_list(items, title)</span>                         [KEEP from 3.2]
 
-# ---- GAME FUNCTIONS ----
-<span class="lc-arch-fn">display_destinations()</span>  shows menu from dict
-<span class="lc-arch-fn">get_destination_choice()</span>  validates user pick
-<span class="lc-arch-fn">handle_hazard(hazards)</span>  random hazard + coin flip              <span class="lc-arch-new">[NEW]</span>
-<span class="lc-arch-fn">travel_to(distance)</span>     D20 travel + hazard checks             <span class="lc-arch-new">[NEW]</span>
+<span class="lc-arch-fn">clean_input(prompt)</span> -&gt; strip + upper                        <span class="lc-arch-new">[NEW-CP2]</span>
+<span class="lc-arch-fn">get_valid_int(prompt, min_val, max_val)</span>                     <span class="lc-arch-replaced">[REPLACED-CP3]</span> now uses .<span class="lc-arch-fn">isdigit()</span>
+<span class="lc-arch-fn">get_yes_no(prompt)</span>                                          <span class="lc-arch-replaced">[REPLACED-CP4]</span> now uses clean_input
+<span class="lc-arch-fn">load_hazards(filename)</span> -&gt; list of dicts                     <span class="lc-arch-new">[NEW-CP1]</span>
+<span class="lc-arch-fn">handle_hazard(hazards)</span> -&gt; (name, escaped)                   <span class="lc-arch-new">[NEW-CP5]</span>
+<span class="lc-arch-fn">get_random_hazard(...)</span>                                      [RETIRED-CP5]
 
-# ---- MAIN PROGRAM ----
-Load data files (distances, info, hazards)
-Get player name
-current_city = &#x27;San Antonio&#x27;
+# ---- IN lab-4-2.py ----
 
-<span class="lc-arch-game-loop">GAME LOOP</span> (each pass is one leg):
-│
-│── Display city info, show destinations
-│── Get choice with .<span class="lc-arch-fn">strip()</span>.<span class="lc-arch-fn">upper()</span>          <span class="lc-arch-replaced">[REPLACED]</span> was or chains
-│── Destination Gate (coin flip)
-│
-│   <span class="lc-arch-travel-loop">TRAVEL LOOP</span> (D20 rolls!):               <span class="lc-arch-replaced">[REPLACED]</span> was fixed 50-mile
-│   │── Roll D20, move (roll × 10) miles
-│   │── 30% chance: <span class="lc-arch-fn">handle_hazard()</span>           <span class="lc-arch-new">[NEW]</span>
-│   │── Repeat until you arrive
-│
-│── Update trip totals (+ hazards_faced, hazards_escaped)
-│── Check outcome: beach / dead end / continue
-│── Save and quit option
+# ---- CONSTANTS ----
+DISTANCES_FILE, INFO_FILE, REPORT_FILE                      [KEEP from 4.1]
+HAZARDS_FILE = &#x27;hazards.txt&#x27;                                <span class="lc-arch-new">[NEW-CP6]</span>
+MILES_MULTIPLIER = 10, HAZARD_CHANCE = 30                   [KEEP from 4.1]
 
-# ---- AFTER THE LOOP ----
-Print trip summary with hazard stats          <span class="lc-arch-new">[NEW]</span>
-&quot;Thanks for playing!&quot;</pre>
+HAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [RETIRED-CP6] now in hazards.txt
+
+<span class="lc-arch-fn">save_trip_report(filename, ...)</span>                             [KEEP from 4.1]
+
+# ---- <span class="lc-arch-fn">main()</span> ----
+distances = <span class="lc-arch-fn">load_city_distances(...)</span>                        [KEEP from 4.1]
+city_info = <span class="lc-arch-fn">load_city_info(...)</span>                             [KEEP from 4.1]
+hazards   = <span class="lc-arch-fn">load_hazards(HAZARDS_FILE)</span>                      <span class="lc-arch-new">[NEW-CP6]</span>
+
+MAIN MENU LOOP                                              [KEEP from 4.1]
+  PLAY-AGAIN LOOP                                           [KEEP from 4.1]
+    IN-<span class="lc-arch-game-loop">GAME LOOP</span>                                            [KEEP from 4.1]
+      │
+      │─ D20 travel loop
+      │     │─ if hazard triggers:
+      │     │     name, escaped = <span class="lc-arch-fn">handle_hazard(hazards)</span>   <span class="lc-arch-replaced">[REPLACED-CP6]</span>
+      │     │     <span class="lc-arch-fn">hazards_list.append(name)</span>
+      │     │     if escaped: hazards_escaped += 1
+      │
+      │─ Continue / Save &amp; quit / Quit                     [KEEP from 4.1]
+    
+    Trip report on screen + trip_report.txt                 [KEEP from 4.1]
+    Session accumulators                                    [KEEP from 4.1]
+</pre>
     </div>
   </div>
 </div>
 <div class="lc-card lc-card--green">
   <div class="lc-topper">
     <div class="lc-topper-title">Checkpoints</div>
-    <div class="lc-sub-banner">4 Checkpoints</div>
+    <div class="lc-sub-banner">7 Checkpoints</div>
   </div>
   <div class="lc-panel">
     <div class="lc-cp-row">
@@ -229,15 +272,41 @@ Print trip summary with hazard stats          <span class="lc-arch-new">[NEW]</s
         <div class="lc-cp-badge__num">1</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Copy &amp; Load Hazards</div>
-        <div class="lc-sub-banner">Start from your Lab 4.1 code and add a new file-loading function for hazards.</div>
+        <div class="lc-cp-title">Copy 4.1 + Load Hazards</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>A function that reads <code>hazards.txt</code> and returns a <strong>list of dictionaries</strong>. Each hazard dictionary has keys for name, heads message, and tails message.</p>
+    <p>A clean starting point for Lab 4.2. Copy <code>lab-4-1.py</code> to <code>lab-4-2.py</code>, update the docstring, and add one new function to <code>function_library.py</code>: <code>load_hazards(filename)</code>. It reads <code>hazards.txt</code> using the exact same <code>.strip().split(',')</code> pattern from Lab 4.1, but returns a <strong>list of dictionaries</strong> instead of a nested dict.</p>
     <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p>Loading structured data from files into a list of dictionaries is everywhere in professional development. JSON APIs return lists of objects, database queries return lists of records, and configuration files store lists of settings. Master this pattern and you've unlocked how real applications manage data.</p>
+    <p>This is the moment Tyler called back in Lab 2.2, CP6, when he warned that the hardcoded hazard data would not scale. He was right. Lab 4.1 still defined hazards as three parallel lists at the top of the lab file. This week those three lists go away and the same data lives in <code>hazards.txt</code>, parsed once at startup. The Patch Note closes here.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Notice the loader pattern is the same one you wrote twice already. <code>.strip().split(',')</code> per line, one dictionary or list per row. The shape of what you build differs by purpose, but the parsing is identical. That is the sign the design is right. The boring part is reusable."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Priya Venkatesh</div>
+        <div class="lc-mentor__role">Project Manager, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li><strong>Copy</strong> <code>lab-4-1.py</code> to <code>lab-4-2.py</code> in the same folder.</li>
+      <li><strong>Update the docstring</strong> at the top of <code>lab-4-2.py</code>: change the title to <code>Lab 4.2: Flexible Input</code> and update the description.</li>
+      <li><strong>Do not copy</strong> <code>function_library.py</code>. It stays in place; you extend it directly.</li>
+      <li>In <code>function_library.py</code>, add a new section header comment block titled <code>HAZARD FUNCTIONS (Added in Lab 4-2)</code>. Place it after the city data loaders.</li>
+      <li>Define <code>load_hazards(filename)</code> with a docstring describing the list-of-dicts return shape.</li>
+      <li>Inside the function, create an empty list called <code>hazards</code>.</li>
+      <li>Open the file with <code>infile = open(filename, 'r')</code>. Loop with <code>for line in infile:</code>.</li>
+      <li>For each line, call <code>parts = line.strip().split(',')</code>. Build a dictionary <code>hazard = {'name': parts[0], 'heads': parts[1], 'tails': parts[2]}</code> and <code>hazards.append(hazard)</code>.</li>
+      <li>Close the file and return <code>hazards</code>.</li>
+      <li>Run <code>lab-4-2.py</code> as-is. Confirm it still plays exactly like 4.1 did.</li>
+    </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
@@ -255,85 +324,69 @@ Print trip summary with hazard stats          <span class="lc-arch-new">[NEW]</s
         <div class="lc-callout__body">
           <ul>
           <li>
-            <strong>Program 9-1</strong>
-            — <code>card_dealer.py</code>
+            <strong>Program 8-10</strong>
+            — <code>split_date.py</code>
             
-            — Your load_city_info() from Lab 4.1 already creates dictionaries from CSV lines. This is the same pattern — but you'll append each hazard dict to a list instead of adding it to a parent dict.
+            — Same <code>.split(',')</code> per line as Lab 4.1, but you build a different shape on the way out.
+          </li>
+          <li>
+            <strong>Program 9-10</strong>
+            — <code>list_of_dicts.py</code>
+            
+            — List of dictionaries is the third dictionary shape this module. Each list item is its own dictionary with the same set of keys.
           </li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li>Copy your <code>lab-4-1.py</code> and rename it to <code>lab-4-2.py</code>.</li>
-      <li>Update your docstring description to reflect Lab 4.2.</li>
-      <li>Define <code>load_hazards(filename)</code> that takes a filename parameter.</li>
-      <li>Create an empty list inside the function: <code>hazards = []</code>.</li>
-      <li>Open the file and loop through each line.</li>
-      <li>For each line: use <code>line.strip().split(',')</code> to get a list of parts.</li>
-      <li>Create a hazard dict: <code>{'name': parts[0], 'heads': parts[1], 'tails': parts[2]}</code>.</li>
-      <li>Append the dict to the list: <code>hazards.append(hazard)</code>.</li>
-      <li>Close the file and return the <code>hazards</code> list.</li>
-    </ol>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p><strong>Step 1:</strong> Add this test harness:</p>
+    <p>Add a temporary DEBUG block under the <code>if __name__ == '__main__':</code> guard in <code>function_library.py</code>. Run the library directly to confirm the hazards load. Delete the block before moving on.</p>
     <div class="lc-code-block">
       <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 2</span>
 hazards <span class="sy-op">=</span> load_hazards<span class="sy-op">(</span><span class="sy-str">&#x27;hazards.txt&#x27;</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Loaded <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>hazards<span class="sy-op">)</span><span class="sy-op">}</span> hazards&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Loaded <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>hazards<span class="sy-op">)</span><span class="sy-op">}</span> hazards.&#x27;<span class="sy-op">)</span>
 <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;First hazard:&#x27;</span><span class="sy-op">,</span> hazards<span class="sy-op">[</span><span class="sy-num">0</span><span class="sy-op">]</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;First hazard name:&#x27;</span><span class="sy-op">,</span> hazards<span class="sy-op">[</span><span class="sy-num">0</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-str">&#x27;name&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span></pre>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;First hazard name:&#x27;</span><span class="sy-op">,</span> hazards<span class="sy-op">[</span><span class="sy-num">0</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-str">&#x27;name&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Last hazard tails:&#x27;</span><span class="sy-op">,</span> hazards<span class="sy-op">[</span><span class="sy-op">-</span><span class="sy-num">1</span><span class="sy-op">]</span><span class="sy-op">[</span><span class="sy-str">&#x27;tails&#x27;</span><span class="sy-op">]</span><span class="sy-op">)</span></pre>
     </div>
-    <p><strong>Step 2:</strong> Run and verify this output:</p>
+    <div class="lc-h3 lc-h3--yellow">Expected Output</div>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
-      <pre>Loaded 8 hazards
-First hazard: {&#x27;name&#x27;: &quot;Buc-ee&#x27;s appears!&quot;, &#x27;heads&#x27;: &#x27;You resist...&#x27;, &#x27;tails&#x27;: &#x27;Lost 2 hours...&#x27;}
-First hazard name: Buc-ee&#x27;s appears!</pre>
-    </div>
-    <p><strong>Step 3:</strong> <strong><strong style="color:#FF6B1A;">DELETE the DEBUG lines</strong></strong> before moving to Checkpoint 2.</p>
-    <div class="lc-mentor">
-      <div class="lc-mentor__inner">
-        <div class="lc-mentor__avatar">
-          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
-        </div>
-        <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"You've been writing 'if x == y or x == Y:' for weeks. Today that pain ends. You're also loading hazards from a file and building a real travel system with D20 rolls. Three new functions, one massive quality-of-life upgrade."</div>
-        </div>
-      </div>
-      <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Sasha Mireles</div>
-        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
-      </div>
+      <pre>Loaded 8 hazards.
+First hazard: {&#x27;name&#x27;: &quot;Buc-ee&#x27;s appears!&quot;, &#x27;heads&#x27;: &quot;You resist the beaver&#x27;s call&quot;, &#x27;tails&#x27;: &#x27;Lost 2 hours on snacks&#x27;}
+First hazard name: Buc-ee&#x27;s appears!
+Last hazard tails: GPS is disappointed</pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+    <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Using wrong index: <code>parts[3]</code></td>
-        <td>Only 3 parts per line (indices 0, 1, 2). Check your CSV structure.</td>
+        <td>Returning a single dictionary instead of a list of dictionaries</td>
+        <td>Each line in the file is its own hazard. The function appends each one to the <code>hazards</code> list. The return type is <code>list</code>, not <code>dict</code>.</td>
       </tr>
       <tr>
-        <td>Forgetting <code>.strip()</code> on the line</td>
-        <td>Trailing newlines corrupt your data and comparisons will fail.</td>
+        <td>Mixing up <code>parts[1]</code> and <code>parts[2]</code></td>
+        <td>Column order in <code>hazards.txt</code> is <code>name,heads_message,tails_message</code>. <code>heads</code> goes with <code>parts[1]</code>, <code>tails</code> with <code>parts[2]</code>.</td>
       </tr>
       <tr>
-        <td>Creating the dict outside the loop</td>
-        <td>Each line needs a NEW dict. Create it inside the loop.</td>
+        <td>Editing <code>lab-4-1.py</code> directly instead of copying first</td>
+        <td>Always preserve last week's submission. Copy first, then edit the copy.</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
-    <p><ul><li><code>lab-4-2.py</code> with an updated docstring</li><li><code>load_hazards()</code> that returns a list of dictionaries</li><li>Each dict has <code>'name'</code>, <code>'heads'</code>, and <code>'tails'</code> keys</li><li>Can access hazards with <code>hazards[0]['name']</code></li></ul></p>
+    <ol>
+      <li><code>lab-4-2.py</code> exists, plays identically to <code>lab-4-1.py</code> at this point</li>
+      <li><code>function_library.py</code> has a new <code>HAZARD FUNCTIONS</code> section with <code>load_hazards(filename)</code> defined inside</li>
+      <li>DEBUG output confirms 8 hazards load with the expected first-name and last-tails strings</li>
+      <li>DEBUG block is removed before moving on</li>
+    </ol>
     </div>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
@@ -342,15 +395,35 @@ First hazard name: Buc-ee&#x27;s appears!</pre>
         <div class="lc-cp-badge__num">2</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">The .upper() Relief</div>
-        <div class="lc-sub-banner">Replace those painful or statements with clean string methods!</div>
+        <div class="lc-cp-title">clean_input (the .upper() relief)</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>Clean, normalized input handling using <code>.strip().upper()</code>. No more <code>if x == 'y' or x == 'Y':</code>.</p>
+    <p>One small function in <code>function_library.py</code> that you have been waiting for since Module 1: <code>clean_input(prompt)</code>. It calls <code>input</code>, strips surrounding whitespace, uppercases the result, and returns it. One line of code; semester-changing in its impact.</p>
     <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p>Input normalization is one of the first things real applications need. Every web form, every API, every command-line tool deals with the reality that users don't type consistently. <code>.strip().upper()</code> is the chapter-level introduction to a principle: clean your input at the boundary before your logic ever touches it. One method chain does what four <code>or</code> conditions used to do.</p>
+    <p>Every time you wrote <code>if choice == 'y' or choice == 'Y':</code> in Modules 1, 2, and 3, you were working around the fact that <code>.upper()</code> had not arrived yet. It has now. From this checkpoint forward, every input-cleanup looks the same: <code>answer = clean_input(prompt)</code>, then compare to a single uppercase string.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Three lines of code from a textbook can change how an entire game feels. Strip, upper, return. Players will never see this function. They will only see that the game stopped fighting them about whether to press the caps-lock key. That is the definition of a good interface: the player does not notice it."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>In <code>function_library.py</code>, add a new section header comment block titled <code>STRING UTILITIES (Added in Lab 4-2)</code>. Place it just before the <code>VALIDATION FUNCTIONS</code> section so that the validation helpers can call <code>clean_input</code> later in CP3 and CP4.</li>
+      <li>Define <code>clean_input(prompt)</code> with a one-line body: <code>return input(prompt).strip().upper()</code>.</li>
+      <li>Add a docstring describing the strip + uppercase behavior and what it returns.</li>
+      <li>Do not modify any other functions yet. CP3 and CP4 are where the existing helpers get rewritten on top of <code>clean_input</code>.</li>
+    </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
@@ -368,105 +441,51 @@ First hazard name: Buc-ee&#x27;s appears!</pre>
         <div class="lc-callout__body">
           <ul>
           <li>
-            <strong>Program 8-5</strong>
-            — <code>string_test.py</code>
+            <strong>Program 8-6</strong>
+            — <code>upper_lower.py</code>
             
-            — Shows <code>.upper()</code> and <code>.lower()</code> being called on strings. The comparison pattern <code>if user_input.upper() == 'Y':</code> is exactly what you are implementing here.
-          </li>
-          <li>
-            <strong>Program 8-10</strong>
-            — <code>split_date.py</code>
-            
-            — You used <code>.split('/')</code> on a string. <code>.strip()</code> and <code>.upper()</code> are from the same string method family — you are just calling them in a chain now.
+            — Demonstrates <code>.upper()</code> and <code>.lower()</code>. Same idea here, but chained with <code>.strip()</code> on the same line.
           </li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li>Find the dead-end handling in your game loop (the "Return to San Antonio?" input).</li>
-      <li>Change the input line to use method chaining: <code>choice = input('Return to San Antonio? (y/n): ').strip().upper()</code>.</li>
-      <li>Update the comparison: check for <code>'Y'</code> only, not <code>'y'</code>.</li>
-      <li>Update the player name input to use <code>.strip()</code> to remove accidental leading or trailing spaces.</li>
-      <li>Search the rest of your code for any remaining <code>or</code> patterns in input handling and fix them the same way.</li>
-    </ol>
-    <div class="lc-callout lc-callout--tip">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
-                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="19" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Old Way vs. New Way</div>
-        <div class="lc-callout__body">
-        <p>Here's the before and after:</p>
-        <ul>
-          <li><code># Old: if choice == 'y' or choice == 'Y':</code></li>
-          <li><code># New: choice = input(...).strip().upper()</code>  then  <code>if choice == 'Y':</code></li>
-        </ul>
-        </div>
-      </div>
-    </div>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p>Run your game and navigate to a dead end (Laredo or El Paso). When asked "Return to San Antonio?", try each of these inputs and confirm all three work: <code>y</code>, <code>Y</code>, and <code>&nbsp;&nbsp;y&nbsp;&nbsp;</code> (with spaces).</p>
-    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
-      <pre>Return to San Antonio? (y/n): y
-Heading back to San Antonio...
-
-Return to San Antonio? (y/n): Y
-Heading back to San Antonio...
-
-Return to San Antonio? (y/n):    y   
-Heading back to San Antonio...</pre>
-    </div>
-    <div class="lc-mentor">
-      <div class="lc-mentor__inner">
-        <div class="lc-mentor__avatar">
-          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
-        </div>
-        <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"Players will do exactly what you didn't expect. They'll type 'Y', 'y', 'YES', or '  y  ' with extra spaces. <code>.strip()</code><code>.upper()</code> handles ALL of that in one line. Design for chaos."</div>
-        </div>
-      </div>
-      <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Sasha Mireles</div>
-        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
-      </div>
+    <p>Quick interactive test: run <code>python3 function_library.py</code> and add a DEBUG block that calls <code>clean_input</code>. Type input with mixed case and leading/trailing whitespace; confirm the result comes back uppercase and trimmed. Delete the DEBUG block before moving on.</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 3</span>
+result <span class="sy-op">=</span> clean_input<span class="sy-op">(</span><span class="sy-str">&#x27;Say something: &#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;You typed (cleaned): <span class="sy-op">{</span>result<span class="sy-op">!</span>r<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+    <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Fix</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Still checking lowercase after <code>.upper()</code></td>
-        <td>Only compare against <code>'Y'</code> and <code>'N'</code>, never <code>'y'</code> or <code>'n'</code>.</td>
+        <td>Forgetting the <code>return</code> keyword</td>
+        <td>Without <code>return</code>, the function does the work but hands back <code>None</code>. The caller has nothing to compare against.</td>
       </tr>
       <tr>
-        <td>Forgetting the parentheses: <code>.upper</code></td>
-        <td>Methods require parentheses: <code>.upper()</code>.</td>
+        <td>Calling <code>.strip()</code> after <code>.upper()</code></td>
+        <td>Order does not matter here in practice (both pure operations), but the canonical order is <code>.strip().upper()</code>: strip first, then transform.</td>
       </tr>
       <tr>
-        <td>Reversed order: <code>.upper().strip()</code></td>
-        <td>Won't crash, but <code>.strip().upper()</code> is the standard pattern. Strip the junk first, then transform.</td>
+        <td>Returning <code>.upper()</code> on already-uppercased data</td>
+        <td>No-op cost, no correctness cost. Do not stress about double-uppering somewhere downstream.</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
-    <p><ul><li>All yes/no inputs use <code>.strip().upper()</code></li><li>No remaining <code>or</code> patterns for case handling</li><li>Player name input uses <code>.strip()</code></li></ul></p>
+    <ol>
+      <li><code>function_library.py</code> has a new <code>STRING UTILITIES</code> section with <code>clean_input(prompt)</code> defined inside</li>
+      <li>Running the library directly with a DEBUG call confirms the function strips whitespace and uppercases the result</li>
+      <li>Docstring present</li>
+    </ol>
     </div>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
@@ -475,29 +494,40 @@ Heading back to San Antonio...</pre>
         <div class="lc-cp-badge__num">3</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Handle Hazards</div>
-        <div class="lc-sub-banner">Create a function that picks a random hazard and determines the outcome with a coin flip.</div>
+        <div class="lc-cp-title">Smarter get_valid_int</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>A function that selects a random hazard from your list, displays it, flips a coin, and shows the appropriate outcome message. Returns <code>True</code> if the player escaped (HEADS) or <code>False</code> if not (TAILS).</p>
+    <p>A rewrite of <code>get_valid_int</code> in <code>function_library.py</code>. The old version called <code>int(input(prompt))</code> and crashed with <code>ValueError</code> the moment a player typed something non-numeric. The new version uses <code>.isdigit()</code> to check the input first and reprompts with a friendly error message if the input is not a whole number.</p>
     <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p><code>random.choice()</code> on a list of dictionaries is the real-world pattern for selecting from structured data. Every game engine, every recommendation system, every A/B testing framework runs on some version of 'pick a random item from a structured list and act on its properties.' Your hazards list is a tiny database and <code>handle_hazard()</code> is your first query.</p>
+    <p>Tyler flagged this gap back in Lab 2-3, CP3, when he noted that the original <code>get_valid_int</code> handled out-of-range numbers but not non-numeric input. That gap has been quietly waiting through Modules 2 and 3 because Chapter 8 had not happened yet. Chapter 8 happens now. The Patch Note closes.</p>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
-          <img src="../../headshots/Terrence-TBone-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"I test this stuff for a living. Random hazard selection sounds simple until you realize you have to verify that EVERY hazard can appear, BOTH coin outcomes work, and the return value is always a boolean. Test it in a loop, run it twenty times, make sure nothing surprises you."</div>
+          <div class="lc-mentor__quote">"I have been waiting on this one. Back in 2-3 we agreed the function caught out-of-range numbers but would faceplant on <code>abc</code> or an empty string. The fix is <code>.isdigit()</code> from Chapter 8. Two lines of logic and the function stops crashing. The pattern works for any 'is this a whole number?' validation you ever write."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
-        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
+        <div class="lc-mentor__name">Tyler Nguyen</div>
+        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
       </div>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>In <code>function_library.py</code>, find <code>get_valid_int</code>. The whole body gets replaced.</li>
+      <li>New body: declare <code>valid = False</code> and <code>value = 0</code> as initial state.</li>
+      <li>Open a <code>while not valid:</code> loop.</li>
+      <li>Inside the loop, get <code>user_input = input(prompt).strip()</code>. Strip handles trailing whitespace.</li>
+      <li>Check <code>if user_input.isdigit():</code>. If yes, cast to <code>int</code> and check the range. Set <code>valid = True</code> if in range, otherwise print a friendly out-of-range message.</li>
+      <li>Add an <code>elif</code> branch for negative numbers: <code>elif user_input.startswith('-') and user_input[1:].isdigit():</code> casts and range-checks the same way. The road trip game never uses negatives, but the library function should handle them in case future labs do.</li>
+      <li>Add an <code>else</code> branch that prints <code>'ERROR: Please enter a valid whole number.'</code> with no value-set. The loop reprompts.</li>
+      <li>Outside the loop, <code>return value</code>.</li>
+      <li>Update the docstring to mention that the function now validates non-numeric input gracefully.</li>
+    </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
@@ -515,88 +545,51 @@ Heading back to San Antonio...</pre>
         <div class="lc-callout__body">
           <ul>
           <li>
-            <strong>Program 9-1</strong>
-            — <code>card_dealer.py</code>
+            <strong>Program 8-7</strong>
+            — <code>string_test.py</code>
             
-            — You built a dictionary with key-value pairs and accessed values by key. <code>handle_hazard()</code> does the same: <code>hazard['name']</code>, <code>hazard['heads']</code>, <code>hazard['tails']</code> — same pattern, different data.
-          </li>
-          <li>
-            <strong>Program 5-24</strong>
-            — <code>sale_price.py</code>
-            
-            — Shows a function that returns a calculated value. <code>handle_hazard()</code> returns a boolean — same return statement pattern, just returning <code>True</code> or <code>False</code> instead of a number.
+            — Demonstrates <code>.isdigit()</code>, <code>.isalpha()</code>, and friends. <code>.isdigit()</code> is the right tool for 'is this a non-negative whole number?'
           </li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li>Define <code>handle_hazard(hazards)</code> that takes the hazards list.</li>
-      <li>Pick a random hazard: <code>hazard = random.choice(hazards)</code>.</li>
-      <li>Display the hazard name: <code>*** HAZARD: {hazard['name']} ***</code>.</li>
-      <li>Flip a coin: <code>result = function_library.flip_coin()</code>.</li>
-      <li>Display the flip result.</li>
-      <li>If HEADS: print <code>hazard['heads']</code> and return <code>True</code>.</li>
-      <li>If TAILS: print <code>hazard['tails']</code> and return <code>False</code>.</li>
-    </ol>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p><strong>Step 1:</strong> Add this test harness:</p>
-    <div class="lc-code-block">
-      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 4</span>
-hazards <span class="sy-op">=</span> load_hazards<span class="sy-op">(</span><span class="sy-str">&#x27;hazards.txt&#x27;</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Testing hazard handling...&#x27;</span><span class="sy-op">)</span>
-<span class="sy-kw">for</span> i <span class="sy-kw">in</span> <span class="sy-bi">range</span><span class="sy-op">(</span><span class="sy-num">3</span><span class="sy-op">)</span><span class="sy-op">:</span>
-    escaped <span class="sy-op">=</span> handle_hazard<span class="sy-op">(</span>hazards<span class="sy-op">)</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Escaped: <span class="sy-op">{</span>escaped<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span></pre>
-    </div>
-    <p><strong>Step 2:</strong> Run several times. Verify you see different hazards and both HEADS and TAILS outcomes appearing across runs. <strong>Step 3:</strong> <strong><strong style="color:#FF6B1A;">DELETE the DEBUG lines</strong></strong> before moving to Checkpoint 4.</p>
-    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
-      <pre>Testing hazard handling...
-*** HAZARD: Buc-ee&#x27;s appears! ***
-Coin flip: HEADS
-You resist the siren call of Buc-ee&#x27;s and stay on schedule!
-Escaped: True
-
-*** HAZARD: Speed trap! ***
-Coin flip: TAILS
-You lose 30 minutes to a speed trap!
-Escaped: False
-
-*** HAZARD: Armadillo crossing! ***
-Coin flip: HEADS
-The armadillo waddles off the road. You&#x27;re clear!
-Escaped: True</pre>
-    </div>
+    <p>Run <code>lab-4-2.py</code> and test each kind of bad input at any numeric menu: type <code>abc</code>, <code>3.5</code>, an empty Enter, and <code>99</code> (out of range). All four should produce a friendly error and reprompt. Then enter a valid choice and confirm the game continues normally.</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+    <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Using <code>hazard['HEADS']</code> (uppercase key)</td>
-        <td>Keys are lowercase: <code>'heads'</code> and <code>'tails'</code>, matching how you defined them in <code>load_hazards()</code>.</td>
+        <td>Forgetting <code>.strip()</code> on the input</td>
+        <td><code>'3 '.isdigit()</code> is <code>False</code> because of the trailing space. <code>.strip()</code> first.</td>
       </tr>
       <tr>
-        <td>Forgetting to return True or False</td>
-        <td>The caller needs to know if the player escaped. The function must return a boolean.</td>
+        <td>Casting before checking <code>.isdigit()</code></td>
+        <td>If you cast unconditionally, you reintroduce the very crash you are trying to prevent.</td>
       </tr>
       <tr>
-        <td>Using <code>random.choice(hazards)</code> without <code>import random</code></td>
-        <td>Make sure <code>import random</code> is at the top of your file.</td>
+        <td>Returning the wrong scope of <code>value</code></td>
+        <td><code>value</code> is declared OUTSIDE the loop. If you declare it inside, you cannot return it after the loop exits.</td>
+      </tr>
+      <tr>
+        <td>Forgetting to reset <code>valid</code> if the range check fails</td>
+        <td><code>valid</code> only flips to <code>True</code> when both the type check and the range check pass. If you accidentally set it to True before checking the range, the loop exits with a bad value.</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
-    <p><ul><li>A working <code>handle_hazard(hazards)</code> that returns <code>True</code> or <code>False</code></li><li>Random hazard selection using <code>random.choice()</code></li><li>Correct lowercase dictionary keys: <code>'heads'</code> and <code>'tails'</code></li><li>DEBUG test lines deleted</li></ul></p>
+    <ol>
+      <li><code>get_valid_int</code> rewritten with <code>.isdigit()</code> as the first check</li>
+      <li>Typing <code>abc</code> at a numeric menu produces 'ERROR: Please enter a valid whole number.' and reprompts: no crash, no traceback</li>
+      <li>Out-of-range numeric input still produces the existing out-of-range message</li>
+      <li>Updated docstring noting the Patch Note closure</li>
+    </ol>
     </div>
     <hr class="lc-cp-sep">
     <div class="lc-cp-row">
@@ -605,29 +598,37 @@ Escaped: True</pre>
         <div class="lc-cp-badge__num">4</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">D20 Travel System</div>
-        <div class="lc-sub-banner">Replace instant travel with dice-roll-based progression and random hazard encounters.</div>
+        <div class="lc-cp-title">Smarter get_yes_no</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>A <code>travel_to()</code> function where you roll a D20 each turn, travel roll × 10 miles, and have a 30% chance of encountering a hazard. The journey continues until you've covered the full distance to the destination.</p>
+    <p>A rewrite of <code>get_yes_no</code> on top of <code>clean_input</code>. The Lab 3.x version compared the raw input against four possibilities: <code>'y'</code>, <code>'Y'</code>, <code>'n'</code>, <code>'N'</code>. The new version calls <code>clean_input</code>, which uppercases the result, and compares against just <code>'Y'</code> and <code>'N'</code>. Same behavior, half the comparison.</p>
     <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p>The travel system is where everything converges — the D20 roll from the library, the hazard system from CP3, the probability check from Module 2. Building it as a standalone function that returns a tuple keeps <code>main()</code> clean and readable. Tuple returns are how Python passes multiple values back from a function — a pattern you will use constantly in real code.</p>
+    <p>This is the visible relief moment for players. Before this CP, a stray caps-lock would crash the yes/no flow. After this CP, the player can type any of <code>y</code>, <code>Y</code>, <code> y </code>, <code>Y\t</code> and get the same result. The fix is half a line in <code>get_yes_no</code> and one new library function from CP2.</p>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
-          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"travel_to() is the most complex function you have written yet — a loop, a probability check, a function call inside a conditional, and a tuple return. Build it one line at a time. Get the D20 loop working first, then add the hazard check, then add the return. Don't try to write it all at once."</div>
+          <div class="lc-mentor__quote">"Read the old <code>get_yes_no</code> body and the new one back-to-back. The old one looked like it was bracing for combat: four comparisons just to figure out whether the player meant yes. The new one just asks the user, normalizes the answer, and checks two values. The shorter version is also the friendlier one. Most of the time, that correlation holds."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Danny Cavanaugh</div>
-        <div class="lc-mentor__role">Lead Developer, Bat City Collective</div>
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
       </div>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>In <code>function_library.py</code>, find <code>get_yes_no</code>. The body gets rewritten.</li>
+      <li>Replace the first <code>answer = input(prompt)</code> with <code>answer = clean_input(prompt)</code>.</li>
+      <li>Replace the 4-way comparison loop condition with <code>while answer != 'Y' and answer != 'N':</code>.</li>
+      <li>Replace the loop-body re-read with <code>answer = clean_input(prompt)</code>.</li>
+      <li>Replace the final return with <code>return answer == 'Y'</code>: one comparison instead of two.</li>
+      <li>Update the docstring to mention that the rewrite uses <code>clean_input</code>.</li>
+    </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
@@ -645,106 +646,336 @@ Escaped: True</pre>
         <div class="lc-callout__body">
           <ul>
           <li>
-            <strong>Program 4-2</strong>
-            — <code>temperature.py</code>
+            <strong>Program 8-6</strong>
+            — <code>upper_lower.py</code>
             
-            — You wrote a while loop that continued until a condition was met. The travel loop — <code>while miles_remaining > 0:</code> — is the same structure: keep going until the distance is covered.
-          </li>
-          <li>
-            <strong>Program 5-28</strong>
-            — <code>hypotenuse.py</code>
-            
-            — You wrote a function that returned a calculated value. <code>travel_to()</code> returns a tuple of three values — same <code>return</code> statement, just with parentheses around multiple items.
+            — Same <code>.upper()</code> normalization, just wrapped in <code>clean_input</code> for reuse. <code>get_yes_no</code> becomes a thin wrapper.
           </li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li>Define <code>travel_to(destination, distance, hazards)</code>.</li>
-      <li>Initialize: <code>miles_remaining = distance</code>, <code>miles_traveled = 0</code>, <code>hazards_faced = 0</code>, <code>hazards_escaped = 0</code>.</li>
-      <li>Create the travel loop: <code>while miles_remaining > 0:</code>.</li>
-      <li>Roll the D20: <code>roll = function_library.roll_d20()</code>.</li>
-      <li>Calculate miles this turn: <code>miles = roll * 10</code>.</li>
-      <li>Cap miles if it would overshoot the destination: <code>if miles > miles_remaining: miles = miles_remaining</code>.</li>
-      <li>Update accumulators: add <code>miles</code> to <code>miles_traveled</code>, subtract from <code>miles_remaining</code>.</li>
-      <li>Print progress: show the roll, miles gained this turn, and remaining distance.</li>
-      <li>Check for a hazard only if <code>miles_remaining > 0</code>: use <code>function_library.check_percentage(30)</code>.</li>
-      <li>If a hazard triggers: call <code>handle_hazard(hazards)</code>, increment <code>hazards_faced</code>, and increment <code>hazards_escaped</code> if it returned <code>True</code>.</li>
-      <li>After the loop, return the tuple: <code>(miles_traveled, hazards_faced, hazards_escaped)</code>.</li>
-    </ol>
-    <div class="lc-callout lc-callout--tip">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
-                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="19" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">No Hazards on the Last Turn</div>
-        <div class="lc-callout__body">
-        <p>Only check for hazards when <code>miles_remaining > 0</code>. You don't want a hazard to fire on the turn you've already arrived at your destination.</p>
-        </div>
-      </div>
-    </div>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <p><strong>Update <code>main()</code> to use the new system:</strong></p>
-    <ol>
-      <li>Load hazards alongside city data at the start of <code>main()</code>.</li>
-      <li>Remove the old coin flip destination gate (the D20 travel system replaces it).</li>
-      <li>Call <code>travel_to()</code> after the player chooses a destination, passing destination name, distance, and hazards list.</li>
-      <li>Unpack the returned tuple and add to running totals: <code>miles, faced, escaped = travel_to(...)</code>.</li>
-      <li>Update the final report to display total hazards faced and escaped.</li>
-    </ol>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p>Play through the complete game and verify: D20 rolls determine progress (roll × 10 miles), hazards appear randomly on about 30% of turns, hazard outcomes depend on the coin flip, the final report shows hazards escaped vs. faced, and total miles matches the sum of all journeys.</p>
-    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
-      <pre>--- Traveling to Houston (200 miles) ---
-Turn 1: Rolled 14 — traveled 140 miles. (60 remaining)
-*** HAZARD: Speed trap! ***
-Coin flip: TAILS
-You lose 30 minutes to a speed trap!
-Turn 2: Rolled 7 — traveled 60 miles. (0 remaining)
-You have arrived in Houston!
-
---- TRIP SUMMARY ---
-Total Miles: 200
-Hazards Faced: 1
-Hazards Escaped: 0</pre>
-    </div>
+    <p>Run <code>lab-4-2.py</code>. At any yes/no prompt (Play again, Return to San Antonio), try each of: <code>y</code>, <code>Y</code>, <code>n</code>, <code>N</code>, and also <code> y </code> (with surrounding spaces). All five should behave correctly. Try <code>maybe</code> to confirm the error path still fires.</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+    <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Using <code>check_percentage(0.3)</code></td>
-        <td>The function expects a whole number: <code>check_percentage(30)</code>.</td>
+        <td>Keeping the old 4-way OR condition</td>
+        <td>If the loop still says <code>answer != 'y' and answer != 'Y' and ...</code>, the rewrite did not land. <code>clean_input</code> already uppercased the answer; uppercase compare is enough.</td>
       </tr>
       <tr>
-        <td>D20 range wrong: <code>randint(0, 20)</code></td>
-        <td>A D20 rolls 1–20, not 0–20. Use the library function to be safe.</td>
+        <td>Comparing against lowercase</td>
+        <td><code>clean_input</code> returns uppercase. Compare to <code>'Y'</code> and <code>'N'</code>, not <code>'y'</code> and <code>'n'</code>.</td>
       </tr>
       <tr>
-        <td>Forgetting to return the tuple</td>
-        <td>The caller needs <code>(miles, faced, escaped)</code> to update the final report.</td>
+        <td>Accepting <code>YES</code> as yes</td>
+        <td>The function still only accepts a single-character answer. Strings like <code>YES</code> or <code>YEAH</code> are rejected. That is intentional: the contract is unchanged from Lab 3.x; only the case-handling improved.</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
-    <p><ul><li><code>travel_to()</code> with D20-based progression and a 30% hazard chance per turn</li><li>Returns a tuple of <code>(miles_traveled, hazards_faced, hazards_escaped)</code></li><li>Updated <code>main()</code> that integrates all new features</li><li>Final report includes hazard statistics</li></ul></p>
+    <ol>
+      <li><code>get_yes_no</code> rewritten to use <code>clean_input</code></li>
+      <li>Loop condition collapsed from a 4-way OR to a 2-way comparison</li>
+      <li>Mixed-case y/n input behaves identically</li>
+      <li><code>YES</code> is still rejected (single-character answers only)</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">5</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">handle_hazard in the Library</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p><code>handle_hazard(hazards)</code> in <code>function_library.py</code>: a single function that picks a random hazard from the loaded list, prints the encounter banner, flips the escape coin, prints the matching outcome message, and returns a tuple <code>(hazard_name, escaped)</code>. This consolidates what used to be 14 lines of inline code in the lab file.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Module 3 had <code>get_random_hazard</code> in the library, but it was a <em>picker</em> only: it returned three values for the lab file to print and flip on. With hazards now stored as dicts, the lab no longer needs to know the internal shape. <code>handle_hazard</code> takes the whole orchestration into the library and returns just what the lab needs: the hazard name to record and whether the player escaped. <code>get_random_hazard</code> retires this CP.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"When you move logic from the lab file into the library, ask what the lab actually needs back. Module 3's picker returned three strings because the lab still had to do the printing and the coin flip. Module 4's handler returns two values because the lab only needs to know what to record and whether to bump the escape counter. Smaller return shape, less knowledge required at the call site. That is a refactor."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Lead Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>In <code>function_library.py</code>, in the <code>HAZARD FUNCTIONS</code> section you started in CP1, add a second function: <code>handle_hazard(hazards)</code> with a full docstring.</li>
+      <li>Inside the function, pick a random hazard with <code>hazard = random.choice(hazards)</code>.</li>
+      <li>Print <code>'*** HAZARD! ***'</code> and then <code>hazard['name']</code> on the next line.</li>
+      <li>Flip the escape coin with <code>flip = flip_coin()</code>. Print the result.</li>
+      <li>If <code>flip == 'HEADS'</code>: print <code>hazard['heads']</code> and return <code>(hazard['name'], True)</code>.</li>
+      <li>Otherwise print <code>hazard['tails']</code> and return <code>(hazard['name'], False)</code>.</li>
+      <li>Delete the old <code>get_random_hazard</code> function from the library entirely. Do not leave it commented out.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-10</strong>
+            — <code>list_of_dicts.py</code>
+            
+            — <code>random.choice(hazards)</code> returns one dictionary from the list. <code>hazard['name']</code> retrieves a field. Same pattern you used at the BookEx.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Add a DEBUG block in <code>function_library.py</code> that loads hazards and exercises <code>handle_hazard</code> five times. Confirm you see five different hazard banners and a mix of HEADS / TAILS outcomes. Delete the block before moving on.</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 6</span>
+hazards <span class="sy-op">=</span> load_hazards<span class="sy-op">(</span><span class="sy-str">&#x27;hazards.txt&#x27;</span><span class="sy-op">)</span>
+<span class="sy-kw">for</span> i <span class="sy-kw">in</span> <span class="sy-bi">range</span><span class="sy-op">(</span><span class="sy-num">5</span><span class="sy-op">)</span><span class="sy-op">:</span>
+    name<span class="sy-op">,</span> escaped <span class="sy-op">=</span> handle_hazard<span class="sy-op">(</span>hazards<span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  -&gt; returned: <span class="sy-op">{</span>name<span class="sy-op">!</span>r<span class="sy-op">}</span>, escaped=<span class="sy-op">{</span>escaped<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span></pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Returning the whole hazard dictionary</td>
+        <td>The lab file only needs the name to append to <code>hazards_list</code>. Return just <code>hazard['name']</code>, not the dict.</td>
+      </tr>
+      <tr>
+        <td>Forgetting to print the outcome message</td>
+        <td><code>handle_hazard</code> does both the heads/tails branching AND the message-print. The lab file does not handle messages anymore.</td>
+      </tr>
+      <tr>
+        <td>Leaving <code>get_random_hazard</code> in the library</td>
+        <td>It needs to be deleted, not just unused. CodeGrade's scope enforcer flags retired functions.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>handle_hazard</code> defined in the <code>HAZARD FUNCTIONS</code> section</li>
+      <li>Five DEBUG runs produce five different hazards (with high probability) and a mix of HEADS/TAILS</li>
+      <li><code>get_random_hazard</code> is deleted from the library</li>
+      <li>Docstring describes the return tuple</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">6</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Wire It All Together</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>The lab-file integration step. Delete the three inline hazard parallel lists from <code>lab-4-2.py</code>. Add <code>HAZARDS_FILE = 'hazards.txt'</code> to the constants block. Add a third file-load call to <code>main()</code> at startup. Replace the entire inline hazard block in the in-game travel loop with a single <code>handle_hazard</code> call. Update the hazard count display in the load banner.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>This is where the library work from CPs 1–5 lands in the game. The shortening of the lab file is dramatic: about 35 lines of hazard data and orchestration collapse to a single function call. The total program does the same thing it always did, with less of it living in the lab file.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>In <code>lab-4-2.py</code>, add <code>HAZARDS_FILE = 'hazards.txt'</code> to the constants block alongside <code>DISTANCES_FILE</code> and <code>INFO_FILE</code>.</li>
+      <li>Delete the three module-level lists <code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code> entirely. The accompanying comment block goes with them.</li>
+      <li>In <code>main()</code>'s data-loading block, add <code>hazards = function_library.load_hazards(HAZARDS_FILE)</code> after the two existing load calls. Add a print line: <code>print(f'Loaded {len(hazards)} possible hazards.')</code>.</li>
+      <li>Find the inline hazard block in the in-game loop. It currently has the <code>if check_percentage(HAZARD_CHANCE):</code> guard followed by 12 lines of orchestration. Replace those 12 lines with: <code>name, escaped = function_library.handle_hazard(hazards)</code>, then <code>hazards_list.append(name)</code>, then <code>if escaped: hazards_escaped = hazards_escaped + 1</code>.</li>
+      <li>Run the program and play a full game. Confirm hazards still fire at roughly 30% per turn, that the trip report's HAZARDS section shows the hazard names correctly, and that the escape count makes sense relative to the faced count.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 9-10</strong>
+            — <code>list_of_dicts.py</code>
+            
+            — The lab file does not need to know that hazards are a list of dicts anymore. <code>handle_hazard</code> hides that detail. The lab file just unpacks the returned tuple.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Run a full game. Test each path: beach win, dead-end at Laredo with return-no, and save-and-quit at Austin followed by a load. Confirm hazards fire, the trip report shows them by name (not as dict literals), and the saved file still works.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Forgetting to unpack the tuple</td>
+        <td>Writing <code>function_library.handle_hazard(hazards)</code> without <code>name, escaped =</code> on the left throws the return value away. The hazard prints work, but <code>hazards_list</code> and the escape counter never update.</td>
+      </tr>
+      <tr>
+        <td>Appending the whole tuple to <code>hazards_list</code></td>
+        <td><code>hazards_list.append((name, escaped))</code> stores 2-tuples; the trip report then displays them as <code>('Buc-ee\'s appears!', True)</code>. Append just <code>name</code>.</td>
+      </tr>
+      <tr>
+        <td>Putting <code>hazards = load_hazards(...)</code> inside the main-menu loop</td>
+        <td>Load once, before the loop. Loading inside the loop re-reads the file every time the player returns to the main menu.</td>
+      </tr>
+      <tr>
+        <td>Leaving the old hazard parallel-list comment block in</td>
+        <td>Delete the lists AND the explanatory comment. The whole block is gone this week.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>HAZARDS_FILE</code> constant declared alongside the other file constants</li>
+      <li>All three inline hazard lists deleted from <code>lab-4-2.py</code></li>
+      <li><code>main()</code> loads hazards.txt at startup and reports the count</li>
+      <li>In-game hazard block is one call plus three follow-up lines (append, escape check, counter)</li>
+      <li>Trip report's HAZARDS section shows clean hazard names, not dict literals</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">7</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Updated Trip Report</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Final verification step. <code>save_trip_report</code> in <code>lab-4-2.py</code> should not need any changes: you fixed the hazard plumbing in CP6 by appending just the name string to <code>hazards_list</code>, which is what the trip report has always wanted. This checkpoint runs end-to-end and confirms that the on-screen report and <code>trip_report.txt</code> both produce the right shape with the new data flow.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Module 3 ended with a polished trip report file. Module 4.1 carried that report forward unchanged. The risk this week is that the hazard data-shape switch broke the report in a subtle way (dict literals showing up instead of names, sort order scrambled, and so on). T-Bone's QA pass here catches anything CP6 missed.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Look at the trip report after a game with several hazards. Each line under HAZARDS ENCOUNTERED should look like <code>1. Buc-ee's appears!</code>, not <code>1. {'name': "Buc-ee's appears!", 'heads': ..., 'tails': ...}</code>. If the dict literal version shows up, it means CP6 appended the dict instead of just the name. Go fix that one line before submitting."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
+        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Run the program. Play a complete game to the beach via Corpus Christi (choice 1 from San Antonio). Let the D20 mechanic carry you forward; you should hit a few hazards along the way.</li>
+      <li>Read the on-screen trip report. Verify the HAZARDS ENCOUNTERED section shows hazards by name only (e.g., <code>1. Buc-ee's appears!</code>), alphabetically sorted.</li>
+      <li>Open <code>trip_report.txt</code> from the same folder. Verify the same shape and ordering. The file output should match the on-screen output line-for-line.</li>
+      <li>Play a quick second game that ends in a dead end. Confirm the trip report still writes correctly with the 'Dead End' status.</li>
+      <li>Save-and-quit at a non-beach city. Confirm <code>trip_report.txt</code> is NOT overwritten on save-and-quit (the file from the previous game should still be there).</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 7-16</strong>
+            — <code>sort_grades.py</code>
+            
+            — <code>.copy().sort()</code> on the hazard names list, same pattern as Lab 3.3. The names are strings (because CP6 appended just the name), so sorting works correctly.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Confirm both outputs (screen + file) are clean. Mid-game inputs you can test: <code>y</code>, <code>Y</code>, <code> y </code>, <code>n</code>, <code>N</code> all behave the same; <code>abc</code> at a numeric prompt no longer crashes.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Trip report shows dict literals like <code>{'name': 'Buc-ee\'s appears!', ...}</code></td>
+        <td>CP6 appended the wrong thing. Find the <code>hazards_list.append(...)</code> call and confirm it appends <code>name</code>, not the full hazard tuple or dict.</td>
+      </tr>
+      <tr>
+        <td>Sort order looks wrong</td>
+        <td>Hazards are sorted alphabetically by name. Apostrophes and exclamation points sort before letters in ASCII, so <code>!</code>-laden names like <code>Buc-ee's appears!</code> may sort earlier than expected. That is correct Python behavior, not a bug.</td>
+      </tr>
+      <tr>
+        <td><code>trip_report.txt</code> contains last week's content</td>
+        <td>Make sure CP6 did not accidentally break the <code>save_trip_report</code> call. If the file write is not happening, the file will hold whatever was there from a previous lab.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li>On-screen trip report shows hazards by name, alphabetically</li>
+      <li><code>trip_report.txt</code> matches the on-screen version line-for-line</li>
+      <li>Dead-end status writes the correct status string</li>
+      <li>Save-and-quit does not overwrite the trip report from a prior completed game</li>
+    </ol>
     </div>
   </div>
 </div>
@@ -761,46 +992,356 @@ Hazards Escaped: 0</pre>
     <ul class="lc-checklist">
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">File is named exactly <code>lab-4-2.py</code></span>
+        <span class="lc-checklist__label">Submitting <strong>two files</strong>: <code>lab-4-2.py</code> and <code>function_library.py</code></span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Docstring updated with name, abc123, section, and description for Lab 4.2</span>
+        <span class="lc-checklist__label"><code>function_library.py</code> gained <strong>three</strong> functions (<code>clean_input</code>, <code>load_hazards</code>, <code>handle_hazard</code>), rewrote <strong>two</strong> (<code>get_valid_int</code>, <code>get_yes_no</code>), and retired <strong>one</strong> (<code>get_random_hazard</code>)</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">All yes/no inputs use <code>.strip().upper()</code> with no remaining <code>or</code> patterns</span>
+        <span class="lc-checklist__label"><code>lab-4-2.py</code> defines <strong>six</strong> module-level constants including the new <code>HAZARDS_FILE</code></span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label"><code>load_hazards()</code> returns a list of dictionaries with <code>'name'</code>, <code>'heads'</code>, and <code>'tails'</code> keys</span>
+        <span class="lc-checklist__label">The three inline hazard parallel lists from Lab 4.1 are deleted from <code>lab-4-2.py</code>, gone, not commented out</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label"><code>travel_to()</code> uses D20 rolls and a 30% hazard chance per turn</span>
+        <span class="lc-checklist__label"><code>main()</code> loads three data files at startup; the load banner reports 10 cities, 10 info records, and 8 hazards</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Final report includes total hazards faced and escaped</span>
+        <span class="lc-checklist__label">Hazard block in the in-game loop is one call: <code>name, escaped = function_library.handle_hazard(hazards)</code></span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">All DEBUG/test code has been removed</span>
+        <span class="lc-checklist__label">Mixed-case y/n input works at every yes-or-no prompt: <code>y</code> and <code>Y</code> both behave the same way, as do <code>n</code> and <code>N</code></span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Typing <code>abc</code> at a numeric prompt no longer crashes the program</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Top-of-file comment block present on both files; docstrings on every function</span>
       </li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
-    <p>Chapters 2–9 only. String methods .strip(), .upper(), and .lower() are the Chapter 8 additions this week. Sets are saved for Module 4.3. CodeGrade will flag code using techniques from later chapters.</p>
+    <p>Module 4.2 introduces &lt;code&gt;.upper()&lt;/code&gt; and &lt;code&gt;.isdigit()&lt;/code&gt; for input handling, plus a list-of-dictionaries data shape for hazards. Sets and the trivia gate are held back for Lab 4.3.</p>
     <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
     <div class="lc-permitted">
-      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2–9 (all prior techniques permitted; this week adds .strip(), .upper(), .lower(), and method chaining from Chapter 8, and list of dictionaries with random.choice() from Chapter 9)</p>
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> Chapters 1–9, with full Chapter 8 string methods now in scope</p>
       <ul class="lc-permitted__list">
-      <li>String methods: <code>.strip()</code>, <code>.upper()</code>, <code>.lower()</code>, <code>.split(',')</code></li>
-      <li>Method chaining: <code>input(...).strip().upper()</code></li>
-      <li>List of dictionaries: <code>[{'name': ..., 'heads': ..., 'tails': ...}, ...]</code></li>
-      <li><code>random.choice(list)</code> to pick a random item</li>
-      <li>Returning tuples from functions</li>
+      <li>C</li>
+      <li>h</li>
+      <li>a</li>
+      <li>p</li>
+      <li>t</li>
+      <li>e</li>
+      <li>r</li>
+      <li> </li>
+      <li>8</li>
+      <li>:</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li>s</li>
+      <li>t</li>
+      <li>r</li>
+      <li>i</li>
+      <li>p</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li>s</li>
+      <li>p</li>
+      <li>l</li>
+      <li>i</li>
+      <li>t</li>
+      <li>(</li>
+      <li>'</li>
+      <li>,</li>
+      <li>'</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li>u</li>
+      <li>p</li>
+      <li>p</li>
+      <li>e</li>
+      <li>r</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li>l</li>
+      <li>o</li>
+      <li>w</li>
+      <li>e</li>
+      <li>r</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li>i</li>
+      <li>s</li>
+      <li>d</li>
+      <li>i</li>
+      <li>g</li>
+      <li>i</li>
+      <li>t</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>.</li>
+      <li> </li>
+      <li>C</li>
+      <li>h</li>
+      <li>a</li>
+      <li>p</li>
+      <li>t</li>
+      <li>e</li>
+      <li>r</li>
+      <li> </li>
+      <li>9</li>
+      <li>:</li>
+      <li> </li>
+      <li>d</li>
+      <li>i</li>
+      <li>c</li>
+      <li>t</li>
+      <li>i</li>
+      <li>o</li>
+      <li>n</li>
+      <li>a</li>
+      <li>r</li>
+      <li>y</li>
+      <li> </li>
+      <li>c</li>
+      <li>r</li>
+      <li>e</li>
+      <li>a</li>
+      <li>t</li>
+      <li>i</li>
+      <li>o</li>
+      <li>n</li>
+      <li>,</li>
+      <li> </li>
+      <li>a</li>
+      <li>c</li>
+      <li>c</li>
+      <li>e</li>
+      <li>s</li>
+      <li>s</li>
+      <li>,</li>
+      <li> </li>
+      <li>n</li>
+      <li>e</li>
+      <li>s</li>
+      <li>t</li>
+      <li>i</li>
+      <li>n</li>
+      <li>g</li>
+      <li>,</li>
+      <li> </li>
+      <li>l</li>
+      <li>i</li>
+      <li>s</li>
+      <li>t</li>
+      <li> </li>
+      <li>o</li>
+      <li>f</li>
+      <li> </li>
+      <li>d</li>
+      <li>i</li>
+      <li>c</li>
+      <li>t</li>
+      <li>i</li>
+      <li>o</li>
+      <li>n</li>
+      <li>a</li>
+      <li>r</li>
+      <li>i</li>
+      <li>e</li>
+      <li>s</li>
+      <li>,</li>
+      <li> </li>
+      <li><</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li>r</li>
+      <li>a</li>
+      <li>n</li>
+      <li>d</li>
+      <li>o</li>
+      <li>m</li>
+      <li>.</li>
+      <li>c</li>
+      <li>h</li>
+      <li>o</li>
+      <li>i</li>
+      <li>c</li>
+      <li>e</li>
+      <li>(</li>
+      <li>)</li>
+      <li><</li>
+      <li>/</li>
+      <li>c</li>
+      <li>o</li>
+      <li>d</li>
+      <li>e</li>
+      <li>></li>
+      <li> </li>
+      <li>o</li>
+      <li>n</li>
+      <li> </li>
+      <li>a</li>
+      <li> </li>
+      <li>l</li>
+      <li>i</li>
+      <li>s</li>
+      <li>t</li>
+      <li> </li>
+      <li>o</li>
+      <li>f</li>
+      <li> </li>
+      <li>d</li>
+      <li>i</li>
+      <li>c</li>
+      <li>t</li>
+      <li>s</li>
+      <li>.</li>
+      <li> </li>
+      <li>E</li>
+      <li>v</li>
+      <li>e</li>
+      <li>r</li>
+      <li>y</li>
+      <li>t</li>
+      <li>h</li>
+      <li>i</li>
+      <li>n</li>
+      <li>g</li>
+      <li> </li>
+      <li>f</li>
+      <li>r</li>
+      <li>o</li>
+      <li>m</li>
+      <li> </li>
+      <li>M</li>
+      <li>o</li>
+      <li>d</li>
+      <li>u</li>
+      <li>l</li>
+      <li>e</li>
+      <li>s</li>
+      <li> </li>
+      <li>1</li>
+      <li>–</li>
+      <li>3</li>
+      <li> </li>
+      <li>a</li>
+      <li>n</li>
+      <li>d</li>
+      <li> </li>
+      <li>L</li>
+      <li>a</li>
+      <li>b</li>
+      <li> </li>
+      <li>4</li>
+      <li>.</li>
+      <li>1</li>
+      <li> </li>
+      <li>c</li>
+      <li>a</li>
+      <li>r</li>
+      <li>r</li>
+      <li>i</li>
+      <li>e</li>
+      <li>s</li>
+      <li> </li>
+      <li>f</li>
+      <li>o</li>
+      <li>r</li>
+      <li>w</li>
+      <li>a</li>
+      <li>r</li>
+      <li>d</li>
+      <li>.</li>
       </ul>
-    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> Sets (Module 4.3), list comprehensions, try/except, classes, inheritance</p>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> Sets (saved for Lab 4.3). Trivia gate (saved for Lab 4.3). Dictionary comprehensions (not covered this semester). &lt;code&gt;get_random_hazard&lt;/code&gt; is retired and should not appear in submitted code.</p>
     </div>
     <div class="lc-callout lc-callout--warning">
       <div class="lc-callout__icon">
@@ -813,7 +1354,22 @@ Hazards Escaped: 0</pre>
       </div>
       <div class="lc-callout__bubble">
         <div class="lc-callout__body">
-          <p>Do not use sets yet — those are the Module 4.3 reveal. CodeGrade's scope check will flag premature use.</p>
+          <p>Do not keep the old <code>HAZARD_NAMES</code> / <code>HAZARD_HEADS_MSGS</code> / <code>HAZARD_TAILS_MSGS</code> lists in <code>lab-4-2.py</code>, even commented out. They are deleted entirely this week.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Do not leave the old call <code>function_library.get_random_hazard(...)</code> anywhere in either file.</p>
         </div>
       </div>
     </div>
@@ -828,9 +1384,168 @@ Hazards Escaped: 0</pre>
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">Save Your Code</div>
         <div class="lc-callout__body">
-          <p>Keep <code>lab-4-2.py</code> — Module 4.3 adds sets and a visited-cities tracker directly on top of this foundation. You will copy this file and build on it.</p>
+          <p>Save <code>lab-4-2.py</code> as <code>lab-4-2-backup.py</code> before starting Lab 4.3. Lab 4.3 starts by copying 4.2 forward.</p>
         </div>
       </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Run the Full Check</div>
+    <p>Before you submit, run your program end-to-end. Your output should match this exactly:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>==================================================
+DEEP IN THE HEART: A LONE STAR JOURNEY
+==================================================
+
+Loading city data...
+Loaded 10 cities with travel routes.
+Loaded 10 city info records.
+Loaded 8 possible hazards.
+
+MAIN MENU
+--------------------
+1. New Game
+2. Load Saved Game
+3. Quit
+
+Choice (1-3): 
+What is your name, traveler? 
+Welcome, Tester!
+You are in San Antonio. Your goal: reach the beach!
+Beach cities: Corpus Christi and Galveston.
+
+You are in: San Antonio
+  &quot;Home of the Alamo&quot;
+
+From San Antonio, you can travel to:
+  1. Corpus Christi - 150 miles
+  2. Houston - 200 miles
+  3. Austin - 80 miles
+  4. Laredo - 160 miles
+  5. El Paso - 550 miles
+
+Choice (1-5): 
+Flipping to see if Texas cooperates...
+Result: HEADS!
+
+Texas says: &quot;Y&#x27;all come on through!&quot;
+You&#x27;re headed to Corpus Christi!
+Distance: 150 miles
+
+==================================================
+TRAVELING TO CORPUS CHRISTI!
+==================================================
+
+--- Turn 1 ---
+Miles remaining: 150
+You rolled a 1!
+You travel 10 miles...
+Miles remaining: 140
+
+--- Turn 2 ---
+Miles remaining: 140
+You rolled a 9!
+You travel 90 miles...
+Miles remaining: 50
+
+--- Turn 3 ---
+Miles remaining: 50
+You rolled a 8!
+You travel 80 miles...
+
+You made it to Corpus Christi!
+
+==================================================
+CONGRATULATIONS! YOU REACHED THE BEACH!
+==================================================
+
+
+==================================================
+FINAL TRIP REPORT
+==================================================
+Driver: Tester
+Final City: Corpus Christi
+Status: BEACH WINNER!
+
+YOUR ROUTE
+----------
+  1. San Antonio
+  2. Corpus Christi
+
+Unique cities visited: 2
+
+HAZARDS ENCOUNTERED (A-Z)
+-------------------------
+  None - Lucky traveler!
+
+STATISTICS
+----------
+  Total Miles: 180
+  Total Turns: 3
+  Hazards Faced: 0
+  Hazards Escaped: 0
+
+==================================================
+
+Trip report saved to trip_report.txt.
+
+Play again? (y/n): 
+==================================================
+SESSION STATISTICS
+==================================================
+Games Played: 1
+Total Miles: 180
+Total Hazards: 0
+==================================================
+
+Thanks for playing, Tester!
+An All My Eggses Live in Texas Production
+
+MAIN MENU
+--------------------
+1. New Game
+2. Load Saved Game
+3. Quit
+
+Choice (1-3): 
+Thanks for playing!</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">If Something Breaks</div>
+    <p>Common failure patterns and where they came from:</p>
+    <div class="lc-table-wrap" style="--lc-accent: #FF1744;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Symptom</th>
+            <th>Where to Look</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>FileNotFoundError: hazards.txt</code></td>
+        <td>Check CP6 (Wire It All Together). The data file must be in the same folder as <code>lab-4-2.py</code>. CodeGrade provides it as a fixture.</td>
+      </tr>
+      <tr>
+        <td><code>AttributeError: module 'function_library' has no attribute 'get_random_hazard'</code></td>
+        <td>Check CP6. The hazard block in the in-game loop still calls the old function. Replace it with the new <code>handle_hazard</code> call.</td>
+      </tr>
+      <tr>
+        <td><code>ValueError: invalid literal for int()</code> at a menu prompt</td>
+        <td>Check CP3 (Smarter get_valid_int). The .isdigit() rewrite did not land in the library, or the wrong version of <code>function_library.py</code> is being used.</td>
+      </tr>
+      <tr>
+        <td>Yes/no prompt accepts <code>y</code> but rejects <code>Y</code> (or vice versa)</td>
+        <td>Check CP4 (Smarter get_yes_no). The rewrite uses <code>clean_input</code>, which uppercases its input, so the comparison should be against <code>'Y'</code> and <code>'N'</code> only.</td>
+      </tr>
+      <tr>
+        <td>Trip report's HAZARDS section shows dict-shaped strings like <code>{'name': 'Buc-ee\'s appears!', ...}</code></td>
+        <td>Check CP6. The code is appending the entire hazard dictionary instead of just the <code>name</code> field. <code>handle_hazard</code> returns a tuple <code>(name, escaped)</code>; unpack it and append <code>name</code> only.</td>
+      </tr>
+      <tr>
+        <td>Hazard prints fire but the trip report shows 0 hazards faced</td>
+        <td>Check CP6. The counter increment moved into the wrong block, or the <code>escaped</code> return value is being checked for the wrong outcome.</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
     <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
@@ -847,11 +1562,11 @@ Hazards Escaped: 0</pre>
 
     <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
     <ul>
-      <li>Review the Chapter 8 string methods table in your textbook — .strip(), .upper(), and .lower() are all covered with examples</li>
-      <li>Test functions in isolation: get <code>load_hazards()</code> working before writing <code>handle_hazard()</code>, and get <code>handle_hazard()</code> working before integrating <code>travel_to()</code></li>
-      <li>Check your method chaining order — <code>.strip().upper()</code>, not <code>.strip.upper()</code> (missing parentheses is a common error)</li>
-      <li>Add DEBUG print statements to see what's happening inside <code>travel_to()</code> — print the roll, miles, and remaining each turn</li>
-      <li>Submit to CodeGrade early — it shows exactly which tests pass or fail</li>
+      <li>Re-read Programs 8–6 (<code>.upper()</code>) and 8–7 (<code>.isdigit()</code>) before you start CP2 and CP3. These two BookEx programs are exactly the pattern you need</li>
+      <li>Test the library functions in isolation before wiring them into the lab. Run <code>python3 function_library.py</code> after each library checkpoint. If <code>clean_input</code> or <code>handle_hazard</code> is broken, you want to know that before you start hooking them into 200 lines of game code</li>
+      <li>If your hazards never fire, check that <code>HAZARDS_FILE</code> is in the same folder as <code>lab-4-2.py</code> and the file has 8 lines</li>
+      <li>If your in-game loop crashes on the first hazard with a <code>TypeError</code>, double-check the unpacking: <code>name, escaped = function_library.handle_hazard(hazards)</code>. Forgetting the unpacking is a common slip</li>
+      <li>Post in <code>#labs</code> on Discord with your specific error message. Include the line number, not a screenshot of the whole file</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
     <div class="lc-contact-grid">

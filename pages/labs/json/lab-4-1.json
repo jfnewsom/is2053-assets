@@ -1,543 +1,883 @@
 {
-    "meta": {
-        "labId": "lab-4-1",
-        "title": "City Data",
-        "module": 4,
-        "week": 1,
-        "weekType": "BUILD",
-        "chapters": "8–9",
-        "chapterTopics": "More About Strings, Dictionaries",
-        "filename": "lab-4-1.py",
-        "additionalFiles": [
-            "function_library.py"
-        ]
+  "meta": {
+    "labId": "lab-4-1",
+    "title": "City Data",
+    "module": 4,
+    "week": 1,
+    "weekType": "BUILD",
+    "chapters": "8\u20139",
+    "chapterTopics": "More About Strings, Dictionaries",
+    "filename": "lab-4-1.py",
+    "additionalFiles": []
+  },
+  "overview": {
+    "body": "BUILD week. Module 4 opens by killing the hardest pain point from Module 3: those long lists of distance constants and parallel destination lists for every city. The city graph moves out of code and into <strong>two text files</strong>, loaded into <strong>dictionaries</strong> at startup. <code>distances['San Antonio']['Houston']</code> returns <code>200</code>. Adding ten more cities means adding ten more lines to a text file, not touching code. Everything else from Lab 3.3 carries forward unchanged: the main-menu loop, save and load, the play-again loop, the D20 travel mechanic, the hazard system, and the trip report file. Same game, smarter data shape.",
+    "mentorQuote": {
+      "character": "Priya Venkatesh",
+      "role": "Project Manager, Bat City Collective",
+      "headshot": "Priya-Venkatesh.png",
+      "quote": "Real codebases keep data and code in separate places. If you have to edit a function every time the business changes its mind about a city, the design is wrong. Move the data into a file, load it once at startup, and let the code stay still. That is the whole point of Module 4."
     },
-    "overview": {
-        "body": "Remember all those distance constants? <code>SAT_TO_CORPUS = 150</code>, <code>SAT_TO_HOUSTON = 200</code>, on and on? And those long if-elif chains for hazards? This week, all that hardcoded data moves into <strong>external files</strong> and gets loaded into <strong>dictionaries</strong>. One data file, one function to load it, and suddenly adding 50 more cities is just adding 50 lines to a text file. <em>This</em> is how real programs work.",
-        "mentorQuote": {
-            "character": "Priya Venkatesh",
-            "role": "Project Manager, Bat City Collective",
-            "headshot": "Priya-Venkatesh.png",
-            "quote": "If I asked you to add 20 new cities to the game using constants, how long would it take? Now imagine it's just adding 20 lines to a text file. That's why we use data files. Dictionaries let your code work with data that doesn't exist when you write it."
-        },
-        "objectives": [
-            "Write <code>load_city_distances()</code> to parse <code>city_distances.txt</code> into a nested dictionary",
-            "Write <code>load_city_info()</code> to parse <code>city_info.txt</code> into a dictionary with nested data",
-            "Display destinations and distances from dictionaries, not hardcoded values",
-            "Use <code>.strip()</code> and <code>.split(',')</code> to clean and parse file input",
-            "Wire all functions into a complete game loop with win detection and a coin flip gate"
-        ],
-        "keyConceptsText": "<strong>Chapter 8:</strong> String methods (<code>.strip()</code>, <code>.split()</code>) for parsing CSV data<br><strong>Chapter 9:</strong> Dictionaries and nested dictionaries for structured data",
-        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 8 & 9",
-        "programRequirements": [
-            "Your program <strong>MUST</strong> load city data from external files, not hardcoded constants",
-            "Your program <strong>MUST</strong> use <code>.strip()</code> and <code>.split(',')</code> to parse file data",
-            "Your program <strong>MUST</strong> use dictionaries to store city distances and city info",
-            "Your program <strong>MUST</strong> use <code>function_library.py</code> for random functions and input validation",
-            "Your program <strong>MUST</strong> include a top-of-file docstring with name, abc123, section, and description"
-        ],
-        "filenameNote": "Submit <code>lab-4-1.py</code> and your <code>function_library.py</code> this week.",
-        "saveYourCode": "Keep <code>lab-4-1.py</code> — Module 4.2 adds string method input handling directly on top of your file-loading foundation.",
-        "dataFiles": [
-            {
-                "file": "city_distances.txt",
-                "format": "city1,city2,distance (e.g., San Antonio,Houston,200)"
-            },
-            {
-                "file": "city_info.txt",
-                "format": "city,type,tagline (e.g., Houston,GATEWAY,Space City)"
-            },
-            {
-                "file": "function_library.py",
-                "format": "Your shared function library from Module 3"
-            }
-        ],
-        "additionalFilesNote": "CodeGrade tests your functions in isolation, so both files must be present."
-    },
-    "timeGuide": {
-        "totalTime": "90–120 Minutes",
-        "rows": [
-            {
-                "checkpoint": "CP1: Load City Distances",
-                "time": "25–30 min",
-                "task": "Parse file into nested dictionary"
-            },
-            {
-                "checkpoint": "CP2: Load City Info",
-                "time": "20–25 min",
-                "task": "Parse file into dictionary with nested data"
-            },
-            {
-                "checkpoint": "CP3: Data-Driven Display",
-                "time": "20–25 min",
-                "task": "Display destinations from dictionary"
-            },
-            {
-                "checkpoint": "CP4: Complete Game Loop",
-                "time": "25–30 min",
-                "task": "Integrate all functions, clean input"
-            }
-        ],
-        "strategy": "This is a BUILD week — focus on getting the data structure right before wiring it into the game. Test each loader function in isolation before moving to the next checkpoint."
-    },
-    "beforeYouBegin": {
-        "intro": "Here's how your finished program fits together. The [NEW] tags show what you're adding. [REPLACED] tags show what changes from your 3.3 code.",
-        "architecture": "# ---- DATA LOADING FUNCTIONS ----  [NEW]\nload_city_distances()   reads city_distances.txt → nested dict\nload_city_info()        reads city_info.txt → dict of dicts\n\n# ---- NAVIGATION FUNCTIONS ----  [NEW]\ndisplay_destinations(city, distances)      shows menu from dict\nget_destination_by_number(city, distances) validates user pick\n\n# ---- MAIN PROGRAM ----\nLoad data files into dictionaries  [NEW]\nGet player name\ncurrent_city = 'San Antonio'\n\nGAME LOOP (each pass is one leg):\n│\n│── Display city info from city_info dict  [REPLACED] was hardcoded\n│── Show destinations from distances dict  [REPLACED] was if/elif menu\n│── Destination Gate (coin flip)\n│\n│   TRAVEL LOOP (each pass is one turn):\n│   │── Fixed 50-mile travel, check for hazard\n│   │── Repeat until you arrive\n│\n│── Update trip totals\n│── Check outcome: beach / dead end / continue\n│── Save and quit option\n\n# ---- AFTER THE LOOP ----\nPrint trip summary\n\"Thanks for playing!\""
-    },
-    "checkpoints": [
-        {
-            "number": 1,
-            "title": "Load City Distances",
-            "content": [
-                {
-                    "type": "mentor_quote",
-                    "character": "Terrence \"T-Bone\" Booker",
-                    "role": "Senior Developer, Bat City Collective",
-                    "headshot": "Terrence-Booker.png",
-                    "quote": "Your 3.3 game works, but all that city data is baked into the code. This week you're pulling it OUT into text files and loading it INTO dictionaries. Two new functions, one big refactor of your menu—and suddenly your game can handle any number of cities."
-                },
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "A function that reads <code>city_distances.txt</code> and creates a nested dictionary where you can look up distances like <code>distances['San Antonio']['Houston']</code> → <code>200</code>."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "In Modules 1–3, you had 20+ constants like <code>SAT_TO_HOUSTON = 200</code>. Adding a new city meant adding 5+ new constants AND updating multiple if-elif chains. With a nested dictionary loaded from a file, adding a city is just adding lines to the data file. Your code doesn't change at all."
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "8-10",
-                            "filename": "split_date.py",
-                            "description": "You used .split('/') to break a date string into parts. Now use .split(',') to break each CSV line into city1, city2, and distance."
-                        },
-                        {
-                            "programId": "9-1",
-                            "filename": "card_dealer.py",
-                            "description": "You created a dictionary with key-value pairs. Now you're building a nested dictionary where each city maps to another dictionary of destinations."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Create a new file called <code>lab-4-1.py</code> with your standard docstring.",
-                        "Add imports: <code>import random</code> and <code>import function_library</code>.",
-                        "Define <code>load_city_distances(filename)</code> that takes a filename parameter.",
-                        "Create an empty dictionary inside the function: <code>distances = {}</code>.",
-                        "Open the file and loop through each line.",
-                        "For each line: use <code>line.strip().split(',')</code> to get a list of parts.",
-                        "Extract: <code>city1 = parts[0]</code>, <code>city2 = parts[1]</code>, <code>distance = int(parts[2])</code>.",
-                        "Check if city1 is already a key; if not, create an empty dictionary for it: <code>if city1 not in distances: distances[city1] = {}</code>.",
-                        "Add the destination: <code>distances[city1][city2] = distance</code>.",
-                        "Close the file and return the distances dictionary."
-                    ]
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Terrence \"T-Bone\" Booker",
-                    "role": "QA Lead, Bat City Collective",
-                    "headshot": "Terrence-Booker.png",
-                    "quote": "When testing file-loaded data, I always check three things: Does the file load correctly? Is the data structured right? What happens if the file is malformed? Print your dictionary right after loading it — if the keys and values look right, your parsing worked. If not, you found the bug early."
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Fix"
-                    ],
-                    "rows": [
-                        [
-                            "Forgetting <code>.strip()</code>",
-                            "Lines have <code>\\n</code> at the end. Use <code>line.strip()</code> first."
-                        ],
-                        [
-                            "KeyError when adding to nested dict",
-                            "Check if city1 exists first: <code>if city1 not in distances:</code>"
-                        ],
-                        [
-                            "Forgetting to convert distance to int",
-                            "Use <code>int(parts[2])</code> — <code>split()</code> returns strings."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 1:</strong> Add this test harness at the bottom of your file:"
-                },
-                {
-                    "type": "code_block",
-                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\ndistances = load_city_distances('city_distances.txt')\nprint('Loaded cities:', list(distances.keys()))\nprint('San Antonio to Houston:', distances['San Antonio']['Houston'])\nprint('Houston destinations:', distances['Houston'])"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 2:</strong> Run and verify this output:"
-                },
-                {
-                    "type": "output_block",
-                    "output": "Loaded cities: ['San Antonio', 'Houston', 'Austin', 'Dallas', ...]\nSan Antonio to Houston: 200\nHouston destinations: {'Galveston': 50, 'Dallas': 240, 'San Antonio': 200}"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 3:</strong> Verify the distance is an <code>int</code> (200) not a <code>string</code> ('200')."
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 4:</strong> <strong style=\"color:#FF6B1A;\">DELETE the DEBUG lines</strong> before moving to Checkpoint 2."
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "text",
-                    "body": "<ul><li>Docstring with your name, ID, section, and description</li><li><code>load_city_distances()</code> function that returns a nested dictionary</li><li>Uses <code>.strip()</code> and <code>.split(',')</code> to parse each line</li><li>Can access any distance with <code>distances[city1][city2]</code></li></ul>"
-                }
-            ],
-            "subtitle": "Parse the city_distances.txt file and build a nested dictionary structure."
-        },
-        {
-            "number": 2,
-            "title": "Load City Info",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "A function that reads <code>city_info.txt</code> and creates a dictionary where each city maps to <em>another dictionary</em> containing its type and tagline. Like this: <code>city_info['Houston']['tagline']</code> → <code>'Space City'</code>."
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "9-1",
-                            "filename": "card_dealer.py",
-                            "description": "You built a dictionary where card names map to values. Now build a dictionary where city names map to dictionaries of attributes."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Define <code>load_city_info(filename)</code> that takes a filename parameter.",
-                        "Create an empty dictionary: <code>info = {}</code>.",
-                        "Open the file and loop through each line.",
-                        "For each line: use <code>line.strip().split(',')</code> to get a list of parts.",
-                        "Extract: <code>city = parts[0]</code>, <code>city_type = parts[1]</code>, <code>tagline = parts[2]</code>.",
-                        "Create the nested entry: <code>info[city] = {'type': city_type, 'tagline': tagline}</code>.",
-                        "Close the file and return the <code>info</code> dictionary."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 1:</strong> Add this test harness:"
-                },
-                {
-                    "type": "code_block",
-                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 3\ncity_info = load_city_info('city_info.txt')\nprint('Houston type:', city_info['Houston']['type'])\nprint('Houston tagline:', city_info['Houston']['tagline'])\nprint('Corpus Christi type:', city_info['Corpus Christi']['type'])"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 2:</strong> Run and verify this output:"
-                },
-                {
-                    "type": "output_block",
-                    "output": "Houston type: GATEWAY\nHouston tagline: Space City\nCorpus Christi type: WIN"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 3:</strong> <strong style=\"color:#FF6B1A;\">DELETE the DEBUG lines</strong> before moving to Checkpoint 3."
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Using <code>city_info['type']</code> directly",
-                            "Need TWO keys: <code>city_info[city_name]['type']</code>"
-                        ],
-                        [
-                            "Inconsistent key names",
-                            "Use exact keys: <code>'type'</code> and <code>'tagline'</code> (lowercase)"
-                        ],
-                        [
-                            "Forgetting to return the dictionary",
-                            "Function must <code>return info</code> at the end"
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "text",
-                    "body": "<ul><li><code>load_city_info()</code> function that returns a dictionary of dictionaries</li><li>Each city maps to <code>{'type': ..., 'tagline': ...}</code></li><li>Can access city attributes with <code>city_info[city]['type']</code></li></ul>"
-                }
-            ],
-            "subtitle": "Parse the city_info.txt file and build a dictionary with nested city data."
-        },
-        {
-            "number": 3,
-            "title": "Data-Driven Display",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "Functions that display available destinations from a city and help with navigation — all driven by your dictionaries, not hardcoded values."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Create <code>display_destinations(city, distances)</code> that takes the current city name and the distances dictionary.",
-                        "Loop through the destinations using a counter variable to number each option (1, 2, 3…).",
-                        "Print each option: number, destination name, and distance.",
-                        "Create <code>get_destination_by_number(city, distances, choice)</code>.",
-                        "Convert dict keys to a list: <code>destinations = list(distances[city].keys())</code>.",
-                        "Return the destination at index <code>choice - 1</code> (user picks 1, but list index is 0).",
-                        "Create <code>is_win_city(city, city_info)</code> that checks if <code>city_info[city]['type']</code> equals <code>'WIN'</code>.",
-                        "Create <code>is_dead_end(city, city_info)</code> that checks if the type is <code>'DEAD_END'</code> or <code>'WRONG_WAY'</code>."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 1:</strong> Add this test harness:"
-                },
-                {
-                    "type": "code_block",
-                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 4\ndistances = load_city_distances('city_distances.txt')\ncity_info = load_city_info('city_info.txt')\n\ndisplay_destinations('San Antonio', distances)\ndest = get_destination_by_number('San Antonio', distances, 2)\nprint('Choice 2 is:', dest)\n\nprint('Corpus Christi is win?', is_win_city('Corpus Christi', city_info))\nprint('Laredo is dead end?', is_dead_end('Laredo', city_info))"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 2:</strong> Run and verify this output:"
-                },
-                {
-                    "type": "output_block",
-                    "output": "From San Antonio, you can travel to:\n\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice 2 is: Houston\nCorpus Christi is win? True\nLaredo is dead end? True"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 3:</strong> <strong style=\"color:#FF6B1A;\">DELETE the DEBUG lines</strong> before moving to Checkpoint 4."
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Using <code>choice</code> as index directly",
-                            "User enters 1 for first item, but <code>list(dict.keys())[0]</code> is index 0. Use <code>choice - 1</code>."
-                        ],
-                        [
-                            "Checking type with <code>== 'win'</code> (lowercase)",
-                            "Types are uppercase: <code>'WIN'</code>, <code>'DEAD_END'</code>, <code>'GATEWAY'</code>."
-                        ],
-                        [
-                            "Forgetting <code>'WRONG_WAY'</code> in <code>is_dead_end()</code>",
-                            "Both <code>'DEAD_END'</code> and <code>'WRONG_WAY'</code> end the game."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "text",
-                    "body": "<ul><li><code>display_destinations()</code> shows a numbered menu from the dictionary</li><li><code>get_destination_by_number()</code> converts user choice to destination name</li><li><code>is_win_city()</code> returns <code>True</code> for WIN cities</li><li><code>is_dead_end()</code> returns <code>True</code> for DEAD_END or WRONG_WAY cities</li></ul>"
-                }
-            ],
-            "subtitle": "Create helper functions that use dictionaries to display destinations and look up information."
-        },
-        {
-            "number": 4,
-            "title": "Complete Game Loop",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "A complete game that loads data, gets the player's name, displays current city info, lets the player choose destinations, uses a coin flip gate, and tracks the route until they reach the beach or a dead end."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Create a <code>main()</code> function with a welcome banner.",
-                        "Load both data files using your two loading functions.",
-                        "Get the player's name: use <code>input().strip()</code> to clean whitespace.",
-                        "Initialize game state: <code>current_city = 'San Antonio'</code>, <code>total_miles = 0</code>, <code>visited = [current_city]</code>.",
-                        "Start the game loop: <code>while playing:</code>.",
-                        "Show the current city name and its tagline from <code>city_info</code>.",
-                        "Check for a win (<code>is_win_city</code>) or dead end (<code>is_dead_end</code>).",
-                        "Display destinations and get the player's choice using <code>function_library.get_valid_int()</code>.",
-                        "Use the coin flip gate: HEADS = go to chosen city, TAILS = random redirect.",
-                        "Update state: <code>current_city</code>, <code>total_miles</code>, and the <code>visited</code> list.",
-                        "After the loop ends, print the final trip report."
-                    ]
-                },
-                {
-                    "type": "callout",
-                    "variant": "tip",
-                    "title": "Input Validation Is Data-Driven Too",
-                    "body": "Use <code>function_library.get_valid_int(prompt, min, max)</code> for the destination choice. The upper bound is <code>len(distances[current_city])</code> — no hardcoding required."
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 1:</strong> Add the main guard at the bottom of your file:"
-                },
-                {
-                    "type": "code_block",
-                    "code": "if __name__ == '__main__':\n    main()"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 2:</strong> Play through the game and verify:"
-                },
-                {
-                    "type": "text",
-                    "body": "<ul><li>Data loads correctly (shows number of cities)</li><li>Current city shows tagline from the data file</li><li>Destination menu shows all options from the dictionary</li><li>Coin flip works (HEADS = choice, TAILS = random)</li><li>Reaching Corpus Christi or Galveston shows a win</li><li>Final report shows route and total miles</li></ul>"
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Data files not in the same folder as the script",
-                            "Python looks for files relative to where the script runs. Keep all .txt files with lab-4-1.py."
-                        ],
-                        [
-                            "Not calling loading functions before using data",
-                            "Call <code>load_city_distances()</code> and <code>load_city_info()</code> at the start of <code>main()</code>."
-                        ],
-                        [
-                            "Missing <code>if __name__ == '__main__':</code>",
-                            "Without this guard, <code>main()</code> runs when the module is imported, which breaks CodeGrade."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "text",
-                    "body": "<ul><li>Complete <code>main()</code> function with game loop</li><li>All data comes from files (no hardcoded constants for cities)</li><li>Clean input with <code>.strip()</code></li><li>Uses <code>function_library</code> for coin flip and input validation</li><li>Complete trip report at the end</li></ul>"
-                }
-            ],
-            "subtitle": "Wire everything together into a complete road trip game with the main() function."
-        }
+    "objectives": [
+      "Add <code>load_city_distances(filename)</code> to <code>function_library.py</code> that parses CSV lines with <code>.strip()</code> and <code>.split(',')</code> into a nested dictionary",
+      "Add <code>load_city_info(filename)</code> that parses CSV lines into a dictionary of dictionaries with <code>type</code> and <code>tagline</code> keys",
+      "Refactor <code>display_destinations</code>, <code>get_destination</code>, and <code>get_redirect</code> in the library to take <code>(city, distances)</code> instead of parallel lists. Same function names, smarter data shape",
+      "Add <code>is_win_city</code> and <code>is_dead_end</code> helpers that read from the city info dictionary",
+      "Rebuild <code>lab-4-1.py</code> so the city graph is loaded from text files at startup. Keep the three-loop architecture (main menu, play-again, in-game), keep the D20 mechanic, keep the parallel-list hazards inline for now (they move to a file in Lab 4.2)"
     ],
-    "finalChecklist": {
-        "beforeYouSubmit": [
-            "File is named exactly <code>lab-4-1.py</code>",
-            "Docstring includes your name, abc123, section, and description",
-            "Uses <code>.strip()</code> and <code>.split(',')</code> to parse file data",
-            "Uses dictionaries (not hardcoded constants) to store city data",
-            "Uses <code>function_library</code> for <code>flip_coin</code> and <code>get_valid_int</code>",
-            "All DEBUG/test code has been removed",
-            "No syntax errors when you run the program"
-        ],
-        "scopeReminder": "Chapters 2–9 only. String methods like .strip() and .split() are the Chapter 8 focus this week. .upper() and .lower() are saved for Module 4.2. Sets are saved for Module 4.3. CodeGrade will flag code using techniques from later chapters.",
-        "permittedTechniques": {
-            "chapters": "2–9 (Chapters 2–7 fully permitted from previous modules; Chapter 8 string methods .strip() and .split() as introduced this week; Chapter 9 dictionaries and nested dictionaries)",
-            "specific": [
-                "String methods: <code>.strip()</code>, <code>.split(',')</code>",
-                "File I/O: <code>open(filename)</code>, reading lines in a loop",
-                "Dictionaries: creation, key access, nested dicts",
-                "<code>import random</code>, <code>import function_library</code>"
-            ],
-            "notPermitted": "Classes (Chapter 10), inheritance (Chapter 11), sets (Module 4.3), .upper() and .lower() (Module 4.2), list comprehensions"
+    "keyConceptsText": "Two new tools arrive together. <code>.strip().split(',')</code> is the standard CSV-parsing pattern from Chapter 8: <code>.strip()</code> removes the newline at the end of each line, <code>.split(',')</code> breaks the comma-separated values into a list of fields. Dictionaries (Chapter 9) replace parallel lists for any data shape where the keys are meaningful. A <em>nested</em> dictionary is just a dictionary whose values are themselves dictionaries: <code>distances['San Antonio']</code> is itself a dictionary mapping destinations to miles. The <code>in</code> operator works on dictionaries too. <code>'Houston' in distances</code> checks if Houston is a key. This is how the loader builds the nested structure: it checks <code>if city1 not in distances:</code> before creating the inner dictionary.",
+    "textbookReference": "Chapter 8 covers the string methods. Programs 8\u20131 through 8\u201314 demonstrate <code>.strip()</code>, <code>.split()</code>, and string traversal. Chapter 9 covers dictionaries. Programs 9\u20131 through 9\u20137 cover dictionary creation, access, the <code>in</code> operator with dictionaries, and looping through keys.",
+    "programRequirements": [
+      "Submit <code>lab-4-1.py</code> and <code>function_library.py</code>",
+      "Top-of-file comment block on both files: Name, abc123, Section, Description",
+      "Docstring on every function",
+      "Load both data files at startup in <code>main()</code> using the new library functions",
+      "Three-loop architecture preserved: main menu, play-again, in-game (carried forward from Lab 3.3)",
+      "D20 mechanic preserved: each turn the player rolls a d20 and moves <code>roll * MILES_MULTIPLIER</code> miles",
+      "Inline parallel-list hazards still live in <code>lab-4-1.py</code> for this lab; <code>hazards.txt</code> arrives in Lab 4.2",
+      "Trip report saved to <code>trip_report.txt</code> at the end of every completed game"
+    ],
+    "namedConstants": [
+      {
+        "name": "DISTANCES_FILE",
+        "description": "Name of the city distances text file"
+      },
+      {
+        "name": "INFO_FILE",
+        "description": "Name of the city info text file"
+      },
+      {
+        "name": "REPORT_FILE",
+        "description": "Name of the trip report output file"
+      },
+      {
+        "name": "MILES_MULTIPLIER",
+        "description": "Multiplier applied to each D20 roll: <code>roll * 10</code> miles per turn"
+      },
+      {
+        "name": "HAZARD_CHANCE",
+        "description": "Percent chance per turn of a hazard event (30)"
+      }
+    ],
+    "filenameNote": "Submit <code>lab-4-1.py</code> and <code>function_library.py</code> this week. CodeGrade provides the data files (<code>city_distances.txt</code>, <code>city_info.txt</code>) as fixtures, so you do not upload them. Test locally with the copies you download from this page.",
+    "dataFiles": [
+      {
+        "file": "city_distances.txt",
+        "path": "4-1/city_distances.txt",
+        "format": "city1,city2,distance (e.g., <code>San Antonio,Houston,200</code>)",
+        "new": true,
+        "submitted": false
+      },
+      {
+        "file": "city_info.txt",
+        "path": "4-1/city_info.txt",
+        "format": "city,type,tagline (e.g., <code>Houston,GATEWAY,Space City</code>)",
+        "new": true,
+        "submitted": false
+      },
+      {
+        "file": "function_library.py",
+        "format": "Your shared function library, carried over from Module 3 and extended this week",
+        "submitted": true
+      }
+    ]
+  },
+  "timeGuide": {
+    "totalTime": "90\u2013120 Minutes",
+    "rows": [
+      {
+        "checkpoint": "CP1: Load City Distances",
+        "time": "15 min",
+        "task": "Add load_city_distances to function_library.py"
+      },
+      {
+        "checkpoint": "CP2: Load City Info",
+        "time": "10 min",
+        "task": "Add load_city_info using the same parsing pattern"
+      },
+      {
+        "checkpoint": "CP3: Graph Helpers",
+        "time": "20 min",
+        "task": "Refactor display_destinations / get_destination / get_redirect to dict shape; add is_win_city and is_dead_end"
+      },
+      {
+        "checkpoint": "CP4: Lab Skeleton + Main Menu",
+        "time": "15 min",
+        "task": "Start lab-4-1.py, load data files in main(), keep the main-menu loop"
+      },
+      {
+        "checkpoint": "CP5: Coin Gate + D20 Travel",
+        "time": "20 min",
+        "task": "In-game loop with coin-flip Destination Gate, D20 movement, dead-end handling"
+      },
+      {
+        "checkpoint": "CP6: Trip Report + Session Totals",
+        "time": "15 min",
+        "task": "Trip report on screen plus trip_report.txt write, session accumulators"
+      },
+      {
+        "checkpoint": "Final Check & Submit",
+        "time": "10 min",
+        "task": "Full play-through, then upload both files to CodeGrade"
+      }
+    ]
+  },
+  "beforeYouBegin": {
+    "intro": "Here is what your finished program looks like. <code>[NEW]</code> tags show what gets added this week. <code>[REPLACED]</code> tags show what changes shape but keeps the same function name. <code>[KEEP]</code> tags show what carries forward from Lab 3.3 untouched.",
+    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nget_valid_int(), get_yes_no()                               [KEEP from 2.3]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\nget_random_hazard(names, heads_msgs, tails_msgs)            [KEEP from 3.3]\n\nload_city_distances(filename) -> nested dict                [NEW-CP1]\nload_city_info(filename) -> dict of dicts                   [NEW-CP2]\ndisplay_destinations(city, distances)                       [REPLACED-CP3] was parallel lists\nget_destination(city, distances, choice)                    [REPLACED-CP3] was parallel lists\nget_redirect(city, distances, avoid)                        [REPLACED-CP3] was parallel lists\nis_win_city(city, city_info)                                [NEW-CP3]\nis_dead_end(city, city_info)                                [NEW-CP3]\n\n# ---- IN lab-4-1.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE = 'city_distances.txt'                       [NEW-CP4]\nINFO_FILE      = 'city_info.txt'                            [NEW-CP4]\nREPORT_FILE    = 'trip_report.txt'                          [KEEP from 3.3]\nMILES_MULTIPLIER = 10                                       [KEEP from 3.3]\nHAZARD_CHANCE    = 30                                       [KEEP from 3.3]\n\n# ---- HAZARD DATA (still inline; moves to file in Lab 4.2) ----\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [KEEP from 3.3]\n\n# ---- LAB-LOCAL HELPER ----\nsave_trip_report(filename, ...)                             [KEEP from 3.3]\n\n# ---- main() ----\nLoad data files: distances = load_city_distances(...)       [NEW-CP4]\n                 city_info = load_city_info(...)            [NEW-CP4]\n\nMAIN MENU LOOP                                              [KEEP from 3.3]\n  1. New Game  2. Load Saved Game  3. Quit\n  \u2502\n  \u2502   PLAY-AGAIN LOOP                                       [KEEP from 3.3]\n  \u2502   \u2502\n  \u2502   \u2502   IN-GAME LOOP                                       [KEEP from 3.3]\n  \u2502   \u2502   \u2502\u2500 Show current city + tagline from city_info     [NEW-CP5]\n  \u2502   \u2502   \u2502\u2500 display_destinations(current_city, distances)  [REPLACED-CP5]\n  \u2502   \u2502   \u2502\u2500 Coin-flip Destination Gate                     [KEEP from 3.3]\n  \u2502   \u2502   \u2502\u2500 D20 travel loop with hazard check              [KEEP from 3.3]\n  \u2502   \u2502   \u2502\u2500 is_win_city / is_dead_end branching            [NEW-CP5]\n  \u2502   \u2502   \u2502\u2500 Continue / Save & quit / Quit                  [KEEP from 3.3]\n  \u2502   \u2502\n  \u2502   \u2502\u2500 Trip report on screen + trip_report.txt              [KEEP-CP6 from 3.3]\n  \u2502   \u2502\u2500 Session accumulators update                          [KEEP-CP6 from 3.3]\n  \u2502   \u2502\u2500 Play again? (y/n)                                    [KEEP from 3.3]\n  \u2502\n  \u2502\u2500 Session statistics block                                  [KEEP from 3.3]\n  \u2502\u2500 Back to main menu\n"
+  },
+  "checkpoints": [
+    {
+      "title": "Load City Distances",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
         },
-        "warnings": [
-            "Do not use <code>.upper()</code> or <code>.lower()</code> yet — those are the Module 4.2 reveal. CodeGrade's scope check will flag premature use."
-        ],
-        "saveYourCode": "Keep <code>lab-4-1.py</code> — Module 4.2 adds string method input handling directly on top of your file-loading foundation. You will copy this file and build on it."
+        {
+          "type": "text",
+          "body": "A new function in <code>function_library.py</code> named <code>load_city_distances(filename)</code>. It opens the named text file, reads it one line at a time, parses each line into a city pair plus a distance, and builds a <strong>nested dictionary</strong> where the outer key is the starting city, the inner key is the destination, and the inner value is the distance in miles."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Lab 3.3 declared one constant per route at the top of <code>lab-3-3.py</code>: <code>SAT_TO_CORPUS = 150</code>, <code>SAT_TO_HOUSTON = 200</code>, and so on. That works for three cities and ten edges. It does not work for ten cities and twenty-four edges, which is what Module 4 hands you. The fix is to keep the data in a text file and write one function that reads it. Adding a city later means adding a line to the text file, not editing code. Same data, different storage shape, dramatically less work downstream."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Priya Venkatesh",
+          "role": "Project Manager, Bat City Collective",
+          "headshot": "Priya-Venkatesh.png",
+          "quote": "If you had to add twenty more cities to this game next week, how long would it take? If the answer is <em>'just add twenty lines to a text file'</em>, the design is right. If the answer is <em>'edit the code in five places'</em>, the design is wrong. Pick the data shape that makes the next change small."
+        },
+        {
+          "type": "callout",
+          "variant": "info",
+          "title": "How the road network is modeled",
+          "body": "The 24 routes in <code>city_distances.txt</code> are the cities and distances you can drive on a Texas interstate. San Antonio reaches Houston (I-10), Austin (I-35), Laredo (I-35), El Paso (I-10), and Corpus Christi (I-37). Houston reaches Galveston (I-45) and Dallas (I-45). Austin reaches Dallas and Fort Worth via the I-35E and I-35W split. Dallas and Fort Worth connect via I-30; Dallas reaches Texarkana via I-30; Fort Worth reaches El Paso via I-20 and I-10. There is no interstate between Austin and Houston, between Laredo and El Paso, or between Corpus Christi and Laredo, so those routes do not appear in the data. To get between two cities that aren't connected directly, the player has to drive through an intermediate city &mdash; usually San Antonio."
+        },
+        {
+          "type": "callout",
+          "variant": "info",
+          "title": "How the road network is modeled",
+          "body": "The city graph in <code>city_distances.txt</code> only includes pairs of cities connected by a single continuous interstate corridor. San Antonio to Houston is on the menu because I-10 runs between them. Austin to Houston is <em>not</em> on the menu, even though the cities are 165 miles apart, because the natural route is US-290 &mdash; a state highway, not an interstate. Laredo and Corpus Christi only connect back to San Antonio for the same reason: no direct interstate between them and the rest of the network. If a route feels missing, that's the constraint at work, not a bug in the data file."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Open <code>function_library.py</code>. At the bottom, add a new section header comment block titled <code>CITY DATA LOADERS</code>.",
+            "Define <code>load_city_distances(filename)</code> with a full docstring describing what it returns.",
+            "Inside the function, create an empty dictionary called <code>distances</code>.",
+            "Open the file with <code>infile = open(filename, 'r')</code>.",
+            "Loop through the file with <code>for line in infile:</code>. For each line, call <code>parts = line.strip().split(',')</code> to split it into a list of three strings.",
+            "Assign <code>city1 = parts[0]</code>, <code>city2 = parts[1]</code>, and <code>miles = int(parts[2])</code>. Only the third part needs <code>int()</code> &mdash; the first two are city names.",
+            "If <code>city1</code> is not yet a key in <code>distances</code>, set <code>distances[city1] = {}</code>. Then set <code>distances[city1][city2] = miles</code>.",
+            "After the loop, close the file with <code>infile.close()</code> and <code>return distances</code>."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "8-10",
+              "filename": "split_date.py",
+              "description": "You used <code>.split('/')</code> to break a date string into parts. Same idea here, but split on <code>','</code> instead. The result is a list of strings you can index by position."
+            },
+            {
+              "programId": "9-1",
+              "filename": "phone_book.py",
+              "description": "You created a dictionary mapping names to phone numbers. Same idea, but the outer dictionary's values are themselves dictionaries: <code>distances[city1][city2] = miles</code>."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Add a temporary test block at the bottom of <code>function_library.py</code> under the <code>if __name__ == '__main__':</code> guard. Run the library directly with <code>python3 function_library.py</code> and confirm the dictionary loads correctly. Delete the test block before you submit."
+        },
+        {
+          "type": "code_block",
+          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\ndistances = load_city_distances('city_distances.txt')\nprint('Cities with outgoing routes:', list(distances.keys()))\nprint('From San Antonio:', distances['San Antonio'])\nprint('SA to Houston:', distances['San Antonio']['Houston'])"
+        },
+        {
+          "type": "h3",
+          "label": "expected_output"
+        },
+        {
+          "type": "output_block",
+          "output": "Cities with outgoing routes: ['San Antonio', 'Houston', 'Austin', 'Dallas', 'Fort Worth', 'El Paso', 'Laredo', 'Texarkana', 'Corpus Christi', 'Galveston']\nFrom San Antonio: {'Corpus Christi': 150, 'Houston': 200, 'Austin': 80, 'Laredo': 160, 'El Paso': 550}\nSA to Houston: 200"
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Forgetting <code>.strip()</code>",
+              "Each line ends with a newline character. Without <code>.strip()</code>, your last 'destination' key has a hidden <code>\\n</code> on the end, and every lookup mysteriously fails."
+            ],
+            [
+              "Casting <code>parts[0]</code> or <code>parts[1]</code> to <code>int</code>",
+              "Only the distance is a number. City names are strings. Doing <code>int(parts[0])</code> throws <code>ValueError</code> the moment you hit a non-numeric city name."
+            ],
+            [
+              "Skipping the <code>if city1 not in distances:</code> guard",
+              "Without it, the very first time you see a city you also try to assign <code>distances[city1][city2]</code>, which fails because <code>distances[city1]</code> does not exist yet."
+            ],
+            [
+              "Trying to use <code>with open(...) as ...</code>",
+              "<code>with</code> statements are not in scope for this lab. Use the plain <code>open()</code>/<code>close()</code> pattern from Chapter 6."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>function_library.py</code> contains a new function <code>load_city_distances(filename)</code> with a full docstring",
+            "Running the library directly prints all ten cities and the expected San Antonio routes",
+            "The DEBUG block is removed before moving on to CP2"
+          ]
+        }
+      ]
     },
-    "needHelp": {
-        "ifYouGetStuck": [
-            "Re-read Program 8-10 (split_date.py) — the pattern for splitting CSV data is exactly what you need here",
-            "Re-read Program 9-1 (card_dealer.py) — creating and accessing dictionaries",
-            "Test each loading function independently — get <code>load_city_distances()</code> working before you start <code>load_city_info()</code>",
-            "Use DEBUG prints — print what you're parsing from each line to verify it's correct",
-            "Submit to CodeGrade early — it shows exactly which tests pass or fail"
-        ]
+    {
+      "title": "Load City Info",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "A second loader function, <code>load_city_info(filename)</code>, that parses <code>city_info.txt</code> into a <strong>dictionary of dictionaries</strong>: each city name maps to an inner dictionary with two keys, <code>'type'</code> (one of <code>START</code>, <code>HUB</code>, <code>GATEWAY</code>, <code>CORRIDOR</code>, <code>WRONG_WAY</code>, <code>DEAD_END</code>, <code>WIN</code>) and <code>'tagline'</code> (the city's short slogan)."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "City info is the metadata that drives game logic. <code>'WIN'</code> cities end the trip with a beach celebration. <code>'DEAD_END'</code> and <code>'WRONG_WAY'</code> cities prompt the player to return to San Antonio. <code>'GATEWAY'</code>, <code>'HUB'</code>, <code>'CORRIDOR'</code> are all just intermediate cities for now. Bundling all of this into one dictionary keyed by city name means the lab file does not need branching logic per city; it just asks the info dictionary what to do."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Priya Venkatesh",
+          "role": "Project Manager, Bat City Collective",
+          "headshot": "Priya-Venkatesh.png",
+          "quote": "Notice that the loader pattern is identical to the one you wrote ten minutes ago. Same <code>.strip().split(',')</code>. Same per-line dictionary assignment. Different data shape on the output side, same parsing pattern on the input side. That is what good design feels like. The boring part is reusable."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Below <code>load_city_distances</code> in <code>function_library.py</code>, define <code>load_city_info(filename)</code> with a full docstring.",
+            "Create an empty dictionary called <code>info</code>.",
+            "Open the file with <code>open(filename, 'r')</code> and loop with <code>for line in infile:</code>.",
+            "Inside the loop, call <code>parts = line.strip().split(',')</code> and assign <code>city = parts[0]</code>, <code>city_type = parts[1]</code>, <code>tagline = parts[2]</code>.",
+            "Assign <code>info[city] = {'type': city_type, 'tagline': tagline}</code> &mdash; one statement creates the inner dictionary inline.",
+            "Close the file and return <code>info</code>."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "9-1",
+              "filename": "phone_book.py",
+              "description": "Same dictionary-creation pattern. The only difference: the value associated with each key is itself a dictionary, not a scalar. That is what makes this a 'dictionary of dictionaries.'"
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Add a DEBUG block under the <code>if __name__ == '__main__':</code> guard in <code>function_library.py</code> that loads <code>city_info.txt</code> and prints three lookups. Delete it before moving on."
+        },
+        {
+          "type": "code_block",
+          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 3\ninfo = load_city_info('city_info.txt')\nprint('San Antonio type:', info['San Antonio']['type'])\nprint('Corpus Christi tagline:', info['Corpus Christi']['tagline'])\nprint('Laredo type:', info['Laredo']['type'])"
+        },
+        {
+          "type": "h3",
+          "label": "expected_output"
+        },
+        {
+          "type": "output_block",
+          "output": "San Antonio type: START\nCorpus Christi tagline: Sparkling City by the Sea\nLaredo type: DEAD_END"
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Putting the type and tagline at the same level as the city",
+              "<code>info[city] = type</code> overwrites with a string, not a dictionary. You need <code>info[city] = {'type': city_type, 'tagline': tagline}</code> &mdash; note the curly braces inside."
+            ],
+            [
+              "Quoting the type values as <code>'win'</code>",
+              "The file uses uppercase <code>WIN</code>. String comparisons are case-sensitive. Match exactly or use <code>.upper()</code> when you compare in CP3 (preview: you will not need <code>.upper()</code> until Lab 4.2)."
+            ],
+            [
+              "Splitting on the wrong delimiter",
+              "The file is comma-separated, not tab- or space-separated. <code>.split(',')</code> exactly."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>load_city_info</code> defined in the same <code>CITY DATA LOADERS</code> section as <code>load_city_distances</code>",
+            "DEBUG print confirms all three lookups produce the expected values",
+            "DEBUG block removed before moving on"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Graph Helpers + Type Checks",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "The library's destination helpers from Lab 3.2 take parallel lists <code>(destinations, distances, notes)</code>. Now they take <code>(city, distances)</code> &mdash; the city name plus the loaded nested dictionary. Same function names, same return shape, smarter data. You will also add two new type-check helpers, <code>is_win_city</code> and <code>is_dead_end</code>, that read from the city info dictionary."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Keeping the function names stable across a data-shape refactor is a real-world discipline. The rest of the lab file calls <code>display_destinations(...)</code> the same way it always has. What changes is what you pass in. That is one of the few ways a working program can absorb a new data shape without rewriting everything that uses it. The new <code>is_win_city</code> and <code>is_dead_end</code> helpers move the game's branching logic out of the lab file and into named, testable functions."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Danny Cavanaugh",
+          "role": "Lead Developer, Bat City Collective",
+          "headshot": "Danny-Cavanaugh.png",
+          "quote": "When you refactor a function, keep the public name and shape stable if you can. The callers do not care what the function does inside &mdash; they care what they pass in and what they get back. <code>display_destinations</code> still prints a numbered menu and returns a count. The shape that gets passed in is different now. The shape that comes out is the same. That is the kind of change that does not break the rest of your code."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>function_library.py</code>, find the <code>DESTINATION HELPERS</code> section from Lab 3.2.",
+            "<strong>Rewrite</strong> <code>display_destinations</code>. New signature: <code>display_destinations(city, distances)</code>. Inside, loop over <code>distances[city]</code> with a 1-based counter, printing <code>{n}. {dest} - {miles} miles</code>. Return the number of destinations shown.",
+            "<strong>Rewrite</strong> <code>get_destination</code>. New signature: <code>get_destination(city, distances, choice)</code>. Build a list of destination names from <code>list(distances[city].keys())</code>, index it with <code>choice - 1</code>, and return a tuple <code>(dest, distances[city][dest])</code>.",
+            "<strong>Rewrite</strong> <code>get_redirect</code>. New signature: <code>get_redirect(city, distances, avoid)</code>. Build the options list the same way, remove <code>avoid</code> if present, pick a random remaining option, and return <code>(dest, distances[city][dest])</code>.",
+            "Add a new section header comment <code>CITY-INFO TYPE CHECKS</code>.",
+            "Define <code>is_win_city(city, city_info)</code>: return <code>True</code> if <code>city_info[city]['type'] == 'WIN'</code>.",
+            "Define <code>is_dead_end(city, city_info)</code>: return <code>True</code> if the city's type is <code>'DEAD_END'</code> or <code>'WRONG_WAY'</code>. Both count as dead ends for gameplay purposes."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "9-3",
+              "filename": "loop_phonebook.py",
+              "description": "You looped through a dictionary with <code>for key in dict:</code>. Same pattern in <code>display_destinations</code>: iterate over the inner dictionary <code>distances[city]</code>."
+            },
+            {
+              "programId": "9-5",
+              "filename": "in_phonebook.py",
+              "description": "You used <code>in</code> to check for a key. <code>is_win_city</code> and <code>is_dead_end</code> use the same idea: ask the dictionary whether a city's type matches the expected value."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Add a DEBUG block in <code>function_library.py</code> that loads both files and exercises all five rewrites. Delete the block before moving on."
+        },
+        {
+          "type": "code_block",
+          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 4\ndistances = load_city_distances('city_distances.txt')\ninfo = load_city_info('city_info.txt')\n\nn = display_destinations('San Antonio', distances)\nprint(f'Total destinations from SA: {n}')\n\ndest, miles = get_destination('San Antonio', distances, 2)\nprint(f'Choice 2 from SA -> {dest} ({miles} miles)')\n\nprint('Corpus Christi is a WIN:', is_win_city('Corpus Christi', info))\nprint('Laredo is a dead end:', is_dead_end('Laredo', info))\nprint('El Paso is a dead end:', is_dead_end('El Paso', info))\nprint('San Antonio is a dead end:', is_dead_end('San Antonio', info))"
+        },
+        {
+          "type": "h3",
+          "label": "expected_output"
+        },
+        {
+          "type": "output_block",
+          "output": "From San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\nTotal destinations from SA: 5\nChoice 2 from SA -> Houston (200 miles)\nCorpus Christi is a WIN: True\nLaredo is a dead end: True\nEl Paso is a dead end: True\nSan Antonio is a dead end: False"
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Old-style function call from the lab file",
+              "<code>display_destinations(SA_DESTINATIONS, SA_DISTANCES, SA_NOTES)</code> is the Lab 3.2 signature. The new signature is <code>display_destinations(current_city, distances)</code>. Update every call site in CP5."
+            ],
+            [
+              "Forgetting to return the count",
+              "<code>display_destinations</code> still returns the number of destinations shown. The lab uses that count in the <code>get_valid_int(f'Choice (1-{n}): ', 1, n)</code> call."
+            ],
+            [
+              "Treating <code>WRONG_WAY</code> as different from <code>DEAD_END</code>",
+              "Gameplay-wise they behave identically: prompt the player to return to San Antonio. <code>is_dead_end</code> returns True for both."
+            ],
+            [
+              "Removing 'avoid' from the dictionary itself",
+              "<code>get_redirect</code> builds a <em>list</em> of options and removes <code>avoid</code> from that list. The original dictionary stays untouched. Otherwise you destroy the loaded game state."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Three rewritten helpers (<code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>) with new <code>(city, distances)</code> signatures",
+            "Two new type-check helpers (<code>is_win_city</code>, <code>is_dead_end</code>) in a new <code>CITY-INFO TYPE CHECKS</code> section",
+            "All five functions have docstrings",
+            "DEBUG block removed"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lab Skeleton + Main Menu",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "Start <code>lab-4-1.py</code>. The file imports <code>function_library</code>, declares the five module-level constants, declares the inline hazard parallel lists (carried forward from Lab 3.3), defines <code>save_trip_report</code> as a lab-local helper (also carried forward), and opens <code>main()</code> with the file loads and the main-menu loop from Lab 3.3."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "The main-menu loop is the outermost structure that lets the player choose New Game, Load Saved Game, or Quit. It was working in Lab 3.3. The only thing that changes here is that the city graph data is loaded from text files <em>before</em> the main-menu loop starts. After that, the menu logic, save/load logic, and welcome banner all stay the same."
+        },
+        {
+          "type": "callout",
+          "variant": "info",
+          "title": "How the Road Network Is Modeled",
+          "body": "The game's road network models <strong>interstate connections only</strong>. Austin connects to San Antonio, Dallas, and Fort Worth (all on the I-35 corridor) but not directly to Houston, because the Austin\u2013Houston route is US-290, a US highway. Laredo and Corpus Christi each connect back to San Antonio only, since neither has an interstate link to anywhere else in the graph. El Paso is reachable from San Antonio (I-10) or Fort Worth (I-20 to I-10), but not from Laredo. Adding a city to <code>city_distances.txt</code> means committing to the same standard: if there's a clean interstate between the two cities, the edge belongs in the file; otherwise it does not."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Create <code>lab-4-1.py</code> with a top-of-file comment block (Name, abc123, Section, Description) and a module docstring.",
+            "<code>import function_library</code> at the top.",
+            "Declare module-level constants: <code>DISTANCES_FILE = 'city_distances.txt'</code>, <code>INFO_FILE = 'city_info.txt'</code>, <code>REPORT_FILE = 'trip_report.txt'</code>, <code>MILES_MULTIPLIER = 10</code>, <code>HAZARD_CHANCE = 30</code>.",
+            "Copy the three parallel hazard lists (<code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code>) from Lab 3.3.",
+            "Copy <code>save_trip_report</code> from Lab 3.3 into the lab file unchanged.",
+            "Define <code>main()</code>. The first thing it does is print the welcome banner and load the data files: <code>distances = function_library.load_city_distances(DISTANCES_FILE)</code> and <code>city_info = function_library.load_city_info(INFO_FILE)</code>. Print the load counts so the player sees the game started cleanly.",
+            "Add the main-menu loop from Lab 3.3 unchanged: a <code>while in_program:</code> loop offering New Game (1), Load Saved Game (2), or Quit (3). Handle Quit and the load-from-file branch exactly like 3.3.",
+            "Add the <code>if __name__ == '__main__':</code> guard at the bottom calling <code>main()</code>.",
+            "Run the program. Confirm the welcome banner shows the loaded counts. Choose 3 to quit immediately and verify the program exits cleanly."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "9-2",
+              "filename": "phonebook_use.py",
+              "description": "Same idea: load a dictionary at program startup, then use it through the rest of the program. The loading happens once; everything downstream reads the loaded dictionary."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Run the program. Expected behavior at this checkpoint: welcome banner, load counts print (10 cities, 10 info records), main menu shows, choosing 3 exits cleanly. Choosing 1 or 2 will not work yet because the play-again loop is built in CP5."
+        },
+        {
+          "type": "output_block",
+          "output": "==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 3\n\nThanks for playing!"
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Loading inside the main-menu loop",
+              "Load the data files ONCE, before the loop. Loading inside the loop re-reads the files every iteration."
+            ],
+            [
+              "Hardcoding file names",
+              "Use the <code>DISTANCES_FILE</code> and <code>INFO_FILE</code> constants. CodeGrade looks for those exact names."
+            ],
+            [
+              "Forgetting <code>if __name__ == '__main__':</code>",
+              "Without it, <code>main()</code> runs at import time, which breaks CodeGrade's test harness."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>lab-4-1.py</code> with top-of-file comment, docstring, imports, constants, hazard lists, <code>save_trip_report</code>, <code>main()</code>",
+            "Running the program shows the welcome banner, loads 10 cities and 10 info records, displays the main menu",
+            "Choosing 3 exits cleanly with a thank-you message"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Coin Gate + D20 Travel + Dead Ends",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "Drop the play-again loop and the in-game loop from Lab 3.3 into <code>main()</code>. Update every call site to use the new dict-shape helpers: <code>display_destinations(current_city, distances)</code>, <code>get_destination(current_city, distances, choice)</code>, and <code>get_redirect(current_city, distances, wanted)</code>. Replace the hardcoded <code>if current_city in ('Corpus Christi', 'Galveston')</code> and <code>elif current_city == 'Austin'</code> branches with calls to <code>is_win_city</code> and <code>is_dead_end</code>."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "The in-game loop is identical in structure to Lab 3.3: pick a destination, flip the coin gate, travel by D20, check for hazards, check arrival type, decide next action. What changes is that every reference to a hardcoded city name moves out into the <code>city_info</code> dictionary lookup. A new city in the data file does not need any code changes here. That is the win."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Inside the main-menu loop's New Game branch, initialize: <code>current_city = 'San Antonio'</code>, <code>games_played = 0</code>, <code>session_miles = 0</code>, <code>session_hazards = 0</code>.",
+            "Open the play-again loop with <code>play_again = True</code>; <code>while play_again:</code>. Inside, reinitialize per-game state (<code>total_miles</code>, <code>total_turns</code>, <code>total_hazards</code>, <code>total_escaped</code>, <code>visited_cities</code>, <code>hazards_list</code>) unless this iteration is resuming a save.",
+            "Open the in-game loop with <code>playing = True</code>; <code>while playing:</code>. Inside, fetch the current city's info, print it with its tagline, then call <code>function_library.display_destinations(current_city, distances)</code>.",
+            "Use <code>function_library.get_valid_int</code> to read the player's menu choice. Then flip the Destination Gate coin: on HEADS call <code>get_destination</code>, on TAILS call <code>get_destination</code> first to capture the wanted destination, then call <code>get_redirect</code> to pick a different destination instead.",
+            "Drop in the D20 travel loop from Lab 3.3 unchanged. Each turn: <code>roll = function_library.roll_d20()</code>, <code>miles_this_turn = roll * MILES_MULTIPLIER</code>, decrement <code>miles_remaining</code>, add to <code>total_miles</code>, and check for hazards via <code>function_library.check_percentage(HAZARD_CHANCE)</code>.",
+            "After arrival, update <code>current_city</code>, append to <code>visited_cities</code>, and check what kind of city you arrived at: if <code>is_win_city(current_city, city_info)</code> you reached the beach (set <code>reached_beach = True</code>, exit the in-game loop). If <code>is_dead_end(current_city, city_info)</code>, print the dead-end message and use <code>function_library.get_yes_no</code> to ask 'Return to San Antonio?'.",
+            "Otherwise print the 1/2/3 Continue / Save & quit / Quit without saving menu and dispatch accordingly. Save & quit calls <code>function_library.save_game(...)</code> with the 11-tuple."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "9-5",
+              "filename": "in_phonebook.py",
+              "description": "<code>'Corpus Christi' in distances</code> works the same way as your earlier <code>in</code> checks. But you do not need to write the city names by hand &mdash; <code>is_win_city</code> and <code>is_dead_end</code> wrap the comparison."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Run a full happy-path play-through: New Game, enter your name, pick Corpus Christi (choice 1), let the coin flip however it lands, and ride the D20 mechanic to the beach. Then play a dead-end path: pick Laredo (choice 4), say no to the return-home prompt, and confirm the game ends with a 'Dead End' status."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Skipping the redirect path on TAILS",
+              "When the gate is TAILS, you still need to know what the player <em>wanted</em>. Call <code>get_destination</code> first to capture the wanted dest, then call <code>get_redirect</code> to pick something else."
+            ],
+            [
+              "Forgetting to append to <code>visited_cities</code> after a return-to-SA",
+              "If the player is at Laredo and chooses to return, <code>current_city = 'San Antonio'</code> and <code>visited_cities.append('San Antonio')</code>. Otherwise the route looks wrong."
+            ],
+            [
+              "Hardcoding 'Corpus Christi' or 'Galveston' as win cities",
+              "Use <code>is_win_city(current_city, city_info)</code> instead. Same outcome, future-proof."
+            ],
+            [
+              "Not resetting per-game state inside the play-again loop",
+              "After 'Play again? y', you need a fresh <code>total_miles</code>, <code>visited_cities</code>, etc. Only the session-level counters carry across games."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Working three-loop architecture (main menu, play-again, in-game) reading from the loaded dictionaries",
+            "Coin-flip Destination Gate working with the new dict-shape helpers",
+            "D20 travel loop working with hazards",
+            "Dead-end (Laredo, Texarkana, El Paso) and WIN (Corpus Christi, Galveston) handling via <code>is_dead_end</code> and <code>is_win_city</code>",
+            "Save & quit writes <code>savegame.txt</code>; loading from that save resumes correctly"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Trip Report + Session Totals",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "Drop the Lab 3.3 final trip report block in below the in-game loop. Sort the hazards alphabetically with <code>.copy().sort()</code>. Build the unique-cities list using the <code>in</code> operator (sets arrive in Lab 4.3). Call the lab-local <code>save_trip_report</code> to write <code>trip_report.txt</code>. Update the session accumulators. Then ask 'Play again?' to close the play-again loop. After the loop, print the session statistics block from 3.3 unchanged."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "The trip report is the player's souvenir. It carries forward from Lab 3.3 because the game's identity, the shape of the data players hold on to, has not changed this week. Module 4 is about how the game's <em>code</em> reads its data, not what the player experiences. The session statistics show that the play-again loop is doing its job: totals accumulate across multiple games in a single sitting."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Terrence \"T-Bone\" Booker",
+          "role": "QA Lead, Bat City Collective",
+          "headshot": "Terrence-Booker.png",
+          "quote": "Test the trip report end-to-end. Run a quick game to the beach, run a dead-end game, run a save-and-quit, run a quit-without-saving. Each one should produce a different status string in the report. If they all say 'BEACH WINNER!' regardless of outcome, the status logic broke and you'll find it in the conditional chain right after the in-game loop. Status strings are the easiest part of this CP to test and the easiest part to get wrong."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Immediately after the in-game loop, check the four flags from CP5 (<code>reached_beach</code>, <code>hit_dead_end</code>, <code>saved_and_quit</code>, <code>quit_without_saving</code>) and assign a <code>status</code> string accordingly. The four allowed values are <code>'BEACH WINNER!'</code>, <code>'Dead End'</code>, <code>'Quit without saving'</code>, and <code>'Trip Incomplete'</code>.",
+            "If the player saved and quit, do not write the trip report; instead break out of the play-again loop with <code>play_again = False</code>.",
+            "Otherwise, build <code>sorted_hazards = hazards_list.copy()</code> then <code>sorted_hazards.sort()</code>.",
+            "Build <code>unique_cities</code> by iterating <code>visited_cities</code> and appending each city that is not already <code>in</code> <code>unique_cities</code>. This is the same pattern as Lab 3.3 &mdash; sets arrive in 4.3.",
+            "Print the trip report block from Lab 3.3: title banner, driver, final city, status, route via <code>display_numbered_list</code>, unique count, hazards (sorted) via <code>display_numbered_list</code> or a 'None' fallback, and the STATISTICS block (miles, turns, hazards faced/escaped, escape rate).",
+            "Call <code>save_trip_report(REPORT_FILE, ...)</code> to write the same content to disk.",
+            "Update the session accumulators: <code>games_played += 1</code>, <code>session_miles += total_miles</code>, <code>session_hazards += total_hazards</code>.",
+            "Ask <code>play_again = function_library.get_yes_no('Play again? (y/n): ')</code>. The play-again loop continues while this stays True.",
+            "After the play-again loop exits, print the SESSION STATISTICS banner from 3.3 if the player did not save-and-quit."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "7-9",
+              "filename": "remove_duplicates.py",
+              "description": "The <code>in</code> operator on a list, the same one you used in Lab 3.3 to build unique-city lists. Carries forward unchanged here. Sets arrive in Lab 4.3 and clean this pattern up."
+            },
+            {
+              "programId": "7-16",
+              "filename": "sort_grades.py",
+              "description": "<code>.sort()</code> sorts a list in place. Pair with <code>.copy()</code> to keep the original list's order intact (you still want <code>visited_cities</code> in chronological order for the route display)."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Run all four outcome paths: (1) beach via Corpus Christi, (2) dead-end at Laredo by saying no to the return-home prompt, (3) save and quit at a non-beach city, (4) quit without saving at a non-beach city. Each should produce the correct status. Then play two consecutive games in one session (beach + dead-end) and verify the SESSION STATISTICS at the end show <code>Games Played: 2</code>."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Calling <code>hazards_list.sort()</code> directly",
+              "That mutates the original. Use <code>sorted_hazards = hazards_list.copy()</code> first, then sort the copy. The trip report wants sorted, the save format wants chronological."
+            ],
+            [
+              "Updating session accumulators inside the in-game loop",
+              "Wait until <em>after</em> the in-game loop exits. Otherwise totals get added to mid-game and the accounting drifts."
+            ],
+            [
+              "Writing the trip report on save-and-quit",
+              "On save-and-quit, the player wants to come back later. Skip the report so they do not get a partial souvenir."
+            ],
+            [
+              "Forgetting to include both screen and file output",
+              "The trip report runs twice: once to the screen (<code>print</code> statements) and once to the file (<code>save_trip_report</code>). Same content, two destinations."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Four distinct status strings produced by the four outcome paths",
+            "<code>trip_report.txt</code> written every completed game (not on save-and-quit)",
+            "Session accumulators correctly summing across multiple plays",
+            "Play-again loop transitions cleanly back to the main menu when the player says no"
+          ]
+        }
+      ]
     }
+  ],
+  "finalChecklist": {
+    "beforeYouSubmit": [
+      "Submitting <strong>two files</strong>: <code>lab-4-1.py</code> and <code>function_library.py</code>",
+      "<code>function_library.py</code> grew by <strong>seven</strong> entries this week: two loaders (<code>load_city_distances</code>, <code>load_city_info</code>), three rewritten helpers (<code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>), and two new type checks (<code>is_win_city</code>, <code>is_dead_end</code>)",
+      "<code>lab-4-1.py</code> defines five constants at module level: <code>DISTANCES_FILE</code>, <code>INFO_FILE</code>, <code>REPORT_FILE</code>, <code>MILES_MULTIPLIER</code>, <code>HAZARD_CHANCE</code>",
+      "<code>main()</code> loads both data files at startup using the new library functions; the loaded <code>distances</code> and <code>city_info</code> dictionaries flow through the rest of the game",
+      "Three-loop architecture from Lab 3.3 is preserved: main menu, play-again, in-game",
+      "D20 travel mechanic from Lab 3.3 is preserved: each turn rolls a d20 and moves <code>roll * MILES_MULTIPLIER</code> miles",
+      "<code>save_trip_report</code> still lives in <code>lab-4-1.py</code> as a lab-local helper and writes <code>trip_report.txt</code> at the end of every completed game",
+      "Top-of-file comment block present on both files: Name, abc123, Section, Description",
+      "Docstring on every function"
+    ],
+    "scopeReminder": "Module 4.1 introduces file parsing (.strip(), .split()) and dictionaries (creation, access, nested, .keys(), 'in' operator). Sets and the .upper() input-cleaning relief are held back for Labs 4.2 and 4.3.",
+    "permittedTechniques": {
+      "chapters": "Chapters 1\u20139 (Strings + Dictionaries arrive this week)",
+      "specific": "Chapter 8: <code>.strip()</code>, <code>.split(',')</code> for file parsing. Chapter 9: dictionary creation with <code>{}</code>, dictionary access with <code>dict[key]</code>, nested dictionaries, <code>'in'</code> with dictionaries, <code>.keys()</code>, looping through dictionaries. Everything from Modules 1\u20133 carries forward.",
+      "notPermitted": "<code>.upper()</code> and <code>.lower()</code> on user input (saved for Lab 4.2). Sets (saved for Lab 4.3). Trivia gate (saved for Lab 4.3). Dictionary comprehensions (not covered this semester)."
+    },
+    "warnings": [
+      "Do not paste the data files into the top of <code>lab-4-1.py</code> as Python literals. The whole point of this week is that the data lives in text files, not in code.",
+      "Do not delete the inline hazard parallel lists from <code>lab-4-1.py</code>. They stay this week; <code>hazards.txt</code> arrives in Lab 4.2."
+    ],
+    "saveYourCode": "Save a copy of <code>lab-4-1.py</code> as <code>lab-4-1-backup.py</code> before you start Lab 4.2. Lab 4.2 starts by copying 4.1 forward, so you want a clean baseline to fall back to if the 4.2 changes break something.",
+    "finalCheck": {
+      "expectedOutput": "==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 1!\nYou travel 10 miles...\nMiles remaining: 140\n\n--- Turn 2 ---\nMiles remaining: 140\nYou rolled a 9!\nYou travel 90 miles...\nMiles remaining: 50\n\n--- Turn 3 ---\nMiles remaining: 50\nYou rolled a 8!\nYou travel 80 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 180\n  Total Turns: 3\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 180\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!",
+      "ifSomethingBreaks": [
+        {
+          "symptom": "<code>KeyError: 'San Antonio'</code> on the first menu display",
+          "redirect": "Check CP1 (Load City Distances) \u2014 the loader is not inserting <code>'San Antonio'</code> as a top-level key. Verify the <code>if city1 not in distances:</code> guard."
+        },
+        {
+          "symptom": "<code>FileNotFoundError: city_distances.txt</code>",
+          "redirect": "Check CP4 (Lab Skeleton). The data files must be in the same folder as <code>lab-4-1.py</code> when you run it locally. CodeGrade provides them as fixtures."
+        },
+        {
+          "symptom": "Menu shows distances but the wrong destinations (Houston instead of Corpus Christi, etc.)",
+          "redirect": "Check CP3 (Graph Helpers). Verify <code>display_destinations</code> iterates <code>distances[city]</code> in order and prints both the destination key and the value."
+        },
+        {
+          "symptom": "Dead-end prompt fires at the wrong cities (or never fires)",
+          "redirect": "Check CP3 (<code>is_dead_end</code>). Both <code>'DEAD_END'</code> and <code>'WRONG_WAY'</code> count as dead ends. Compare exact uppercase strings."
+        },
+        {
+          "symptom": "Trip report does not appear at the end of the game",
+          "redirect": "Check CP6. The trip report runs after the in-game loop exits naturally. If the player saves and quits, the report is intentionally skipped (that's the save path, not the report path)."
+        },
+        {
+          "symptom": "<code>ValueError: invalid literal for int()</code> when loading distances",
+          "redirect": "Check CP1. After <code>parts = line.strip().split(',')</code>, only <code>parts[2]</code> gets cast to <code>int</code>. <code>parts[0]</code> and <code>parts[1]</code> stay as strings."
+        }
+      ]
+    }
+  },
+  "needHelp": {
+    "ifYouGetStuck": [
+      "Re-read Programs 8\u201310 (<code>.split('/')</code>) and 9\u20131 (basic dictionaries) before you start. The CSV parsing pattern (<code>line.strip().split(',')</code>) is the lab's most common bug source",
+      "Print the loaded dictionaries during development. After <code>distances = load_city_distances(...)</code>, add <code>print(distances)</code> to confirm the shape before you use it. Delete the print before submitting",
+      "If <code>display_destinations</code> shows nothing, you probably passed the wrong arguments. The new signature is <code>(city, distances)</code> &mdash; the city is a string, the distances is the whole nested dictionary",
+      "Save / load was working in Lab 3.3 and should still work here unchanged. If it stops working, you probably touched the library save/load functions accidentally. Roll those back to the Module 3 version",
+      "Post questions in <code>#labs</code> on Discord. Include your error message and the line number, not a screenshot of the whole file"
+    ],
+    "officeHours": "Zoom Tuesdays 6 PM: <a href='https://utsa.zoom.us/j/97617245124'>https://utsa.zoom.us/j/97617245124</a>. Book a 1\u20131 with Prof. Newsom: <a href='https://calendly.com/john-newsom-utsa/student-meeting'>calendly.com/john-newsom-utsa/student-meeting</a>."
+  }
 }
