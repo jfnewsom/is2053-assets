@@ -1,634 +1,634 @@
 {
-    "meta": {
-        "labId": "lab-4-2",
-        "title": "Flexible Input",
-        "module": 4,
-        "week": 2,
-        "weekType": "ENHANCE",
-        "chapters": "8–9",
-        "chapterTopics": "String Methods, Lists of Dictionaries",
-        "filename": "lab-4-2.py",
-        "additionalFiles": [
-            "city_distances.txt",
-            "city_info.txt",
-            "hazards.txt",
-            "function_library.py"
-        ]
+  "meta": {
+    "labId": "lab-4-2",
+    "title": "Flexible Input",
+    "module": 4,
+    "week": 2,
+    "weekType": "ENHANCE",
+    "chapters": "8–9",
+    "chapterTopics": "String Methods, Lists of Dictionaries",
+    "filename": "lab-4-2.py",
+    "additionalFiles": [
+      "city_distances.txt",
+      "city_info.txt",
+      "hazards.txt",
+      "function_library.py"
+    ]
+  },
+  "overview": {
+    "body": "Remember writing <code>if choice == 'y' or choice == 'Y':</code> over and over? Those days are <strong>OVER</strong>. This week you'll discover <code>.upper()</code> and <code>.strip()</code> — string methods that clean and normalize input in one line. You'll also add <strong>hazards</strong> loaded from a data file and a <strong>D20 travel system</strong> where dice rolls determine how far you go each turn.",
+    "mentorQuote": {
+      "character": "Tyler Nguyen",
+      "role": "Junior Developer, Bat City Collective",
+      "headshot": "Tyler-Nguyen.png",
+      "quote": "I spent SO much time writing <code>if choice == 'y' or choice == 'Y'</code> everywhere. When someone showed me <code>choice.upper() == 'Y'</code>, I was like... wait, that’s IT? One method fixes ALL my case problems? Now I <code>.upper()</code> or <code>.lower()</code> every string comparison!"
     },
-    "overview": {
-        "body": "Remember writing <code>if choice == 'y' or choice == 'Y':</code> over and over? Those days are <strong>OVER</strong>. This week you'll discover <code>.upper()</code> and <code>.strip()</code> — string methods that clean and normalize input in one line. You'll also add <strong>hazards</strong> loaded from a data file and a <strong>D20 travel system</strong> where dice rolls determine how far you go each turn.",
-        "mentorQuote": {
-            "character": "Tyler Nguyen",
-            "role": "Junior Developer, Bat City Collective",
-            "headshot": "Tyler-Nguyen.png",
-            "quote": "I spent SO much time writing <code>if choice == 'y' or choice == 'Y'</code> everywhere. When someone showed me <code>choice.upper() == 'Y'</code>, I was like... wait, that’s IT? One method fixes ALL my case problems? Now I <code>.upper()</code> or <code>.lower()</code> every string comparison!"
-        },
-        "objectives": [
-            "Write <code>load_hazards()</code> to parse <code>hazards.txt</code> into a list of dictionaries",
-            "Replace all <code>or</code> case-handling patterns with <code>.strip().upper()</code>",
-            "Write <code>handle_hazard()</code> to pick a random hazard and flip a coin for the outcome",
-            "Write <code>travel_to()</code> with D20-based progression and a 30% hazard chance per turn",
-            "Track hazards faced and escaped in the final trip report"
-        ],
-        "keyConceptsText": "<strong>Chapter 8:</strong> <code>.upper()</code>, <code>.lower()</code>, <code>.strip()</code>, and method chaining<br><strong>Chapter 9:</strong> List of dictionaries, <code>random.choice()</code> with a list of dicts",
-        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 8 & 9",
-        "programRequirements": [
-            "Your program <strong>MUST</strong> use <code>.strip().upper()</code> for all yes/no input handling",
-            "Your program <strong>MUST</strong> load hazards from <code>hazards.txt</code> into a list of dictionaries",
-            "Your program <strong>MUST</strong> use D20 rolls for travel distance (roll × 10 miles per turn)",
-            "Your program <strong>MUST</strong> use <code>function_library.py</code> for <code>roll_d20</code>, <code>flip_coin</code>, and <code>check_percentage</code>",
-            "Your program <strong>MUST</strong> track and display hazards faced and escaped in the final report"
-        ],
-        "filenameNote": "Submit <code>lab-4-2.py</code> and your <code>function_library.py</code> this week. Start by copying your <code>lab-4-1.py</code> and renaming it.",
-        "saveYourCode": "Keep <code>lab-4-2.py</code> — Module 4.3 adds sets and a visited-cities tracker directly on top of this foundation.",
-        "dataFiles": [
-            {
-                "file": "city_distances.txt",
-                "format": "Same as Lab 4.1"
-            },
-            {
-                "file": "city_info.txt",
-                "format": "Same as Lab 4.1"
-            },
-            {
-                "file": "hazards.txt",
-                "format": "name,heads_message,tails_message",
-                "new": true
-            },
-            {
-                "file": "function_library.py",
-                "format": "Your shared function library from Module 3"
-            }
-        ],
-        "additionalFilesNote": "CodeGrade tests your functions in isolation, so both files must be present."
-    },
-    "timeGuide": {
-        "totalTime": "90–120 Minutes",
-        "rows": [
-            {
-                "checkpoint": "CP1: Copy & Load Hazards",
-                "time": "20–25 min",
-                "task": "Copy lab-4-1.py, add load_hazards()"
-            },
-            {
-                "checkpoint": "CP2: The .upper() Relief",
-                "time": "15–20 min",
-                "task": "Clean input with string methods"
-            },
-            {
-                "checkpoint": "CP3: Handle Hazards",
-                "time": "20–25 min",
-                "task": "Random hazard selection and outcomes"
-            },
-            {
-                "checkpoint": "CP4: D20 Travel System",
-                "time": "30–35 min",
-                "task": "Roll-based travel with hazard checks"
-            }
-        ],
-        "strategy": "This is an ENHANCE week — you already have the dictionary foundation from 4.1. Focus on getting <code>.strip().upper()</code> working everywhere before adding hazards and travel."
-    },
-    "beforeYouBegin": {
-        "intro": "Here's how your finished program fits together. The [NEW] tags show what you're adding. [REPLACED] tags show what changes from your 4.1 code.",
-        "architecture": "# ---- DATA LOADING FUNCTIONS ----\nload_city_distances()   reads city_distances.txt → nested dict\nload_city_info()        reads city_info.txt → dict of dicts\nload_hazards()          reads hazards.txt → list of dicts     [NEW]\n\n# ---- GAME FUNCTIONS ----\ndisplay_destinations()  shows menu from dict\nget_destination_choice()  validates user pick\nhandle_hazard(hazards)  random hazard + coin flip              [NEW]\ntravel_to(distance)     D20 travel + hazard checks             [NEW]\n\n# ---- MAIN PROGRAM ----\nLoad data files (distances, info, hazards)\nGet player name\ncurrent_city = 'San Antonio'\n\nGAME LOOP (each pass is one leg):\n│\n│── Display city info, show destinations\n│── Get choice with .strip().upper()          [REPLACED] was or chains\n│── Destination Gate (coin flip)\n│\n│   TRAVEL LOOP (D20 rolls!):               [REPLACED] was fixed 50-mile\n│   │── Roll D20, move (roll × 10) miles\n│   │── 30% chance: handle_hazard()           [NEW]\n│   │── Repeat until you arrive\n│\n│── Update trip totals (+ hazards_faced, hazards_escaped)\n│── Check outcome: beach / dead end / continue\n│── Save and quit option\n\n# ---- AFTER THE LOOP ----\nPrint trip summary with hazard stats          [NEW]\n\"Thanks for playing!\""
-    },
-    "checkpoints": [
-        {
-            "number": 1,
-            "title": "Copy & Load Hazards",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "A function that reads <code>hazards.txt</code> and returns a <strong>list of dictionaries</strong>. Each hazard dictionary has keys for name, heads message, and tails message."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "Loading structured data from files into a list of dictionaries is everywhere in professional development. JSON APIs return lists of objects, database queries return lists of records, and configuration files store lists of settings. Master this pattern and you've unlocked how real applications manage data."
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "9-1",
-                            "filename": "card_dealer.py",
-                            "description": "Your load_city_info() from Lab 4.1 already creates dictionaries from CSV lines. This is the same pattern — but you'll append each hazard dict to a list instead of adding it to a parent dict."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Copy your <code>lab-4-1.py</code> and rename it to <code>lab-4-2.py</code>.",
-                        "Update your docstring description to reflect Lab 4.2.",
-                        "Define <code>load_hazards(filename)</code> that takes a filename parameter.",
-                        "Create an empty list inside the function: <code>hazards = []</code>.",
-                        "Open the file and loop through each line.",
-                        "For each line: use <code>line.strip().split(',')</code> to get a list of parts.",
-                        "Create a hazard dict: <code>{'name': parts[0], 'heads': parts[1], 'tails': parts[2]}</code>.",
-                        "Append the dict to the list: <code>hazards.append(hazard)</code>.",
-                        "Close the file and return the <code>hazards</code> list."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 1:</strong> Add this test harness:"
-                },
-                {
-                    "type": "code_block",
-                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\nhazards = load_hazards('hazards.txt')\nprint(f'Loaded {len(hazards)} hazards')\nprint('First hazard:', hazards[0])\nprint('First hazard name:', hazards[0]['name'])"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 2:</strong> Run and verify this output:"
-                },
-                {
-                    "type": "output_block",
-                    "output": "Loaded 8 hazards\nFirst hazard: {'name': \"Buc-ee's appears!\", 'heads': 'You resist...', 'tails': 'Lost 2 hours...'}\nFirst hazard name: Buc-ee's appears!"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 3:</strong> <strong><strong style=\"color:#FF6B1A;\">DELETE the DEBUG lines</strong></strong> before moving to Checkpoint 2."
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Sasha Mireles",
-                    "role": "QA Lead, Bat City Collective",
-                    "headshot": "Sasha-Mireles.png",
-                    "quote": "You've been writing 'if x == y or x == Y:' for weeks. Today that pain ends. You're also loading hazards from a file and building a real travel system with D20 rolls. Three new functions, one massive quality-of-life upgrade."
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Using wrong index: <code>parts[3]</code>",
-                            "Only 3 parts per line (indices 0, 1, 2). Check your CSV structure."
-                        ],
-                        [
-                            "Forgetting <code>.strip()</code> on the line",
-                            "Trailing newlines corrupt your data and comparisons will fail."
-                        ],
-                        [
-                            "Creating the dict outside the loop",
-                            "Each line needs a NEW dict. Create it inside the loop."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "text",
-                    "body": "<ul><li><code>lab-4-2.py</code> with an updated docstring</li><li><code>load_hazards()</code> that returns a list of dictionaries</li><li>Each dict has <code>'name'</code>, <code>'heads'</code>, and <code>'tails'</code> keys</li><li>Can access hazards with <code>hazards[0]['name']</code></li></ul>"
-                }
-            ],
-            "subtitle": "Start from your Lab 4.1 code and add a new file-loading function for hazards."
-        },
-        {
-            "number": 2,
-            "title": "The .upper() Relief",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "Clean, normalized input handling using <code>.strip().upper()</code>. No more <code>if x == 'y' or x == 'Y':</code>."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "Input normalization is one of the first things real applications need. Every web form, every API, every command-line tool deals with the reality that users don't type consistently. <code>.strip().upper()</code> is the chapter-level introduction to a principle: clean your input at the boundary before your logic ever touches it. One method chain does what four <code>or</code> conditions used to do."
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "8-5",
-                            "filename": "string_test.py",
-                            "description": "Shows <code>.upper()</code> and <code>.lower()</code> being called on strings. The comparison pattern <code>if user_input.upper() == 'Y':</code> is exactly what you are implementing here."
-                        },
-                        {
-                            "programId": "8-10",
-                            "filename": "split_date.py",
-                            "description": "You used <code>.split('/')</code> on a string. <code>.strip()</code> and <code>.upper()</code> are from the same string method family — you are just calling them in a chain now."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Find the dead-end handling in your game loop (the \"Return to San Antonio?\" input).",
-                        "Change the input line to use method chaining: <code>choice = input('Return to San Antonio? (y/n): ').strip().upper()</code>.",
-                        "Update the comparison: check for <code>'Y'</code> only, not <code>'y'</code>.",
-                        "Update the player name input to use <code>.strip()</code> to remove accidental leading or trailing spaces.",
-                        "Search the rest of your code for any remaining <code>or</code> patterns in input handling and fix them the same way."
-                    ]
-                },
-                {
-                    "type": "callout",
-                    "variant": "tip",
-                    "title": "Old Way vs. New Way",
-                    "body": "Here's the before and after:",
-                    "items": [
-                        "<code># Old: if choice == 'y' or choice == 'Y':</code>",
-                        "<code># New: choice = input(...).strip().upper()</code>  then  <code>if choice == 'Y':</code>"
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "Run your game and navigate to a dead end (Laredo or El Paso). When asked \"Return to San Antonio?\", try each of these inputs and confirm all three work: <code>y</code>, <code>Y</code>, and <code>&nbsp;&nbsp;y&nbsp;&nbsp;</code> (with spaces)."
-                },
-                {
-                    "type": "output_block",
-                    "output": "Return to San Antonio? (y/n): y\nHeading back to San Antonio...\n\nReturn to San Antonio? (y/n): Y\nHeading back to San Antonio...\n\nReturn to San Antonio? (y/n):    y   \nHeading back to San Antonio..."
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Sasha Mireles",
-                    "role": "Creative Director, Bat City Collective",
-                    "headshot": "Sasha-Mireles.png",
-                    "quote": "Players will do exactly what you didn't expect. They'll type 'Y', 'y', 'YES', or '  y  ' with extra spaces. <code>.strip()</code><code>.upper()</code> handles ALL of that in one line. Design for chaos."
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Fix"
-                    ],
-                    "rows": [
-                        [
-                            "Still checking lowercase after <code>.upper()</code>",
-                            "Only compare against <code>'Y'</code> and <code>'N'</code>, never <code>'y'</code> or <code>'n'</code>."
-                        ],
-                        [
-                            "Forgetting the parentheses: <code>.upper</code>",
-                            "Methods require parentheses: <code>.upper()</code>."
-                        ],
-                        [
-                            "Reversed order: <code>.upper().strip()</code>",
-                            "Won't crash, but <code>.strip().upper()</code> is the standard pattern. Strip the junk first, then transform."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "text",
-                    "body": "<ul><li>All yes/no inputs use <code>.strip().upper()</code></li><li>No remaining <code>or</code> patterns for case handling</li><li>Player name input uses <code>.strip()</code></li></ul>"
-                }
-            ],
-            "subtitle": "Replace those painful or statements with clean string methods!"
-        },
-        {
-            "number": 3,
-            "title": "Handle Hazards",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "A function that selects a random hazard from your list, displays it, flips a coin, and shows the appropriate outcome message. Returns <code>True</code> if the player escaped (HEADS) or <code>False</code> if not (TAILS)."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "<code>random.choice()</code> on a list of dictionaries is the real-world pattern for selecting from structured data. Every game engine, every recommendation system, every A/B testing framework runs on some version of 'pick a random item from a structured list and act on its properties.' Your hazards list is a tiny database and <code>handle_hazard()</code> is your first query."
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Terrence \"T-Bone\" Booker",
-                    "role": "QA Lead, Bat City Collective",
-                    "headshot": "Terrence-TBone-Booker.png",
-                    "quote": "I test this stuff for a living. Random hazard selection sounds simple until you realize you have to verify that EVERY hazard can appear, BOTH coin outcomes work, and the return value is always a boolean. Test it in a loop, run it twenty times, make sure nothing surprises you."
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "9-1",
-                            "filename": "card_dealer.py",
-                            "description": "You built a dictionary with key-value pairs and accessed values by key. <code>handle_hazard()</code> does the same: <code>hazard['name']</code>, <code>hazard['heads']</code>, <code>hazard['tails']</code> — same pattern, different data."
-                        },
-                        {
-                            "programId": "5-24",
-                            "filename": "sale_price.py",
-                            "description": "Shows a function that returns a calculated value. <code>handle_hazard()</code> returns a boolean — same return statement pattern, just returning <code>True</code> or <code>False</code> instead of a number."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Define <code>handle_hazard(hazards)</code> that takes the hazards list.",
-                        "Pick a random hazard: <code>hazard = random.choice(hazards)</code>.",
-                        "Display the hazard name: <code>*** HAZARD: {hazard['name']} ***</code>.",
-                        "Flip a coin: <code>result = function_library.flip_coin()</code>.",
-                        "Display the flip result.",
-                        "If HEADS: print <code>hazard['heads']</code> and return <code>True</code>.",
-                        "If TAILS: print <code>hazard['tails']</code> and return <code>False</code>."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 1:</strong> Add this test harness:"
-                },
-                {
-                    "type": "code_block",
-                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 4\nhazards = load_hazards('hazards.txt')\nprint('Testing hazard handling...')\nfor i in range(3):\n    escaped = handle_hazard(hazards)\n    print(f'Escaped: {escaped}')\n    print()"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 2:</strong> Run several times. Verify you see different hazards and both HEADS and TAILS outcomes appearing across runs. <strong>Step 3:</strong> <strong><strong style=\"color:#FF6B1A;\">DELETE the DEBUG lines</strong></strong> before moving to Checkpoint 4."
-                },
-                {
-                    "type": "output_block",
-                    "output": "Testing hazard handling...\n*** HAZARD: Buc-ee's appears! ***\nCoin flip: HEADS\nYou resist the siren call of Buc-ee's and stay on schedule!\nEscaped: True\n\n*** HAZARD: Speed trap! ***\nCoin flip: TAILS\nYou lose 30 minutes to a speed trap!\nEscaped: False\n\n*** HAZARD: Armadillo crossing! ***\nCoin flip: HEADS\nThe armadillo waddles off the road. You're clear!\nEscaped: True"
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Using <code>hazard['HEADS']</code> (uppercase key)",
-                            "Keys are lowercase: <code>'heads'</code> and <code>'tails'</code>, matching how you defined them in <code>load_hazards()</code>."
-                        ],
-                        [
-                            "Forgetting to return True or False",
-                            "The caller needs to know if the player escaped. The function must return a boolean."
-                        ],
-                        [
-                            "Using <code>random.choice(hazards)</code> without <code>import random</code>",
-                            "Make sure <code>import random</code> is at the top of your file."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "text",
-                    "body": "<ul><li>A working <code>handle_hazard(hazards)</code> that returns <code>True</code> or <code>False</code></li><li>Random hazard selection using <code>random.choice()</code></li><li>Correct lowercase dictionary keys: <code>'heads'</code> and <code>'tails'</code></li><li>DEBUG test lines deleted</li></ul>"
-                }
-            ],
-            "subtitle": "Create a function that picks a random hazard and determines the outcome with a coin flip."
-        },
-        {
-            "number": 4,
-            "title": "D20 Travel System",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "A <code>travel_to()</code> function where you roll a D20 each turn, travel roll × 10 miles, and have a 30% chance of encountering a hazard. The journey continues until you've covered the full distance to the destination."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "The travel system is where everything converges — the D20 roll from the library, the hazard system from CP3, the probability check from Module 2. Building it as a standalone function that returns a tuple keeps <code>main()</code> clean and readable. Tuple returns are how Python passes multiple values back from a function — a pattern you will use constantly in real code."
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Danny Cavanaugh",
-                    "role": "Lead Developer, Bat City Collective",
-                    "headshot": "Danny-Cavanaugh.png",
-                    "quote": "travel_to() is the most complex function you have written yet — a loop, a probability check, a function call inside a conditional, and a tuple return. Build it one line at a time. Get the D20 loop working first, then add the hazard check, then add the return. Don't try to write it all at once."
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "4-2",
-                            "filename": "temperature.py",
-                            "description": "You wrote a while loop that continued until a condition was met. The travel loop — <code>while remaining > 0:</code> — is the same structure: keep going until the distance is covered."
-                        },
-                        {
-                            "programId": "5-28",
-                            "filename": "hypotenuse.py",
-                            "description": "You wrote a function that returned a calculated value. <code>travel_to()</code> returns a tuple of three values — same <code>return</code> statement, just with parentheses around multiple items."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Define <code>travel_to(destination, distance, hazards)</code>.",
-                        "Initialize: <code>remaining = distance</code>, <code>miles_traveled = 0</code>, <code>hazards_faced = 0</code>, <code>hazards_escaped = 0</code>.",
-                        "Create the travel loop: <code>while remaining > 0:</code>.",
-                        "Roll the D20: <code>roll = function_library.roll_d20()</code>.",
-                        "Calculate miles this turn: <code>miles = roll * 10</code>.",
-                        "Cap miles if it would overshoot the destination: <code>if miles > remaining: miles = remaining</code>.",
-                        "Update accumulators: add <code>miles</code> to <code>miles_traveled</code>, subtract from <code>remaining</code>.",
-                        "Print progress: show the roll, miles gained this turn, and remaining distance.",
-                        "Check for a hazard only if <code>remaining > 0</code>: use <code>function_library.check_percentage(30)</code>.",
-                        "If a hazard triggers: call <code>handle_hazard(hazards)</code>, increment <code>hazards_faced</code>, and increment <code>hazards_escaped</code> if it returned <code>True</code>.",
-                        "After the loop, return the tuple: <code>(miles_traveled, hazards_faced, hazards_escaped)</code>."
-                    ]
-                },
-                {
-                    "type": "callout",
-                    "variant": "tip",
-                    "title": "No Hazards on the Last Turn",
-                    "body": "Only check for hazards when <code>remaining > 0</code>. You don't want a hazard to fire on the turn you've already arrived at your destination."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Update <code>main()</code> to use the new system:</strong>"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Load hazards alongside city data at the start of <code>main()</code>.",
-                        "Remove the old coin flip destination gate (the D20 travel system replaces it).",
-                        "Call <code>travel_to()</code> after the player chooses a destination, passing destination name, distance, and hazards list.",
-                        "Unpack the returned tuple and add to running totals: <code>miles, faced, escaped = travel_to(...)</code>.",
-                        "Update the final report to display total hazards faced and escaped."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "Play through the complete game and verify: D20 rolls determine progress (roll × 10 miles), hazards appear randomly on about 30% of turns, hazard outcomes depend on the coin flip, the final report shows hazards escaped vs. faced, and total miles matches the sum of all journeys."
-                },
-                {
-                    "type": "output_block",
-                    "output": "--- Traveling to Houston (200 miles) ---\nTurn 1: Rolled 14 — traveled 140 miles. (60 remaining)\n*** HAZARD: Speed trap! ***\nCoin flip: TAILS\nYou lose 30 minutes to a speed trap!\nTurn 2: Rolled 7 — traveled 60 miles. (0 remaining)\nYou have arrived in Houston!\n\n--- TRIP SUMMARY ---\nTotal Miles: 200\nHazards Faced: 1\nHazards Escaped: 0"
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Using <code>check_percentage(0.3)</code>",
-                            "The function expects a whole number: <code>check_percentage(30)</code>."
-                        ],
-                        [
-                            "D20 range wrong: <code>randint(0, 20)</code>",
-                            "A D20 rolls 1–20, not 0–20. Use the library function to be safe."
-                        ],
-                        [
-                            "Forgetting to return the tuple",
-                            "The caller needs <code>(miles, faced, escaped)</code> to update the final report."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "text",
-                    "body": "<ul><li><code>travel_to()</code> with D20-based progression and a 30% hazard chance per turn</li><li>Returns a tuple of <code>(miles_traveled, hazards_faced, hazards_escaped)</code></li><li>Updated <code>main()</code> that integrates all new features</li><li>Final report includes hazard statistics</li></ul>"
-                }
-            ],
-            "subtitle": "Replace instant travel with dice-roll-based progression and random hazard encounters."
-        }
+    "objectives": [
+      "Write <code>load_hazards()</code> to parse <code>hazards.txt</code> into a list of dictionaries",
+      "Replace all <code>or</code> case-handling patterns with <code>.strip().upper()</code>",
+      "Write <code>handle_hazard()</code> to pick a random hazard and flip a coin for the outcome",
+      "Write <code>travel_to()</code> with D20-based progression and a 30% hazard chance per turn",
+      "Track hazards faced and escaped in the final trip report"
     ],
-    "finalChecklist": {
-        "beforeYouSubmit": [
-            "File is named exactly <code>lab-4-2.py</code>",
-            "Docstring updated with name, abc123, section, and description for Lab 4.2",
-            "All yes/no inputs use <code>.strip().upper()</code> with no remaining <code>or</code> patterns",
-            "<code>load_hazards()</code> returns a list of dictionaries with <code>'name'</code>, <code>'heads'</code>, and <code>'tails'</code> keys",
-            "<code>travel_to()</code> uses D20 rolls and a 30% hazard chance per turn",
-            "Final report includes total hazards faced and escaped",
-            "All DEBUG/test code has been removed"
-        ],
-        "scopeReminder": "Chapters 2–9 only. String methods .strip(), .upper(), and .lower() are the Chapter 8 additions this week. Sets are saved for Module 4.3. CodeGrade will flag code using techniques from later chapters.",
-        "permittedTechniques": {
-            "chapters": "2–9 (all prior techniques permitted; this week adds .strip(), .upper(), .lower(), and method chaining from Chapter 8, and list of dictionaries with random.choice() from Chapter 9)",
-            "specific": [
-                "String methods: <code>.strip()</code>, <code>.upper()</code>, <code>.lower()</code>, <code>.split(',')</code>",
-                "Method chaining: <code>input(...).strip().upper()</code>",
-                "List of dictionaries: <code>[{'name': ..., 'heads': ..., 'tails': ...}, ...]</code>",
-                "<code>random.choice(list)</code> to pick a random item",
-                "Returning tuples from functions"
-            ],
-            "notPermitted": "Sets (Module 4.3), list comprehensions, try/except, classes, inheritance"
+    "keyConceptsText": "<strong>Chapter 8:</strong> <code>.upper()</code>, <code>.lower()</code>, <code>.strip()</code>, and method chaining<br><strong>Chapter 9:</strong> List of dictionaries, <code>random.choice()</code> with a list of dicts",
+    "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapters 8 & 9",
+    "programRequirements": [
+      "Your program <strong>MUST</strong> use <code>.strip().upper()</code> for all yes/no input handling",
+      "Your program <strong>MUST</strong> load hazards from <code>hazards.txt</code> into a list of dictionaries",
+      "Your program <strong>MUST</strong> use D20 rolls for travel distance (roll × 10 miles per turn)",
+      "Your program <strong>MUST</strong> use <code>function_library.py</code> for <code>roll_d20</code>, <code>flip_coin</code>, and <code>check_percentage</code>",
+      "Your program <strong>MUST</strong> track and display hazards faced and escaped in the final report"
+    ],
+    "filenameNote": "Submit <code>lab-4-2.py</code> and your <code>function_library.py</code> this week. Start by copying your <code>lab-4-1.py</code> and renaming it.",
+    "saveYourCode": "Keep <code>lab-4-2.py</code> — Module 4.3 adds sets and a visited-cities tracker directly on top of this foundation.",
+    "dataFiles": [
+      {
+        "file": "city_distances.txt",
+        "format": "Same as Lab 4.1"
+      },
+      {
+        "file": "city_info.txt",
+        "format": "Same as Lab 4.1"
+      },
+      {
+        "file": "hazards.txt",
+        "format": "name,heads_message,tails_message",
+        "new": true
+      },
+      {
+        "file": "function_library.py",
+        "format": "Your shared function library from Module 3"
+      }
+    ],
+    "additionalFilesNote": "CodeGrade tests your functions in isolation, so both files must be present."
+  },
+  "timeGuide": {
+    "totalTime": "90–120 Minutes",
+    "rows": [
+      {
+        "checkpoint": "CP1: Copy & Load Hazards",
+        "time": "20–25 min",
+        "task": "Copy lab-4-1.py, add load_hazards()"
+      },
+      {
+        "checkpoint": "CP2: The .upper() Relief",
+        "time": "15–20 min",
+        "task": "Clean input with string methods"
+      },
+      {
+        "checkpoint": "CP3: Handle Hazards",
+        "time": "20–25 min",
+        "task": "Random hazard selection and outcomes"
+      },
+      {
+        "checkpoint": "CP4: D20 Travel System",
+        "time": "30–35 min",
+        "task": "Roll-based travel with hazard checks"
+      }
+    ],
+    "strategy": "This is an ENHANCE week — you already have the dictionary foundation from 4.1. Focus on getting <code>.strip().upper()</code> working everywhere before adding hazards and travel."
+  },
+  "beforeYouBegin": {
+    "intro": "Here's how your finished program fits together. The [NEW] tags show what you're adding. [REPLACED] tags show what changes from your 4.1 code.",
+    "architecture": "# ---- DATA LOADING FUNCTIONS ----\nload_city_distances()   reads city_distances.txt → nested dict\nload_city_info()        reads city_info.txt → dict of dicts\nload_hazards()          reads hazards.txt → list of dicts     [NEW]\n\n# ---- GAME FUNCTIONS ----\ndisplay_destinations()  shows menu from dict\nget_destination_choice()  validates user pick\nhandle_hazard(hazards)  random hazard + coin flip              [NEW]\ntravel_to(distance)     D20 travel + hazard checks             [NEW]\n\n# ---- MAIN PROGRAM ----\nLoad data files (distances, info, hazards)\nGet player name\ncurrent_city = 'San Antonio'\n\nGAME LOOP (each pass is one leg):\n│\n│── Display city info, show destinations\n│── Get choice with .strip().upper()          [REPLACED] was or chains\n│── Destination Gate (coin flip)\n│\n│   TRAVEL LOOP (D20 rolls!):               [REPLACED] was fixed 50-mile\n│   │── Roll D20, move (roll × 10) miles\n│   │── 30% chance: handle_hazard()           [NEW]\n│   │── Repeat until you arrive\n│\n│── Update trip totals (+ hazards_faced, hazards_escaped)\n│── Check outcome: beach / dead end / continue\n│── Save and quit option\n\n# ---- AFTER THE LOOP ----\nPrint trip summary with hazard stats          [NEW]\n\"Thanks for playing!\""
+  },
+  "checkpoints": [
+    {
+      "number": 1,
+      "title": "Copy & Load Hazards",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
         },
-        "warnings": [
-            "Do not use sets yet — those are the Module 4.3 reveal. CodeGrade's scope check will flag premature use."
-        ],
-        "saveYourCode": "Keep <code>lab-4-2.py</code> — Module 4.3 adds sets and a visited-cities tracker directly on top of this foundation. You will copy this file and build on it."
+        {
+          "type": "text",
+          "body": "A function that reads <code>hazards.txt</code> and returns a <strong>list of dictionaries</strong>. Each hazard dictionary has keys for name, heads message, and tails message."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Loading structured data from files into a list of dictionaries is everywhere in professional development. JSON APIs return lists of objects, database queries return lists of records, and configuration files store lists of settings. Master this pattern and you've unlocked how real applications manage data."
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "9-1",
+              "filename": "card_dealer.py",
+              "description": "Your load_city_info() from Lab 4.1 already creates dictionaries from CSV lines. This is the same pattern — but you'll append each hazard dict to a list instead of adding it to a parent dict."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Copy your <code>lab-4-1.py</code> and rename it to <code>lab-4-2.py</code>.",
+            "Update your docstring description to reflect Lab 4.2.",
+            "Define <code>load_hazards(filename)</code> that takes a filename parameter.",
+            "Create an empty list inside the function: <code>hazards = []</code>.",
+            "Open the file and loop through each line.",
+            "For each line: use <code>line.strip().split(',')</code> to get a list of parts.",
+            "Create a hazard dict: <code>{'name': parts[0], 'heads': parts[1], 'tails': parts[2]}</code>.",
+            "Append the dict to the list: <code>hazards.append(hazard)</code>.",
+            "Close the file and return the <code>hazards</code> list."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 1:</strong> Add this test harness:"
+        },
+        {
+          "type": "code_block",
+          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\nhazards = load_hazards('hazards.txt')\nprint(f'Loaded {len(hazards)} hazards')\nprint('First hazard:', hazards[0])\nprint('First hazard name:', hazards[0]['name'])"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 2:</strong> Run and verify this output:"
+        },
+        {
+          "type": "output_block",
+          "output": "Loaded 8 hazards\nFirst hazard: {'name': \"Buc-ee's appears!\", 'heads': 'You resist...', 'tails': 'Lost 2 hours...'}\nFirst hazard name: Buc-ee's appears!"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 3:</strong> <strong><strong style=\"color:#FF6B1A;\">DELETE the DEBUG lines</strong></strong> before moving to Checkpoint 2."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Sasha Mireles",
+          "role": "QA Lead, Bat City Collective",
+          "headshot": "Sasha-Mireles.png",
+          "quote": "You've been writing 'if x == y or x == Y:' for weeks. Today that pain ends. You're also loading hazards from a file and building a real travel system with D20 rolls. Three new functions, one massive quality-of-life upgrade."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Common Mistake",
+            "Why It Fails"
+          ],
+          "rows": [
+            [
+              "Using wrong index: <code>parts[3]</code>",
+              "Only 3 parts per line (indices 0, 1, 2). Check your CSV structure."
+            ],
+            [
+              "Forgetting <code>.strip()</code> on the line",
+              "Trailing newlines corrupt your data and comparisons will fail."
+            ],
+            [
+              "Creating the dict outside the loop",
+              "Each line needs a NEW dict. Create it inside the loop."
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "text",
+          "body": "<ul><li><code>lab-4-2.py</code> with an updated docstring</li><li><code>load_hazards()</code> that returns a list of dictionaries</li><li>Each dict has <code>'name'</code>, <code>'heads'</code>, and <code>'tails'</code> keys</li><li>Can access hazards with <code>hazards[0]['name']</code></li></ul>"
+        }
+      ],
+      "subtitle": "Start from your Lab 4.1 code and add a new file-loading function for hazards."
     },
-    "needHelp": {
-        "ifYouGetStuck": [
-            "Review the Chapter 8 string methods table in your textbook — .strip(), .upper(), and .lower() are all covered with examples",
-            "Test functions in isolation: get <code>load_hazards()</code> working before writing <code>handle_hazard()</code>, and get <code>handle_hazard()</code> working before integrating <code>travel_to()</code>",
-            "Check your method chaining order — <code>.strip().upper()</code>, not <code>.strip.upper()</code> (missing parentheses is a common error)",
-            "Add DEBUG print statements to see what's happening inside <code>travel_to()</code> — print the roll, miles, and remaining each turn",
-            "Submit to CodeGrade early — it shows exactly which tests pass or fail"
-        ]
+    {
+      "number": 2,
+      "title": "The .upper() Relief",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "Clean, normalized input handling using <code>.strip().upper()</code>. No more <code>if x == 'y' or x == 'Y':</code>."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Input normalization is one of the first things real applications need. Every web form, every API, every command-line tool deals with the reality that users don't type consistently. <code>.strip().upper()</code> is the chapter-level introduction to a principle: clean your input at the boundary before your logic ever touches it. One method chain does what four <code>or</code> conditions used to do."
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "8-5",
+              "filename": "string_test.py",
+              "description": "Shows <code>.upper()</code> and <code>.lower()</code> being called on strings. The comparison pattern <code>if user_input.upper() == 'Y':</code> is exactly what you are implementing here."
+            },
+            {
+              "programId": "8-10",
+              "filename": "split_date.py",
+              "description": "You used <code>.split('/')</code> on a string. <code>.strip()</code> and <code>.upper()</code> are from the same string method family — you are just calling them in a chain now."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Find the dead-end handling in your game loop (the \"Return to San Antonio?\" input).",
+            "Change the input line to use method chaining: <code>choice = input('Return to San Antonio? (y/n): ').strip().upper()</code>.",
+            "Update the comparison: check for <code>'Y'</code> only, not <code>'y'</code>.",
+            "Update the player name input to use <code>.strip()</code> to remove accidental leading or trailing spaces.",
+            "Search the rest of your code for any remaining <code>or</code> patterns in input handling and fix them the same way."
+          ]
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "Old Way vs. New Way",
+          "body": "Here's the before and after:",
+          "items": [
+            "<code># Old: if choice == 'y' or choice == 'Y':</code>",
+            "<code># New: choice = input(...).strip().upper()</code>  then  <code>if choice == 'Y':</code>"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Run your game and navigate to a dead end (Laredo or El Paso). When asked \"Return to San Antonio?\", try each of these inputs and confirm all three work: <code>y</code>, <code>Y</code>, and <code>&nbsp;&nbsp;y&nbsp;&nbsp;</code> (with spaces)."
+        },
+        {
+          "type": "output_block",
+          "output": "Return to San Antonio? (y/n): y\nHeading back to San Antonio...\n\nReturn to San Antonio? (y/n): Y\nHeading back to San Antonio...\n\nReturn to San Antonio? (y/n):    y   \nHeading back to San Antonio..."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Sasha Mireles",
+          "role": "Creative Director, Bat City Collective",
+          "headshot": "Sasha-Mireles.png",
+          "quote": "Players will do exactly what you didn't expect. They'll type 'Y', 'y', 'YES', or '  y  ' with extra spaces. <code>.strip()</code><code>.upper()</code> handles ALL of that in one line. Design for chaos."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Common Mistake",
+            "Fix"
+          ],
+          "rows": [
+            [
+              "Still checking lowercase after <code>.upper()</code>",
+              "Only compare against <code>'Y'</code> and <code>'N'</code>, never <code>'y'</code> or <code>'n'</code>."
+            ],
+            [
+              "Forgetting the parentheses: <code>.upper</code>",
+              "Methods require parentheses: <code>.upper()</code>."
+            ],
+            [
+              "Reversed order: <code>.upper().strip()</code>",
+              "Won't crash, but <code>.strip().upper()</code> is the standard pattern. Strip the junk first, then transform."
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "text",
+          "body": "<ul><li>All yes/no inputs use <code>.strip().upper()</code></li><li>No remaining <code>or</code> patterns for case handling</li><li>Player name input uses <code>.strip()</code></li></ul>"
+        }
+      ],
+      "subtitle": "Replace those painful or statements with clean string methods!"
+    },
+    {
+      "number": 3,
+      "title": "Handle Hazards",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "A function that selects a random hazard from your list, displays it, flips a coin, and shows the appropriate outcome message. Returns <code>True</code> if the player escaped (HEADS) or <code>False</code> if not (TAILS)."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "<code>random.choice()</code> on a list of dictionaries is the real-world pattern for selecting from structured data. Every game engine, every recommendation system, every A/B testing framework runs on some version of 'pick a random item from a structured list and act on its properties.' Your hazards list is a tiny database and <code>handle_hazard()</code> is your first query."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Terrence \"T-Bone\" Booker",
+          "role": "QA Lead, Bat City Collective",
+          "headshot": "Terrence-TBone-Booker.png",
+          "quote": "I test this stuff for a living. Random hazard selection sounds simple until you realize you have to verify that EVERY hazard can appear, BOTH coin outcomes work, and the return value is always a boolean. Test it in a loop, run it twenty times, make sure nothing surprises you."
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "9-1",
+              "filename": "card_dealer.py",
+              "description": "You built a dictionary with key-value pairs and accessed values by key. <code>handle_hazard()</code> does the same: <code>hazard['name']</code>, <code>hazard['heads']</code>, <code>hazard['tails']</code> — same pattern, different data."
+            },
+            {
+              "programId": "5-24",
+              "filename": "sale_price.py",
+              "description": "Shows a function that returns a calculated value. <code>handle_hazard()</code> returns a boolean — same return statement pattern, just returning <code>True</code> or <code>False</code> instead of a number."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Define <code>handle_hazard(hazards)</code> that takes the hazards list.",
+            "Pick a random hazard: <code>hazard = random.choice(hazards)</code>.",
+            "Display the hazard name: <code>*** HAZARD: {hazard['name']} ***</code>.",
+            "Flip a coin: <code>result = function_library.flip_coin()</code>.",
+            "Display the flip result.",
+            "If HEADS: print <code>hazard['heads']</code> and return <code>True</code>.",
+            "If TAILS: print <code>hazard['tails']</code> and return <code>False</code>."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 1:</strong> Add this test harness:"
+        },
+        {
+          "type": "code_block",
+          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 4\nhazards = load_hazards('hazards.txt')\nprint('Testing hazard handling...')\nfor i in range(3):\n    escaped = handle_hazard(hazards)\n    print(f'Escaped: {escaped}')\n    print()"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 2:</strong> Run several times. Verify you see different hazards and both HEADS and TAILS outcomes appearing across runs. <strong>Step 3:</strong> <strong><strong style=\"color:#FF6B1A;\">DELETE the DEBUG lines</strong></strong> before moving to Checkpoint 4."
+        },
+        {
+          "type": "output_block",
+          "output": "Testing hazard handling...\n*** HAZARD: Buc-ee's appears! ***\nCoin flip: HEADS\nYou resist the siren call of Buc-ee's and stay on schedule!\nEscaped: True\n\n*** HAZARD: Speed trap! ***\nCoin flip: TAILS\nYou lose 30 minutes to a speed trap!\nEscaped: False\n\n*** HAZARD: Armadillo crossing! ***\nCoin flip: HEADS\nThe armadillo waddles off the road. You're clear!\nEscaped: True"
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Common Mistake",
+            "Why It Fails"
+          ],
+          "rows": [
+            [
+              "Using <code>hazard['HEADS']</code> (uppercase key)",
+              "Keys are lowercase: <code>'heads'</code> and <code>'tails'</code>, matching how you defined them in <code>load_hazards()</code>."
+            ],
+            [
+              "Forgetting to return True or False",
+              "The caller needs to know if the player escaped. The function must return a boolean."
+            ],
+            [
+              "Using <code>random.choice(hazards)</code> without <code>import random</code>",
+              "Make sure <code>import random</code> is at the top of your file."
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "text",
+          "body": "<ul><li>A working <code>handle_hazard(hazards)</code> that returns <code>True</code> or <code>False</code></li><li>Random hazard selection using <code>random.choice()</code></li><li>Correct lowercase dictionary keys: <code>'heads'</code> and <code>'tails'</code></li><li>DEBUG test lines deleted</li></ul>"
+        }
+      ],
+      "subtitle": "Create a function that picks a random hazard and determines the outcome with a coin flip."
+    },
+    {
+      "number": 4,
+      "title": "D20 Travel System",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "A <code>travel_to()</code> function where you roll a D20 each turn, travel roll × 10 miles, and have a 30% chance of encountering a hazard. The journey continues until you've covered the full distance to the destination."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "The travel system is where everything converges — the D20 roll from the library, the hazard system from CP3, the probability check from Module 2. Building it as a standalone function that returns a tuple keeps <code>main()</code> clean and readable. Tuple returns are how Python passes multiple values back from a function — a pattern you will use constantly in real code."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Danny Cavanaugh",
+          "role": "Lead Developer, Bat City Collective",
+          "headshot": "Danny-Cavanaugh.png",
+          "quote": "travel_to() is the most complex function you have written yet — a loop, a probability check, a function call inside a conditional, and a tuple return. Build it one line at a time. Get the D20 loop working first, then add the hazard check, then add the return. Don't try to write it all at once."
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "4-2",
+              "filename": "temperature.py",
+              "description": "You wrote a while loop that continued until a condition was met. The travel loop — <code>while miles_remaining > 0:</code> — is the same structure: keep going until the distance is covered."
+            },
+            {
+              "programId": "5-28",
+              "filename": "hypotenuse.py",
+              "description": "You wrote a function that returned a calculated value. <code>travel_to()</code> returns a tuple of three values — same <code>return</code> statement, just with parentheses around multiple items."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Define <code>travel_to(destination, distance, hazards)</code>.",
+            "Initialize: <code>miles_remaining = distance</code>, <code>miles_traveled = 0</code>, <code>hazards_faced = 0</code>, <code>hazards_escaped = 0</code>.",
+            "Create the travel loop: <code>while miles_remaining > 0:</code>.",
+            "Roll the D20: <code>roll = function_library.roll_d20()</code>.",
+            "Calculate miles this turn: <code>miles = roll * 10</code>.",
+            "Cap miles if it would overshoot the destination: <code>if miles > miles_remaining: miles = miles_remaining</code>.",
+            "Update accumulators: add <code>miles</code> to <code>miles_traveled</code>, subtract from <code>miles_remaining</code>.",
+            "Print progress: show the roll, miles gained this turn, and remaining distance.",
+            "Check for a hazard only if <code>miles_remaining > 0</code>: use <code>function_library.check_percentage(30)</code>.",
+            "If a hazard triggers: call <code>handle_hazard(hazards)</code>, increment <code>hazards_faced</code>, and increment <code>hazards_escaped</code> if it returned <code>True</code>.",
+            "After the loop, return the tuple: <code>(miles_traveled, hazards_faced, hazards_escaped)</code>."
+          ]
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "No Hazards on the Last Turn",
+          "body": "Only check for hazards when <code>miles_remaining > 0</code>. You don't want a hazard to fire on the turn you've already arrived at your destination."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Update <code>main()</code> to use the new system:</strong>"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Load hazards alongside city data at the start of <code>main()</code>.",
+            "Remove the old coin flip destination gate (the D20 travel system replaces it).",
+            "Call <code>travel_to()</code> after the player chooses a destination, passing destination name, distance, and hazards list.",
+            "Unpack the returned tuple and add to running totals: <code>miles, faced, escaped = travel_to(...)</code>.",
+            "Update the final report to display total hazards faced and escaped."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Play through the complete game and verify: D20 rolls determine progress (roll × 10 miles), hazards appear randomly on about 30% of turns, hazard outcomes depend on the coin flip, the final report shows hazards escaped vs. faced, and total miles matches the sum of all journeys."
+        },
+        {
+          "type": "output_block",
+          "output": "--- Traveling to Houston (200 miles) ---\nTurn 1: Rolled 14 — traveled 140 miles. (60 remaining)\n*** HAZARD: Speed trap! ***\nCoin flip: TAILS\nYou lose 30 minutes to a speed trap!\nTurn 2: Rolled 7 — traveled 60 miles. (0 remaining)\nYou have arrived in Houston!\n\n--- TRIP SUMMARY ---\nTotal Miles: 200\nHazards Faced: 1\nHazards Escaped: 0"
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Common Mistake",
+            "Why It Fails"
+          ],
+          "rows": [
+            [
+              "Using <code>check_percentage(0.3)</code>",
+              "The function expects a whole number: <code>check_percentage(30)</code>."
+            ],
+            [
+              "D20 range wrong: <code>randint(0, 20)</code>",
+              "A D20 rolls 1–20, not 0–20. Use the library function to be safe."
+            ],
+            [
+              "Forgetting to return the tuple",
+              "The caller needs <code>(miles, faced, escaped)</code> to update the final report."
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "text",
+          "body": "<ul><li><code>travel_to()</code> with D20-based progression and a 30% hazard chance per turn</li><li>Returns a tuple of <code>(miles_traveled, hazards_faced, hazards_escaped)</code></li><li>Updated <code>main()</code> that integrates all new features</li><li>Final report includes hazard statistics</li></ul>"
+        }
+      ],
+      "subtitle": "Replace instant travel with dice-roll-based progression and random hazard encounters."
     }
+  ],
+  "finalChecklist": {
+    "beforeYouSubmit": [
+      "File is named exactly <code>lab-4-2.py</code>",
+      "Docstring updated with name, abc123, section, and description for Lab 4.2",
+      "All yes/no inputs use <code>.strip().upper()</code> with no remaining <code>or</code> patterns",
+      "<code>load_hazards()</code> returns a list of dictionaries with <code>'name'</code>, <code>'heads'</code>, and <code>'tails'</code> keys",
+      "<code>travel_to()</code> uses D20 rolls and a 30% hazard chance per turn",
+      "Final report includes total hazards faced and escaped",
+      "All DEBUG/test code has been removed"
+    ],
+    "scopeReminder": "Chapters 2–9 only. String methods .strip(), .upper(), and .lower() are the Chapter 8 additions this week. Sets are saved for Module 4.3. CodeGrade will flag code using techniques from later chapters.",
+    "permittedTechniques": {
+      "chapters": "2–9 (all prior techniques permitted; this week adds .strip(), .upper(), .lower(), and method chaining from Chapter 8, and list of dictionaries with random.choice() from Chapter 9)",
+      "specific": [
+        "String methods: <code>.strip()</code>, <code>.upper()</code>, <code>.lower()</code>, <code>.split(',')</code>",
+        "Method chaining: <code>input(...).strip().upper()</code>",
+        "List of dictionaries: <code>[{'name': ..., 'heads': ..., 'tails': ...}, ...]</code>",
+        "<code>random.choice(list)</code> to pick a random item",
+        "Returning tuples from functions"
+      ],
+      "notPermitted": "Sets (Module 4.3), list comprehensions, try/except, classes, inheritance"
+    },
+    "warnings": [
+      "Do not use sets yet — those are the Module 4.3 reveal. CodeGrade's scope check will flag premature use."
+    ],
+    "saveYourCode": "Keep <code>lab-4-2.py</code> — Module 4.3 adds sets and a visited-cities tracker directly on top of this foundation. You will copy this file and build on it."
+  },
+  "needHelp": {
+    "ifYouGetStuck": [
+      "Review the Chapter 8 string methods table in your textbook — .strip(), .upper(), and .lower() are all covered with examples",
+      "Test functions in isolation: get <code>load_hazards()</code> working before writing <code>handle_hazard()</code>, and get <code>handle_hazard()</code> working before integrating <code>travel_to()</code>",
+      "Check your method chaining order — <code>.strip().upper()</code>, not <code>.strip.upper()</code> (missing parentheses is a common error)",
+      "Add DEBUG print statements to see what's happening inside <code>travel_to()</code> — print the roll, miles, and remaining each turn",
+      "Submit to CodeGrade early — it shows exactly which tests pass or fail"
+    ]
+  }
 }

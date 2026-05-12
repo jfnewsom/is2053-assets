@@ -224,18 +224,18 @@ def <span class="lc-arch-fn">main()</span>:
 │── else:                            <span class="lc-arch-new">[NEW-CP1]</span>
 │       default to Corpus + warning
 │
-│── distance_remaining = distance    <span class="lc-arch-new">[NEW-CP2]</span>
+│── miles_remaining = distance    <span class="lc-arch-new">[NEW-CP2]</span>
 │── total_miles = 0                  <span class="lc-arch-new">[NEW-CP2]</span>
 │── turn = 1                         <span class="lc-arch-new">[NEW-CP2]</span>
 │
 │── Print journey header             <span class="lc-arch-new">[NEW-CP3]</span>
 │
 │   <span class="lc-arch-travel-loop">TRAVEL LOOP</span>:                       <span class="lc-arch-new">[NEW-CP3/4]</span>
-│   while distance_remaining &gt; 0:
+│   while miles_remaining &gt; 0:
 │   │── Display turn header
 │   │── Display miles remaining
 │   │── Display travel message
-│   │── distance_remaining -= MILES_PER_TURN
+│   │── miles_remaining -= MILES_PER_TURN
 │   │── total_miles += MILES_PER_TURN
 │   │── turn += 1
 │
@@ -282,7 +282,7 @@ if __name__ == &#x27;__main__&#x27;:
     <ol>
       <li>The <code>HOU_TO_GALVESTON</code> constant at the top of the file</li>
       <li>The entire dice roll block: the &quot;Roll to see how far you can travel.&quot; print statements, the URL print, the <code>roll = int(input(...))</code> line, the <code>miles_rolled = roll * 10</code> calculation, and the &quot;You rolled X! That gives you Y miles.&quot; print</li>
-      <li>The initialize-defaults block before the if-elif-else (<code>destination = 'Nowhere'</code>, <code>total_distance = 0</code>, <code>miles_remaining = miles_rolled</code>, <code>status = 'ERROR'</code>, <code>message = 'Something went wrong!'</code>)</li>
+      <li>The initialize-defaults block before the if-elif-else (<code>destination = 'Nowhere'</code>, <code>distance = 0</code>, <code>miles_remaining = miles_rolled</code>, <code>status = 'ERROR'</code>, <code>message = 'Something went wrong!'</code>)</li>
       <li>Everything inside <code>if choice == 1:</code> EXCEPT the <code>destination = 'Corpus Christi'</code> line</li>
       <li>Everything inside <code>elif choice == 2:</code> (Houston) EXCEPT the <code>destination = 'Houston'</code> line &mdash; this includes the entire nested Galveston logic</li>
       <li>Everything inside <code>elif choice == 3:</code> (Austin) EXCEPT the <code>destination = 'Austin'</code> line</li>
@@ -304,7 +304,7 @@ if __name__ == &#x27;__main__&#x27;:
     </ol>
     <p><strong>RENAME (small but important):</strong></p>
     <ol>
-      <li>Inside each branch, the variable that holds the distance to your destination was called <code>total_distance</code> in Lab 1.3. Rename it to <code>distance</code> throughout this file. You'll touch it in three places: the branches, and the <code>Distance:</code> line in the TRIP SUMMARY</li>
+      <li>Inside each branch, the variable that holds the distance to your destination was called <code>distance</code> in Lab 1.3. Rename it to <code>distance</code> throughout this file. You'll touch it in three places: the branches, and the <code>Distance:</code> line in the TRIP SUMMARY</li>
     </ol>
     <p><strong>ADD (just one thing for now):</strong></p>
     <ol>
@@ -378,7 +378,7 @@ if __name__ == &#x27;__main__&#x27;:
         <td><code>NameError</code> as soon as the program reaches that line</td>
       </tr>
       <tr>
-        <td>Forgetting to rename <code>total_distance</code> &rarr; <code>distance</code></td>
+        <td>Forgetting to rename <code>distance</code> &rarr; <code>distance</code></td>
         <td>Lab 2.1 uses <code>distance</code> consistently. Mixing names will cause CodeGrade tests to fail</td>
       </tr>
       <tr>
@@ -554,7 +554,7 @@ Choice 4: Invalid choice. Defaulting to Corpus Christi.
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <p><strong>After</strong> your if-elif-else chain (where <code>destination</code> and <code>distance</code> are set), add three variables:</p>
     <ol>
-      <li><code>distance_remaining</code> — starts equal to the full distance</li>
+      <li><code>miles_remaining</code> — starts equal to the full distance</li>
       <li><code>total_miles</code> — accumulator, starts at 0</li>
       <li><code>turn</code> — counter, starts at 1</li>
     </ol>
@@ -562,21 +562,21 @@ Choice 4: Invalid choice. Defaulting to Corpus Christi.
     <p><strong>Step 1:</strong> Add these debug lines AFTER your three variable initializations:</p>
     <div class="lc-code-block">
       <pre>    <span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 3</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: distance_remaining=<span class="sy-op">{</span>distance_remaining<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: miles_remaining=<span class="sy-op">{</span>miles_remaining<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
     <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: total_miles=<span class="sy-op">{</span>total_miles<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
     <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: turn=<span class="sy-op">{</span>turn<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
     </div>
     <p><strong>Step 2:</strong> Run with choice 1 (Corpus Christi). Verify:</p>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
-      <pre>DEBUG: distance_remaining=150
+      <pre>DEBUG: miles_remaining=150
 DEBUG: total_miles=0
 DEBUG: turn=1</pre>
     </div>
     <p><strong>Step 3:</strong> Run again with choice 3 (Austin). Verify:</p>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
-      <pre>DEBUG: distance_remaining=80
+      <pre>DEBUG: miles_remaining=80
 DEBUG: total_miles=0
 DEBUG: turn=1</pre>
     </div>
@@ -615,7 +615,7 @@ DEBUG: turn=1</pre>
       </tr>
       <tr>
         <td>Putting tracking variables before if-elif-else</td>
-        <td>You need to know distance first before setting distance_remaining</td>
+        <td>You need to know distance first before setting miles_remaining</td>
       </tr>
         </tbody>
       </table>
@@ -623,7 +623,7 @@ DEBUG: turn=1</pre>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
       <li>Three tracking variables initialized AFTER if-elif-else, BEFORE the loop</li>
-      <li><code>distance_remaining</code> equals the distance for the chosen destination</li>
+      <li><code>miles_remaining</code> equals the distance for the chosen destination</li>
       <li><code>total_miles</code> is 0, <code>turn</code> is 1</li>
     </ol>
     </div>
@@ -641,7 +641,7 @@ DEBUG: turn=1</pre>
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <p>A while loop that continues as long as there's still distance to travel. Think of it as: "Keep driving WHILE there are miles remaining."</p>
     <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p>The <code>while</code> condition is the most important decision in any loop. T-Bone said it in the overview: if you can't clearly answer &quot;what makes this loop stop?&quot; you're not ready to write it. Here the answer is concrete &mdash; <code>distance_remaining</code> decreases by <code>MILES_PER_TURN</code> every iteration until it hits zero or below. The condition guards against the loop running forever.</p>
+    <p>The <code>while</code> condition is the most important decision in any loop. T-Bone said it in the overview: if you can't clearly answer &quot;what makes this loop stop?&quot; you're not ready to write it. Here the answer is concrete &mdash; <code>miles_remaining</code> decreases by <code>MILES_PER_TURN</code> every iteration until it hits zero or below. The condition guards against the loop running forever.</p>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
@@ -662,7 +662,7 @@ DEBUG: turn=1</pre>
             <strong>Program 4-2</strong>
             — <code>temperature.py</code>
             
-            — You wrote a loop that continued while temperature > MAX_TEMP. Your travel loop continues while distance_remaining > 0. Same pattern!
+            — You wrote a loop that continued while temperature > MAX_TEMP. Your travel loop continues while miles_remaining > 0. Same pattern!
           </li>
           </ul>
         </div>
@@ -671,7 +671,7 @@ DEBUG: turn=1</pre>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li>Add a "journey begins" header with print statements before the loop</li>
-      <li>Write the while statement: continue while <code>distance_remaining</code> is greater than 0</li>
+      <li>Write the while statement: continue while <code>miles_remaining</code> is greater than 0</li>
       <li>Don't forget the colon — <code>while condition:</code> requires it</li>
       <li>For now, just add a placeholder inside the loop: print the turn number</li>
     </ol>
@@ -687,7 +687,7 @@ DEBUG: turn=1</pre>
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">Infinite Loop Danger!</div>
         <div class="lc-callout__body">
-        <p>If you run this now without updating <code>distance_remaining</code> inside the loop, it will run forever. Press <strong>Ctrl+C</strong> to stop it. Use the test harness below to safely test your loop structure.</p>
+        <p>If you run this now without updating <code>miles_remaining</code> inside the loop, it will run forever. Press <strong>Ctrl+C</strong> to stop it. Use the test harness below to safely test your loop structure.</p>
         </div>
       </div>
     </div>
@@ -696,16 +696,16 @@ DEBUG: turn=1</pre>
     <div class="lc-code-block">
       <pre>    <span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 4</span>
     <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;DEBUG: Loop entered! Condition was True.&#x27;</span><span class="sy-op">)</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: distance_remaining=<span class="sy-op">{</span>distance_remaining<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: miles_remaining=<span class="sy-op">{</span>miles_remaining<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
     <span class="sy-kw">break</span>  <span class="sy-cm"># TEMPORARY - stops loop after 1 iteration</span></pre>
     </div>
     <p><strong>Step 2:</strong> Run with choice 1 (Corpus Christi). Verify:</p>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
       <pre>DEBUG: Loop entered! Condition was True.
-DEBUG: distance_remaining=150</pre>
+DEBUG: miles_remaining=150</pre>
     </div>
-    <p><strong>Step 3:</strong> This confirms your while condition is correct — the loop entered because <code>distance_remaining</code> (150) is greater than 0.</p>
+    <p><strong>Step 3:</strong> This confirms your while condition is correct — the loop entered because <code>miles_remaining</code> (150) is greater than 0.</p>
     <div class="lc-callout lc-callout--pitfall">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -732,7 +732,7 @@ DEBUG: distance_remaining=150</pre>
         </thead>
         <tbody>
       <tr>
-        <td>Using while distance_remaining != 0</td>
+        <td>Using while miles_remaining != 0</td>
         <td>You might overshoot 0! Use > 0 instead</td>
       </tr>
       <tr>
@@ -748,7 +748,7 @@ DEBUG: distance_remaining=150</pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li>A <code>while distance_remaining > 0:</code> loop in place</li>
+      <li>A <code>while miles_remaining > 0:</code> loop in place</li>
       <li>The loop body is empty for now (you'll add the body in CP5)</li>
       <li>Or, if you wrote a placeholder body, verify it doesn't infinite-loop</li>
     </ol>
@@ -765,7 +765,7 @@ DEBUG: distance_remaining=150</pre>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>The complete loop body that: shows turn info, travels 50 miles, updates <code>distance_remaining</code> so the loop eventually ends, accumulates <code>total_miles</code>, and increments the turn counter.</p>
+    <p>The complete loop body that: shows turn info, travels 50 miles, updates <code>miles_remaining</code> so the loop eventually ends, accumulates <code>total_miles</code>, and increments the turn counter.</p>
     <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
     <p>The accumulator pattern (<code>total_miles = total_miles + MILES_PER_TURN</code>) is one of the most common shapes in all of programming. Shopping carts add prices. Game scores tally points. Fitness apps count steps. Every running total in every program you'll ever use is some version of this exact line.</p>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
@@ -774,7 +774,7 @@ DEBUG: distance_remaining=150</pre>
       <li>Display the turn header — show what turn number this is</li>
       <li>Display miles remaining — so the player sees their progress</li>
       <li>Display a travel message — "You travel 50 miles..." (use your constant!)</li>
-      <li>Update <code>distance_remaining</code> — SUBTRACT miles traveled</li>
+      <li>Update <code>miles_remaining</code> — SUBTRACT miles traveled</li>
       <li>Update <code>total_miles</code> — ADD miles traveled (accumulator pattern!)</li>
       <li>Increment <code>turn</code> — add 1 so next iteration shows Turn 2, Turn 3, etc.</li>
     </ol>
@@ -815,7 +815,7 @@ DEBUG: distance_remaining=150</pre>
         </thead>
         <tbody>
       <tr>
-        <td>Forgetting to subtract from distance_remaining</td>
+        <td>Forgetting to subtract from miles_remaining</td>
         <td>Infinite loop! Distance never reaches 0</td>
       </tr>
       <tr>
@@ -837,7 +837,7 @@ DEBUG: distance_remaining=150</pre>
     <p><strong>Step 1:</strong> Add this debug line at the END of your while loop (still indented inside the loop):</p>
     <div class="lc-code-block">
       <pre>    <span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 5</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG END OF TURN: remaining=<span class="sy-op">{</span>distance_remaining<span class="sy-op">}</span>, total=<span class="sy-op">{</span>total_miles<span class="sy-op">}</span>, next_turn=<span class="sy-op">{</span>turn<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG END OF TURN: remaining=<span class="sy-op">{</span>miles_remaining<span class="sy-op">}</span>, total=<span class="sy-op">{</span>total_miles<span class="sy-op">}</span>, next_turn=<span class="sy-op">{</span>turn<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
     <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span></pre>
     </div>
     <p><strong>Step 2:</strong> Run with choice 1 (Corpus Christi, 150 mi). Verify you see exactly 3 turns:</p>
@@ -879,7 +879,7 @@ DEBUG END OF TURN: remaining=0, total=150, next_turn=4</pre>
       <li>Loop runs the correct number of turns for each destination (3 for Corpus, 4 for Houston, 2 for Austin)</li>
       <li>Turn counter increments each iteration</li>
       <li>Miles remaining decreases each turn</li>
-      <li>Loop stops when <code>distance_remaining</code> reaches 0</li>
+      <li>Loop stops when <code>miles_remaining</code> reaches 0</li>
     </ol>
     </div>
     <hr class="lc-cp-sep">
@@ -1087,7 +1087,7 @@ Thanks for playing!</pre>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">while loop condition uses <code>distance_remaining > 0</code></span>
+        <span class="lc-checklist__label">while loop condition uses <code>miles_remaining > 0</code></span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
@@ -1226,7 +1226,7 @@ Thanks for playing!
       </tr>
       <tr>
         <td>Program runs forever (infinite loop) when you start the journey</td>
-        <td>Check <strong>CP4 (Build the while Loop)</strong> &mdash; your loop body isn't decreasing <code>distance_remaining</code>. The line <code>distance_remaining = distance_remaining - MILES_PER_TURN</code> needs to be INSIDE the loop.</td>
+        <td>Check <strong>CP4 (Build the while Loop)</strong> &mdash; your loop body isn't decreasing <code>miles_remaining</code>. The line <code>miles_remaining = miles_remaining - MILES_PER_TURN</code> needs to be INSIDE the loop.</td>
       </tr>
       <tr>
         <td>Total Miles in the Trip Summary is 0 or the same as MILES_PER_TURN</td>

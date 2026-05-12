@@ -227,25 +227,25 @@ def <span class="lc-arch-fn">main()</span>:
 │── games_played = 0                         <span class="lc-arch-new">[NEW-CP5]</span>
 │── session_miles = 0                        <span class="lc-arch-new">[NEW-CP5]</span>
 │── session_hazards = 0                      <span class="lc-arch-new">[NEW-CP5]</span>
-│── keep_playing = True                      <span class="lc-arch-new">[NEW-CP4]</span>
+│── play_again = True                      <span class="lc-arch-new">[NEW-CP4]</span>
 │
 │   <span class="lc-arch-game-loop">GAME LOOP</span>:                               <span class="lc-arch-new">[NEW-CP4]</span>
-│   while keep_playing:
+│   while play_again:
 │   │
 │   │── Display destination menu
 │   │── choice = <span class="lc-arch-fn">get_valid_int(...)</span>          <span class="lc-arch-replaced">[REPLACED-CP3]</span>
 │   │── Destination Gate (coin flip)
-│   │── Set distance_remaining, totals
+│   │── Set miles_remaining, totals
 │   │
 │   │   <span class="lc-arch-travel-loop">TRAVEL LOOP</span>: (unchanged from 2.2)
-│   │   while distance_remaining &gt; 0:
+│   │   while miles_remaining &gt; 0:
 │   │   │── Roll D20, travel
 │   │   │── Hazard check
 │   │   └── (next turn)
 │   │
 │   │── Print TRIP SUMMARY
 │   │── Update session accumulators          <span class="lc-arch-new">[NEW-CP5]</span>
-│   │── keep_playing = <span class="lc-arch-fn">get_yes_no(...)</span>       <span class="lc-arch-new">[NEW-CP4]</span>
+│   │── play_again = <span class="lc-arch-fn">get_yes_no(...)</span>       <span class="lc-arch-new">[NEW-CP4]</span>
 │
 │── Print SESSION STATISTICS                 <span class="lc-arch-new">[NEW-CP5]</span>
 │── Personalized goodbye
@@ -423,7 +423,7 @@ You picked: 3</pre>
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <p>A function called <code>get_yes_no()</code> that accepts 'y', 'Y', 'n', or 'N' and returns <code>True</code> for yes or <code>False</code> for no.</p>
     <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p><code>get_yes_no()</code> returns a <strong>Boolean</strong>, not a string. That matters because in Checkpoint 4 you will use it as a sentinel condition: <code>keep_playing = function_library.get_yes_no(...)</code>. The function does the validation <em>and</em> the y/n &rarr; True/False conversion in one call, so your <code>while</code> loop stays clean.</p>
+    <p><code>get_yes_no()</code> returns a <strong>Boolean</strong>, not a string. That matters because in Checkpoint 4 you will use it as a sentinel condition: <code>play_again = function_library.get_yes_no(...)</code>. The function does the validation <em>and</em> the y/n &rarr; True/False conversion in one call, so your <code>while</code> loop stays clean.</p>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
@@ -691,7 +691,7 @@ Flipping to see if Texas cooperates...</pre>
         <tbody>
       <tr>
         <td>Welcome + Setup</td>
-        <td>Print title, get player name, initialize totals, set keep_playing = True</td>
+        <td>Print title, get player name, initialize totals, set play_again = True</td>
         <td>Once (before any loop)</td>
       </tr>
       <tr>
@@ -739,13 +739,13 @@ Flipping to see if Texas cooperates...</pre>
     </div>
     <div class="lc-code-block">
       <pre><span class="sy-cm"># CP4 structural skeleton — your sentinel loop wraps everything from Lab 2.2</span>
-keep_playing <span class="sy-op">=</span> <span class="sy-kw">True</span>
+play_again <span class="sy-op">=</span> <span class="sy-kw">True</span>
 
-<span class="sy-kw">while</span> keep_playing<span class="sy-op">:</span>
+<span class="sy-kw">while</span> play_again<span class="sy-op">:</span>
     <span class="sy-cm"># Menu, Destination Gate, travel loop, hazards, trip summary</span>
     <span class="sy-cm"># (all your Lab 2.2 code goes here, indented)</span>
     
-    keep_playing <span class="sy-op">=</span> function_library<span class="sy-op">.</span>get_yes_no<span class="sy-op">(</span><span class="sy-str">&#x27;Play again? (y/n): &#x27;</span><span class="sy-op">)</span>
+    play_again <span class="sy-op">=</span> function_library<span class="sy-op">.</span>get_yes_no<span class="sy-op">(</span><span class="sy-str">&#x27;Play again? (y/n): &#x27;</span><span class="sy-op">)</span>
 
 <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span>
 <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Thanks for playing, <span class="sy-op">{</span>player_name<span class="sy-op">}</span>!&#x27;<span class="sy-op">)</span></pre>
@@ -754,10 +754,10 @@ keep_playing <span class="sy-op">=</span> <span class="sy-kw">True</span>
     <p>Lab 2.2 ended after one trip. Real games keep going until the player wants to stop. The <strong>sentinel loop</strong> pattern from Chapter 4.5 gives you exactly that &mdash; a Boolean flag that controls whether the outer loop runs again. You are not rewriting your game. You are wrapping it.</p>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li><strong>Before</strong> the menu, initialize: <code>keep_playing = True</code></li>
-      <li>Add <code>while keep_playing:</code> to wrap the game logic</li>
+      <li><strong>Before</strong> the menu, initialize: <code>play_again = True</code></li>
+      <li>Add <code>while play_again:</code> to wrap the game logic</li>
       <li><strong>Indent</strong> all game code inside the while loop</li>
-      <li><strong>After</strong> the trip summary (inside the loop): <code>keep_playing = function_library.get_yes_no('Play again? (y/n): ')</code></li>
+      <li><strong>After</strong> the trip summary (inside the loop): <code>play_again = function_library.get_yes_no('Play again? (y/n): ')</code></li>
       <li>"Thanks for playing!" message goes <strong>outside</strong> the loop</li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
@@ -834,8 +834,8 @@ Where would you like to go?
         <td>Message appears after every game, not just at the end</td>
       </tr>
       <tr>
-        <td>Using while keep_playing == True:</td>
-        <td>Works but redundant — just use while keep_playing:</td>
+        <td>Using while play_again == True:</td>
+        <td>Works but redundant — just use while play_again:</td>
       </tr>
         </tbody>
       </table>
@@ -905,7 +905,7 @@ Where would you like to go?
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li><strong>Before</strong> the play again loop, initialize: <code>games_played = 0</code>, <code>session_miles = 0</code>, <code>session_hazards = 0</code></li>
-      <li><strong>Inside</strong> the loop, after each trip summary, update the accumulators: add 1 to <code>games_played</code>, add <code>total_trip_miles</code> to <code>session_miles</code>, add <code>total_hazards</code> to <code>session_hazards</code></li>
+      <li><strong>Inside</strong> the loop, after each trip summary, update the accumulators: add 1 to <code>games_played</code>, add <code>total_miles</code> to <code>session_miles</code>, add <code>total_hazards</code> to <code>session_hazards</code></li>
       <li><strong>After</strong> the loop ends, display a "SESSION STATISTICS" block with all three totals</li>
       <li>Include the player's name in the final goodbye message</li>
     </ol>
@@ -947,7 +947,7 @@ An All My Eggses Live in Texas Production</pre>
       </tr>
       <tr>
         <td>Using wrong variable names</td>
-        <td>Adding miles using the wrong name &mdash; the per-game variable is <code>total_trip_miles</code>, not <code>total_miles</code></td>
+        <td>Adding miles using the wrong name &mdash; the per-game variable is <code>total_miles</code>, not <code>total_miles</code></td>
       </tr>
       <tr>
         <td>Forgetting games_played += 1</td>
@@ -1163,7 +1163,7 @@ An All My Eggses Live in Texas Production</pre>
       </tr>
       <tr>
         <td>Game ends after one trip even when you answer <code>y</code> to <code>Play again? (y/n):</code></td>
-        <td>Check <strong>CP4 (Play Again Loop)</strong> &mdash; either the <code>while keep_playing:</code> wrapper is missing, the game code is not indented inside it, or <code>keep_playing</code> is never reassigned after the trip summary.</td>
+        <td>Check <strong>CP4 (Play Again Loop)</strong> &mdash; either the <code>while play_again:</code> wrapper is missing, the game code is not indented inside it, or <code>play_again</code> is never reassigned after the trip summary.</td>
       </tr>
       <tr>
         <td><code>Play again? (y/n):</code> prompt repeatedly prints <code>ERROR: Please enter 'y' or 'n'.</code> even when you type <code>y</code></td>
@@ -1171,7 +1171,7 @@ An All My Eggses Live in Texas Production</pre>
       </tr>
       <tr>
         <td>Final session report shows <code>0</code> for total games, miles, or hazards</td>
-        <td>Check <strong>CP5 (Session Statistics)</strong> &mdash; accumulators (<code>games_played</code>, <code>session_miles</code>, <code>session_hazards</code>) are likely initialized <em>inside</em> the <code>while keep_playing:</code> loop. They must be initialized <strong>before</strong> the loop so they persist across games.</td>
+        <td>Check <strong>CP5 (Session Statistics)</strong> &mdash; accumulators (<code>games_played</code>, <code>session_miles</code>, <code>session_hazards</code>) are likely initialized <em>inside</em> the <code>while play_again:</code> loop. They must be initialized <strong>before</strong> the loop so they persist across games.</td>
       </tr>
       <tr>
         <td><code>AttributeError: module 'function_library' has no attribute 'get_valid_int'</code></td>

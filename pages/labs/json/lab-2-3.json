@@ -108,7 +108,7 @@
   },
   "beforeYouBegin": {
     "intro": "Here's how your finished program fits together. Checkpoints 1–2 expand function_library.py. Checkpoints 3–5 update lab-2-3.py. The [NEW] and [REPLACED] tags show what changes.",
-    "architecture": "# ---- function_library.py ----\n# (From Lab 2.2)\nflip_coin()               returns 'HEADS' or 'TAILS'\nroll_d20()                returns int 1-20\ncheck_percentage(chance)  returns True/False\n\n# (Added in Lab 2.3)\ndef get_valid_int(prompt, min_val, max_val):  [NEW-CP1]\n    priming read → validation while loop → return\ndef get_yes_no(prompt):                       [NEW-CP2]\n    priming read → validation while loop → return True/False\n\n# ---- lab-2-3.py ----\ndef main():\n│\n│── Welcome banner, get player_name\n│── games_played = 0                         [NEW-CP5]\n│── session_miles = 0                        [NEW-CP5]\n│── session_hazards = 0                      [NEW-CP5]\n│── keep_playing = True                      [NEW-CP4]\n│\n│   GAME LOOP:                               [NEW-CP4]\n│   while keep_playing:\n│   │\n│   │── Display destination menu\n│   │── choice = get_valid_int(...)          [REPLACED-CP3]\n│   │── Destination Gate (coin flip)\n│   │── Set distance_remaining, totals\n│   │\n│   │   TRAVEL LOOP: (unchanged from 2.2)\n│   │   while distance_remaining > 0:\n│   │   │── Roll D20, travel\n│   │   │── Hazard check\n│   │   └── (next turn)\n│   │\n│   │── Print TRIP SUMMARY\n│   │── Update session accumulators          [NEW-CP5]\n│   │── keep_playing = get_yes_no(...)       [NEW-CP4]\n│\n│── Print SESSION STATISTICS                 [NEW-CP5]\n│── Personalized goodbye\n\nif __name__ == '__main__':\n    main()"
+    "architecture": "# ---- function_library.py ----\n# (From Lab 2.2)\nflip_coin()               returns 'HEADS' or 'TAILS'\nroll_d20()                returns int 1-20\ncheck_percentage(chance)  returns True/False\n\n# (Added in Lab 2.3)\ndef get_valid_int(prompt, min_val, max_val):  [NEW-CP1]\n    priming read → validation while loop → return\ndef get_yes_no(prompt):                       [NEW-CP2]\n    priming read → validation while loop → return True/False\n\n# ---- lab-2-3.py ----\ndef main():\n│\n│── Welcome banner, get player_name\n│── games_played = 0                         [NEW-CP5]\n│── session_miles = 0                        [NEW-CP5]\n│── session_hazards = 0                      [NEW-CP5]\n│── play_again = True                      [NEW-CP4]\n│\n│   GAME LOOP:                               [NEW-CP4]\n│   while play_again:\n│   │\n│   │── Display destination menu\n│   │── choice = get_valid_int(...)          [REPLACED-CP3]\n│   │── Destination Gate (coin flip)\n│   │── Set miles_remaining, totals\n│   │\n│   │   TRAVEL LOOP: (unchanged from 2.2)\n│   │   while miles_remaining > 0:\n│   │   │── Roll D20, travel\n│   │   │── Hazard check\n│   │   └── (next turn)\n│   │\n│   │── Print TRIP SUMMARY\n│   │── Update session accumulators          [NEW-CP5]\n│   │── play_again = get_yes_no(...)       [NEW-CP4]\n│\n│── Print SESSION STATISTICS                 [NEW-CP5]\n│── Personalized goodbye\n\nif __name__ == '__main__':\n    main()"
   },
   "checkpoints": [
     {
@@ -266,7 +266,7 @@
         },
         {
           "type": "text",
-          "body": "<code>get_yes_no()</code> returns a <strong>Boolean</strong>, not a string. That matters because in Checkpoint 4 you will use it as a sentinel condition: <code>keep_playing = function_library.get_yes_no(...)</code>. The function does the validation <em>and</em> the y/n &rarr; True/False conversion in one call, so your <code>while</code> loop stays clean."
+          "body": "<code>get_yes_no()</code> returns a <strong>Boolean</strong>, not a string. That matters because in Checkpoint 4 you will use it as a sentinel condition: <code>play_again = function_library.get_yes_no(...)</code>. The function does the validation <em>and</em> the y/n &rarr; True/False conversion in one call, so your <code>while</code> loop stays clean."
         },
         {
           "type": "mentor_quote",
@@ -514,7 +514,7 @@
           "rows": [
             [
               "Welcome + Setup",
-              "Print title, get player name, initialize totals, set keep_playing = True",
+              "Print title, get player name, initialize totals, set play_again = True",
               "Once (before any loop)"
             ],
             [
@@ -553,7 +553,7 @@
         },
         {
           "type": "code_block",
-          "code": "# CP4 structural skeleton — your sentinel loop wraps everything from Lab 2.2\nkeep_playing = True\n\nwhile keep_playing:\n    # Menu, Destination Gate, travel loop, hazards, trip summary\n    # (all your Lab 2.2 code goes here, indented)\n    \n    keep_playing = function_library.get_yes_no('Play again? (y/n): ')\n\nprint()\nprint(f'Thanks for playing, {player_name}!')"
+          "code": "# CP4 structural skeleton — your sentinel loop wraps everything from Lab 2.2\nplay_again = True\n\nwhile play_again:\n    # Menu, Destination Gate, travel loop, hazards, trip summary\n    # (all your Lab 2.2 code goes here, indented)\n    \n    play_again = function_library.get_yes_no('Play again? (y/n): ')\n\nprint()\nprint(f'Thanks for playing, {player_name}!')"
         },
         {
           "type": "h3",
@@ -570,10 +570,10 @@
         {
           "type": "instructions",
           "items": [
-            "<strong>Before</strong> the menu, initialize: <code>keep_playing = True</code>",
-            "Add <code>while keep_playing:</code> to wrap the game logic",
+            "<strong>Before</strong> the menu, initialize: <code>play_again = True</code>",
+            "Add <code>while play_again:</code> to wrap the game logic",
             "<strong>Indent</strong> all game code inside the while loop",
-            "<strong>After</strong> the trip summary (inside the loop): <code>keep_playing = function_library.get_yes_no('Play again? (y/n): ')</code>",
+            "<strong>After</strong> the trip summary (inside the loop): <code>play_again = function_library.get_yes_no('Play again? (y/n): ')</code>",
             "\"Thanks for playing!\" message goes <strong>outside</strong> the loop"
           ]
         },
@@ -632,8 +632,8 @@
               "Message appears after every game, not just at the end"
             ],
             [
-              "Using while keep_playing == True:",
-              "Works but redundant — just use while keep_playing:"
+              "Using while play_again == True:",
+              "Works but redundant — just use while play_again:"
             ]
           ],
           "accent": "green"
@@ -702,7 +702,7 @@
           "type": "instructions",
           "items": [
             "<strong>Before</strong> the play again loop, initialize: <code>games_played = 0</code>, <code>session_miles = 0</code>, <code>session_hazards = 0</code>",
-            "<strong>Inside</strong> the loop, after each trip summary, update the accumulators: add 1 to <code>games_played</code>, add <code>total_trip_miles</code> to <code>session_miles</code>, add <code>total_hazards</code> to <code>session_hazards</code>",
+            "<strong>Inside</strong> the loop, after each trip summary, update the accumulators: add 1 to <code>games_played</code>, add <code>total_miles</code> to <code>session_miles</code>, add <code>total_hazards</code> to <code>session_hazards</code>",
             "<strong>After</strong> the loop ends, display a \"SESSION STATISTICS\" block with all three totals",
             "Include the player's name in the final goodbye message"
           ]
@@ -744,7 +744,7 @@
             ],
             [
               "Using wrong variable names",
-              "Adding miles using the wrong name &mdash; the per-game variable is <code>total_trip_miles</code>, not <code>total_miles</code>"
+              "Adding miles using the wrong name &mdash; the per-game variable is <code>total_miles</code>, not <code>total_miles</code>"
             ],
             [
               "Forgetting games_played += 1",
@@ -803,7 +803,7 @@
         },
         {
           "symptom": "Game ends after one trip even when you answer <code>y</code> to <code>Play again? (y/n):</code>",
-          "redirect": "Check <strong>CP4 (Play Again Loop)</strong> &mdash; either the <code>while keep_playing:</code> wrapper is missing, the game code is not indented inside it, or <code>keep_playing</code> is never reassigned after the trip summary."
+          "redirect": "Check <strong>CP4 (Play Again Loop)</strong> &mdash; either the <code>while play_again:</code> wrapper is missing, the game code is not indented inside it, or <code>play_again</code> is never reassigned after the trip summary."
         },
         {
           "symptom": "<code>Play again? (y/n):</code> prompt repeatedly prints <code>ERROR: Please enter 'y' or 'n'.</code> even when you type <code>y</code>",
@@ -811,7 +811,7 @@
         },
         {
           "symptom": "Final session report shows <code>0</code> for total games, miles, or hazards",
-          "redirect": "Check <strong>CP5 (Session Statistics)</strong> &mdash; accumulators (<code>games_played</code>, <code>session_miles</code>, <code>session_hazards</code>) are likely initialized <em>inside</em> the <code>while keep_playing:</code> loop. They must be initialized <strong>before</strong> the loop so they persist across games."
+          "redirect": "Check <strong>CP5 (Session Statistics)</strong> &mdash; accumulators (<code>games_played</code>, <code>session_miles</code>, <code>session_hazards</code>) are likely initialized <em>inside</em> the <code>while play_again:</code> loop. They must be initialized <strong>before</strong> the loop so they persist across games."
         },
         {
           "symptom": "<code>AttributeError: module 'function_library' has no attribute 'get_valid_int'</code>",

@@ -238,15 +238,15 @@ def <span class="lc-arch-fn">main()</span>:
 │   if HEADS: keep destination
 │   else: redirect to random other destination
 │
-│── distance_remaining, total_miles, turn = ...
+│── miles_remaining, total_miles, turn = ...
 │── hazards_faced = 0, hazards_escaped = 0                  <span class="lc-arch-new">[NEW-CP6]</span>
 │
 │   <span class="lc-arch-travel-loop">TRAVEL LOOP</span>:
-│   while distance_remaining &gt; 0:
+│   while miles_remaining &gt; 0:
 │   │── roll = <span class="lc-arch-fn">function_library.roll_d20()</span>                <span class="lc-arch-new">[NEW-CP5]</span>
 │   │── miles_this_turn = roll * MILES_MULTIPLIER         <span class="lc-arch-replaced">[REPLACED-CP5]</span>
 │   │── Display turn, roll, miles
-│   │── Update distance_remaining, total_miles, turn
+│   │── Update miles_remaining, total_miles, turn
 │   │── HAZARD CHECK:                                     <span class="lc-arch-new">[NEW-CP6]</span>
 │   │   if <span class="lc-arch-fn">function_library.check_percentage(HAZARD_CHANCE)</span>:
 │   │       pick random hazard 1-8
@@ -821,10 +821,10 @@ You made it to Houston!</pre>
         <tbody>
       <tr>
         <td>Infinite loop — not subtracting from remaining</td>
-        <td>Loop condition never becomes false if you don't update distance_remaining</td>
+        <td>Loop condition never becomes false if you don't update miles_remaining</td>
       </tr>
       <tr>
-        <td>Using while distance_remaining != 0</td>
+        <td>Using while miles_remaining != 0</td>
         <td>Use > 0 — you might overshoot exact zero with variable rolls</td>
       </tr>
       <tr>
@@ -1200,7 +1200,7 @@ Thanks for playing!
       </tr>
       <tr>
         <td>Program runs forever or hangs after one turn</td>
-        <td>Check <strong>CP5 (D20 Travel System)</strong> &mdash; you're not subtracting <code>miles_this_turn</code> from <code>distance_remaining</code>. The loop body MUST decrement <code>distance_remaining</code> each iteration or you've built an infinite loop.</td>
+        <td>Check <strong>CP5 (D20 Travel System)</strong> &mdash; you're not subtracting <code>miles_this_turn</code> from <code>miles_remaining</code>. The loop body MUST decrement <code>miles_remaining</code> each iteration or you've built an infinite loop.</td>
       </tr>
         </tbody>
       </table>

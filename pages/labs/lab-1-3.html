@@ -53,7 +53,7 @@
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <ul class="lc-objectives">
       <li>Add the <strong>HOU_TO_GALVESTON</strong> constant (50 miles)</li>
-      <li>Initialize <strong>miles_remaining</strong> and <strong>total_distance</strong> tracking variables</li>
+      <li>Initialize <strong>miles_remaining</strong> and <strong>distance</strong> tracking variables</li>
       <li>Write a <strong>nested if</strong> inside the Houston branch to ask about Galveston</li>
       <li>Use the <strong>or</strong> operator to accept both 'y' and 'Y'</li>
       <li>Set a <strong>status</strong> variable (WINNER, SHORT, DETOUR, STOPPED, ERROR) in every branch</li>
@@ -68,7 +68,7 @@
       <li>Your program <strong>MUST</strong> start from your Lab 1.2 code</li>
       <li>Your program <strong>MUST</strong> have a nested if inside the Houston branch</li>
       <li>Your program <strong>MUST</strong> use the <code>or</code> operator to accept 'y' or 'Y'</li>
-      <li>Your program <strong>MUST</strong> set <code>total_distance</code> and <code>status</code> in every branch</li>
+      <li>Your program <strong>MUST</strong> set <code>distance</code> and <code>status</code> in every branch</li>
       <li>Your program <strong>MUST</strong> display a final message based on <code>status</code></li>
       <li>Your program <strong>MUST</strong> include your docstring with name, abc123, section, and description</li>
     </ul>
@@ -193,14 +193,14 @@ def <span class="lc-arch-fn">main()</span>:
 │
 │── Welcome banner, player name, roll
 │── miles_remaining = miles_rolled      <span class="lc-arch-new">[NEW-CP1]</span>
-│── total_distance = 0                  <span class="lc-arch-new">[NEW-CP1]</span>
+│── distance = 0                  <span class="lc-arch-new">[NEW-CP1]</span>
 │
 │── Display menu, get choice
 │
 │── if choice == 1 (Corpus):            <span class="lc-arch-replaced">[REPLACED-CP3]</span>
 │       check miles_remaining &gt;= 0
 │       set status WINNER or SHORT
-│       set total_distance
+│       set distance
 │
 │── elif choice == 2 (Houston):         <span class="lc-arch-replaced">[REPLACED-CP2]</span>
 │       check miles_remaining &gt;= 0
@@ -213,12 +213,12 @@ def <span class="lc-arch-fn">main()</span>:
 │       │       status = STOPPED
 │       else:
 │           status = SHORT
-│       set total_distance
+│       set distance
 │
 │── elif choice == 3 (Austin):          <span class="lc-arch-replaced">[REPLACED-CP3]</span>
 │       check miles_remaining &gt;= 0
 │       status = DETOUR or SHORT
-│       set total_distance
+│       set distance
 │
 │── else (invalid):                     <span class="lc-arch-replaced">[REPLACED-CP3]</span>
 │       status = ERROR
@@ -260,7 +260,7 @@ if __name__ == &#x27;__main__&#x27;:
       <li>Update your docstring with the new lab number and description</li>
       <li>Add the Galveston constant with your other constants: <code>HOU_TO_GALVESTON = 50</code></li>
       <li>After calculating <code>miles_rolled</code>, add: <code>miles_remaining = miles_rolled</code></li>
-      <li>Before the if-elif-else chain, add: <code>total_distance = 0</code></li>
+      <li>Before the if-elif-else chain, add: <code>distance = 0</code></li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
@@ -314,7 +314,7 @@ if __name__ == &#x27;__main__&#x27;:
         <tbody>
       <tr>
         <td>Wrong initial value for tracking vars</td>
-        <td>total_distance starts at 0; miles_remaining starts at miles_rolled</td>
+        <td>distance starts at 0; miles_remaining starts at miles_rolled</td>
       </tr>
       <tr>
         <td>Forgetting HOU_TO_GALVESTON constant</td>
@@ -332,13 +332,13 @@ if __name__ == &#x27;__main__&#x27;:
     <div class="lc-code-block">
       <pre>    <span class="sy-cm"># DEBUG - DELETE AFTER TESTING</span>
     <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: miles_remaining = <span class="sy-op">{</span>miles_remaining<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: total_distance = <span class="sy-op">{</span>total_distance<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: distance = <span class="sy-op">{</span>distance<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
     </div>
     <p><strong>Step 2:</strong> Run with roll 15. Verify:</p>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
       <pre>DEBUG: miles_remaining = 150
-DEBUG: total_distance = 0</pre>
+DEBUG: distance = 0</pre>
     </div>
     <div class="lc-callout lc-callout--pitfall">
       <div class="lc-callout__icon">
@@ -359,7 +359,7 @@ DEBUG: total_distance = 0</pre>
     <ol>
       <li>4 constants including <code>HOU_TO_GALVESTON</code></li>
       <li><code>miles_remaining</code> initialized to <code>miles_rolled</code></li>
-      <li><code>total_distance</code> initialized to <code>0</code></li>
+      <li><code>distance</code> initialized to <code>0</code></li>
     </ol>
     </div>
     <hr class="lc-cp-sep">
@@ -427,10 +427,10 @@ DEBUG: total_distance = 0</pre>
     <p><strong>Replace your Houston branch (elif choice == 2)</strong> with nested logic. The structure is:</p>
     <ol>
       <li>Check if made it to Houston (<code>miles_remaining &gt;= SAT_TO_HOUSTON</code>)</li>
-      <li>If yes: subtract <code>SAT_TO_HOUSTON</code> from <code>miles_remaining</code>, set <code>total_distance</code>, then ask <code>'Continue to Galveston? (y/n): '</code></li>
+      <li>If yes: subtract <code>SAT_TO_HOUSTON</code> from <code>miles_remaining</code>, set <code>distance</code>, then ask <code>'Continue to Galveston? (y/n): '</code></li>
       <li>If they say y/Y: check if <code>miles_remaining &gt;= HOU_TO_GALVESTON</code> — set status WINNER or SHORT accordingly</li>
       <li>If they say anything else: set status to 'STOPPED'</li>
-      <li>If didn't make Houston: set status to 'SHORT', set <code>total_distance</code> to <code>SAT_TO_HOUSTON</code></li>
+      <li>If didn't make Houston: set status to 'SHORT', set <code>distance</code> to <code>SAT_TO_HOUSTON</code></li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
     <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
@@ -485,7 +485,7 @@ DEBUG: total_distance = 0</pre>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>Updated Corpus, Austin, and Invalid branches that set <code>total_distance</code> and <code>status</code> so the final summary has accurate data.</p>
+    <p>Updated Corpus, Austin, and Invalid branches that set <code>distance</code> and <code>status</code> so the final summary has accurate data.</p>
     <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
     <p>Branch consistency is invisible until something breaks. If even one branch forgets to set <code>status</code>, the Trip Summary crashes with a <code>NameError</code> the moment a player picks that path &mdash; possibly after they've already played for a minute. Defensive programming means every branch leaves the program in a valid state, every time.</p>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
@@ -495,7 +495,7 @@ DEBUG: total_distance = 0</pre>
         <thead>
           <tr>
         <th>Branch</th>
-        <th>total_distance</th>
+        <th>distance</th>
         <th>status</th>
           </tr>
         </thead>
@@ -569,7 +569,7 @@ DEBUG: total_distance = 0</pre>
             <strong>Program 3-6</strong>
             — <code>grader.py</code>
             
-            — Shows setting different variables in each branch of an if-elif-else. Same pattern here — each destination sets its own status and total_distance.
+            — Shows setting different variables in each branch of an if-elif-else. Same pattern here — each destination sets its own status and distance.
           </li>
           </ul>
         </div>
@@ -594,7 +594,7 @@ DEBUG: total_distance = 0</pre>
         <td>status stays undefined, causing a NameError in the summary</td>
       </tr>
       <tr>
-        <td>Updating distance instead of total_distance</td>
+        <td>Updating distance instead of distance</td>
         <td>Summary shows wrong value</td>
       </tr>
         </tbody>
@@ -604,9 +604,9 @@ DEBUG: total_distance = 0</pre>
     <p><strong>Step 1:</strong> Add a debug line at the END of the full if-elif-else block (right before the summary):</p>
     <div class="lc-code-block">
       <pre>    <span class="sy-cm"># DEBUG - DELETE AFTER TESTING</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: total_distance = <span class="sy-op">{</span>total_distance<span class="sy-op">}</span>, status = <span class="sy-op">{</span>status<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: distance = <span class="sy-op">{</span>distance<span class="sy-op">}</span>, status = <span class="sy-op">{</span>status<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
     </div>
-    <p><strong>Step 2:</strong> Test each branch and verify <code>total_distance</code> and <code>status</code> are set correctly for every path.</p>
+    <p><strong>Step 2:</strong> Test each branch and verify <code>distance</code> and <code>status</code> are set correctly for every path.</p>
     <div class="lc-callout lc-callout--pitfall">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -624,7 +624,7 @@ DEBUG: total_distance = 0</pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li>All branches setting <code>total_distance</code> and <code>status</code></li>
+      <li>All branches setting <code>distance</code> and <code>status</code></li>
       <li>Consistent status strings (all uppercase)</li>
       <li>Each branch tested and working</li>
     </ol>
@@ -660,7 +660,7 @@ DEBUG: total_distance = 0</pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>Update the Trip Summary to show "Total Distance" using <code>total_distance</code></li>
+      <li>Update the Trip Summary to show "Total Distance" using <code>distance</code></li>
       <li>After the summary, add an if-elif-else that checks the <code>status</code> variable and prints a matching closing message</li>
     </ol>
     <p><strong>Messages to display for each status:</strong></p>
@@ -778,7 +778,7 @@ CONGRATULATIONS! You made it to the beach!</pre>
     </ol>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li>Updated Trip Summary displaying <code>total_distance</code></li>
+      <li>Updated Trip Summary displaying <code>distance</code></li>
       <li>if-elif-else checking <code>status</code> for the final message</li>
       <li>All statuses producing an appropriate closing message</li>
     </ol>
@@ -818,7 +818,7 @@ CONGRATULATIONS! You made it to the beach!</pre>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">All branches set <code>total_distance</code> and <code>status</code></span>
+        <span class="lc-checklist__label">All branches set <code>distance</code> and <code>status</code></span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
@@ -913,7 +913,7 @@ Better luck next time! Roll higher!
         <td>Check <strong>CP1 (Setup &amp; New Variables)</strong> &mdash; you didn't add the new constant at the top of your file. Should be <code>HOU_TO_GALVESTON = 50</code>.</td>
       </tr>
       <tr>
-        <td><code>NameError: name 'total_distance'</code> or <code>'miles_remaining'</code> <code>is not defined</code> in the Trip Summary</td>
+        <td><code>NameError: name 'distance'</code> or <code>'miles_remaining'</code> <code>is not defined</code> in the Trip Summary</td>
         <td>Check <strong>CP1 (Setup &amp; New Variables)</strong> &mdash; you didn't initialize the tracking variables BEFORE the if-elif-else chain. They must exist before any branch references them.</td>
       </tr>
       <tr>
@@ -930,7 +930,7 @@ Better luck next time! Roll higher!
       </tr>
       <tr>
         <td>Player chose Corpus, fell short, but Trip Summary shows <code>Status: ERROR</code> or <code>Distance: 0</code></td>
-        <td>Check <strong>CP3 (Update Other Branches)</strong> &mdash; the Corpus branch is missing the <code>total_distance</code> or <code>status</code> assignment. Every branch needs to set both.</td>
+        <td>Check <strong>CP3 (Update Other Branches)</strong> &mdash; the Corpus branch is missing the <code>distance</code> or <code>status</code> assignment. Every branch needs to set both.</td>
       </tr>
       <tr>
         <td><code>NameError: name 'status' is not defined</code> at the closing message</td>
