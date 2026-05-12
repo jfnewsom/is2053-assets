@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Save Your Progress — IS2053</title>
+    <title>Lists to the Rescue — IS2053</title>
     <link rel="icon" type="image/png" href="https://jfnewsom.github.io/is2053-assets/favicon.png">
     <link rel="stylesheet" href="../../labs.css">
 </head>
@@ -20,7 +20,7 @@
           </div>
         </td>
         <td style="vertical-align: bottom; padding: 0 0 0 16px;">
-          <div class="lc-topper-title">Save Your Progress</div>
+          <div class="lc-topper-title">Lists to the Rescue</div>
         </td>
         <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">
           <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: 120px; width: auto; display: block;">
@@ -32,53 +32,122 @@
   <div class="lc-panel">
     <div class="lc-h3 lc-h3--yellow">Overview</div>
     <img src="../../branding/AllMyEggses3D-Full.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
-    <p>This is an ENHANCE week — you'll transform your ugly if/elif chains into <strong>elegant parallel lists!</strong> Remember all those repetitive destination menus and choice handlers? Lists make them disappear. You'll also add tracking lists to record your route and hazards, and update save/load to preserve them.</p>
+    <p>Last week you bolted file I/O onto your road trip game and made progress persist between sessions. That was the BUILD week. This is the ENHANCE week. The destination menus you carried forward from Lab 1.3 are still a wall of <code>if/elif</code> chains. Three menus, dozens of lines, all of them doing the same job in slightly different ways. <strong>Parallel lists</strong> &mdash; the central pattern of Chapter 7 &mdash; collapse that wall into a few lines of data and one universal display function. You'll also add tracking lists so the trip report can show the player's actual route and the hazards they faced, and extend save/load so those lists persist across sessions.</p>
     <div style="clear: both;"></div>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
         <div class="lc-mentor__avatar">
-          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
         </div>
         <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"Here's a question I ask every developer: if you had to add 20 more cities to your game, how long would it take? If the answer is 'hours of copying and pasting,' your code isn't scalable. Lists fix that. Add a city? Add one line to a list. That's it. Five minutes of planning saves five hours of debugging."</div>
+          <div class="lc-mentor__quote">"When you find yourself writing the same shape of code three times in a row, that's data wearing a logic costume. The structure is begging to be a list. Once you see it, you can't unsee it &mdash; and your code gets so much shorter."</div>
         </div>
       </div>
       <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Priya Venkatesh</div>
-        <div class="lc-mentor__role">Project Manager, Bat City Collective</div>
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Lead Developer, Bat City Collective</div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Filename</div>
-    <p>Submit TWO files this week: <code>function_library.py</code> — Your expanded module (now with file utility functions) and <code>lab-3-2.py</code> — Your game with parallel lists and tracking.</p>
-    <p>function_library.py is submitted alongside lab-3-2.py — it gets three new file utility functions. CodeGrade tests these functions in isolation.</p>
+    <p>Save your main game file as <code>lab-3-2.py</code>. Your <code>function_library.py</code> from Lab 3.1 grows this week &mdash; six functions get added or extended.</p>
+    <p>Submit both <code>lab-3-2.py</code> and <code>function_library.py</code>. The save file <code>savegame.txt</code> is generated at runtime; you do not submit it.</p>
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
     <ul class="lc-objectives">
-      <li><strong>Parallel Lists</strong> — <code>SA_DESTINATIONS</code>, <code>SA_DISTANCES</code>, <code>SA_NOTES</code> (and for Houston/Austin)</li>
-      <li><strong>display_destinations()</strong> — Loop through lists to show menu dynamically</li>
-      <li><strong>get_destination()</strong> — Use <code>[choice - 1]</code> indexing instead of if/elif</li>
-      <li><strong>Tracking Lists</strong> — <code>visited_cities</code> and <code>hazards_list</code></li>
-      <li><strong>Enhanced Save/Load</strong> — Preserve tracking lists with a separator marker</li>
+      <li>Replace the destination <code>if/elif</code> chains with <strong>parallel lists</strong> &mdash; three per city: destinations, distances, notes</li>
+      <li><strong>Promote</strong> <code>save_game()</code> and <code>load_game()</code> from <code>lab-3-1.py</code> to <code>function_library.py</code></li>
+      <li>Add three universal destination helpers to the library: <code>display_destinations()</code>, <code>get_destination()</code>, <code>get_redirect()</code></li>
+      <li>Build <strong>tracking lists</strong>: <code>visited_cities</code> (route) and <code>hazards_list</code> (war stories)</li>
+      <li><strong>Extend</strong> <code>save_game()</code> and <code>load_game()</code> to persist both tracking lists using a <code>---LISTS_END---</code> separator</li>
+      <li>Add <code>display_numbered_list()</code> to the library and use it in the Trip Summary</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
-    <p>Chapter 7: 7.2 (List Creation), 7.3 (for loops with lists), 7.4 (in operator), 7.5 (index, remove, copy)</p>
+    <p>Parallel lists with initial values (same index links related items). Indexing with <code>[choice - 1]</code>. Building lists with <code>.append()</code>. Iterating with <code>for i in range(len(lst))</code>. Using <code>in</code> to check membership, <code>.index()</code> to find positions, <code>.remove()</code> and <code>.pop()</code> to remove items, <code>.copy()</code> to avoid mutating originals. Writing lists to files line by line. Reading lists with a separator marker. Refactoring functions from a lab file into the library.</p>
     <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
-    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 7</p>
+    <p>Chapter 7: Lists and Tuples (Sections 7.1, 7.2, 7.4, 7.5, 7.7)</p>
     <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
     <ul>
-      <li>Create parallel lists for three origin cities (San Antonio, Houston, Austin)</li>
-      <li>San Antonio now has 4 destinations (Corpus Christi, Houston, Austin, Laredo)</li>
-      <li>Houston now has 3 destinations (Galveston, San Antonio, Dallas)</li>
-      <li>Laredo and Dallas are dead ends — no onward connections</li>
-      <li>Track visited cities and hazards encountered in lists</li>
-      <li>Save/load must preserve both tracking lists using a separator</li>
+      <li>Your program <strong>MUST</strong> use parallel lists (<code>destinations</code>, <code>distances</code>, <code>notes</code>) for each city</li>
+      <li>Your program <strong>MUST</strong> use <code>[choice - 1]</code> indexing to look up destinations and distances</li>
+      <li>Your program <strong>MUST</strong> use <code>.append()</code> to build <code>visited_cities</code> and <code>hazards_list</code></li>
+      <li>Your library <strong>MUST</strong> contain <code>save_game()</code>, <code>load_game()</code>, <code>display_destinations()</code>, <code>get_destination()</code>, <code>get_redirect()</code>, and <code>display_numbered_list()</code></li>
+      <li>Your saved file <strong>MUST</strong> use the <code>---LISTS_END---</code> marker to separate <code>visited_cities</code> from <code>hazards_list</code></li>
+      <li>Your <code>function_library.py</code> destination helpers <strong>MUST</strong> accept the parallel lists as parameters (no module-level globals from the lab file)</li>
     </ul>
+    <div class="lc-h3 lc-h3--yellow">Required Data Files</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Format</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr><td><code>function_library.py</code></td><td>Your reusable function module. Carries forward from Lab 3.1 with significant growth this week: <code>save_game()</code> and <code>load_game()</code> migrate here from <code>lab-3-1.py</code>, then get extended; four new destination/display helpers are added.</td><td><a href="data/function_library.py" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; function_library.py</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Named Constants</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table lc-named-constants__table">
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>SAT_TO_CORPUS</code></td>
+        <td>Distance SA to Corpus Christi (150 miles) &amp;mdash; &lt;strong&gt;still used&lt;/strong&gt; inside the parallel lists</td>
+      </tr>
+      <tr>
+        <td><code>SAT_TO_HOUSTON</code></td>
+        <td>Distance SA to Houston (200 miles) &amp;mdash; used inside the parallel lists</td>
+      </tr>
+      <tr>
+        <td><code>SAT_TO_AUSTIN</code></td>
+        <td>Distance SA to Austin (80 miles) &amp;mdash; used inside the parallel lists</td>
+      </tr>
+      <tr>
+        <td><code>HOU_TO_GALVESTON</code></td>
+        <td>Distance Houston to Galveston (50 miles) &amp;mdash; used inside the parallel lists</td>
+      </tr>
+      <tr>
+        <td><code>HOU_TO_SAN_ANTONIO</code></td>
+        <td>Distance Houston to SA (200 miles) &amp;mdash; used inside the parallel lists</td>
+      </tr>
+      <tr>
+        <td><code>MILES_MULTIPLIER</code></td>
+        <td>Multiplier for D20 rolls (10)</td>
+      </tr>
+      <tr>
+        <td><code>HAZARD_CHANCE</code></td>
+        <td>Percentage chance of a hazard per turn (30)</td>
+      </tr>
+      <tr>
+        <td><code>SA_DESTINATIONS, SA_DISTANCES, SA_NOTES</code></td>
+        <td>&lt;strong&gt;NEW&lt;/strong&gt; &amp;mdash; parallel lists for San Antonio (three destinations)</td>
+      </tr>
+      <tr>
+        <td><code>HOU_DESTINATIONS, HOU_DISTANCES, HOU_NOTES</code></td>
+        <td>&lt;strong&gt;NEW&lt;/strong&gt; &amp;mdash; parallel lists for Houston (two destinations)</td>
+      </tr>
+      <tr>
+        <td><code>AUS_DESTINATIONS, AUS_DISTANCES, AUS_NOTES</code></td>
+        <td>&lt;strong&gt;NEW&lt;/strong&gt; &amp;mdash; parallel lists for Austin (one destination)</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <div class="lc-card lc-card--orange">
 
   <div class="lc-topper">
     <div class="lc-topper-title">Time Guide</div>
-    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 60–75 Minutes</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 120–150 Minutes</div>
   </div>
 
   <div class="lc-panel">
@@ -94,54 +163,61 @@
         </thead>
         <tbody>
       <tr>
-        <td><strong>CP1: Parallel Lists</strong></td>
+        <td><strong>CP1: Cleanup</strong></td>
         <td>10 min</td>
-        <td>Create constant lists for destinations/distances/notes</td>
+        <td>Copy lab-3-1.py to lab-3-2.py and confirm carryover</td>
       </tr>
       <tr>
-        <td><strong>CP2: display_destinations()</strong></td>
+        <td><strong>CP2: Promote to Library</strong></td>
         <td>15 min</td>
-        <td>Build function to loop through and display menu</td>
+        <td>Move save_game/load_game from lab-3-1.py to function_library.py</td>
       </tr>
       <tr>
-        <td><strong>CP3: get_destination()</strong></td>
+        <td><strong>CP3: Build the SA Parallel Lists</strong></td>
         <td>10 min</td>
-        <td>Replace if/elif with [choice - 1] indexing</td>
+        <td>Replace SA if/elif with three parallel lists</td>
       </tr>
       <tr>
-        <td><strong>CP4: Tracking &amp; Save/Load</strong></td>
+        <td><strong>CP4: display_destinations()</strong></td>
+        <td>15 min</td>
+        <td>Build the library&#x27;s universal menu printer</td>
+      </tr>
+      <tr>
+        <td><strong>CP5: get_destination() and get_redirect()</strong></td>
         <td>20 min</td>
-        <td>Add visited_cities, hazards_list, enhance save/load</td>
+        <td>Build the library&#x27;s destination accessor and tails-redirect</td>
       </tr>
       <tr>
-        <td><strong>CP5: Trip Report</strong></td>
+        <td><strong>CP6: Extend to Houston and Austin</strong></td>
+        <td>15 min</td>
+        <td>Add parallel lists for the other two cities, add get_city_data() dispatch</td>
+      </tr>
+      <tr>
+        <td><strong>CP7: Tracking Lists</strong></td>
+        <td>15 min</td>
+        <td>Add visited_cities and hazards_list, append on travel and hazards</td>
+      </tr>
+      <tr>
+        <td><strong>CP8: Extend save/load</strong></td>
+        <td>20 min</td>
+        <td>Library save_game and load_game grow to persist the two lists</td>
+      </tr>
+      <tr>
+        <td><strong>CP9: display_numbered_list and Trip Summary</strong></td>
         <td>10 min</td>
-        <td>Display route and hazards from lists</td>
+        <td>Add the display helper to the library, use it in the Trip Summary</td>
+      </tr>
+      <tr>
+        <td><strong>Final Check &amp; Submit</strong></td>
+        <td>10 min</td>
+        <td>Run end-to-end test, verify expected output, submit to CodeGrade</td>
       </tr>
       <tr class="lc-table__total">
         <td colspan="2"><strong>Total Estimated Time</strong></td>
-        <td><strong>60–75 Minutes</strong></td>
+        <td><strong>120–150 Minutes</strong></td>
       </tr>
         </tbody>
       </table>
-    </div>
-    <div class="lc-callout lc-callout--tip">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
-                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="19" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Strategy</div>
-        <div class="lc-callout__body">
-          <p>Lists are powerful but easy to mess up. Test after each checkpoint! Make sure your menus display correctly before moving on. Verify indexing works with actual gameplay. Don&#x27;t save until you&#x27;re sure the tracking lists are being built correctly.</p>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -151,61 +227,84 @@
     <div class="lc-sub-banner">Program Architecture</div>
   </div>
   <div class="lc-panel">
-    <p class="lc-arch-intro">Here&#x27;s how your finished program fits together. [NEW] = brand new code. [REPLACED] = old code swapped for something better.</p>
+    <p class="lc-arch-intro">Here&#x27;s how your finished program fits together this week. The big move is splitting your code across &lt;em&gt;two&lt;/em&gt; files: lab-specific game flow stays in &lt;code&gt;lab-3-2.py&lt;/code&gt;; reusable mechanics (save/load, destination helpers, display helpers) move into &lt;code&gt;function_library.py&lt;/code&gt;. The &lt;strong&gt;[NEW]&lt;/strong&gt;, &lt;strong&gt;[MOVED]&lt;/strong&gt;, &lt;strong&gt;[REPLACED]&lt;/strong&gt;, and &lt;strong&gt;[EXTENDED]&lt;/strong&gt; tags show what changes and at which checkpoint.</p>
     <div class="lc-arch">
-      <pre># ---- CONSTANTS ----
-SA_DESTINATIONS = [&#x27;Corpus Christi&#x27;, &#x27;Houston&#x27;, &#x27;Austin&#x27;, &#x27;Laredo&#x27;]  <span class="lc-arch-new">[NEW]</span>
-SA_DISTANCES    = [150, 200, 80, 160]                               <span class="lc-arch-new">[NEW]</span>
-SA_NOTES        = [&#x27;BEACH!&#x27;, &#x27;Gateway East&#x27;, ...]                    <span class="lc-arch-new">[NEW]</span>
-(same pattern for HOUSTON_ and AUSTIN_ lists)
+      <pre># ---- IN function_library.py ----
+<span class="lc-arch-fn">flip_coin()</span>, <span class="lc-arch-fn">roll_d20()</span>, <span class="lc-arch-fn">check_percentage()</span>     (keep from 2.2)
+<span class="lc-arch-fn">get_valid_int()</span>, <span class="lc-arch-fn">get_yes_no()</span>                   (keep from 2.3)
+<span class="lc-arch-fn">save_game(...)</span>                                  [MOVED-CP2, EXTENDED-CP8]
+<span class="lc-arch-fn">load_game()</span>                                     [MOVED-CP2, EXTENDED-CP8]
+SAVE_FILE = &#x27;savegame.txt&#x27;                      [MOVED-CP2]
+<span class="lc-arch-fn">display_destinations(destinations, distances, notes)</span>   <span class="lc-arch-new">[NEW-CP4]</span>
+<span class="lc-arch-fn">get_destination(destinations, distances, choice)</span>       <span class="lc-arch-new">[NEW-CP5]</span>
+<span class="lc-arch-fn">get_redirect(destinations, distances, avoid)</span>           <span class="lc-arch-new">[NEW-CP5]</span>
+<span class="lc-arch-fn">display_numbered_list(items, title)</span>                    <span class="lc-arch-new">[NEW-CP9]</span>
 
-# ---- FUNCTION LIBRARY (function_library.py) ----
-All Lab 2 functions still here, plus:
-<span class="lc-arch-fn">save_list_to_file()</span>    <span class="lc-arch-new">[NEW]</span>
-<span class="lc-arch-fn">load_list_from_file()</span>   <span class="lc-arch-new">[NEW]</span>
-<span class="lc-arch-fn">file_exists()</span>          <span class="lc-arch-new">[NEW]</span>
+# ---- IN lab-3-2.py ----
 
-# ---- HELPER FUNCTIONS ----
-<span class="lc-arch-fn">display_destinations(city)</span>    <span class="lc-arch-replaced">[REPLACED old print blocks]</span>
-<span class="lc-arch-fn">get_destination(city, choice)</span> <span class="lc-arch-replaced">[REPLACED old if/elif chains]</span>
-<span class="lc-arch-fn">get_redirect(city, avoid)</span>     <span class="lc-arch-new">[NEW — handles detours]</span>
+# ---- DISTANCE CONSTANTS ----
+SAT_TO_CORPUS = 150, SAT_TO_HOUSTON = 200, ...   (keep from 2.3)
+MILES_MULTIPLIER = 10, HAZARD_CHANCE = 30        (keep from 2.3)
 
-# ---- TRACKING LISTS ----
-visited_cities = [&#x27;San Antonio&#x27;]   <span class="lc-arch-new">[NEW]</span>
-hazards_list = []                   <span class="lc-arch-new">[NEW]</span>
+# ---- PARALLEL LISTS ----
+SA_DESTINATIONS = [&#x27;Corpus Christi&#x27;, &#x27;Houston&#x27;, &#x27;Austin&#x27;]  <span class="lc-arch-new">[NEW-CP3]</span>
+SA_DISTANCES    = [SAT_TO_CORPUS, SAT_TO_HOUSTON, SAT_TO_AUSTIN]  <span class="lc-arch-new">[NEW-CP3]</span>
+SA_NOTES        = [&#x27;BEACH!&#x27;, &#x27;Gateway East&#x27;, &#x27;Keep it Weird&#x27;]  <span class="lc-arch-new">[NEW-CP3]</span>
+HOU_*, AUS_*  (same shape, three lists each)     <span class="lc-arch-new">[NEW-CP6]</span>
 
-# ---- MAIN MENU (same as 3.1) ----
-(Load now restores tracking lists too)
+def <span class="lc-arch-fn">get_city_data(city)</span>:                         <span class="lc-arch-new">[NEW-CP6]</span>
+│── if city == &#x27;San Antonio&#x27;: return SA_*
+│── elif city == &#x27;Houston&#x27;:   return HOU_*
+│── else (Austin):           return AUS_*
 
-<span class="lc-arch-game-loop">GAME LOOP</span>:
+# ---- MAIN MENU LOOP ----   (keep from 3.1)
+while in_program:
+│── New / Load / Quit menu
+│── if Load: <span class="lc-arch-fn">function_library.load_game()</span> returns 11-tuple   [EXTENDED-CP8]
+│── if New: initialize session accumulators
 │
-│── <span class="lc-arch-fn">display_destinations(current_city)</span>     <span class="lc-arch-replaced">[REPLACED]</span>
-│── Get validated choice
-│── <span class="lc-arch-fn">get_destination(current_city, choice)</span>  <span class="lc-arch-replaced">[REPLACED]</span>
-│── Destination Gate (coin flip)
+│── # ---- PLAY-AGAIN LOOP ----   (keep from 3.1)
+│   while play_again:
+│   │── Reset per-game state (unless resumed)
+│   │── visited_cities = [&#x27;San Antonio&#x27;]      <span class="lc-arch-new">[NEW-CP7]</span>
+│   │── hazards_list = []                     <span class="lc-arch-new">[NEW-CP7]</span>
+│   │
+│   │── # ---- IN-<span class="lc-arch-game-loop">GAME LOOP</span> ----   (keep from 3.1, with refactors)
+│   │   while playing:
+│   │   │── destinations, distances, notes = <span class="lc-arch-fn">get_city_data(current_city)</span>  <span class="lc-arch-replaced">[REPLACED-CP6]</span>
+│   │   │── num = <span class="lc-arch-fn">function_library.display_destinations(...)</span>   <span class="lc-arch-replaced">[REPLACED-CP4]</span>
+│   │   │── choice = <span class="lc-arch-fn">get_valid_int(...)</span>
+│   │   │── gate = <span class="lc-arch-fn">flip_coin()</span>
+│   │   │   if HEADS: dest, dist = <span class="lc-arch-fn">function_library.get_destination(...)</span>  <span class="lc-arch-replaced">[REPLACED-CP5]</span>
+│   │   │   if TAILS: dest, dist = <span class="lc-arch-fn">function_library.get_redirect(...)</span>     <span class="lc-arch-replaced">[REPLACED-CP5]</span>
+│   │   │── Travel loop with hazards
+│   │   │   on hazard: <span class="lc-arch-fn">hazards_list.append(hazard)</span>    <span class="lc-arch-new">[NEW-CP7]</span>
+│   │   │── After leg: current_city = destination
+│   │   │   <span class="lc-arch-fn">visited_cities.append(current_city)</span>        <span class="lc-arch-new">[NEW-CP7]</span>
+│   │   │── If beach: playing = False
+│   │   │── If Houston/SA: 3-way Continue/Save/Quit-no-save
+│   │   │   on Save: <span class="lc-arch-fn">function_library.save_game(..., visited_cities, hazards_list)</span>  [EXTENDED-CP8]
+│   │
+│   │── After in-game loop:
+│   │   ├── if saved_and_quit: skip everything, back to main menu
+│   │   ├── Print TRIP SUMMARY
+│   │   ├── <span class="lc-arch-fn">function_library.display_numbered_list(visited_cities, &#x27;YOUR ROUTE&#x27;)</span>  <span class="lc-arch-new">[NEW-CP9]</span>
+│   │   ├── <span class="lc-arch-fn">function_library.display_numbered_list(hazards_list, &#x27;HAZARDS ENCOUNTERED&#x27;)</span>  <span class="lc-arch-new">[NEW-CP9]</span>
+│   │   ├── Update session accumulators
+│   │   └── play_again = <span class="lc-arch-fn">get_yes_no(&#x27;Play again? (y/n)</span>: &#x27;)
+│   │
+│   └── After play-again loop:
+│       └── if not saved_and_quit: print SESSION STATISTICS
 │
-│   <span class="lc-arch-travel-loop">TRAVEL LOOP</span>:
-│   │── Roll D20, move miles
-│   │── Check for hazard
-│   │      If hazard: <span class="lc-arch-fn">hazards_encountered.append(name)</span>  <span class="lc-arch-new">[NEW]</span>
-│   │── Repeat until arrival
-│
-│── <span class="lc-arch-fn">visited_cities.append(destination)</span>     <span class="lc-arch-new">[NEW]</span>
-│── Update trip totals
-│── Check outcome / Save &amp; Quit option
-
-# ---- AFTER THE LOOP ----
-Enhanced trip report:
-  Route: San Antonio -&gt; Houston -&gt; Galveston   <span class="lc-arch-new">[NEW]</span>
-  Hazards encountered list                        <span class="lc-arch-new">[NEW]</span>
-&quot;Thanks for playing!&quot;</pre>
+└── Back to main menu loop
+</pre>
     </div>
   </div>
 </div>
 <div class="lc-card lc-card--green">
   <div class="lc-topper">
     <div class="lc-topper-title">Checkpoints</div>
-    <div class="lc-sub-banner">5 Checkpoints</div>
+    <div class="lc-sub-banner">9 Checkpoints</div>
   </div>
   <div class="lc-panel">
     <div class="lc-cp-row">
@@ -214,474 +313,22 @@ Enhanced trip report:
         <div class="lc-cp-badge__num">1</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Create Parallel Lists</div>
-        <div class="lc-sub-banner">Set up the destination, distance, and notes lists for each origin city.</div>
+        <div class="lc-cp-title">Cleanup</div>
       </div>
     </div>
     <div class="lc-cp-body">
-    <div class="lc-mentor">
-      <div class="lc-mentor__inner">
-        <div class="lc-mentor__avatar">
-          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
-        </div>
-        <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"This week you're replacing a LOT of ugly code with clean code. All those if/elif chains for destinations? Gone — replaced by lists. All those scattered print statements for menus? Gone — replaced by functions. The game loop itself barely changes. You're swapping out parts, not rebuilding the engine."</div>
-        </div>
-      </div>
-      <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Priya Venkatesh</div>
-        <div class="lc-mentor__role">Data Specialist, Bat City Collective</div>
-      </div>
-    </div>
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>Parallel lists — three lists where the same index across all three refers to related data. <code>SA_DESTINATIONS[0]</code> is 'Corpus Christi', <code>SA_DISTANCES[0]</code> is 150, <code>SA_NOTES[0]</code> is 'BEACH!'.</p>
+    <p>A clean starting point for Lab 3.2. You'll copy <code>lab-3-1.py</code> to <code>lab-3-2.py</code>, update the docstring, and confirm everything still runs before refactoring anything. <code>function_library.py</code> carries forward unchanged this checkpoint &mdash; you'll start growing it in CP2.</p>
     <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p>Parallel lists are your bridge to more sophisticated data structures. While we'll learn better approaches (dictionaries, objects), understanding how to keep data synchronized across multiple lists is a fundamental skill. Many real-world systems still use this pattern, and debugging parallel list issues is a rite of passage for every programmer.</p>
+    <p>Mixing 'fix the old code' with 'add new code' is the fastest way to break a working program. This week has a lot of refactoring; you can't tell whether a bug is in the refactor or in the copy unless you start from a known-good state. Confirm Lab 3.1 still works in its new filename before touching anything.</p>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>Copy your <code>lab-3-1.py</code> and rename it <code>lab-3-2.py</code></li>
-      <li>Update the docstring: "Lab 3.2: Save Your Progress"</li>
-      <li>Near the top (after imports, before functions), add a comment section: <code># PARALLEL LISTS</code></li>
-      <li>Create the San Antonio lists (4 destinations now!)</li>
-      <li>Create the Houston lists (3 destinations)</li>
-      <li>Create the Austin lists (2 destinations)</li>
+      <li><strong>Copy</strong> <code>lab-3-1.py</code> to a new file named <code>lab-3-2.py</code> in the same folder</li>
+      <li><strong>Do NOT copy</strong> <code>function_library.py</code> &mdash; it stays the same file, in the same place. You'll just edit it during CP2</li>
+      <li><strong>Update the docstring</strong> at the top of <code>lab-3-2.py</code>: change the title to <code>Lab 3.2: Lists to the Rescue</code>, update the description, and change the chapter list to <code>Chapter 7 Concepts:</code></li>
+      <li><strong>Run <code>lab-3-2.py</code></strong> exactly as-is. It should behave identically to Lab 3.1. Play one game, verify the trip summary appears, verify session stats run. If anything has changed, find and fix the copy problem before moving on</li>
     </ol>
-    <div class="lc-table-wrap">
-      <table class="lc-table">
-        <thead>
-          <tr>
-        <th>Constant Name</th>
-        <th>Values</th>
-          </tr>
-        </thead>
-        <tbody>
-      <tr>
-        <td>SA_DESTINATIONS</td>
-        <td>['Corpus Christi', 'Houston', 'Austin', 'Laredo']</td>
-      </tr>
-      <tr>
-        <td>SA_DISTANCES</td>
-        <td>[150, 200, 80, 160]</td>
-      </tr>
-      <tr>
-        <td>SA_NOTES</td>
-        <td>['BEACH!', 'Gateway East', 'Keep it Weird', 'Dead End']</td>
-      </tr>
-      <tr>
-        <td>HOU_DESTINATIONS</td>
-        <td>['Galveston', 'San Antonio', 'Dallas']</td>
-      </tr>
-      <tr>
-        <td>HOU_DISTANCES</td>
-        <td>[50, 200, 240]</td>
-      </tr>
-      <tr>
-        <td>HOU_NOTES</td>
-        <td>['BEACH!', 'Back West', 'Wrong Way']</td>
-      </tr>
-      <tr>
-        <td>AUS_DESTINATIONS</td>
-        <td>['San Antonio', 'Houston']</td>
-      </tr>
-      <tr>
-        <td>AUS_DISTANCES</td>
-        <td>[80, 165]</td>
-      </tr>
-      <tr>
-        <td>AUS_NOTES</td>
-        <td>['Back Home', 'Space City']</td>
-      </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="lc-callout lc-callout--bookex">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">BookEx Patterns</div>
-        <div class="lc-callout__body">
-          <ul>
-          <li>
-            <strong>Program 7-1</strong>
-            — <code>sales_list.py</code>
-            (Step 1)
-            — You created a list with initial values using sales = [0] * NUM_DAYS. Here you're doing something similar but with actual values: ['Corpus Christi', 'Houston', ...]
-          </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p><strong>Step 1:</strong> Add temporary test code at the bottom of your file to verify your lists:</p>
-    <div class="lc-code-block">
-      <pre><span class="sy-cm"># TEMPORARY TEST CODE - Delete before submitting</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;SA destinations:&#x27;</span><span class="sy-op">,</span> SA_DESTINATIONS<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;SA distances:&#x27;</span><span class="sy-op">,</span> SA_DISTANCES<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Index 1 test:&#x27;</span><span class="sy-op">,</span> SA_DESTINATIONS<span class="sy-op">[</span><span class="sy-num">1</span><span class="sy-op">]</span><span class="sy-op">,</span> <span class="sy-str">&#x27;-&#x27;</span><span class="sy-op">,</span> SA_DISTANCES<span class="sy-op">[</span><span class="sy-num">1</span><span class="sy-op">]</span><span class="sy-op">,</span> <span class="sy-str">&#x27;miles&#x27;</span><span class="sy-op">)</span></pre>
-    </div>
-    <p><strong>Step 2:</strong> Run your file and verify the output:</p>
-    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
-      <pre>SA destinations: [&#x27;Corpus Christi&#x27;, &#x27;Houston&#x27;, &#x27;Austin&#x27;, &#x27;Laredo&#x27;]
-SA distances: [150, 200, 80, 160]
-Index 1 test: Houston - 200 miles</pre>
-    </div>
-    <p><strong>Step 3:</strong> Verify these critical behaviors: <strong>Index alignment</strong> — Index 1 returns Houston (200 miles), not Corpus Christi. <strong>List lengths match</strong> — All three SA lists have 4 items. <strong>No typos</strong> — City names and distances are correct.</p>
-    <p><strong>Step 4:</strong> Delete the test code, then move on to Checkpoint 2.</p>
-    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap">
-      <table class="lc-table">
-        <thead>
-          <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
-          </tr>
-        </thead>
-        <tbody>
-      <tr>
-        <td>Lists have different lengths</td>
-        <td>Parallel lists MUST have same length — index 3 needs to exist in all three!</td>
-      </tr>
-      <tr>
-        <td>Data out of sync across lists</td>
-        <td>If index 1 is Houston in destinations, it must be 200 in distances</td>
-      </tr>
-      <tr>
-        <td>Using lowercase names for constants</td>
-        <td>Constants should be SA_DESTINATIONS not sa_destinations</td>
-      </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
-    <ol>
-      <li>9 constant lists defined at module level (3 cities — 3 lists each)</li>
-      <li>All lists use UPPERCASE_NAMES (they're constants)</li>
-      <li>Index 0 in all three SA lists refers to Corpus Christi data</li>
-    </ol>
-    </div>
-    <hr class="lc-cp-sep">
-    <div class="lc-cp-row">
-      <div class="lc-cp-badge">
-        <div class="lc-cp-badge__word">Checkpoint</div>
-        <div class="lc-cp-badge__num">2</div>
-      </div>
-      <div class="lc-cp-content">
-        <div class="lc-cp-title">Build display_destinations()</div>
-        <div class="lc-sub-banner">Create a function that loops through your parallel lists to display the menu.</div>
-      </div>
-    </div>
-    <div class="lc-cp-body">
-    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>A function called <code>display_destinations(city)</code> that takes a city name, loops through the appropriate lists, prints a numbered menu, and returns the <strong>number of choices</strong>.</p>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li>Define <code>display_destinations(city)</code> with one parameter</li>
-      <li>Use if/elif to select which lists to use based on city</li>
-      <li>Add an else case that prints "No destinations available" and returns 0</li>
-      <li>Print <code>'Where would you like to go?'</code></li>
-      <li>Loop with <code>for i in range(len(destinations)):</code></li>
-      <li>Inside loop: Build a line with menu number, destination, distance, and note</li>
-      <li>Return <code>len(destinations)</code></li>
-    </ol>
-    <div class="lc-callout lc-callout--bookex">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">BookEx Patterns</div>
-        <div class="lc-callout__body">
-          <ul>
-          <li>
-            <strong>Program 7-1</strong>
-            — <code>sales_list.py</code>
-            (Step 1)
-            — You used for index in range(len(sales)) to loop through indices. That's exactly what you need here — the index lets you access the same position across all three parallel lists!
-          </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap">
-      <table class="lc-table">
-        <thead>
-          <tr>
-        <th>Mistake</th>
-        <th>Why It Fails</th>
-          </tr>
-        </thead>
-        <tbody>
-      <tr>
-        <td>Printing <code>i</code> instead of <code>i + 1</code></td>
-        <td>Users see 0, 1, 2 but expect 1, 2, 3</td>
-      </tr>
-      <tr>
-        <td>Forgetting to return <code>len()</code></td>
-        <td>Caller can't set valid range for get_valid_int()</td>
-      </tr>
-      <tr>
-        <td>Multiple print() calls per item</td>
-        <td>Messy output, harder to format consistently</td>
-      </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p><strong>Step 1:</strong> Add temporary test code at the bottom of your file:</p>
-    <div class="lc-code-block">
-      <pre><span class="sy-cm"># TEMPORARY TEST CODE - Delete before submitting</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Testing San Antonio:&#x27;</span><span class="sy-op">)</span>
-count <span class="sy-op">=</span> display_destinations<span class="sy-op">(</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Returned count: <span class="sy-op">{</span>count<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Testing Houston:&#x27;</span><span class="sy-op">)</span>
-count <span class="sy-op">=</span> display_destinations<span class="sy-op">(</span><span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Returned count: <span class="sy-op">{</span>count<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
-    </div>
-    <p><strong>Step 2:</strong> Run your file and verify the output:</p>
-    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
-      <pre>Testing San Antonio:
-  1. Corpus Christi - 150 miles (BEACH!)
-  2. Houston - 200 miles (Gateway East)
-  3. Austin - 80 miles (Keep it Weird)
-  4. Laredo - 160 miles (Dead End)
-Returned count: 4
-
-Testing Houston:
-  1. Galveston - 50 miles (BEACH!)
-  2. San Antonio - 200 miles (Back West)
-  3. Dallas - 240 miles (Wrong Way)
-Returned count: 3</pre>
-    </div>
-    <p><strong>Step 3:</strong> Verify these critical behaviors: <strong>Numbers start at 1</strong>, not 0. <strong>San Antonio returns 4</strong>, Houston returns 3, Austin returns 2. <strong>Notes appear in parentheses</strong> after each item.</p>
-    <p><strong>Step 4:</strong> Delete the test code, then move on to Checkpoint 3.</p>
-    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
-    <ol>
-      <li><code>display_destinations(city)</code> that prints a numbered menu</li>
-      <li>Returns the number of choices (4 for San Antonio, 3 for Houston, 2 for Austin)</li>
-      <li>Handles unknown cities gracefully (prints message, returns 0)</li>
-    </ol>
-    </div>
-    <hr class="lc-cp-sep">
-    <div class="lc-cp-row">
-      <div class="lc-cp-badge">
-        <div class="lc-cp-badge__word">Checkpoint</div>
-        <div class="lc-cp-badge__num">3</div>
-      </div>
-      <div class="lc-cp-content">
-        <div class="lc-cp-title">Build get_destination() and get_redirect()</div>
-        <div class="lc-sub-banner">Replace your if/elif choice handlers with elegant list indexing.</div>
-      </div>
-    </div>
-    <div class="lc-cp-body">
-    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>Two functions: <code>get_destination(city, choice)</code> returns the destination name and distance using <code>[choice - 1]</code> indexing. <code>get_redirect(city, avoid)</code> picks a random different destination for detours.</p>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li>For <code>get_destination(city, choice)</code>: Define function with two parameters: city and choice</li>
-      <li>Calculate index: <code>index = choice - 1</code></li>
-      <li>Use if/elif to determine which city's lists to access</li>
-      <li>Return a tuple: <code>return SA_DESTINATIONS[index], SA_DISTANCES[index]</code></li>
-      <li>Add else case returning <code>'San Antonio', 100</code></li>
-      <li>For <code>get_redirect(city, avoid)</code>: Define function with two parameters: city and avoid</li>
-      <li>Use if/elif to select city lists, then <strong>make copies</strong>: <code>destinations = SA_DESTINATIONS.copy()</code></li>
-      <li>Check if avoid is in the list: <code>if avoid in destinations:</code></li>
-      <li>Find its position: <code>idx = destinations.index(avoid)</code></li>
-      <li>Remove from both copies: <code>destinations.remove(avoid)</code> and <code>distances.pop(idx)</code></li>
-      <li>Pick random from remaining using <code>random.randint(0, len(destinations) - 1)</code></li>
-    </ol>
-    <div class="lc-callout lc-callout--bookex">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">BookEx Patterns</div>
-        <div class="lc-callout__body">
-          <ul>
-          <li>
-            <strong>Program 7-2</strong>
-            — <code>in_list.py</code>
-            (Step 1)
-            — You used the in operator to check if a product number existed in a list. Same pattern here: if avoid in destinations:
-          </li>
-          <li>
-            <strong>Program 7-4</strong>
-            — <code>index_list.py</code>
-            (Step 2)
-            — You used index() to find an item's position and remove() to delete it. For parallel lists, you also need pop(idx) to remove by position.
-          </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="lc-callout lc-callout--pitfall">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 4 L27 25 L3 25 Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="15" y1="12" x2="15" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="15" cy="22.5" r="1.5" fill="#000"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">CRITICAL: Why .copy() is Essential</div>
-        <div class="lc-callout__body">
-        <p>If you write <code>destinations = SA_DESTINATIONS</code>, both variables point to the same list. When you remove an item, you delete it from your original constant! Always use <code>.copy()</code> when you need to modify a list without affecting the original.</p>
-        </div>
-      </div>
-    </div>
-    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p><strong>Step 1:</strong> Add temporary test code at the bottom of your file:</p>
-    <div class="lc-code-block">
-      <pre><span class="sy-cm"># TEMPORARY TEST CODE - Delete before submitting</span>
-dest<span class="sy-op">,</span> dist <span class="sy-op">=</span> get_destination<span class="sy-op">(</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">,</span> <span class="sy-num">2</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Choice 2 from SA: <span class="sy-op">{</span>dest<span class="sy-op">}</span> - <span class="sy-op">{</span>dist<span class="sy-op">}</span> miles&#x27;<span class="sy-op">)</span>
-
-redirect <span class="sy-op">=</span> get_redirect<span class="sy-op">(</span><span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;Houston&#x27;</span><span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Redirect (avoiding Houston): <span class="sy-op">{</span>redirect<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-
-<span class="sy-cm"># Verify .copy() worked - original should still have Houston</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Original SA_DESTINATIONS:&#x27;</span><span class="sy-op">,</span> SA_DESTINATIONS<span class="sy-op">)</span></pre>
-    </div>
-    <p><strong>Step 2:</strong> Run your file and verify the output:</p>
-    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
-      <pre>Choice 2 from SA: Houston - 200 miles
-Redirect (avoiding Houston): Corpus Christi   (or Austin or Laredo - random!)
-Original SA_DESTINATIONS: [&#x27;Corpus Christi&#x27;, &#x27;Houston&#x27;, &#x27;Austin&#x27;, &#x27;Laredo&#x27;]</pre>
-    </div>
-    <p><strong>Step 3:</strong> Verify these critical behaviors: <strong>Choice 2 returns index 1 (Houston)</strong>, not index 2 (Austin). <strong>Redirect never returns Houston</strong> (the city we're avoiding). <strong>Original list unchanged</strong> — still has all 4 cities including Houston.</p>
-    <p><strong>Step 4:</strong> Delete the test code, then move on to Checkpoint 4.</p>
-    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
-    <div class="lc-table-wrap">
-      <table class="lc-table">
-        <thead>
-          <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
-          </tr>
-        </thead>
-        <tbody>
-      <tr>
-        <td>Using choice as index directly</td>
-        <td>User enters 1 for first item, but index 0 is first — subtract 1!</td>
-      </tr>
-      <tr>
-        <td>Modifying original list in get_redirect()</td>
-        <td>Use .copy() to create a copy before removing the avoided city</td>
-      </tr>
-      <tr>
-        <td>Forgetting to return BOTH destination and distance</td>
-        <td>Function returns a tuple — caller needs both values</td>
-      </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="lc-mentor">
-      <div class="lc-mentor__inner">
-        <div class="lc-mentor__avatar">
-          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
-        </div>
-        <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"Dude, when this clicked for me, I literally said 'OHHHH' out loud. The user picks choice 2, you subtract 1 to get index 1, and boom — you've got Houston and 200 miles without a single if statement. Compare your code to last week's version. That's real progress. You're not the same coder you were seven days ago."</div>
-        </div>
-      </div>
-      <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Tyler Nguyen</div>
-        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
-      </div>
-    </div>
-    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
-    <ol>
-      <li><code>get_destination()</code> returns (destination, distance) tuple using list indexing</li>
-      <li><code>get_redirect()</code> returns a random different destination</li>
-      <li>Update your main game loop to call these functions instead of if/elif chains</li>
-    </ol>
-    </div>
-    <hr class="lc-cp-sep">
-    <div class="lc-cp-row">
-      <div class="lc-cp-badge">
-        <div class="lc-cp-badge__word">Checkpoint</div>
-        <div class="lc-cp-badge__num">4</div>
-      </div>
-      <div class="lc-cp-content">
-        <div class="lc-cp-title">Add Tracking Lists &amp; Enhanced Save/Load</div>
-        <div class="lc-sub-banner">Track your route and hazards in lists, then update save/load to preserve them.</div>
-      </div>
-    </div>
-    <div class="lc-cp-body">
-    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>Two tracking lists (<code>visited_cities</code> and <code>hazards_list</code>) that grow as you play. Updated <code>save_game()</code> and <code>load_game()</code> that preserve these lists using a <code>---HAZARDS---</code> separator.</p>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li><strong>Part A — Initialize Tracking Lists.</strong> In new game setup: <code>visited_cities = ['San Antonio']</code> (start with home city). Also add: <code>hazards_list = []</code> (empty until hazards happen). After arriving at destination: <code>visited_cities.append(destination)</code>. When hazard occurs: <code>hazards_list.append(hazard)</code> (where hazard is the message string).</li>
-      <li><strong>Part B — Update save_game().</strong> Add two new parameters: <code>visited_cities</code> and <code>hazards_list</code>. After writing basic stats, loop through <code>visited_cities</code> and write each city. Write the separator: <code>outfile.write('---HAZARDS---\n')</code>. Loop through <code>hazards_list</code> and write each hazard.</li>
-      <li><strong>Part C — Update load_game().</strong> After reading basic stats, create empty <code>visited_cities = []</code>. Use a while loop to read lines until you hit <code>'---HAZARDS---'</code>. Append each city to <code>visited_cities</code>. Create empty <code>hazards_list = []</code>. Continue reading and appending until end of file. Return tuple now includes both lists.</li>
-      <li><strong>Part D — Add File Functions to function_library.py.</strong> These three utility functions live in <code>function_library.py</code>, not in your main game file. Add them under a new <code># FILE FUNCTIONS</code> comment block after your existing validation functions.</li>
-    </ol>
-    <div class="lc-callout lc-callout--bookex">
-      <div class="lc-callout__icon">
-        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
-              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
-        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
-    </svg>
-      </div>
-      <div class="lc-callout__bubble">
-        <div class="lc-callout__title">BookEx Patterns</div>
-        <div class="lc-callout__body">
-          <ul>
-          <li>
-            <strong>Program 7-3</strong>
-            — <code>list_append.py</code>
-            (Step 1)
-            — You built a list dynamically with name_list = [] then name_list.append(name). Same pattern here — start empty, append as events happen!
-          </li>
-          <li>
-            <strong>Program 7-16</strong>
-            — <code>write_number_list.py</code>
-            (Step 2)
-            — Writing a list to a file one item per line — exactly what save_list_to_file() does.
-          </li>
-          <li>
-            <strong>Program 7-17</strong>
-            — <code>read_number_list.py</code>
-            (Step 3)
-            — Reading a file back into a list — that's load_list_from_file(). The readline() while loop pattern is identical to your load_game() from Lab 3.1.
-          </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <p><strong>For function_library.py — save_list_to_file(filename, data_list):</strong> Define the function with two parameters: filename and data_list. Open the file for writing: <code>with open(filename, 'w') as outfile:</code>. Loop through data_list and write each item: <code>outfile.write(str(item) + '\n')</code>. No return value needed.</p>
-    <p><strong>For function_library.py — load_list_from_file(filename):</strong> Define the function with one parameter: filename. Create an empty result list: <code>result = []</code>. Open the file inside a try block: <code>with open(filename, 'r') as infile:</code>. Use a readline() while loop — same pattern as your load_game(). Append each line stripped of <code>\n</code> to result. In the except FileNotFoundError block: leave result as empty list. Return result.</p>
-    <p><strong>For function_library.py — file_exists(filename):</strong> Define the function with one parameter: filename. In a try block: attempt to open the file for reading. If it opens successfully: return True. In the except FileNotFoundError block: return False.</p>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--info">
       <div class="lc-callout__icon">
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -691,64 +338,345 @@ Original SA_DESTINATIONS: [&#x27;Corpus Christi&#x27;, &#x27;Houston&#x27;, &#x2
     </svg>
       </div>
       <div class="lc-callout__bubble">
-        <div class="lc-callout__title">Why the ---HAZARDS--- marker?</div>
         <div class="lc-callout__body">
-        <p>The <code>---HAZARDS---</code> marker separates the variable-length visited_cities list from the variable-length hazards_list. Since both lists can be any length, you need a clear signal for where one ends and the other begins.</p>
+        <p>No new BookEx patterns yet &mdash; this checkpoint is pure cleanup. CP2 introduces the refactoring lesson; CP3 introduces Program 7-1 (list with initial values).</p>
         </div>
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p><strong>Step 1:</strong> Play a short game, save mid-way, then check your save file — open <code>savegame.txt</code> in a text editor and verify contents.</p>
-    <p><strong>Step 2:</strong> Your save file should look like this:</p>
-    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
-      <pre>TestPlayer
-Houston
-280
-3
-2
-1
-San Antonio
-Austin
-Houston
----HAZARDS---
-Speed trap!
-Armadillo crossing!</pre>
-    </div>
-    <p><strong>Step 3:</strong> Quit and reload — verify these behaviors: <strong>Route restored</strong> — visited_cities has San Antonio, Austin, Houston. <strong>Hazards restored</strong> — hazards_list has the 2 hazard messages. <strong>No duplicates</strong> — Separator line itself is NOT in either list.</p>
-    <p><strong>Step 4:</strong> Once save/load works correctly, move on to Checkpoint 5.</p>
+    <p>Run <code>lab-3-2.py</code> end-to-end. Play one full game to the beach. Verify the main menu appears, the trip summary prints with status BEACH WINNER!, and session statistics appear before you return to the main menu. Choose <code>3</code> to quit.</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
     <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Including separator in restored lists</td>
-        <td>The separator is a marker, not data — skip it during load</td>
+        <td>Editing <code>lab-3-1.py</code> directly</td>
+        <td>Always preserve your previous submission. Copy first, then edit the copy.</td>
       </tr>
       <tr>
-        <td>Forgetting .strip() when reading lines</td>
-        <td>Newlines in data cause comparison failures and display bugs</td>
+        <td>Touching <code>function_library.py</code> in this CP</td>
+        <td>Library changes happen in CP2. This CP only renames a file and updates a docstring.</td>
       </tr>
       <tr>
-        <td>Not initializing lists before appending</td>
-        <td>Empty lists must exist before you can append to them</td>
+        <td>Different output between 3.1 and 3.2 starting state</td>
+        <td>If your menus look different, your trip summary text differs, or session stats are missing, your copy is incomplete. Diff the two files until they match.</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li><code>visited_cities</code> grows each time you arrive somewhere</li>
-      <li><code>hazards_list</code> grows each time a hazard occurs</li>
-      <li>Save/load preserves both lists using the separator marker</li>
-      <li>Three new functions added to <code>function_library.py</code>: <code>save_list_to_file()</code>, <code>load_list_from_file()</code>, <code>file_exists()</code></li>
-      <li>Test: Save mid-game, reload, verify lists are restored correctly</li>
+      <li>A file named <code>lab-3-2.py</code> with an updated docstring</li>
+      <li><code>function_library.py</code> unchanged from Lab 3.1</li>
+      <li>Running <code>lab-3-2.py</code> plays a complete game identical to Lab 3.1</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Promote save_game and load_game to the Library</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Last week your <code>save_game</code> and <code>load_game</code> functions did exactly one job in exactly one file. This week we are going to use them from a different file, and next week we will probably use them again. That moves them across an invisible line: from 'helper for this lab' to 'piece of your permanent toolkit.' When code crosses that line, it gets promoted. Not just copied &mdash; promoted. We move it, we remove it from where it used to live, and we update every place that called it. That last part is the refactoring lesson."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Priya Venkatesh</div>
+        <div class="lc-mentor__role">Project Manager, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>A clean refactoring of two functions out of <code>lab-3-1.py</code> and into <code>function_library.py</code>, along with the constant they depend on. You'll touch four things: the function definitions, the constant declaration, the call sites, and any leftover references.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Moving a function is more than copy-paste. Every function has dependencies &mdash; constants it reads, modules it imports, functions it calls. When the function moves, those dependencies have to travel with it OR be passed in as parameters. <code>save_game()</code> depends on <code>SAVE_FILE</code>; they move together. Then every call site (in <code>lab-3-2.py</code>) has to be updated to use the new path: <code>function_library.save_game(...)</code> instead of just <code>save_game(...)</code>. Miss one call site and you get <code>NameError</code> at runtime. This is the refactoring practice you'll do hundreds of times in your career.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li><strong>Open both files</strong>: <code>lab-3-1.py</code> (which you copied as <code>lab-3-2.py</code> in CP1) and <code>function_library.py</code> side by side</li>
+      <li><strong>In <code>lab-3-2.py</code></strong>, locate the <code>SAVE_FILE = 'savegame.txt'</code> line, the entire <code>def save_game(...):</code> function block (including its docstring), and the entire <code>def load_game():</code> function block</li>
+      <li><strong>In <code>function_library.py</code></strong>, find a good spot for them &mdash; right after the existing validation functions is fine. Add a header comment: <code># SAVE/LOAD FUNCTIONS (Promoted from lab-3-1.py in Lab 3-2)</code></li>
+      <li><strong>Move <code>SAVE_FILE</code></strong> to <code>function_library.py</code> (place it near the top of the file with the other constants), then delete it from <code>lab-3-2.py</code></li>
+      <li><strong>Move the <code>save_game()</code> function</strong>: cut the entire definition (including docstring) from <code>lab-3-2.py</code> and paste it into <code>function_library.py</code> under your new header comment</li>
+      <li><strong>Move the <code>load_game()</code> function</strong> the same way</li>
+      <li><strong>Update the call sites in <code>lab-3-2.py</code></strong>: search for <code>save_game(</code> and prefix each call with <code>function_library.</code> so it becomes <code>function_library.save_game(</code>. Do the same for <code>load_game()</code></li>
+      <li><strong>Check for leftover references</strong>: search <code>lab-3-2.py</code> for any remaining <code>SAVE_FILE</code> &mdash; that constant lives only in the library now</li>
+      <li><strong>Run <code>lab-3-2.py</code></strong>. Play through one game, save mid-trip in Houston, quit, restart, load. The behavior should be identical to Lab 3.1 from the user's perspective. The difference is invisible from outside &mdash; that's how you know the refactor succeeded</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+        <p><strong>Program 5-1 (function_demo.py)</strong>: shows the module.function syntax for calling functions from another file. <strong>Program 5-4 (sum_numbers.py)</strong>: passing parameters to functions. The refactoring <em>practice</em> isn't a BookEx pattern &mdash; it's a real-world skill that comes from doing it. Don't worry if it feels like work; it always feels like work.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Run <code>lab-3-2.py</code>. Choose New Game, travel to Houston, choose Save and quit. Verify <code>savegame.txt</code> is created in your folder. Quit the program (choose 3 at main menu). Run again, choose Load Saved Game. Verify you resume from Houston with your saved miles. Finish the trip. Verify the trip summary and session statistics look identical to Lab 3.1's output.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>NameError: name 'SAVE_FILE' is not defined</code></td>
+        <td>Reference to <code>SAVE_FILE</code> in <code>lab-3-2.py</code> wasn't removed. The constant lives only in the library now.</td>
+      </tr>
+      <tr>
+        <td><code>NameError: name 'save_game' is not defined</code></td>
+        <td>Call site still says <code>save_game(...)</code> instead of <code>function_library.save_game(...)</code>. Search the whole file.</td>
+      </tr>
+      <tr>
+        <td><code>AttributeError: module 'function_library' has no attribute 'save_game'</code></td>
+        <td>The function definition didn't actually land in <code>function_library.py</code>. Open it and check &mdash; it might have ended up nested inside another function by accident.</td>
+      </tr>
+      <tr>
+        <td>Function works once, then crashes</td>
+        <td>You may have copied the function instead of moving it &mdash; both files have a definition, but the wrong one is being called. Delete the old definition from <code>lab-3-2.py</code>.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>function_library.py</code> contains <code>SAVE_FILE</code>, <code>save_game()</code>, and <code>load_game()</code></li>
+      <li><code>lab-3-2.py</code> no longer contains these definitions</li>
+      <li>All call sites use <code>function_library.save_game(...)</code> and <code>function_library.load_game()</code></li>
+      <li>Saving and loading still work end-to-end</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">3</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Build the SA Parallel Lists</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Open lab-3-2.py and look at your San Antonio menu. Three <code>print()</code> statements for the three options. Three <code>if/elif</code> branches to figure out which destination they picked. Three more <code>if/elif</code> branches to redirect on TAILS. That is twelve lines of logic doing what should be <em>three lines of data</em>. This week we cut that down to three lists of three items, and the code that drives the menu becomes a single loop. Magic moment."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Lead Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Three parallel lists for San Antonio's destinations: <code>SA_DESTINATIONS</code>, <code>SA_DISTANCES</code>, and <code>SA_NOTES</code>. Each list has three items, and items at the same index describe the same destination. You'll declare them at the top of <code>lab-3-2.py</code> in CP3; you'll <em>use</em> them in CP4 and CP5.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Parallel lists are the simplest way to associate related pieces of data. Same index across all three lists = same destination. <code>SA_DESTINATIONS[0]</code> is <code>'Corpus Christi'</code>, <code>SA_DISTANCES[0]</code> is <code>150</code>, <code>SA_NOTES[0]</code> is <code>'BEACH!'</code> &mdash; together they describe the first destination. Adding a new destination becomes a one-line change to each list. Compare that to the current pattern where you'd add an <code>elif</code> branch, an <code>if</code> branch in the redirect logic, and a menu <code>print</code> statement. Parallel lists scale; <code>if/elif</code> chains don't.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li><strong>Find a spot near the top of <code>lab-3-2.py</code></strong>, after your distance constants and before <code>def main()</code>. Add a comment header: <code># DESTINATION DATA AS PARALLEL LISTS (NEW in 3.2)</code></li>
+      <li><strong>Declare <code>SA_DESTINATIONS</code></strong> as a list with the three destination names in order: <code>['Corpus Christi', 'Houston', 'Austin']</code></li>
+      <li><strong>Declare <code>SA_DISTANCES</code></strong> as a list with the three matching distances. Use the named constants you already have: <code>[SAT_TO_CORPUS, SAT_TO_HOUSTON, SAT_TO_AUSTIN]</code></li>
+      <li><strong>Declare <code>SA_NOTES</code></strong> as a list with three short note strings, one per destination: <code>['BEACH!', 'Gateway East', 'Keep it Weird']</code></li>
+      <li><strong>Do NOT remove the <code>if/elif</code> chain yet.</strong> The lists exist but nothing uses them until CP4. Your code still works exactly like Lab 3.1 right now</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+        <p><strong>Program 7-1 (list_demo.py)</strong>: creating lists with initial values. <strong>Section 7.2.2</strong>: the textbook calls this 'a list with initial values' but it's the most common Python list pattern. <strong>Section 7.3</strong>: indexing &mdash; <code>my_list[0]</code> for first item, <code>my_list[len(my_list) - 1]</code> for last.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Add a temporary debug print right before <code>def main():</code> to confirm the lists are defined:</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 4</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: SA destinations = <span class="sy-op">{</span>SA_DESTINATIONS<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: SA distances    = <span class="sy-op">{</span>SA_DISTANCES<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: SA notes        = <span class="sy-op">{</span>SA_NOTES<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: lengths match? &#x27;
+      f&#x27;<span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>SA_DESTINATIONS<span class="sy-op">)</span> <span class="sy-op">==</span> <span class="sy-bi">len</span><span class="sy-op">(</span>SA_DISTANCES<span class="sy-op">)</span> <span class="sy-op">==</span> <span class="sy-bi">len</span><span class="sy-op">(</span>SA_NOTES<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    </div>
+    <p><strong>Step 2:</strong> Run the program. You should see the three lists print out, and the lengths-match line should print <code>True</code>. If you see <code>False</code>, your lists have different lengths and that will cause <code>IndexError</code> in CP4.</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>DEBUG: SA destinations = [&#x27;Corpus Christi&#x27;, &#x27;Houston&#x27;, &#x27;Austin&#x27;]
+DEBUG: SA distances    = [150, 200, 80]
+DEBUG: SA notes        = [&#x27;BEACH!&#x27;, &#x27;Gateway East&#x27;, &#x27;Keep it Weird&#x27;]
+DEBUG: lengths match? True</pre>
+    </div>
+    <p><strong>Step 3:</strong> Delete the DEBUG print lines before moving to CP4.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Lists are different lengths</td>
+        <td>Every parallel list MUST have the same length. If <code>SA_DESTINATIONS</code> has 3 items but <code>SA_NOTES</code> has 2, code that loops to <code>len(SA_DESTINATIONS)</code> will crash when it tries to read <code>SA_NOTES[2]</code>.</td>
+      </tr>
+      <tr>
+        <td>Wrong order across the lists</td>
+        <td>If your destination order doesn't match your distance order, you get '150 miles to Houston' on the screen. Read the lists vertically: 'Corpus Christi, 150 miles, BEACH!' &mdash; that's index 0 across all three. Each row of indices = one destination.</td>
+      </tr>
+      <tr>
+        <td>Hardcoded distances instead of named constants</td>
+        <td>Writing <code>SA_DISTANCES = [150, 200, 80]</code> works, but writing <code>SA_DISTANCES = [SAT_TO_CORPUS, SAT_TO_HOUSTON, SAT_TO_AUSTIN]</code> is cleaner &mdash; if you ever update a distance, you only change one place.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li>Three lists declared at module level in <code>lab-3-2.py</code>: <code>SA_DESTINATIONS</code>, <code>SA_DISTANCES</code>, <code>SA_NOTES</code></li>
+      <li>All three lists are length 3 in the same order</li>
+      <li>Game still plays identically to Lab 3.1 (lists are declared but nothing uses them yet)</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">4</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Build display_destinations() in the Library</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>A new library function, <code>display_destinations(destinations, distances, notes)</code>, that takes three parallel lists and prints a numbered menu. Then you'll replace the SA <code>if</code>-branch menu printing in <code>lab-3-2.py</code> with a single call to this function.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>This is the first time a function in your library <strong>takes lists as parameters</strong>. The destination lists live in <code>lab-3-2.py</code>, but the function that displays them lives in <code>function_library.py</code>. They communicate through the parameter list: the lab file passes the lists in, the library function does the display work, and neither file needs to know about the other's internal structure. That's exactly the pattern Module 4 will scale up &mdash; data in one place, logic in another, parameters as the bridge.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li><strong>Open <code>function_library.py</code></strong>. After the SAVE/LOAD section, add a new section header: <code># DESTINATION HELPERS (Added in Lab 3-2)</code></li>
+      <li><strong>Define <code>display_destinations(destinations, distances, notes)</code></strong> with the signature shown in the skeleton below</li>
+      <li><strong>Inside the function</strong>: print <code>'Where would you like to go?'</code>, then loop with <code>for i in range(len(destinations)):</code> and print each menu line in the format <code>'  N. CITY - DISTANCE miles (NOTE)'</code> using f-string formatting</li>
+      <li><strong>Return <code>len(destinations)</code></strong> so the caller knows how many options were shown</li>
+      <li><strong>Now switch to <code>lab-3-2.py</code></strong>. Find the San Antonio menu block in <code>main()</code> &mdash; the four <code>print()</code> calls that show <code>'Where would you like to go?'</code> and the three destination lines</li>
+      <li><strong>Replace all four prints</strong> with a single call: <code>num_choices = function_library.display_destinations(SA_DESTINATIONS, SA_DISTANCES, SA_NOTES)</code></li>
+      <li><strong>Use <code>num_choices</code></strong> in the <code>get_valid_int</code> call below: <code>function_library.get_valid_int(f'Choice (1-{num_choices}): ', 1, num_choices)</code></li>
+      <li><strong>Leave the Houston and Austin menus alone for now.</strong> CP6 extends to them. Right now you'll have a hybrid file: SA uses the new library function, Houston and Austin still use <code>print()</code> chains</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">display_destinations</span><span class="sy-op">(</span>destinations<span class="sy-op">,</span> distances<span class="sy-op">,</span> notes<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;
+    Display a numbered destination menu using parallel lists.
+
+    Args:
+        destinations (list of str): City names to display
+        distances (list of int): Miles to each city (same index)
+        notes (list of str): Short tag per city (same index)
+
+    Returns:
+        int: The number of destinations shown
+    &quot;&quot;&quot;</span>
+    <span class="sy-cm"># 1. Print the menu prompt: &#x27;Where would you like to go?&#x27;</span>
+    <span class="sy-cm"># 2. Loop with for i in range(len(destinations)):</span>
+    <span class="sy-cm">#    - Build the line: f&#x27;  {i + 1}. {destinations[i]} - {distances[i]} miles ({notes[i]})&#x27;</span>
+    <span class="sy-cm">#    - Print it</span>
+    <span class="sy-cm"># 3. Return the length of the destinations list</span>
+    <span class="sy-kw">pass</span>
+</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+        <p><strong>Program 7-3 (list_loop.py)</strong>: looping through a list with <code>for i in range(len(lst))</code>. <strong>Section 7.3</strong>: indexing with <code>lst[i]</code>. <strong>Section 5.3</strong>: functions with parameters, returning a value.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1:</strong> Save both files. Run <code>lab-3-2.py</code>. Choose New Game. The SA menu should appear with the new format including the notes column:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Where would you like to go?
+  1. Corpus Christi - 150 miles (BEACH!)
+  2. Houston - 200 miles (Gateway East)
+  3. Austin - 80 miles (Keep it Weird)
+
+Choice (1-3): </pre>
+    </div>
+    <p><strong>Step 2:</strong> Choose any destination. Verify the rest of the game still works (gate, travel, hazards, trip summary). The Houston menu (if you reach it) will still use the OLD format &mdash; that's expected.</p>
+    <p><strong>Step 3:</strong> Save your work. Both files should be runnable as-is.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>num_choices</code> is the wrong value (e.g. 0)</td>
+        <td>The function isn't returning <code>len(destinations)</code>. Check the last line of <code>display_destinations</code>.</td>
+      </tr>
+      <tr>
+        <td>Menu prints but <code>get_valid_int</code> errors with bad upper bound</td>
+        <td>You forgot to capture the return value: <code>num_choices = function_library.display_destinations(...)</code>. Without the <code>num_choices =</code>, the return is discarded.</td>
+      </tr>
+      <tr>
+        <td><code>IndexError</code> mid-loop</td>
+        <td>Your parallel lists have different lengths. Run the DEBUG check from CP3 again to verify they're all length 3.</td>
+      </tr>
+      <tr>
+        <td>Different output format than expected</td>
+        <td>The format string is precise: <code>f'  {i + 1}. {destinations[i]} - {distances[i]} miles ({notes[i]})'</code>. Two spaces of indent. <code>i + 1</code> for 1-based numbering. <code>miles</code> spelled exactly. CodeGrade compares byte-for-byte.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>display_destinations()</code> function defined in <code>function_library.py</code></li>
+      <li>Function takes three list parameters, prints the menu, returns the count</li>
+      <li>SA menu in <code>lab-3-2.py</code> uses the library call</li>
+      <li>Houston and Austin menus still use the old <code>print()</code> chains (will be updated in CP6)</li>
     </ol>
     </div>
     <hr class="lc-cp-sep">
@@ -758,81 +686,588 @@ Armadillo crossing!</pre>
         <div class="lc-cp-badge__num">5</div>
       </div>
       <div class="lc-cp-content">
-        <div class="lc-cp-title">Enhanced Trip Report</div>
-        <div class="lc-sub-banner">Display your route and hazards using numbered lists in the final report.</div>
+        <div class="lc-cp-title">Build get_destination() and get_redirect() in the Library</div>
       </div>
     </div>
     <div class="lc-cp-body">
     <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>An enhanced trip report that displays your complete route as a numbered list and all hazards encountered. This shows the player exactly where they traveled and what they faced!</p>
+    <p>Two more library functions: <code>get_destination(destinations, distances, choice)</code> returns the destination and distance for a 1-based menu choice. <code>get_redirect(destinations, distances, avoid)</code> returns a random different destination for TAILS. Then you'll refactor the SA HEADS and TAILS branches to call them.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p><code>get_destination()</code> is one line of real work (<code>return lst1[idx], lst2[idx]</code>) but it eliminates an entire <code>if/elif</code> chain at the call site. <code>get_redirect()</code> shows off the list methods from Section 7.5 &mdash; <code>.copy()</code>, <code>.index()</code>, <code>.remove()</code>, <code>.pop()</code> &mdash; in a real use case. Both functions accept lists as parameters and don't reach into module-level globals; that's what makes them reusable for Houston and Austin in CP6.</p>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>After the game loop, print <code>'YOUR ROUTE:'</code></li>
-      <li>Loop through <code>visited_cities</code> with <code>for i in range(len(visited_cities)):</code></li>
-      <li>Print each city with number: <code>f'  {i + 1}. {visited_cities[i]}'</code></li>
-      <li>Print <code>'HAZARDS ENCOUNTERED:'</code></li>
-      <li>Check <code>if len(hazards_list) > 0:</code> before looping</li>
-      <li>If no hazards, print <code>'  None - Lucky traveler!'</code></li>
+      <li><strong>In <code>function_library.py</code></strong>, under the DESTINATION HELPERS section, add <code>get_destination(destinations, distances, choice)</code></li>
+      <li><strong>Inside <code>get_destination</code></strong>: compute <code>index = choice - 1</code>, then return <code>(destinations[index], distances[index])</code> as a tuple</li>
+      <li><strong>Right after</strong>, add <code>get_redirect(destinations, distances, avoid)</code></li>
+      <li><strong>Inside <code>get_redirect</code></strong>: copy both lists with <code>.copy()</code> so you don't mutate the caller's data, then use <code>.index()</code> and <code>.remove()</code>/<code>.pop()</code> to drop the 'avoid' destination, then <code>random.randint(0, len(dest_copy) - 1)</code> to pick from what's left</li>
+      <li><strong>Now switch to <code>lab-3-2.py</code></strong>. Find your gate-result <code>if/else</code> block (the part that picks a destination based on HEADS or TAILS)</li>
+      <li><strong>For HEADS</strong>: replace the entire SA <code>if/elif</code> chain with <code>destination, distance = function_library.get_destination(SA_DESTINATIONS, SA_DISTANCES, choice)</code></li>
+      <li><strong>For TAILS</strong>: first call <code>wanted, _ = function_library.get_destination(SA_DESTINATIONS, SA_DISTANCES, choice)</code> to figure out what they wanted, then call <code>destination, distance = function_library.get_redirect(SA_DESTINATIONS, SA_DISTANCES, wanted)</code> to get the redirect. (The <code>_</code> is the standard way to say 'I don't need this value')</li>
+      <li><strong>Leave Houston and Austin alone for now.</strong> Hybrid file again &mdash; SA uses the new helpers, HOU/AUS still use <code>if/elif</code> chains</li>
     </ol>
-    <div class="lc-h3 lc-h3--yellow">Expected Output</div>
-    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
-      <pre>==================================================
-TRIP REPORT
-==================================================
-Driver: Maria
-Final City: Galveston
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">get_destination</span><span class="sy-op">(</span>destinations<span class="sy-op">,</span> distances<span class="sy-op">,</span> choice<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;
+    Return the destination and distance for a 1-based menu choice.
 
-YOUR ROUTE:
-  1. San Antonio
-  2. Houston
-  3. Galveston
+    Args:
+        destinations (list of str): City names
+        distances (list of int): Miles to each city (same index)
+        choice (int): 1-based menu choice
 
-HAZARDS ENCOUNTERED:
-  1. Buc-ee&#x27;s appears!
-  2. Speed trap!
+    Returns:
+        tuple: (destination_name, distance)
+    &quot;&quot;&quot;</span>
+    <span class="sy-cm"># 1. Convert 1-based choice to 0-based index: index = choice - 1</span>
+    <span class="sy-cm"># 2. Return (destinations[index], distances[index]) as a tuple</span>
+    <span class="sy-kw">pass</span>
 
-STATISTICS:
-  Total Miles: 267
-  Total Turns: 4
-  Hazards: 1/2 escaped
-==================================================</pre>
+
+<span class="sy-kw">def</span> <span class="sy-fn">get_redirect</span><span class="sy-op">(</span>destinations<span class="sy-op">,</span> distances<span class="sy-op">,</span> avoid<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;
+    Pick a random destination from the lists, excluding &#x27;avoid&#x27;.
+
+    Args:
+        destinations (list of str): City names
+        distances (list of int): Miles to each city (same index)
+        avoid (str): The destination to exclude
+
+    Returns:
+        tuple: (destination_name, distance) for some city != avoid
+    &quot;&quot;&quot;</span>
+    <span class="sy-cm"># 1. Make a copy of each list (use .copy()) so you don&#x27;t mutate the</span>
+    <span class="sy-cm">#    caller&#x27;s lists</span>
+    <span class="sy-cm"># 2. If avoid is in the destinations copy:</span>
+    <span class="sy-cm">#    - Find its index with .index()</span>
+    <span class="sy-cm">#    - Remove it from destinations copy with .remove(avoid)</span>
+    <span class="sy-cm">#    - Remove the matching distance with dist_copy.pop(idx)</span>
+    <span class="sy-cm"># 3. If the copy still has items:</span>
+    <span class="sy-cm">#    - Pick a random index: random.randint(0, len(dest_copy) - 1)</span>
+    <span class="sy-cm">#    - Return (dest_copy[idx], dist_copy[idx])</span>
+    <span class="sy-cm"># 4. Otherwise (avoid was the only option):</span>
+    <span class="sy-cm">#    - Return (destinations[0], distances[0]) as a fallback</span>
+    <span class="sy-kw">pass</span>
+</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+        <p><strong>Section 7.5.2</strong>: <code>.index(item)</code> returns the position of an item. <strong>Section 7.5.3</strong>: <code>.remove(item)</code> deletes the first matching item. <strong>Section 7.5.6</strong>: <code>.copy()</code> makes an independent copy of a list. <strong>Section 5.6</strong>: functions returning multiple values via tuples; the caller unpacks them with <code>a, b = func()</code>.</p>
+        </div>
+      </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p><strong>Step 1:</strong> Play a full game to a beach, then check the trip report.</p>
-    <p><strong>Step 2:</strong> Verify the trip report shows: <strong>Numbered route</strong> — 1. San Antonio, 2. Houston, 3. Galveston. <strong>Numbered hazards</strong> — Each hazard message with a number. <strong>Statistics</strong> — Miles, turns, and hazard escape ratio.</p>
-    <p><strong>Step 3:</strong> Test the "no hazards" case — play a quick game (San Antonio to Corpus Christi is fastest). If no hazards occurred, report should say "None - Lucky traveler!"</p>
-    <p><strong>Step 4:</strong> Once your trip report displays correctly, you're ready to submit!</p>
+    <p><strong>Step 1:</strong> Run <code>lab-3-2.py</code>. Start a New Game and pick Houston (option 2). Depending on the gate flip you'll either head to Houston (HEADS) or get redirected to Corpus Christi or Austin (TAILS). Either way the game should continue normally.</p>
+    <p><strong>Step 2:</strong> Run several games to exercise both branches. The new behavior should be functionally identical to Lab 3.1 &mdash; same destinations, same distances, same gate-redirect logic &mdash; the difference is entirely under the hood.</p>
+    <p><strong>Step 3:</strong> If you'd like to verify <code>get_redirect</code> isn't mutating the originals, add a debug print before/after the call:</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 6</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG before: SA_DESTINATIONS = <span class="sy-op">{</span>SA_DESTINATIONS<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+destination<span class="sy-op">,</span> distance <span class="sy-op">=</span> function_library<span class="sy-op">.</span>get_redirect<span class="sy-op">(</span>
+    SA_DESTINATIONS<span class="sy-op">,</span> SA_DISTANCES<span class="sy-op">,</span> wanted<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG after:  SA_DESTINATIONS = <span class="sy-op">{</span>SA_DESTINATIONS<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    </div>
+    <p>Both lines should print the original list. If they don't match, you forgot to <code>.copy()</code> inside <code>get_redirect</code> and you're mutating the caller's data.</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
     <div class="lc-table-wrap">
       <table class="lc-table">
         <thead>
           <tr>
-        <th>Common Mistake</th>
-        <th>Why It Fails</th>
           </tr>
         </thead>
         <tbody>
       <tr>
-        <td>Starting enumeration at 0</td>
-        <td>Use i + 1 to start numbering at 1</td>
+        <td>TAILS always redirects to the same destination</td>
+        <td>You forgot <code>random.randint</code>, OR you copied the wrong list and got stuck with one option. Walk through <code>get_redirect</code> with <code>destinations = ['Corpus', 'Houston', 'Austin']</code> and <code>avoid = 'Houston'</code> on paper.</td>
       </tr>
       <tr>
-        <td>Not checking if hazards list is empty</td>
-        <td>If no hazards, display "None" instead of empty section</td>
+        <td>After a few games, the SA menu only shows 1 option</td>
+        <td><code>get_redirect</code> is mutating <code>SA_DESTINATIONS</code> directly. Add <code>.copy()</code> on the first two lines.</td>
       </tr>
       <tr>
-        <td>Division by zero in escape ratio</td>
-        <td>Check hazards_faced > 0 before calculating percentage</td>
+        <td><code>ValueError: 'X' is not in list</code></td>
+        <td>You're calling <code>.remove(avoid)</code> without checking <code>if avoid in dest_copy</code> first. Or you passed the wrong city name string.</td>
+      </tr>
+      <tr>
+        <td>TAILS branch crashes when SA only has 1 destination (later)</td>
+        <td>After removing the only option, your random pick crashes. Use the fallback <code>else</code> branch returning a default. (This won't matter in 3-2 since SA always has 3+ options, but the safety check is good practice.)</td>
       </tr>
         </tbody>
       </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li>Trip report shows numbered route from tracking list</li>
-      <li>Hazards section shows all encountered hazards (or "None")</li>
-      <li>Statistics section preserved from Lab 3.1</li>
+      <li><code>get_destination()</code> and <code>get_redirect()</code> defined in <code>function_library.py</code></li>
+      <li>Both functions accept lists as parameters; neither references module-level globals</li>
+      <li><code>get_redirect()</code> uses <code>.copy()</code> so it doesn't mutate caller data</li>
+      <li>SA branch in <code>lab-3-2.py</code> uses both helpers; Houston and Austin still use old if/elif chains</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">6</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Extend Parallel Lists to Houston and Austin</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Two more triples of parallel lists &mdash; one for Houston, one for Austin &mdash; plus a small dispatch function <code>get_city_data(city)</code> that returns the right triple for whatever city you're in. Then you'll replace the remaining <code>if</code>-branch menus and destination/redirect logic for HOU and AUS so all three cities use the same library helpers.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>The pattern from CPs 3-5 generalizes here. Each city needs three lists; one tiny dispatch function decides which set to use. Everything downstream &mdash; menu display, destination lookup, gate redirect &mdash; uses the same library code regardless of which city you're in. This is where the file shrinks dramatically: what was a 90-line <code>if/elif</code> wall in 3.1 becomes about 20 lines of data plus a few library calls.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li><strong>Below the SA lists</strong> in <code>lab-3-2.py</code>, declare the Houston lists: <code>HOU_DESTINATIONS = ['Galveston', 'San Antonio']</code>, <code>HOU_DISTANCES = [HOU_TO_GALVESTON, HOU_TO_SAN_ANTONIO]</code>, <code>HOU_NOTES = ['BEACH!', 'Back West']</code></li>
+      <li><strong>Below those</strong>, declare the Austin lists: <code>AUS_DESTINATIONS = ['San Antonio']</code>, <code>AUS_DISTANCES = [SAT_TO_AUSTIN]</code>, <code>AUS_NOTES = ['Back Home']</code> (Austin only has one option &mdash; back home)</li>
+      <li><strong>Define the dispatch function</strong> <code>get_city_data(city)</code> at module level (above <code>main()</code>) &mdash; it takes a city name and returns a tuple of <code>(destinations, distances, notes)</code>. Use an <code>if/elif/else</code> to pick the right triple</li>
+      <li><strong>Why does this stay in <code>lab-3-2.py</code></strong>? Because the city names and the constants <code>SA_*</code>, <code>HOU_*</code>, <code>AUS_*</code> are lab-specific data, not universal logic. The library doesn't know about San Antonio or Houston; it knows about lists</li>
+      <li><strong>Now refactor the in-game loop's menu logic.</strong> Replace the entire <code>if current_city == 'San Antonio': ... elif current_city == 'Houston': ... else (Austin): ...</code> menu-printing block with one block of code that calls <code>get_city_data</code> first, then <code>display_destinations</code> on the result</li>
+      <li><strong>Same for the HEADS branch</strong>: one call to <code>function_library.get_destination(destinations, distances, choice)</code></li>
+      <li><strong>Same for the TAILS branch</strong>: <code>wanted, _ = function_library.get_destination(...)</code> followed by <code>function_library.get_redirect(destinations, distances, wanted)</code></li>
+      <li><strong>After this CP your in-game loop should have NO city-specific <code>if/elif</code> for destinations.</strong> The only city-name comparisons left should be checking for beach cities (Corpus Christi, Galveston) and for Austin (which still triggers a 'return to San Antonio?' prompt)</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+        <p>No new BookEx patterns &mdash; this CP applies the patterns from CPs 3-5 to additional data. The mental shift is recognizing that 'add another city' now means 'add another triple of parallel lists and one <code>elif</code> in <code>get_city_data</code>' rather than 'add another full menu printing block, another destination lookup, and another redirect block.'</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1:</strong> Run a New Game. Travel to Houston (option 2 from SA). When you arrive, verify the Houston menu now shows the notes column:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Where would you like to go?
+  1. Galveston - 50 miles (BEACH!)
+  2. San Antonio - 200 miles (Back West)
+
+Choice (1-2): </pre>
+    </div>
+    <p><strong>Step 2:</strong> Travel through Austin too &mdash; from SA, choose Austin. The Austin menu should show one option: <code>1. San Antonio - 80 miles (Back Home)</code></p>
+    <p><strong>Step 3:</strong> Play one full game through to the beach. The trip summary should still appear and look the same as before.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Houston menu still shows old format</td>
+        <td>You didn't refactor the Houston branch &mdash; the old <code>elif current_city == 'Houston':</code> menu print is still there. Delete it; all three cities now use the same code via <code>get_city_data</code>.</td>
+      </tr>
+      <tr>
+        <td><code>NameError: name 'HOU_DESTINATIONS' is not defined</code></td>
+        <td><code>get_city_data</code> references the lists before they're declared. Check that all the list declarations appear at the top of the file, before <code>get_city_data</code>.</td>
+      </tr>
+      <tr>
+        <td>Austin menu shows 0 options</td>
+        <td>Your <code>AUS_DESTINATIONS</code> declaration is empty <code>[]</code> instead of <code>['San Antonio']</code>. Austin still has one option (back home).</td>
+      </tr>
+      <tr>
+        <td>Reaching Austin loops forever</td>
+        <td>After arriving in Austin, the game asks 'Return to San Antonio? (y/n):'. That logic is separate from the menu and should still work. If the menu shows but the question doesn't, check that you didn't accidentally delete the Austin special-case block.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li>All three triples of parallel lists declared at module level</li>
+      <li><code>get_city_data(city)</code> dispatch function returns the right triple</li>
+      <li>In-game loop has no city-specific <code>if/elif</code> for destinations, gates, or redirects</li>
+      <li>All three cities' menus now show the notes column</li>
+      <li>Full game play-through still works</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">7</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add Tracking Lists: visited_cities and hazards_list</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"The route is the story. The hazards are the war stories. When the player finishes their trip, what they want to see isn't <em>'You traveled 450 miles'</em> &mdash; they want to see <em>'San Antonio, then Houston, then Galveston, and Buc-ee's tried to get me but I escaped.'</em> We are not tracking statistics this checkpoint. We are tracking <strong>memories</strong>. Two lists, appended to as the game runs, become the trip report your players actually care about."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Sasha Mireles</div>
+        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Two empty lists, initialized once per game: <code>visited_cities</code> starts with <code>['San Antonio']</code> (where you begin) and <code>hazards_list</code> starts empty. Each time you arrive somewhere new, append the destination to <code>visited_cities</code>. Each time a hazard fires, append the hazard string to <code>hazards_list</code>. By end of game, both lists tell the story of the trip.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p><code>.append()</code> is the fundamental list-building operation. You start with an empty (or near-empty) list, and grow it one item at a time as new things happen. The trick is initializing in the right scope: these lists belong to a single game, so they live inside the play-again loop and reset on each new game. If you initialize them outside, they accumulate across games (and that's a fun feature but not what we want today).</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li><strong>Find the per-game reset block</strong> inside the play-again loop in <code>main()</code>. It currently resets <code>total_miles</code>, <code>total_turns</code>, <code>total_hazards</code>, <code>total_escaped</code> when <code>not resumed_game</code></li>
+      <li><strong>Add two new resets</strong> inside that <code>if not resumed_game:</code> block: <code>visited_cities = ['San Antonio']</code> and <code>hazards_list = []</code></li>
+      <li><strong>Find the hazard block</strong> in the travel loop &mdash; the spot where a hazard fires and you print its name. Immediately after <code>print(hazard)</code>, add <code>hazards_list.append(hazard)</code></li>
+      <li><strong>Find the city-arrival code</strong> right after the travel loop ends &mdash; where you set <code>current_city = destination</code>. Add <code>visited_cities.append(current_city)</code> on the next line</li>
+      <li><strong>Handle the Austin special case</strong>: when Austin returns to SA, you also need to append SA to <code>visited_cities</code> (otherwise the route shows 'San Antonio, Austin' and then jumps to Houston without recording the trip back to SA in between)</li>
+      <li><strong>Update <code>function_library.load_game()</code> return value handling</strong> in <code>main()</code>: when the Load branch succeeds, you'll need <code>visited_cities</code> and <code>hazards_list</code> from the loaded tuple. <strong>For now</strong>, since the library function still returns a 9-tuple, just initialize empty lists in the Load branch too: <code>visited_cities = []; hazards_list = []</code>. CP8 will extend the library to return them properly</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+        <p><strong>Program 7-2 (list_demo2.py)</strong>: empty list plus <code>.append()</code>. <strong>Section 7.2.1</strong>: the pattern of starting with <code>[]</code> and growing as you go. <strong>Section 7.7</strong>: lists are frequently used as accumulators &mdash; same pattern as your numeric accumulators (<code>total_miles += ...</code>), but you're accumulating strings instead of numbers.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1:</strong> Add a DEBUG print at the end of main()'s game logic to see what was tracked:</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 8</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: visited_cities = <span class="sy-op">{</span>visited_cities<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: hazards_list = <span class="sy-op">{</span>hazards_list<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    </div>
+    <p><strong>Step 2:</strong> Play a full game through to Galveston. Verify <code>visited_cities</code> shows the route in order, and <code>hazards_list</code> shows every hazard that fired (regardless of whether you escaped). Example:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>DEBUG: visited_cities = [&#x27;San Antonio&#x27;, &#x27;Houston&#x27;, &#x27;Galveston&#x27;]
+DEBUG: hazards_list = [&quot;Buc-ee&#x27;s appears!&quot;]</pre>
+    </div>
+    <p><strong>Step 3:</strong> Try a game where you visit Austin and return to SA. Verify <code>visited_cities</code> shows the return: <code>['San Antonio', 'Austin', 'San Antonio', ...]</code></p>
+    <p><strong>Step 4 (round-trip check):</strong> Play a game that visits Austin and returns. From San Antonio choose Austin (option 3); when prompted, choose <code>y</code> to return to San Antonio; then choose Houston (option 2); when you arrive in Houston, choose option 2 (Save and quit). Now restart and Load. Verify that the loaded <code>visited_cities</code> contains <code>['San Antonio', 'Austin', 'San Antonio', 'Houston']</code> in that order. Lab 3.3 will calculate unique-city counts from this list, so the duplicates AND the order matter.</p>
+    <p><strong>Step 5:</strong> Delete the DEBUG print before CP8. The Trip Summary in CP9 will display these lists properly.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>visited_cities</code> is empty at end of game</td>
+        <td>You initialized it outside the play-again loop, OR you forgot to <code>.append(current_city)</code> after the travel loop ends. Trace the code.</td>
+      </tr>
+      <tr>
+        <td><code>visited_cities</code> persists across replays</td>
+        <td>You initialized it OUTSIDE the play-again loop. It needs to be inside, in the per-game reset block, so each new game starts fresh.</td>
+      </tr>
+      <tr>
+        <td>Hazards appear in the list even when escaped</td>
+        <td>That's correct &mdash; <code>hazards_list</code> records every hazard <em>encountered</em>, not just the ones you got delayed by. Escape status is tracked separately via <code>hazards_escaped</code>.</td>
+      </tr>
+      <tr>
+        <td>Route shows Austin once but skips the return to SA</td>
+        <td>You appended <code>destination</code> in the travel loop, but the Austin special-case sets <code>current_city = 'San Antonio'</code> separately without appending. Add an explicit <code>visited_cities.append('San Antonio')</code> in the Austin branch.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>visited_cities</code> initialized with <code>['San Antonio']</code> in the per-game reset</li>
+      <li><code>hazards_list</code> initialized empty in the per-game reset</li>
+      <li><code>.append()</code> calls when arriving at any city</li>
+      <li><code>.append()</code> call when a hazard fires (before the escape coin flip)</li>
+      <li>Austin branch appends SA back to <code>visited_cities</code> on return</li>
+      <li>Lists persist correctly during one game and reset for new games</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">8</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Extend save_game and load_game to Persist the Lists</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Terrence-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Every new piece of state you save is another thing that has to survive load. The number-one bug in save systems is fields that work in isolation but break under round-trip. Save with 3 hazards, load, save again, load again &mdash; do you still have 3 hazards? Do you have 6 because they doubled? Do you have 0 because they vanished? Test the round trip after every extension. I have seen save systems ship to production where the first load worked perfectly and the second load wiped the player's inventory. Round trip, every time."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
+        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Extended versions of <code>save_game()</code> and <code>load_game()</code> in <code>function_library.py</code>. <code>save_game</code> grows from 9 parameters to 11 (adding <code>visited_cities</code> and <code>hazards_list</code>). The save file grows by however many cities and hazards exist, plus a <code>---LISTS_END---</code> marker between them. <code>load_game</code> reads back the 9 base fields, then loops to collect cities until it hits the marker, then loops to collect hazards until end-of-file. Returns an 11-tuple.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Variable-length data in files is harder than fixed-length data. You can't say 'read line 10' because you don't know how many cities there are. The solution is the <strong>separator pattern</strong>: write a marker the data would never accidentally contain, and read until you see it. <code>---LISTS_END---</code> can't be a city name (the city list ends when you hit the marker) and can't be a hazard name (the hazard list ends at end-of-file). This pattern scales: Module 4's data files use a similar idea with comma delimiters and end-of-file.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li><strong>Open <code>function_library.py</code></strong> and find your <code>save_game()</code> function</li>
+      <li><strong>Change the signature</strong>: add <code>visited_cities</code> and <code>hazards_list</code> as the last two parameters (after <code>session_hazards</code>). Update the docstring to describe them</li>
+      <li><strong>After writing the 9 base fields</strong>, add a <code>for</code> loop: <code>for city in visited_cities: outfile.write(city + '\n')</code></li>
+      <li><strong>Write the marker line</strong>: <code>outfile.write('---LISTS_END---\n')</code></li>
+      <li><strong>After the marker</strong>, write another loop for hazards: <code>for hazard in hazards_list: outfile.write(hazard + '\n')</code></li>
+      <li><strong>Now find <code>load_game()</code></strong> in the library and extend it</li>
+      <li><strong>After reading the 9 base fields</strong>, add the visited_cities loop: <code>visited_cities = []</code>, then read first line with <code>rstrip('\n')</code>, then <code>while line != '---LISTS_END---' and line != '':</code> append and read next</li>
+      <li><strong>Then add the hazards loop</strong>: <code>hazards_list = []</code>, read next line with <code>rstrip('\n')</code>, then <code>while line != '':</code> append and read next</li>
+      <li><strong>Update the return statement</strong> to include both lists: <code>return (..., visited_cities, hazards_list)</code> (11 values)</li>
+      <li><strong>Now switch to <code>lab-3-2.py</code></strong>. Find the call to <code>function_library.save_game</code> in your mid-trip Save & quit branch. Add <code>visited_cities, hazards_list</code> as the last two arguments</li>
+      <li><strong>Find the call to <code>function_library.load_game()</code></strong> in the Load main-menu branch. Update the tuple unpack to expect 11 values, ending with <code>..., visited_cities, hazards_list = saved</code></li>
+      <li><strong>Remove the placeholder empty-list initialization</strong> you added in CP7 for the Load branch &mdash; the loaded values now come from the file</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># In function_library.py — UPDATED SIGNATURE</span>
+<span class="sy-kw">def</span> <span class="sy-fn">save_game</span><span class="sy-op">(</span>player_name<span class="sy-op">,</span> current_city<span class="sy-op">,</span> total_miles<span class="sy-op">,</span> total_turns<span class="sy-op">,</span>
+              total_hazards<span class="sy-op">,</span> total_escaped<span class="sy-op">,</span> games_played<span class="sy-op">,</span>
+              session_miles<span class="sy-op">,</span> session_hazards<span class="sy-op">,</span>
+              visited_cities<span class="sy-op">,</span> hazards_list<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;Save full session state to a file.&quot;&quot;&quot;</span>
+    <span class="sy-cm"># 1. Open SAVE_FILE in &#x27;w&#x27; mode (use &#x27;outfile = open(...)&#x27;)</span>
+    <span class="sy-cm"># 2. Write the 9 base fields as before (with str() and &#x27;\n&#x27;)</span>
+    <span class="sy-cm"># 3. Loop through visited_cities, writing each city + &#x27;\n&#x27;</span>
+    <span class="sy-cm"># 4. Write the marker line: &#x27;---LISTS_END---\n&#x27;</span>
+    <span class="sy-cm"># 5. Loop through hazards_list, writing each hazard + &#x27;\n&#x27;</span>
+    <span class="sy-cm"># 6. Close the file</span>
+    <span class="sy-cm"># 7. Print &#x27;Game saved!&#x27;</span>
+    <span class="sy-kw">pass</span>
+
+
+<span class="sy-kw">def</span> <span class="sy-fn">load_game</span><span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;Load full session state. Returns 11-tuple, or None.&quot;&quot;&quot;</span>
+    <span class="sy-kw">try</span><span class="sy-op">:</span>
+        <span class="sy-cm"># 1. Open SAVE_FILE in &#x27;r&#x27; mode</span>
+        <span class="sy-cm"># 2. Read the 9 base fields as before</span>
+        <span class="sy-cm"># 3. Loop to read visited_cities:</span>
+        <span class="sy-cm">#    - visited_cities = []</span>
+        <span class="sy-cm">#    - Read first line, rstrip(&#x27;\n&#x27;)</span>
+        <span class="sy-cm">#    - while line != &#x27;---LISTS_END---&#x27; and line != &#x27;&#x27;:</span>
+        <span class="sy-cm">#        - append, read next line</span>
+        <span class="sy-cm"># 4. Loop to read hazards_list:</span>
+        <span class="sy-cm">#    - hazards_list = []</span>
+        <span class="sy-cm">#    - Read next line, rstrip(&#x27;\n&#x27;)</span>
+        <span class="sy-cm">#    - while line != &#x27;&#x27;:</span>
+        <span class="sy-cm">#        - append, read next line</span>
+        <span class="sy-cm"># 5. Close the file</span>
+        <span class="sy-cm"># 6. Return 11-tuple: 9 base fields + 2 lists</span>
+        <span class="sy-kw">pass</span>
+    <span class="sy-kw">except</span> FileNotFoundError<span class="sy-op">:</span>
+        <span class="sy-kw">return</span> <span class="sy-kw">None</span>
+</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+        <p><strong>Program 7-13 (write_list.py)</strong>: writing a list to a file with a loop. <strong>Program 7-14 (read_list.py)</strong>: reading a list from a file with <code>readline()</code> in a loop until empty string. <strong>Section 6.4 (sentinel reading)</strong>: using a known marker string to signal end of one section, which is exactly what <code>---LISTS_END---</code> does.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1: Save round-trip.</strong> Start a New Game, travel to Houston, save and quit. Open <code>savegame.txt</code> in Notepad. Verify the format:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>TestPlayer
+Houston
+300
+2
+1
+1
+0
+0
+0
+San Antonio
+Houston
+---LISTS_END---
+Buc-ee&#x27;s appears!</pre>
+    </div>
+    <p><strong>Step 2: Load round-trip.</strong> Quit the program, restart, choose Load Saved Game. Verify you resume from Houston AND that <code>visited_cities</code> and <code>hazards_list</code> retain their saved values (use a temporary DEBUG print to inspect them if needed).</p>
+    <p><strong>Step 3: Double-save round-trip.</strong> T-Bone's actual test: load, travel a bit more, save again, quit, restart, load. The lists should have grown but not duplicated. If your cities show up twice, your load is appending to existing lists instead of replacing them.</p>
+    <p><strong>Step 4:</strong> Finish a game to the beach, decline replay, quit, restart, choose Load. There's no save file (the game was completed, no mid-trip save). Verify the fallback message: <code>'No saved game found. Starting new game.'</code></p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Loaded game has empty <code>visited_cities</code></td>
+        <td>The load loop is exiting immediately. Either you forgot the first <code>readline()</code> before the <code>while</code> check, or the marker is being mistaken for a city name. Print the line at top of loop to debug.</td>
+      </tr>
+      <tr>
+        <td>Loaded game has the marker AS a city</td>
+        <td>Your <code>while</code> condition is just <code>line != ''</code>. It needs to ALSO check <code>line != '---LISTS_END---'</code>.</td>
+      </tr>
+      <tr>
+        <td>Extra blank line between cities in saved file</td>
+        <td>You're writing <code>'\n'</code> twice per city, or your city strings already had a trailing newline when appended. <code>.rstrip('\n')</code> on load handles incoming newlines.</td>
+      </tr>
+      <tr>
+        <td>Tuple unpack fails with 'too many values to unpack' on load</td>
+        <td><code>load_game</code> now returns 11 values but the caller is unpacking 9. Update the unpack site in <code>main()</code>.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>save_game()</code> in library: 11 parameters; writes 9 base lines + cities + marker + hazards</li>
+      <li><code>load_game()</code> in library: returns 11-tuple; uses marker to separate the two list reads</li>
+      <li>Save round-trip preserves both lists</li>
+      <li>Load fallback (no file) still returns <code>None</code></li>
+      <li>Call sites in <code>lab-3-2.py</code> pass and unpack 11 values</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">9</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Add display_numbered_list and Use It in the Trip Summary</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>One more library function: <code>display_numbered_list(items, title)</code>. Then you'll use it twice in the Trip Summary &mdash; once for <code>visited_cities</code> (route) and once for <code>hazards_list</code> (hazards encountered). The Trip Summary becomes the player's story of their trip.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Numbered lists with a title and a divider are a common output pattern. You wrote one manually in CP7 to debug; now you write it once in the library and call it everywhere. The Trip Summary will use it for two lists this lab, and Lab 3.3 will use it for at least one more (sorted hazards). Three uses across two labs &mdash; that's the bar for promoting a function to the library.</p>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li><strong>Open <code>function_library.py</code></strong>. After the destination helpers section, add a new header: <code># DISPLAY HELPERS (Added in Lab 3-2)</code></li>
+      <li><strong>Define <code>display_numbered_list(items, title)</code></strong></li>
+      <li><strong>Inside the function</strong>: print the title, then print a divider line made of <code>'-' * len(title)</code> dashes (exactly the same length as the title), then loop with <code>for i in range(len(items))</code> printing each item as <code>'  N. ITEM'</code>, then print a blank line</li>
+      <li><strong>Now switch to <code>lab-3-2.py</code></strong> and find the Trip Summary block in <code>main()</code> &mdash; after the <code>print('Status: ...')</code> lines and before the play-again prompt</li>
+      <li><strong>Replace any existing YOUR ROUTE print logic</strong> with a single call: <code>function_library.display_numbered_list(visited_cities, 'YOUR ROUTE')</code></li>
+      <li><strong>For hazards</strong>, handle the empty case specially: <code>if len(hazards_list) &gt; 0:</code> call <code>display_numbered_list(hazards_list, 'HAZARDS ENCOUNTERED')</code>; else print a small 'None - Lucky traveler!' block with the same title/divider/blank-line shape</li>
+      <li><strong>Verify the Trip Summary order</strong>: Driver, Final City, totals, status, blank, YOUR ROUTE block, HAZARDS ENCOUNTERED block, divider, blank, then play-again prompt</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">display_numbered_list</span><span class="sy-op">(</span>items<span class="sy-op">,</span> title<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;
+    Display a list with a title, an underline, and 1-based numbering.
+
+    Args:
+        items (list): Items to display
+        title (str): Title to show above the list
+    &quot;&quot;&quot;</span>
+    <span class="sy-cm"># 1. Print the title</span>
+    <span class="sy-cm"># 2. Print a divider line: &#x27;-&#x27; multiplied by len(title)</span>
+    <span class="sy-cm"># 3. Loop with for i in range(len(items)):</span>
+    <span class="sy-cm">#    - Print f&#x27;  {i + 1}. {items[i]}&#x27;</span>
+    <span class="sy-cm"># 4. Print a blank line at the end</span>
+    <span class="sy-kw">pass</span>
+</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="13" x2="15" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="9.5" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+        <p><strong>Program 7-3</strong> again, this time as a library function. <strong>Section 5.2</strong>: functions that have side effects (printing) but don't return anything &mdash; they're called for the work they do, not the value they produce. <code>display_numbered_list</code> is a side-effect-only function, like Python's built-in <code>print()</code>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1:</strong> Run a full game to the beach. When the trip summary prints, you should see two numbered lists like this:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>YOUR ROUTE
+----------
+  1. San Antonio
+  2. Houston
+  3. Galveston
+
+HAZARDS ENCOUNTERED
+-------------------
+  1. Buc-ee&#x27;s appears!</pre>
+    </div>
+    <p><strong>Step 2:</strong> Run a game with no hazards (you'll need RNG luck). Verify the HAZARDS ENCOUNTERED block shows the 'None - Lucky traveler!' message instead of an empty numbered list.</p>
+    <p><strong>Step 3:</strong> Visit Austin and return to SA before reaching the beach. Verify <code>visited_cities</code> shows all five entries: <code>['San Antonio', 'Austin', 'San Antonio', 'Houston', 'Galveston']</code>.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Divider is wrong length</td>
+        <td><code>'-' * len(title)</code> matches the title length exactly. If your divider is too short, you probably hardcoded a number; if too long, you might be doing <code>'-' * 50</code>.</td>
+      </tr>
+      <tr>
+        <td>Empty hazard list shows '0. ' or no list at all</td>
+        <td>Check the <code>if len(hazards_list) &gt; 0:</code> guard. The else branch should still print SOMETHING that tells the player there were no hazards.</td>
+      </tr>
+      <tr>
+        <td>Trip summary order looks different from expected output</td>
+        <td>The order is fixed: header divider, summary fields, blank, ROUTE block, HAZARDS block, closing divider. Check your existing print statements haven't drifted.</td>
+      </tr>
+      <tr>
+        <td>Numbered list prints right after the previous line with no space</td>
+        <td><code>display_numbered_list</code> should print a trailing blank line for separation. Add a <code>print()</code> at the end.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>display_numbered_list(items, title)</code> in <code>function_library.py</code></li>
+      <li>Function prints title, divider, numbered items, trailing blank line</li>
+      <li>Trip Summary in <code>lab-3-2.py</code> uses the helper for visited_cities</li>
+      <li>Trip Summary uses the helper for hazards_list (with empty-case fallback)</li>
+      <li>Output matches the canonical Trip Summary block in the final check</li>
     </ol>
     </div>
   </div>
@@ -850,41 +1285,63 @@ STATISTICS:
     <ul class="lc-checklist">
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label"><code>lab-3-2.py</code> with parallel lists, tracking lists, and enhanced save/load</span>
+        <span class="lc-checklist__label">Submitting <strong>two files</strong>: <code>lab-3-2.py</code> and <code>function_library.py</code></span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label"><code>function_library.py</code> with 3 new functions: <code>save_list_to_file()</code>, <code>load_list_from_file()</code>, <code>file_exists()</code></span>
+        <span class="lc-checklist__label"><code>function_library.py</code> contains: <code>flip_coin</code>, <code>roll_d20</code>, <code>check_percentage</code>, <code>get_valid_int</code>, <code>get_yes_no</code>, <code>SAVE_FILE</code>, <code>save_game</code> (11 params), <code>load_game</code> (returns 11-tuple), <code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>, <code>display_numbered_list</code></span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">9 parallel lists defined as constants (UPPERCASE names)</span>
+        <span class="lc-checklist__label"><code>lab-3-2.py</code> has the three triples of parallel lists at module level (SA, HOU, AUS)</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Both files have proper header comments with your name, ID, and section</span>
+        <span class="lc-checklist__label"><code>lab-3-2.py</code> has <code>get_city_data()</code> dispatch function</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">All functions have docstrings</span>
+        <span class="lc-checklist__label"><code>lab-3-2.py</code> has NO city-specific <code>if/elif</code> for destinations &mdash; all menus go through the library helpers</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Save/load uses <code>---HAZARDS---</code> separator and restores both tracking lists</span>
+        <span class="lc-checklist__label"><code>visited_cities</code> tracks the route, including any return trips through SA</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>hazards_list</code> tracks every hazard encountered, regardless of escape</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Both files have updated docstrings with name, abc123, section, and description</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Save/load round trip preserves all 11 fields including both lists</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>function_library.py</code> destination helpers accept lists as parameters (no module-level globals from <code>lab-3-2.py</code>)</span>
       </li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
-    <p>You may use all Chapter 2-7 concepts including lists with initial values, append(), len(), in operator, index(), remove(), pop(), copy(), for with range(len()). NOT YET: sort() (that&#x27;s Lab 3.3!), list slicing, list comprehensions, readlines().</p>
+    <p>Chapters 2–7 only. CodeGrade will flag code using techniques from later chapters.</p>
     <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
     <div class="lc-permitted">
       <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> Chapters 2–7</p>
       <ul class="lc-permitted__list">
-      <li>All previous techniques (variables, if/else, loops, functions, file I/O)</li>
-      <li>Lists with initial values, append(), len(), in operator</li>
-      <li>index(), remove(), pop(), copy()</li>
-      <li>for with range(len())</li>
+      <li>All previous techniques (variables, if/else, loops, functions, function_library, file I/O, try-except)</li>
+      <li>Lists with initial values: <code>[item1, item2, ...]</code></li>
+      <li>List indexing with <code>lst[i]</code> and <code>lst[choice - 1]</code></li>
+      <li><code>.append()</code> to grow lists</li>
+      <li><code>len()</code> for list length</li>
+      <li><code>for i in range(len(lst))</code> iteration</li>
+      <li><code>in</code> operator for membership check</li>
+      <li><code>.index()</code>, <code>.remove()</code>, <code>.pop()</code> for list manipulation</li>
+      <li><code>.copy()</code> to avoid mutating originals</li>
+      <li>Multiple return values via tuples; unpacking at call site</li>
       </ul>
-    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> sort() (Lab 3.3), list slicing, list comprehensions, readlines()</p>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> Dictionaries, sets, list comprehensions, &lt;code&gt;readlines()&lt;/code&gt;, &lt;code&gt;with&lt;/code&gt; statement, or any Chapter 8+ techniques. Note: &lt;code&gt;with&lt;/code&gt; is in Chapter 6 but we&#x27;re staying with explicit &lt;code&gt;open()&lt;/code&gt;/&lt;code&gt;close()&lt;/code&gt; through Module 3 for consistency.</p>
     </div>
     <div class="lc-callout lc-callout--success">
       <div class="lc-callout__icon">
@@ -897,12 +1354,195 @@ STATISTICS:
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">Save Your Code</div>
         <div class="lc-callout__body">
-          <p>Keep BOTH files! In Lab 3.3, you'll add sort(), unique city counting, and a printable trip report file. Your function library will keep growing!</p>
+          <p>Keep both files — Lab 3.3 builds the Master capstone of Module 3 on top of this. <code>function_library.py</code> grows again next week.</p>
         </div>
       </div>
     </div>
+    <div class="lc-h3 lc-h3--yellow">Run the Full Check</div>
+    <p>Before you submit, run your program end-to-end. Your output should match this exactly:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>
+==================================================
+DEEP IN THE HEART: A LONE STAR JOURNEY
+==================================================
+
+MAIN MENU
+--------------------
+1. New Game
+2. Load Saved Game
+3. Quit
+
+Choice (1-3): 
+What is your name, traveler? 
+Welcome, TestPlayer!
+You are in San Antonio. Your goal: reach the beach!
+
+Where would you like to go?
+  1. Corpus Christi - 150 miles (BEACH!)
+  2. Houston - 200 miles (Gateway East)
+  3. Austin - 80 miles (Keep it Weird)
+
+Choice (1-3): 
+Flipping to see if Texas cooperates...
+Result: HEADS!
+
+Texas says: &quot;Y&#x27;all come on through!&quot;
+You&#x27;re headed to Houston!
+Distance: 200 miles
+
+==================================================
+TRAVELING TO HOUSTON!
+==================================================
+
+--- Turn 1 ---
+Miles remaining: 200
+You rolled a 15!
+You travel 150 miles...
+Miles remaining: 50
+
+*** HAZARD! ***
+Buc-ee&#x27;s appears!
+HEADS!
+You resist the beaver&#x27;s call.
+
+--- Turn 2 ---
+Miles remaining: 50
+You rolled a 15!
+You travel 150 miles...
+
+You made it to Houston!
+
+OPTIONS:
+  1. Continue journey
+  2. Save and quit
+  3. Quit without saving
+
+Choice (1-3): 
+Where would you like to go?
+  1. Galveston - 50 miles (BEACH!)
+  2. San Antonio - 200 miles (Back West)
+
+Choice (1-2): 
+Flipping to see if Texas cooperates...
+Result: HEADS!
+
+Texas says: &quot;Y&#x27;all come on through!&quot;
+You&#x27;re headed to Galveston!
+Distance: 50 miles
+
+==================================================
+TRAVELING TO GALVESTON!
+==================================================
+
+--- Turn 1 ---
+Miles remaining: 50
+You rolled a 15!
+You travel 150 miles...
+
+You made it to Galveston!
+
+==================================================
+CONGRATULATIONS! YOU REACHED THE BEACH!
+==================================================
+
+
+--------------------------------------------------
+TRIP SUMMARY
+--------------------------------------------------
+Driver: TestPlayer
+Final City: Galveston
+Total Miles: 450
+Total Turns: 3
+Hazards Faced: 1
+Hazards Escaped: 1
+Status: BEACH WINNER!
+
+YOUR ROUTE
+----------
+  1. San Antonio
+  2. Houston
+  3. Galveston
+
+HAZARDS ENCOUNTERED
+-------------------
+  1. Buc-ee&#x27;s appears!
+
+--------------------------------------------------
+
+Play again? (y/n): 
+==================================================
+SESSION STATISTICS
+==================================================
+Games Played: 1
+Total Miles: 450
+Total Hazards: 1
+==================================================
+
+Thanks for playing, TestPlayer!
+An All My Eggses Live in Texas Production
+
+MAIN MENU
+--------------------
+1. New Game
+2. Load Saved Game
+3. Quit
+
+Choice (1-3): 
+Thanks for playing!</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">If Something Breaks</div>
+    <p>Common failure patterns and where they came from:</p>
+    <div class="lc-table-wrap" style="--lc-accent: #FF1744;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Symptom</th>
+            <th>Where to Look</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>NameError: 'save_game' is not defined</code> or similar after CP2</td>
+        <td>Check <strong>CP2</strong> &mdash; one or more call sites still say <code>save_game(...)</code> instead of <code>function_library.save_game(...)</code>. Search <code>lab-3-2.py</code> for any bare <code>save_game</code> or <code>load_game</code> references.</td>
+      </tr>
+      <tr>
+        <td>Menu still shows old format without the notes column at one or more cities</td>
+        <td>Check <strong>CP4 and CP6</strong> &mdash; you may have refactored SA but not the Houston or Austin menu. After CP6, all three cities should go through <code>function_library.display_destinations(...)</code>.</td>
+      </tr>
+      <tr>
+        <td>TAILS gate always sends the player to the same destination</td>
+        <td>Check <strong>CP5</strong> &mdash; <code>get_redirect</code> needs <code>random.randint</code> AND needs <code>.copy()</code> on both lists. Without copy, you mutate the originals and eventually only one option remains.</td>
+      </tr>
+      <tr>
+        <td><code>visited_cities</code> empty at end of game</td>
+        <td>Check <strong>CP7</strong> &mdash; you forgot the <code>.append(current_city)</code> after the travel loop ends. The list is initialized but nothing's adding to it.</td>
+      </tr>
+      <tr>
+        <td><code>too many values to unpack</code> error after loading a saved game</td>
+        <td>Check <strong>CP8</strong> &mdash; you extended <code>load_game</code> to return 11 values, but the unpack site in <code>main()</code> still expects 9. Update the unpack to include <code>visited_cities</code> and <code>hazards_list</code>.</td>
+      </tr>
+      <tr>
+        <td>Save file shows the <code>---LISTS_END---</code> marker but loading doesn't find it</td>
+        <td>Check <strong>CP8</strong> &mdash; your <code>while</code> condition in <code>load_game</code> probably just checks <code>line != ''</code>. It also needs <code>line != '---LISTS_END---'</code>.</td>
+      </tr>
+      <tr>
+        <td>Trip Summary lists are missing the divider line or trailing space</td>
+        <td>Check <strong>CP9</strong> &mdash; <code>display_numbered_list</code> needs to print: title, then <code>'-' * len(title)</code>, then the numbered items, then a blank <code>print()</code> at the end.</td>
+      </tr>
+      <tr>
+        <td>Lists persist across games (e.g., game 2 shows game 1's hazards too)</td>
+        <td>Check <strong>CP7</strong> &mdash; the list initializations need to be INSIDE the play-again loop's per-game reset block, not before the loop.</td>
+      </tr>
+      <tr>
+        <td>Loaded game crashes with <code>ValueError</code> or wrong field counts</td>
+        <td>Check <strong>CP8</strong> &mdash; if your save file is from before you finished CP8 (or from Lab 3.1 directly), it has the wrong number of lines for the new format. Delete <code>savegame.txt</code> and start fresh. The library's <code>load_game()</code> handles missing files cleanly, but a partial or old-format file may have parse errors. If a fresh save then loads cleanly, the fix is good. If it still crashes, your <code>load_game()</code> isn't catching <code>ValueError</code> &mdash; update the <code>except</code> clause to <code>except (FileNotFoundError, ValueError):</code>.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
-    <p>This assignment must be your own work. You may reference the textbook and BookEx examples. You may NOT copy code from others, use AI, or share your code.</p>
+    <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
   </div>
 </div>
 <div class="lc-card lc-card--purple">
@@ -916,11 +1556,12 @@ STATISTICS:
 
     <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
     <ul>
-      <li>Re-read BookEx 7.2 and 7.5 — list creation, indexing, and modification patterns</li>
-      <li>Test your parallel lists first — make sure indexing works before building functions</li>
-      <li>Print intermediate values — show what's in your lists at key points</li>
-      <li>Submit to CodeGrade early — shows exactly which tests pass or fail</li>
-      <li>Come to Zoom or office hours — screen share and debug together</li>
+      <li>Re-read Programs 7-1 (lists with initial values), 7-3 (list iteration), and 7-7/7-8 (in operator, index method, remove method) &mdash; these four show every list operation you need this week</li>
+      <li>When refactoring (especially CP2 and CP6), make ONE change at a time and re-run after each. Don't refactor SA, Houston, and Austin all at once &mdash; do them one at a time</li>
+      <li>If a library function isn't working, test it in isolation. Open <code>function_library.py</code>, add temporary code at the bottom under <code>if __name__ == '__main__':</code> that calls the function with known inputs</li>
+      <li>For CP8 (extending save/load), do the SAVE side first and inspect <code>savegame.txt</code> in Notepad before touching the LOAD side. Half the load bugs are actually save bugs from the previous step</li>
+      <li>Submit to CodeGrade early &mdash; the grader tests <code>function_library.py</code> in isolation, so you'll know immediately if a library function is broken without playing through a full game</li>
+      <li>Come to Zoom or office hours &mdash; debugging across two files is much easier with someone watching the screen</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
     <div class="lc-contact-grid">

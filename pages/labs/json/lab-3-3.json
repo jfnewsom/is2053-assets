@@ -1,580 +1,959 @@
 {
-    "meta": {
-        "labId": "lab-3-3",
-        "title": "Trip Report",
-        "module": 3,
-        "week": 3,
-        "weekType": "MASTER",
-        "chapters": "7",
-        "chapterTopics": "Lists and Tuples",
-        "filename": "lab-3-3.py",
-        "additionalFiles": [
-            "function_library.py"
-        ]
+  "meta": {
+    "labId": "lab-3-3",
+    "title": "Trip Report",
+    "module": 3,
+    "week": 3,
+    "weekType": "MASTER",
+    "chapters": "7",
+    "chapterTopics": "Lists and Tuples",
+    "filename": "lab-3-3.py",
+    "additionalFiles": [
+      "function_library.py"
+    ]
+  },
+  "overview": {
+    "body": "MASTER week. Module 3 ends here. You've already built file save/load, parallel lists for destinations, tracking lists for the route and hazards, and a library full of reusable helpers. This week pulls it all together. You'll replace the inline hazard <code>if/elif</code> with three more parallel lists, sort the hazards alphabetically for display, count unique cities visited using the <code>in</code> operator, and generate a polished trip report saved to <code>trip_report.txt</code> that the player can keep as a souvenir. The <code>function_library.py</code> grows by exactly one function this week: <code>get_random_hazard()</code>. Everything else lives in <code>lab-3-3.py</code>.",
+    "mentorQuote": {
+      "character": "Priya Venkatesh",
+      "role": "Project Manager, Bat City Collective",
+      "headshot": "Priya-Venkatesh.png",
+      "quote": "MASTER week is about the deliverable. You've spent two weeks building infrastructure &mdash; files, lists, library functions, save/load. This week the player gets something they can hold onto. A printed report. A permanent record. Treat <code>trip_report.txt</code> the way you'd treat any shipping artifact: the format is fixed, the content is real, and it has to look right every time."
     },
-    "overview": {
-        "body": "You have built a lot this module. You have files that save and load game state, lists that track everywhere you have been, and a working save/reload cycle. This final week pulls it all together.\n\nYou will replace the hardcoded hazard if/elif chain with a <code>HAZARD_NAMES</code> list, sort the hazard history alphabetically for display, calculate unique cities using the <code>in</code> operator, and write a formatted trip report to <code>trip_report.txt</code> at the end of a run. You will also add the final Module 3 function to <code>function_library.py</code>: <code>display_numbered_list()</code>.\n\n<strong>Before you begin:</strong> Copy your <code>lab-3-2.py</code> and <code>function_library.py</code> files into your working folder for this week. All changes go into new files named <code>lab-3-3.py</code> and an updated <code>function_library.py</code>. Do not overwrite your 3-2 work.",
-        "mentorQuote": {
-            "character": "Tyler Nguyen",
-            "role": "Junior Developer, Bat City Collective",
-            "headshot": "Tyler-Nguyen.png",
-            "quote": "MASTER week is when it clicks. You stop adding features and start seeing the system. The trip report is not just output — it is proof that every piece you built this module is talking to every other piece."
-        },
-        "objectives": [
-            "Replace a hardcoded hazard if/elif chain with a HAZARD_NAMES list and index-based random selection",
-            "Use .copy() to duplicate a list before sorting so the original is preserved",
-            "Use .sort() to sort a list alphabetically in place",
-            "Build a unique cities list using the in operator to filter duplicates",
-            "Write a formatted multi-section report to a file using save_trip_report()",
-            "Add display_numbered_list() to function_library.py as the final Module 3 library function"
-        ],
-        "keyConceptsText": "Chapter 7: Program 7-6 (list methods — remove), Program 7-9 (len and built-in functions), Program 7-12 (comprehensive list processing), Program 7-16 (writing a list to a file).",
-        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 7",
-        "programRequirements": [
-            "HAZARD_NAMES list constant defined with at least six hazard strings",
-            "get_random_hazard() uses random.randint() to pick an index and returns HAZARD_NAMES[index]",
-            "REPORT_FILE = 'trip_report.txt' constant defined",
-            "save_trip_report() writes the formatted report to trip_report.txt",
-            "Sorted hazards in the trip report use .copy() then .sort() on hazards_list",
-            "Unique cities are calculated using a for loop and the in operator",
-            "function_library.py adds display_numbered_list(items, title) with a docstring"
-        ],
-        "namedConstants": [
-            {
-                "name": "HAZARD_NAMES",
-                "description": "List of hazard name strings used for random selection"
-            },
-            {
-                "name": "REPORT_FILE",
-                "description": "String constant — filename for the trip report, always 'trip_report.txt'"
-            }
-        ],
-        "filenameNote": "Submit lab-3-3.py and function_library.py this week.",
-        "additionalFilesNote": "function_library.py is submitted alongside lab-3-3.py. CodeGrade tests display_numbered_list() in isolation."
-    },
-    "timeGuide": {
-        "totalTime": "120–150 Minutes",
-        "rows": [
-            {
-                "checkpoint": "Setup",
-                "time": "5 min",
-                "task": "Copy lab-3-2.py and function_library.py to lab-3-3.py"
-            },
-            {
-                "checkpoint": "CP1: HAZARD_NAMES list",
-                "time": "25 min",
-                "task": "Replace hazard if/elif with list + get_random_hazard() function"
-            },
-            {
-                "checkpoint": "CP2: sort() and copy()",
-                "time": "20 min",
-                "task": "Sort hazard display and build unique cities list"
-            },
-            {
-                "checkpoint": "CP3: save_trip_report()",
-                "time": "35 min",
-                "task": "Write save_trip_report() and add REPORT_FILE constant"
-            },
-            {
-                "checkpoint": "CP4: Library + Integration",
-                "time": "25 min",
-                "task": "Add display_numbered_list() to library and wire up the full report"
-            },
-            {
-                "checkpoint": "Test & Submit",
-                "time": "10 min",
-                "task": "Test end-to-end, verify trip_report.txt, submit both files"
-            }
-        ]
-    },
-    "beforeYouBegin": {
-        "intro": "Here is how your finished program fits together. The [NEW] tags show what you are adding this week. The [REPLACED] tags show what changes from your 3.2 code.",
-        "architecture": "# ---- CONSTANTS ----\nSAVE_FILE    = 'savegame.txt'             (unchanged)\nREPORT_FILE  = 'trip_report.txt'          [NEW]\nHAZARD_NAMES = [...]                      [NEW — replaces hazard if/elif]\nSA_DESTINATIONS / SA_DISTANCES / SA_NOTES (unchanged)\n\n# ---- HELPER FUNCTIONS ----\nget_random_hazard()                       [REPLACED — uses HAZARD_NAMES[index]]\ndisplay_destinations()                    (unchanged)\n\n# ---- REPORT FUNCTION ----\nsave_trip_report(player_name,\n    current_city, total_miles, total_turns,\n    hazards_faced, hazards_escaped,\n    visited_cities, hazards_list)          [NEW]\n\n# ---- SAVE / LOAD ----\nsave_game() / load_game()                 (unchanged from 3.2)\n\nGAME LOOP:  (unchanged)\n│\nFINAL TRIP REPORT:\n│── Unique cities calculation             [NEW]\n│   └── for city in visited_cities:\n│       └── if city not in unique_cities\n│── sorted_hazards = hazards_list.copy()  [NEW]\n│── sorted_hazards.sort()                 [NEW]\n│── function_library.display_numbered_list()  [NEW]\n│── save_trip_report()                    [NEW]\n│── Offer to save trip report to file     [NEW]\n\n# ---- function_library.py additions ----\ndisplay_numbered_list(items, title)       [NEW]"
-    },
-    "checkpoints": [
-        {
-            "number": 1,
-            "title": "Replace Hazard if/elif with HAZARD_NAMES List",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "Your hazard selection currently uses a chain of if/elif branches or a series of random number comparisons. You are going to apply the same parallel-list pattern from CP2 last week: define <code>HAZARD_NAMES</code> as a list constant, then write a <code>get_random_hazard()</code> function that picks a random index and returns the name at that position."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "The if/elif chain for hazards is brittle — adding a new hazard means editing multiple places in your code. A list constant plus index-based selection means adding a hazard is one more string in the list. That is it. This is the same principle that cleaned up destination selection in Lab 3.2, and it will keep paying off every time the game grows."
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Danny Cavanaugh",
-                    "role": "Lead Developer, Bat City Collective",
-                    "headshot": "Danny-Cavanaugh.png",
-                    "quote": "If you catch yourself writing elif again for something that's just picking from a list of options — stop. Make a list. Write one function. Every time I see a six-branch elif chain that could be a list, a junior dev somewhere is doubling their maintenance work."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Start by copying <code>lab-3-2.py</code> to a new file named <code>lab-3-3.py</code>. Also make a copy of your current <code>function_library.py</code> — both files get updated this week.",
-                        "Near the top of <code>lab-3-3.py</code>, add the <code>HAZARD_NAMES</code> list constant with at least six hazard strings. Include the hazards already used in your game, plus any new ones you want to add.",
-                        "Add the <code>REPORT_FILE = 'trip_report.txt'</code> constant nearby.",
-                        "Define a <code>get_random_hazard()</code> function. It should use <code>random.randint()</code> to generate a random index in the range <code>0</code> to <code>len(HAZARD_NAMES) - 1</code>, then return <code>HAZARD_NAMES[index]</code>.",
-                        "In the game loop, find where hazards are triggered. Replace the old if/elif hazard selection logic with a call to <code>get_random_hazard()</code>. The return value is the hazard name string — use it the same way you used the old hazard variable.",
-                        "Run the game and trigger a few hazards to confirm different hazard names appear and they all come from your list."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Tip",
-                        "Watch Out"
-                    ],
-                    "rows": [
-                        [
-                            "Use <code>len(HAZARD_NAMES) - 1</code> as the upper bound in <code>random.randint()</code>. That way adding a new hazard to the list automatically makes it reachable — you never have to update two places.",
-                            "Don't hardcode the upper bound as a fixed number like <code>5</code>. If your list grows to seven items but your randint still goes up to <code>5</code>, the last item can never be selected."
-                        ],
-                        [
-                            "Give <code>get_random_hazard()</code> a docstring — CodeGrade checks documentation on library-style functions.",
-                            "Don't forget to remove or comment out the old if/elif hazard chain. Having both the old logic and the new function call active at the same time will cause hazards to behave unpredictably."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "7-1",
-                            "filename": "sales_list.py",
-                            "description": "You created a list with initial values using <code>sales = [0] * NUM_DAYS</code>. <code>HAZARD_NAMES</code> uses the same idea — a list defined with its values at the top of the file."
-                        },
-                        {
-                            "programId": "5-21",
-                            "filename": "dice.py",
-                            "description": "You used <code>random.randint(MIN, MAX)</code> to simulate dice. <code>get_random_hazard()</code> uses the same call — just with <code>0</code> and <code>len(HAZARD_NAMES) - 1</code> as the bounds."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "Trigger at least three hazards during a test run. Confirm each one comes from your <code>HAZARD_NAMES</code> list. Then temporarily add a seventh hazard string to the list and verify it can appear — then remove it before submitting."
-                },
-                {
-                    "type": "output_block",
-                    "output": "A hazard appears on the road!\nSpeed trap!\nRoll your d20 to escape! (You rolled: 14)\nYou escaped the hazard!"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>HAZARD_NAMES</code> list constant defined with at least six strings",
-                        "<code>REPORT_FILE = 'trip_report.txt'</code> constant defined",
-                        "<code>get_random_hazard()</code> function defined with a docstring, using random index into <code>HAZARD_NAMES</code>",
-                        "Old hazard if/elif chain removed from the game loop",
-                        "Hazards still append to <code>hazards_list</code> as before"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 2,
-            "title": "Add Sorted Hazard Display and Unique Cities Calculation",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "This checkpoint adds two list operations to the final trip report section. First, you will sort the hazard history alphabetically so it reads cleanly — but you must copy the list before sorting so the original encounter order is preserved. Second, you will calculate how many unique cities the player visited by filtering out duplicates using the <code>in</code> operator."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "Sorted output makes reports readable — players can scan alphabetically for the hazards they remember. And the unique city count tells a more honest story than the total route length when a player visits the same city multiple times. These are also two of the most useful list patterns in Python: sort a copy to protect the original, and build a unique list with <code>in</code> to filter duplicates."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "In the final trip report section of your game, add the sorted hazard display. First, make a copy of the list: <code>sorted_hazards = hazards_list.copy()</code>. Then sort the copy in place: <code>sorted_hazards.sort()</code>. Loop through <code>sorted_hazards</code> to display them — not <code>hazards_list</code>.",
-                        "Add the unique cities calculation. Create an empty list <code>unique_cities = []</code>. Loop through <code>visited_cities</code>. For each city, check <code>if city not in unique_cities</code> — if it is not already there, append it.",
-                        "Use <code>len(unique_cities)</code> in the trip report to display the count of unique cities visited.",
-                        "Run the game, visit a city more than once, and confirm the unique count is lower than the total route length."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Tip",
-                        "Watch Out"
-                    ],
-                    "rows": [
-                        [
-                            "<code>hazards_list.copy()</code> creates a new independent list. Sort the copy — the original stays in encounter order for saving.",
-                            "<code>sort()</code> modifies the list permanently in place. Calling <code>hazards_list.sort()</code> directly means the save file will store hazards alphabetically instead of in the order they happened."
-                        ],
-                        [
-                            "The unique cities pattern — <code>if city not in unique_cities: unique_cities.append(city)</code> — works on any list. It is the Chapter 7 way to deduplicate before <code>set()</code> arrives in Module 4.",
-                            "Don't use <code>sorted()</code> (the built-in function) — it is not in scope this module. Use <code>.copy()</code> then <code>.sort()</code> on the copy."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "7-2",
-                            "filename": "in_list.py",
-                            "description": "You used the <code>in</code> operator to check if a product number was in a list. The unique cities check uses the exact same pattern: <code>if city not in unique_cities</code>."
-                        },
-                        {
-                            "programId": "7-12",
-                            "filename": "drop_lowest_score.py",
-                            "description": "Shows comprehensive list processing including sorting. The sort-a-copy discipline comes from the same instinct as protecting the original score list."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "Visit at least one city more than once during your test run, and trigger at least two different hazards. Check that the on-screen trip report shows hazards in alphabetical order and that the unique city count is correct."
-                },
-                {
-                    "type": "output_block",
-                    "output": "HAZARDS ENCOUNTERED (A-Z):\n  1. Armadillo crossing!\n  2. Buc-ee's appears!\n  3. Speed trap!\n\nRoute: San Antonio -> Houston -> Austin -> Houston\nUnique cities visited: 3"
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Sasha Mireles",
-                    "role": "Creative Director, Bat City Collective",
-                    "headshot": "Sasha-Mireles.png",
-                    "quote": "Sorted hazards in a report are a small thing that makes a huge difference. Players notice when their journey feels organized. Copy first, sort the copy — that one line of discipline protects everything built underneath it."
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Sorted hazard display uses <code>hazards_list.copy()</code> then <code>.sort()</code> — original list untouched",
-                        "Unique cities are calculated with a <code>for</code> loop and <code>in</code> operator",
-                        "<code>len(unique_cities)</code> appears in the trip report output"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 3,
-            "title": "Write save_trip_report() and Generate trip_report.txt",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "The trip report currently only prints to the screen. This checkpoint adds a <code>save_trip_report()</code> function that writes a formatted version to <code>trip_report.txt</code> so the player can keep a record of their run."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "The on-screen report disappears when the session ends. Writing to <code>trip_report.txt</code> means the player can share their run, compare routes, or just feel the weight of what they accomplished. It is also the first time you are writing a multi-section structured document to a file — a pattern that scales directly to real data export in professional software."
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Priya Venkatesh",
-                    "role": "Project Manager, Bat City Collective",
-                    "headshot": "Priya-Venkatesh.png",
-                    "quote": "A deliverable that only exists on screen isn't really a deliverable. The client asked for something they can hold onto. trip_report.txt is your handoff artifact — treat the format like it matters, because to them it does."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Define <code>save_trip_report()</code> with the following parameters: <code>player_name</code>, <code>current_city</code>, <code>total_miles</code>, <code>total_turns</code>, <code>hazards_faced</code>, <code>hazards_escaped</code>, <code>visited_cities</code>, and <code>hazards_list</code>. Give it a docstring.",
-                        "Inside the function, open <code>REPORT_FILE</code> in write mode using the <code>with</code> statement.",
-                        "Write the header section: a title line, a separator line of equal signs, the driver name, and the final destination.",
-                        "Write a ROUTE section. Loop through <code>visited_cities</code> and write each city separated by <code>' -> '</code> on a single line. Then write the unique cities count on the next line.",
-                        "Write a STATISTICS section with total miles, total turns, hazards faced, hazards escaped, and the escape rate as a percentage (use <code>:.1f</code> formatting). Guard against division by zero on the escape rate.",
-                        "Write a HAZARDS (A-Z) section. Copy and sort <code>hazards_list</code> inside the function, then write each hazard prefixed with <code>' - '</code>.",
-                        "Write a closing separator line.",
-                        "In the main game, after the trip report prints to screen, ask the player if they want to save the report using <code>function_library.get_yes_no()</code>. If yes, call <code>save_trip_report()</code> with all the required arguments."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Tip",
-                        "Watch Out"
-                    ],
-                    "rows": [
-                        [
-                            "Use <code>with open(REPORT_FILE, 'w')</code> inside the function — not the string literal <code>'trip_report.txt'</code>. That is what the constant is for.",
-                            "Division by zero on the escape rate. Guard with <code>if hazards_faced > 0</code> before calculating the percentage, and default to <code>0.0</code> when no hazards were triggered."
-                        ],
-                        [
-                            "Build the route line by joining <code>visited_cities</code> with <code>' -> '</code> using a loop or the <code>join()</code> string method — either works at this scope level.",
-                            "Opening in <code>'w'</code> mode overwrites the file every time. That is intentional — the player saves a fresh report at the end of each run. Do not use <code>'a'</code> (append) mode."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "expected_output"
-                },
-                {
-                    "type": "output_block",
-                    "output": "DEEP IN THE HEART - TRIP REPORT\n========================================\nDriver: Maria\nFinal Destination: Galveston\n\nROUTE:\n  San Antonio -> Houston -> Galveston\n  Unique cities: 3\n\nSTATISTICS:\n  Total Miles: 267\n  Total Turns: 4\n  Hazards Faced: 2\n  Hazards Escaped: 1\n  Escape Rate: 50.0%\n\nHAZARDS (A-Z):\n - Armadillo crossing!\n - Buc-ee's appears!\n\n========================================"
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "7-16",
-                            "filename": "write_number_list.py",
-                            "step": 1,
-                            "description": "Shows the pattern for writing list contents to a file with a loop — adapt this for writing the hazards section."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "End a complete game and choose to save the report. Open <code>trip_report.txt</code> in a text editor and confirm all four sections appear with correct formatting. Run the game again and save another report — confirm the old one is overwritten cleanly (write mode, not append)."
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>save_trip_report()</code> defined with all parameters and a docstring",
-                        "Function uses <code>with open(REPORT_FILE, 'w')</code> — not the constant string directly",
-                        "Report contains header, ROUTE, STATISTICS, and HAZARDS (A-Z) sections in that order",
-                        "Escape rate is formatted to one decimal place and guards against division by zero",
-                        "Player is prompted to save the report after the on-screen trip report displays"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 4,
-            "title": "Add display_numbered_list() to function_library.py",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "The final piece: one new function in <code>function_library.py</code>. <code>display_numbered_list()</code> takes any list and a title string, prints the title with a separator, and displays each item with a number prefix. This is the last Module 3 library addition — after this week, the library has eight functions across four categories."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "Right now, any numbered list in the game requires the same for-loop boilerplate written out every time. Wrapping it in a library function means changing the display format once changes it everywhere — the route display, the hazard list, any future list you add. That is what library functions are for. Eight functions, three modules. You have built something real."
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Danny Cavanaugh",
-                    "role": "Lead Developer, Bat City Collective",
-                    "headshot": "Danny-Cavanaugh.png",
-                    "quote": "Eight functions, three weeks. That is a library. Every one of those came from a real pain point in the game — a place where you said 'this is annoying to repeat.' Keep that instinct. It is how good code gets written."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Open <code>function_library.py</code>. Add a new section comment at the bottom: <code># LIST UTILITY FUNCTIONS (Added in Lab 3-3)</code>",
-                        "Define <code>display_numbered_list(items, title)</code>. Give it a complete docstring that describes both parameters.",
-                        "Inside the function: print the title string, then print a separator using <code>'-' * len(title)</code>.",
-                        "Use <code>for i in range(len(items)):</code> to loop through the list by index. Print each item as <code>f'  {i + 1}. {items[i]}'</code>.",
-                        "Print a blank line after the last item so the output has breathing room.",
-                        "Back in <code>lab-3-3.py</code>, update the final trip report to use <code>function_library.display_numbered_list()</code> for displaying the visited cities route and the sorted hazards list."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Tip",
-                        "Watch Out"
-                    ],
-                    "rows": [
-                        [
-                            "The separator line uses <code>'-' * len(title)</code> — it automatically matches the title width, so any title you pass in gets a perfectly fitted separator.",
-                            "Use <code>range(len(items))</code> for the loop, not <code>for item in items</code>. You need the index number <code>i</code> to print <code>i + 1</code> in front of each item."
-                        ],
-                        [
-                            "Test the function by passing it a short list directly in the terminal before wiring it into the game — faster feedback loop.",
-                            "Don't forget the trailing blank line (<code>print()</code>) at the end of the function. CodeGrade tests the output format exactly, including spacing."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "7-12",
-                            "filename": "drop_lowest_score.py",
-                            "step": 1,
-                            "description": "Shows a function that accepts a list as a parameter and processes it — the same pattern as <code>display_numbered_list()</code>."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Play a complete game from start to beach. Travel through at least two cities and trigger at least two hazards.",
-                        "Verify the on-screen trip report shows a numbered city route and a sorted, numbered hazard list.",
-                        "Choose to save the trip report. Open <code>trip_report.txt</code> in a text editor and confirm it matches the expected format.",
-                        "Run the program again, load a saved game, play one more turn, and verify the full save-reload-play-report cycle works end to end.",
-                        "Run <code>python3 function_library.py</code> in your terminal — it should produce no errors."
-                    ]
-                },
-                {
-                    "type": "output_block",
-                    "output": "ROUTE:\n--------------------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nHAZARDS ENCOUNTERED (A-Z):\n---------------------------\n  1. Armadillo crossing!\n  2. Buc-ee's appears!"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>display_numbered_list(items, title)</code> defined in <code>function_library.py</code> with a docstring",
-                        "Function prints title, separator, numbered items using <code>range(len(items))</code>, and a trailing blank line",
-                        "Trip report on screen uses <code>function_library.display_numbered_list()</code> for the route and hazard sections",
-                        "<code>trip_report.txt</code> is generated with the correct multi-section format",
-                        "Both <code>lab-3-3.py</code> and <code>function_library.py</code> are ready to submit"
-                    ]
-                }
-            ]
-        }
+    "objectives": [
+      "Add three more parallel lists for hazards: <code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code> (6 hazards each, same shape as the destination lists)",
+      "Add <code>get_random_hazard(names, heads_msgs, tails_msgs)</code> to <code>function_library.py</code> (parameterized: accepts the hazard lists as arguments)",
+      "Refactor the in-game hazard block to use the library helper instead of an inline <code>if/elif</code>",
+      "Sort hazards alphabetically in the trip summary using <code>.copy()</code> and <code>.sort()</code>",
+      "Count unique cities visited using the <code>in</code> operator",
+      "Build <code>save_trip_report()</code> in <code>lab-3-3.py</code> and write a formatted multi-section report to <code>trip_report.txt</code> at the end of every game"
     ],
-    "finalChecklist": {
-        "beforeYouSubmit": [
-            "lab-3-3.py has a top-of-file comment block with your name, abc123, section number, and a description",
-            "function_library.py has display_numbered_list(items, title) with a complete docstring",
-            "HAZARD_NAMES list constant defined with at least six hazard strings",
-            "REPORT_FILE = 'trip_report.txt' constant defined and used in save_trip_report()",
-            "get_random_hazard() uses random index into HAZARD_NAMES — no if/elif chain",
-            "Sorted hazard display uses .copy() then .sort() — original hazards_list is not modified",
-            "Unique cities are calculated with a for loop and in operator — no sort() or set() on visited_cities",
-            "save_trip_report() writes all four sections: header, ROUTE, STATISTICS, HAZARDS (A-Z)",
-            "Escape rate calculation guards against division by zero",
-            "Player is offered the option to save the trip report at the end of the game"
-        ],
-        "scopeReminder": "Chapter 7 list methods are all in scope: append(), sort(), copy(), remove(), index(), and len(). The with statement remains permitted for file operations. Do NOT use sets, dictionaries, classes, list comprehensions, or any Chapter 8+ features. The set() type is the Module 4 upgrade for unique tracking — use the for/in approach this week.",
-        "permittedTechniques": {
-            "chapters": "2–7 (all techniques from Chapters 2–6 plus full Chapter 7 list processing)",
-            "specific": [
-                "list.copy() to duplicate a list before sorting",
-                "list.sort() to sort a list in place",
-                "for loop with range(len(list)) for indexed display",
-                "in operator to check membership and build unique lists",
-                "with open(filename, 'w') for file writing",
-                "random.randint(0, len(list) - 1) for random index generation"
-            ],
-            "notPermitted": "set(), dict, classes, list comprehensions, sorted() built-in (use .sort() on a copy instead)"
+    "keyConceptsText": "Parallel lists applied to hazards (same pattern as destinations, fresh data). <code>.copy()</code> to duplicate a list before mutating. <code>.sort()</code> for alphabetical ordering in place. <code>in</code> operator for membership testing and deduplication. Formatted multi-section file output. <strong>Library Membership Rule</strong>: a function with known future use originates in <code>function_library.py</code> from day one. <code>get_random_hazard()</code> will be used again in Module 4 when hazard data moves to a text file, so it lands in the library now.",
+    "textbookReference": "Chapter 7: Lists and Tuples (Sections 7.4 'The in operator', 7.5.4 '.sort()', 7.5.6 '.copy()', 7.7 'Files and lists')",
+    "programRequirements": [
+      "Your program <strong>MUST</strong> use three parallel lists for hazards: <code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code>",
+      "Your <code>function_library.py</code> <strong>MUST</strong> contain <code>get_random_hazard(names, heads_msgs, tails_msgs)</code>",
+      "Your program <strong>MUST</strong> use <code>.copy()</code> followed by <code>.sort()</code> to display hazards alphabetically (the original <code>hazards_list</code> stays in arrival order for the save file)",
+      "Your program <strong>MUST</strong> build a <code>unique_cities</code> list using the <code>in</code> operator",
+      "Your program <strong>MUST</strong> write <code>trip_report.txt</code> at the end of every completed game (no y/n prompt &mdash; always save)",
+      "Your <code>save_trip_report()</code> function <strong>MUST</strong> live in <code>lab-3-3.py</code>, not in the library (it's lab-specific format)"
+    ],
+    "filenameNote": "Save your main game file as <code>lab-3-3.py</code>. Your <code>function_library.py</code> grows by exactly one function this week.",
+    "additionalFilesNote": "Submit both <code>lab-3-3.py</code> and <code>function_library.py</code>. The save file <code>savegame.txt</code> and the trip report <code>trip_report.txt</code> are generated at runtime; you do not submit them.",
+    "dataFiles": [
+      {
+        "file": "function_library.py",
+        "format": "Your reusable function module. Carries forward from Lab 3.2 with one addition this week: <code>get_random_hazard()</code> in a new HAZARD HELPER section.",
+        "new": false,
+        "submitted": true
+      }
+    ],
+    "namedConstants": [
+      {
+        "name": "All previous constants (distance, MILES_MULTIPLIER, HAZARD_CHANCE, parallel destination lists)",
+        "description": "Carry forward from Lab 3.2"
+      },
+      {
+        "name": "REPORT_FILE",
+        "description": "<strong>NEW</strong> &mdash; where to write the trip report (<code>'trip_report.txt'</code>)"
+      },
+      {
+        "name": "HAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS",
+        "description": "<strong>NEW</strong> &mdash; three parallel lists, six hazards each"
+      }
+    ]
+  },
+  "timeGuide": {
+    "totalTime": "90–120 Minutes",
+    "rows": [
+      {
+        "checkpoint": "CP1: Cleanup",
+        "time": "5 min",
+        "task": "Copy lab-3-2.py to lab-3-3.py and confirm carryover"
+      },
+      {
+        "checkpoint": "CP2: Build Parallel Hazard Lists",
+        "time": "10 min",
+        "task": "Declare three parallel lists with 6 hazards each"
+      },
+      {
+        "checkpoint": "CP3: get_random_hazard() in the Library",
+        "time": "10 min",
+        "task": "Add the parameterized helper to function_library.py"
+      },
+      {
+        "checkpoint": "CP4: Refactor the Hazard Block",
+        "time": "10 min",
+        "task": "Replace inline if/elif with the library call"
+      },
+      {
+        "checkpoint": "CP5: Sort Hazards Alphabetically",
+        "time": "10 min",
+        "task": "Use .copy() and .sort() before displaying"
+      },
+      {
+        "checkpoint": "CP6: Count Unique Cities",
+        "time": "10 min",
+        "task": "Build unique_cities with the in operator"
+      },
+      {
+        "checkpoint": "CP7: Build save_trip_report() and Generate the Report",
+        "time": "30 min",
+        "task": "Multi-section formatted report written to trip_report.txt"
+      },
+      {
+        "checkpoint": "Final Check & Submit",
+        "time": "10 min",
+        "task": "Run end-to-end test, verify expected output and report, submit"
+      }
+    ]
+  },
+  "beforeYouBegin": {
+    "intro": "MASTER week pulls Module 3 together. The library grows by one function (<code>get_random_hazard</code>); the lab file gets three new parallel lists (hazards), one new helper (<code>save_trip_report</code>), and a few additions to the trip summary (sorted hazards, unique city count, file output).",
+    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()     (keep from 2.2)\nget_valid_int(), get_yes_no()                   (keep from 2.3)\nsave_game(...), load_game()                     (keep from 3.2)\ndisplay_destinations(...), get_destination(...), get_redirect(...)  (keep from 3.2)\ndisplay_numbered_list(...)                      (keep from 3.2)\nget_random_hazard(names, heads_msgs, tails_msgs)   [NEW-CP3]\n\n# ---- IN lab-3-3.py ----\n\n# ---- DISTANCE + PARALLEL DESTINATION CONSTANTS ----   (keep from 3.2)\nSAT_TO_CORPUS, SAT_TO_HOUSTON, ... HAZARD_CHANCE\nSA_DESTINATIONS, SA_DISTANCES, SA_NOTES\nHOU_DESTINATIONS, HOU_DISTANCES, HOU_NOTES\nAUS_DESTINATIONS, AUS_DISTANCES, AUS_NOTES\n\n# ---- NEW HAZARD CONSTANTS ----\nREPORT_FILE = 'trip_report.txt'                  [NEW-CP7]\nHAZARD_NAMES = [...]      (6 hazards)            [NEW-CP2]\nHAZARD_HEADS_MSGS = [...] (6 messages)           [NEW-CP2]\nHAZARD_TAILS_MSGS = [...] (6 messages)           [NEW-CP2]\n\ndef get_city_data(city):                         (keep from 3.2)\n\ndef save_trip_report(filename, ...):             [NEW-CP7]\n│── Writes formatted multi-section report to disk\n│── Stays in lab-3-3.py (lab-specific format, not library-bound)\n\n# ---- MAIN MENU LOOP ----   (keep from 3.2)\nwhile in_program:\n│── New / Load / Quit\n│\n│── # ---- PLAY-AGAIN LOOP ----   (keep from 3.2)\n│   while play_again:\n│   │── Reset per-game state\n│   │\n│   │── # ---- IN-GAME LOOP ----   (keep from 3.2)\n│   │   while playing:\n│   │   │── Menu, choice, gate flip (unchanged)\n│   │   │── Travel loop with hazards\n│   │   │   on hazard: hazard, heads_msg, tails_msg =\n│   │   │              function_library.get_random_hazard(\n│   │   │                  HAZARD_NAMES,\n│   │   │                  HAZARD_HEADS_MSGS,\n│   │   │                  HAZARD_TAILS_MSGS)          [REPLACED-CP4]\n│   │   │── Standard arrival / save / quit handling\n│   │\n│   │── After in-game loop — FINAL TRIP REPORT (on screen):\n│   │   ├── status = 'BEACH WINNER!' / 'Trip Incomplete' / etc.\n│   │   ├── sorted_hazards = hazards_list.copy(); .sort()  [NEW-CP5]\n│   │   ├── unique_cities = build with `in` operator         [NEW-CP6]\n│   │   ├── Display all the sections on screen\n│   │   └── save_trip_report(REPORT_FILE, ...)               [NEW-CP7]\n│   │\n│   │── Update session accumulators, play_again prompt\n│\n│── After play-again: SESSION STATISTICS (keep from 3.2)\n"
+  },
+  "checkpoints": [
+    {
+      "title": "Cleanup",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
         },
-        "warnings": [
-            "Submit both lab-3-3.py and function_library.py. A missing function_library.py will fail the display_numbered_list() tests even if your main file is correct.",
-            "Do not call sort() directly on hazards_list or visited_cities in the game loop — only sort copies, and only in the report section."
-        ]
+        {
+          "type": "text",
+          "body": "A clean starting point for Lab 3.3. Copy <code>lab-3-2.py</code> to <code>lab-3-3.py</code>, update the docstring, and confirm everything still runs before adding the MASTER-week features."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Same reason as every BUILD/ENHANCE cleanup: do not mix 'fix the old' with 'add the new.' If something breaks this week, it's because of something you added today, not something that broke yesterday."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<strong>Copy</strong> <code>lab-3-2.py</code> to <code>lab-3-3.py</code> in the same folder",
+            "<strong>Do NOT copy</strong> <code>function_library.py</code> &mdash; it stays in place; you'll add one function to it in CP3",
+            "<strong>Update the docstring</strong>: change the title to <code>Lab 3.3: Trip Report</code>, update the description, and change the chapter list",
+            "<strong>Run <code>lab-3-3.py</code></strong> as-is. Play one game to the beach. Verify the trip summary appears with YOUR ROUTE and HAZARDS ENCOUNTERED. If anything's different from Lab 3.2, fix the copy before moving on"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "kind": "bookex",
+          "title": "",
+          "body": "No new BookEx patterns yet &mdash; this is pure cleanup. CP2 starts the new work."
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Run <code>lab-3-3.py</code> end-to-end. Play one full game. Verify behavior is identical to Lab 3.2. Choose <code>3</code> to quit when done."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Editing <code>lab-3-2.py</code> directly",
+              "Always preserve your previous submission. Copy first, then edit the copy."
+            ],
+            [
+              "Touching <code>function_library.py</code> this CP",
+              "Library changes start in CP3. This CP only renames a file and updates a docstring."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "A file named <code>lab-3-3.py</code> with an updated docstring",
+            "<code>function_library.py</code> unchanged from Lab 3.2",
+            "Running <code>lab-3-3.py</code> plays a complete game identical to Lab 3.2"
+          ]
+        }
+      ]
     },
-    "needHelp": {
-        "ifYouGetStuck": [
-            "If trip_report.txt looks wrong, add print statements inside save_trip_report() to trace what is being written before you open the file",
-            "Re-read Program 7-12 for the pattern of passing a list to a function and processing it — display_numbered_list() follows the same shape",
-            "Submit to CodeGrade early — it tests display_numbered_list() in isolation, so you will see immediately if the function signature or output format is off",
-            "Come to Zoom or office hours — MASTER week bugs are almost always a matter of tracking which variable holds the right data at the right moment"
-        ],
-        "bookexResourceNote": "Chapter 6 and Chapter 7 BookEx Reference Guides — both chapters remain in scope this week"
+    {
+      "title": "Build Parallel Hazard Lists",
+      "content": [
+        {
+          "type": "mentor_quote",
+          "character": "Tyler Nguyen",
+          "role": "Junior Developer, Bat City Collective",
+          "headshot": "Tyler-Nguyen.png",
+          "quote": "Last week you saw what parallel lists do for destinations. This week, you do the same trick for hazards &mdash; but with <em>three</em> lists per item instead of two. The name, the escape message, and the delay message. Same pattern, fresh data. And the payoff scales: when you want a seventh hazard, you add one item to each list and the rest of your code doesn't change. I love this pattern. It's the moment your code stops feeling like a wall of <code>if</code> statements and starts feeling like a data table."
+        },
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "Three parallel lists in <code>lab-3-3.py</code>: <code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, and <code>HAZARD_TAILS_MSGS</code>. Each list has six items, and items at the same index describe the same hazard. The current hazard <code>if/elif</code> chain in the in-game loop stays in place for now &mdash; you'll refactor it in CP4 after the library helper is built."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Same idea as the destination lists from Lab 3.2: same index across three lists = related data. With six hazards instead of three, the savings are bigger. The current inline if/elif handles 3 hazards in ~12 lines. Six hazards via parallel lists is 18 strings of data and zero lines of branching logic. That ratio gets better as the hazard count grows. Module 4 takes this to its conclusion by moving the data out of code entirely &mdash; into a text file."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<strong>Find a spot in <code>lab-3-3.py</code></strong> after the destination parallel lists and before <code>def get_city_data</code>. Add a section header: <code># HAZARD DATA AS PARALLEL LISTS (NEW in 3.3)</code>",
+            "<strong>Declare <code>HAZARD_NAMES</code></strong> as a list with six strings: <code>\"Buc-ee's appears!\"</code>, <code>\"Armadillo crossing!\"</code>, <code>\"Speed trap!\"</code>, <code>\"Check engine light!\"</code>, <code>\"Whataburger cravings!\"</code>, <code>\"Toll road confusion!\"</code>",
+            "<strong>Declare <code>HAZARD_HEADS_MSGS</code></strong> as a list with six matching messages (one per hazard, in the same order). These print when the escape coin flip is HEADS &mdash; the player escapes. Examples: <code>\"You resist the beaver's call.\"</code>, <code>\"It scurries across safely.\"</code>, <code>\"You saw the cop in time.\"</code>, <code>\"False alarm. Reset the light.\"</code>, <code>\"You drive past. Strong willpower.\"</code>, <code>\"Exact change. Smooth pass.\"</code>",
+            "<strong>Declare <code>HAZARD_TAILS_MSGS</code></strong> as a list with six matching messages. These print on TAILS &mdash; the player gets delayed. Examples: <code>\"Lost 2 hours on beef jerky.\"</code>, <code>\"You swerved. Armadillo unbothered.\"</code>, <code>\"Small town officer says howdy.\"</code>, <code>\"Pulled over. Mechanic shrug.\"</code>, <code>\"Detour through the drive-thru.\"</code>, <code>\"Wrong lane. Backed up half a mile.\"</code>",
+            "<strong>Do NOT remove the existing <code>if/elif</code> hazard block yet.</strong> The lists exist but nothing uses them until CP4"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "kind": "bookex",
+          "title": "",
+          "body": "<strong>Program 7-1 (list_demo.py)</strong> and <strong>Section 7.2.2</strong> (a list with initial values) &mdash; the same pattern from Lab 3.2, applied to a different kind of data."
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Add a temporary debug print right after the list declarations to verify all three lists are length 6 and the index ordering is consistent:"
+        },
+        {
+          "type": "code_block",
+          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 3\nprint(f'DEBUG: HAZARD_NAMES len      = {len(HAZARD_NAMES)}')\nprint(f'DEBUG: HAZARD_HEADS_MSGS len = {len(HAZARD_HEADS_MSGS)}')\nprint(f'DEBUG: HAZARD_TAILS_MSGS len = {len(HAZARD_TAILS_MSGS)}')\nprint(f'DEBUG: All match length 6?   = '\n      f'{len(HAZARD_NAMES) == len(HAZARD_HEADS_MSGS) == len(HAZARD_TAILS_MSGS) == 6}')\nfor i in range(len(HAZARD_NAMES)):\n    print(f'  [{i}] {HAZARD_NAMES[i]} | H: {HAZARD_HEADS_MSGS[i]} | T: {HAZARD_TAILS_MSGS[i]}')"
+        },
+        {
+          "type": "text",
+          "body": "Run the program. The DEBUG block should print all six hazards with their matching HEADS and TAILS messages, and the lengths-match line should read <code>True</code>. If the messages don't match the hazards (e.g., Armadillo paired with a Buc-ee's message), reorder the lists until each row makes sense. Delete the DEBUG block before moving to CP3."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Lists are different lengths",
+              "Every parallel list MUST have the same length (6). If they don't match, indexing into one will eventually crash. Use the DEBUG check to verify."
+            ],
+            [
+              "Wrong order across lists",
+              "Read the lists vertically by index, not horizontally. <code>HAZARD_NAMES[2]</code> is 'Speed trap!' &mdash; so <code>HAZARD_HEADS_MSGS[2]</code> should be the escape message for a speed trap, not for an armadillo."
+            ],
+            [
+              "Escaping the apostrophe in &quot;Buc-ee&apos;s&quot;",
+              "Use double quotes around any string that contains an apostrophe: <code>\"Buc-ee's appears!\"</code>. Or escape it: <code>'Buc-ee\\\\'s appears!'</code>. Double quotes are cleaner."
+            ],
+            [
+              "Forgetting commas",
+              "Each list item must end with a comma except the last. Missing commas cause silent string concatenation: <code>['a' 'b']</code> becomes <code>['ab']</code> with no error."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Three new list declarations at module level: <code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code>",
+            "All three lists are length 6 in the same order (index 0 = Buc-ee's, index 1 = Armadillo, ...)",
+            "DEBUG check confirms lengths match and the rows make sense",
+            "Game still plays identically to Lab 3.2 (the lists exist but nothing uses them yet)"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Add get_random_hazard() to the Library",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "One new function in <code>function_library.py</code>: <code>get_random_hazard(names, heads_msgs, tails_msgs)</code>. It accepts three parallel lists as parameters and returns a random triple. The function lives in the library &mdash; not in <code>lab-3-3.py</code> &mdash; because Module 4 will reuse it when hazard data moves to a text file."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "This is the <strong>Library Membership Rule</strong> in action: a function with a known future use goes in the library from day one. We're <em>not</em> going to write <code>get_random_hazard</code> in <code>lab-3-3.py</code> and then promote it next week &mdash; we learned that lesson with <code>save_game</code>/<code>load_game</code> in Lab 3.2. Going forward, when you can see the future, put the function where it belongs the first time."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<strong>Open <code>function_library.py</code></strong>. Find the DESTINATION HELPERS section",
+            "<strong>After the destination helpers</strong> (right after <code>get_redirect</code> ends), add a new section header: <code># HAZARD HELPER (Added in Lab 3-3)</code>",
+            "<strong>Define <code>get_random_hazard(names, heads_msgs, tails_msgs)</code></strong> using the skeleton below",
+            "<strong>Inside the function</strong>: use <code>random.randint(0, len(names) - 1)</code> to get a valid index, then return the three list items at that index as a tuple",
+            "<strong>Save <code>function_library.py</code></strong>. You'll wire it up in CP4"
+          ]
+        },
+        {
+          "type": "code_block",
+          "code": "def get_random_hazard(names, heads_msgs, tails_msgs):\n    \"\"\"\n    Pick a random hazard from three parallel lists.\n\n    Args:\n        names (list of str): Hazard names\n        heads_msgs (list of str): Escape-success messages (same index)\n        tails_msgs (list of str): Escape-fail messages (same index)\n\n    Returns:\n        tuple: (name, heads_msg, tails_msg) at a random index\n    \"\"\"\n    # 1. Pick a random index in range [0, len(names) - 1]:\n    #    index = random.randint(0, len(names) - 1)\n    # 2. Return the three values at that index as a tuple:\n    #    return names[index], heads_msgs[index], tails_msgs[index]\n    pass\n"
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "kind": "bookex",
+          "title": "",
+          "body": "<strong>Section 5.6</strong>: returning multiple values via tuples. <strong>Section 7.3</strong>: list indexing. The function does in 2 lines what a 12-line <code>if/elif</code> chain does."
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 1:</strong> Test the function in isolation. At the bottom of <code>function_library.py</code>, find the existing <code>if __name__ == '__main__':</code> block. Add a temporary call:"
+        },
+        {
+          "type": "code_block",
+          "code": "# Add temporarily to function_library.py's main() for testing:\ntest_names = ['hazard1', 'hazard2']\ntest_heads = ['escape1', 'escape2']\ntest_tails = ['delay1', 'delay2']\nresult = get_random_hazard(test_names, test_heads, test_tails)\nprint(f'  get_random_hazard test => {result}')"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 2:</strong> Run <code>function_library.py</code> directly: <code>python3 function_library.py</code>. You should see one of <code>('hazard1', 'escape1', 'delay1')</code> or <code>('hazard2', 'escape2', 'delay2')</code>. Run it a few times &mdash; both options should appear. Delete the test block after you're confident."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "<code>NameError: name 'random' is not defined</code>",
+              "<code>function_library.py</code> already imports <code>random</code> at the top &mdash; if you got this error, you may have deleted the import. Restore it."
+            ],
+            [
+              "<code>IndexError</code> when calling the function",
+              "<code>random.randint(0, len(names) - 1)</code> &mdash; that's <code>len() - 1</code>, not <code>len()</code>. Indexing is 0-based so the last valid index is one less than the length."
+            ],
+            [
+              "Function returns a single value instead of a tuple",
+              "Make sure the return statement is <code>return names[index], heads_msgs[index], tails_msgs[index]</code> (three values separated by commas). Parentheses optional but commas required."
+            ],
+            [
+              "Reading from <code>HAZARD_NAMES</code> globals",
+              "<code>function_library.py</code> doesn't know about your lab's globals. The function MUST use the parameter names (<code>names</code>, <code>heads_msgs</code>, <code>tails_msgs</code>), not <code>HAZARD_NAMES</code>."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>get_random_hazard()</code> defined in <code>function_library.py</code>",
+            "Function uses parameters (no module-level globals)",
+            "Function returns a 3-tuple",
+            "Isolated test confirms it returns different values across runs"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Refactor the In-Game Hazard Block",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "A refactor of the hazard logic in the in-game loop. Out: the inline <code>if hazard_type == 1: ... elif hazard_type == 2:</code> chain. In: a single call to <code>function_library.get_random_hazard(HAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS)</code> that returns the hazard name, the heads message, and the tails message."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "The if/elif chain works, but it only handles three hazards. To add a fourth, you'd need another <code>elif</code> branch &mdash; and a wider <code>random.randint</code> range, and matching <code>hazard</code>/<code>heads_msg</code>/<code>tails_msg</code> assignments. The parallel-list version handles six hazards with the same line count as it took to handle three. Adding a seventh is one item per list."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<strong>Find the hazard block</strong> in <code>main()</code>'s in-game loop &mdash; the part inside <code>if function_library.check_percentage(HAZARD_CHANCE):</code>. There's a <code>random.randint(1, 3)</code> followed by an <code>if/elif/else</code> chain that sets <code>hazard</code>, <code>heads_msg</code>, and <code>tails_msg</code>",
+            "<strong>Delete the <code>random.randint(1, 3)</code></strong> and the entire if/elif/else block. Keep the <code>print()</code>, <code>print('*** HAZARD! ***')</code>, and the <code>hazards_faced</code> increment that come before it",
+            "<strong>Replace them with one call</strong>: <code>hazard, heads_msg, tails_msg = function_library.get_random_hazard(HAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS)</code>",
+            "<strong>Keep the rest unchanged</strong> &mdash; the <code>print(hazard)</code>, the <code>hazards_list.append(hazard)</code>, the escape coin flip, and the <code>print(heads_msg)</code>/<code>print(tails_msg)</code> branches all stay as-is"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "kind": "bookex",
+          "title": "",
+          "body": "<strong>Section 5.6 (returning multiple values)</strong> &mdash; the unpacking pattern <code>a, b, c = func()</code> is the same shape you used for <code>get_destination</code> in Lab 3.2."
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 1:</strong> Run <code>lab-3-3.py</code>. Start a New Game. Play through long enough to trigger at least one hazard. Verify the hazard name shows up (could be any of the six now, not just the original three from Lab 3.2)."
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 2:</strong> Play a few more games. You should eventually see hazards 4-6 (Check engine, Whataburger, Toll road) appear &mdash; the new additions. If you only ever see the first three, your <code>get_random_hazard</code> is using <code>random.randint(0, 2)</code> instead of <code>random.randint(0, len(names) - 1)</code>."
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 3:</strong> When a hazard fires, verify the HEADS and TAILS messages match the hazard. Buc-ee's should mention beavers/jerky, not armadillos. If messages are mismatched, the lists are out of order &mdash; revisit CP2."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "<code>NameError: 'hazard_type' is not defined</code>",
+              "You deleted the random.randint but left a reference to <code>hazard_type</code> somewhere below. Search for <code>hazard_type</code> in the file."
+            ],
+            [
+              "Tuple unpacking error",
+              "The function returns three values. Your call site must unpack all three: <code>hazard, heads_msg, tails_msg = function_library.get_random_hazard(...)</code>. Three names on the left, comma-separated."
+            ],
+            [
+              "Hazard messages don't match the hazard",
+              "The lists are out of order. Look at the DEBUG output from CP2 to verify."
+            ],
+            [
+              "Same hazard every time",
+              "Your call site is using the same index for all three lookups (e.g. <code>HAZARD_NAMES[0]</code> hardcoded). Use the library function &mdash; let it pick the random index once."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "The hazard block in <code>main()</code> has no inline <code>if/elif</code> for hazard selection",
+            "The block calls <code>function_library.get_random_hazard(HAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS)</code>",
+            "All six hazards can appear in gameplay (verified over multiple runs)",
+            "HEADS/TAILS messages match the hazard"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Sort Hazards Alphabetically in the Trip Summary",
+      "content": [
+        {
+          "type": "mentor_quote",
+          "character": "Sasha Mireles",
+          "role": "Creative Director, Bat City Collective",
+          "headshot": "Sasha-Mireles.png",
+          "quote": "The player just survived a road trip. Their brain is still in the chaos of it. The trip summary is where we give them order. A sorted list of hazards reads differently than a chronological one &mdash; alphabetical feels like a record, like an index, like <em>finalized</em>. Two lines of code, big UX win."
+        },
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "A sorted copy of <code>hazards_list</code> that gets displayed alphabetically in the trip summary. The original <code>hazards_list</code> stays in arrival order &mdash; <code>save_game</code> needs the chronological version, and the player's trip narrative matches arrival order too. So we copy first, sort the copy, display the copy. The original is untouched."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "<code>list.sort()</code> is a <strong>destructive</strong> operation &mdash; it changes the list in place. If you call <code>hazards_list.sort()</code> directly, you've permanently lost the arrival order. <code>.copy()</code> creates an independent duplicate; sort the duplicate and the original stays intact. This is the same <code>.copy()</code> pattern you saw in <code>get_redirect</code> in Lab 3.2 &mdash; preserve the source, mutate the copy."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<strong>Find the trip summary block</strong> in <code>main()</code> &mdash; the part that prints YOUR ROUTE and HAZARDS ENCOUNTERED. It comes after the in-game loop ends and before the play-again prompt",
+            "<strong>Immediately before the HAZARDS ENCOUNTERED display</strong>, add two lines: <code>sorted_hazards = hazards_list.copy()</code> and <code>sorted_hazards.sort()</code>",
+            "<strong>Change the display call</strong> from displaying <code>hazards_list</code> to displaying <code>sorted_hazards</code>",
+            "<strong>Update the section title</strong> from <code>'HAZARDS ENCOUNTERED'</code> to <code>'HAZARDS ENCOUNTERED (A-Z)'</code> so the sort order is visible to the player",
+            "<strong>Important:</strong> only the display uses <code>sorted_hazards</code>. The save_game call (if it fires) still passes the original <code>hazards_list</code> in arrival order. Don't touch that path"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "kind": "bookex",
+          "title": "",
+          "body": "<strong>Section 7.5.4 (<code>list.sort()</code>)</strong>: sorts a list in place alphabetically by default. <strong>Section 7.5.6 (<code>list.copy()</code>)</strong>: creates an independent copy so the source list is preserved. Together they're the standard 'sort-without-mutating' pattern in Python."
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 1:</strong> Play a game where you trigger multiple hazards. Hazard names start with a mix of letters (A, B, C, S, T, W). Verify the trip summary shows them alphabetically &mdash; e.g., 'Armadillo crossing!' before 'Buc-ee's appears!' even if Buc-ee's happened first."
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 2:</strong> Verify the section title now reads <code>HAZARDS ENCOUNTERED (A-Z)</code>. The underline should adjust automatically because <code>display_numbered_list</code> uses <code>'-' * len(title)</code>."
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 3 (save-roundtrip check):</strong> Play a game with multiple hazards, save mid-trip, quit, reload. The saved hazards in <code>savegame.txt</code> should be in arrival order (NOT sorted), because <code>save_game</code> still receives the original list. If your save file is alphabetical, you accidentally sorted <code>hazards_list</code> in place."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "<code>hazards_list.sort()</code> instead of <code>sorted_hazards.sort()</code>",
+              "Sorts the original list in place, losing arrival order. The save file will then save sorted hazards. ALWAYS copy first."
+            ],
+            [
+              "<code>hazards_list = hazards_list.sort()</code>",
+              "Common trap: <code>.sort()</code> returns <code>None</code>. This line replaces your list with <code>None</code>. Use the two-line pattern instead."
+            ],
+            [
+              "Trip summary uses <code>hazards_list</code> instead of <code>sorted_hazards</code>",
+              "You created <code>sorted_hazards</code> but kept passing the old name to <code>display_numbered_list</code>. Double-check the variable name in the display call."
+            ],
+            [
+              "Title doesn't update automatically",
+              "The divider line in <code>display_numbered_list</code> uses <code>'-' * len(title)</code>. If you hardcoded 19 dashes for 'HAZARDS ENCOUNTERED', they won't grow when you add ' (A-Z)'."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>sorted_hazards = hazards_list.copy()</code> followed by <code>sorted_hazards.sort()</code> right before the display call",
+            "Trip summary shows hazards alphabetically with section title <code>HAZARDS ENCOUNTERED (A-Z)</code>",
+            "Save file still contains hazards in arrival order"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Count Unique Cities Visited",
+      "content": [
+        {
+          "type": "mentor_quote",
+          "character": "Terrence \"T-Bone\" Booker",
+          "role": "QA Lead, Bat City Collective",
+          "headshot": "Terrence-Booker.png",
+          "quote": "<code>visited_cities</code> is the full route in arrival order, including every time the player came back through San Antonio. If they visit Austin and bounce back to SA before heading to Houston, the list has San Antonio twice. That's <em>correct</em> for the route display &mdash; the player wants to see they went back &mdash; but the <strong>unique cities count</strong> shouldn't double-count. Build the deduplicated list with the <code>in</code> operator. And then test it. Go to Austin and come back. If the count says you visited five cities instead of four, you have a bug."
+        },
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "A second list, <code>unique_cities</code>, built from <code>visited_cities</code> by filtering out duplicates with the <code>in</code> operator. The count of unique cities goes in the trip summary right after the route block, and the full list goes into the trip report file in CP7."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "The <code>in</code> operator is the cleanest way to check whether something already exists in a list. The pattern is: empty list, loop through the source, append to the new list only if the item isn't there yet. Four lines. This is what Python's <code>set()</code> type does internally &mdash; you'll learn that in Module 4. For now, the explicit pattern is the learning."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<strong>In <code>main()</code>'s trip summary block</strong>, right after the sorted_hazards lines from CP5 (or just before, doesn't matter), add the unique-cities pattern",
+            "<strong>Initialize an empty list</strong>: <code>unique_cities = []</code>",
+            "<strong>Loop through <code>visited_cities</code></strong>: <code>for city in visited_cities:</code>",
+            "<strong>Inside the loop, check membership</strong>: <code>if city not in unique_cities:</code> then <code>unique_cities.append(city)</code>",
+            "<strong>Display the count</strong> right after the route display: <code>print(f'Unique cities visited: {len(unique_cities)}')</code> and then <code>print()</code>"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "kind": "bookex",
+          "title": "",
+          "body": "<strong>Section 7.4 (the <code>in</code> operator)</strong>: tests whether an item exists in a list. <strong>Program 7-9 (search_demo.py)</strong>: building a filtered list with <code>not in</code>. <strong>Section 7.5.5 (<code>len()</code>)</strong>: returns the count of items in a list."
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 1 (the simple case):</strong> Play SA &rarr; Houston &rarr; Galveston. Trip summary should show:"
+        },
+        {
+          "type": "output_block",
+          "output": "YOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3"
+        },
+        {
+          "type": "text",
+          "body": "Three cities visited, three unique. No duplicates to filter. Easy."
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 2 (the Austin round-trip):</strong> Play SA &rarr; Austin &rarr; back to SA &rarr; Houston &rarr; Galveston. Trip summary should show:"
+        },
+        {
+          "type": "output_block",
+          "output": "YOUR ROUTE\n----------\n  1. San Antonio\n  2. Austin\n  3. San Antonio\n  4. Houston\n  5. Galveston\n\nUnique cities visited: 4"
+        },
+        {
+          "type": "text",
+          "body": "Five cities in the route, four unique. If your unique count says 5, your <code>in</code> check isn't working. If it says 3, you're filtering San Antonio entirely instead of just deduplicating it."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "Unique count equals route length",
+              "Your <code>not in</code> check isn't preventing the duplicate append. Walk through the loop manually: when city = 'San Antonio' for the second time, what does <code>'San Antonio' in unique_cities</code> return?"
+            ],
+            [
+              "Unique count is 0 or off by some other amount",
+              "You initialized <code>unique_cities</code> inside the loop instead of before it, so the list gets reset every iteration. Move the <code>unique_cities = []</code> line to BEFORE the loop."
+            ],
+            [
+              "<code>SyntaxError</code> on <code>if city not in unique_cities:</code>",
+              "Watch the wording: it's <code>not in</code> (two words), not <code>!in</code> or <code>!=in</code>. Python reads <code>not in</code> as a single operator."
+            ],
+            [
+              "Order matters for unique count",
+              "<code>unique_cities</code> ends up in first-appearance order (San Antonio first, Austin second, ...). That's correct for the count; if you ever need a sorted unique list, copy and sort it (same pattern as CP5)."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>unique_cities</code> built in the trip summary block using the <code>in</code> operator",
+            "<code>print(f'Unique cities visited: {len(unique_cities)}')</code> displayed after the route",
+            "The Austin round-trip test gives count = 4 (not 5)"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Build save_trip_report() and Generate the Report",
+      "content": [
+        {
+          "type": "mentor_quote",
+          "character": "Priya Venkatesh",
+          "role": "Project Manager, Bat City Collective",
+          "headshot": "Priya-Venkatesh.png",
+          "quote": "This is the deliverable. Every other lab this module was about machinery &mdash; can you write to a file, can you build a list, can you organize data. This week we hand the player something. A multi-section report with their name on it, their route, their statistics. It needs to look right every time, save automatically at the end of every game, and reflect what just happened. No y/n prompt &mdash; we don't ask. The report is part of the game."
+        },
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "Two things: (1) a new <code>save_trip_report</code> function in <code>lab-3-3.py</code> that writes a formatted multi-section report to <code>trip_report.txt</code>, and (2) a call to it at the end of every game (immediately after the on-screen trip summary, before the play-again prompt). The function stays in <code>lab-3-3.py</code> &mdash; it's lab-specific format, not a general-purpose helper."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Library functions are universal mechanics. <code>save_trip_report</code> is the opposite &mdash; every section header, every label, every layout choice is specific to this game. The Library Membership Rule doesn't promote it. It lives next to the game logic that needs it. This is the other half of the rule: <em>not</em> everything goes in the library."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<strong>At module level in <code>lab-3-3.py</code></strong>, define a new constant near the other constants: <code>REPORT_FILE = 'trip_report.txt'</code>",
+            "<strong>Define <code>save_trip_report</code></strong> as shown in the skeleton. It takes 11 parameters in this order: <code>filename</code>, <code>player_name</code>, <code>current_city</code>, <code>total_miles</code>, <code>total_turns</code>, <code>total_hazards</code>, <code>total_escaped</code>, <code>visited_cities</code>, <code>unique_cities</code>, <code>sorted_hazards</code>, <code>status</code>",
+            "<strong>Inside the function</strong>, open the file in <code>'w'</code> mode and write the five sections in order: HEADER, ROUTE, STATISTICS, HAZARDS, closing divider. Use <code>' -> '.join(visited_cities)</code> for the arrow-separated route string",
+            "<strong>The status string</strong> &mdash; you'll need to set this in <code>main()</code> based on game outcome: <code>'BEACH WINNER!'</code> if they reached the beach, <code>'Quit without saving'</code> if they chose option 3 mid-trip, or <code>'Trip Incomplete'</code> otherwise",
+            "<strong>In <code>main()</code></strong>, in the trip-summary block, set the <code>status</code> variable before displaying anything. Place it right where the existing <code>print(f'Status: ...')</code> logic is (or add that print if it's not there)",
+            "<strong>Call <code>save_trip_report</code></strong> after all the on-screen displays but BEFORE the play-again prompt. Pass all 11 arguments including <code>REPORT_FILE</code>, <code>unique_cities</code>, and <code>sorted_hazards</code> that you computed in CP5 and CP6",
+            "<strong>Print a confirmation</strong>: <code>print(f'Trip report saved to {REPORT_FILE}.')</code> followed by <code>print()</code>",
+            "<strong>No y/n prompt.</strong> The report saves every game, automatically"
+          ]
+        },
+        {
+          "type": "code_block",
+          "code": "def save_trip_report(filename, player_name, current_city,\n                     total_miles, total_turns, total_hazards,\n                     total_escaped, visited_cities, unique_cities,\n                     sorted_hazards, status):\n    \"\"\"\n    Write a formatted multi-section trip report to disk.\n\n    Stays in lab-3-3.py (not in function_library.py) because the\n    report format is specific to this game.\n    \"\"\"\n    # 1. open(filename, 'w') as outfile (or use outfile = open(...))\n    # 2. Write the header block:\n    #    - 'DEEP IN THE HEART - TRIP REPORT'\n    #    - '=' * 40\n    #    - f'Driver: {player_name}'\n    #    - f'Final City: {current_city}'\n    #    - f'Status: {status}'\n    #    - blank line\n    # 3. Write the ROUTE block:\n    #    - 'ROUTE:'\n    #    - f'  {city1 -> city2 -> ...}'  (use ' -> '.join(visited_cities))\n    #    - f'  Unique cities visited: {len(unique_cities)}'\n    #    - blank line\n    # 4. Write the STATISTICS block:\n    #    - 'STATISTICS:'\n    #    - f'  Total Miles: {total_miles}'\n    #    - f'  Total Turns: {total_turns}'\n    #    - f'  Hazards Faced: {total_hazards}'\n    #    - f'  Hazards Escaped: {total_escaped}'\n    #    - if total_hazards > 0:\n    #        rate = (total_escaped / total_hazards) * 100\n    #        f'  Escape Rate: {rate:.1f}%'\n    #    - blank line\n    # 5. Write the HAZARDS (A-Z) block:\n    #    - 'HAZARDS (A-Z):'\n    #    - if sorted_hazards is non-empty: loop and write f'  - {hazard}'\n    #    - else: write '  None - Lucky traveler!'\n    #    - blank line\n    # 6. Write the closing divider: '=' * 40\n    # 7. Close the file\n    pass\n"
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "kind": "bookex",
+          "title": "",
+          "body": "<strong>Section 6.1 (writing to files)</strong>: <code>open(filename, 'w')</code>, <code>.write()</code>, <code>.close()</code>. <strong>Section 7.7 (writing lists to files)</strong>: looping through a list and writing each item. <strong>Section 7.5.7 (<code>str.join()</code>)</strong>: combine list items with a separator string between them &mdash; <code>' -> '.join(['a', 'b', 'c'])</code> gives <code>'a -&gt; b -&gt; c'</code>."
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 1:</strong> Play one full game to the beach. After the on-screen trip summary, you should see <code>Trip report saved to trip_report.txt.</code>"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 2:</strong> Open <code>trip_report.txt</code> in your editor. The content should look like this:"
+        },
+        {
+          "type": "output_block",
+          "output": "DEEP IN THE HEART - TRIP REPORT\n========================================\nDriver: TestPlayer\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nROUTE:\n  San Antonio -> Houston -> Galveston\n  Unique cities visited: 3\n\nSTATISTICS:\n  Total Miles: 450\n  Total Turns: 3\n  Hazards Faced: 1\n  Hazards Escaped: 1\n  Escape Rate: 100.0%\n\nHAZARDS (A-Z):\n  - Armadillo crossing!\n\n========================================"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 3:</strong> Play a game that ends in 'Trip Incomplete' (decline to return from Austin, or decline to continue after Houston). Verify the <code>Status:</code> line in the report changes to <code>Status: Trip Incomplete</code>."
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 4:</strong> Play a game with NO hazards (short trip to Austin and back). Verify the HAZARDS section reads <code>None - Lucky traveler!</code> instead of an empty bulleted list."
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 5:</strong> Play TWO games in a row. Verify <code>trip_report.txt</code> contains the SECOND game's data &mdash; the file is overwritten each game, not appended to. (That's what <code>'w'</code> mode does.)"
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "<code>trip_report.txt</code> not created",
+              "Most likely: <code>save_trip_report</code> is defined but never called. Confirm there's a call in <code>main()</code> right before the play-again prompt."
+            ],
+            [
+              "File created but empty",
+              "You opened the file but didn't write anything. Add print statements inside <code>save_trip_report</code> to confirm the function actually runs."
+            ],
+            [
+              "File appends instead of replacing",
+              "You used <code>'a'</code> mode instead of <code>'w'</code> mode. Mode <code>'w'</code> overwrites; <code>'a'</code> appends to the end. Use <code>'w'</code>."
+            ],
+            [
+              "<code>TypeError: 'list' object is not callable</code>",
+              "Probably wrote <code>visited_cities()</code> or <code>sorted_hazards()</code> with parentheses somewhere. These are lists, not functions &mdash; no parentheses."
+            ],
+            [
+              "Escape rate divides by zero crash",
+              "You wrote <code>rate = (total_escaped / total_hazards) * 100</code> without the <code>if total_hazards > 0:</code> guard. Wrap the line in a conditional."
+            ],
+            [
+              "Report has the previous game's hazard count",
+              "You passed <code>hazards_faced</code> (the per-leg counter that gets reset) instead of <code>total_hazards</code> (the per-game total). Walk the variable names."
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>save_trip_report</code> defined in <code>lab-3-3.py</code> (NOT in <code>function_library.py</code>)",
+            "<code>REPORT_FILE = 'trip_report.txt'</code> constant at module level",
+            "<code>main()</code> sets <code>status</code> based on outcome and calls <code>save_trip_report</code> after the on-screen summary",
+            "Confirmation message <code>Trip report saved to trip_report.txt.</code> appears in the terminal",
+            "<code>trip_report.txt</code> exists after every completed game",
+            "Report has all five sections in order: HEADER, ROUTE, STATISTICS, HAZARDS, closing divider"
+          ]
+        }
+      ]
     }
+  ],
+  "finalChecklist": {
+    "beforeYouSubmit": [
+      "Submitting <strong>two files</strong>: <code>lab-3-3.py</code> and <code>function_library.py</code>",
+      "<code>function_library.py</code> grew by exactly one function this week: <code>get_random_hazard(names, heads_msgs, tails_msgs)</code> in a new HAZARD HELPER section",
+      "<code>lab-3-3.py</code> has the three parallel hazard lists at module level: <code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code> (all length 6)",
+      "<code>REPORT_FILE = 'trip_report.txt'</code> declared at module level",
+      "Hazard block in the in-game loop uses <code>function_library.get_random_hazard(...)</code> &mdash; no inline if/elif for hazard selection",
+      "<code>sorted_hazards = hazards_list.copy()</code> followed by <code>sorted_hazards.sort()</code> in the trip summary",
+      "<code>unique_cities</code> built with the <code>in</code> operator",
+      "<code>save_trip_report()</code> defined in <code>lab-3-3.py</code> (NOT in the library)",
+      "<code>save_trip_report</code> called automatically at the end of every game (no y/n prompt)",
+      "<code>trip_report.txt</code> contains all five sections: HEADER, ROUTE, STATISTICS, HAZARDS, closing divider",
+      "Both files have updated docstrings with name, abc123, section, and description",
+      "All Module 3 features still work: three-loop architecture, save/load, parallel destinations, tracking lists, session statistics"
+    ],
+    "scopeReminder": "Chapters 2–7 only. CodeGrade will flag code using techniques from later chapters.",
+    "permittedTechniques": {
+      "chapters": "Chapters 2–7",
+      "specific": [
+        "All previous techniques (variables, if/else, loops, functions, function_library, file I/O, try-except, lists, append, index, len, in)",
+        "<code>.copy()</code> &mdash; create an independent duplicate of a list",
+        "<code>.sort()</code> &mdash; sort a list in place alphabetically",
+        "<code>.join()</code> &mdash; combine list items into a single string with a separator",
+        "Member of (or not member of) a list: <code>x in list</code>, <code>x not in list</code>",
+        "Multi-return tuples from a function and unpacking at the call site"
+      ],
+      "notPermitted": "Dictionaries, sets, list comprehensions, <code>readlines()</code>, <code>with</code> statement, <code>sorted()</code> (the built-in function that returns a new list &mdash; use <code>.sort()</code> on a copy instead), or any Chapter 8+ techniques."
+    },
+    "saveYourCode": "Keep both files — Module 4 starts on top of this. <code>function_library.py</code> grows again next week when data starts loading from text files.",
+    "warnings": [],
+    "finalCheck": {
+      "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, TestPlayer!\nYou are in San Antonio. Your goal: reach the beach!\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles (Gateway East)\n  3. Austin - 80 miles (Keep it Weird)\n\nChoice (1-3): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 15!\nYou travel 150 miles...\nMiles remaining: 50\n\n*** HAZARD! ***\nArmadillo crossing!\nHEADS!\nIt scurries across safely.\n\n--- Turn 2 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nWhere would you like to go?\n  1. Galveston - 50 miles (BEACH!)\n  2. San Antonio - 200 miles (Back West)\n\nChoice (1-2): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: TestPlayer\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  1. Armadillo crossing!\n\nSTATISTICS\n----------\n  Total Miles: 450\n  Total Turns: 3\n  Hazards Faced: 1\n  Hazards Escaped: 1\n  Escape Rate: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 450\nTotal Hazards: 1\n==================================================\n\nThanks for playing, TestPlayer!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!",
+      "expectedOutputNote": "This run uses inputs <code>1</code> (New Game) &rarr; <code>TestPlayer</code> &rarr; <code>2</code> (Houston) &rarr; <code>1</code> (Continue) &rarr; <code>1</code> (Galveston) &rarr; <code>n</code> (no replay) &rarr; <code>3</code> (Quit) with the deterministic CodeGrade fixture. With real random, your hazard names and specific rolls will differ &mdash; but the structure must match: main menu &rarr; new game &rarr; play one game (parallel-list hazards, sorted hazards display, unique city count, trip report saved) &rarr; session stats &rarr; main menu &rarr; quit.",
+      "expectedReportFile": "DEEP IN THE HEART - TRIP REPORT\n========================================\nDriver: TestPlayer\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nROUTE:\n  San Antonio -> Houston -> Galveston\n  Unique cities visited: 3\n\nSTATISTICS:\n  Total Miles: 450\n  Total Turns: 3\n  Hazards Faced: 1\n  Hazards Escaped: 1\n  Escape Rate: 100.0%\n\nHAZARDS (A-Z):\n  - Armadillo crossing!\n\n========================================",
+      "expectedReportNote": "After the canonical run completes, <code>trip_report.txt</code> should contain exactly this content. All five sections present, in this order, with these labels and dashes. Different gameplay produces different numbers, but the <em>shape</em> must match byte-for-byte.",
+      "ifSomethingBreaks": [
+        {
+          "symptom": "Hazards still show only the original three (Buc-ee's, Armadillo, Speed trap)",
+          "redirect": "Check <strong>CP4</strong> &mdash; the hazard block is still using the inline if/elif. Delete the entire <code>if hazard_type == 1: ... elif ...</code> block and replace with the single library call."
+        },
+        {
+          "symptom": "Hazard fires but the HEADS or TAILS message is wrong for that hazard",
+          "redirect": "Check <strong>CP2</strong> &mdash; the parallel lists are out of order. <code>HAZARD_NAMES[2]</code> must match <code>HAZARD_HEADS_MSGS[2]</code> and <code>HAZARD_TAILS_MSGS[2]</code>. Re-run the DEBUG check from CP2 to verify."
+        },
+        {
+          "symptom": "Trip summary shows hazards in arrival order, not alphabetical",
+          "redirect": "Check <strong>CP5</strong> &mdash; either you skipped the <code>.copy()</code>+<code>.sort()</code> step, or you're still passing <code>hazards_list</code> to the display call instead of <code>sorted_hazards</code>."
+        },
+        {
+          "symptom": "Save file (<code>savegame.txt</code>) shows hazards alphabetically too",
+          "redirect": "Check <strong>CP5</strong> &mdash; you sorted <code>hazards_list</code> in place (<code>hazards_list.sort()</code>) instead of sorting a copy. The save needs arrival order; only the display gets sorted."
+        },
+        {
+          "symptom": "Unique city count equals total cities (e.g., 5 instead of 4 in the Austin round-trip)",
+          "redirect": "Check <strong>CP6</strong> &mdash; the <code>if city not in unique_cities</code> check isn't blocking the duplicate append. Walk through the loop on paper for the Austin scenario."
+        },
+        {
+          "symptom": "<code>trip_report.txt</code> doesn't exist after a completed game",
+          "redirect": "Check <strong>CP7</strong> &mdash; <code>save_trip_report</code> is defined but never called from <code>main()</code>. Confirm there's a call AFTER the on-screen summary and BEFORE the play-again prompt."
+        },
+        {
+          "symptom": "<code>trip_report.txt</code> exists but is empty",
+          "redirect": "Check <strong>CP7</strong> &mdash; the function probably opens the file but never writes to it. Verify each <code>outfile.write(...)</code> line has an actual string argument."
+        },
+        {
+          "symptom": "<code>trip_report.txt</code> contains old game's data after a new game",
+          "redirect": "Check <strong>CP7</strong> &mdash; you used file mode <code>'a'</code> (append) instead of <code>'w'</code> (write/overwrite). Use <code>'w'</code>."
+        },
+        {
+          "symptom": "<code>ZeroDivisionError</code> when computing escape rate on a no-hazard game",
+          "redirect": "Check <strong>CP7</strong> &mdash; the escape rate calculation needs an <code>if total_hazards > 0:</code> guard. With zero hazards, dividing by zero crashes."
+        },
+        {
+          "symptom": "Status line shows <code>None</code> or is missing",
+          "redirect": "Check <strong>CP7</strong> &mdash; the <code>status</code> variable isn't being set in all code paths. Make sure it's defined for BEACH WINNER, Trip Incomplete, AND Quit without saving outcomes."
+        }
+      ]
+    }
+  },
+  "needHelp": {
+    "ifYouGetStuck": [
+      "Re-read Programs 7-9 (the <code>in</code> operator), 7-13 (writing a list to a file), and 7-16 (sorting a list) &mdash; these three cover every new technique this week",
+      "Verify the parallel hazard lists FIRST before doing anything else. If CP2 is off by one across the three lists, every CP after it will produce weird output. The DEBUG check from CP2 catches this in 10 seconds",
+      "When testing CP6's unique-city counter, use the SA &rarr; Austin &rarr; SA &rarr; Houston &rarr; Galveston path explicitly. It's the only path that meaningfully exercises the dedup logic with the current city graph",
+      "For CP7, open <code>trip_report.txt</code> in Notepad after every test run. Visually compare against the canonical expected report in the final check. Tiny formatting differences (extra newline, missing colon) WILL be flagged by CodeGrade",
+      "Submit to CodeGrade early and often. <code>function_library.py</code> in particular is grader-checked in isolation &mdash; a wrong signature in <code>get_random_hazard</code> shows up immediately",
+      "Come to Zoom or office hours if anything's unclear. This is the final lab of Module 3; the patterns here all reappear in Module 4 with different data"
+    ],
+    "bookexResourceNote": "Chapter 7 BookEx Reference Guide — step-by-step breakdowns of every Chapter 7 example. Sections 7.4, 7.5.4, 7.5.6, 7.5.7, and 7.7 are the relevant ones for this lab."
+  }
 }
