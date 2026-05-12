@@ -144,6 +144,17 @@ def render_overview_card(overview: dict, meta: dict) -> str:
         )
 
     # 8. Required Data Files — rendered as a table when dataFiles array is present
+    #
+    # Three row categories, distinguished by the `submitted` flag and `path`:
+    #
+    #   1. Pure data file       (submitted=False, .txt/.py) → download link only
+    #   2. Scaffolded starter   (submitted=True,  path set) → download + "you submit"
+    #   3. Carried-forward file (submitted=True,  no path)  → "you submit" only,
+    #                                                          no download cell
+    #
+    # The third case is for files like `function_library.py` that students
+    # carry across labs in their own working folder; rendering a download
+    # link to a non-existent `data/function_library.py` would 404.
     data_files_html = ""
     if data_files:
         rows_html = ""
@@ -151,18 +162,22 @@ def render_overview_card(overview: dict, meta: dict) -> str:
             f_name = html_lib.escape(df.get("file", ""))
             f_fmt  = df.get("format", "")
             new_badge = ' <span style="color:#FFCC00; font-size:11px; font-weight:700;">NEW!</span>' if df.get("new") else ""
+            submit_badge = ' <span style="color:#39FF14; font-size:11px; font-weight:700;" title="You submit this file to CodeGrade">SUBMIT</span>' if df.get("submitted") else ""
             file_raw = df.get("file", "")
-            if file_raw.endswith((".txt", ".py")):
+            path_field = df.get("path")
+            submitted = df.get("submitted", False)
+
+            if file_raw.endswith((".txt", ".py")) and (path_field or not submitted):
                 # Honor optional "path" override (e.g. "5-2/lab-5-2.py" for lab-specific files)
-                href_path = df.get("path") or f_name
+                href_path = path_field or f_name
                 download_cell = (
                     f'<td><a href="data/{href_path}" download '
                     f'style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">'
                     f'&#11123; {f_name}</a></td>'
                 )
             else:
-                download_cell = '<td style="color:#555; font-size:12px;">—</td>'
-            rows_html += f'      <tr><td><code>{f_name}</code>{new_badge}</td><td>{f_fmt}</td>{download_cell}</tr>\n'
+                download_cell = '<td style="color:#555; font-size:12px;">&mdash;</td>'
+            rows_html += f'      <tr><td><code>{f_name}</code>{new_badge}{submit_badge}</td><td>{f_fmt}</td>{download_cell}</tr>\n'
         data_files_html = f"""    <div class="lc-h3 lc-h3--yellow">Required Data Files</div>
     <div class="lc-table-wrap">
       <table class="lc-table">
