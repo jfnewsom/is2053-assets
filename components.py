@@ -919,20 +919,20 @@ def render_final_check(final_check: dict) -> str:
 
 CONTACT_GRID_HTML = """    <div class="lc-contact-grid">
       <div class="lc-contact-card">
-        <div class="lc-contact-card__label">Zoom Office Hours</div>
-        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM<br>
-          <a href="https://utsa.zoom.us/j/97617245124" target="_blank">Join Meeting</a>
-        </div>
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post in <strong>#help-python</strong> &mdash; fastest response, classmates and instructor both monitor</div>
       </div>
       <div class="lc-contact-card">
-        <div class="lc-contact-card__label">Schedule a Meeting</div>
-        <div class="lc-contact-card__value">
+        <div class="lc-contact-card__label">Book a 1-on-1</div>
+        <div class="lc-contact-card__value">15-minute focused session<br>
           <a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a>
         </div>
       </div>
       <div class="lc-contact-card">
-        <div class="lc-contact-card__label">Course Discord</div>
-        <div class="lc-contact-card__value">Post questions in <strong>#help</strong> &mdash; check if your question has already been answered</div>
+        <div class="lc-contact-card__label">Tuesday Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM &mdash; drop-in for general questions. Not 1-on-1.<br>
+          <a href="https://utsa.zoom.us/j/96542097913" target="_blank">Join Zoom</a>
+        </div>
       </div>
       <div class="lc-contact-card">
         <div class="lc-contact-card__label">Email</div>
