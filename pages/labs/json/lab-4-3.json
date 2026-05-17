@@ -5,13 +5,13 @@
     "module": 4,
     "week": 3,
     "weekType": "MASTER",
-    "chapters": "8\u20139",
+    "chapters": "8–9",
     "chapterTopics": "More About Strings, Dictionaries, Sets",
     "filename": "lab-4-3.py",
     "additionalFiles": []
   },
   "overview": {
-    "body": "MASTER week. Two arrivals close Module 4. First, the coin-flip Destination Gate from Labs 3.x and 4.x retires entirely. A TRIVIA gate replaces it: players answer a TRUE/FALSE question about the city they want to visit, and a wrong answer triggers the same <code>get_redirect</code> detour that the old TAILS branch did. Second, <strong>sets</strong> arrive as the right tool for tracking unique cities and unique hazards across a game. The trip report grows a TRIVIA section with asked / correct / accuracy stats, and the HAZARDS display uses <code>sorted()</code> on a set to show each unique hazard exactly once. This is also the lab where Sasha drops the Module 5 Patch Note about the dictionary-of-dictionaries shape: it works, but it's starting to feel awkward. The fix is coming next module.",
+    "body": "MASTER week. Two arrivals close Module 4. First, the coin-flip Destination Gate from Labs 3.x and 4.x retires entirely. A TRIVIA gate replaces it: players answer a TRUE/FALSE question about the city they want to visit, and a wrong answer triggers the same <code>get_redirect</code> detour that the old TAILS branch did. Second, <strong>sets</strong> arrive as the right tool for tracking unique cities and unique hazards across a game. The trip report grows a TRIVIA section with asked / correct / accuracy stats, and the HAZARDS display uses <code>sorted()</code> on a set to show each unique hazard exactly once.",
     "mentorQuote": {
       "character": "Sasha Mireles",
       "role": "Creative Director, Bat City Collective",
@@ -25,11 +25,10 @@
       "Replace the coin-flip Destination Gate in the in-game loop with a call to <code>trivia_gate</code>",
       "Build <code>unique_cities = set()</code> and <code>unique_hazards = set()</code> at game start; <code>.add()</code> entries every time a city or hazard is recorded",
       "Replace the post-game <code>'in' operator</code> uniqueness loop with <code>sorted(unique_cities)</code>; replace the <code>.copy().sort()</code> hazard sort with <code>sorted(unique_hazards)</code>",
-      "Track <code>trivia_asked</code> and <code>trivia_correct</code> as per-game counters; add a TRIVIA section to the trip report showing asked, correct, and accuracy percentage",
-      "Drop a <strong>forward-facing Patch Note</strong> in CP8: Sasha flags that the dict-of-dicts city shape is starting to creak, and points to Module 5's class-based fix"
+      "Track <code>trivia_asked</code> and <code>trivia_correct</code> as per-game counters; add a TRIVIA section to the trip report showing asked, correct, and accuracy percentage"
     ],
     "keyConceptsText": "A <strong>set</strong> in Python is a collection of unique items with O(1) membership testing. <code>my_set = set()</code> creates an empty set. <code>my_set.add(item)</code> inserts an item (or does nothing if it's already present). <code>len(my_set)</code> gives the unique count. <code>sorted(my_set)</code> returns a new sorted list. Sets are unordered, so iterate them via <code>sorted()</code> for stable display. The <strong>trivia data shape</strong> introduced this lab is a dictionary keyed by city, with each value a list of dicts: <code>trivia['Austin'] -> [{'question': '...', 'answer': 'TRUE'}, ...]</code>. This combines two patterns from CP1 of Lab 4.1 (dict lookup) and CP1 of Lab 4.2 (list of dicts) into one structure.",
-    "textbookReference": "Chapter 9 sets section (Programs 9\u201318 through 9\u201323) covers set creation, <code>.add()</code>, membership testing, and iteration. <code>sorted()</code> on a set is shown in Program 9\u201321.",
+    "textbookReference": "Chapter 9 sets section (Programs 9–18 through 9–23) covers set creation, <code>.add()</code>, membership testing, and iteration. <code>sorted()</code> on a set is shown in Program 9–21.",
     "programRequirements": [
       "Submit <code>lab-4-3.py</code> and <code>function_library.py</code>",
       "Top-of-file comment block on both files",
@@ -107,7 +106,7 @@
     ]
   },
   "timeGuide": {
-    "totalTime": "90\u2013120 Minutes",
+    "totalTime": "90–120 Minutes",
     "rows": [
       {
         "checkpoint": "CP1: Copy 4.2 + Load Trivia",
@@ -145,11 +144,6 @@
         "task": "Add trivia_asked/trivia_correct counters and TRIVIA section to trip report"
       },
       {
-        "checkpoint": "CP8: Module 5 Tease (Patch Note)",
-        "time": "5 min",
-        "task": "Sasha drops a forward-facing Patch Note: city dicts will become classes"
-      },
-      {
         "checkpoint": "Final Check & Submit",
         "time": "10 min",
         "task": "Full play-through + a wrong-trivia path, then upload to CodeGrade"
@@ -158,7 +152,7 @@
   },
   "beforeYouBegin": {
     "intro": "Lab 4.3 is the MASTER week. About half the work is in the lab file this time: the library gets one new function (<code>load_trivia</code>), but the lab file changes in five places: constants, startup, in-game gate, per-game state, and the trip report. <code>[NEW]</code> tags show what's added. <code>[REPLACED]</code> tags show what swaps out. <code>[RETIRED]</code> tags show what gets deleted entirely.",
-    "architecture": "# ---- IN function_library.py ----\nall 4.2 functions                                           [KEEP from 4.2]\nload_trivia(filename) -> dict[city] -> list of Q/A dicts    [NEW-CP1]\n\n# ---- IN lab-4-3.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE, INFO_FILE, HAZARDS_FILE, REPORT_FILE        [KEEP from 4.2]\nTRIVIA_FILE = 'trivia.txt'                                  [NEW-CP1]\nMILES_MULTIPLIER, HAZARD_CHANCE                             [KEEP from 4.2]\n\ntrivia_gate(dest, trivia, current, distances)               [NEW-CP2]\nsave_trip_report(...) +trivia_asked +trivia_correct         [REPLACED-CP7]\n\n# ---- main() ----\ndistances = load_city_distances(...)                        [KEEP from 4.2]\ncity_info = load_city_info(...)                             [KEEP from 4.2]\nhazards   = load_hazards(...)                               [KEEP from 4.2]\ntrivia    = load_trivia(TRIVIA_FILE)                        [NEW-CP1]\n\nMAIN MENU LOOP                                              [KEEP from 4.2]\n  PLAY-AGAIN LOOP                                           [KEEP from 4.2]\n    \u2502\n    \u2502\u2500 Per-game init:\n    \u2502     trivia_asked = 0, trivia_correct = 0           [NEW-CP7]\n    \u2502     unique_cities = set(visited_cities)             [NEW-CP4]\n    \u2502     unique_hazards = set(hazards_list)              [NEW-CP5]\n    \u2502\n    IN-GAME LOOP                                            [KEEP from 4.2]\n      \u2502\n      \u2502\u2500 Coin-flip Destination Gate                    [RETIRED-CP3]\n      \u2502\u2500 destination, distance, correct =\n      \u2502     trivia_gate(wanted, trivia, ...)             [NEW-CP3]\n      \u2502     trivia_asked += 1, trivia_correct += correct\n      \u2502\n      \u2502\u2500 D20 travel loop\n      \u2502     \u2502\u2500 if hazard: handle_hazard            [KEEP from 4.2]\n      \u2502     \u2502     hazards_list.append(name)\n      \u2502     \u2502     unique_hazards.add(name)            [NEW-CP5]\n      \u2502\n      \u2502\u2500 Arrival:\n      \u2502     visited_cities.append(current_city)\n      \u2502     unique_cities.add(current_city)              [NEW-CP4]\n      \u2502\n      \u2502\u2500 Continue / Save & quit / Quit               [KEEP from 4.2]\n    \n    Trip report on screen + trip_report.txt:\n      ROUTE                                                 [KEEP from 4.2]\n      Unique cities = len(unique_cities)                    [REPLACED-CP6]\n      HAZARDS = sorted(unique_hazards)                      [REPLACED-CP6]\n      STATISTICS                                            [KEEP from 4.2]\n      TRIVIA: asked / correct / accuracy                    [NEW-CP7]\n"
+    "architecture": "# ---- IN function_library.py ----\nall 4.2 functions                                           [KEEP from 4.2]\nload_trivia(filename) -> dict[city] -> list of Q/A dicts    [NEW-CP1]\n\n# ---- IN lab-4-3.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE, INFO_FILE, HAZARDS_FILE, REPORT_FILE        [KEEP from 4.2]\nTRIVIA_FILE = 'trivia.txt'                                  [NEW-CP1]\nMILES_MULTIPLIER, HAZARD_CHANCE                             [KEEP from 4.2]\n\ntrivia_gate(dest, trivia, current, distances)               [NEW-CP2]\nsave_trip_report(...) +trivia_asked +trivia_correct         [REPLACED-CP7]\n\n# ---- main() ----\ndistances = load_city_distances(...)                        [KEEP from 4.2]\ncity_info = load_city_info(...)                             [KEEP from 4.2]\nhazards   = load_hazards(...)                               [KEEP from 4.2]\ntrivia    = load_trivia(TRIVIA_FILE)                        [NEW-CP1]\n\nMAIN MENU LOOP                                              [KEEP from 4.2]\n  PLAY-AGAIN LOOP                                           [KEEP from 4.2]\n    │\n    │─ Per-game init:\n    │     trivia_asked = 0, trivia_correct = 0           [NEW-CP7]\n    │     unique_cities = set(visited_cities)             [NEW-CP4]\n    │     unique_hazards = set(hazards_list)              [NEW-CP5]\n    │\n    IN-GAME LOOP                                            [KEEP from 4.2]\n      │\n      │─ Coin-flip Destination Gate                    [RETIRED-CP3]\n      │─ destination, distance, correct =\n      │     trivia_gate(wanted, trivia, ...)             [NEW-CP3]\n      │     trivia_asked += 1, trivia_correct += correct\n      │\n      │─ D20 travel loop\n      │     │─ if hazard: handle_hazard            [KEEP from 4.2]\n      │     │     hazards_list.append(name)\n      │     │     unique_hazards.add(name)            [NEW-CP5]\n      │\n      │─ Arrival:\n      │     visited_cities.append(current_city)\n      │     unique_cities.add(current_city)              [NEW-CP4]\n      │\n      │─ Continue / Save & quit / Quit               [KEEP from 4.2]\n    \n    Trip report on screen + trip_report.txt:\n      ROUTE                                                 [KEEP from 4.2]\n      Unique cities = len(unique_cities)                    [REPLACED-CP6]\n      HAZARDS = sorted(unique_hazards)                      [REPLACED-CP6]\n      STATISTICS                                            [KEEP from 4.2]\n      TRIVIA: asked / correct / accuracy                    [NEW-CP7]\n"
   },
   "checkpoints": [
     {
@@ -444,6 +438,26 @@
         },
         {
           "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "5-8",
+              "filename": "multiple_args.py",
+              "description": "Calling a function with multiple arguments. <code>trivia_gate(dest, trivia, current, distances)</code> passes four pieces of state to the function you built in CP2; the function returns one result."
+            },
+            {
+              "programId": "5-32",
+              "filename": "rectangle2.py",
+              "description": "Function returning a tuple, unpacked at the call site. <code>destination, distance, correct = trivia_gate(...)</code> unpacks the 3-tuple into three named variables in one line. Same pattern as <code>rectangle2.py</code>'s <code>area, perimeter = compute_dimensions(...)</code>."
+            }
+          ]
+        },
+        {
+          "type": "h3",
           "label": "test_your_code"
         },
         {
@@ -504,7 +518,7 @@
         },
         {
           "type": "text",
-          "body": "Lab 4.2 ended every game with a loop that scanned <code>visited_cities</code> and used <code>if city not in unique_cities:</code> to deduplicate. That works, but it's O(n) per check, O(n\u00b2) total, and the code reads like a workaround for the right data structure. <code>set</code> is the right data structure: uniqueness is enforced on insertion, membership is O(1), and the post-game code becomes a single <code>len(unique_cities)</code> call."
+          "body": "Lab 4.2 ended every game with a loop that scanned <code>visited_cities</code> and used <code>if city not in unique_cities:</code> to deduplicate. That works, but it's O(n) per check, O(n²) total, and the code reads like a workaround for the right data structure. <code>set</code> is the right data structure: uniqueness is enforced on insertion, membership is O(1), and the post-game code becomes a single <code>len(unique_cities)</code> call."
         },
         {
           "type": "mentor_quote",
@@ -879,67 +893,6 @@
           ]
         }
       ]
-    },
-    {
-      "title": "Module 5 Tease (Patch Note)",
-      "content": [
-        {
-          "type": "h3",
-          "label": "what_youre_building"
-        },
-        {
-          "type": "text",
-          "body": "A small but consequential comment block in <code>lab-4-3.py</code>: Sasha's Patch Note about the dict-of-dicts city shape. No code changes; this CP is <strong>discovery</strong>, not implementation. Read the comment, recognize the limitation, and look forward to Module 5 where you'll fix it."
-        },
-        {
-          "type": "h3",
-          "label": "why_this_matters"
-        },
-        {
-          "type": "text",
-          "body": "Every Module has a Patch Note that closes a previous one. Module 2 dropped Tyler's hazard parallel-list note (closed in 4.2). Module 2 also dropped Tyler's int validation note (closed in 4.2). This is the Module 4 -> 5 Patch Note: Sasha flags that the dict-of-dicts city representation has gotten awkward, and Module 5 introduces classes as the cleaner replacement."
-        },
-        {
-          "type": "mentor_quote",
-          "character": "Sasha Mireles",
-          "role": "Creative Director, Bat City Collective",
-          "headshot": "Sasha-Mireles.png",
-          "quote": "<strong>PATCH NOTE [Module 5]:</strong> The dict-of-dicts city shape works, but every helper that needs city data takes both <code>city_info</code> and <code>distances</code> as parameters. <code>is_win_city(city, city_info)</code>, <code>get_destination(city, distances, choice)</code>, every <code>is_dead_end(city, city_info)</code>. The data is in two places; the functions juggle both. Module 5 introduces a <code>City</code> class that carries its own info AND its connections, so the calls become <code>city.is_win()</code>, <code>city.get_destination(choice)</code>. Half as many parameters; the data and the behavior live together."
-        },
-        {
-          "type": "h3",
-          "label": "step_by_step"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "Open <code>lab-4-3.py</code>. Find the existing comment block at the top of the file (the docstring that describes the lab).",
-            "Just below the docstring, add a clearly-marked Patch Note comment block. Format: <code># PATCH NOTE [Module 5]:</code> on its own line, followed by Sasha's full text from the mentor quote above. End the block with <code># Module 5 will introduce a City class to fix this.</code>",
-            "Save the file. There are no functional changes this CP; just documentation."
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "test_your_code"
-        },
-        {
-          "type": "text",
-          "body": "No code changes; nothing to test functionally. Confirm the program still runs end-to-end without errors."
-        },
-        {
-          "type": "h3",
-          "label": "what_you_should_have"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "Patch Note comment block present at the top of <code>lab-4-3.py</code>",
-            "Block identifies the dict-of-dicts limitation specifically (parameters in two places)",
-            "Block points to Module 5's City class as the upcoming fix",
-            "Program still runs end-to-end with no functional changes"
-          ]
-        }
-      ]
     }
   ],
   "finalChecklist": {
@@ -959,9 +912,9 @@
     ],
     "scopeReminder": "Module 4.3 introduces <code>set()</code>, <code>.add()</code>, <code>sorted()</code> on sets, and the dict-keyed-by-city-with-list-of-dicts trivia shape. The City class and inheritance are saved for Module 5.",
     "permittedTechniques": {
-      "chapters": "Chapters 1\u20139 in full",
-      "specific": "Chapter 8 string methods (<code>.upper()</code>, <code>.isdigit()</code>, etc.) from Lab 4.2 carry forward. Chapter 9: <strong>sets</strong> with <code>set()</code>, <code>.add()</code>, <code>in</code> membership, <code>len()</code>, <code>sorted()</code>. Everything from Modules 1\u20133 and Labs 4.1\u20134.2 carries forward.",
-      "notPermitted": "Set comprehensions (<code>{x for x in items}</code>) are out of scope. Stick to <code>set()</code> + <code>.add()</code>. Classes, methods, and <code>__init__</code> are saved for Module 5. The City class fix that Sasha hints at in CP8 is not implemented this week."
+      "chapters": "Chapters 1–9 in full",
+      "specific": "Chapter 8 string methods (<code>.upper()</code>, <code>.isdigit()</code>, etc.) from Lab 4.2 carry forward. Chapter 9: <strong>sets</strong> with <code>set()</code>, <code>.add()</code>, <code>in</code> membership, <code>len()</code>, <code>sorted()</code>. Everything from Modules 1–3 and Labs 4.1–4.2 carries forward.",
+      "notPermitted": "Set comprehensions (<code>{x for x in items}</code>) are out of scope. Stick to <code>set()</code> + <code>.add()</code>. Classes, methods, and <code>__init__</code> are saved for Module 5."
     },
     "warnings": [
       "Do not put <code>trivia_gate</code> in <code>function_library.py</code>. It is lab-local: it knows about the game's specific TRUE/FALSE answer format and the on-screen banners. Library functions stay general; lab functions hold game-specific logic.",

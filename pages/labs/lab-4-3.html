@@ -32,7 +32,7 @@
   <div class="lc-panel">
     <div class="lc-h3 lc-h3--yellow">Overview</div>
     <img src="../../branding/AllMyEggses3D-Full.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
-    <p>MASTER week. Two arrivals close Module 4. First, the coin-flip Destination Gate from Labs 3.x and 4.x retires entirely. A TRIVIA gate replaces it: players answer a TRUE/FALSE question about the city they want to visit, and a wrong answer triggers the same <code>get_redirect</code> detour that the old TAILS branch did. Second, <strong>sets</strong> arrive as the right tool for tracking unique cities and unique hazards across a game. The trip report grows a TRIVIA section with asked / correct / accuracy stats, and the HAZARDS display uses <code>sorted()</code> on a set to show each unique hazard exactly once. This is also the lab where Sasha drops the Module 5 Patch Note about the dictionary-of-dictionaries shape: it works, but it's starting to feel awkward. The fix is coming next module.</p>
+    <p>MASTER week. Two arrivals close Module 4. First, the coin-flip Destination Gate from Labs 3.x and 4.x retires entirely. A TRIVIA gate replaces it: players answer a TRUE/FALSE question about the city they want to visit, and a wrong answer triggers the same <code>get_redirect</code> detour that the old TAILS branch did. Second, <strong>sets</strong> arrive as the right tool for tracking unique cities and unique hazards across a game. The trip report grows a TRIVIA section with asked / correct / accuracy stats, and the HAZARDS display uses <code>sorted()</code> on a set to show each unique hazard exactly once.</p>
     <div style="clear: both;"></div>
     <div class="lc-mentor">
       <div class="lc-mentor__inner">
@@ -59,7 +59,6 @@
       <li>Build <code>unique_cities = set()</code> and <code>unique_hazards = set()</code> at game start; <code>.add()</code> entries every time a city or hazard is recorded</li>
       <li>Replace the post-game <code>'in' operator</code> uniqueness loop with <code>sorted(unique_cities)</code>; replace the <code>.copy().sort()</code> hazard sort with <code>sorted(unique_hazards)</code></li>
       <li>Track <code>trivia_asked</code> and <code>trivia_correct</code> as per-game counters; add a TRIVIA section to the trip report showing asked, correct, and accuracy percentage</li>
-      <li>Drop a <strong>forward-facing Patch Note</strong> in CP8: Sasha flags that the dict-of-dicts city shape is starting to creak, and points to Module 5's class-based fix</li>
     </ul>
     <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
     <p>A <strong>set</strong> in Python is a collection of unique items with O(1) membership testing. <code>my_set = set()</code> creates an empty set. <code>my_set.add(item)</code> inserts an item (or does nothing if it's already present). <code>len(my_set)</code> gives the unique count. <code>sorted(my_set)</code> returns a new sorted list. Sets are unordered, so iterate them via <code>sorted()</code> for stable display. The <strong>trivia data shape</strong> introduced this lab is a dictionary keyed by city, with each value a list of dicts: <code>trivia['Austin'] -> [{'question': '...', 'answer': 'TRUE'}, ...]</code>. This combines two patterns from CP1 of Lab 4.1 (dict lookup) and CP1 of Lab 4.2 (list of dicts) into one structure.</p>
@@ -195,11 +194,6 @@
         <td>Add trivia_asked/trivia_correct counters and TRIVIA section to trip report</td>
       </tr>
       <tr>
-        <td><strong>CP8: Module 5 Tease (Patch Note)</strong></td>
-        <td>5 min</td>
-        <td>Sasha drops a forward-facing Patch Note: city dicts will become classes</td>
-      </tr>
-      <tr>
         <td><strong>Final Check &amp; Submit</strong></td>
         <td>10 min</td>
         <td>Full play-through + a wrong-trivia path, then upload to CodeGrade</td>
@@ -280,7 +274,7 @@ MAIN MENU LOOP                                              [KEEP from 4.2]
 <div class="lc-card lc-card--green">
   <div class="lc-topper">
     <div class="lc-topper-title">Checkpoints</div>
-    <div class="lc-sub-banner">8 Checkpoints</div>
+    <div class="lc-sub-banner">7 Checkpoints</div>
   </div>
   <div class="lc-panel">
     <div class="lc-cp-row">
@@ -569,6 +563,38 @@ result <span class="sy-op">=</span> trivia_gate<span class="sy-op">(</span><span
       <li>Increment <code>trivia_asked = trivia_asked + 1</code> after the gate. If <code>correct:</code> then <code>trivia_correct = trivia_correct + 1</code>.</li>
       <li>Run the program and play a full game. Confirm the coin-flip banner is gone, the trivia banner appears, and the game still travels to a destination (correct answer) or a detour (wrong answer).</li>
     </ol>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 5-8</strong>
+            — <code>multiple_args.py</code>
+            
+            — Calling a function with multiple arguments. <code>trivia_gate(dest, trivia, current, distances)</code> passes four pieces of state to the function you built in CP2; the function returns one result.
+          </li>
+          <li>
+            <strong>Program 5-32</strong>
+            — <code>rectangle2.py</code>
+            
+            — Function returning a tuple, unpacked at the call site. <code>destination, distance, correct = trivia_gate(...)</code> unpacks the 3-tuple into three named variables in one line. Same pattern as <code>rectangle2.py</code>'s <code>area, perimeter = compute_dimensions(...)</code>.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
     <p>Two test paths to walk through: pick Corpus Christi from San Antonio, answer TRUE (correct) and confirm you arrive at Corpus Christi. Start a new game, pick Corpus Christi again, answer FALSE (wrong), and confirm you end up at one of the other San Antonio destinations (Houston, Austin, Laredo, or El Paso).</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
@@ -974,51 +1000,6 @@ result <span class="sy-op">=</span> trivia_gate<span class="sy-op">(</span><span
       <li>Accuracy line is skipped entirely when the player faced no trivia gates (impossible in normal play, but defensive)</li>
     </ol>
     </div>
-    <hr class="lc-cp-sep">
-    <div class="lc-cp-row">
-      <div class="lc-cp-badge">
-        <div class="lc-cp-badge__word">Checkpoint</div>
-        <div class="lc-cp-badge__num">8</div>
-      </div>
-      <div class="lc-cp-content">
-        <div class="lc-cp-title">Module 5 Tease (Patch Note)</div>
-      </div>
-    </div>
-    <div class="lc-cp-body">
-    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
-    <p>A small but consequential comment block in <code>lab-4-3.py</code>: Sasha's Patch Note about the dict-of-dicts city shape. No code changes; this CP is <strong>discovery</strong>, not implementation. Read the comment, recognize the limitation, and look forward to Module 5 where you'll fix it.</p>
-    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
-    <p>Every Module has a Patch Note that closes a previous one. Module 2 dropped Tyler's hazard parallel-list note (closed in 4.2). Module 2 also dropped Tyler's int validation note (closed in 4.2). This is the Module 4 -> 5 Patch Note: Sasha flags that the dict-of-dicts city representation has gotten awkward, and Module 5 introduces classes as the cleaner replacement.</p>
-    <div class="lc-mentor">
-      <div class="lc-mentor__inner">
-        <div class="lc-mentor__avatar">
-          <img src="../../headshots/Sasha-Mireles.png" alt="Sasha Mireles">
-        </div>
-        <div class="lc-mentor__bubble">
-          <div class="lc-mentor__quote">"<strong>PATCH NOTE [Module 5]:</strong> The dict-of-dicts city shape works, but every helper that needs city data takes both <code>city_info</code> and <code>distances</code> as parameters. <code>is_win_city(city, city_info)</code>, <code>get_destination(city, distances, choice)</code>, every <code>is_dead_end(city, city_info)</code>. The data is in two places; the functions juggle both. Module 5 introduces a <code>City</code> class that carries its own info AND its connections, so the calls become <code>city.is_win()</code>, <code>city.get_destination(choice)</code>. Half as many parameters; the data and the behavior live together."</div>
-        </div>
-      </div>
-      <div class="lc-mentor__attribution">
-        <div class="lc-mentor__name">Sasha Mireles</div>
-        <div class="lc-mentor__role">Creative Director, Bat City Collective</div>
-      </div>
-    </div>
-    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
-    <ol>
-      <li>Open <code>lab-4-3.py</code>. Find the existing comment block at the top of the file (the docstring that describes the lab).</li>
-      <li>Just below the docstring, add a clearly-marked Patch Note comment block. Format: <code># PATCH NOTE [Module 5]:</code> on its own line, followed by Sasha's full text from the mentor quote above. End the block with <code># Module 5 will introduce a City class to fix this.</code></li>
-      <li>Save the file. There are no functional changes this CP; just documentation.</li>
-    </ol>
-    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p>No code changes; nothing to test functionally. Confirm the program still runs end-to-end without errors.</p>
-    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
-    <ol>
-      <li>Patch Note comment block present at the top of <code>lab-4-3.py</code></li>
-      <li>Block identifies the dict-of-dicts limitation specifically (parameters in two places)</li>
-      <li>Block points to Module 5's City class as the upcoming fix</li>
-      <li>Program still runs end-to-end with no functional changes</li>
-    </ol>
-    </div>
   </div>
 </div>
 <div class="lc-card lc-card--red">
@@ -1407,7 +1388,7 @@ result <span class="sy-op">=</span> trivia_gate<span class="sy-op">(</span><span
       <li>d</li>
       <li>.</li>
       </ul>
-    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> Set comprehensions (&lt;code&gt;{x for x in items}&lt;/code&gt;) are out of scope. Stick to &lt;code&gt;set()&lt;/code&gt; + &lt;code&gt;.add()&lt;/code&gt;. Classes, methods, and &lt;code&gt;__init__&lt;/code&gt; are saved for Module 5. The City class fix that Sasha hints at in CP8 is not implemented this week.</p>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> Set comprehensions (&lt;code&gt;{x for x in items}&lt;/code&gt;) are out of scope. Stick to &lt;code&gt;set()&lt;/code&gt; + &lt;code&gt;.add()&lt;/code&gt;. Classes, methods, and &lt;code&gt;__init__&lt;/code&gt; are saved for Module 5.</p>
     </div>
     <div class="lc-callout lc-callout--warning">
       <div class="lc-callout__icon">

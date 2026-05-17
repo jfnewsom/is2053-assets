@@ -95,6 +95,15 @@ CALLOUT_ICONS = {
         <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
     </svg>""",
 
+    "strategy": """<svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
+                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="19" r="1.5" fill="#000"/>
+    </svg>""",
+
     "warning": """<svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="5" y="5" width="20" height="20" rx="3"
               stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
@@ -110,6 +119,7 @@ CALLOUT_ACCENT = {
     "info":    "#0055FF",
     "bookex":  "#BF40FF",
     "warning": "#FF1744",
+    "strategy": "#FF6B1A",
 }
 
 
@@ -567,9 +577,9 @@ def render_time_guide(time_guide: dict) -> str:
       </tr>
 """ if total_time else ""
 
-    strategy_html = f"""    <div class="lc-callout lc-callout--tip">
+    strategy_html = f"""    <div class="lc-callout lc-callout--strategy">
       <div class="lc-callout__icon">
-        {CALLOUT_ICONS["tip"].strip()}
+        {CALLOUT_ICONS["strategy"].strip()}
       </div>
       <div class="lc-callout__bubble">
         <div class="lc-callout__title">Strategy</div>
