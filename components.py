@@ -674,7 +674,8 @@ def render_before_you_begin(byb: dict) -> str:
         '<span class="lc-arch-travel-loop">TRAVEL LOOP</span>'
     )
 
-    intro_html = f'    <p class="lc-arch-intro">{html_lib.escape(intro)}</p>\n' if intro else ""
+    # intro may contain HTML (code tags, strong, em, br) — do NOT escape
+    intro_html = f'    <p class="lc-arch-intro">{intro}</p>\n' if intro else ""
 
     return (
         card_open("cyan")

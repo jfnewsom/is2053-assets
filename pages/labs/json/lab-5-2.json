@@ -1,676 +1,716 @@
 {
-    "meta": {
-        "labId": "lab-5-2",
-        "title": "Deep in the Heart",
-        "module": 5,
-        "week": 2,
-        "weekType": "MASTER",
-        "chapters": "10",
-        "chapterTopics": "Classes and Object-Oriented Programming",
-        "filename": "player.py",
-        "additionalFiles": []
+  "meta": {
+    "labId": "lab-5-2",
+    "title": "Deep in the Heart",
+    "module": 5,
+    "week": 2,
+    "weekType": "MASTER",
+    "chapters": "10",
+    "chapterTopics": "Classes and Object-Oriented Programming",
+    "filename": "player.py",
+    "additionalFiles": []
+  },
+  "overview": {
+    "body": "Look at the top of <code>main()</code> in your <code>lab-5-1.py</code>. You'll see ten state variables: <code>current_city</code>, <code>total_miles</code>, <code>visited</code>, <code>unique_cities</code>, <code>unique_hazards</code>, and five more. Every one of them is related — they all describe the same thing: the player's journey. This week, you'll bundle all ten into a single <strong>Player class</strong>. The Player object tracks everything, and the main program talks to it through method calls. <code>lab-5-2.py</code> is provided — your job is to build <code>player.py</code> so it runs.",
+    "mentorQuote": {
+      "character": "Danny Cavanaugh",
+      "role": "Lead Developer, Bat City Collective",
+      "headshot": "Danny-Cavanaugh.png",
+      "quote": "You wrote the same game five different ways this semester. Each time it got better. Module 1 was raw Python. Module 3 added files. Module 4 added dictionaries. Module 5 brings it home with objects. That's not repetition -- that's how you learn to build things that last."
     },
-    "overview": {
-        "body": "Look at the top of <code>main()</code> in your <code>lab-5-1.py</code>. You'll see ten state variables: <code>current_city</code>, <code>total_miles</code>, <code>visited</code>, <code>unique_cities</code>, <code>unique_hazards</code>, and five more. Every one of them is related — they all describe the same thing: the player's journey. This week, you'll bundle all ten into a single <strong>Player class</strong>. The Player object tracks everything, and the main program talks to it through method calls. <code>lab-5-2.py</code> is provided — your job is to build <code>player.py</code> so it runs.",
-        "mentorQuote": {
-            "character": "Danny Cavanaugh",
-            "role": "Lead Developer, Bat City Collective",
-            "headshot": "Danny-Cavanaugh.png",
-            "quote": "You wrote the same game five different ways this semester. Each time it got better. Module 1 was raw Python. Module 3 added files. Module 4 added dictionaries. Module 5 brings it home with objects. That's not repetition -- that's how you learn to build things that last."
-        },
-        "objectives": [
-            "Define a <code>Player</code> class using the same OOP pattern as <code>City</code>",
-            "Track all game state in one object: location, miles, cities visited, hazards, and trivia",
-            "Use a list and a set inside a class to track the full route and unique cities",
-            "Replace ten scattered state variables with a single <code>player</code> object",
-            "See the provided <code>lab-5-2.py</code> as a spec: every <code>player.</code> call tells you a method to build"
-        ],
-        "programRequirements": [
-            "<code>player.py</code> defines a class named <code>Player</code> with private attributes",
-            "<code>Player.__init__(name, starting_city)</code> initializes all tracking state",
-            "<code>Player</code> has twelve getter-style methods for all attributes, including <code>get_unique_city_count()</code> and <code>get_unique_hazard_count()</code> which return lengths rather than raw attributes",
-            "<code>travel_to(city_name, distance)</code> updates current city, miles, visited list, and unique set",
-            "<code>record_hazard(hazard_name, escaped)</code> updates hazard counters and unique hazard set",
-            "<code>record_trivia(correct)</code> updates trivia counters",
-            "<code>get_route_string()</code> returns the full route as a <code>' -> '</code> separated string",
-            "<code>get_trivia_accuracy()</code> returns accuracy as a percentage string",
-            "<code>__str__</code> method returns a single-line summary of the player"
-        ],
-        "filenameNote": "Submit <code>player.py</code> only this week. CodeGrade already has <code>lab-5-2.py</code>, <code>city.py</code>, <code>function_library.py</code>, and the four data files -- it runs your <code>player.py</code> against them automatically.",
-        "additionalFilesNote": "<code>lab-5-2.py</code> and <code>test.py</code> are provided -- download them below along with the four data files. Do not modify <code>lab-5-2.py</code>. Read through it carefully -- every <code>player.</code> call tells you a method your <code>Player</code> class needs to implement. A reference <code>city.py</code> is also available below as a backup if your Lab 5.1 file is broken or missing. If your own <code>city.py</code> works, keep using it.",
-        "dataFiles": [
-            {
-                "file": "lab-5-2.py",
-                "path": "5-2/lab-5-2.py",
-                "format": "Provided main program -- do not modify"
-            },
-            {
-                "file": "test.py",
-                "path": "5-2/test.py",
-                "format": "Local test harness -- run before submitting"
-            },
-            {
-                "file": "city.py",
-                "path": "5-2/city.py",
-                "format": "Reference City class -- backup only, use yours from Lab 5.1 if it works"
-            },
-            {
-                "file": "city_distances.txt",
-                "path": "5-2/city_distances.txt",
-                "format": "Same as Module 4 (carried forward)"
-            },
-            {
-                "file": "city_info.txt",
-                "path": "5-2/city_info.txt",
-                "format": "Same as Module 4 (carried forward)"
-            },
-            {
-                "file": "hazards.txt",
-                "path": "5-2/hazards.txt",
-                "format": "Same as Module 4 (carried forward)"
-            },
-            {
-                "file": "trivia.txt",
-                "path": "5-2/trivia.txt",
-                "format": "Same as Module 4 (carried forward)"
-            }
-        ],
-        "keyConceptsText": "<strong>Chapter 10:</strong> <code>class</code> definition, <code>__init__</code> constructor, private attributes with double-underscore prefix, getter methods, state-updating methods, <code>__str__</code> special method, and list/set as class attributes.",
-        "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 10"
-    },
-    "timeGuide": {
-        "totalTime": "60-90 Minutes",
-        "rows": [
-            {
-                "checkpoint": "Checkpoint 1",
-                "time": "15 min",
-                "task": "Create <code>player.py</code>, define <code>__init__</code> with all attributes"
-            },
-            {
-                "checkpoint": "Checkpoint 2",
-                "time": "15 min",
-                "task": "Add all getter methods"
-            },
-            {
-                "checkpoint": "Checkpoint 3",
-                "time": "20 min",
-                "task": "Add <code>travel_to()</code>, <code>record_hazard()</code>, <code>record_trivia()</code>"
-            },
-            {
-                "checkpoint": "Checkpoint 4",
-                "time": "15 min",
-                "task": "Add display methods and <code>__str__</code>, run test.py"
-            },
-            {
-                "checkpoint": "Submit",
-                "time": "10 min",
-                "task": "Final check and CodeGrade submission"
-            }
-        ],
-        "strategy": "Start by reading through the provided <code>lab-5-2.py</code> and noting every <code>player.</code> call. That list is your build checklist. The Player class follows the exact same pattern as the City class you built in Lab 5.1 -- private attributes, getters, methods that update state, and <code>__str__</code>. If City clicked, Player will too."
-    },
-    "beforeYouBegin": {
-        "intro": "The Player class replaces ten scattered variables from lab-5-1.py's main() function. Each attribute maps directly to one of those variables. Each method maps to the lines that updated them. Use this architecture as your build guide.",
-        "architecture": "# ---- player.py ----\nclass Player:\n\n    # --- Constructor ---   [CP1]\n    __init__(self, name, starting_city)\n        self.__name              = name\n        self.__current_city      = starting_city\n        self.__total_miles       = 0\n        self.__visited_cities    = [starting_city]   (list -- preserves order)\n        self.__unique_cities     = set()             (set -- no duplicates)\n        self.__unique_cities.add(starting_city)\n        self.__hazards_faced     = 0\n        self.__hazards_escaped   = 0\n        self.__unique_hazards    = set()\n        self.__trivia_asked      = 0\n        self.__trivia_correct    = 0\n\n    # --- Getter Methods ---   [CP2]\n    get_name()                  returns self.__name\n    get_current_city()          returns self.__current_city\n    get_total_miles()           returns self.__total_miles\n    get_visited_cities()        returns self.__visited_cities.copy()\n    get_unique_cities()         returns self.__unique_cities.copy()\n    get_unique_city_count()     returns len(self.__unique_cities)\n    get_hazards_faced()         returns self.__hazards_faced\n    get_hazards_escaped()       returns self.__hazards_escaped\n    get_unique_hazards()        returns self.__unique_hazards.copy()\n    get_unique_hazard_count()   returns len(self.__unique_hazards)\n    get_trivia_asked()          returns self.__trivia_asked\n    get_trivia_correct()        returns self.__trivia_correct\n\n    # --- Travel Methods ---   [CP3]\n    travel_to(city_name, distance)\n        updates: __current_city, __total_miles, __visited_cities, __unique_cities\n\n    # --- Hazard Methods ---   [CP3]\n    record_hazard(hazard_name, escaped)\n        updates: __hazards_faced, __unique_hazards\n        if escaped: updates __hazards_escaped\n\n    # --- Trivia Methods ---   [CP3]\n    record_trivia(correct)\n        updates: __trivia_asked\n        if correct: updates __trivia_correct\n\n    # --- Display Methods ---   [CP4]\n    get_route_string()          ' -> '.join(self.__visited_cities)\n    get_trivia_accuracy()       returns percentage string e.g. '75.0%'\n    __str__                     returns 'Maria in Houston (450 miles)'\n\n\n# ---- lab-5-2.py ---- (PROVIDED -- do not modify)\nfrom city import City\nfrom player import Player\nimport function_library\n\n  ... all load functions unchanged ...\n  build_cities()        same as lab-5-1.py\n  trivia_gate()         same as lab-5-1.py\n  handle_hazard(hazards, player)     [REPLACED] calls player.record_hazard()\n  execute_travel(dest, dist, ...)    [REPLACED] calls player.travel_to()\n\nmain():\n  player = Player(name, 'San Antonio')   [NEW] one line replaces ten variables\n  ... game loop calls player methods ...\n\nif __name__ == '__main__': -> main()"
-    },
-    "checkpoints": [
-        {
-            "number": 1,
-            "title": "File Setup & Constructor",
-            "subtitle": "Create <code>player.py</code> and define the Player class with all ten private attributes.",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "The Player class starts with one job: hold all the state that was scattered across <code>main()</code> in <code>lab-5-1.py</code>. Ten variables become ten private attributes, all initialized in one <code>__init__</code> method."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "In <code>lab-5-1.py</code>, if you wanted to know the player's current city, you'd look at <code>current_city</code>. If you wanted their total miles, <code>total_miles</code>. Two different names, two different places. Now it's <code>player.get_current_city()</code> and <code>player.get_total_miles()</code>. Same object. Same place. Everything the player <em>is</em> lives in one place."
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "10-12",
-                            "filename": "cellphone.py",
-                            "step": 1,
-                            "description": "You built a CellPhone class with private attributes for manufacturer, model, and price. Player follows the same pattern -- more attributes, same structure. Copy your City class to player.py, rename the class, and replace the attributes using the architecture diagram above."
-                        }
-                    ]
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Tyler Nguyen",
-                    "role": "Junior Developer, Bat City Collective",
-                    "headshot": "Tyler-Nguyen.png",
-                    "quote": "When I first saw ten state variables in main() I thought that was just how games worked. Then Danny showed me a Player class and I literally said 'that's it?' One object. One place. Everything the player is, right there. I wish I'd learned this sooner."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Create a new file called <code>player.py</code>",
-                        "Add the module docstring at the top with your name, abc123, section, and description",
-                        "Define the <code>Player</code> class with a class docstring",
-                        "Write <code>__init__(self, name, starting_city)</code> and initialize all ten private attributes -- use the architecture diagram as your guide",
-                        "Pay attention to the list and set: <code>self.__visited_cities = [starting_city]</code> starts with the starting city already in it, and so does <code>self.__unique_cities</code>"
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 1:</strong> Add this test at the bottom of player.py:"
-                },
-                {
-                    "type": "code_block",
-                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\np = Player('Maria', 'San Antonio')\nprint('Player created successfully!')\nprint(type(p))"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 2:</strong> Run player.py. You should see:"
-                },
-                {
-                    "type": "output_block",
-                    "output": "Player created successfully!\n<class '__main__.Player'>"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 3:</strong> Delete the debug code before continuing."
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Inheriting from City: <code>class Player(City):</code>",
-                            "Player does not inherit from City -- they are separate classes. Inheritance is Chapter 11 and not part of this course."
-                        ],
-                        [
-                            "Not pre-loading starting_city into the list and set",
-                            "The starting city counts as visited from the moment the game begins"
-                        ],
-                        [
-                            "Using a single underscore: <code>self._name</code>",
-                            "Private attributes need double underscores: <code>self.__name</code>"
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>player.py</code> with module docstring",
-                        "<code>Player</code> class with class docstring",
-                        "<code>__init__</code> accepting <code>name</code> and <code>starting_city</code>",
-                        "All ten private attributes initialized",
-                        "Starting city pre-loaded in both <code>__visited_cities</code> and <code>__unique_cities</code>"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 2,
-            "title": "Getter Methods",
-            "subtitle": "Add all twelve getter-style methods.",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "Twelve getter methods that provide read access to the Player's private data. These are the methods <code>lab-5-2.py</code> calls to build the final report. Same pattern you used in City -- each getter just returns its attribute."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "Getters enforce a contract: outside code never touches private data directly. <code>lab-5-2.py</code> doesn't reach into <code>player.__total_miles</code> — it calls <code>player.get_total_miles()</code>. That one layer of separation is what makes it safe to change how the Player stores data internally without breaking anything that uses it. Two of the getters — <code>get_unique_city_count()</code> and <code>get_unique_hazard_count()</code> — return <code>len()</code> instead of the raw attribute. The caller gets a number, not a set. That is encapsulation doing real work."
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "10-12",
-                            "filename": "cellphone.py",
-                            "step": 1,
-                            "description": "You typed <code>get_manufact()</code>, <code>get_model()</code>, and <code>get_retail_price()</code> -- each just returned <code>self.__attribute</code>. All twelve Player getters follow exactly the same pattern."
-                        }
-                    ]
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Priya Venkatesh",
-                    "role": "Project Manager, Bat City Collective",
-                    "headshot": "Priya-Venkatesh.png",
-                    "quote": "Twelve getters sounds like a lot of repetition. But think of it as a public API. lab-5-2.py is the client. It only talks to Player through method calls. If we ever need to change how the Player stores miles internally, the client code doesn't change at all. That contract is worth writing twelve methods for."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Add a <code># --- Getter Methods ---</code> comment below <code>__init__</code>",
-                        "Write a getter for each of the twelve methods listed in the architecture diagram -- ten return <code>self.__attribute</code> directly, and two (<code>get_unique_city_count()</code> and <code>get_unique_hazard_count()</code>) return <code>len(self.__attribute)</code>",
-                        "For <code>get_visited_cities()</code> and <code>get_unique_cities()</code>, return a <strong>copy</strong> with <code>.copy()</code> to protect the originals",
-                        "Add a docstring to every method"
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 1:</strong> Add this test:"
-                },
-                {
-                    "type": "code_block",
-                    "code": "# DEBUG - DELETE BEFORE CHECKPOINT 3\np = Player('Maria', 'San Antonio')\nprint(f'Name: {p.get_name()}')\nprint(f'City: {p.get_current_city()}')\nprint(f'Miles: {p.get_total_miles()}')\nprint(f'Unique cities: {p.get_unique_city_count()}')\nprint(f'Hazards faced: {p.get_hazards_faced()}')\nprint(f'Trivia asked: {p.get_trivia_asked()}')"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 2:</strong> You should see:"
-                },
-                {
-                    "type": "output_block",
-                    "output": "Name: Maria\nCity: San Antonio\nMiles: 0\nUnique cities: 1\nHazards faced: 0\nTrivia asked: 0"
-                },
-                {
-                    "type": "text",
-                    "body": "<strong>Step 3:</strong> Delete the debug code before continuing."
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Returning the raw set instead of a copy: <code>return self.__unique_cities</code>",
-                            "The caller could modify the set directly. Use <code>return self.__unique_cities.copy()</code> to protect the original."
-                        ],
-                        [
-                            "Returning <code>self.__unique_cities</code> for the count getter",
-                            "<code>get_unique_city_count()</code> returns <code>len(self.__unique_cities)</code>, not the set itself."
-                        ],
-                        [
-                            "Missing a docstring on any getter",
-                            "CodeGrade checks documentation on every method. One missing docstring is a deduction."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Twelve getter methods, each with a docstring",
-                        "<code>get_visited_cities()</code> and <code>get_unique_cities()</code> return copies"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 3,
-            "title": "State-Updating Methods",
-            "subtitle": "Add <code>travel_to()</code>, <code>record_hazard()</code>, and <code>record_trivia()</code> -- the methods that update the player's state during the game.",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "Three methods that replace the scattered update statements in <code>lab-5-1.py</code>'s main() function. Each method handles multiple related updates in one place. Instead of four lines of code to record travel, it's one method call: <code>player.travel_to(dest, distance)</code>."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "In <code>lab-5-1.py</code>, recording a hazard meant four separate lines in <code>main()</code>: increment the counter, add to the set, check a boolean, maybe increment escaped. Now it is one call: <code>player.record_hazard(name, escaped)</code>. The Player knows how to update itself. The caller just says what happened. This is what object-oriented design means in practice — behavior lives with the data it operates on."
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Danny Cavanaugh",
-                    "role": "Lead Developer, Bat City Collective",
-                    "headshot": "Danny-Cavanaugh.png",
-                    "quote": "Three methods. travel_to(), record_hazard(), record_trivia(). Together they replace about twenty lines of scattered updates in main(). And next time we want to add a stat — say, a fuel tracker — we add one attribute and one method. We don't go hunting through main() trying to remember every place it touches."
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "10-12",
-                            "filename": "cellphone.py",
-                            "step": 1,
-                            "description": "The CellPhone class had a <code>set_retail_price()</code> method that updated <code>self.__retail_price</code>. Your <code>travel_to()</code>, <code>record_hazard()</code>, and <code>record_trivia()</code> methods follow the exact same pattern — a method that changes one or more private attributes based on what happened."
-                        },
-                        {
-                            "programId": "10-9",
-                            "filename": "bankaccount2.py",
-                            "step": 1,
-                            "description": "The BankAccount <code>deposit()</code> method did <code>self.__balance = self.__balance + amount</code>. Your <code>travel_to()</code> does the same thing with miles: <code>self.__total_miles = self.__total_miles + distance</code>."
-                        }
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Add a <code># --- Travel Methods ---</code> comment",
-                        "Define <code>travel_to(self, city_name, distance)</code> -- it must update all four travel attributes:"
-                    ]
-                },
-                {
-                    "type": "code_block",
-                    "code": "def travel_to(self, city_name, distance):\n    \"\"\"\n    Travel to a new city.\n\n    Replaces in main():\n        current_city = final_dest\n        total_miles = total_miles + miles\n        visited.append(final_dest)\n        unique_cities.add(final_dest)\n    \"\"\"\n    self.__current_city = city_name\n    self.__total_miles = self.__total_miles + distance\n    self.__visited_cities.append(city_name)\n    self.__unique_cities.add(city_name)"
-                },
-                {
-                    "type": "instructions",
-                    "start": 3,
-                    "items": [
-                        "Add a <code># --- Hazard Methods ---</code> comment",
-                        "Define <code>record_hazard(self, hazard_name, escaped)</code> -- update <code>__hazards_faced</code>, add to <code>__unique_hazards</code>, and increment <code>__hazards_escaped</code> only if <code>escaped</code> is True",
-                        "Add a <code># --- Trivia Methods ---</code> comment",
-                        "Define <code>record_trivia(self, correct)</code> -- increment <code>__trivia_asked</code> always, increment <code>__trivia_correct</code> only if <code>correct</code> is True"
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "text",
-                    "body": "Run <code>python test.py</code> from your project folder. All Player tests through the state-updating section should pass."
-                },
-                {
-                    "type": "output_block",
-                    "output": "# After player = Player('Maria', 'San Antonio')\n# then player.travel_to('Houston', 200)\n# then player.record_hazard(\"Speed trap!\", False)\n# then player.record_trivia(True)\n\nprint(player.get_current_city())   # Houston\nprint(player.get_total_miles())    # 200\nprint(player.get_unique_city_count())  # 2\nprint(player.get_hazards_faced())  # 1\nprint(player.get_hazards_escaped())  # 0\nprint(player.get_trivia_asked())   # 1\nprint(player.get_trivia_correct()) # 1"
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Forgetting to update all four attributes in <code>travel_to()</code>",
-                            "Missing any one means the final report will be wrong"
-                        ],
-                        [
-                            "Using <code>=</code> instead of <code>+=</code> equivalent for miles",
-                            "Write it out: <code>self.__total_miles = self.__total_miles + distance</code>"
-                        ],
-                        [
-                            "Always incrementing <code>__hazards_escaped</code>",
-                            "Only increment if <code>escaped</code> is True -- use <code>if escaped:</code>"
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>travel_to()</code> updating four attributes, with docstring",
-                        "<code>record_hazard()</code> updating faced count, unique set, and conditionally escaped count, with docstring",
-                        "<code>record_trivia()</code> updating asked count and conditionally correct count, with docstring"
-                    ]
-                }
-            ]
-        },
-        {
-            "number": 4,
-            "title": "Display Methods, __str__, and Final Test",
-            "subtitle": "Add the display methods, <code>__str__</code>, run the full test suite, then submit.",
-            "content": [
-                {
-                    "type": "h3",
-                    "label": "what_youre_building"
-                },
-                {
-                    "type": "text",
-                    "body": "The final methods: <code>get_route_string()</code> formats the travel history as a readable route, <code>get_trivia_accuracy()</code> calculates the accuracy percentage, and <code>__str__</code> gives a one-line summary of the player's current state."
-                },
-                {
-                    "type": "h3",
-                    "label": "why_this_matters"
-                },
-                {
-                    "type": "text",
-                    "body": "Display methods are the Player's voice. <code>get_route_string()</code> and <code>get_trivia_accuracy()</code> transform raw stored data into something readable — the same work a report generator or dashboard does professionally. <code>__str__</code> is Python's protocol for making objects printable: implement it, and <code>print(player)</code> just works. These three methods complete the Player's public interface."
-                },
-                {
-                    "type": "h3",
-                    "label": "bookex_patterns"
-                },
-                {
-                    "type": "callout",
-                    "variant": "bookex",
-                    "references": [
-                        {
-                            "programId": "10-9",
-                            "filename": "bankaccount2.py",
-                            "step": 1,
-                            "description": "You typed a <code>__str__</code> method that returned a formatted string. Python calls it automatically when you <code>print()</code> the object. Your Player's <code>__str__</code> should return something like <code>'Maria in Houston (450 miles)'</code>."
-                        }
-                    ]
-                },
-                {
-                    "type": "mentor_quote",
-                    "character": "Terrence \"T-Bone\" Booker",
-                    "role": "QA Lead, Bat City Collective",
-                    "headshot": "Terrence-TBone-Booker.png",
-                    "quote": "Fifty-three tests. That's what test.py runs against your Player class. Every method, every edge case, zero-trivia-asked, escaped vs. not escaped. Run it after every checkpoint — not just at the end. A test that breaks at CP2 is a five-minute fix. The same break discovered at submission is a bad night."
-                },
-                {
-                    "type": "h3",
-                    "label": "step_by_step"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Add a <code># --- Display Methods ---</code> comment",
-                        "Define <code>get_route_string(self)</code> that joins the visited cities list with <code>' -> '</code>:"
-                    ]
-                },
-                {
-                    "type": "code_block",
-                    "code": "def get_route_string(self):\n    \"\"\"Return the full travel route as a formatted string.\"\"\"\n    return ' -> '.join(self.__visited_cities)"
-                },
-                {
-                    "type": "instructions",
-                    "start": 3,
-                    "items": [
-                        "Define <code>get_trivia_accuracy(self)</code> that returns a percentage string. If no questions have been asked, return <code>'0.0%'</code>. Otherwise calculate: <code>(correct / asked) * 100</code> and return it formatted to one decimal place with a <code>%</code> sign.",
-                        "Define <code>__str__(self)</code> that returns a single-line summary including the player name, current city, and total miles",
-                        "Run <code>python test.py</code> -- all 53 tests should pass",
-                        "Then run <code>python lab-5-2.py</code> and play the game end-to-end -- this is the payoff"
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "expected_output"
-                },
-                {
-                    "type": "text",
-                    "body": "When your Player class is complete, the final report in <code>lab-5-2.py</code> will look like this:"
-                },
-                {
-                    "type": "output_block",
-                    "output": "=======================================================\nFINAL TRIP REPORT\n=======================================================\nDriver:              Maria\nFinal City:          Corpus Christi\n\nROUTE:\n  San Antonio -> Houston -> Corpus Christi\n\nUNIQUE CITIES (3):\n  - Corpus Christi\n  - Houston\n  - San Antonio\n\nTRIVIA:\n  Asked: 2\n  Correct: 2\n  Accuracy: 100.0%\n\nHAZARDS:\n  Faced: 1\n  Escaped: 1\n  Unique types: 1\n\nSTATS:\n  Total Miles: 410"
-                },
-                {
-                    "type": "h3",
-                    "label": "test_your_code"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "Run <code>python test.py</code> from your project folder. All 53 tests should pass. If any fail, the output tells you the method name and what it returned vs. what was expected.",
-                        "Run <code>python lab-5-2.py</code> and play a complete game. Travel to at least two cities, trigger at least one hazard, and reach a beach or win city.",
-                        "Verify <code>print(player)</code> inside the game loop outputs a clean one-line summary.",
-                        "Verify the final report shows a correct route string with arrows, accurate trivia percentage, and correct unique city and hazard counts.",
-                        "Check <code>get_trivia_accuracy()</code> with zero questions asked — quit before any trivia fires and confirm the report prints <code>0.0%</code> without crashing."
-                    ]
-                },
-                {
-                    "type": "h3",
-                    "label": "tips_and_pitfalls"
-                },
-                {
-                    "type": "table",
-                    "headers": [
-                        "Common Mistake",
-                        "Why It Fails"
-                    ],
-                    "rows": [
-                        [
-                            "Returning <code>self.__visited_cities</code> directly in <code>get_route_string()</code>",
-                            "<code>' -> '.join()</code> needs the list, not the return value of a method. Write it as <code>' -> '.join(self.__visited_cities)</code> inside the method itself."
-                        ],
-                        [
-                            "Dividing before checking if <code>__trivia_asked</code> is zero",
-                            "If no trivia has been asked, <code>__trivia_asked</code> is 0. Guard with <code>if self.__trivia_asked == 0: return '0.0%'</code> before calculating."
-                        ],
-                        [
-                            "Forgetting the <code>%</code> sign in the accuracy string",
-                            "The return value should be a string like <code>'75.0%'</code> — include the percent sign."
-                        ]
-                    ],
-                    "accent": "green"
-                },
-                {
-                    "type": "h3",
-                    "label": "what_you_should_have"
-                },
-                {
-                    "type": "instructions",
-                    "items": [
-                        "<code>get_route_string()</code> joining visited cities with <code>' -> '</code>, with docstring",
-                        "<code>get_trivia_accuracy()</code> returning percentage string, handling zero-question case, with docstring",
-                        "<code>__str__</code> returning one-line player summary, with docstring",
-                        "All 53 tests passing in <code>test.py</code>",
-                        "Game runs end-to-end with <code>lab-5-2.py</code>",
-                        "<code>player.py</code> submitted to CodeGrade"
-                    ]
-                }
-            ]
-        }
+    "objectives": [
+      "Define a <code>Player</code> class using the same OOP pattern as <code>City</code>",
+      "Track all game state in one object: location, miles, cities visited, hazards, and trivia",
+      "Use a list and a set inside a class to track the full route and unique cities",
+      "Replace ten scattered state variables with a single <code>player</code> object",
+      "See the provided <code>lab-5-2.py</code> as a spec: every <code>player.</code> call tells you a method to build"
     ],
-    "finalChecklist": {
-        "beforeYouSubmit": [
-            "<code>player.py</code> has module docstring with name, abc123, section, and description",
-            "<code>Player</code> class has class docstring and all methods have docstrings",
-            "All attributes use double underscore prefix: <code>self.__name</code>",
-            "<code>class Player:</code> -- NOT <code>class Player(City):</code> -- no inheritance",
-            "<code>travel_to()</code> updates all four attributes: city, miles, list, and set",
-            "<code>record_hazard()</code> updates faced count, unique set, and conditionally escaped",
-            "<code>record_trivia()</code> updates asked count and conditionally correct",
-            "<code>get_trivia_accuracy()</code> handles the zero-question case without crashing",
-            "All 53 tests pass in <code>python test.py</code>",
-            "Game runs end-to-end with <code>lab-5-2.py</code>",
-            "<code>player.py</code> submitted to CodeGrade (CodeGrade has all other files)"
-        ],
-        "scopeReminder": "Chapter 10 only. Classes, constructors, private attributes, getter methods, and methods that update state. No inheritance -- <code>class Player(City):</code> is wrong and will be flagged by CodeGrade.",
-        "permittedTechniques": {
-            "chapters": "2-10 (all prior techniques fully permitted; Chapter 10 sections 10.1-10.3 introduced this module)",
-            "specific": [
-                "Class definition with the <code>class</code> keyword",
-                "<code>__init__</code> constructor with <code>self</code>",
-                "Private attributes with <code>__</code> prefix",
-                "Getter methods returning <code>self.__attribute</code>",
-                "Methods that update multiple private attributes",
-                "List (<code>self.__visited_cities</code>) and set (<code>self.__unique_cities</code>) as class attributes",
-                "<code>__str__</code> special method",
-                "All techniques from Modules 1-4"
-            ],
-            "notPermitted": "Inheritance, subclasses, method overriding, polymorphism (Chapter 11 -- not taught in this course)"
+    "programRequirements": [
+      "<code>player.py</code> defines a class named <code>Player</code> with private attributes",
+      "<code>Player.__init__(name, starting_city)</code> initializes all tracking state",
+      "<code>Player</code> has twelve getter-style methods for all attributes, including <code>get_unique_city_count()</code> and <code>get_unique_hazard_count()</code> which return lengths rather than raw attributes",
+      "<code>travel_to(city_name, distance)</code> updates current city, miles, visited list, and unique set",
+      "<code>record_hazard(hazard_name, escaped)</code> updates hazard counters and unique hazard set",
+      "<code>record_trivia(correct)</code> updates trivia counters",
+      "<code>get_route_string()</code> returns the full route as a <code>' -> '</code> separated string",
+      "<code>get_trivia_accuracy()</code> returns accuracy as a percentage string",
+      "<code>__str__</code> method returns a single-line summary of the player"
+    ],
+    "filenameNote": "Submit <code>player.py</code> only this week. CodeGrade already has <code>lab-5-2.py</code>, <code>city.py</code>, <code>function_library.py</code>, and the four data files -- it runs your <code>player.py</code> against them automatically.",
+    "dataFiles": [
+      {
+        "file": "lab-5-2.py",
+        "path": "5-2/lab-5-2.py",
+        "format": "Provided main program -- do not modify"
+      },
+      {
+        "file": "test.py",
+        "path": "5-2/test.py",
+        "format": "Local test harness -- run before submitting"
+      },
+      {
+        "file": "city.py",
+        "path": "5-2/city.py",
+        "format": "Reference City class -- backup only, use yours from Lab 5.1 if it works"
+      },
+      {
+        "file": "city_distances.txt",
+        "path": "5-2/city_distances.txt",
+        "format": "Same as Module 4 (carried forward)"
+      },
+      {
+        "file": "city_info.txt",
+        "path": "5-2/city_info.txt",
+        "format": "Same as Module 4 (carried forward)"
+      },
+      {
+        "file": "hazards.txt",
+        "path": "5-2/hazards.txt",
+        "format": "Same as Module 4 (carried forward)"
+      },
+      {
+        "file": "trivia.txt",
+        "path": "5-2/trivia.txt",
+        "format": "Same as Module 4 (carried forward)"
+      }
+    ],
+    "keyConceptsText": "<strong>Chapter 10:</strong> <code>class</code> definition, <code>__init__</code> constructor, private attributes with double-underscore prefix, getter methods, state-updating methods, <code>__str__</code> special method, and list/set as class attributes.",
+    "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 10"
+  },
+  "timeGuide": {
+    "totalTime": "60-90 Minutes",
+    "rows": [
+      {
+        "checkpoint": "CP1: File Setup & Constructor",
+        "time": "15 min",
+        "task": "Create <code>player.py</code>, define <code>__init__</code> with all attributes"
+      },
+      {
+        "checkpoint": "CP2: Getter Methods",
+        "time": "15 min",
+        "task": "Add all getter methods"
+      },
+      {
+        "checkpoint": "CP3: State-Updating Methods",
+        "time": "20 min",
+        "task": "Add <code>travel_to()</code>, <code>record_hazard()</code>, <code>record_trivia()</code>"
+      },
+      {
+        "checkpoint": "CP4: Display Methods, __str__, and Final Test",
+        "time": "15 min",
+        "task": "Add display methods and <code>__str__</code>, run test.py"
+      },
+      {
+        "checkpoint": "Final Check & Submit",
+        "time": "10 min",
+        "task": "Run test.py end-to-end, verify all 16 tests pass, submit player.py to CodeGrade"
+      }
+    ],
+    "strategy": "Start by reading through the provided <code>lab-5-2.py</code> and noting every <code>player.</code> call. That list is your build checklist. The Player class follows the exact same pattern as the City class you built in Lab 5.1 -- private attributes, getters, methods that update state, and <code>__str__</code>. If City clicked, Player will too."
+  },
+  "beforeYouBegin": {
+    "intro": "The Player class replaces ten scattered variables from <code>lab-5-1.py</code>&apos;s <code>main()</code> function. Each attribute maps directly to one of those variables. Each method maps to the lines that updated them. Use this architecture as your build guide. <br><br><code>lab-5-2.py</code> and <code>test.py</code> are provided this week &mdash; download them along with the four data files. <strong>Do not modify <code>lab-5-2.py</code></strong>. Read through it carefully: every <code>player.</code> call inside <code>lab-5-2.py</code> tells you a method your <code>Player</code> class needs to implement. A reference <code>city.py</code> is also available below as a backup. If your Lab 5.1 <code>city.py</code> works, keep using it &mdash; otherwise grab the reference.",
+    "architecture": "# ---- player.py ----\nclass Player:\n\n    # --- Constructor ---   [CP1]\n    __init__(self, name, starting_city)\n        self.__name              = name\n        self.__current_city      = starting_city\n        self.__total_miles       = 0\n        self.__visited_cities    = [starting_city]   (list -- preserves order)\n        self.__unique_cities     = set()             (set -- no duplicates)\n        self.__unique_cities.add(starting_city)\n        self.__hazards_faced     = 0\n        self.__hazards_escaped   = 0\n        self.__unique_hazards    = set()\n        self.__trivia_asked      = 0\n        self.__trivia_correct    = 0\n\n    # --- Getter Methods ---   [CP2]\n    get_name()                  returns self.__name\n    get_current_city()          returns self.__current_city\n    get_total_miles()           returns self.__total_miles\n    get_visited_cities()        returns self.__visited_cities.copy()\n    get_unique_cities()         returns self.__unique_cities.copy()\n    get_unique_city_count()     returns len(self.__unique_cities)\n    get_hazards_faced()         returns self.__hazards_faced\n    get_hazards_escaped()       returns self.__hazards_escaped\n    get_unique_hazards()        returns self.__unique_hazards.copy()\n    get_unique_hazard_count()   returns len(self.__unique_hazards)\n    get_trivia_asked()          returns self.__trivia_asked\n    get_trivia_correct()        returns self.__trivia_correct\n\n    # --- Travel Methods ---   [CP3]\n    travel_to(city_name, distance)\n        updates: __current_city, __total_miles, __visited_cities, __unique_cities\n\n    # --- Hazard Methods ---   [CP3]\n    record_hazard(hazard_name, escaped)\n        updates: __hazards_faced, __unique_hazards\n        if escaped: updates __hazards_escaped\n\n    # --- Trivia Methods ---   [CP3]\n    record_trivia(correct)\n        updates: __trivia_asked\n        if correct: updates __trivia_correct\n\n    # --- Display Methods ---   [CP4]\n    get_route_string()          ' -> '.join(self.__visited_cities)\n    get_trivia_accuracy()       returns percentage string e.g. '75.0%'\n    __str__                     returns 'Maria in Houston (450 miles)'\n\n\n# ---- lab-5-2.py ---- (PROVIDED -- do not modify)\nfrom city import City\nfrom player import Player\nimport function_library\n\n  ... all load functions unchanged ...\n  build_cities()        same as lab-5-1.py\n  trivia_gate()         same as lab-5-1.py\n  handle_hazard(hazards, player)     [REPLACED] calls player.record_hazard()\n  execute_travel(dest, dist, ...)    [REPLACED] calls player.travel_to()\n\nmain():\n  player = Player(name, 'San Antonio')   [NEW] one line replaces ten variables\n  ... game loop calls player methods ...\n\nif __name__ == '__main__': -> main()"
+  },
+  "checkpoints": [
+    {
+      "number": 1,
+      "title": "File Setup & Constructor",
+      "subtitle": "Create <code>player.py</code> and define the Player class with all ten private attributes.",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
         },
-        "warnings": [
-            "Do not use inheritance. <code>class Player(City):</code> is a Chapter 11 technique and will be flagged as out-of-scope.",
-            "Do not modify <code>lab-5-2.py</code>. It is provided. CodeGrade will test your Player class against it.",
-            "Submit only <code>player.py</code>. CodeGrade has <code>lab-5-2.py</code>, <code>city.py</code>, <code>function_library.py</code>, and the four data files already."
-        ],
-        "saveYourCode": "This is the final lab of the semester. Keep everything -- <code>city.py</code>, <code>player.py</code>, <code>lab-5-2.py</code>, and <code>function_library.py</code> -- for your portfolio. You built a full game from scratch across five modules. That's worth keeping."
+        {
+          "type": "text",
+          "body": "The Player class starts with one job: hold all the state that was scattered across <code>main()</code> in <code>lab-5-1.py</code>. Ten variables become ten private attributes, all initialized in one <code>__init__</code> method."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "In <code>lab-5-1.py</code>, if you wanted to know the player's current city, you'd look at <code>current_city</code>. If you wanted their total miles, <code>total_miles</code>. Two different names, two different places. Now it's <code>player.get_current_city()</code> and <code>player.get_total_miles()</code>. Same object. Same place. Everything the player <em>is</em> lives in one place."
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "10-12",
+              "filename": "cellphone.py",
+              "step": 1,
+              "description": "You built a CellPhone class with private attributes for manufacturer, model, and price. Player follows the same pattern -- more attributes, same structure. Copy your City class to player.py, rename the class, and replace the attributes using the architecture diagram above."
+            }
+          ]
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Tyler Nguyen",
+          "role": "Junior Developer, Bat City Collective",
+          "headshot": "Tyler-Nguyen.png",
+          "quote": "When I first saw ten state variables in main() I thought that was just how games worked. Then Danny showed me a Player class and I literally said 'that's it?' One object. One place. Everything the player is, right there. I wish I'd learned this sooner."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Create a new file called <code>player.py</code>",
+            "Add the module docstring at the top with your name, abc123, section, and description",
+            "Define the <code>Player</code> class with a class docstring",
+            "Write <code>__init__(self, name, starting_city)</code> and initialize all ten private attributes -- use the architecture diagram as your guide",
+            "Pay attention to the list and set: <code>self.__visited_cities = [starting_city]</code> starts with the starting city already in it, and so does <code>self.__unique_cities</code>"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 1:</strong> Add this test at the bottom of player.py:"
+        },
+        {
+          "type": "code_block",
+          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\np = Player('Maria', 'San Antonio')\nprint('Player created successfully!')\nprint(type(p))"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 2:</strong> Run player.py. You should see:"
+        },
+        {
+          "type": "output_block",
+          "output": "Player created successfully!\n<class '__main__.Player'>"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 3:</strong> Delete the debug code before continuing."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Common Mistake",
+            "Why It Fails"
+          ],
+          "rows": [
+            [
+              "Inheriting from City: <code>class Player(City):</code>",
+              "Player does not inherit from City -- they are separate classes. Inheritance is Chapter 11 and not part of this course."
+            ],
+            [
+              "Not pre-loading starting_city into the list and set",
+              "The starting city counts as visited from the moment the game begins"
+            ],
+            [
+              "Using a single underscore: <code>self._name</code>",
+              "Private attributes need double underscores: <code>self.__name</code>"
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>player.py</code> with module docstring",
+            "<code>Player</code> class with class docstring",
+            "<code>__init__</code> accepting <code>name</code> and <code>starting_city</code>",
+            "All ten private attributes initialized",
+            "Starting city pre-loaded in both <code>__visited_cities</code> and <code>__unique_cities</code>"
+          ]
+        }
+      ]
     },
-    "needHelp": {
-        "chapterResource": "Chapter 10 BookEx Reference Guide -- step-by-step breakdowns of every textbook example; your primary reference for Player class patterns",
-        "ifYouGetStuck": [
-            "Read through <code>lab-5-2.py</code> and find every <code>player.</code> call -- each one is a method you need to write",
-            "Run <code>python test.py</code> -- it shows exactly which method is failing and what value it returned",
-            "The Player class is the City class with different attributes -- if City worked, Player will too",
-            "Check that <code>class Player:</code> does not inherit from City -- no parentheses with City inside",
-            "Come to Zoom or Discord -- this is the final lab and we want you to finish strong"
-        ],
-        "zoomLink": "https://utsa.zoom.us/j/97617245124",
-        "calendlyLink": "https://calendly.com/john-newsom-utsa/student-meeting",
-        "discordNote": "Post in the course Discord with your checkpoint number, what test.py is reporting, and what your method currently returns. Include the [FAIL] line from test.py output."
+    {
+      "number": 2,
+      "title": "Getter Methods",
+      "subtitle": "Add all twelve getter-style methods.",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "Twelve getter methods that provide read access to the Player's private data. These are the methods <code>lab-5-2.py</code> calls to build the final report. Same pattern you used in City -- each getter just returns its attribute."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Getters enforce a contract: outside code never touches private data directly. <code>lab-5-2.py</code> doesn't reach into <code>player.__total_miles</code> — it calls <code>player.get_total_miles()</code>. That one layer of separation is what makes it safe to change how the Player stores data internally without breaking anything that uses it. Two of the getters — <code>get_unique_city_count()</code> and <code>get_unique_hazard_count()</code> — return <code>len()</code> instead of the raw attribute. The caller gets a number, not a set. That is encapsulation doing real work."
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "10-12",
+              "filename": "cellphone.py",
+              "step": 1,
+              "description": "You typed <code>get_manufact()</code>, <code>get_model()</code>, and <code>get_retail_price()</code> -- each just returned <code>self.__attribute</code>. All twelve Player getters follow exactly the same pattern."
+            }
+          ]
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Priya Venkatesh",
+          "role": "Project Manager, Bat City Collective",
+          "headshot": "Priya-Venkatesh.png",
+          "quote": "Twelve getters sounds like a lot of repetition. But think of it as a public API. lab-5-2.py is the client. It only talks to Player through method calls. If we ever need to change how the Player stores miles internally, the client code doesn't change at all. That contract is worth writing twelve methods for."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Add a <code># --- Getter Methods ---</code> comment below <code>__init__</code>",
+            "Write a getter for each of the twelve methods listed in the architecture diagram -- ten return <code>self.__attribute</code> directly, and two (<code>get_unique_city_count()</code> and <code>get_unique_hazard_count()</code>) return <code>len(self.__attribute)</code>",
+            "For <code>get_visited_cities()</code> and <code>get_unique_cities()</code>, return a <strong>copy</strong> with <code>.copy()</code> to protect the originals",
+            "Add a docstring to every method"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 1:</strong> Add this test:"
+        },
+        {
+          "type": "code_block",
+          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 3\np = Player('Maria', 'San Antonio')\nprint(f'Name: {p.get_name()}')\nprint(f'City: {p.get_current_city()}')\nprint(f'Miles: {p.get_total_miles()}')\nprint(f'Unique cities: {p.get_unique_city_count()}')\nprint(f'Hazards faced: {p.get_hazards_faced()}')\nprint(f'Trivia asked: {p.get_trivia_asked()}')"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 2:</strong> You should see:"
+        },
+        {
+          "type": "output_block",
+          "output": "Name: Maria\nCity: San Antonio\nMiles: 0\nUnique cities: 1\nHazards faced: 0\nTrivia asked: 0"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Step 3:</strong> Delete the debug code before continuing."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Common Mistake",
+            "Why It Fails"
+          ],
+          "rows": [
+            [
+              "Returning the raw set instead of a copy: <code>return self.__unique_cities</code>",
+              "The caller could modify the set directly. Use <code>return self.__unique_cities.copy()</code> to protect the original."
+            ],
+            [
+              "Returning <code>self.__unique_cities</code> for the count getter",
+              "<code>get_unique_city_count()</code> returns <code>len(self.__unique_cities)</code>, not the set itself."
+            ],
+            [
+              "Missing a docstring on any getter",
+              "CodeGrade checks documentation on every method. One missing docstring is a deduction."
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Twelve getter methods, each with a docstring",
+            "<code>get_visited_cities()</code> and <code>get_unique_cities()</code> return copies"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "State-Updating Methods",
+      "subtitle": "Add <code>travel_to()</code>, <code>record_hazard()</code>, and <code>record_trivia()</code> -- the methods that update the player's state during the game.",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "Three methods that replace the scattered update statements in <code>lab-5-1.py</code>'s main() function. Each method handles multiple related updates in one place. Instead of four lines of code to record travel, it's one method call: <code>player.travel_to(dest, distance)</code>."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "In <code>lab-5-1.py</code>, recording a hazard meant four separate lines in <code>main()</code>: increment the counter, add to the set, check a boolean, maybe increment escaped. Now it is one call: <code>player.record_hazard(name, escaped)</code>. The Player knows how to update itself. The caller just says what happened. This is what object-oriented design means in practice — behavior lives with the data it operates on."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Danny Cavanaugh",
+          "role": "Lead Developer, Bat City Collective",
+          "headshot": "Danny-Cavanaugh.png",
+          "quote": "Three methods. travel_to(), record_hazard(), record_trivia(). Together they replace about twenty lines of scattered updates in main(). And next time we want to add a stat — say, a fuel tracker — we add one attribute and one method. We don't go hunting through main() trying to remember every place it touches."
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "10-12",
+              "filename": "cellphone.py",
+              "step": 1,
+              "description": "The CellPhone class had a <code>set_retail_price()</code> method that updated <code>self.__retail_price</code>. Your <code>travel_to()</code>, <code>record_hazard()</code>, and <code>record_trivia()</code> methods follow the exact same pattern — a method that changes one or more private attributes based on what happened."
+            },
+            {
+              "programId": "10-9",
+              "filename": "bankaccount2.py",
+              "step": 1,
+              "description": "The BankAccount <code>deposit()</code> method did <code>self.__balance = self.__balance + amount</code>. Your <code>travel_to()</code> does the same thing with miles: <code>self.__total_miles = self.__total_miles + distance</code>."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Add a <code># --- Travel Methods ---</code> comment",
+            "Define <code>travel_to(self, city_name, distance)</code> -- it must update all four travel attributes:"
+          ]
+        },
+        {
+          "type": "code_block",
+          "code": "def travel_to(self, city_name, distance):\n    \"\"\"\n    Travel to a new city.\n\n    Replaces in main():\n        current_city = final_dest\n        total_miles = total_miles + miles\n        visited.append(final_dest)\n        unique_cities.add(final_dest)\n    \"\"\"\n    self.__current_city = city_name\n    self.__total_miles = self.__total_miles + distance\n    self.__visited_cities.append(city_name)\n    self.__unique_cities.add(city_name)"
+        },
+        {
+          "type": "instructions",
+          "start": 3,
+          "items": [
+            "Add a <code># --- Hazard Methods ---</code> comment",
+            "Define <code>record_hazard(self, hazard_name, escaped)</code> -- update <code>__hazards_faced</code>, add to <code>__unique_hazards</code>, and increment <code>__hazards_escaped</code> only if <code>escaped</code> is True",
+            "Add a <code># --- Trivia Methods ---</code> comment",
+            "Define <code>record_trivia(self, correct)</code> -- increment <code>__trivia_asked</code> always, increment <code>__trivia_correct</code> only if <code>correct</code> is True"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Run <code>python test.py</code> from your project folder. All Player tests through the state-updating section should pass."
+        },
+        {
+          "type": "output_block",
+          "output": "# After player = Player('Maria', 'San Antonio')\n# then player.travel_to('Houston', 200)\n# then player.record_hazard(\"Speed trap!\", False)\n# then player.record_trivia(True)\n\nprint(player.get_current_city())   # Houston\nprint(player.get_total_miles())    # 200\nprint(player.get_unique_city_count())  # 2\nprint(player.get_hazards_faced())  # 1\nprint(player.get_hazards_escaped())  # 0\nprint(player.get_trivia_asked())   # 1\nprint(player.get_trivia_correct()) # 1"
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Common Mistake",
+            "Why It Fails"
+          ],
+          "rows": [
+            [
+              "Forgetting to update all four attributes in <code>travel_to()</code>",
+              "Missing any one means the final report will be wrong"
+            ],
+            [
+              "Using <code>=</code> instead of <code>+=</code> equivalent for miles",
+              "Write it out: <code>self.__total_miles = self.__total_miles + distance</code>"
+            ],
+            [
+              "Always incrementing <code>__hazards_escaped</code>",
+              "Only increment if <code>escaped</code> is True -- use <code>if escaped:</code>"
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>travel_to()</code> updating four attributes, with docstring",
+            "<code>record_hazard()</code> updating faced count, unique set, and conditionally escaped count, with docstring",
+            "<code>record_trivia()</code> updating asked count and conditionally correct count, with docstring"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Display Methods, __str__, and Final Test",
+      "subtitle": "Add the display methods, <code>__str__</code>, run the full test suite, then submit.",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "The final methods: <code>get_route_string()</code> formats the travel history as a readable route, <code>get_trivia_accuracy()</code> calculates the accuracy percentage, and <code>__str__</code> gives a one-line summary of the player's current state."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Display methods are the Player's voice. <code>get_route_string()</code> and <code>get_trivia_accuracy()</code> transform raw stored data into something readable — the same work a report generator or dashboard does professionally. <code>__str__</code> is Python's protocol for making objects printable: implement it, and <code>print(player)</code> just works. These three methods complete the Player's public interface."
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "10-9",
+              "filename": "bankaccount2.py",
+              "step": 1,
+              "description": "You typed a <code>__str__</code> method that returned a formatted string. Python calls it automatically when you <code>print()</code> the object. Your Player's <code>__str__</code> should return something like <code>'Maria in Houston (450 miles)'</code>."
+            }
+          ]
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Terrence \"T-Bone\" Booker",
+          "role": "QA Lead, Bat City Collective",
+          "headshot": "Terrence-TBone-Booker.png",
+          "quote": "Fifty-three tests. That's what test.py runs against your Player class. Every method, every edge case, zero-trivia-asked, escaped vs. not escaped. Run it after every checkpoint — not just at the end. A test that breaks at CP2 is a five-minute fix. The same break discovered at submission is a bad night."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Add a <code># --- Display Methods ---</code> comment",
+            "Define <code>get_route_string(self)</code> that joins the visited cities list with <code>' -> '</code>:"
+          ]
+        },
+        {
+          "type": "code_block",
+          "code": "def get_route_string(self):\n    \"\"\"Return the full travel route as a formatted string.\"\"\"\n    return ' -> '.join(self.__visited_cities)"
+        },
+        {
+          "type": "instructions",
+          "start": 3,
+          "items": [
+            "Define <code>get_trivia_accuracy(self)</code> that returns a percentage string. If no questions have been asked, return <code>'0.0%'</code>. Otherwise calculate: <code>(correct / asked) * 100</code> and return it formatted to one decimal place with a <code>%</code> sign.",
+            "Define <code>__str__(self)</code> that returns a single-line summary including the player name, current city, and total miles",
+            "Run <code>python test.py</code> -- all 53 tests should pass",
+            "Then run <code>python lab-5-2.py</code> and play the game end-to-end -- this is the payoff"
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "expected_output"
+        },
+        {
+          "type": "text",
+          "body": "When your Player class is complete, the final report in <code>lab-5-2.py</code> will look like this:"
+        },
+        {
+          "type": "output_block",
+          "output": "=======================================================\nFINAL TRIP REPORT\n=======================================================\nDriver:              Maria\nFinal City:          Corpus Christi\n\nROUTE:\n  San Antonio -> Houston -> Corpus Christi\n\nUNIQUE CITIES (3):\n  - Corpus Christi\n  - Houston\n  - San Antonio\n\nTRIVIA:\n  Asked: 2\n  Correct: 2\n  Accuracy: 100.0%\n\nHAZARDS:\n  Faced: 1\n  Escaped: 1\n  Unique types: 1\n\nSTATS:\n  Total Miles: 410"
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Run <code>python test.py</code> from your project folder. All 53 tests should pass. If any fail, the output tells you the method name and what it returned vs. what was expected.",
+            "Run <code>python lab-5-2.py</code> and play a complete game. Travel to at least two cities, trigger at least one hazard, and reach a beach or win city.",
+            "Verify <code>print(player)</code> inside the game loop outputs a clean one-line summary.",
+            "Verify the final report shows a correct route string with arrows, accurate trivia percentage, and correct unique city and hazard counts.",
+            "Check <code>get_trivia_accuracy()</code> with zero questions asked — quit before any trivia fires and confirm the report prints <code>0.0%</code> without crashing."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Common Mistake",
+            "Why It Fails"
+          ],
+          "rows": [
+            [
+              "Returning <code>self.__visited_cities</code> directly in <code>get_route_string()</code>",
+              "<code>' -> '.join()</code> needs the list, not the return value of a method. Write it as <code>' -> '.join(self.__visited_cities)</code> inside the method itself."
+            ],
+            [
+              "Dividing before checking if <code>__trivia_asked</code> is zero",
+              "If no trivia has been asked, <code>__trivia_asked</code> is 0. Guard with <code>if self.__trivia_asked == 0: return '0.0%'</code> before calculating."
+            ],
+            [
+              "Forgetting the <code>%</code> sign in the accuracy string",
+              "The return value should be a string like <code>'75.0%'</code> — include the percent sign."
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>get_route_string()</code> joining visited cities with <code>' -> '</code>, with docstring",
+            "<code>get_trivia_accuracy()</code> returning percentage string, handling zero-question case, with docstring",
+            "<code>__str__</code> returning one-line player summary, with docstring",
+            "All 53 tests passing in <code>test.py</code>",
+            "Game runs end-to-end with <code>lab-5-2.py</code>",
+            "<code>player.py</code> submitted to CodeGrade"
+          ]
+        }
+      ]
     }
+  ],
+  "finalChecklist": {
+    "beforeYouSubmit": [
+      "<code>player.py</code> has module docstring with name, abc123, section, and description",
+      "<code>Player</code> class has class docstring and all methods have docstrings",
+      "All attributes use double underscore prefix: <code>self.__name</code>",
+      "<code>class Player:</code> -- NOT <code>class Player(City):</code> -- no inheritance",
+      "<code>travel_to()</code> updates all four attributes: city, miles, list, and set",
+      "<code>record_hazard()</code> updates faced count, unique set, and conditionally escaped",
+      "<code>record_trivia()</code> updates asked count and conditionally correct",
+      "<code>get_trivia_accuracy()</code> handles the zero-question case without crashing",
+      "All 53 tests pass in <code>python test.py</code>",
+      "Game runs end-to-end with <code>lab-5-2.py</code>",
+      "<code>player.py</code> submitted to CodeGrade (CodeGrade has all other files)"
+    ],
+    "scopeReminder": "Chapter 10 only. Classes, constructors, private attributes, getter methods, and methods that update state. No inheritance -- <code>class Player(City):</code> is wrong and will be flagged by CodeGrade.",
+    "permittedTechniques": {
+      "chapters": "2-10 (all prior techniques fully permitted; Chapter 10 sections 10.1-10.3 introduced this module)",
+      "specific": [
+        "Class definition with the <code>class</code> keyword",
+        "<code>__init__</code> constructor with <code>self</code>",
+        "Private attributes with <code>__</code> prefix",
+        "Getter methods returning <code>self.__attribute</code>",
+        "Methods that update multiple private attributes",
+        "List (<code>self.__visited_cities</code>) and set (<code>self.__unique_cities</code>) as class attributes",
+        "<code>__str__</code> special method",
+        "All techniques from Modules 1-4"
+      ],
+      "notPermitted": "Inheritance, subclasses, method overriding, polymorphism (Chapter 11 -- not taught in this course)"
+    },
+    "warnings": [
+      "Do not use inheritance. <code>class Player(City):</code> is a Chapter 11 technique and will be flagged as out-of-scope.",
+      "Do not modify <code>lab-5-2.py</code>. It is provided. CodeGrade will test your Player class against it.",
+      "Submit only <code>player.py</code>. CodeGrade has <code>lab-5-2.py</code>, <code>city.py</code>, <code>function_library.py</code>, and the four data files already."
+    ],
+    "saveYourCode": "This is the final lab of the semester. Keep everything -- <code>city.py</code>, <code>player.py</code>, <code>lab-5-2.py</code>, and <code>function_library.py</code> -- for your portfolio. You built a full game from scratch across five modules. That's worth keeping.",
+    "finalCheck": {
+      "expectedOutput": "test.py output when all Player methods are correctly implemented:\n\nRunning Player class tests...\n\n[PASS] Test 1: Player __init__ sets name and starting city\n[PASS] Test 2: get_name() returns the player name\n[PASS] Test 3: get_current_city() returns the starting city after init\n[PASS] Test 4: get_total_miles() returns 0 after init\n[PASS] Test 5: travel_to() updates current city\n[PASS] Test 6: travel_to() adds distance to total_miles\n[PASS] Test 7: travel_to() appends to visited list\n[PASS] Test 8: travel_to() adds to unique_cities set\n[PASS] Test 9: record_hazard() increments counter\n[PASS] Test 10: record_hazard() tracks escaped count\n[PASS] Test 11: record_hazard() adds to unique_hazards set\n[PASS] Test 12: record_trivia() tracks asked and correct counts\n[PASS] Test 13: get_route_string() returns ' -> ' joined cities\n[PASS] Test 14: get_trivia_accuracy() returns formatted percentage\n[PASS] Test 15: get_unique_city_count() matches set size\n[PASS] Test 16: __str__ returns a readable summary string\n\nAll 16 tests passed. Submit player.py to CodeGrade.\n\n(The exact test names and pass count come from test.py provided in the\nlab download. If test.py reports a different total, that file is the\nsource of truth — not this block.)",
+      "ifSomethingBreaks": [
+        {
+          "symptom": "<code>ImportError: cannot import name 'Player' from 'player'</code> when running <code>lab-5-2.py</code>",
+          "redirect": "Check <strong>CP1 (File Setup &amp; Constructor)</strong> &mdash; verify <code>player.py</code> exists in the same folder as <code>lab-5-2.py</code> and that the class is spelled <code>Player</code> (capital P)."
+        },
+        {
+          "symptom": "<code>AttributeError: 'Player' object has no attribute '_Player__name'</code>",
+          "redirect": "Check <strong>CP1 (File Setup &amp; Constructor)</strong> &mdash; the constructor must assign <code>self.__name = name</code> with exactly two leading underscores."
+        },
+        {
+          "symptom": "<code>AttributeError: 'Player' object has no attribute 'get_current_city'</code> (or any other getter method)",
+          "redirect": "Check <strong>CP2 (Getter Methods)</strong> &mdash; the missing method name in the error message tells you which getter is missing. <code>lab-5-2.py</code> calls each one by name; if the name doesn&apos;t match, the call fails."
+        },
+        {
+          "symptom": "<code>travel_to()</code> updates miles but route shows only the destination, not the path",
+          "redirect": "Check <strong>CP3 (State-Updating Methods)</strong> &mdash; <code>travel_to</code> must <code>.append()</code> the new city to <code>self.__visited</code>. If it overwrites instead of appends, you lose history."
+        },
+        {
+          "symptom": "<code>get_unique_city_count()</code> returns the wrong number (too high or duplicates)",
+          "redirect": "Check <strong>CP3 (State-Updating Methods)</strong> &mdash; <code>travel_to</code> must <code>.add()</code> to a <code>set</code>, not <code>.append()</code> to a list. Verify <code>self.__unique_cities</code> is initialized as <code>set()</code> in <code>__init__</code>."
+        },
+        {
+          "symptom": "<code>get_trivia_accuracy()</code> crashes with <code>ZeroDivisionError</code> on a fresh player",
+          "redirect": "Check <strong>CP3 (State-Updating Methods)</strong> &mdash; when <code>trivia_asked</code> is 0, return <code>'0.0%'</code> (or whatever the spec says) without performing the division. Guard the calculation."
+        },
+        {
+          "symptom": "<code>get_route_string()</code> returns the cities but separator is wrong (commas, dashes, no spaces, etc.)",
+          "redirect": "Check <strong>CP4 (Display Methods)</strong> &mdash; the separator is exactly <code>' -&gt; '</code> (space, hyphen, greater-than, space). Use <code>' -&gt; '.join(self.__visited)</code>."
+        },
+        {
+          "symptom": "<code>print(player)</code> shows <code>&lt;player.Player object at 0x...&gt;</code> instead of a summary",
+          "redirect": "Check <strong>CP4 (Display Methods, __str__)</strong> &mdash; <code>__str__</code> must <code>return</code> a string, not <code>print</code> one. If you wrote <code>print(...)</code> instead of <code>return ...</code>, the method returns <code>None</code> and Python falls back to the default repr."
+        },
+        {
+          "symptom": "<code>test.py</code> hangs or asks for input when run",
+          "redirect": "Check that you haven&apos;t added any <code>input()</code> calls to <code>player.py</code>. <code>Player</code> methods do not prompt the user &mdash; <code>lab-5-2.py</code> handles all I/O. <code>player.py</code> is data and methods only."
+        }
+      ]
+    }
+  },
+  "needHelp": {
+    "chapterResource": "Chapter 10 BookEx Reference Guide -- step-by-step breakdowns of every textbook example; your primary reference for Player class patterns",
+    "ifYouGetStuck": [
+      "Read through <code>lab-5-2.py</code> and find every <code>player.</code> call -- each one is a method you need to write",
+      "Run <code>python test.py</code> -- it shows exactly which method is failing and what value it returned",
+      "The Player class is the City class with different attributes -- if City worked, Player will too",
+      "Check that <code>class Player:</code> does not inherit from City -- no parentheses with City inside",
+      "Come to Zoom or Discord -- this is the final lab and we want you to finish strong"
+    ],
+    "zoomLink": "https://utsa.zoom.us/j/97617245124",
+    "calendlyLink": "https://calendly.com/john-newsom-utsa/student-meeting",
+    "discordNote": "Post in the course Discord with your checkpoint number, what test.py is reporting, and what your method currently returns. Include the [FAIL] line from test.py output."
+  }
 }
