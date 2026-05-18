@@ -1788,38 +1788,85 @@ a:hover { text-decoration: underline; }
 
 /* ─────────────────────────────────────────────────────────────────────
    Collapsible callouts — uses native <details>/<summary>.
-   Used for progressive-disclosure content (e.g., "expand if you didn't
-   use the starter zip"). Inherits all .lc-callout--{variant} colors.
+   Lightweight inline-note style: thin left rule + small disclosure
+   triangle. Strips the heavy callout-box chrome (no icon circle, no
+   drop shadow, no thick border) so they read as side-notes rather than
+   demanding visual attention.
+   Inherits the --lc-accent color from .lc-callout--{variant}.
    ───────────────────────────────────────────────────────────────────── */
 .lc-callout--collapsible {
     display: block;
-    cursor: default;
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 14px 0;
+    border-left: 3px solid var(--lc-accent);
+    padding-left: 14px;
+    gap: 0;
 }
 .lc-callout--collapsible > .lc-callout__summary {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    align-items: baseline;
+    gap: 6px;
     cursor: pointer;
     list-style: none;
     padding: 0;
+    font-size: 14px;
+    color: var(--lc-accent);
+    user-select: none;
+}
+.lc-callout--collapsible > .lc-callout__summary:hover {
+    text-decoration: underline;
 }
 .lc-callout--collapsible > .lc-callout__summary::-webkit-details-marker {
     display: none;
 }
 .lc-callout--collapsible > .lc-callout__summary::before {
     content: "▸";
-    font-size: 14px;
+    font-size: 12px;
     color: inherit;
-    margin-right: 4px;
     transition: transform 0.15s;
     flex-shrink: 0;
+    display: inline-block;
+    width: 12px;
 }
 .lc-callout--collapsible[open] > .lc-callout__summary::before {
     transform: rotate(90deg);
 }
+/* Hide the icon circle entirely — inline notes don't need a chunky icon */
+.lc-callout--collapsible > .lc-callout__summary .lc-callout__icon {
+    display: none;
+}
 .lc-callout--collapsible > .lc-callout__summary .lc-callout__title {
     margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: inherit;
+    text-transform: none;
+    letter-spacing: 0;
 }
-.lc-callout--collapsible[open] > .lc-callout__bubble {
-    margin-top: 12px;
+/* Bubble (the expanded body) — strip the heavy box, keep readable padding */
+.lc-callout--collapsible > .lc-callout__bubble {
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    margin-top: 10px;
+}
+.lc-callout--collapsible > .lc-callout__bubble .lc-callout__body {
+    font-size: 14px;
+    color: #ccc;
+}
+.lc-callout--collapsible > .lc-callout__bubble .lc-callout__body p {
+    margin: 6px 0;
+}
+.lc-callout--collapsible > .lc-callout__bubble .lc-callout__body ol,
+.lc-callout--collapsible > .lc-callout__bubble .lc-callout__body ul {
+    margin: 6px 0;
+    padding-left: 22px;
+}
+.lc-callout--collapsible > .lc-callout__bubble .lc-callout__body li {
+    margin: 2px 0;
 }
