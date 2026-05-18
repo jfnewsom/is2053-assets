@@ -66,24 +66,23 @@ def section_div_classes(color):
     return cls
 
 
-def render_info_bar(cadence):
-    """The weekly cadence info bar. Adds lc-info-bar--5col modifier when
-    there are 5+ stats (so they don't pack into the default 4-column grid)."""
-    cells = []
+def render_stat_grid(cadence):
+    """The weekly cadence stat grid. N separate bordered boxes, each with
+    a colored label + big 'Day N' value + small day-of-week subtitle.
+    Auto-fits via CSS grid; stacks naturally as the viewport narrows."""
+    boxes = []
     for stat in cadence['stats']:
-        cells.append(
-            f'        <div class="lc-info-stat">\n'
-            f'          <div class="lc-info-stat__label lc-info-stat__label--{stat["labelColor"]}">{stat["label"]}</div>\n'
-            f'          <div class="lc-info-stat__value lc-info-stat__value--lg">{stat["value_html"]}</div>\n'
+        boxes.append(
+            f'        <div class="lc-stat-box">\n'
+            f'          <div class="lc-stat-box__label lc-stat-box__label--{stat["labelColor"]}">{stat["label"]}</div>\n'
+            f'          <div class="lc-stat-box__num">{stat["num_html"]}</div>\n'
+            f'          <div class="lc-stat-box__sub">{stat["sub_html"]}</div>\n'
             f'        </div>'
         )
-    cells_html = '\n'.join(cells)
-    bar_classes = 'lc-info-bar'
-    if len(cadence['stats']) >= 5:
-        bar_classes += ' lc-info-bar--5col'
+    boxes_html = '\n'.join(boxes)
     return (
-        f'      <div class="{bar_classes}">\n'
-        f'{cells_html}\n'
+        f'      <div class="lc-stat-grid">\n'
+        f'{boxes_html}\n'
         f'      </div>'
     )
 
@@ -91,16 +90,16 @@ def render_info_bar(cadence):
 # ── Section renderers ────────────────────────────────────────────────
 
 def render_section_cadence(term, cadence):
-    """Section 1: Weekly Cadence — term intro + info bar + footer note."""
+    """Section 1: Weekly Cadence — term intro + stat grid + footer note."""
     classes = section_div_classes(None)
     label_html = render_section_label('Weekly Cadence', None)
-    info_bar_html = render_info_bar(cadence)
+    stat_grid_html = render_stat_grid(cadence)
     return (
         f'      <div class="{classes}">\n'
         f'{label_html}\n'
         f'      {term["intro_html"]}\n'
         f'\n'
-        f'{info_bar_html}\n'
+        f'{stat_grid_html}\n'
         f'\n'
         f'      {cadence["footer_html"]}\n'
         f'      </div>'
