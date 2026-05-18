@@ -102,26 +102,31 @@ def render_cta_button(item):
     )
 
 
-def render_mentor(item):
-    """Mentor quote block — used in Card 1 Overview."""
+def render_mentor(item, indent='      '):
+    """Mentor quote block.
+
+    Used in Card 1 Overview (6-space indent, the default) and inside CP bodies
+    (8-space indent). Pass the appropriate indent level for the context.
+    """
+    ind = indent
     return (
-        f'      <div class="lc-mentor">\n'
-        f'        <div class="lc-mentor__inner">\n'
-        f'          <div class="lc-mentor__avatar">\n'
-        f'            <img src="{item["avatar"]}"\n'
-        f'                 alt="{item["name"]}">\n'
-        f'          </div>\n'
-        f'          <div class="lc-mentor__bubble">\n'
-        f'            <p class="lc-mentor__quote">\n'
-        f'              {item["quote"]}\n'
-        f'            </p>\n'
-        f'          </div>\n'
-        f'        </div>\n'
-        f'        <div class="lc-mentor__attribution">\n'
-        f'          <div class="lc-mentor__name">{item["name"]}</div>\n'
-        f'          <div class="lc-mentor__role">{item["role"]}</div>\n'
-        f'        </div>\n'
-        f'      </div>'
+        f'{ind}<div class="lc-mentor">\n'
+        f'{ind}  <div class="lc-mentor__inner">\n'
+        f'{ind}    <div class="lc-mentor__avatar">\n'
+        f'{ind}      <img src="{item["avatar"]}"\n'
+        f'{ind}           alt="{item["name"]}">\n'
+        f'{ind}    </div>\n'
+        f'{ind}    <div class="lc-mentor__bubble">\n'
+        f'{ind}      <p class="lc-mentor__quote">\n'
+        f'{ind}        {item["quote"]}\n'
+        f'{ind}      </p>\n'
+        f'{ind}    </div>\n'
+        f'{ind}  </div>\n'
+        f'{ind}  <div class="lc-mentor__attribution">\n'
+        f'{ind}    <div class="lc-mentor__name">{item["name"]}</div>\n'
+        f'{ind}    <div class="lc-mentor__role">{item["role"]}</div>\n'
+        f'{ind}  </div>\n'
+        f'{ind}</div>'
     )
 
 
@@ -156,6 +161,7 @@ CP_RENDERERS = {
     'h3': render_h3,
     'code_block': render_code_block,
     'cta_button': render_cta_button,
+    'mentor': lambda item: render_mentor(item, indent='        '),
 }
 
 
