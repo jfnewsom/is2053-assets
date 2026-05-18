@@ -3,8 +3,11 @@
 render_grading_info.py — Renders pages/support/grading-info.html
 from pages/support/json/grading-info.json.
 
-Single source of truth for the Grading Info page. Mirrors the architectural
-pattern of render_modules.py and render_start_here.py.
+Single source of truth for the Grading Info page.
+
+Schema: One outer lc-card with internal lc-named-section blocks.
+This is the home-page pattern (tight, one frame) rather than the
+4-cards-stacked assignment-sheet pattern.
 
 Run with:
     python3 render_grading_info.py
@@ -19,8 +22,7 @@ from pathlib import Path
 # ── Small renderers ──────────────────────────────────────────────────
 
 def render_callout(callout):
-    """An lc-callout block with icon + title + body_html.
-    Multi-line form (matches the hand-written grading-info.html style)."""
+    """An lc-callout block with icon + title + body_html."""
     return (
         f'      <div class="lc-callout lc-callout--{callout["variant"]}">\n'
         f'        <div class="lc-callout__icon">\n'
@@ -36,8 +38,17 @@ def render_callout(callout):
     )
 
 
+def render_section_label(label, color):
+    """Yellow-by-default named-section label. color is a string like
+    'green', 'orange', 'red', 'cyan', 'purple', or None (default yellow)."""
+    cls = 'lc-named-section__label'
+    if color:
+        cls += f' lc-named-section__label--{color}'
+    return f'      <div class="{cls}">{label}</div>'
+
+
 def render_weights_table(rows):
-    """The Grade Weights table inside Card 1."""
+    """Grade Weights table."""
     body_rows = []
     for row in rows:
         body_rows.append(
@@ -67,9 +78,7 @@ def render_weights_table(rows):
 
 
 def render_drop_table(rows, header_label='Drops'):
-    """The Drop Policy / Sick Days table inside Card 2. The second column
-    header defaults to 'Drops' but can be overridden via header_label
-    (e.g., 'Sick Days')."""
+    """Sick Days / drops table. header_label overrides the second column."""
     body_rows = []
     for row in rows:
         body_rows.append(
@@ -97,10 +106,8 @@ def render_drop_table(rows, header_label='Drops'):
 
 
 def render_grade_scale_table(rows):
-    """The two-column letter-grade table inside Card 4.
-
-    Each entry is a {left, right} pair. If 'left' is null, the row renders
-    a <td colspan='2'></td> in the left half (used for the lone F row)."""
+    """Two-column letter-grade table. left:null → <td colspan='2'></td>
+    in left half (used for the lone F row)."""
     body_rows = []
     for row in rows:
         if row['left'] is None:
@@ -142,18 +149,92 @@ def render_grade_scale_table(rows):
     )
 
 
-# ── Card renderers ───────────────────────────────────────────────────
+# ── Section renderers ────────────────────────────────────────────────
 
-def render_card1_weights(weights):
-    """Card 1: Grade Weights — blue, with course-badge topper and table."""
-    color = weights['card1Color']
+def render_section_weights(weights):
+    """Section 1: Grade Weights — table + optional footer paragraph."""
+    label_html = render_section_label(weights['label'], weights.get('labelColor'))
     table_html = render_weights_table(weights['rows'])
     footer = weights.get('footer_html', '')
     return (
-        f'  <!-- ══════════════════════════════════════════════════════════\n'
-        f'       CARD 1 — Grade Weights ({color})\n'
-        f'  ══════════════════════════════════════════════════════════ -->\n'
-        f'  <div class="lc-card lc-card--{color}">\n'
+        f'      <div class="lc-named-section">\n'
+        f'{label_html}\n'
+        f'{table_html}\n'
+        f'\n'
+        f'      {footer}\n'
+        f'      </div>'
+    )
+
+
+def render_section_sick_days(drop):
+    """Section 2: Sick Days — intro + table + workplace metaphor callout.
+
+    The named-section gets an id (anchor target for cross-links from
+    Late Work)."""
+    anchor_id = drop.get('anchor_id', 'drop-policy')
+    header_label = drop.get('rowsHeader', 'Drops')
+    label_html = render_section_label(drop['label'], drop.get('labelColor'))
+    table_html = render_drop_table(drop['rows'], header_label=header_label)
+    callout_html = render_callout(drop['callout'])
+    return (
+        f'      <div class="lc-named-section" id="{anchor_id}">\n'
+        f'{label_html}\n'
+        f'      {drop["intro_html"]}\n'
+        f'\n'
+        f'{table_html}\n'
+        f'\n'
+        f'{callout_html}\n'
+        f'      </div>'
+    )
+
+
+def render_section_late_work(late):
+    """Section 3: Late Work — warning callout + sub-sections (each with
+    lc-h3 sub-heading) + closing paragraph."""
+    label_html = render_section_label(late['label'], late.get('labelColor'))
+    sub_color = late.get('labelColor', '')
+    h3_class = f' lc-h3--{sub_color}' if sub_color else ''
+
+    blocks = [render_callout(late['callout'])]
+
+    for section in late.get('sections', []):
+        sub_block = (
+            f'      <div class="lc-h3{h3_class}">{section["heading"]}</div>\n'
+            f'      {section["body_html"]}'
+        )
+        blocks.append(sub_block)
+
+    if late.get('closing_html'):
+        blocks.append(f'      {late["closing_html"]}')
+
+    body = '\n\n'.join(blocks)
+
+    return (
+        f'      <div class="lc-named-section">\n'
+        f'{label_html}\n'
+        f'{body}\n'
+        f'      </div>'
+    )
+
+
+def render_section_grade_scale(scale):
+    """Section 4: Grade Scale — two-column letter-grade table only."""
+    label_html = render_section_label(scale['label'], scale.get('labelColor'))
+    table_html = render_grade_scale_table(scale['rows'])
+    return (
+        f'      <div class="lc-named-section">\n'
+        f'{label_html}\n'
+        f'{table_html}\n'
+        f'      </div>'
+    )
+
+
+# ── Top-level page renderer ──────────────────────────────────────────
+
+def render_card_topper(card_meta):
+    """The course-badge topper at the top of the outer card.
+    Same shape as the module overview pages."""
+    return (
         f'    <div class="lc-topper">\n'
         f'      <table style="width: 100%; border-collapse: collapse;">\n'
         f'        <tr>\n'
@@ -164,7 +245,7 @@ def render_card1_weights(weights):
         f'            </div>\n'
         f'          </td>\n'
         f'          <td style="vertical-align: bottom; padding: 0 0 0 16px;">\n'
-        f'            <div class="lc-topper-title">{weights["topperTitle"]}</div>\n'
+        f'            <div class="lc-topper-title">{card_meta["topperTitle"]}</div>\n'
         f'          </td>\n'
         f'          <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">\n'
         f'            <img src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-3D.png"\n'
@@ -173,145 +254,25 @@ def render_card1_weights(weights):
         f'        </tr>\n'
         f'        <tr>\n'
         f'          <td colspan="3" style="padding: 10px 0 0 0;">\n'
-        f'            <div class="lc-sub-banner">{weights["subBanner"]}</div>\n'
+        f'            <div class="lc-sub-banner">{card_meta["subBanner"]}</div>\n'
         f'          </td>\n'
         f'        </tr>\n'
         f'      </table>\n'
-        f'    </div>\n'
-        f'    <div class="lc-panel">\n'
-        f'\n'
-        f'{table_html}\n'
-        f'\n'
-        f'      {footer}\n'
-        f'\n'
-        f'    </div>\n'
-        f'  </div>'
+        f'    </div>'
     )
 
-
-def render_card2_drop_policy(drop):
-    """Card 2: Sick Days (formerly Drop Policy) — green. Anchor id from JSON
-    so the Late Work card can link back to it; defaults to 'drop-policy' for
-    back-compat if anchor_id is not specified."""
-    anchor_id = drop.get('anchor_id', 'drop-policy')
-    header_label = drop.get('rowsHeader', 'Drops')
-    table_html = render_drop_table(drop['rows'], header_label=header_label)
-    callout_html = render_callout(drop['callout'])
-    return (
-        f'  <!-- ══════════════════════════════════════════════════════════\n'
-        f'       CARD 2 — {drop["topperTitle"]} (green)\n'
-        f'  ══════════════════════════════════════════════════════════ -->\n'
-        f'  <div class="lc-card lc-card--green" id="{anchor_id}">\n'
-        f'    <div class="lc-topper">\n'
-        f'      <div class="lc-topper-title">{drop["topperTitle"]}</div>\n'
-        f'      <div class="lc-sub-banner">{drop["subBanner"]}</div>\n'
-        f'    </div>\n'
-        f'    <div class="lc-panel">\n'
-        f'\n'
-        f'      {drop["intro_html"]}\n'
-        f'\n'
-        f'{table_html}\n'
-        f'\n'
-        f'{callout_html}\n'
-        f'\n'
-        f'    </div>\n'
-        f'  </div>'
-    )
-
-
-def render_relief_valves(valves):
-    """Render the 'Three relief valves' as an ordered list inside Card 3.
-    Each item is rendered as: <li><strong>{title_html}</strong> &mdash; {body_html}</li>"""
-    items = []
-    for v in valves:
-        items.append(
-            f'        <li><strong>{v["title_html"]}</strong> &mdash; {v["body_html"]}</li>'
-        )
-    items_html = '\n'.join(items)
-    return (
-        '      <ol>\n'
-        f'{items_html}\n'
-        '      </ol>'
-    )
-
-
-def render_card3_late_work(late):
-    """Card 3: Late Work — red.
-
-    Standard structure (slim):
-      - Warning callout (the headline "No Late Work")
-      - body_html (one or more <p> tags)
-      - closing_html (final paragraph)
-
-    Optional expansion blocks (rendered if present, between body_html and closing_html):
-      - relief_valves_intro_html
-      - relief_valves list (rendered as <ol>)
-      - discretion_callout
-
-    All fields except callout are optional.
-    """
-    blocks = [render_callout(late['callout'])]
-
-    if late.get('body_html'):
-        blocks.append(f'      {late["body_html"]}')
-
-    if late.get('relief_valves_intro_html'):
-        blocks.append(f'      {late["relief_valves_intro_html"]}')
-
-    if late.get('relief_valves'):
-        blocks.append(render_relief_valves(late['relief_valves']))
-
-    if late.get('discretion_callout'):
-        blocks.append(render_callout(late['discretion_callout']))
-
-    if late.get('closing_html'):
-        blocks.append(f'      {late["closing_html"]}')
-
-    body_html = '\n\n'.join(blocks)
-
-    return (
-        f'  <!-- ══════════════════════════════════════════════════════════\n'
-        f'       CARD 3 — Late Work (red)\n'
-        f'  ══════════════════════════════════════════════════════════ -->\n'
-        f'  <div class="lc-card lc-card--red">\n'
-        f'    <div class="lc-topper">\n'
-        f'      <div class="lc-topper-title">{late["topperTitle"]}</div>\n'
-        f'      <div class="lc-sub-banner">{late["subBanner"]}</div>\n'
-        f'    </div>\n'
-        f'    <div class="lc-panel">\n'
-        f'\n'
-        f'{body_html}\n'
-        f'\n'
-        f'    </div>\n'
-        f'  </div>'
-    )
-
-
-def render_card4_grade_scale(scale):
-    """Card 4: Grade Scale — orange, two-column letter-grade table."""
-    table_html = render_grade_scale_table(scale['rows'])
-    return (
-        f'  <!-- ══════════════════════════════════════════════════════════\n'
-        f'       CARD 4 — Grade Scale (orange)\n'
-        f'  ══════════════════════════════════════════════════════════ -->\n'
-        f'  <div class="lc-card lc-card--orange">\n'
-        f'    <div class="lc-topper">\n'
-        f'      <div class="lc-topper-title">{scale["topperTitle"]}</div>\n'
-        f'      <div class="lc-sub-banner">{scale["subBanner"]}</div>\n'
-        f'    </div>\n'
-        f'    <div class="lc-panel">\n'
-        f'\n'
-        f'{table_html}\n'
-        f'\n'
-        f'    </div>\n'
-        f'  </div>'
-    )
-
-
-# ── Top-level page renderer ──────────────────────────────────────────
 
 def render_page(data):
-    """Render the complete grading-info.html document."""
+    """Render the complete grading-info.html — one outer card with four
+    internal lc-named-section blocks (home-page pattern)."""
+    card = data['card']
+    color = card['color']
+
+    weights_section = render_section_weights(data['gradeWeights'])
+    drops_section = render_section_sick_days(data['dropPolicy'])
+    late_section = render_section_late_work(data['lateWork'])
+    scale_section = render_section_grade_scale(data['gradeScale'])
+
     return (
         '<!DOCTYPE html>\n'
         '<html lang="en">\n'
@@ -325,10 +286,18 @@ def render_page(data):
         '</head>\n'
         '<body>\n'
         '<div class="lc-wrapper">\n\n\n'
-        + render_card1_weights(data['gradeWeights']) + '\n\n\n'
-        + render_card2_drop_policy(data['dropPolicy']) + '\n\n\n'
-        + render_card3_late_work(data['lateWork']) + '\n\n\n'
-        + render_card4_grade_scale(data['gradeScale']) + '\n\n\n'
+        '  <!-- ══════════════════════════════════════════════════════════\n'
+        '       Grading Info — single card, sections within (home-page pattern)\n'
+        '  ══════════════════════════════════════════════════════════ -->\n'
+        f'  <div class="lc-card lc-card--{color}">\n'
+        f'{render_card_topper(card)}\n'
+        '    <div class="lc-panel">\n\n'
+        f'{weights_section}\n\n'
+        f'{drops_section}\n\n'
+        f'{late_section}\n\n'
+        f'{scale_section}\n\n'
+        '    </div>\n'
+        '  </div>\n\n\n'
         '</div><!-- /lc-wrapper -->\n'
         '<script src="https://jfnewsom.github.io/is2053-assets/nav.js"></script>\n'
         '</body>\n'
@@ -351,7 +320,7 @@ def main():
     out.write_text(html, encoding='utf-8')
     print(f'  Rendered → {out}  ({len(html.splitlines())} lines)')
 
-    # Sanity check: weights total to 100
+    # Sanity: weights sum to 100
     total = sum(int(r['weight'].rstrip('%')) for r in data['gradeWeights']['rows'])
     if total != 100:
         print(f'  WARNING: weights total {total}%, not 100%')
