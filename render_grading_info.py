@@ -217,6 +217,185 @@ def render_section_late_work(late):
     )
 
 
+def render_section_rubrics(rubrics):
+    """Section: Rubrics — intro + N sub-tables (BookEx, Lab, etc.).
+    Each sub-table gets an lc-h3 sub-heading colored to match the section."""
+    label_html = render_section_label(rubrics['label'], rubrics.get('labelColor'))
+    sub_color = rubrics.get('labelColor', '')
+    h3_class = f' lc-h3--{sub_color}' if sub_color else ''
+
+    blocks = []
+    if rubrics.get('intro_html'):
+        blocks.append(f'      {rubrics["intro_html"]}')
+
+    for table in rubrics['tables']:
+        body_rows = []
+        for row in table['rows']:
+            body_rows.append(
+                f'            <tr>\n'
+                f'              <td>{row["category"]}</td>\n'
+                f'              <td><strong>{row["points"]}</strong></td>\n'
+                f'              <td>{row["description"]}</td>\n'
+                f'            </tr>'
+            )
+        rows_html = '\n'.join(body_rows)
+        table_html = (
+            '      <div class="lc-table-wrap">\n'
+            '        <table class="lc-table">\n'
+            '          <thead>\n'
+            '            <tr>\n'
+            '              <th>Category</th>\n'
+            '              <th>Points</th>\n'
+            '              <th>What It Checks</th>\n'
+            '            </tr>\n'
+            '          </thead>\n'
+            '          <tbody>\n'
+            f'{rows_html}\n'
+            '          </tbody>\n'
+            '        </table>\n'
+            '      </div>'
+        )
+        block = (
+            f'      <div class="lc-h3{h3_class}">{table["heading"]}</div>\n'
+            f'{table_html}'
+        )
+        blocks.append(block)
+
+    if rubrics.get('sotNote_html'):
+        blocks.append(f'      {rubrics["sotNote_html"]}')
+
+    body = '\n\n'.join(blocks)
+    return (
+        f'      <div class="lc-named-section">\n'
+        f'{label_html}\n'
+        f'{body}\n'
+        f'      </div>'
+    )
+
+
+def render_section_how_calculated(hc):
+    """Section: How Your Grade Is Calculated — intro + numbered steps +
+    worked-example callout."""
+    label_html = render_section_label(hc['label'], hc.get('labelColor'))
+    steps_html = '\n'.join(f'        <li>{s}</li>' for s in hc['steps_html'])
+    steps_block = (
+        '      <ol>\n'
+        f'{steps_html}\n'
+        '      </ol>'
+    )
+    blocks = [f'      {hc["intro_html"]}', steps_block]
+    if hc.get('example_callout'):
+        blocks.append(render_callout(hc['example_callout']))
+    body = '\n\n'.join(blocks)
+    return (
+        f'      <div class="lc-named-section">\n'
+        f'{label_html}\n'
+        f'{body}\n'
+        f'      </div>'
+    )
+
+
+def render_section_module_exams(me, exams_data):
+    """Section: Module Exams — pulls common format details and per-module
+    coverage from exams.json. The 'me' block holds only the wrapping prose."""
+    label_html = render_section_label(me['label'], me.get('labelColor'))
+    sub_color = me.get('labelColor', '')
+    h3_class = f' lc-h3--{sub_color}' if sub_color else ''
+
+    common = exams_data['common']
+    exams = exams_data['exams']
+
+    # Pull a representative exam for shared format numbers (M1; all are same).
+    first = exams[0]
+    questions = first['questions']
+    minutes = first['timeLimitMinutes']
+    attempts = first['attempts']
+
+    format_para = (
+        f'      <p>{me["formatPrefix_html"]} <strong>{questions} questions</strong>, '
+        f'a <strong>{minutes}-minute</strong> time limit, and <strong>{attempts} attempt</strong>. '
+        f'Questions are {common["questionTypeDescription"]}. '
+        f'{me["formatSuffix_html"]}</p>'
+    )
+
+    # Allowed materials block (mirrors exam-page styling)
+    materials_lis = []
+    for m in common['allowedMaterials']:
+        icon_cls = 'lc-allow' if m['allowed'] else 'lc-deny'
+        icon_char = '&#10003;' if m['allowed'] else '&#10007;'
+        materials_lis.append(f'        <li><span class="{icon_cls}">{icon_char}</span> {m["text"]}</li>')
+    materials_block = (
+        f'      <div class="lc-h3{h3_class}">{me["materialsHeading"]}</div>\n'
+        '      <ul>\n'
+        f'{chr(10).join(materials_lis)}\n'
+        '      </ul>'
+    )
+
+    # Per-module coverage table
+    coverage_rows = []
+    for exam in exams:
+        coverage_rows.append(
+            f'            <tr>\n'
+            f'              <td><strong>Module {exam["num"]}</strong></td>\n'
+            f'              <td>{exam["subtitle"]}</td>\n'
+            f'            </tr>'
+        )
+    coverage_rows_html = '\n'.join(coverage_rows)
+    coverage_table = (
+        f'      <div class="lc-h3{h3_class}">{me["coverageHeading"]}</div>\n'
+        '      <div class="lc-table-wrap">\n'
+        '        <table class="lc-table">\n'
+        '          <thead>\n'
+        '            <tr>\n'
+        '              <th>Exam</th>\n'
+        '              <th>Coverage</th>\n'
+        '            </tr>\n'
+        '          </thead>\n'
+        '          <tbody>\n'
+        f'{coverage_rows_html}\n'
+        '          </tbody>\n'
+        '        </table>\n'
+        '      </div>'
+    )
+
+    body = '\n\n'.join([
+        f'      {me["intro_html"]}',
+        format_para,
+        materials_block,
+        coverage_table,
+    ])
+
+    return (
+        f'      <div class="lc-named-section">\n'
+        f'{label_html}\n'
+        f'{body}\n'
+        f'      </div>'
+    )
+
+
+def render_section_grade_visibility(gv):
+    """Section: Grade Visibility & Disputes — N sub-sections with lc-h3
+    headings, default yellow label."""
+    label_html = render_section_label(gv['label'], gv.get('labelColor'))
+    sub_color = gv.get('labelColor', '')
+    h3_class = f' lc-h3--{sub_color}' if sub_color else ''
+
+    blocks = []
+    for section in gv.get('sections', []):
+        sub_block = (
+            f'      <div class="lc-h3{h3_class}">{section["heading"]}</div>\n'
+            f'      {section["body_html"]}'
+        )
+        blocks.append(sub_block)
+    body = '\n\n'.join(blocks)
+    return (
+        f'      <div class="lc-named-section">\n'
+        f'{label_html}\n'
+        f'{body}\n'
+        f'      </div>'
+    )
+
+
 def render_section_grade_scale(scale):
     """Section 4: Grade Scale — two-column letter-grade table only."""
     label_html = render_section_label(scale['label'], scale.get('labelColor'))
@@ -262,15 +441,22 @@ def render_card_topper(card_meta):
     )
 
 
-def render_page(data):
-    """Render the complete grading-info.html — one outer card with four
-    internal lc-named-section blocks (home-page pattern)."""
+def render_page(data, exams_data):
+    """Render the complete grading-info.html — one outer card with eight
+    internal lc-named-section blocks (home-page pattern).
+
+    exams_data is the parsed pages/exams/json/exams.json. The Module Exams
+    section pulls format details and per-module coverage from it."""
     card = data['card']
     color = card['color']
 
     weights_section = render_section_weights(data['gradeWeights'])
+    how_calc_section = render_section_how_calculated(data['howCalculated'])
+    exams_section = render_section_module_exams(data['moduleExams'], exams_data)
+    rubrics_section = render_section_rubrics(data['rubrics'])
     drops_section = render_section_sick_days(data['dropPolicy'])
     late_section = render_section_late_work(data['lateWork'])
+    visibility_section = render_section_grade_visibility(data['gradeVisibility'])
     scale_section = render_section_grade_scale(data['gradeScale'])
 
     return (
@@ -293,8 +479,12 @@ def render_page(data):
         f'{render_card_topper(card)}\n'
         '    <div class="lc-panel">\n\n'
         f'{weights_section}\n\n'
+        f'{how_calc_section}\n\n'
+        f'{exams_section}\n\n'
+        f'{rubrics_section}\n\n'
         f'{drops_section}\n\n'
         f'{late_section}\n\n'
+        f'{visibility_section}\n\n'
         f'{scale_section}\n\n'
         '    </div>\n'
         '  </div>\n\n\n'
@@ -310,13 +500,17 @@ def render_page(data):
 def main():
     repo_root = Path(__file__).resolve().parent
     src = repo_root / 'pages' / 'support' / 'json' / 'grading-info.json'
+    exams_src = repo_root / 'pages' / 'exams' / 'json' / 'exams.json'
     out = repo_root / 'pages' / 'support' / 'grading-info.html'
 
     print(f'Reading {src}')
     with open(src) as f:
         data = json.load(f)
+    print(f'Reading {exams_src}')
+    with open(exams_src) as f:
+        exams_data = json.load(f)
 
-    html = render_page(data)
+    html = render_page(data, exams_data)
     out.write_text(html, encoding='utf-8')
     print(f'  Rendered → {out}  ({len(html.splitlines())} lines)')
 
