@@ -1,0 +1,98 @@
+{
+  "_meta": {
+    "purpose": "Single source of truth for pages/support/flake8-guide.html. Drives a single-card / sections-within layout via render_flake8_guide.py.",
+    "lastEdited": "2026-05-18",
+    "notes": "Critical-error code examples include lc-syn-* syntax-highlight spans inline within problem_html/fix_html (preserved verbatim from the original page)."
+  },
+
+  "pageTitle": "Flake8 Guide | IS2053 Programming I",
+
+  "card": {
+    "color": "purple",
+    "topperTitle": "Flake8 Guide",
+    "subBanner": "Python Code Style Checker"
+  },
+
+  "overview": {
+    "label": "Overview",
+    "labelColor": null,
+    "body_html": "<p><strong>Flake8</strong> is a code style checker that runs automatically when you submit to CodeGrade. It checks your Python code against <strong>PEP 8</strong> &mdash; the official Python style guide used by professional developers worldwide.</p>\n      <p>These aren&rsquo;t just suggestions &mdash; they&rsquo;re part of your <strong>Code Style grade</strong>. Clean code is professional code. See the <a href=\"grading-info.html#rubrics\">Rubrics section on Grading Info</a> for how Code Style factors into your overall lab grade.</p>"
+  },
+
+  "readingErrors": {
+    "label": "Reading Errors",
+    "labelColor": "blue",
+    "intro_html": "<p>Flake8 errors follow this format:</p>",
+    "errorFormat_html": "<div class=\"lc-code-block\">\n        <pre><span class=\"lc-syn-bi\">lab-1-1.py</span>:<span class=\"lc-syn-str\">12</span>:<span class=\"lc-syn-kw\">5</span>: <span class=\"lc-syn-kw\">E302</span> <span class=\"lc-syn-cm\">expected 2 blank lines, found 1</span></pre>\n      </div>",
+    "anatomy": [
+      { "label": "Filename",    "color": "cyan",   "desc": "Which file the error is in" },
+      { "label": "Line Number", "color": "green",  "desc": "Which line to look at" },
+      { "label": "Column",      "color": "orange", "desc": "Position on that line" },
+      { "label": "Error Code",  "color": "red",    "desc": "The type of problem found" }
+    ],
+    "prefixesTable": {
+      "heading": "Error Code Prefixes",
+      "headingColor": "yellow",
+      "rows": [
+        { "prefix": "E", "category": "Style errors (PEP 8 violations)" },
+        { "prefix": "W", "category": "Style warnings (minor issues)" },
+        { "prefix": "F", "category": "<strong>PyFlakes errors (code problems) &mdash; most serious!</strong>" }
+      ]
+    }
+  },
+
+  "criticalErrors": {
+    "label": "Critical Errors",
+    "labelColor": "red",
+    "subtitle_html": "Fix these first! (&minus;15 points each)",
+    "errors": [
+      {
+        "code": "F401",
+        "title": "Module Imported But Unused",
+        "color": "red",
+        "intro_html": "<p>You imported something but never used it. Remove the import!</p>",
+        "problem_html": "<div class=\"lc-code-block\">\n              <pre><span class=\"lc-syn-kw\">import</span> math\n<span class=\"lc-syn-cm\"># math is never used!</span>\n<span class=\"lc-syn-fn\">print</span>(<span class=\"lc-syn-str\">\"Hello\"</span>)</pre>\n            </div>",
+        "fix_html": "<div class=\"lc-code-block\">\n              <pre><span class=\"lc-syn-cm\"># Removed unused import</span>\n<span class=\"lc-syn-fn\">print</span>(<span class=\"lc-syn-str\">\"Hello\"</span>)</pre>\n            </div>"
+      },
+      {
+        "code": "F841",
+        "title": "Variable Assigned But Never Used",
+        "color": "red",
+        "intro_html": "<p>You created a variable but never did anything with it.</p>",
+        "problem_html": "<div class=\"lc-code-block\">\n              <pre>result <span class=\"lc-syn-op\">=</span> <span class=\"lc-syn-num\">5</span> <span class=\"lc-syn-op\">+</span> <span class=\"lc-syn-num\">3</span>\n<span class=\"lc-syn-cm\"># result is never printed or used!</span></pre>\n            </div>",
+        "fix_html": "<div class=\"lc-code-block\">\n              <pre>result <span class=\"lc-syn-op\">=</span> <span class=\"lc-syn-num\">5</span> <span class=\"lc-syn-op\">+</span> <span class=\"lc-syn-num\">3</span>\n<span class=\"lc-syn-fn\">print</span>(result)</pre>\n            </div>"
+      }
+    ]
+  },
+
+  "styleErrors": {
+    "label": "Style Errors",
+    "labelColor": "orange",
+    "subtitle_html": "Common PEP 8 issues (&minus;5 points each)",
+    "rows": [
+      { "code": "E302",         "problem": "Expected 2 blank lines before function",     "fix": "Put <strong>2 blank lines</strong> before every function definition" },
+      { "code": "E303",         "problem": "Too many blank lines",                       "fix": "Never have more than <strong>2 consecutive blank lines</strong>" },
+      { "code": "E501",         "problem": "Line too long",                              "fix": "Keep lines under <strong>79 characters</strong>; break long strings across multiple lines" },
+      { "code": "W291 / W293",  "problem": "Trailing whitespace",                        "fix": "Remove invisible spaces at the end of lines (VS Code can do this automatically)" },
+      { "code": "E111 / E117",  "problem": "Indentation errors",                         "fix": "Use exactly <strong>4 spaces</strong> per level &mdash; never mix tabs and spaces" },
+      { "code": "E225",         "problem": "Missing spaces around operator",             "fix": "Write <code>x = 5 + 3</code> not <code>x=5+3</code>" },
+      { "code": "E231",         "problem": "Missing space after comma",                  "fix": "Write <code>func(a, b, c)</code> not <code>func(a,b,c)</code>" }
+    ]
+  },
+
+  "quickFixes": {
+    "label": "Quick Fixes",
+    "labelColor": "green",
+    "intro_html": "<p>Run through this list before every submission:</p>",
+    "items_html": [
+      "<strong>2 blank lines</strong> before each function definition",
+      "<strong>4 spaces</strong> for each indentation level (not tabs)",
+      "All lines under <strong>79 characters</strong>",
+      "No trailing whitespace at the end of lines",
+      "<strong>Spaces after commas:</strong> <code>func(a, b, c)</code>",
+      "<strong>Spaces around operators:</strong> <code>x = 5 + 3</code>",
+      "All variables you created are actually used",
+      "All imports at the top are actually needed"
+    ]
+  }
+}
