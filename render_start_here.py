@@ -448,10 +448,22 @@ def resolve_refs(obj, repo_root):
 
     If obj is a dict with exactly one key '$ref', replace it with the
     resolved value. Otherwise, walk children.
+
+    When the resolved value is a list, items with 'exclude_from_ref': true
+    are dropped. This lets a body item be visible at its home location but
+    invisible when pulled in via $ref (e.g., a CTA button that belongs only
+    to the original page, not the page that references it).
     """
     if isinstance(obj, dict):
         if list(obj.keys()) == ['$ref']:
-            return resolve_ref(obj['$ref'], repo_root)
+            resolved = resolve_ref(obj['$ref'], repo_root)
+            # Filter exclude_from_ref items if the resolved value is a list
+            if isinstance(resolved, list):
+                resolved = [
+                    item for item in resolved
+                    if not (isinstance(item, dict) and item.get('exclude_from_ref'))
+                ]
+            return resolved
         return {k: resolve_refs(v, repo_root) for k, v in obj.items()}
     if isinstance(obj, list):
         return [resolve_refs(item, repo_root) for item in obj]
