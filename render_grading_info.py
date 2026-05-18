@@ -66,8 +66,10 @@ def render_weights_table(rows):
     )
 
 
-def render_drop_table(rows):
-    """The Drop Policy table inside Card 2."""
+def render_drop_table(rows, header_label='Drops'):
+    """The Drop Policy / Sick Days table inside Card 2. The second column
+    header defaults to 'Drops' but can be overridden via header_label
+    (e.g., 'Sick Days')."""
     body_rows = []
     for row in rows:
         body_rows.append(
@@ -83,7 +85,7 @@ def render_drop_table(rows):
         '          <thead>\n'
         '            <tr>\n'
         '              <th>Category</th>\n'
-        '              <th>Drops</th>\n'
+        f'              <th>{header_label}</th>\n'
         '            </tr>\n'
         '          </thead>\n'
         '          <tbody>\n'
@@ -188,15 +190,18 @@ def render_card1_weights(weights):
 
 
 def render_card2_drop_policy(drop):
-    """Card 2: Drop Policy — green. Anchor id='drop-policy' so the Late Work
-    card can link back to it."""
-    table_html = render_drop_table(drop['rows'])
+    """Card 2: Sick Days (formerly Drop Policy) — green. Anchor id from JSON
+    so the Late Work card can link back to it; defaults to 'drop-policy' for
+    back-compat if anchor_id is not specified."""
+    anchor_id = drop.get('anchor_id', 'drop-policy')
+    header_label = drop.get('rowsHeader', 'Drops')
+    table_html = render_drop_table(drop['rows'], header_label=header_label)
     callout_html = render_callout(drop['callout'])
     return (
         f'  <!-- ══════════════════════════════════════════════════════════\n'
-        f'       CARD 2 — Drop Policy (green)\n'
+        f'       CARD 2 — {drop["topperTitle"]} (green)\n'
         f'  ══════════════════════════════════════════════════════════ -->\n'
-        f'  <div class="lc-card lc-card--green" id="drop-policy">\n'
+        f'  <div class="lc-card lc-card--green" id="{anchor_id}">\n'
         f'    <div class="lc-topper">\n'
         f'      <div class="lc-topper-title">{drop["topperTitle"]}</div>\n'
         f'      <div class="lc-sub-banner">{drop["subBanner"]}</div>\n'
@@ -214,10 +219,56 @@ def render_card2_drop_policy(drop):
     )
 
 
+def render_relief_valves(valves):
+    """Render the 'Three relief valves' as an ordered list inside Card 3.
+    Each item is rendered as: <li><strong>{title_html}</strong> &mdash; {body_html}</li>"""
+    items = []
+    for v in valves:
+        items.append(
+            f'        <li><strong>{v["title_html"]}</strong> &mdash; {v["body_html"]}</li>'
+        )
+    items_html = '\n'.join(items)
+    return (
+        '      <ol>\n'
+        f'{items_html}\n'
+        '      </ol>'
+    )
+
+
 def render_card3_late_work(late):
-    """Card 3: Late Work — red. Warning callout + drop-policy callback."""
-    callout_html = render_callout(late['callout'])
-    callback_html = late.get('callback_html', '')
+    """Card 3: Late Work — red.
+
+    Standard structure (slim):
+      - Warning callout (the headline "No Late Work")
+      - body_html (one or more <p> tags)
+      - closing_html (final paragraph)
+
+    Optional expansion blocks (rendered if present, between body_html and closing_html):
+      - relief_valves_intro_html
+      - relief_valves list (rendered as <ol>)
+      - discretion_callout
+
+    All fields except callout are optional.
+    """
+    blocks = [render_callout(late['callout'])]
+
+    if late.get('body_html'):
+        blocks.append(f'      {late["body_html"]}')
+
+    if late.get('relief_valves_intro_html'):
+        blocks.append(f'      {late["relief_valves_intro_html"]}')
+
+    if late.get('relief_valves'):
+        blocks.append(render_relief_valves(late['relief_valves']))
+
+    if late.get('discretion_callout'):
+        blocks.append(render_callout(late['discretion_callout']))
+
+    if late.get('closing_html'):
+        blocks.append(f'      {late["closing_html"]}')
+
+    body_html = '\n\n'.join(blocks)
+
     return (
         f'  <!-- ══════════════════════════════════════════════════════════\n'
         f'       CARD 3 — Late Work (red)\n'
@@ -229,9 +280,7 @@ def render_card3_late_work(late):
         f'    </div>\n'
         f'    <div class="lc-panel">\n'
         f'\n'
-        f'{callout_html}\n'
-        f'\n'
-        f'      {callback_html}\n'
+        f'{body_html}\n'
         f'\n'
         f'    </div>\n'
         f'  </div>'
