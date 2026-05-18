@@ -56,6 +56,16 @@ def render_section_label(label, color):
     return f'      <div class="{cls}">{label}</div>'
 
 
+def section_div_classes(color):
+    """CSS class list for the lc-named-section div given an optional color.
+    Drives the section-scoped --lc-accent override that propagates to
+    descendants (table headers, etc.)."""
+    cls = 'lc-named-section'
+    if color:
+        cls += f' lc-named-section--{color}'
+    return cls
+
+
 def render_info_bar(cadence):
     """The 4-cell weekly cadence info bar."""
     cells = []
@@ -78,10 +88,11 @@ def render_info_bar(cadence):
 
 def render_section_cadence(term, cadence):
     """Section 1: Weekly Cadence — term intro + info bar + footer note."""
+    classes = section_div_classes(None)
     label_html = render_section_label('Weekly Cadence', None)
     info_bar_html = render_info_bar(cadence)
     return (
-        f'      <div class="lc-named-section">\n'
+        f'      <div class="{classes}">\n'
         f'{label_html}\n'
         f'      {term["intro_html"]}\n'
         f'\n'
@@ -94,6 +105,7 @@ def render_section_cadence(term, cadence):
 
 def render_section_schedule(schedule):
     """Section 2: 10-Week Schedule — the dense data table."""
+    classes = section_div_classes('orange')
     label_html = render_section_label('10-Week Schedule', 'orange')
 
     # Headers
@@ -138,7 +150,7 @@ def render_section_schedule(schedule):
     rows_block = '\n'.join(rows_html)
 
     return (
-        f'      <div class="lc-named-section">\n'
+        f'      <div class="{classes}">\n'
         f'{label_html}\n'
         f'        <table class="lc-schedule-table">\n'
         f'          <thead>\n'
@@ -156,10 +168,11 @@ def render_section_schedule(schedule):
 
 def render_section_module5(m5):
     """Section 3: How Module 5 Differs — intro + lab bullets + explanation."""
+    classes = section_div_classes('purple')
     label_html = render_section_label('How Module 5 Differs', 'purple')
     labs_lis = '\n'.join(f'        <li>{lab}</li>' for lab in m5['labs_html'])
     return (
-        f'      <div class="lc-named-section">\n'
+        f'      <div class="{classes}">\n'
         f'{label_html}\n'
         f'      {m5["intro_html"]}\n'
         f'\n'
@@ -175,6 +188,7 @@ def render_section_module5(m5):
 def render_section_term_dates(td):
     """Section 4: Term Dates — three lc-h3 sub-blocks (Boundaries / Holidays
     / Registrar) + a due-times callout at the end."""
+    classes = section_div_classes('cyan')
     label_html = render_section_label('Term Dates', 'cyan')
 
     # Holidays list
@@ -192,7 +206,7 @@ def render_section_term_dates(td):
     callout_html = render_callout(td['dueTimesCallout'])
 
     return (
-        f'      <div class="lc-named-section">\n'
+        f'      <div class="{classes}">\n'
         f'{label_html}\n'
         f'\n'
         f'      <div class="lc-h3 lc-h3--cyan">Term Boundaries</div>\n'

@@ -47,6 +47,16 @@ def render_section_label(label, color):
     return f'      <div class="{cls}">{label}</div>'
 
 
+def section_div_classes(color):
+    """CSS class list for the lc-named-section div given an optional
+    labelColor. Drives the section-scoped --lc-accent override that
+    propagates to descendants (table headers, etc.)."""
+    cls = 'lc-named-section'
+    if color:
+        cls += f' lc-named-section--{color}'
+    return cls
+
+
 def render_weights_table(rows):
     """Grade Weights table."""
     body_rows = []
@@ -153,11 +163,12 @@ def render_grade_scale_table(rows):
 
 def render_section_weights(weights):
     """Section 1: Grade Weights — table + optional footer paragraph."""
+    classes = section_div_classes(weights.get('labelColor'))
     label_html = render_section_label(weights['label'], weights.get('labelColor'))
     table_html = render_weights_table(weights['rows'])
     footer = weights.get('footer_html', '')
     return (
-        f'      <div class="lc-named-section">\n'
+        f'      <div class="{classes}">\n'
         f'{label_html}\n'
         f'{table_html}\n'
         f'\n'
@@ -173,11 +184,12 @@ def render_section_sick_days(drop):
     Late Work)."""
     anchor_id = drop.get('anchor_id', 'drop-policy')
     header_label = drop.get('rowsHeader', 'Drops')
+    classes = section_div_classes(drop.get('labelColor'))
     label_html = render_section_label(drop['label'], drop.get('labelColor'))
     table_html = render_drop_table(drop['rows'], header_label=header_label)
     callout_html = render_callout(drop['callout'])
     return (
-        f'      <div class="lc-named-section" id="{anchor_id}">\n'
+        f'      <div class="{classes}" id="{anchor_id}">\n'
         f'{label_html}\n'
         f'      {drop["intro_html"]}\n'
         f'\n'
@@ -191,6 +203,7 @@ def render_section_sick_days(drop):
 def render_section_late_work(late):
     """Section 3: Late Work — warning callout + sub-sections (each with
     lc-h3 sub-heading) + closing paragraph."""
+    classes = section_div_classes(late.get('labelColor'))
     label_html = render_section_label(late['label'], late.get('labelColor'))
     sub_color = late.get('labelColor', '')
     h3_class = f' lc-h3--{sub_color}' if sub_color else ''
@@ -210,7 +223,7 @@ def render_section_late_work(late):
     body = '\n\n'.join(blocks)
 
     return (
-        f'      <div class="lc-named-section">\n'
+        f'      <div class="{classes}">\n'
         f'{label_html}\n'
         f'{body}\n'
         f'      </div>'
@@ -220,6 +233,7 @@ def render_section_late_work(late):
 def render_section_rubrics(rubrics):
     """Section: Rubrics — intro + N sub-tables (BookEx, Lab, etc.).
     Each sub-table gets an lc-h3 sub-heading colored to match the section."""
+    classes = section_div_classes(rubrics.get('labelColor'))
     label_html = render_section_label(rubrics['label'], rubrics.get('labelColor'))
     sub_color = rubrics.get('labelColor', '')
     h3_class = f' lc-h3--{sub_color}' if sub_color else ''
@@ -266,7 +280,7 @@ def render_section_rubrics(rubrics):
 
     body = '\n\n'.join(blocks)
     return (
-        f'      <div class="lc-named-section">\n'
+        f'      <div class="{classes}">\n'
         f'{label_html}\n'
         f'{body}\n'
         f'      </div>'
@@ -276,6 +290,7 @@ def render_section_rubrics(rubrics):
 def render_section_how_calculated(hc):
     """Section: How Your Grade Is Calculated — intro + numbered steps +
     worked-example callout."""
+    classes = section_div_classes(hc.get('labelColor'))
     label_html = render_section_label(hc['label'], hc.get('labelColor'))
     steps_html = '\n'.join(f'        <li>{s}</li>' for s in hc['steps_html'])
     steps_block = (
@@ -288,7 +303,7 @@ def render_section_how_calculated(hc):
         blocks.append(render_callout(hc['example_callout']))
     body = '\n\n'.join(blocks)
     return (
-        f'      <div class="lc-named-section">\n'
+        f'      <div class="{classes}">\n'
         f'{label_html}\n'
         f'{body}\n'
         f'      </div>'
@@ -297,7 +312,12 @@ def render_section_how_calculated(hc):
 
 def render_section_module_exams(me, exams_data):
     """Section: Module Exams — pulls common format details and per-module
-    coverage from exams.json. The 'me' block holds only the wrapping prose."""
+    coverage from exams.json. The 'me' block holds only the wrapping prose.
+
+    Per-exam question count and time vary (M1-M4 have 30q, M5 has 20q),
+    so the coverage table carries those numbers per row rather than
+    asserting them in a single shared sentence."""
+    classes = section_div_classes(me.get('labelColor'))
     label_html = render_section_label(me['label'], me.get('labelColor'))
     sub_color = me.get('labelColor', '')
     h3_class = f' lc-h3--{sub_color}' if sub_color else ''
@@ -305,16 +325,10 @@ def render_section_module_exams(me, exams_data):
     common = exams_data['common']
     exams = exams_data['exams']
 
-    # Pull a representative exam for shared format numbers (M1; all are same).
-    first = exams[0]
-    questions = first['questions']
-    minutes = first['timeLimitMinutes']
-    attempts = first['attempts']
-
+    # Format paragraph — describes question TYPES (universal) and the
+    # question-pool note. Question count/time/attempts are in the table.
     format_para = (
-        f'      <p>{me["formatPrefix_html"]} <strong>{questions} questions</strong>, '
-        f'a <strong>{minutes}-minute</strong> time limit, and <strong>{attempts} attempt</strong>. '
-        f'Questions are {common["questionTypeDescription"]}. '
+        f'      <p>{me["formatPrefix_html"]} {common["questionTypeDescription"]}. '
         f'{me["formatSuffix_html"]}</p>'
     )
 
@@ -331,13 +345,17 @@ def render_section_module_exams(me, exams_data):
         '      </ul>'
     )
 
-    # Per-module coverage table
+    # Per-module coverage table — Coverage + Questions + Time + Attempts
+    # per row so M5's 20-question structure is visible alongside M1-M4's 30.
     coverage_rows = []
     for exam in exams:
         coverage_rows.append(
             f'            <tr>\n'
             f'              <td><strong>Module {exam["num"]}</strong></td>\n'
             f'              <td>{exam["subtitle"]}</td>\n'
+            f'              <td>{exam["questions"]}</td>\n'
+            f'              <td>{exam["timeLimitMinutes"]} min</td>\n'
+            f'              <td>{exam["attempts"]}</td>\n'
             f'            </tr>'
         )
     coverage_rows_html = '\n'.join(coverage_rows)
@@ -349,6 +367,9 @@ def render_section_module_exams(me, exams_data):
         '            <tr>\n'
         '              <th>Exam</th>\n'
         '              <th>Coverage</th>\n'
+        '              <th>Questions</th>\n'
+        '              <th>Time</th>\n'
+        '              <th>Attempts</th>\n'
         '            </tr>\n'
         '          </thead>\n'
         '          <tbody>\n'
@@ -366,7 +387,7 @@ def render_section_module_exams(me, exams_data):
     ])
 
     return (
-        f'      <div class="lc-named-section">\n'
+        f'      <div class="{classes}">\n'
         f'{label_html}\n'
         f'{body}\n'
         f'      </div>'
@@ -376,6 +397,7 @@ def render_section_module_exams(me, exams_data):
 def render_section_grade_visibility(gv):
     """Section: Grade Visibility & Disputes — N sub-sections with lc-h3
     headings, default yellow label."""
+    classes = section_div_classes(gv.get('labelColor'))
     label_html = render_section_label(gv['label'], gv.get('labelColor'))
     sub_color = gv.get('labelColor', '')
     h3_class = f' lc-h3--{sub_color}' if sub_color else ''
@@ -389,19 +411,21 @@ def render_section_grade_visibility(gv):
         blocks.append(sub_block)
     body = '\n\n'.join(blocks)
     return (
-        f'      <div class="lc-named-section">\n'
+        f'      <div class="{classes}">\n'
         f'{label_html}\n'
         f'{body}\n'
         f'      </div>'
     )
 
 
+
 def render_section_grade_scale(scale):
     """Section 4: Grade Scale — two-column letter-grade table only."""
+    classes = section_div_classes(scale.get('labelColor'))
     label_html = render_section_label(scale['label'], scale.get('labelColor'))
     table_html = render_grade_scale_table(scale['rows'])
     return (
-        f'      <div class="lc-named-section">\n'
+        f'      <div class="{classes}">\n'
         f'{label_html}\n'
         f'{table_html}\n'
         f'      </div>'
