@@ -375,7 +375,6 @@
             ${link('Syllabus',        'https://utsa.simplesyllabus.com/doc/xvcdfi182/Spring-2026-IS-2053-ON1-Programming-I?mode=view', 'dd-yellow', true)}
             ${link('Grading Info',    S + 'grading-info.html' + suffix,    'dd-yellow')}
             ${link('Course Schedule', S + 'course-schedule.html' + suffix, 'dd-yellow')}
-            ${link('Zoom Sessions',   S + 'zoom-sessions.html' + suffix,   'dd-yellow')}
             <div class="drop-label">Support Resources</div>
             ${link('Assignment Overview', S + 'assignment-overview.html' + suffix, 'dd-green')}
             ${link('CodeGrade Guide',     S + 'codegrade-guide.html' + suffix,     'dd-green')}
