@@ -73,6 +73,31 @@ def render_callout(item):
     )
 
 
+def render_collapsible_callout(item):
+    """A collapsible callout using native <details>/<summary>.
+
+    Same visual structure as lc-callout (icon + bubble with title + body), but
+    wrapped in <details> so the body is hidden until the title is clicked.
+    Pairs the strict-spec teaching style with progressive disclosure for content
+    that only matters to a subset of readers (e.g., 'if you DIDN'T use the zip').
+    """
+    return (
+        f'        <details class="lc-callout lc-callout--{item["variant"]} lc-callout--collapsible">\n'
+        f'          <summary class="lc-callout__summary">\n'
+        f'            <div class="lc-callout__icon">\n'
+        f'              <span class="material-symbols-outlined">{item["icon"]}</span>\n'
+        f'            </div>\n'
+        f'            <div class="lc-callout__title">{item["title"]}</div>\n'
+        f'          </summary>\n'
+        f'          <div class="lc-callout__bubble">\n'
+        f'            <div class="lc-callout__body">\n'
+        f'              {item["body_html"]}\n'
+        f'            </div>\n'
+        f'          </div>\n'
+        f'        </details>'
+    )
+
+
 def render_h3(item, indent='        '):
     """Section heading. Optional color variant."""
     color_class = f' lc-h3--{item["color"]}' if item.get('color') else ''
@@ -158,6 +183,7 @@ CP_RENDERERS = {
     'ordered_list': render_ordered_list,
     'unordered_list': render_unordered_list,
     'callout': render_callout,
+    'collapsible_callout': render_collapsible_callout,
     'h3': render_h3,
     'code_block': render_code_block,
     'cta_button': render_cta_button,
