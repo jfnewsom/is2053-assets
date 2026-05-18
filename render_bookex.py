@@ -104,7 +104,10 @@ def render_bookex_overview_card(overview: dict, meta: dict) -> str:
     # Filename note
     filename_html = ""
     if filename_note or filename:
-        display_note = filename_note or f"Submit <code>{filename}</code> with all programs combined into one file."
+        # IMPORTANT: never default to "combined into one file" — CodeGrade always
+        # expects individual file submissions. If filenameNote is missing, the
+        # JSON should be fixed; the fallback below is intentionally generic.
+        display_note = filename_note or f"Submit the individual files listed in the checkpoints above (do not combine them)."
         filename_html = (
             '    <div class="lc-h3 lc-h3--yellow">Filename</div>\n'
             f"    <p>{display_note}</p>\n"
