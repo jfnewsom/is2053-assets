@@ -67,7 +67,8 @@ def section_div_classes(color):
 
 
 def render_info_bar(cadence):
-    """The 4-cell weekly cadence info bar."""
+    """The weekly cadence info bar. Adds lc-info-bar--5col modifier when
+    there are 5+ stats (so they don't pack into the default 4-column grid)."""
     cells = []
     for stat in cadence['stats']:
         cells.append(
@@ -77,8 +78,11 @@ def render_info_bar(cadence):
             f'        </div>'
         )
     cells_html = '\n'.join(cells)
+    bar_classes = 'lc-info-bar'
+    if len(cadence['stats']) >= 5:
+        bar_classes += ' lc-info-bar--5col'
     return (
-        f'      <div class="lc-info-bar">\n'
+        f'      <div class="{bar_classes}">\n'
         f'{cells_html}\n'
         f'      </div>'
     )
@@ -162,6 +166,7 @@ def render_section_schedule(schedule):
         f'{rows_block}\n'
         f'          </tbody>\n'
         f'        </table>\n'
+        f'        <p style="font-size: 13px; color: var(--color-text-muted); margin-top: 14px;">Worried about turning stuff in late? See the <a href="grading-info.html#late-work">late policy</a>.</p>\n'
         f'      </div>'
     )
 

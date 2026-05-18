@@ -202,8 +202,11 @@ def render_section_sick_days(drop):
 
 def render_section_late_work(late):
     """Section 3: Late Work — warning callout + sub-sections (each with
-    lc-h3 sub-heading) + closing paragraph."""
+    lc-h3 sub-heading) + closing paragraph. Optionally emits an id on
+    the section div for deep-linking from other pages."""
     classes = section_div_classes(late.get('labelColor'))
+    anchor_id = late.get('anchor_id')
+    id_attr = f' id="{anchor_id}"' if anchor_id else ''
     label_html = render_section_label(late['label'], late.get('labelColor'))
     sub_color = late.get('labelColor', '')
     h3_class = f' lc-h3--{sub_color}' if sub_color else ''
@@ -223,7 +226,7 @@ def render_section_late_work(late):
     body = '\n\n'.join(blocks)
 
     return (
-        f'      <div class="{classes}">\n'
+        f'      <div class="{classes}"{id_attr}>\n'
         f'{label_html}\n'
         f'{body}\n'
         f'      </div>'
