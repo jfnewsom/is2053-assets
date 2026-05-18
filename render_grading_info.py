@@ -237,6 +237,8 @@ def render_section_rubrics(rubrics):
     """Section: Rubrics — intro + N sub-tables (BookEx, Lab, etc.).
     Each sub-table gets an lc-h3 sub-heading colored to match the section."""
     classes = section_div_classes(rubrics.get('labelColor'))
+    anchor_id = rubrics.get('anchor_id')
+    id_attr = f' id="{anchor_id}"' if anchor_id else ''
     label_html = render_section_label(rubrics['label'], rubrics.get('labelColor'))
     sub_color = rubrics.get('labelColor', '')
     h3_class = f' lc-h3--{sub_color}' if sub_color else ''
@@ -281,9 +283,12 @@ def render_section_rubrics(rubrics):
     if rubrics.get('sotNote_html'):
         blocks.append(f'      {rubrics["sotNote_html"]}')
 
+    if rubrics.get('crossRef_html'):
+        blocks.append(f'      {rubrics["crossRef_html"]}')
+
     body = '\n\n'.join(blocks)
     return (
-        f'      <div class="{classes}">\n'
+        f'      <div class="{classes}"{id_attr}>\n'
         f'{label_html}\n'
         f'{body}\n'
         f'      </div>'
