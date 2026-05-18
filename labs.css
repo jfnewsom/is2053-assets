@@ -570,8 +570,11 @@ a:hover { text-decoration: underline; }
    kerning, no separator line. The font-family switch (Slab → sans)
    plus the absence of a bottom border makes the hierarchy obvious
    while keeping the colored modifier (--red, --cyan, etc.) to
-   preserve the visual tie to the parent section. */
-.lc-named-section .lc-h3 {
+   preserve the visual tie to the parent section. Same treatment
+   applies to h3s inside .lc-stage-card so multi-stage cards on
+   Assignment Overview stay subordinate to the stage label. */
+.lc-named-section .lc-h3,
+.lc-stage-card .lc-h3 {
     font-family: 'Roboto', sans-serif;
     font-weight: 900;
     font-size: 11px;
@@ -583,7 +586,8 @@ a:hover { text-decoration: underline; }
     opacity: 0.85;
 }
 
-.lc-named-section .lc-h3:first-child {
+.lc-named-section .lc-h3:first-child,
+.lc-stage-card .lc-h3:first-child {
     margin-top: 0;
 }
 
@@ -1700,8 +1704,7 @@ a:hover { text-decoration: underline; }
 
 @media (max-width: 900px) {
     .lc-resource-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+        grid-template-columns: repeat(2, 1fr);    }
 }
 
 @media (max-width: 500px) {
@@ -1709,6 +1712,55 @@ a:hover { text-decoration: underline; }
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Stage grid — 3-up side-by-side cards for parallel content blocks
+   (used for BUILD/ENHANCE/MASTER on Assignment Overview). Each card
+   carries a colored label, a small subtitle, and dense sub-banner
+   content (What You Do / What's Due). Single column on narrow screens. */
+.lc-stage-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 20px 0;
+}
+
+.lc-stage-card {
+    background: rgba(10, 10, 10, 0.6);
+    border: 2px solid #2a2a2a;
+    padding: 16px;
+}
+
+.lc-stage-card__label {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--bat-yellow);
+    margin-bottom: 4px;
+}
+
+.lc-stage-card__label--purple { color: var(--neon-purple); }
+.lc-stage-card__label--green  { color: var(--neon-green); }
+.lc-stage-card__label--orange { color: var(--neon-orange); }
+.lc-stage-card__label--blue   { color: var(--neon-blue); }
+.lc-stage-card__label--cyan   { color: var(--neon-cyan); }
+.lc-stage-card__label--red    { color: var(--neon-red, #FF1744); }
+
+.lc-stage-card__subtitle {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 900px) {
+    .lc-stage-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 /* Module row — 5 minimal module cards in a row */
 .lc-module-row {
