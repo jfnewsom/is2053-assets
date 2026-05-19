@@ -372,7 +372,7 @@
             <div class="drop-label">Course Info</div>
             ${link('Home',            S + 'home.html' + suffix,            'dd-yellow')}
             ${link('Start Here',      S + 'start-here.html' + suffix,      'dd-yellow')}
-            ${link('Syllabus',        'https://utsa.simplesyllabus.com/doc/xvcdfi182/Spring-2026-IS-2053-ON1-Programming-I?mode=view', 'dd-yellow', true)}
+            ${link('Syllabus',        'https://utsa.simplesyllabus.com/doc/tff2rb0cn/Summer-2026-IS-2053-ON1-Programming-I?mode=view', 'dd-yellow', true)}
             ${link('Grading Info',    S + 'grading-info.html' + suffix,    'dd-yellow')}
             ${link('Course Schedule', S + 'course-schedule.html' + suffix, 'dd-yellow')}
             <div class="drop-label">Support Resources</div>
