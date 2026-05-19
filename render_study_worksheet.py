@@ -56,7 +56,7 @@ def render_subheading(b, color):
 
 
 def render_bullet_list(b, color):
-    items = '\n'.join(f'        <li>{item}</li>' for item in b['items'])
+    items = '\n'.join(f'        <li>{replace_blanks(item)}</li>' for item in b['items'])
     return (
         '      <ul class="ws-bullets">\n'
         f'{items}\n'
@@ -82,7 +82,7 @@ def render_fill_table(b, color):
             if cell is None:
                 cell_parts.append('              <td class="ws-answer-cell"></td>')
             else:
-                cell_parts.append(f'              <td>{cell}</td>')
+                cell_parts.append(f'              <td>{replace_blanks(cell)}</td>')
         rows_html.append(f'            <tr{tr_class}>\n' + '\n'.join(cell_parts) + '\n            </tr>')
 
     return (
@@ -125,6 +125,17 @@ def render_prompt(b, color):
     return f'      <p class="ws-prompt">{text}</p>'
 
 
+def render_code_block(b, color):
+    """Raw HTML code block. Pass through pre-formatted HTML — useful when
+    the source needs syntax-highlighting spans (lc-syn-*) or multi-line
+    code that wouldn't fit in a single string."""
+    return (
+        '      <div class="lc-code-block"><pre>'
+        + b['html']
+        + '</pre></div>'
+    )
+
+
 def render_paragraph(b, color):
     """Plain paragraph (no blank substitution)."""
     return f'      <p>{b["text"]}</p>'
@@ -138,6 +149,7 @@ BLOCK_RENDERERS = {
     'key_question':      render_key_question,
     'concept_questions': render_concept_questions,
     'prompt':            render_prompt,
+    'code_block':        render_code_block,
     'paragraph':         render_paragraph,
 }
 
