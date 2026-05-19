@@ -284,6 +284,8 @@ def render_lab(data: dict, output_path: str) -> None:
     final         = data.get("finalChecklist", {})
     need_help     = data.get("needHelp", {})
 
+    module        = meta.get("module", 1)
+
     title_str = meta.get("title", "Lab")
     page_title = f"{title_str} \u2014 IS2053"
 
@@ -296,7 +298,7 @@ def render_lab(data: dict, output_path: str) -> None:
 
     html += render_checkpoints_card(checkpoints)
     html += render_final_checklist(final)
-    html += render_need_help(need_help)
+    html += render_need_help(need_help, module)
     html += html_foot()
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)

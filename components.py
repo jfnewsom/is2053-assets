@@ -960,8 +960,14 @@ CONTACT_GRID_HTML = """    <div class="lc-contact-grid">
 """
 
 
-def render_need_help(need_help: dict) -> str:
-    """Render the full purple Need Help card."""
+def render_need_help(need_help: dict, module: int) -> str:
+    """Render the full purple Need Help card.
+
+    The Course Discord card's channel reference is rewired to point at
+    the current module's help channel (e.g., #module-3-help). Each module
+    has its own help channel; students should post in the channel for
+    the module where the issue lives.
+    """
     if_you_get_stuck = need_help.get("ifYouGetStuck", [])
 
     stuck_items = "".join(
@@ -973,8 +979,12 @@ def render_need_help(need_help: dict) -> str:
 {stuck_items}    </ul>
 """ if stuck_items else ""
 
+    contact_grid = CONTACT_GRID_HTML.replace(
+        "#help-python", f"#module-{module}-help"
+    )
+
     return f"""{card_open("purple")}
 {topper("Need Help?", "Look No Further!")}
 {panel_open()}
 {stuck_block}    <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
-{CONTACT_GRID_HTML}{panel_close()}{card_close()}"""
+{contact_grid}{panel_close()}{card_close()}"""

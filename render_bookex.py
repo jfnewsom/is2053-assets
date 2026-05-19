@@ -196,12 +196,17 @@ def render_bookex(data: dict, output_path: str) -> None:
     title   = meta.get("title", "")
     page_title = f"BookEx Chapter {chapter}: {title} \u2014 IS2053"
 
+    # Derive module from chapter for the Need Help card's Discord channel.
+    # Chapter-to-Module map: Ch 2-3→M1, Ch 4-5→M2, Ch 6-7→M3, Ch 8-9→M4,
+    # Ch 10→M5. Integer division by 2 gives the right answer across 2-10.
+    module = int(chapter) // 2 if chapter else 1
+
     html = html_head(page_title)
     html += render_bookex_overview_card(overview, meta)
     html += render_time_guide(time_guide)
     html += render_bookex_checkpoints_card(checkpoints)
     html += render_final_checklist(final)
-    html += render_need_help(need_help)
+    html += render_need_help(need_help, module)
     html += html_foot()
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
