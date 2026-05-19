@@ -1,0 +1,305 @@
+{
+  "_meta": {
+    "purpose": "Authoritative module-by-module build roadmap for Deep in the Heart: A Lone Star Journey. Content synthesized from each lab's overview.body and overview.objectives in pages/labs/json/lab-*.json (as of 2026-05-18).",
+    "lastEdited": "2026-05-18",
+    "syncSource": "pages/labs/json/lab-*.json",
+    "manualSyncNote": "When a lab's objectives or game-state arc change materially, the corresponding card in this JSON needs to be updated by hand."
+  },
+  "pageTitle": "Project Plan | IS2053 Programming I",
+  "siteContext": "scenario",
+  "card": {
+    "color": "blue",
+    "topperTitle": "Project Plan",
+    "subBanner": "Module-by-Module Build Roadmap"
+  },
+  "overview": {
+    "label": "Project Overview",
+    "labelColor": null,
+    "intro_html": "<p>This page is your <strong>project plan</strong> for <em>Deep in the Heart: A Lone Star Journey</em>. It walks the full semester &mdash; what you build in every lab, what each lab adds to the game, and what the game does at the end. Use it to orient yourself before a module, to see where the lab you&rsquo;re working on fits in the arc, or to remind yourself why a particular concept matters for the bigger picture.</p>\n      <p>Every lab BUILDs a feature, ENHANCEs it, then MASTERs it. By Module 5 you&rsquo;re refactoring your own code from week 1 into a class-based architecture. <strong>You don&rsquo;t start over.</strong> Every line you write in Module 1 still runs (in some form) in Module 5.</p>",
+    "endStateHeading": "By the end of the semester, the game will:",
+    "endState_html": [
+      "Load city distances, city info, hazards, and Texas trivia from <strong>text files at startup</strong> &mdash; add a row to a file, add content to the game",
+      "Let players <strong>save and reload</strong> partway through a road trip and resume where they left off",
+      "Use a <strong>D20</strong> for mileage per turn, a <strong>TRUE/FALSE trivia gate</strong> to validate destination choices, and <strong>random hazards</strong> on the road",
+      "Handle bad input <strong>gracefully</strong> &mdash; no crashes, no <code>ValueError</code>s, friendly retry messages",
+      "Track <strong>session statistics</strong> across multiple games (total miles, cities visited, hazards faced, trivia accuracy)",
+      "Write a <strong>trip report</strong> to <code>trip_report.txt</code> at the end of every game",
+      "Be architected with two classes &mdash; <code>City</code> and <code>Player</code> &mdash; with a reusable <code>function_library.py</code> module behind them"
+    ]
+  },
+  "module1": {
+    "label": "Module 1: Getting Started",
+    "labelColor": "blue",
+    "subtitle_html": "Chapters 2 &amp; 3 &bull; Variables, I/O, decisions",
+    "intro_html": "<p>Establish the foundation: get input, do math, branch on choices. By the end of Module 1, your program asks the player&rsquo;s name, simulates a single dice roll, lets them pick a destination, and tells them whether they made it &mdash; with a bonus detour to Galveston if they reach Houston.</p>",
+    "labs": [
+      {
+        "stage": "BUILD",
+        "stageColor": "blue",
+        "subtitle_html": "Lab 1.1 &bull; Ch 2 &bull; Welcome to San Antonio",
+        "whatYouDo_html": [
+          "Display a welcome banner and prompt for the player&rsquo;s name with <code>input()</code>",
+          "Get a dice roll (1&ndash;20), convert to <code>int</code>, calculate miles (roll &times; 10)",
+          "Calculate miles remaining to each of four destinations (Corpus, Houston, Austin, Dallas)",
+          "Print a formatted <strong>Travel Report</strong> with all calculations"
+        ],
+        "result_html": "<p>The game greets the player, simulates one dice roll, and shows how many miles short of each Texas destination they&rsquo;d be after rolling.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-1-1.html"
+      },
+      {
+        "stage": "ENHANCE",
+        "stageColor": "orange",
+        "subtitle_html": "Lab 1.2 &bull; Ch 3 &bull; Choose Your Destination",
+        "whatYouDo_html": [
+          "Add a destination menu with 3 choices (Corpus, Houston, Austin)",
+          "Write an <code>if</code>/<code>elif</code>/<code>else</code> chain that sets <code>destination</code>, <code>distance</code>, <code>status</code>, <code>message</code> per choice",
+          "Check whether the player made it: <code>miles_remaining &gt;= 0</code>",
+          "Use <code>abs()</code> to report how many miles short on a fail",
+          "Print a <strong>Trip Summary</strong> with the final result"
+        ],
+        "result_html": "<p>Player picks a destination. The program responds with a Trip Summary saying whether the roll was enough, or how many miles short.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-1-2.html"
+      },
+      {
+        "stage": "MASTER",
+        "stageColor": "green",
+        "subtitle_html": "Lab 1.3 &bull; Ch 3 &bull; Hit the Road",
+        "whatYouDo_html": [
+          "Add <code>HOU_TO_GALVESTON = 50</code> as a new named constant",
+          "Add a <strong>nested <code>if</code></strong> inside the Houston branch: keep going to Galveston for the beach?",
+          "Use the <code>or</code> operator to accept both lower- and upper-case yes (<code>'y'</code> or <code>'Y'</code>)",
+          "Track a <code>status</code> variable across every branch: WINNER, SHORT, DETOUR, STOPPED, ERROR",
+          "Print a final message keyed off the status"
+        ],
+        "result_html": "<p>Houston now has a bonus leg to Galveston. Every branch ends with a tracked status &mdash; WINNER, SHORT, DETOUR, STOPPED, or ERROR &mdash; and a tailored end-of-trip message.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-1-3.html"
+      }
+    ]
+  },
+  "module2": {
+    "label": "Module 2: The Journey Begins",
+    "labelColor": "orange",
+    "subtitle_html": "Chapters 4 &amp; 5 &bull; Loops, validation, your first module",
+    "intro_html": "<p>Single-turn trips become multi-turn trips. The game loops over many turns, the dice roll changes mileage each turn, hazards appear, and you can play multiple games in one session. You also write your <strong>first reusable module</strong> &mdash; <code>function_library.py</code> &mdash; that every later lab will keep extending.</p>",
+    "labs": [
+      {
+        "stage": "BUILD",
+        "stageColor": "blue",
+        "subtitle_html": "Lab 2.1 &bull; Ch 4 &bull; Keep On Driving",
+        "whatYouDo_html": [
+          "Trim Lab 1.3: remove the dice roll, the Galveston detour, the win/short logic",
+          "Simplify to 3 destinations and add <code>MILES_PER_TURN = 50</code>",
+          "Add a <code>while</code> loop that drives toward the chosen destination",
+          "Track progress with a <strong>miles accumulator</strong>",
+          "Print turn-by-turn progress and a trip summary on arrival"
+        ],
+        "result_html": "<p>The game loops over turns until the player arrives. Each turn moves a fixed 50 miles. Turn-by-turn progress prints as the trip unfolds.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-2-1.html"
+      },
+      {
+        "stage": "ENHANCE",
+        "stageColor": "orange",
+        "subtitle_html": "Lab 2.2 &bull; Ch 5 &bull; Texas Has Other Plans",
+        "whatYouDo_html": [
+          "Create <code>function_library.py</code> with three helpers: <code>flip_coin()</code>, <code>roll_d20()</code>, <code>check_percentage()</code>",
+          "Import your own module into <code>lab-2-2.py</code>",
+          "Implement the <strong>Destination Gate</strong>: a coin flip decides if Texas lets you go where you want, otherwise you&rsquo;re redirected",
+          "Replace fixed 50-mile travel with a <strong>D20 roll &times; 10 = miles</strong> per turn",
+          "Add hazard encounters at a <strong>30% chance per turn</strong>"
+        ],
+        "result_html": "<p>Each turn rolls a D20 for mileage. A coin-flip gate may redirect you somewhere unexpected. Random hazards land on roughly 30% of turns. Your first reusable module is live.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-2-2.html"
+      },
+      {
+        "stage": "MASTER",
+        "stageColor": "green",
+        "subtitle_html": "Lab 2.3 &bull; Ch 4&ndash;5 &bull; Road Trip Ready",
+        "whatYouDo_html": [
+          "Add <code>get_valid_int()</code> and <code>get_yes_no()</code> to <code>function_library.py</code> (5 functions total)",
+          "Replace raw menu input with the validation function &mdash; bad input no longer crashes",
+          "Wrap the whole game in a <strong>sentinel-controlled play-again loop</strong>",
+          "Track <strong>cumulative session statistics</strong> across multiple games"
+        ],
+        "result_html": "<p>Input is validated &mdash; typing nonsense at a menu retries instead of crashing. The player can play game after game in one session, and the program tracks cumulative stats across all of them.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-2-3.html"
+      }
+    ]
+  },
+  "module3": {
+    "label": "Module 3: Keeping Track",
+    "labelColor": "green",
+    "subtitle_html": "Chapters 6 &amp; 7 &bull; Functions, lists, persistence",
+    "intro_html": "<p>The game gets a <strong>memory</strong>. You can save mid-trip, reload, and pick up where you left off. The destination menus collapse from <code>if</code>/<code>elif</code> chains into parallel lists. Hazards work the same way. Every game ends with a <strong>trip report file</strong> &mdash; a memento of the road trip you just played.</p>",
+    "labs": [
+      {
+        "stage": "BUILD",
+        "stageColor": "blue",
+        "subtitle_html": "Lab 3.1 &bull; Ch 6 &bull; Save Your Journey",
+        "whatYouDo_html": [
+          "Write <code>save_game()</code> that writes <strong>9 fields</strong> of session state to a text file",
+          "Write <code>load_game()</code> that reads the file back, returns a 9-tuple, handles missing files",
+          "Add a <strong>main menu</strong>: New Game / Load Saved Game / Quit",
+          "Resume logic that picks up a saved session mid-trip and keeps session totals intact",
+          "Mid-trip 3-way option: Continue / Save and quit / Quit without saving"
+        ],
+        "result_html": "<p>Progress survives between sessions. Quit halfway through a trip, reload tomorrow, the game restarts exactly where you left off &mdash; including your session statistics.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-3-1.html"
+      },
+      {
+        "stage": "ENHANCE",
+        "stageColor": "orange",
+        "subtitle_html": "Lab 3.2 &bull; Ch 7 &bull; Lists to the Rescue",
+        "whatYouDo_html": [
+          "Replace destination <code>if</code>/<code>elif</code> chains with <strong>parallel lists</strong>: destinations, distances, notes (three per city)",
+          "Promote <code>save_game()</code> and <code>load_game()</code> from the lab file up to <code>function_library.py</code>",
+          "Add three universal helpers to the library: <code>display_destinations()</code>, <code>get_destination()</code>, <code>get_redirect()</code>",
+          "Build tracking lists: <code>visited_cities</code> (your route) and <code>hazards_list</code> (war stories)",
+          "Extend save/load to persist both tracking lists using a <code>--LISTS_END--</code> separator"
+        ],
+        "result_html": "<p>The destination menu is data, not branches. The save file now preserves your full route and hazard history. The library is the right place to put reusable helpers.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-3-2.html"
+      },
+      {
+        "stage": "MASTER",
+        "stageColor": "green",
+        "subtitle_html": "Lab 3.3 &bull; Ch 7 &bull; Trip Report",
+        "whatYouDo_html": [
+          "Add three more parallel lists for hazards: <code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code>",
+          "Add <code>get_random_hazard()</code> to the library (parameterized &mdash; takes the hazard lists as arguments)",
+          "Refactor the in-game hazard block to call the library helper instead of inline <code>if</code>/<code>elif</code>",
+          "Sort hazards alphabetically in the trip summary using <code>.copy()</code> and <code>.sort()</code>",
+          "Count unique cities visited using the <code>in</code> operator",
+          "Build <code>save_trip_report()</code> &mdash; writes a formatted multi-section report to <code>trip_report.txt</code> at the end of every game"
+        ],
+        "result_html": "<p>Hazards work the same way as destinations now &mdash; parallel lists driven through library helpers. Every completed game saves a <code>trip_report.txt</code> the player can keep.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-3-3.html"
+      }
+    ]
+  },
+  "module4": {
+    "label": "Module 4: Smarter Code",
+    "labelColor": "purple",
+    "subtitle_html": "Chapters 8 &amp; 9 &bull; Files, exceptions, dictionaries, sets",
+    "intro_html": "<p>The game becomes <strong>content-driven</strong>. City distances, city info, hazards, and Texas trivia all move out of code and into text files loaded at startup. Want to add a city, a hazard, or a trivia question? Add a row to a file. The Destination Gate retires in favor of a TRIVIA gate &mdash; players answer a TRUE/FALSE question about the city they want to visit, and a wrong answer reroutes them.</p>",
+    "labs": [
+      {
+        "stage": "BUILD",
+        "stageColor": "blue",
+        "subtitle_html": "Lab 4.1 &bull; Ch 8&ndash;9 &bull; City Data",
+        "whatYouDo_html": [
+          "Add <code>load_city_distances(filename)</code> to the library: parses CSV into a nested dictionary",
+          "Add <code>load_city_info(filename)</code>: dictionary of dictionaries with <code>type</code> and <code>tagline</code> keys",
+          "Refactor <code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code> to take <code>(city, distances)</code> instead of parallel lists",
+          "Add <code>is_win_city</code> and <code>is_dead_end</code> helpers reading from the city info dict",
+          "Rebuild <code>lab-4-1.py</code>: city graph loads from text files at startup; D20 mechanic and three-loop architecture preserved"
+        ],
+        "result_html": "<p>The city graph lives in <code>city_distances.csv</code> and <code>city_info.csv</code>. Add a row, add a city. No more recompiling code to add a destination.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-4-1.html"
+      },
+      {
+        "stage": "ENHANCE",
+        "stageColor": "orange",
+        "subtitle_html": "Lab 4.2 &bull; Ch 8&ndash;9 &bull; Flexible Input",
+        "whatYouDo_html": [
+          "Add <code>clean_input(prompt)</code>: <code>return input(prompt).strip().upper()</code>",
+          "Rewrite <code>get_valid_int</code> with <code>.isdigit()</code> &mdash; no more <code>ValueError</code> crashes on text input",
+          "Rewrite <code>get_yes_no</code> using <code>clean_input</code> &mdash; <code>'y'/'Y'/'n'/'N'</code> collapses to one Y/N check",
+          "Add <code>load_hazards(filename)</code>: parses <code>hazards.txt</code> into a list of dictionaries",
+          "Add <code>handle_hazard(hazards)</code>: picks a random hazard, prints it, flips the escape coin, returns <code>(name, escaped)</code>",
+          "Replace the inline hazard block in <code>lab-4-2.py</code> with one call to the library helper"
+        ],
+        "result_html": "<p>Hazards now load from <code>hazards.txt</code>. Input handling is rock-solid &mdash; nonsense input retries instead of crashing. The <code>function_library.py</code> module is starting to look like a real toolkit.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-4-2.html"
+      },
+      {
+        "stage": "MASTER",
+        "stageColor": "green",
+        "subtitle_html": "Lab 4.3 &bull; Ch 8&ndash;9 &bull; Trivia Challenge",
+        "whatYouDo_html": [
+          "Add <code>load_trivia(filename)</code>: parses <code>trivia.txt</code> into a dictionary keyed by city",
+          "Write <code>trivia_gate(dest, trivia, current, distances)</code> as a lab-local function: asks a TRUE/FALSE question, redirects on wrong",
+          "Replace the coin-flip Destination Gate in the in-game loop with a call to <code>trivia_gate</code>",
+          "Build <code>unique_cities = set()</code> and <code>unique_hazards = set()</code>; <code>.add()</code> entries as they happen",
+          "Replace the <code>in</code>-operator uniqueness loop and <code>.copy().sort()</code> hazard sort with <code>sorted(unique_cities)</code> / <code>sorted(unique_hazards)</code>",
+          "Track <code>trivia_asked</code> and <code>trivia_correct</code>; add a TRIVIA section to the trip report with accuracy percentage"
+        ],
+        "result_html": "<p>Wrong answer to a Texas trivia question &mdash; you get redirected somewhere else. Right answer &mdash; you head where you wanted. Sets handle uniqueness cleanly. The trip report grows a TRIVIA section.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-4-3.html"
+      }
+    ]
+  },
+  "module5": {
+    "label": "Module 5: Ship It",
+    "labelColor": "cyan",
+    "subtitle_html": "Chapter 10 &bull; Classes &amp; objects",
+    "intro_html": "<p>OOP arrives. City data and behavior bundle into a <code>City</code> class. The ten state variables tracking your road trip bundle into a <code>Player</code> class. The game plays exactly the same &mdash; but the code is now architected the way professional Python is written. <strong>This is your shippable artifact.</strong></p>",
+    "labs": [
+      {
+        "stage": "BUILD",
+        "stageColor": "blue",
+        "subtitle_html": "Lab 5.1 &bull; Ch 10 &bull; Meet the Cities",
+        "whatYouDo_html": [
+          "Define a <code>City</code> class in <code>city.py</code>: <code>__init__</code>, private attributes, getters",
+          "Add connection methods, status methods, and <code>__str__</code>",
+          "Add <code>enter_to_continue()</code> to <code>function_library.py</code> as the library&rsquo;s final function",
+          "Refactor <code>lab-4-3.py</code> into <code>lab-5-1.py</code> using <code>City</code> objects in place of the two dictionaries"
+        ],
+        "result_html": "<p>Cities are objects, not raw dicts. <code>city.name</code>, <code>city.is_win_city()</code>, <code>city.distance_to('Austin')</code>. The game plays identically; the code reads like a real codebase.</p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-5-1.html"
+      },
+      {
+        "stage": "MASTER",
+        "stageColor": "green",
+        "subtitle_html": "Lab 5.2 &bull; Ch 10 &bull; Deep in the Heart",
+        "whatYouDo_html": [
+          "Define a <code>Player</code> class in <code>player.py</code> using the same pattern as <code>City</code>",
+          "Bundle all game state into one object: location, miles, cities visited, hazards, trivia counters",
+          "Use a <strong>list</strong> (for the full route) and a <strong>set</strong> (for unique cities) inside the class",
+          "Replace ten scattered state variables with a single <code>player</code> object",
+          "Follow the provided <code>lab-5-2.py</code> as a spec &mdash; every <code>player.</code> call signals a method to build"
+        ],
+        "result_html": "<p>One <code>player</code> object holds every piece of state about the road trip. Two classes (<code>City</code> + <code>Player</code>), one library module, four data files, and a game that ships. <strong>This is the portfolio piece.</strong></p>",
+        "labUrl": "https://jfnewsom.github.io/is2053-assets/pages/labs/lab-5-2.html"
+      }
+    ]
+  },
+  "finalProduct": {
+    "label": "The Final Product",
+    "labelColor": "cyan",
+    "subtitle_html": "What you&rsquo;ll have at the end of Module 5",
+    "body_html": "<p>Pull together everything you built. Your shipping artifact at the end of the semester is a complete, playable, OOP-architected text adventure game. It runs from the command line, has real content, real game mechanics, real input handling, and saves trip reports the player can keep.</p>",
+    "byTheNumbers": [
+      {
+        "label": "Modules",
+        "num": "5",
+        "sub": "BUILD &rarr; ENHANCE &rarr; MASTER"
+      },
+      {
+        "label": "Labs",
+        "num": "14",
+        "sub": "you carry each lab&rsquo;s code forward"
+      },
+      {
+        "label": "Classes",
+        "num": "2",
+        "sub": "City &amp; Player"
+      },
+      {
+        "label": "Data Files",
+        "num": "4",
+        "sub": "distances, info, hazards, trivia"
+      },
+      {
+        "label": "Lib Functions",
+        "num": "14",
+        "sub": "in function_library.py"
+      }
+    ],
+    "closingMentor": {
+      "name": "Danny Cavanaugh",
+      "role": "Lead Developer, Bat City Collective",
+      "avatar": "Danny-Cavanaugh.png",
+      "quote_html": "&ldquo;Show this to a recruiter and say <strong>&lsquo;I wrote this in my first programming class.&rsquo;</strong> Then watch their face.&rdquo;"
+    }
+  }
+}

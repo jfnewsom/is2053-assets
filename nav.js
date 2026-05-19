@@ -389,8 +389,10 @@
           <div class="nav-trigger">Bat City <span class="nav-caret">&#9660;</span></div>
           <div class="nav-dropdown">
             <div class="drop-label">Game World</div>
-            ${link('The Scenario',      SC + 'the-scenario.html' + suffix,      'dd-orange')}
-            ${link('Texas Highway Map', SC + 'texas-highway-map.html' + suffix, 'dd-orange')}
+            ${link('Scenario',         SC + 'scenario.html' + suffix,        'dd-orange')}
+            ${link('Bat City',         SC + 'bat-city.html' + suffix,        'dd-orange')}
+            ${link('All My Eggses',    SC + 'all-my-eggses.html' + suffix,   'dd-orange')}
+            ${link('Project Plan',     SC + 'project-plan.html' + suffix,    'dd-orange')}
           </div>
         </div>
 
