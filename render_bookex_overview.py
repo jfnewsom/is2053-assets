@@ -144,43 +144,38 @@ def render_chapters(chapters):
     )
 
 
-# ── Section 3: Scoring table ──────────────────────────────────────────
+# ── Section 3: Scoring (binary grading — paragraph + callout) ─────────
 
 def render_scoring(scoring):
+    """Binary-grading section. Lead paragraph stating the 100/0 rule,
+    followed by an explanatory callout about the troubleshooting
+    pedagogy and unlimited submissions."""
     color = scoring['labelColor']
     header = render_section_header(scoring['label'], scoring['subLabel'], color)
-    headers = scoring['headers']
-    header_row = '\n'.join(f'              <th>{h}</th>' for h in headers)
-    rows = scoring['rows']
-    highlight_last = scoring.get('highlightLast', False)
-    last_idx = len(rows) - 1
-    row_lines = []
-    for i, row in enumerate(rows):
-        tr_class = ' class="lc-table__total"' if (highlight_last and i == last_idx) else ''
-        row_lines.append(
-            f'            <tr{tr_class}>\n'
-            f'              <td><strong>{row["component_html"]}</strong></td>\n'
-            f'              <td><strong>{row["weight_html"]}</strong></td>\n'
-            f'              <td>{row["meaning_html"]}</td>\n'
-            f'            </tr>'
+    body = scoring['body_html']
+
+    callout = scoring.get('callout')
+    callout_html = ''
+    if callout:
+        callout_html = (
+            f'\n\n'
+            f'      <div class="lc-callout lc-callout--{callout["variant"]}">\n'
+            f'        <div class="lc-callout__icon"><span class="material-symbols-outlined">{callout["icon"]}</span></div>\n'
+            f'        <div class="lc-callout__bubble">\n'
+            f'          <div class="lc-callout__title">{callout["title"]}</div>\n'
+            f'          <div class="lc-callout__body">\n'
+            f'            {callout["body_html"]}\n'
+            f'          </div>\n'
+            f'        </div>\n'
+            f'      </div>'
         )
-    rows_html = '\n'.join(row_lines)
+
     return (
         f'\n\n'
         f'{header}\n'
         f'\n'
-        f'      <div class="lc-table-wrap">\n'
-        f'        <table class="lc-table">\n'
-        f'          <thead>\n'
-        f'            <tr>\n'
-        f'{header_row}\n'
-        f'            </tr>\n'
-        f'          </thead>\n'
-        f'          <tbody>\n'
-        f'{rows_html}\n'
-        f'          </tbody>\n'
-        f'        </table>\n'
-        f'      </div>\n'
+        f'      {body}'
+        f'{callout_html}\n'
         f'      </div>'
     )
 
