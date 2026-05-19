@@ -382,7 +382,6 @@
             ${link('How To Get Help',     S + 'how-to-get-help.html' + suffix,     'dd-green')}
             ${link('Discord',             S + 'discord.html' + suffix,             'dd-green')}
             ${link('AI Policy',           S + 'ai-policy.html' + suffix,           'dd-green')}
-            ${link('Practice Archive',    S + 'practice-archive.html' + suffix,    'dd-green')}
             <div class="drop-label">External Tools</div>
             ${link('Python Docs', 'https://www.python.org/downloads/',                    'dd-cyan', true)}
             ${link('VS Code',     'https://code.visualstudio.com/download',               'dd-cyan', true)}
