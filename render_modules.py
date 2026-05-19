@@ -3,14 +3,19 @@
 render_modules.py — Renders pages/support/module-N-overview.html (N=1..5)
 from pages/support/json/modules.json.
 
-Single source of truth for the five Module Overview pages. Mirrors the
-architectural pattern used by render_start_here.py.
+Single source of truth for the five Module Overview pages.
 
-Each module page has four cards:
-  1. Module Overview (color varies per module)
-  2. Client Context (always orange)
-  3. Skills & End State (always green)
-  4. Recordings (always orange)
+Each module page is a single outer card (color from `card1Color`) with three
+named sections inside:
+  1. Lead-in (no named section) — intro_html + "This Module" lab table
+  2. Client Context — orange accent — intro + mentor block
+  3. Skills & End State — green accent — skills list + end state + optional
+     callout + next-step paragraph
+  4. Recordings — orange accent — intro + recording rows
+
+This collapsed layout replaces the previous four-stacked-cards layout. The
+home.html recordings injection still happens between sentinel markers and
+is unchanged.
 
 Run with:
     python3 render_modules.py
@@ -21,6 +26,7 @@ Output:  pages/support/module-1-overview.html
          pages/support/module-3-overview.html
          pages/support/module-4-overview.html
          pages/support/module-5-overview.html
+         pages/support/home.html (recordings card injected between sentinels)
 """
 import json
 from pathlib import Path
@@ -62,7 +68,7 @@ def render_lab_row(lab, is_last):
 
 
 def render_lab_table(card1):
-    """Full lab table inside Card 1."""
+    """Full lab table for the lead-in section."""
     rows = []
     labs = card1['labs']
     for i, lab in enumerate(labs):
@@ -88,7 +94,7 @@ def render_lab_table(card1):
 
 
 def render_callout(callout):
-    """An inline lc-callout block (single line, matching M5 source style)."""
+    """An inline lc-callout block."""
     return (
         f'<div class="lc-callout lc-callout--{callout["variant"]}">'
         f'<div class="lc-callout__icon">'
@@ -120,7 +126,7 @@ def render_recording_button(url, label):
 
 
 def render_recording_row(row):
-    """One row in the recordings card: a label + Chapter Notes + Lab Walkthrough."""
+    """One row in a recordings section: label + Chapter Notes + Lab Walkthrough."""
     chapter_btn = render_recording_button(row.get('chapter_notes_url'), 'Chapter Notes')
     walkthrough_btn = render_recording_button(row.get('lab_walkthrough_url'), 'Lab Walkthrough')
     return (
@@ -132,19 +138,12 @@ def render_recording_row(row):
     )
 
 
-# ── Card renderers ───────────────────────────────────────────────────
+# ── Section renderers (all live inside the single outer card) ────────
 
-def render_card1_overview(module):
-    """Card 1: Module Overview, with course-badge topper + lab table.
-    Color varies per module."""
-    color = module['card1Color']
+def render_topper(module):
+    """Card topper: course badge + module title + Bat City logo + sub-banner."""
     card1 = module['card1']
-    table_html = render_lab_table(card1)
     return (
-        f'  <!-- ══════════════════════════════════════════════════════════\n'
-        f'       CARD 1 — Module Overview ({color})\n'
-        f'  ══════════════════════════════════════════════════════════ -->\n'
-        f'  <div class="lc-card lc-card--{color}">\n'
         f'    <div class="lc-topper">\n'
         f'      <table style="width: 100%; border-collapse: collapse;">\n'
         f'        <tr>\n'
@@ -168,33 +167,34 @@ def render_card1_overview(module):
         f'          </td>\n'
         f'        </tr>\n'
         f'      </table>\n'
-        f'    </div>\n'
-        f'    <div class="lc-panel">\n'
+        f'    </div>'
+    )
+
+
+def render_lead_in(module):
+    """Lead-in content: intro paragraph + 'This Module' h3 + lab table.
+    No named section here — this is the bare lead-in inside the panel."""
+    color = module['card1Color']
+    card1 = module['card1']
+    table_html = render_lab_table(card1)
+    return (
         f'\n'
         f'      {card1["intro_html"]}\n'
         f'\n'
         f'      <div class="lc-h3 lc-h3--{color}">{card1["tableTitle"]}</div>\n'
         f'{table_html}\n'
-        f'\n'
-        f'    </div>\n'
-        f'  </div>'
     )
 
 
-def render_card2_client_context(module):
-    """Card 2: Client Context — always orange. Includes mentor block."""
+def render_section_client_context(module):
+    """Named section: Client Context (orange accent). Includes mentor block."""
     card2 = module['card2']
     mentor = card2['mentor']
     return (
-        f'  <!-- ══════════════════════════════════════════════════════════\n'
-        f'       CARD 2 — Client Context (orange)\n'
-        f'  ══════════════════════════════════════════════════════════ -->\n'
-        f'  <div class="lc-card lc-card--orange">\n'
-        f'    <div class="lc-topper">\n'
-        f'      <div class="lc-topper-title">{card2["topperTitle"]}</div>\n'
-        f'      <div class="lc-sub-banner">{card2["subBanner"]}</div>\n'
-        f'    </div>\n'
-        f'    <div class="lc-panel">\n'
+        f'\n'
+        f'      <div class="lc-named-section lc-named-section--orange">\n'
+        f'      <div class="lc-named-section__label lc-named-section__label--orange">{card2["topperTitle"]}</div>\n'
+        f'      <p style="font-size: 13px; color: var(--color-text-muted); margin-top: -4px; margin-bottom: 16px; font-style: italic;">{card2["subBanner"]}</p>\n'
         f'\n'
         f'      {card2["intro_html"]}\n'
         f'\n'
@@ -212,14 +212,12 @@ def render_card2_client_context(module):
         f'          <div class="lc-mentor__role">{mentor["role"]}</div>\n'
         f'        </div>\n'
         f'      </div>\n'
-        f'\n'
-        f'    </div>\n'
-        f'  </div>'
+        f'      </div>\n'
     )
 
 
-def render_card3_skills(module):
-    """Card 3: Skills & End State — always green."""
+def render_section_skills(module):
+    """Named section: Skills & End State (green accent)."""
     card3 = module['card3']
     skill_lis = '\n'.join(f'        <li>{s}</li>' for s in card3['skills_html'])
 
@@ -229,18 +227,13 @@ def render_card3_skills(module):
             f'\n      {render_callout(card3["callout"])}\n'
         )
     else:
-        callout_block = '\n      \n'
+        callout_block = ''
 
     return (
-        f'  <!-- ══════════════════════════════════════════════════════════\n'
-        f'       CARD 3 — Skills and End State (green)\n'
-        f'  ══════════════════════════════════════════════════════════ -->\n'
-        f'  <div class="lc-card lc-card--green">\n'
-        f'    <div class="lc-topper">\n'
-        f'      <div class="lc-topper-title">{card3["topperTitle"]}</div>\n'
-        f'      <div class="lc-sub-banner">{card3["subBanner"]}</div>\n'
-        f'    </div>\n'
-        f'    <div class="lc-panel">\n'
+        f'\n'
+        f'      <div class="lc-named-section lc-named-section--green">\n'
+        f'      <div class="lc-named-section__label lc-named-section__label--green">{card3["topperTitle"]}</div>\n'
+        f'      <p style="font-size: 13px; color: var(--color-text-muted); margin-top: -4px; margin-bottom: 16px; font-style: italic;">{card3["subBanner"]}</p>\n'
         f'\n'
         f'      <div class="lc-h3 lc-h3--green">Skills You&rsquo;ll Build</div>\n'
         f'      <ul>\n'
@@ -253,41 +246,39 @@ def render_card3_skills(module):
         f'      <p style="margin-top: 20px;">\n'
         f'        {card3["next_step_html"]}\n'
         f'      </p>\n'
-        f'\n'
-        f'    </div>\n'
-        f'  </div>'
+        f'      </div>\n'
     )
 
 
-def render_card4_recordings(module):
-    """Card 4: Recordings — always orange. Rows of buttons (real anchors when
-    URL is present, disabled spans otherwise)."""
+def render_section_recordings(module):
+    """Named section: Recordings (orange accent)."""
     rec = module['card4_recordings']
     rows_html = '\n'.join(render_recording_row(r) for r in rec['rows'])
     return (
-        f'  <!-- ══════════════════════════════════════════════════════════\n'
-        f'       CARD — Recordings (orange)\n'
-        f'  ══════════════════════════════════════════════════════════ -->\n'
-        f'  <div class="lc-card lc-card--orange">\n'
-        f'    <div class="lc-topper">\n'
-        f'      <div class="lc-topper-title">Recordings</div>\n'
-        f'      <div class="lc-sub-banner">Chapter Notes &bull; Lab Walkthroughs</div>\n'
-        f'    </div>\n'
-        f'    <div class="lc-panel">\n'
+        f'\n'
+        f'      <div class="lc-named-section lc-named-section--orange">\n'
+        f'      <div class="lc-named-section__label lc-named-section__label--orange">Recordings</div>\n'
+        f'      <p style="font-size: 13px; color: var(--color-text-muted); margin-top: -4px; margin-bottom: 16px; font-style: italic;">Chapter Notes &bull; Lab Walkthroughs</p>\n'
         f'\n'
         f'      {rec["intro_html"]}\n'
         f'\n'
         f'{rows_html}\n'
-        f'\n'
-        f'    </div>\n'
-        f'  </div>'
+        f'      </div>\n'
     )
 
 
 # ── Top-level page renderer ──────────────────────────────────────────
 
 def render_module_page(module):
-    """Render a complete module-N-overview.html document."""
+    """Render a complete module-N-overview.html document as a single outer
+    card (color from card1Color) with three named sections inside."""
+    color = module['card1Color']
+    topper = render_topper(module)
+    lead_in = render_lead_in(module)
+    sec_client = render_section_client_context(module)
+    sec_skills = render_section_skills(module)
+    sec_recordings = render_section_recordings(module)
+
     return (
         '<!DOCTYPE html>\n'
         '<html lang="en">\n'
@@ -300,10 +291,19 @@ def render_module_page(module):
         '</head>\n'
         '<body>\n'
         '<div class="lc-wrapper">\n\n\n'
-        + render_card1_overview(module) + '\n\n\n'
-        + render_card2_client_context(module) + '\n\n\n'
-        + render_card3_skills(module) + '\n\n\n\n'
-        + render_card4_recordings(module) + '\n\n'
+        f'  <!-- ══════════════════════════════════════════════════════════\n'
+        f'       Module {module["num"]} Overview — single card, sections within\n'
+        f'  ══════════════════════════════════════════════════════════ -->\n'
+        f'  <div class="lc-card lc-card--{color}">\n'
+        f'{topper}\n'
+        f'    <div class="lc-panel">\n'
+        f'{lead_in}'
+        f'{sec_client}'
+        f'{sec_skills}'
+        f'{sec_recordings}'
+        f'    </div>\n'
+        f'  </div>\n'
+        '\n'
         '</div><!-- /lc-wrapper -->\n'
         '<script src="https://jfnewsom.github.io/is2053-assets/nav.js"></script>\n'
         '</body>\n'
@@ -322,7 +322,7 @@ def render_home_recordings_card(modules):
 
     Layout: one card containing all 5 modules. Each module gets a yellow
     `.sp-rec-mod-label` header (Module N: <thematic title>) followed by its
-    lab rows. Same button rendering as the per-module Recordings card —
+    lab rows. Same button rendering as the per-module Recordings section —
     active anchors for set URLs, disabled placeholder spans otherwise.
 
     Rendered between sentinel markers in home.html so the rest of the home
@@ -349,7 +349,7 @@ def render_home_recordings_card(modules):
         '    </div>\n'
         '    <div class="lc-panel">\n'
         '\n'
-        '      <p>Recordings will be posted here after each Tuesday office hours session. Same buttons live on each module overview page.</p>\n'
+        '      <p>Recordings are posted here before each module&rsquo;s start date so you can preview the upcoming material. Same buttons live on each module overview page.</p>\n'
         '\n'
         f'{rows_html}\n'
         '\n'
