@@ -792,12 +792,23 @@ def render_final_checklist(checklist: dict) -> str:
         specific = permitted.get("specific", [])
         not_permitted = permitted.get("notPermitted", "")
 
+        # Defensive: a bare string here would iterate char-by-char and
+        # produce one <li> per character. Wrap into a single-item list
+        # and emit a loud warning so the author can fix the JSON.
+        if isinstance(specific, str):
+            print(
+                f"  ⚠ WARNING: permittedTechniques.specific is a string; "
+                f"expected list. Rendering as a single item. "
+                f"Fix the JSON to use a list of strings."
+            )
+            specific = [specific]
+
         specific_items = "".join(
             f'      <li>{s}</li>\n' for s in specific
         )
         not_permitted_html = (
             f'    <p class="lc-permitted__not-permitted">'
-            f'<strong>Not permitted:</strong> {html_lib.escape(not_permitted)}</p>\n'
+            f'<strong>Not permitted:</strong> {not_permitted}</p>\n'
         ) if not_permitted else ""
 
         permitted_block = f"""    <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
