@@ -82,6 +82,13 @@
     for (var k = 0; k < icons.length; k++) {
       icons[k].parentNode.removeChild(icons[k]);
     }
+
+    // Bat City logo → drop. Renders poorly in Word (sizing/positioning)
+    // and isn't needed in a fill-in printable.
+    var logos = root.querySelectorAll('img[alt="Bat City Collective"]');
+    for (var L = 0; L < logos.length; L++) {
+      logos[L].parentNode.removeChild(logos[L]);
+    }
   }
 
   function transformForPlain(root) {
@@ -102,6 +109,10 @@
     var icons = root.querySelectorAll('.material-symbols-outlined');
     for (var k = 0; k < icons.length; k++) {
       icons[k].parentNode.removeChild(icons[k]);
+    }
+    var logos = root.querySelectorAll('img[alt="Bat City Collective"]');
+    for (var L = 0; L < logos.length; L++) {
+      logos[L].parentNode.removeChild(logos[L]);
     }
   }
 
