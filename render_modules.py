@@ -80,7 +80,7 @@ def render_lab_table(card1):
         '        <table class="lc-table">\n'
         '          <thead>\n'
         '            <tr>\n'
-        '              <th>Week</th>\n'
+        '              <th>Unit</th>\n'
         '              <th>Assignment</th>\n'
         '              <th>Focus</th>\n'
         '            </tr>\n'

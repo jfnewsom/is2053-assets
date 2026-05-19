@@ -74,7 +74,7 @@ def render_overview_card(overview: dict, meta: dict) -> str:
 
     badge_num = f"{module}.{week}"
 
-    sub_banner_text = f"MODULE {module} &bull; WEEK {week} &bull; {week_type}"
+    sub_banner_text = f"MODULE {module} &bull; UNIT {week} &bull; {week_type}"
     if chapters:
         chapter_part = html_lib.escape(chapters)
         if chapter_topics:
@@ -102,7 +102,7 @@ def render_overview_card(overview: dict, meta: dict) -> str:
     # 3. Filename — primary submission file + any additional files listed inline
     filename_html = ""
     if filename_note or filename:
-        display_note = filename_note if filename_note else f"Submit <code>{filename}</code> this week."
+        display_note = filename_note if filename_note else f"Submit <code>{filename}</code> this unit."
         filename_html = f'    <div class="lc-h3 lc-h3--yellow">Filename</div>\n    <p>{display_note}</p>\n'
     if additional_files_note:
         filename_html += f"    <p>{additional_files_note}</p>\n"

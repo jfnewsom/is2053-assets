@@ -11,12 +11,12 @@
     "additionalFiles": []
   },
   "overview": {
-    "body": "MASTER week. Module 3 ends here. You've already built file save/load, parallel lists for destinations, tracking lists for the route and hazards, and a library full of reusable helpers. This week pulls it all together. You'll replace the inline hazard <code>if/elif</code> with three more parallel lists, sort the hazards alphabetically for display, count unique cities visited using the <code>in</code> operator, and generate a polished trip report saved to <code>trip_report.txt</code> that the player can keep as a souvenir. The <code>function_library.py</code> grows by exactly one function this week: <code>get_random_hazard()</code>. Everything else lives in <code>lab-3-3.py</code>.",
+    "body": "MASTER unit. Module 3 ends here. You've already built file save/load, parallel lists for destinations, tracking lists for the route and hazards, and a library full of reusable helpers. This unit pulls it all together. You'll replace the inline hazard <code>if/elif</code> with three more parallel lists, sort the hazards alphabetically for display, count unique cities visited using the <code>in</code> operator, and generate a polished trip report saved to <code>trip_report.txt</code> that the player can keep as a souvenir. The <code>function_library.py</code> grows by exactly one function this unit: <code>get_random_hazard()</code>. Everything else lives in <code>lab-3-3.py</code>.",
     "mentorQuote": {
       "character": "Priya Venkatesh",
       "role": "Project Manager, Bat City Collective",
       "headshot": "Priya-Venkatesh.png",
-      "quote": "MASTER week is about the deliverable. You've spent two weeks building infrastructure &mdash; files, lists, library functions, save/load. This week the player gets something they can hold onto. A printed report. A permanent record. Treat <code>trip_report.txt</code> the way you'd treat any shipping artifact: the format is fixed, the content is real, and it has to look right every time."
+      "quote": "MASTER unit is about the deliverable. You've spent two units building infrastructure &mdash; files, lists, library functions, save/load. This unit the player gets something they can hold onto. A printed report. A permanent record. Treat <code>trip_report.txt</code> the way you'd treat any shipping artifact: the format is fixed, the content is real, and it has to look right every time."
     },
     "objectives": [
       "Add three more parallel lists for hazards: <code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code> (6 hazards each, same shape as the destination lists)",
@@ -36,11 +36,11 @@
       "Your program <strong>MUST</strong> write <code>trip_report.txt</code> at the end of every completed game (no y/n prompt &mdash; always save)",
       "Your <code>save_trip_report()</code> function <strong>MUST</strong> live in <code>lab-3-3.py</code>, not in the library (it's lab-specific format)"
     ],
-    "filenameNote": "Save your main game file as <code>lab-3-3.py</code>. Your <code>function_library.py</code> grows by exactly one function this week. The save file <code>savegame.txt</code> and the trip report <code>trip_report.txt</code> are generated at runtime; you do not submit them.",
+    "filenameNote": "Save your main game file as <code>lab-3-3.py</code>. Your <code>function_library.py</code> grows by exactly one function this unit. The save file <code>savegame.txt</code> and the trip report <code>trip_report.txt</code> are generated at runtime; you do not submit them.",
     "dataFiles": [
       {
         "file": "function_library.py",
-        "format": "Your reusable function module. Carries forward from Lab 3.2 with one addition this week: <code>get_random_hazard()</code> in a new HAZARD HELPER section.",
+        "format": "Your reusable function module. Carries forward from Lab 3.2 with one addition this unit: <code>get_random_hazard()</code> in a new HAZARD HELPER section.",
         "new": false,
         "submitted": true
       }
@@ -106,7 +106,7 @@
     ]
   },
   "beforeYouBegin": {
-    "intro": "MASTER week pulls Module 3 together. The library grows by one function (<code>get_random_hazard</code>); the lab file gets three new parallel lists (hazards), one new helper (<code>save_trip_report</code>), and a few additions to the trip summary (sorted hazards, unique city count, file output).",
+    "intro": "MASTER unit pulls Module 3 together. The library grows by one function (<code>get_random_hazard</code>); the lab file gets three new parallel lists (hazards), one new helper (<code>save_trip_report</code>), and a few additions to the trip summary (sorted hazards, unique city count, file output).",
     "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()     (keep from 2.2)\nget_valid_int(), get_yes_no()                   (keep from 2.3)\nsave_game(...), load_game()                     (keep from 3.2)\ndisplay_destinations(...), get_destination(...), get_redirect(...)  (keep from 3.2)\ndisplay_numbered_list(...)                      (keep from 3.2)\nget_random_hazard(names, heads_msgs, tails_msgs)   [NEW-CP3]\n\n# ---- IN lab-3-3.py ----\n\n# ---- DISTANCE + PARALLEL DESTINATION CONSTANTS ----   (keep from 3.2)\nSAT_TO_CORPUS, SAT_TO_HOUSTON, ... HAZARD_CHANCE\nSA_DESTINATIONS, SA_DISTANCES, SA_NOTES\nHOU_DESTINATIONS, HOU_DISTANCES, HOU_NOTES\nAUS_DESTINATIONS, AUS_DISTANCES, AUS_NOTES\n\n# ---- NEW HAZARD CONSTANTS ----\nREPORT_FILE = 'trip_report.txt'                  [NEW-CP7]\nHAZARD_NAMES = [...]      (6 hazards)            [NEW-CP2]\nHAZARD_HEADS_MSGS = [...] (6 messages)           [NEW-CP2]\nHAZARD_TAILS_MSGS = [...] (6 messages)           [NEW-CP2]\n\ndef get_city_data(city):                         (keep from 3.2)\n\ndef save_trip_report(filename, ...):             [NEW-CP7]\n│── Writes formatted multi-section report to disk\n│── Stays in lab-3-3.py (lab-specific format, not library-bound)\n\n# ---- MAIN MENU LOOP ----   (keep from 3.2)\nwhile in_program:\n│── New / Load / Quit\n│\n│── # ---- PLAY-AGAIN LOOP ----   (keep from 3.2)\n│   while play_again:\n│   │── Reset per-game state\n│   │\n│   │── # ---- IN-GAME LOOP ----   (keep from 3.2)\n│   │   while playing:\n│   │   │── Menu, choice, gate flip (unchanged)\n│   │   │── Travel loop with hazards\n│   │   │   on hazard: hazard, heads_msg, tails_msg =\n│   │   │              function_library.get_random_hazard(\n│   │   │                  HAZARD_NAMES,\n│   │   │                  HAZARD_HEADS_MSGS,\n│   │   │                  HAZARD_TAILS_MSGS)          [REPLACED-CP4]\n│   │   │── Standard arrival / save / quit handling\n│   │\n│   │── After in-game loop — FINAL TRIP REPORT (on screen):\n│   │   ├── status = 'BEACH WINNER!' / 'Trip Incomplete' / etc.\n│   │   ├── sorted_hazards = hazards_list.copy(); .sort()  [NEW-CP5]\n│   │   ├── unique_cities = build with `in` operator         [NEW-CP6]\n│   │   ├── Display all the sections on screen\n│   │   └── save_trip_report(REPORT_FILE, ...)               [NEW-CP7]\n│   │\n│   │── Update session accumulators, play_again prompt\n│\n│── After play-again: SESSION STATISTICS (keep from 3.2)\n"
   },
   "checkpoints": [
@@ -119,7 +119,7 @@
         },
         {
           "type": "text",
-          "body": "A clean starting point for Lab 3.3. Copy <code>lab-3-2.py</code> to <code>lab-3-3.py</code>, update the docstring, and confirm everything still runs before adding the MASTER-week features."
+          "body": "A clean starting point for Lab 3.3. Copy <code>lab-3-2.py</code> to <code>lab-3-3.py</code>, update the docstring, and confirm everything still runs before adding the MASTER-unit features."
         },
         {
           "type": "h3",
@@ -127,7 +127,7 @@
         },
         {
           "type": "text",
-          "body": "Same reason as every BUILD/ENHANCE cleanup: do not mix 'fix the old' with 'add the new.' If something breaks this week, it's because of something you added today, not something that broke yesterday."
+          "body": "Same reason as every BUILD/ENHANCE cleanup: do not mix 'fix the old' with 'add the new.' If something breaks this unit, it's because of something you added today, not something that broke yesterday."
         },
         {
           "type": "h3",
@@ -200,7 +200,7 @@
           "character": "Tyler Nguyen",
           "role": "Junior Developer, Bat City Collective",
           "headshot": "Tyler-Nguyen.png",
-          "quote": "Last week you saw what parallel lists do for destinations. This week, you do the same trick for hazards &mdash; but with <em>three</em> lists per item instead of two. The name, the escape message, and the delay message. Same pattern, fresh data. And the payoff scales: when you want a seventh hazard, you add one item to each list and the rest of your code doesn't change. I love this pattern. It's the moment your code stops feeling like a wall of <code>if</code> statements and starts feeling like a data table."
+          "quote": "Last unit you saw what parallel lists do for destinations. This unit, you do the same trick for hazards &mdash; but with <em>three</em> lists per item instead of two. The name, the escape message, and the delay message. Same pattern, fresh data. And the payoff scales: when you want a seventh hazard, you add one item to each list and the rest of your code doesn't change. I love this pattern. It's the moment your code stops feeling like a wall of <code>if</code> statements and starts feeling like a data table."
         },
         {
           "type": "h3",
@@ -316,7 +316,7 @@
         },
         {
           "type": "text",
-          "body": "This is the <strong>Library Membership Rule</strong> in action: a function with a known future use goes in the library from day one. We're <em>not</em> going to write <code>get_random_hazard</code> in <code>lab-3-3.py</code> and then promote it next week &mdash; we learned that lesson with <code>save_game</code>/<code>load_game</code> in Lab 3.2. Going forward, when you can see the future, put the function where it belongs the first time."
+          "body": "This is the <strong>Library Membership Rule</strong> in action: a function with a known future use goes in the library from day one. We're <em>not</em> going to write <code>get_random_hazard</code> in <code>lab-3-3.py</code> and then promote it next unit &mdash; we learned that lesson with <code>save_game</code>/<code>load_game</code> in Lab 3.2. Going forward, when you can see the future, put the function where it belongs the first time."
         },
         {
           "type": "h3",
@@ -734,7 +734,7 @@
           "character": "Priya Venkatesh",
           "role": "Project Manager, Bat City Collective",
           "headshot": "Priya-Venkatesh.png",
-          "quote": "This is the deliverable. Every other lab this module was about machinery &mdash; can you write to a file, can you build a list, can you organize data. This week we hand the player something. A multi-section report with their name on it, their route, their statistics. It needs to look right every time, save automatically at the end of every game, and reflect what just happened. No y/n prompt &mdash; we don't ask. The report is part of the game."
+          "quote": "This is the deliverable. Every other lab this module was about machinery &mdash; can you write to a file, can you build a list, can you organize data. This unit we hand the player something. A multi-section report with their name on it, their route, their statistics. It needs to look right every time, save automatically at the end of every game, and reflect what just happened. No y/n prompt &mdash; we don't ask. The report is part of the game."
         },
         {
           "type": "h3",
@@ -866,7 +866,7 @@
   "finalChecklist": {
     "beforeYouSubmit": [
       "Submitting <strong>two files</strong>: <code>lab-3-3.py</code> and <code>function_library.py</code>",
-      "<code>function_library.py</code> grew by exactly one function this week: <code>get_random_hazard(names, heads_msgs, tails_msgs)</code> in a new HAZARD HELPER section",
+      "<code>function_library.py</code> grew by exactly one function this unit: <code>get_random_hazard(names, heads_msgs, tails_msgs)</code> in a new HAZARD HELPER section",
       "<code>lab-3-3.py</code> has the three parallel hazard lists at module level: <code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code> (all length 6)",
       "<code>REPORT_FILE = 'trip_report.txt'</code> declared at module level",
       "Hazard block in the in-game loop uses <code>function_library.get_random_hazard(...)</code> &mdash; no inline if/elif for hazard selection",
@@ -891,7 +891,7 @@
       ],
       "notPermitted": "Dictionaries, sets, list comprehensions, <code>readlines()</code>, <code>with</code> statement, <code>sorted()</code> (the built-in function that returns a new list &mdash; use <code>.sort()</code> on a copy instead), or any Chapter 8+ techniques."
     },
-    "saveYourCode": "Keep both files — Module 4 starts on top of this. <code>function_library.py</code> grows again next week when data starts loading from text files.",
+    "saveYourCode": "Keep both files — Module 4 starts on top of this. <code>function_library.py</code> grows again next unit when data starts loading from text files.",
     "warnings": [],
     "finalCheck": {
       "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, TestPlayer!\nYou are in San Antonio. Your goal: reach the beach!\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles (Gateway East)\n  3. Austin - 80 miles (Keep it Weird)\n\nChoice (1-3): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 15!\nYou travel 150 miles...\nMiles remaining: 50\n\n*** HAZARD! ***\nArmadillo crossing!\nHEADS!\nIt scurries across safely.\n\n--- Turn 2 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nWhere would you like to go?\n  1. Galveston - 50 miles (BEACH!)\n  2. San Antonio - 200 miles (Back West)\n\nChoice (1-2): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: TestPlayer\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  1. Armadillo crossing!\n\nSTATISTICS\n----------\n  Total Miles: 450\n  Total Turns: 3\n  Hazards Faced: 1\n  Hazards Escaped: 1\n  Escape Rate: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 450\nTotal Hazards: 1\n==================================================\n\nThanks for playing, TestPlayer!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!",
@@ -944,7 +944,7 @@
   },
   "needHelp": {
     "ifYouGetStuck": [
-      "Re-read Programs 7-9 (the <code>in</code> operator), 7-13 (writing a list to a file), and 7-16 (sorting a list) &mdash; these three cover every new technique this week",
+      "Re-read Programs 7-9 (the <code>in</code> operator), 7-13 (writing a list to a file), and 7-16 (sorting a list) &mdash; these three cover every new technique this unit",
       "Verify the parallel hazard lists FIRST before doing anything else. If CP2 is off by one across the three lists, every CP after it will produce weird output. The DEBUG check from CP2 catches this in 10 seconds",
       "When testing CP6's unique-city counter, use the SA &rarr; Austin &rarr; SA &rarr; Houston &rarr; Galveston path explicitly. It's the only path that meaningfully exercises the dedup logic with the current city graph",
       "For CP7, open <code>trip_report.txt</code> in Notepad after every test run. Visually compare against the canonical expected report in the final check. Tiny formatting differences (extra newline, missing colon) WILL be flagged by CodeGrade",

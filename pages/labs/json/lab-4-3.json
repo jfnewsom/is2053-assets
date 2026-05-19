@@ -11,7 +11,7 @@
     "additionalFiles": []
   },
   "overview": {
-    "body": "MASTER week. Two arrivals close Module 4. First, the coin-flip Destination Gate from Labs 3.x and 4.x retires entirely. A TRIVIA gate replaces it: players answer a TRUE/FALSE question about the city they want to visit, and a wrong answer triggers the same <code>get_redirect</code> detour that the old TAILS branch did. Second, <strong>sets</strong> arrive as the right tool for tracking unique cities and unique hazards across a game. The trip report grows a TRIVIA section with asked / correct / accuracy stats, and the HAZARDS display uses <code>sorted()</code> on a set to show each unique hazard exactly once.",
+    "body": "MASTER unit. Two arrivals close Module 4. First, the coin-flip Destination Gate from Labs 3.x and 4.x retires entirely. A TRIVIA gate replaces it: players answer a TRUE/FALSE question about the city they want to visit, and a wrong answer triggers the same <code>get_redirect</code> detour that the old TAILS branch did. Second, <strong>sets</strong> arrive as the right tool for tracking unique cities and unique hazards across a game. The trip report grows a TRIVIA section with asked / correct / accuracy stats, and the HAZARDS display uses <code>sorted()</code> on a set to show each unique hazard exactly once.",
     "mentorQuote": {
       "character": "Sasha Mireles",
       "role": "Creative Director, Bat City Collective",
@@ -56,7 +56,7 @@
       },
       {
         "name": "TRIVIA_FILE",
-        "description": "Trivia text file (new this week)"
+        "description": "Trivia text file (new this unit)"
       },
       {
         "name": "REPORT_FILE",
@@ -94,13 +94,13 @@
       {
         "file": "trivia.txt",
         "path": "4-3/trivia.txt",
-        "format": "city,question,answer (new this week)",
+        "format": "city,question,answer (new this unit)",
         "new": true,
         "submitted": false
       },
       {
         "file": "function_library.py",
-        "format": "Shared function library, extended this week with load_trivia",
+        "format": "Shared function library, extended this unit with load_trivia",
         "submitted": true
       }
     ]
@@ -151,7 +151,7 @@
     ]
   },
   "beforeYouBegin": {
-    "intro": "Lab 4.3 is the MASTER week. About half the work is in the lab file this time: the library gets one new function (<code>load_trivia</code>), but the lab file changes in five places: constants, startup, in-game gate, per-game state, and the trip report. <code>[NEW]</code> tags show what's added. <code>[REPLACED]</code> tags show what swaps out. <code>[RETIRED]</code> tags show what gets deleted entirely.",
+    "intro": "Lab 4.3 is the MASTER unit. About half the work is in the lab file this time: the library gets one new function (<code>load_trivia</code>), but the lab file changes in five places: constants, startup, in-game gate, per-game state, and the trip report. <code>[NEW]</code> tags show what's added. <code>[REPLACED]</code> tags show what swaps out. <code>[RETIRED]</code> tags show what gets deleted entirely.",
     "architecture": "# ---- IN function_library.py ----\nall 4.2 functions                                           [KEEP from 4.2]\nload_trivia(filename) -> dict[city] -> list of Q/A dicts    [NEW-CP1]\n\n# ---- IN lab-4-3.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE, INFO_FILE, HAZARDS_FILE, REPORT_FILE        [KEEP from 4.2]\nTRIVIA_FILE = 'trivia.txt'                                  [NEW-CP1]\nMILES_MULTIPLIER, HAZARD_CHANCE                             [KEEP from 4.2]\n\ntrivia_gate(dest, trivia, current, distances)               [NEW-CP2]\nsave_trip_report(...) +trivia_asked +trivia_correct         [REPLACED-CP7]\n\n# ---- main() ----\ndistances = load_city_distances(...)                        [KEEP from 4.2]\ncity_info = load_city_info(...)                             [KEEP from 4.2]\nhazards   = load_hazards(...)                               [KEEP from 4.2]\ntrivia    = load_trivia(TRIVIA_FILE)                        [NEW-CP1]\n\nMAIN MENU LOOP                                              [KEEP from 4.2]\n  PLAY-AGAIN LOOP                                           [KEEP from 4.2]\n    │\n    │─ Per-game init:\n    │     trivia_asked = 0, trivia_correct = 0           [NEW-CP7]\n    │     unique_cities = set(visited_cities)             [NEW-CP4]\n    │     unique_hazards = set(hazards_list)              [NEW-CP5]\n    │\n    IN-GAME LOOP                                            [KEEP from 4.2]\n      │\n      │─ Coin-flip Destination Gate                    [RETIRED-CP3]\n      │─ destination, distance, correct =\n      │     trivia_gate(wanted, trivia, ...)             [NEW-CP3]\n      │     trivia_asked += 1, trivia_correct += correct\n      │\n      │─ D20 travel loop\n      │     │─ if hazard: handle_hazard            [KEEP from 4.2]\n      │     │     hazards_list.append(name)\n      │     │     unique_hazards.add(name)            [NEW-CP5]\n      │\n      │─ Arrival:\n      │     visited_cities.append(current_city)\n      │     unique_cities.add(current_city)              [NEW-CP4]\n      │\n      │─ Continue / Save & quit / Quit               [KEEP from 4.2]\n    \n    Trip report on screen + trip_report.txt:\n      ROUTE                                                 [KEEP from 4.2]\n      Unique cities = len(unique_cities)                    [REPLACED-CP6]\n      HAZARDS = sorted(unique_hazards)                      [REPLACED-CP6]\n      STATISTICS                                            [KEEP from 4.2]\n      TRIVIA: asked / correct / accuracy                    [NEW-CP7]\n"
   },
   "checkpoints": [
@@ -898,7 +898,7 @@
   "finalChecklist": {
     "beforeYouSubmit": [
       "Submitting <strong>two files</strong>: <code>lab-4-3.py</code> and <code>function_library.py</code>",
-      "<code>function_library.py</code> gained <strong>one</strong> function (<code>load_trivia</code>); no other library changes this week",
+      "<code>function_library.py</code> gained <strong>one</strong> function (<code>load_trivia</code>); no other library changes this unit",
       "<code>lab-4-3.py</code> defines <strong>seven</strong> module-level constants including the new <code>TRIVIA_FILE</code>",
       "<code>trivia_gate</code> is <strong>defined in <code>lab-4-3.py</code></strong> (lab-local), NOT in the library",
       "<code>main()</code> loads <strong>four</strong> data files at startup; the load banner reports 10 cities, 10 info records, 8 hazards, and 20 trivia questions across 10 cities",

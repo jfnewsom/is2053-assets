@@ -11,7 +11,7 @@
     "additionalFiles": []
   },
   "overview": {
-    "body": "All semester you've been building <em>Deep in the Heart: A Lone Star Journey</em> with dictionaries, functions, and files. The game works — but city data is scattered. <code>CITY_DISTANCES</code> lives in one place, <code>CITY_INFO</code> in another, and the functions that use them are somewhere else entirely. This week, that changes. You'll build a <strong>City class</strong> that bundles a city's name, type, tagline, and connections into one object. Then you'll refactor your Module 4 game to use City objects instead of those two dictionaries — same game, better structure. You'll also add one new function to <code>function_library.py</code> that gives the travel loop the pacing it has been missing all semester.",
+    "body": "All semester you've been building <em>Deep in the Heart: A Lone Star Journey</em> with dictionaries, functions, and files. The game works — but city data is scattered. <code>CITY_DISTANCES</code> lives in one place, <code>CITY_INFO</code> in another, and the functions that use them are somewhere else entirely. This unit, that changes. You'll build a <strong>City class</strong> that bundles a city's name, type, tagline, and connections into one object. Then you'll refactor your Module 4 game to use City objects instead of those two dictionaries — same game, better structure. You'll also add one new function to <code>function_library.py</code> that gives the travel loop the pacing it has been missing all semester.",
     "mentorQuote": {
       "character": "Priya Venkatesh",
       "role": "Project Manager, Bat City Collective",
@@ -37,17 +37,17 @@
       "<code>function_library.py</code> has a new <code>enter_to_continue(prompt)</code> function",
       "<code>lab-5-1.py</code> imports <code>City</code> and uses City objects in place of the <code>distances</code> and <code>city_info</code> dictionaries"
     ],
-    "filenameNote": "Submit <code>city.py</code> (City class), <code>lab-5-1.py</code> (refactored game), and <code>function_library.py</code> (updated with <code>enter_to_continue</code>) this week. The save file <code>savegame.txt</code> and the trip report <code>trip_report.txt</code> are generated at runtime; you do not submit them.",
+    "filenameNote": "Submit <code>city.py</code> (City class), <code>lab-5-1.py</code> (refactored game), and <code>function_library.py</code> (updated with <code>enter_to_continue</code>) this unit. The save file <code>savegame.txt</code> and the trip report <code>trip_report.txt</code> are generated at runtime; you do not submit them.",
     "dataFiles": [
       {
         "file": "city.py",
-        "format": "Your new <code>City</code> class, built fresh this week in CP1–CP4. Defines the class and nothing else — no game logic. Submitted alongside <code>lab-5-1.py</code>.",
+        "format": "Your new <code>City</code> class, built fresh this unit in CP1–CP4. Defines the class and nothing else — no game logic. Submitted alongside <code>lab-5-1.py</code>.",
         "new": true,
         "submitted": true
       },
       {
         "file": "function_library.py",
-        "format": "Your reusable function module from Lab 4.3, gaining one final function this week: <code>enter_to_continue()</code>. Submitted alongside <code>lab-5-1.py</code>.",
+        "format": "Your reusable function module from Lab 4.3, gaining one final function this unit: <code>enter_to_continue()</code>. Submitted alongside <code>lab-5-1.py</code>.",
         "new": false,
         "submitted": true
       }
@@ -90,7 +90,7 @@
     "strategy": "Build and test the City class first (Checkpoints 1-4) before touching the game. Once all City methods work, the refactor in Checkpoint 5 is mostly find-and-replace: swap dictionary lookups for method calls. Take it one substitution at a time."
   },
   "beforeYouBegin": {
-    "intro": "Here is the structure of what you are building this week. <code>city.py</code> contains only the class definition. <code>lab-5-1.py</code> is your lab-4-3.py refactored to use City objects. <code>function_library.py</code> gets one new function. Each checkpoint adds one section to the class, then Checkpoint 5 wires it all together.",
+    "intro": "Here is the structure of what you are building this unit. <code>city.py</code> contains only the class definition. <code>lab-5-1.py</code> is your lab-4-3.py refactored to use City objects. <code>function_library.py</code> gets one new function. Each checkpoint adds one section to the class, then Checkpoint 5 wires it all together.",
     "architecture": "# ---- city.py ----\nclass City:\n\n    # --- Constructor ---   [CP1]\n    __init__(self, name, city_type, tagline)\n        self.__name          = name\n        self.__city_type     = city_type\n        self.__tagline       = tagline\n        self.__connections   = {}     (empty dict to start)\n\n    # --- Getter Methods ---   [CP2]\n    get_name(self)                    returns self.__name\n    get_type(self)                    returns self.__city_type\n    get_tagline(self)                 returns self.__tagline\n\n    # --- Connection Methods ---   [CP3]\n    add_connection(self, city, dist)  stores in self.__connections\n    get_distance_to(self, city)       returns distance or -1\n    get_destination_names(self)       returns list of connected names\n\n    # --- Status Methods ---   [CP4]\n    is_win_city(self)                 True if type == 'WIN'\n    is_dead_end(self)                 True if type == 'DEAD_END' or 'WRONG_WAY'\n    get_arrival_message(self)         returns message string based on city type\n    display_destinations(self)        prints numbered menu of connections\n    __str__(self)                     returns 'San Antonio (START)'\n\n\n# ---- function_library.py ----   [CP5]\nenter_to_continue(prompt)            [NEW] pauses game; waits for Enter\n\n\n# ---- lab-5-1.py ----   [CP5]\nfrom city import City\nimport function_library\n\nload_city_distances(filename)         unchanged from lab-4-3.py\nload_city_info(filename)              unchanged from lab-4-3.py\nload_hazards(filename)                unchanged from lab-4-3.py\nload_trivia(filename)                 unchanged from lab-4-3.py\n\nbuild_cities(distances, city_info)    [NEW] converts dicts to City objects\nget_destination_by_number(city, n)    [REPLACED] now takes City object\ntrivia_gate(dest, trivia, ...)        [REPLACED] uses city.get_distance_to()\nhandle_hazard(hazards, unique)        unchanged\ntravel_to(dest, dist, ...)            [REPLACED] uses enter_to_continue()\n\nmain():\n    load all data files               unchanged\n    cities = build_cities(...)        [NEW]\n    game loop uses city objects       [REPLACED] method calls replace dict lookups\n\nif __name__ == '__main__': -> main()"
   },
   "checkpoints": [

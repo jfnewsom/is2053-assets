@@ -9,7 +9,7 @@ is the human reference; calendar.json mirrors its tables in machine form.
 
 Page structure: one outer orange card (home-page pattern) with four
 internal lc-named-section blocks:
-  1. Weekly Cadence  (default yellow label)
+  1. Unit Cadence  (default yellow label)
   2. 10-Week Schedule  (orange label)
   3. How Module 5 Differs  (purple label)
   4. Term Dates  (cyan label) — boundaries / holidays / registrar deadlines
@@ -92,7 +92,7 @@ def render_stat_grid(cadence):
 def render_section_cadence(term, cadence):
     """Section 1: Weekly Cadence — term intro + stat grid + footer note."""
     classes = section_div_classes(None)
-    label_html = render_section_label('Weekly Cadence', None)
+    label_html = render_section_label('Unit Cadence', None)
     stat_grid_html = render_stat_grid(cadence)
     return (
         f'      <div class="{classes}">\n'

@@ -11,7 +11,7 @@
     "additionalFiles": []
   },
   "overview": {
-    "body": "ENHANCE week. Two big wins land together. First, hazards move out of <code>lab-4-2.py</code> and into <code>hazards.txt</code>, loaded into a list of dictionaries with a third loader function. Second, <code>.upper()</code> finally arrives. A new <code>clean_input()</code> helper strips whitespace and uppercases the result, collapsing every <code>y/Y/n/N</code> comparison into a single Y/N check. <code>get_valid_int</code> also gets smarter, using <code>.isdigit()</code> so typing <code>abc</code> at a numeric prompt no longer crashes the program. Two Patch Notes Tyler dropped back in Module 2 finally close this week.",
+    "body": "ENHANCE unit. Two big wins land together. First, hazards move out of <code>lab-4-2.py</code> and into <code>hazards.txt</code>, loaded into a list of dictionaries with a third loader function. Second, <code>.upper()</code> finally arrives. A new <code>clean_input()</code> helper strips whitespace and uppercases the result, collapsing every <code>y/Y/n/N</code> comparison into a single Y/N check. <code>get_valid_int</code> also gets smarter, using <code>.isdigit()</code> so typing <code>abc</code> at a numeric prompt no longer crashes the program. Two Patch Notes Tyler dropped back in Module 2 finally close this unit.",
     "mentorQuote": {
       "character": "Sasha Mireles",
       "role": "Creative Director, Bat City Collective",
@@ -50,7 +50,7 @@
       },
       {
         "name": "HAZARDS_FILE",
-        "description": "Name of the hazards text file (new this week)"
+        "description": "Name of the hazards text file (new this unit)"
       },
       {
         "name": "REPORT_FILE",
@@ -88,7 +88,7 @@
       },
       {
         "file": "function_library.py",
-        "format": "Shared function library, extended this week with clean_input, load_hazards, and handle_hazard",
+        "format": "Shared function library, extended this unit with clean_input, load_hazards, and handle_hazard",
         "submitted": true
       }
     ]
@@ -139,7 +139,7 @@
     ]
   },
   "beforeYouBegin": {
-    "intro": "Lab 4.2 is mostly library work. The lab file changes in two places: the startup loads one more file, and the in-game hazard block collapses to a single function call. Everything else carries forward from 4.1. <code>[NEW]</code> tags show what's added this week. <code>[REPLACED]</code> tags show what swaps out. <code>[RETIRED]</code> tags show what gets deleted. <code>[KEEP]</code> tags show what carries forward.",
+    "intro": "Lab 4.2 is mostly library work. The lab file changes in two places: the startup loads one more file, and the in-game hazard block collapses to a single function call. Everything else carries forward from 4.1. <code>[NEW]</code> tags show what's added this unit. <code>[REPLACED]</code> tags show what swaps out. <code>[RETIRED]</code> tags show what gets deleted. <code>[KEEP]</code> tags show what carries forward.",
     "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_destinations(city, distances)                       [KEEP from 4.1]\nget_destination(city, distances, choice)                    [KEEP from 4.1]\nget_redirect(city, distances, avoid)                        [KEEP from 4.1]\nis_win_city(city, city_info)                                [KEEP from 4.1]\nis_dead_end(city, city_info)                                [KEEP from 4.1]\nload_city_distances(filename), load_city_info(filename)     [KEEP from 4.1]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\n\nclean_input(prompt) -> strip + upper                        [NEW-CP2]\nget_valid_int(prompt, min_val, max_val)                     [REPLACED-CP3] now uses .isdigit()\nget_yes_no(prompt)                                          [REPLACED-CP4] now uses clean_input\nload_hazards(filename) -> list of dicts                     [NEW-CP1]\nhandle_hazard(hazards) -> (name, escaped)                   [NEW-CP5]\nget_random_hazard(...)                                      [RETIRED-CP5]\n\n# ---- IN lab-4-2.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE, INFO_FILE, REPORT_FILE                      [KEEP from 4.1]\nHAZARDS_FILE = 'hazards.txt'                                [NEW-CP6]\nMILES_MULTIPLIER = 10, HAZARD_CHANCE = 30                   [KEEP from 4.1]\n\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [RETIRED-CP6] now in hazards.txt\n\nsave_trip_report(filename, ...)                             [KEEP from 4.1]\n\n# ---- main() ----\ndistances = load_city_distances(...)                        [KEEP from 4.1]\ncity_info = load_city_info(...)                             [KEEP from 4.1]\nhazards   = load_hazards(HAZARDS_FILE)                      [NEW-CP6]\n\nMAIN MENU LOOP                                              [KEEP from 4.1]\n  PLAY-AGAIN LOOP                                           [KEEP from 4.1]\n    IN-GAME LOOP                                            [KEEP from 4.1]\n      \u2502\n      \u2502\u2500 D20 travel loop\n      \u2502     \u2502\u2500 if hazard triggers:\n      \u2502     \u2502     name, escaped = handle_hazard(hazards)   [REPLACED-CP6]\n      \u2502     \u2502     hazards_list.append(name)\n      \u2502     \u2502     if escaped: hazards_escaped += 1\n      \u2502\n      \u2502\u2500 Continue / Save & quit / Quit                     [KEEP from 4.1]\n    \n    Trip report on screen + trip_report.txt                 [KEEP from 4.1]\n    Session accumulators                                    [KEEP from 4.1]\n"
   },
   "checkpoints": [
@@ -160,7 +160,7 @@
         },
         {
           "type": "text",
-          "body": "This is the moment Tyler called back in Lab 2.2, CP6, when he warned that the hardcoded hazard data would not scale. He was right. Lab 4.1 still defined hazards as three parallel lists at the top of the lab file. This week those three lists go away and the same data lives in <code>hazards.txt</code>, parsed once at startup. The Patch Note closes here."
+          "body": "This is the moment Tyler called back in Lab 2.2, CP6, when he warned that the hardcoded hazard data would not scale. He was right. Lab 4.1 still defined hazards as three parallel lists at the top of the lab file. This unit those three lists go away and the same data lives in <code>hazards.txt</code>, parsed once at startup. The Patch Note closes here."
         },
         {
           "type": "mentor_quote",
@@ -246,7 +246,7 @@
             ],
             [
               "Editing <code>lab-4-1.py</code> directly instead of copying first",
-              "Always preserve last week's submission. Copy first, then edit the copy."
+              "Always preserve last unit's submission. Copy first, then edit the copy."
             ]
           ]
         },
@@ -760,7 +760,7 @@
             ],
             [
               "Leaving the old hazard parallel-list comment block in",
-              "Delete the lists AND the explanatory comment. The whole block is gone this week."
+              "Delete the lists AND the explanatory comment. The whole block is gone this unit."
             ]
           ]
         },
@@ -797,7 +797,7 @@
         },
         {
           "type": "text",
-          "body": "Module 3 ended with a polished trip report file. Module 4.1 carried that report forward unchanged. The risk this week is that the hazard data-shape switch broke the report in a subtle way (dict literals showing up instead of names, sort order scrambled, and so on). T-Bone's QA pass here catches anything CP6 missed."
+          "body": "Module 3 ended with a polished trip report file. Module 4.1 carried that report forward unchanged. The risk this unit is that the hazard data-shape switch broke the report in a subtle way (dict literals showing up instead of names, sort order scrambled, and so on). T-Bone's QA pass here catches anything CP6 missed."
         },
         {
           "type": "mentor_quote",
@@ -860,7 +860,7 @@
               "Hazards are sorted alphabetically by name. Apostrophes and exclamation points sort before letters in ASCII, so <code>!</code>-laden names like <code>Buc-ee's appears!</code> may sort earlier than expected. That is correct Python behavior, not a bug."
             ],
             [
-              "<code>trip_report.txt</code> contains last week's content",
+              "<code>trip_report.txt</code> contains last unit's content",
               "Make sure CP6 did not accidentally break the <code>save_trip_report</code> call. If the file write is not happening, the file will hold whatever was there from a previous lab."
             ]
           ]
@@ -900,7 +900,7 @@
       "notPermitted": "Sets (saved for Lab 4.3). Trivia gate (saved for Lab 4.3). Dictionary comprehensions (not covered this semester). <code>get_random_hazard</code> is retired and should not appear in submitted code."
     },
     "warnings": [
-      "Do not keep the old <code>HAZARD_NAMES</code> / <code>HAZARD_HEADS_MSGS</code> / <code>HAZARD_TAILS_MSGS</code> lists in <code>lab-4-2.py</code>, even commented out. They are deleted entirely this week.",
+      "Do not keep the old <code>HAZARD_NAMES</code> / <code>HAZARD_HEADS_MSGS</code> / <code>HAZARD_TAILS_MSGS</code> lists in <code>lab-4-2.py</code>, even commented out. They are deleted entirely this unit.",
       "Do not leave the old call <code>function_library.get_random_hazard(...)</code> anywhere in either file."
     ],
     "saveYourCode": "Save <code>lab-4-2.py</code> as <code>lab-4-2-backup.py</code> before starting Lab 4.3. Lab 4.3 starts by copying 4.2 forward.",

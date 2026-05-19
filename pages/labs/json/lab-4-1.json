@@ -11,7 +11,7 @@
     "additionalFiles": []
   },
   "overview": {
-    "body": "BUILD week. Module 4 opens by killing the hardest pain point from Module 3: those long lists of distance constants and parallel destination lists for every city. The city graph moves out of code and into <strong>two text files</strong>, loaded into <strong>dictionaries</strong> at startup. <code>distances['San Antonio']['Houston']</code> returns <code>200</code>. Adding ten more cities means adding ten more lines to a text file, not touching code. Everything else from Lab 3.3 carries forward unchanged: the main-menu loop, save and load, the play-again loop, the D20 travel mechanic, the hazard system, and the trip report file. Same game, smarter data shape.",
+    "body": "BUILD unit. Module 4 opens by killing the hardest pain point from Module 3: those long lists of distance constants and parallel destination lists for every city. The city graph moves out of code and into <strong>two text files</strong>, loaded into <strong>dictionaries</strong> at startup. <code>distances['San Antonio']['Houston']</code> returns <code>200</code>. Adding ten more cities means adding ten more lines to a text file, not touching code. Everything else from Lab 3.3 carries forward unchanged: the main-menu loop, save and load, the play-again loop, the D20 travel mechanic, the hazard system, and the trip report file. Same game, smarter data shape.",
     "mentorQuote": {
       "character": "Priya Venkatesh",
       "role": "Project Manager, Bat City Collective",
@@ -59,7 +59,7 @@
         "description": "Percent chance per turn of a hazard event (30)"
       }
     ],
-    "filenameNote": "Submit <code>lab-4-1.py</code> and <code>function_library.py</code> this week. CodeGrade provides the data files (<code>city_distances.txt</code>, <code>city_info.txt</code>) as fixtures, so you do not upload them. Test locally with the copies you download from this page.",
+    "filenameNote": "Submit <code>lab-4-1.py</code> and <code>function_library.py</code> this unit. CodeGrade provides the data files (<code>city_distances.txt</code>, <code>city_info.txt</code>) as fixtures, so you do not upload them. Test locally with the copies you download from this page.",
     "dataFiles": [
       {
         "file": "city_distances.txt",
@@ -77,7 +77,7 @@
       },
       {
         "file": "function_library.py",
-        "format": "Your shared function library, carried over from Module 3 and extended this week",
+        "format": "Your shared function library, carried over from Module 3 and extended this unit",
         "submitted": true
       }
     ]
@@ -123,7 +123,7 @@
     ]
   },
   "beforeYouBegin": {
-    "intro": "Here is what your finished program looks like. <code>[NEW]</code> tags show what gets added this week. <code>[REPLACED]</code> tags show what changes shape but keeps the same function name. <code>[KEEP]</code> tags show what carries forward from Lab 3.3 untouched.",
+    "intro": "Here is what your finished program looks like. <code>[NEW]</code> tags show what gets added this unit. <code>[REPLACED]</code> tags show what changes shape but keeps the same function name. <code>[KEEP]</code> tags show what carries forward from Lab 3.3 untouched.",
     "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nget_valid_int(), get_yes_no()                               [KEEP from 2.3]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\nget_random_hazard(names, heads_msgs, tails_msgs)            [KEEP from 3.3]\n\nload_city_distances(filename) -> nested dict                [NEW-CP1]\nload_city_info(filename) -> dict of dicts                   [NEW-CP2]\ndisplay_destinations(city, distances)                       [REPLACED-CP3] was parallel lists\nget_destination(city, distances, choice)                    [REPLACED-CP3] was parallel lists\nget_redirect(city, distances, avoid)                        [REPLACED-CP3] was parallel lists\nis_win_city(city, city_info)                                [NEW-CP3]\nis_dead_end(city, city_info)                                [NEW-CP3]\n\n# ---- IN lab-4-1.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE = 'city_distances.txt'                       [NEW-CP4]\nINFO_FILE      = 'city_info.txt'                            [NEW-CP4]\nREPORT_FILE    = 'trip_report.txt'                          [KEEP from 3.3]\nMILES_MULTIPLIER = 10                                       [KEEP from 3.3]\nHAZARD_CHANCE    = 30                                       [KEEP from 3.3]\n\n# ---- HAZARD DATA (still inline; moves to file in Lab 4.2) ----\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [KEEP from 3.3]\n\n# ---- LAB-LOCAL HELPER ----\nsave_trip_report(filename, ...)                             [KEEP from 3.3]\n\n# ---- main() ----\nLoad data files: distances = load_city_distances(...)       [NEW-CP4]\n                 city_info = load_city_info(...)            [NEW-CP4]\n\nMAIN MENU LOOP                                              [KEEP from 3.3]\n  1. New Game  2. Load Saved Game  3. Quit\n  \u2502\n  \u2502   PLAY-AGAIN LOOP                                       [KEEP from 3.3]\n  \u2502   \u2502\n  \u2502   \u2502   IN-GAME LOOP                                       [KEEP from 3.3]\n  \u2502   \u2502   \u2502\u2500 Show current city + tagline from city_info     [NEW-CP5]\n  \u2502   \u2502   \u2502\u2500 display_destinations(current_city, distances)  [REPLACED-CP5]\n  \u2502   \u2502   \u2502\u2500 Coin-flip Destination Gate                     [KEEP from 3.3]\n  \u2502   \u2502   \u2502\u2500 D20 travel loop with hazard check              [KEEP from 3.3]\n  \u2502   \u2502   \u2502\u2500 is_win_city / is_dead_end branching            [NEW-CP5]\n  \u2502   \u2502   \u2502\u2500 Continue / Save & quit / Quit                  [KEEP from 3.3]\n  \u2502   \u2502\n  \u2502   \u2502\u2500 Trip report on screen + trip_report.txt              [KEEP-CP6 from 3.3]\n  \u2502   \u2502\u2500 Session accumulators update                          [KEEP-CP6 from 3.3]\n  \u2502   \u2502\u2500 Play again? (y/n)                                    [KEEP from 3.3]\n  \u2502\n  \u2502\u2500 Session statistics block                                  [KEEP from 3.3]\n  \u2502\u2500 Back to main menu\n"
   },
   "checkpoints": [
@@ -151,7 +151,7 @@
           "character": "Priya Venkatesh",
           "role": "Project Manager, Bat City Collective",
           "headshot": "Priya-Venkatesh.png",
-          "quote": "If you had to add twenty more cities to this game next week, how long would it take? If the answer is <em>'just add twenty lines to a text file'</em>, the design is right. If the answer is <em>'edit the code in five places'</em>, the design is wrong. Pick the data shape that makes the next change small."
+          "quote": "If you had to add twenty more cities to this game next unit, how long would it take? If the answer is <em>'just add twenty lines to a text file'</em>, the design is right. If the answer is <em>'edit the code in five places'</em>, the design is wrong. Pick the data shape that makes the next change small."
         },
         {
           "type": "callout",
@@ -708,7 +708,7 @@
         },
         {
           "type": "text",
-          "body": "The trip report is the player's souvenir. It carries forward from Lab 3.3 because the game's identity, the shape of the data players hold on to, has not changed this week. Module 4 is about how the game's <em>code</em> reads its data, not what the player experiences. The session statistics show that the play-again loop is doing its job: totals accumulate across multiple games in a single sitting."
+          "body": "The trip report is the player's souvenir. It carries forward from Lab 3.3 because the game's identity, the shape of the data players hold on to, has not changed this unit. Module 4 is about how the game's <em>code</em> reads its data, not what the player experiences. The session statistics show that the play-again loop is doing its job: totals accumulate across multiple games in a single sitting."
         },
         {
           "type": "mentor_quote",
@@ -808,7 +808,7 @@
   "finalChecklist": {
     "beforeYouSubmit": [
       "Submitting <strong>two files</strong>: <code>lab-4-1.py</code> and <code>function_library.py</code>",
-      "<code>function_library.py</code> grew by <strong>seven</strong> entries this week: two loaders (<code>load_city_distances</code>, <code>load_city_info</code>), three rewritten helpers (<code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>), and two new type checks (<code>is_win_city</code>, <code>is_dead_end</code>)",
+      "<code>function_library.py</code> grew by <strong>seven</strong> entries this unit: two loaders (<code>load_city_distances</code>, <code>load_city_info</code>), three rewritten helpers (<code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>), and two new type checks (<code>is_win_city</code>, <code>is_dead_end</code>)",
       "<code>lab-4-1.py</code> defines five constants at module level: <code>DISTANCES_FILE</code>, <code>INFO_FILE</code>, <code>REPORT_FILE</code>, <code>MILES_MULTIPLIER</code>, <code>HAZARD_CHANCE</code>",
       "<code>main()</code> loads both data files at startup using the new library functions; the loaded <code>distances</code> and <code>city_info</code> dictionaries flow through the rest of the game",
       "Three-loop architecture from Lab 3.3 is preserved: main menu, play-again, in-game",
@@ -819,13 +819,13 @@
     ],
     "scopeReminder": "Module 4.1 introduces file parsing (.strip(), .split()) and dictionaries (creation, access, nested, .keys(), 'in' operator). Sets and the .upper() input-cleaning relief are held back for Labs 4.2 and 4.3.",
     "permittedTechniques": {
-      "chapters": "Chapters 1\u20139 (Strings + Dictionaries arrive this week)",
+      "chapters": "Chapters 1\u20139 (Strings + Dictionaries arrive this unit)",
       "specific": "Chapter 8: <code>.strip()</code>, <code>.split(',')</code> for file parsing. Chapter 9: dictionary creation with <code>{}</code>, dictionary access with <code>dict[key]</code>, nested dictionaries, <code>'in'</code> with dictionaries, <code>.keys()</code>, looping through dictionaries. Everything from Modules 1\u20133 carries forward.",
       "notPermitted": "<code>.upper()</code> and <code>.lower()</code> on user input (saved for Lab 4.2). Sets (saved for Lab 4.3). Trivia gate (saved for Lab 4.3). Dictionary comprehensions (not covered this semester)."
     },
     "warnings": [
-      "Do not paste the data files into the top of <code>lab-4-1.py</code> as Python literals. The whole point of this week is that the data lives in text files, not in code.",
-      "Do not delete the inline hazard parallel lists from <code>lab-4-1.py</code>. They stay this week; <code>hazards.txt</code> arrives in Lab 4.2."
+      "Do not paste the data files into the top of <code>lab-4-1.py</code> as Python literals. The whole point of this unit is that the data lives in text files, not in code.",
+      "Do not delete the inline hazard parallel lists from <code>lab-4-1.py</code>. They stay this unit; <code>hazards.txt</code> arrives in Lab 4.2."
     ],
     "saveYourCode": "Save a copy of <code>lab-4-1.py</code> as <code>lab-4-1-backup.py</code> before you start Lab 4.2. Lab 4.2 starts by copying 4.1 forward, so you want a clean baseline to fall back to if the 4.2 changes break something.",
     "finalCheck": {

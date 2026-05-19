@@ -11,7 +11,7 @@
     "additionalFiles": []
   },
   "overview": {
-    "body": "You've built an amazing road trip game over Module 2 &mdash; full validation, multiple legs, session statistics across multiple games. But there's one huge problem: <strong>everything vanishes when you quit!</strong> Imagine playing for 20 minutes, racking up three games of session stats, then accidentally closing the program. All that progress &mdash; gone. This week, you'll learn to <strong>save your full session to a file</strong> and <strong>load it back</strong> when you return. Welcome to file I/O &mdash; the skill that makes data persist!",
+    "body": "You've built an amazing road trip game over Module 2 &mdash; full validation, multiple legs, session statistics across multiple games. But there's one huge problem: <strong>everything vanishes when you quit!</strong> Imagine playing for 20 minutes, racking up three games of session stats, then accidentally closing the program. All that progress &mdash; gone. This unit, you'll learn to <strong>save your full session to a file</strong> and <strong>load it back</strong> when you return. Welcome to file I/O &mdash; the skill that makes data persist!",
     "mentorQuote": {
       "character": "Danny Cavanaugh",
       "role": "Lead Developer, Bat City Collective",
@@ -75,7 +75,7 @@
       },
       {
         "name": "SAVE_FILE",
-        "description": "Filename for the saved game (<code>'savegame.txt'</code>) &mdash; <strong>NEW this week</strong>"
+        "description": "Filename for the saved game (<code>'savegame.txt'</code>) &mdash; <strong>NEW this unit</strong>"
       }
     ]
   },
@@ -120,7 +120,7 @@
     ]
   },
   "beforeYouBegin": {
-    "intro": "Here's how your finished program fits together. You're wrapping your Lab 2.3 game with two new layers: a save/load system that persists state to disk, and a main menu that ties it all together. The <strong>[NEW]</strong> tags show what's new this week. <strong>(keep from 2.3)</strong> marks the chunks that carry forward unchanged.",
+    "intro": "Here's how your finished program fits together. You're wrapping your Lab 2.3 game with two new layers: a save/load system that persists state to disk, and a main menu that ties it all together. The <strong>[NEW]</strong> tags show what's new this unit. <strong>(keep from 2.3)</strong> marks the chunks that carry forward unchanged.",
     "architecture": "# ---- CONSTANTS ----\nSAT_TO_CORPUS = 150            (keep from 2.3)\nSAT_TO_HOUSTON = 200           (keep from 2.3)\nSAT_TO_AUSTIN = 80             (keep from 2.3)\nHOU_TO_GALVESTON = 50          (keep from 2.3)\nHOU_TO_SAN_ANTONIO = 200       (keep from 2.3)\nMILES_MULTIPLIER = 10          (keep from 2.3)\nHAZARD_CHANCE = 30             (keep from 2.3)\nSAVE_FILE = 'savegame.txt'     [NEW-CP1]\n\n# ---- FUNCTIONS ----\ndef save_game(player_name, current_city, total_miles, total_turns,\n              total_hazards, total_escaped, games_played,\n              session_miles, session_hazards):    [NEW-CP2]\n│── Open SAVE_FILE in 'w' mode\n│── Write each parameter on its own line\n│── Convert integers with str() before writing\n│── Close file\n│── Print 'Game saved!'\n\ndef load_game():                                  [NEW-CP3]\n│── try: open SAVE_FILE in 'r' mode\n│    ├── Read 9 lines with readline().rstrip('\\n')\n│    ├── Convert numeric lines with int()\n│    └── Return 9-tuple\n│── except FileNotFoundError:\n│    └── Return None\n\n# ---- MAIN MENU LOOP ----   [NEW-CP4]\nwhile in_program:\n│── Display menu (1=New, 2=Load, 3=Quit)\n│── main_choice = get_valid_int('Choice (1-3): ', 1, 3)\n│\n│── if main_choice == 3:\n│    └── in_program = False, break out\n│\n│── if main_choice == 2:    [NEW-CP5]\n│    ├── saved = load_game()\n│    ├── if saved is None: print 'No saved game found.', fall to New Game\n│    └── else: unpack 9-tuple, set resumed_game = True\n│\n│── if main_choice == 1:\n│    ├── Get player_name from input\n│    └── Initialize session accumulators to 0\n│\n│── # ---- PLAY-AGAIN LOOP ----   (keep from 2.3)\n│   play_again = True\n│   while play_again:\n│   │\n│   │── if not resumed_game: reset per-game state\n│   │── resumed_game = False\n│   │\n│   │── # ---- IN-GAME LOOP ----   (keep from 2.3)\n│   │   while playing:\n│   │   │── Menu → Destination Gate → Travel Loop → Hazards\n│   │   │\n│   │   │── If beach city: playing = False, reached_beach = True\n│   │   │── If Austin: ask Return to San Antonio?\n│   │   │── If Houston/SA: 3-way prompt   [REPLACED-CP6]\n│   │       │── 1. Continue journey\n│   │       │── 2. Save and quit  → save_game(), saved_and_quit = True\n│   │       └── 3. Quit without saving → playing = False\n│   │\n│   │── After in-game loop:\n│   │   ├── if saved_and_quit: play_again = False, continue (back to main menu)\n│   │   ├── Print TRIP SUMMARY\n│   │   ├── Update session accumulators\n│   │   └── play_again = get_yes_no('Play again? (y/n): ')\n│   │\n│   └── After play-again loop:\n│       └── if not saved_and_quit: Print SESSION STATISTICS\n│\n└── Back to main menu loop\n"
   },
   "checkpoints": [
@@ -132,7 +132,7 @@
           "character": "Priya Venkatesh",
           "role": "Project Manager, Bat City Collective",
           "headshot": "Priya-Venkatesh.png",
-          "quote": "Project handoff time. Lab 2.3 is a complete, working game. What we are doing this week is wrapping it with a save/load layer and a main menu. The game logic itself does not change. Before you write a single new line of code, let's be explicit about what carries forward, what gets renamed, and what's brand new. Five minutes of inventory now saves an hour of debugging later."
+          "quote": "Project handoff time. Lab 2.3 is a complete, working game. What we are doing this unit is wrapping it with a save/load layer and a main menu. The game logic itself does not change. Before you write a single new line of code, let's be explicit about what carries forward, what gets renamed, and what's brand new. Five minutes of inventory now saves an hour of debugging later."
         },
         {
           "type": "h3",
@@ -159,7 +159,7 @@
           "items": [
             "<strong>Copy</strong> <code>lab-2-3.py</code> to a new file named <code>lab-3-1.py</code> in the same folder",
             "<strong>Update the docstring</strong> at the top: change the title to <code>Lab 3.1: Save Your Journey</code> and update the description and chapter list",
-            "<strong>Do NOT change</strong> <code>function_library.py</code> &mdash; it carries forward unchanged this week",
+            "<strong>Do NOT change</strong> <code>function_library.py</code> &mdash; it carries forward unchanged this unit",
             "<strong>Run your new <code>lab-3-1.py</code></strong> exactly as-is. It should behave identically to Lab 2.3. If it does not, fix the difference before moving on",
             "<strong>Review the inventory tables below</strong> so you know exactly what you're keeping and what you'll add in CPs 2–6"
           ]
@@ -206,7 +206,7 @@
         },
         {
           "type": "table",
-          "caption": "ADD in Lab 3.1 (new this week)",
+          "caption": "ADD in Lab 3.1 (new this unit)",
           "rows": [
             [
               "Constant",
