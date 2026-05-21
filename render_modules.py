@@ -126,8 +126,23 @@ def render_recording_button(url, label):
 
 
 def render_recording_row(row):
-    """One row in a recordings section: label + Chapter Notes + Lab Walkthrough."""
-    chapter_btn = render_recording_button(row.get('chapter_notes_url'), 'Chapter Notes')
+    """One row in a recordings section: label + Chapter Notes + Lab Walkthrough.
+
+    MASTER rows (Labs 1.3, 2.3, 3.3, 4.3, 5.2) render an invisible placeholder
+    in the Chapter Notes slot because no new chapter is introduced in the
+    MASTER engagement. The slot is kept (not removed) so the Lab Walkthrough
+    column aligns vertically across all rows in the same module — treating
+    the rows like a table where the MASTER row simply has an empty cell.
+    """
+    label = row['label']
+    is_master = '(MASTER)' in label
+    if is_master:
+        chapter_btn = (
+            '        <span class="sp-rec-btn sp-rec-btn--empty" '
+            'aria-hidden="true">Chapter Notes</span>'
+        )
+    else:
+        chapter_btn = render_recording_button(row.get('chapter_notes_url'), 'Chapter Notes')
     walkthrough_btn = render_recording_button(row.get('lab_walkthrough_url'), 'Lab Walkthrough')
     return (
         f'      <div class="sp-rec-row">\n'
