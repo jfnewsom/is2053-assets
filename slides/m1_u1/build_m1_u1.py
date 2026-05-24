@@ -40,7 +40,7 @@ from build_lib import (  # noqa: E402
 )
 
 # ----- Outputs -----
-OUTPUT_PPTX = '/home/claude/M1-U1.pptx'
+OUTPUT_PPTX = '/home/claude/IS2053_2026-05-24_M1-U1_Deck.pptx'
 PNG_OUT = '/home/claude/m1_u1_pngs'
 WORK_DIR = '/tmp/build_m1_u1'
 
@@ -112,7 +112,50 @@ def main():
     )
 
     # =========================================================================
-    # SLIDE 3: Concept - Why We Need Variables
+    # SLIDE 3: Concept - The Shape of a Python Lab File
+    # =========================================================================
+    deck.add_concept_slide(
+        title='The Shape of a Python Lab File',
+        bullets=[
+            'Every lab file in this course has the same shape: docstring, constants, def main(), if __name__.',
+            'The docstring names you, your section, and what the program does.',
+            'The constants block holds fixed values you reference repeatedly: distances, limits, magic numbers.',
+            'def main(): is a container for all your program logic. For now, write everything inside it.',
+            "if __name__ == '__main__': at the bottom is what runs main() when you press play. Always there. Don't touch it.",
+        ],
+        notes=format_concept_notes(
+            video_script=(
+                "The lab template you'll open in VS Code already has this skeleton in "
+                "place. Your job is to fill in the body of main(). The structural pieces "
+                "around it (docstring, def main, if __name__) are given to you. The "
+                "reason this shape exists is twofold. One, it's how real Python programs "
+                "are organized. By the end of the course you'll understand WHY def main "
+                "exists and what if __name__ means; today you accept it as the wrapper "
+                "and move on. Two, it gives every lab in the course the same shape, so "
+                "once you've seen Lab 1.1's structure, you've seen Lab 2.1's structure "
+                "too. The labs grow inside the same scaffolding. Don't try to remove the "
+                "def main line. Don't write code outside it. Stay inside the function "
+                "body and your life will be easier. The demos in the rest of this video "
+                "are kept simple and don't show the wrapper, but rest assured: when you "
+                "open the Lab 1.1 file, the wrapper is there and your code goes inside "
+                "it. Think about this. Have you ever opened a Word document template "
+                "that already has the formatting set up so you just fill in the body? "
+                "Same idea here."
+            ),
+            key_terms=[
+                ('Docstring', 'A triple-quoted string at the top of a file or function that documents what it does.'),
+                ('Function', 'A named chunk of code you can call by name. def is the keyword that defines one.'),
+            ],
+            think_about=[
+                'Why might a Python course put all program logic inside def main() instead of just typing it at the top of the file?',
+                "The if __name__ == '__main__' line looks cryptic. We're not going to fully explain it today. What other things in life have you accepted on faith and circled back to understand later?",
+            ],
+            source_url='https://docs.python.org/3/tutorial/modules.html#executing-modules-as-scripts',
+        ),
+    )
+
+    # =========================================================================
+    # SLIDE 4: Concept - Why We Need Variables
     # =========================================================================
     deck.add_concept_slide(
         title='Why We Need Variables',
@@ -202,7 +245,55 @@ def main():
     )
 
     # =========================================================================
-    # SLIDE 5: Concept - print() and the Banner Trick
+    # SLIDE 6: Concept - Named Constants for Fixed Values
+    # =========================================================================
+    deck.add_concept_slide(
+        title='Named Constants for Fixed Values',
+        bullets=[
+            "Some values in your program don't change while it runs: a distance to a city, the number of sides on a die.",
+            'Store those values in variables named in UPPER_SNAKE_CASE: SAT_TO_CORPUS = 150.',
+            'The ALL CAPS is a signal to other programmers (and your future self): treat this as a constant.',
+            "Python doesn't ENFORCE it. You CAN reassign all-caps names. The convention is for humans, not the interpreter.",
+            'Declare constants at the top of the file, above def main(), so the program\'s fixed values are visible up front.',
+        ],
+        notes=format_concept_notes(
+            video_script=(
+                "When you read your own lab solution six weeks from now, will you "
+                "remember why the number 150 keeps appearing in the math? Probably "
+                "not. But if every place that used to say 150 now says SAT_TO_CORPUS, "
+                "you'll instantly understand: that's the distance from San Antonio to "
+                "Corpus Christi. That's the entire purpose of a named constant. It's "
+                "a label on a number, exactly like a variable has a label, but with "
+                "one social convention. The label is in ALL CAPS. UPPER_SNAKE_CASE. "
+                "The constants from your Lab 1.1 are SAT_TO_CORPUS, SAT_TO_HOUSTON, "
+                "SAT_TO_AUSTIN, and HOU_TO_GALVESTON. Three letters of city code from, "
+                "T-O, three letters of city code to. Read them out loud: san antonio "
+                "to corpus. That's it. There's a piece of weird programming culture "
+                "to understand here. Python doesn't actually FORCE these to be "
+                "constant. You can write SAT_TO_CORPUS = 9999 anywhere in your "
+                "program and Python will let you. The all caps is a signal to humans, "
+                "not to Python: treat this as if it were constant. Don't change it. "
+                "Future-you reads your past-you's code, sees ALL CAPS, and knows not "
+                "to mess with it. The other small rule is location. Declare these at "
+                "the top of your file, before def main(). The reason is that anyone "
+                "reading the file can see, in the first ten lines, what fixed values "
+                "your program uses. Think about this. Why is the convention ALL CAPS "
+                "rather than something else?"
+            ),
+            key_terms=[
+                ('Constant', "A value that doesn't change during program execution."),
+                ('UPPER_SNAKE_CASE', 'All capital letters with underscores between words. Python convention for constants.'),
+            ],
+            think_about=[
+                'Why is the convention ALL CAPS rather than something like underscores around the name?',
+                "If Python doesn't actually prevent you from reassigning a constant, why bother with the convention?",
+            ],
+            source_url='https://peps.python.org/pep-0008/#constants',
+        ),
+    )
+
+    # =========================================================================
+    # SLIDE 7: Concept - print() and the Banner Trick
     # =========================================================================
     deck.add_concept_slide(
         title='print() and the Banner Trick',
@@ -332,36 +423,39 @@ def main():
     )
 
     # =========================================================================
-    # SLIDE 8: Demo: Asking for a Name
+    # SLIDE 8: Demo - Getting Information from the User
     # =========================================================================
     input_demo_code = """\
-# Ask for a name, then say hello back.
+# Get the user's name, age, and income.
+name = input('What is your name? ')
+age = int(input('What is your age? '))
+income = float(input('What is your income? '))
 
-print('=' * 50)
-print('     CHARACTER CREATION')
-print('=' * 50)
-
-player_name = input('What is your name, traveler? ')
-
-print()
-print('Welcome aboard,', player_name)"""
+# Display the data.
+print('Here is the data you entered:')
+print('Name:', name)
+print('Age:', age)
+print('Income:', income)"""
 
     deck.add_demo_slide(
-        title='Demo: Asking for a Name',
+        title='Demo: Getting Information from the User',
         code=input_demo_code,
         png='slide06a_input_demo.png',
         notes=format_demo_notes(
             code=input_demo_code,
             instructor_notes=(
-                "Type slowly. After the three banner lines, pause and ask viewers to "
-                "predict what the screen looks like before you've even gotten to the input "
-                "line. Type the input line, mention the trailing space inside the prompt "
-                "that keeps the cursor off the question mark. Type the empty print() for "
-                "vertical spacing. Run the program. Type a name yourself (use Maria, who's "
-                "going to be the running example through this module). Read the welcome "
-                "line out loud. Optionally, comment out the variable assignment and re-run "
-                "to show what happens when input has nowhere to go: the program still "
-                "pauses and the typed name still vanishes."
+                "This is the BookEx input.py exercise students just typed. Mention that "
+                "by name on screen so they connect this demo to their own work. Walk "
+                "through line by line. The name line is plain string input. The age line "
+                "wraps int() around input() to convert text digits into a usable "
+                "integer. The income line wraps float() instead because income usually "
+                "has cents (a decimal point). Then four prints at the bottom display "
+                "what came in. Run the program. Use Maria for the name, 19 for the age, "
+                "12500.00 for the income. Then point at the output: notice that 12500.00 "
+                "comes back as 12500.0. Python's float type drops trailing zeros after "
+                "the decimal. That's a real-world detail that surprises every student "
+                "the first time. It's a quirk to notice and accept; the labs in this "
+                "course don't apply formatting to clean it up."
             ),
         ),
     )
@@ -370,12 +464,13 @@ print('Welcome aboard,', player_name)"""
     # SLIDE 9: Output - What the User Sees
     # =========================================================================
     input_output_text = """\
-==================================================
-     CHARACTER CREATION
-==================================================
-What is your name, traveler? Maria
-
-Welcome aboard, Maria"""
+What is your name? Maria
+What is your age? 19
+What is your income? 12500.00
+Here is the data you entered:
+Name: Maria
+Age: 19
+Income: 12500.0"""
 
     deck.add_output_slide(
         title='Output: What the User Sees',
@@ -384,12 +479,13 @@ Welcome aboard, Maria"""
         notes=format_output_notes(
             output_text=input_output_text,
             instructor_notes=(
-                "Point at the prompt line and the typed name Maria sitting on the same "
-                "line as the prompt. The trailing space inside the prompt string is what "
-                "creates that effect. Then trace the variable player_name from where it's "
-                "assigned to where it's used at the bottom. The same string moved through "
-                "the program. Highlight that the blank line between the banner and the "
-                "welcome comes from the empty print() call."
+                "Walk through what the user did and what the program produced. The "
+                "first three lines are the input prompts; the user typed Maria, 19, "
+                "and 12500.00. Then the program echoes back what it captured. Point at "
+                "the last line, Income: 12500.0. The user typed 12500.00 but the "
+                "program shows 12500.0. Python's float displayed it without the "
+                "trailing zero. That's not wrong, it's how floats work. Just note the "
+                "behavior and move on; the labs accept this display as-is."
             ),
         ),
     )
@@ -529,38 +625,42 @@ Welcome aboard, Maria"""
     )
 
     # =========================================================================
-    # SLIDE 13: Demo - A Trip Calculator
+    # SLIDE 13: Demo - Simple Math with Variables
     # =========================================================================
     arithmetic_demo_code = """\
-# Convert a roll into miles, see how far you got.
+# Assign a value to the salary variable.
+salary = 2500.0
 
-MILES_PER_ROLL = 10
-DISTANCE_TO_DESTINATION = 150
+# Assign a value to the bonus variable.
+bonus = 1200.0
 
-roll = int(input('Roll a number from 1 to 20: '))
-miles_traveled = roll * MILES_PER_ROLL
-miles_remaining = DISTANCE_TO_DESTINATION - miles_traveled
+# Calculate the total pay by adding salary
+# and bonus. Assign the result to pay.
+pay = salary + bonus
 
-print('You rolled', roll)
-print('Miles traveled:', miles_traveled)
-print('Miles remaining:', miles_remaining)"""
+# Display the pay.
+print('Your pay is', pay)"""
 
     deck.add_demo_slide(
-        title='Demo: A Trip Calculator',
+        title='Demo: Simple Math with Variables',
         code=arithmetic_demo_code,
         png='slide09a_arithmetic_demo.png',
         notes=format_demo_notes(
             code=arithmetic_demo_code,
             instructor_notes=(
-                "Mention the two ALL_CAPS names at the top before running. We'll come "
-                "back to those formally in a couple slides; for now they're just storage. "
-                "Type the input line, pause to remind viewers that int() is what converts "
-                "the typed digits into a number we can multiply. Type the two arithmetic "
-                "lines, ask viewers to predict the values for a roll of 14 before running. "
-                "Run the program. Type 14. Walk through each output line tying it back to "
-                "the variable that produced it. Optional bonus moment: mention that "
-                "miles_remaining can go negative if the player rolls high enough, and "
-                "we'll deal with that in U2 when we get to if statements."
+                "This is the BookEx simple_math.py exercise. Walk through the four "
+                "moving parts: store salary, store bonus, compute pay by adding them, "
+                "print the result. Notice that all three variables are floats (2500.0, "
+                "1200.0). Why floats and not just 2500? Because real money has cents. "
+                "The decimal point is there to remind us this is a quantity that COULD "
+                "have a fractional part, even when it doesn't. Now point at the line "
+                "pay = salary + bonus. The right side gets evaluated first: Python "
+                "computes 2500.0 + 1200.0 to get 3700.0, then assigns that result to "
+                "pay. Two arrows: arithmetic produces a number, assignment stores the "
+                "number. Run the program. Output is 'Your pay is 3700.0.' Worth "
+                "highlighting that the final number has a trailing .0 because Python "
+                "is showing the float as-is, the same situation we saw earlier with "
+                "Income: 12500.0. Same quirk, same acceptance: notice, move on."
             ),
         ),
     )
@@ -568,11 +668,7 @@ print('Miles remaining:', miles_remaining)"""
     # =========================================================================
     # SLIDE 14: Output - What the Math Produced
     # =========================================================================
-    arithmetic_output_text = """\
-Roll a number from 1 to 20: 14
-You rolled 14
-Miles traveled: 140
-Miles remaining: 10"""
+    arithmetic_output_text = "Your pay is 3700.0"
 
     deck.add_output_slide(
         title='Output: What the Math Produced',
@@ -581,14 +677,12 @@ Miles remaining: 10"""
         notes=format_output_notes(
             output_text=arithmetic_output_text,
             instructor_notes=(
-                "Trace the math live. Roll 14 came from the user. Multiplied by the "
-                "multiplier 10, that gives 140 miles traveled. Distance 150 minus traveled "
-                "140 leaves 10 miles remaining. Then ask viewers to imagine a roll of 20 "
-                "instead. Multiply mentally: 200 miles traveled. Subtraction: 150 minus "
-                "200 is negative 50. The program would print \"Miles remaining: -50.\" "
-                "That's the overshoot case. Tell them U2 introduces the conditional logic "
-                "that turns \"negative 50 miles\" into \"you passed the destination, "
-                "here's your final stop.\""
+                "Short output, big lesson. Trace the math live: 2500.0 + 1200.0 = "
+                "3700.0. The result is a float because both operands are floats. "
+                "Python preserves the type. Then notice the .0 at the end. The program "
+                "is correct, but the output reads weirdly: nobody talks about salary as "
+                "3700 point zero dollars. That's just how Python shows floats by "
+                "default. Acknowledge it, don't fix it; the labs accept this format."
             ),
         ),
     )
@@ -735,155 +829,56 @@ Miles remaining: 10"""
     )
 
     # =========================================================================
-    # SLIDE 18: Demo - Building a Travel Report
+    # SLIDE 18: Demo - An F-String with No Formatting
     # =========================================================================
     fstring_demo_code = """\
-# Same calculation, cleaner output.
-
-MILES_PER_ROLL = 10
-DISTANCE_TO_DESTINATION = 150
-
-player_name = input('Enter your name: ')
-roll = int(input('Roll a number from 1 to 20: '))
-miles_traveled = roll * MILES_PER_ROLL
-miles_remaining = DISTANCE_TO_DESTINATION - miles_traveled
-
-print(f'Driver: {player_name}')
-print(f'You rolled {roll}, traveled {miles_traveled} miles.')
-print(f'Distance remaining: {miles_remaining} miles.')"""
+# This program demonstrates how a floating-point
+# number is displayed with no formatting.
+amount_due = 5000.0
+monthly_payment = amount_due / 12.0
+print(f'The monthly payment is {monthly_payment}.')"""
 
     deck.add_demo_slide(
-        title='Demo: Building a Travel Report',
+        title='Demo: An F-String with No Formatting',
         code=fstring_demo_code,
         png='slide12a_fstring_demo.png',
         notes=format_demo_notes(
             code=fstring_demo_code,
             instructor_notes=(
-                "Build this as a rewrite of the previous demo. Start with the original "
-                "three print lines (the comma-separated version) on screen. Rewrite the "
-                "first one as an f-string. Run it; compare to the comma version. Rewrite "
-                "the second print line; run again. Rewrite the third. Each rewrite, point "
-                "out that the syntax is shorter and the output reads more naturally. The "
-                "point isn't the code logic, which is identical to the previous demo. "
-                "The point is the formatting."
+                "This is the BookEx f_string_no_formatting.py exercise. Walk through "
+                "the four lines. Comment for context. Set amount_due to 5000. Compute "
+                "monthly_payment by dividing by 12. Display with an f-string. The "
+                "{monthly_payment} inside the curly braces is the substitution slot: "
+                "Python evaluates the expression and inserts the result into the "
+                "string. Run the program. Pause when the output appears. Let viewers "
+                "see how many decimal places come out. That's a real Python quirk "
+                "students will run into anywhere they do division on floats. Don't "
+                "promise a fix here; just let them sit with it."
             ),
         ),
     )
 
     # =========================================================================
-    # SLIDE 19: Output - The Report
+    # SLIDE 19: Output - The Monthly Payment, Unformatted
     # =========================================================================
-    fstring_output_text = """\
-Enter your name: Maria
-Roll a number from 1 to 20: 14
-Driver: Maria
-You rolled 14, traveled 140 miles.
-Distance remaining: 10 miles."""
+    fstring_output_text = "The monthly payment is 416.6666666666667."
 
     deck.add_output_slide(
-        title='Output: The Report',
+        title='Output: The Monthly Payment, Unformatted',
         output_text=fstring_output_text,
         png='slide12b_fstring_demo_output.png',
         notes=format_output_notes(
             output_text=fstring_output_text,
             instructor_notes=(
-                "Compare side-by-side with the previous Output slide if you can put them "
-                "on screen together. The numbers are identical, but the sentences here "
-                "read like sentences instead of like print statements. Point at the last "
-                "output line, \"Distance remaining: 10 miles.\" That's not three separate "
-                "print arguments smashed together. That's one coherent sentence. That's "
-                "the win."
+                "Stop and let the output sit on screen. Five thousand divided by twelve "
+                "is mathematically 416.66666... with a six that repeats forever. Python "
+                "doesn't repeat forever, but it does show thirteen digits of decimal. "
+                "That's just how Python displays floats by default. In a real-world "
+                "program you'd usually round it for display, and your textbook covers "
+                "that technique in BookEx (f_string_rounding.py). We don't apply it in "
+                "the labs this semester, so just notice the quirk, hold it in your "
+                "mental model, and keep moving."
             ),
-        ),
-    )
-
-    # =========================================================================
-    # SLIDE 20: Concept - Rounding Numbers with f-string Format Specs
-    # =========================================================================
-    deck.add_concept_slide(
-        title='Rounding Numbers with f-string Format Specs',
-        bullets=[
-            'Some calculations produce more decimal places than you want to show.',
-            'Inside the braces of an f-string, you can add format specs after a colon.',
-            '{price:.2f} rounds the value of price to two decimal places.',
-            ':.0f rounds to zero decimals; :.4f rounds to four. You pick.',
-            "The original variable doesn't change. Only the displayed value is rounded.",
-        ],
-        notes=format_concept_notes(
-            video_script=(
-                "A treadmill display that says \"you burned 245.6824 calories\" is "
-                "technically more accurate than one that says \"you burned 246.\" But "
-                "which one would a person rather see? Pretty much always the rounded "
-                "version. Same thing happens in programming constantly. You do a "
-                "calculation, you get a long decimal number, and the user doesn't need to "
-                "see all of it. They need a clean two-decimal version. F-strings handle "
-                "this with what are called format specs. Inside the curly braces, after "
-                "the variable name, you put a colon, then the recipe for how to format the "
-                "value. The spec for rounding is a dot, then a number of decimal places, "
-                "then the letter f. So {price:.2f} says \"format the value of price as a "
-                "fixed-point number with two decimal places.\" If price is 245.6824, that "
-                "f-string slot prints 245.68. If price is 245.6, it prints 245.60. The "
-                "trailing zero is included because you asked for exactly two decimals. "
-                "You can put any non-negative integer in the spec. :.0f rounds to a whole "
-                "number; :.4f shows four decimals. Pick whichever fits the situation. "
-                "The variable itself doesn't change. It still holds 245.6824 in memory. "
-                "Only the displayed version is rounded. Think about this. If your tip "
-                "calculator computes a tip of $3.7619, what do you want it to display to "
-                "the customer?"
-            ),
-            key_terms=[
-                ('Format spec', 'The colon-and-recipe inside an f-string brace that controls how the value displays.'),
-            ],
-            think_about=[
-                'If your tip calculator computes a tip of $3.7619, what do you want it to display to the customer?',
-                "The variable's actual value doesn't change when you format it. Why is that a useful distinction?",
-            ],
-            source_url='https://docs.python.org/3/library/string.html#format-specification-mini-language',
-        ),
-    )
-
-    # =========================================================================
-    # SLIDE 21: Concept - Aligning Text in Columns
-    # =========================================================================
-    deck.add_concept_slide(
-        title='Aligning Text in Columns',
-        bullets=[
-            ':<N left-aligns the value in a field N characters wide.',
-            ':>N right-aligns.',
-            ':^N centers.',
-            'Useful when you want output to look like a table: every column lines up.',
-            'Combine with rounding: {price:>10.2f} means right-align in a 10-wide field, 2 decimals.',
-        ],
-        notes=format_concept_notes(
-            video_script=(
-                "The other big use of format specs is alignment. Picture a receipt at a "
-                "store. Item names on the left, prices on the right, everything lined up "
-                "so you can scan down the column and see the totals. That kind of layout "
-                "would be miserable to build with concatenation and spaces. F-string "
-                "format specs make it one line of code. Inside the braces, after the "
-                "colon, put a less-than sign for left-align, a greater-than sign for "
-                "right-align, or a caret for center. After that symbol, put the width in "
-                "characters. So {name:<15} says \"put the value of name into a 15-"
-                "character-wide slot, aligned to the left.\" If name is shorter than 15 "
-                "characters, Python pads it with spaces on the right. If it's longer, it "
-                "just spills over. Same logic for right-align: {price:>10} puts the value "
-                "into a 10-character slot, aligned right, padded with spaces on the left. "
-                "The caret centers in the slot. Here's the clever part. You can combine "
-                "alignment with rounding. {price:>10.2f} means right-align in a ten-wide "
-                "field, with two decimal places. The spec reads left-to-right: alignment "
-                "first, then width, then dot, then decimals, then f. Once you've used "
-                "these a few times to make a table, you'll wonder how anyone formatted "
-                "output without them. Think about this. Have you ever made a Word "
-                "document with columns that don't line up no matter what you do?"
-            ),
-            key_terms=[
-                ('Field width', 'The number of characters reserved in the output for a particular value. Padded with spaces if the value is shorter.'),
-            ],
-            think_about=[
-                "Have you ever made a Word document with columns that don't line up no matter what you do? What was happening?",
-                'Could you align text with regular spaces if you don\'t use format specs? What goes wrong as the data changes?',
-            ],
-            source_url='https://docs.python.org/3/library/string.html#format-specification-mini-language',
         ),
     )
 
