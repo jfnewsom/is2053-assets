@@ -156,7 +156,7 @@
       </div>
       <div class="lc-cp-body">
         <p>
-          Download Python from <a href="https://python.org" target="_blank" rel="noopener">python.org</a>. Get version <strong>3.14 or newer</strong> (3.14.5 is current as of Summer 2026). <strong>Read both callouts below before you click anything</strong> &mdash; the python.org download page recently changed.
+          Download Python from <a href="https://python.org" target="_blank" rel="noopener">python.org</a>. Get version <strong>3.14 or newer</strong> (3.14.5 is current as of Summer 2026). <strong>One heads-up before you click anything:</strong> python.org now pushes you toward its new <em>Install Manager</em> as the front-and-center download button. For this course, <strong>scroll past the Install Manager and grab the standalone installer instead</strong>. The first callout below shows you exactly where to look.
         </p>
         <div class="lc-callout lc-callout--warning">
           <div class="lc-callout__icon">
@@ -231,12 +231,23 @@
           VS Code now ships with <strong>AI-powered code suggestions turned on by default</strong>. It sounds helpful, but it will hurt you in this course. The AI doesn&rsquo;t know what chapter we&rsquo;re on, so it happily suggests list comprehensions, f-strings, and other techniques we haven&rsquo;t covered yet. <strong>CodeGrade flags those as scope violations and auto-zeroes the assignment.</strong> The suggestions are also frequently just wrong for your specific problem.
         </p>
         <p>
-          Turn off all three of these in VS Code Settings (press <code>Cmd + ,</code> on Mac or <code>Ctrl + ,</code> on Windows):
+          You&rsquo;ll work in <strong>two different panels</strong> in VS Code for this checkpoint &mdash; first <strong>Settings</strong>, then <strong>Extensions</strong>. The keyboard shortcuts and search bars are different in each, so the steps below tell you which panel to switch to before each search.
+        </p>
+        <div class="lc-h3 lc-h3--green">Step 1 &mdash; In the Settings panel</div>
+        <p>
+          Open Settings with <code>Cmd + ,</code> (Mac) or <code>Ctrl + ,</code> (Windows). Use the search bar at the top of the Settings page:
         </p>
         <ol>
-          <li>Search <code>editor.inlineSuggest.enabled</code> &mdash; <strong>uncheck the box</strong>. This kills inline AI completions.</li>
-          <li>Search <code>github.copilot.enable</code> &mdash; set to <strong>false</strong>, or uninstall the GitHub Copilot extension entirely.</li>
-          <li>Search <code>IntelliCode</code> &mdash; <strong>disable or uninstall</strong> both the &ldquo;IntelliCode&rdquo; and &ldquo;IntelliCode API Usage Examples&rdquo; extensions.</li>
+          <li>Search <code>editor.inlineSuggest.enabled</code> and <strong>uncheck the box</strong>. This kills the gray ghost-text predictions that appear inline as you type.</li>
+        </ol>
+        <div class="lc-h3 lc-h3--green">Step 2 &mdash; In the Extensions panel</div>
+        <p>
+          Now switch to Extensions with <code>Cmd + Shift + X</code> (Mac) or <code>Ctrl + Shift + X</code> (Windows). The search bar at the top of the Extensions sidebar is a different search bar from the one in Settings &mdash; it searches installed and available extensions, not settings keys.
+        </p>
+        <ol>
+          <li>Search <code>GitHub Copilot</code>. If you see it in your installed list, click the gear icon and choose <strong>Uninstall</strong>. (If it&rsquo;s not installed, skip this one &mdash; nothing to do.)</li>
+          <li>Search <code>GitHub Copilot Chat</code>. <strong>This is the tricky one.</strong> New VS Code installs ship Copilot Chat as a <em>built-in</em> extension, which means there&rsquo;s no Uninstall button &mdash; only a dropdown labeled <strong>&ldquo;Disable AI Features&rdquo;</strong>. Click the dropdown and choose <strong>Disable AI Features</strong>. This is the step that turns off the right-side <strong>CHAT</strong> panel and the <strong>&ldquo;Generate code&rdquo;</strong> inline prompt &mdash; both of those come from Copilot Chat, not from the inline suggestion setting in Step 1.</li>
+          <li>Search <code>IntelliCode</code>. <strong>Disable</strong> (or uninstall) both <strong>IntelliCode</strong> and <strong>IntelliCode API Usage Examples</strong> using the gear icon on each.</li>
         </ol>
         <div class="lc-callout lc-callout--tip">
           <div class="lc-callout__icon">
@@ -245,7 +256,13 @@
           <div class="lc-callout__bubble">
             <div class="lc-callout__title">How to Verify It Worked</div>
             <div class="lc-callout__body">
-              <p>After making these changes, when you type code you should only see basic autocomplete (Python keywords like <code>if</code>, <code>while</code>, <code>print</code>, and variable names you&rsquo;ve already typed). You should <em>not</em> see entire lines of suggested code appearing in gray. Those gray ghost-lines are the AI&mdash;if you see them, you missed a setting.</p>
+              <p>After making all the changes above, you should see <strong>no AI surfaces anywhere</strong> in VS Code. Specifically, all three of these things should be gone:</p>
+              <ul>
+                <li><strong>No gray ghost-text</strong> appearing inline as you type. Basic autocomplete is fine and expected &mdash; Python keywords like <code>if</code>, <code>while</code>, <code>print</code> and variable names you&rsquo;ve already typed will still pop up in a suggestion dropdown. What should be gone is <em>entire lines</em> of suggested code appearing in gray ahead of your cursor. If those are still there, the <code>editor.inlineSuggest.enabled</code> setting didn&rsquo;t take &mdash; go back and re-check Step 1.</li>
+                <li><strong>No &ldquo;Generate code&rdquo; inline prompt</strong> floating in the editor near your cursor. That prompt comes from Copilot Chat, not from the inline suggestion setting. If you still see it, Copilot Chat&rsquo;s AI features are still enabled.</li>
+                <li><strong>No CHAT panel on the right side</strong> of the VS Code window. Same source &mdash; the right-side CHAT panel disappears once Copilot Chat&rsquo;s AI features are disabled.</li>
+              </ul>
+              <p>If any of these are still showing up, go back to the Extensions panel and confirm GitHub Copilot Chat reads <strong>&ldquo;AI Features Disabled&rdquo;</strong> next to its name.</p>
             </div>
           </div>
         </div>
@@ -560,6 +577,20 @@
           Save the file (<code>Cmd + S</code> on Mac, <code>Ctrl + S</code> on Windows). Then click the <strong>Play button</strong> in the upper-right corner of the editor. A terminal panel opens at the bottom of VS Code and you should see:
         </p>
         <div class="lc-code-block"><pre>Hello, World!</pre></div>
+        <div class="lc-callout lc-callout--tip">
+          <div class="lc-callout__icon">
+            <span class="material-symbols-outlined">lightbulb</span>
+          </div>
+          <div class="lc-callout__bubble">
+            <div class="lc-callout__title">Your Output Is the Last Line &mdash; Ignore the Path Noise Above It</div>
+            <div class="lc-callout__body">
+              <p>When you click the Play button, VS Code dumps a noisy first line into the terminal before your program&rsquo;s actual output. The whole thing looks roughly like this:</p>
+              <pre><code>PS C:\Users\you&gt; &amp; 'C:/Users/you/AppData/Local/Programs/Python/Python314/python.exe' 'c:/Users/you/Documents/is2053/start_here/hello.py'
+Hello, World!</code></pre>
+              <p>That first long line is just VS Code telling the terminal <em>which</em> Python it&rsquo;s about to run and <em>which</em> file it&rsquo;s feeding in &mdash; useful for troubleshooting later, but it is not your program&rsquo;s output. <strong>Your output is the line that actually says <code>Hello, World!</code></strong> &mdash; if you see that line, your program ran correctly. The path stuff above it is normal and will appear every time you click Play.</p>
+            </div>
+          </div>
+        </div>
         <p>
           That&rsquo;s your first Python program working locally. Now we send it to CodeGrade.
         </p>
