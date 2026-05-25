@@ -233,8 +233,40 @@ def render_card_section(item):
             f'        </div>\n'
             f'      </div>'
         )
+    elif rtype == 'welcome_video':
+        return render_welcome_video(item)
     else:
         raise ValueError(f"Unknown card section type: {rtype}")
+
+
+def render_welcome_video(item):
+    """A two-column flex block: Panopto video (left, ~25%) + synopsis (right, ~75%).
+
+    Used at the top of the Overview card on the Start Here page and (with the
+    same markup) on the home page. Flex-wrap collapses to a single column on
+    narrow viewports.
+    """
+    paragraphs = '\n'.join(
+        f'          <p>{p}</p>' for p in item['paragraphs']
+    )
+    return (
+        f'      <!-- Welcome video + synopsis -->\n'
+        f'      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; margin: 0 0 24px 0;">\n'
+        f'        <div style="flex: 0 0 25%; min-width: 280px;">\n'
+        f'          <div style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%;">\n'
+        f'            <iframe src="{item["panoptoUrl"]}"\n'
+        f'                    style="border: 1px solid #464646; position: absolute; top: 0; left: 0; width: 100%; height: 100%; box-sizing: border-box;"\n'
+        f'                    allowfullscreen allow="autoplay"\n'
+        f'                    aria-label="Panopto Embedded Video Player"\n'
+        f'                    aria-description="{item["ariaDescription"]}"></iframe>\n'
+        f'          </div>\n'
+        f'        </div>\n'
+        f'        <div style="flex: 1 1 320px;">\n'
+        f'          <div class="lc-h3 lc-h3--yellow" style="margin-top: 0;">{item["heading"]}</div>\n'
+        f'{paragraphs}\n'
+        f'        </div>\n'
+        f'      </div>'
+    )
 
 
 # ── Card-level renderers ──────────────────────────────────────────────
