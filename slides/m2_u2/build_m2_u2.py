@@ -211,7 +211,7 @@ def main():
                 "num2), that is parameters. show_sum(12, 45), that is arguments. 12 lands in num1, 45 "
                 "lands in num2. Order matters. If you wrote show_sum(45, 12), num1 would be 45 and num2 "
                 "would be 12. For most of the functions we write, order matters a lot. The check_percentage "
-                "function you will write in Lab 2.2 takes one parameter, the percent chance. flip_coin "
+                "function you will write in Lab 2.2 takes one parameter called chance, which is the percent value from 0 to 100. flip_coin "
                 "takes zero parameters. roll_d20 takes zero parameters. Most early functions are like that. "
                 "Pick the smallest number of parameters that gets the job done."
             ),
@@ -638,7 +638,7 @@ Second flip: TAILS
     deck.add_concept_slide(
         title='What You Can Build Now: Lab 2.2',
         bullets=[
-            "Create function_library.py with three functions: flip_coin(), roll_d20(), check_percentage(percent).",
+            "Create function_library.py with three functions: flip_coin(), roll_d20(), check_percentage(chance).",
             "All three use random.randint with different ranges. Each returns a value (string, int, or bool).",
             "Update lab-2-2.py to import function_library AND random. Bring forward your Lab 2.1 code.",
             "Replace fixed MILES_PER_TURN with D20 rolls: roll_d20() * MILES_MULTIPLIER (= 10).",
@@ -650,8 +650,8 @@ Second flip: TAILS
                 "Three functions go in it. flip_coin returns either the string HEADS or the string TAILS. "
                 "Implementation: random.randint(0, 1), then map 1 to HEADS and 0 to TAILS. roll_d20 "
                 "returns a random integer 1 through 20, with the constants D20_MIN and D20_MAX at the top "
-                "of the file. check_percentage takes a parameter called percent and returns True or False "
-                "based on whether a random 1-to-100 roll is less than or equal to that percent. Step two, "
+                "of the file. check_percentage takes a parameter called chance and returns True or False "
+                "based on whether a random 1-to-100 roll is less than or equal to that chance. Step two, "
                 "carry your Lab 2.1 code forward into lab-2-2.py, then make some changes. Import "
                 "function_library at the top. Import random too, because the main game uses random.randint "
                 "directly to pick which hazard happens. Replace the fixed 50-mile-per-turn travel with a "
