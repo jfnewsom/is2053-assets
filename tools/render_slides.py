@@ -176,13 +176,15 @@ def _colorize_output_line(text):
     if leading_dash:
         segments.append((BUILTIN, leading_dash.group(1)))
         pos = leading_dash.end()
-    for m in re.finditer(r"\d+\.?\d*", text[pos:]):
-        abs_start = pos + m.start()
-        abs_end   = pos + m.end()
-        if abs_start > pos:
-            segments.append((DEFAULT, text[pos:abs_start]))
+    # Scan the whole string with absolute offsets so pos and match
+    # positions stay in the same coordinate space.
+    for m in re.finditer(r"\d+\.?\d*", text):
+        if m.start() < pos:
+            continue
+        if m.start() > pos:
+            segments.append((DEFAULT, text[pos:m.start()]))
         segments.append((NUMBER, m.group()))
-        pos = abs_end
+        pos = m.end()
     if pos < len(text):
         segments.append((DEFAULT, text[pos:]))
     return segments if segments else [(DEFAULT, text)]
