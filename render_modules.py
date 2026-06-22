@@ -31,6 +31,8 @@ Output:  pages/support/module-1-overview.html
 import json
 from pathlib import Path
 
+from components import DEADLINE_CALLOUT_TITLE, DEADLINE_CALLOUT_BODY
+
 
 # ── Tier-to-color mapping for lab table badges ────────────────────────
 
@@ -106,6 +108,21 @@ def render_callout(callout):
         f'</div>'
         f'</div>'
     )
+
+
+def render_deadline_callout():
+    """Canonical due-time notice for module overview pages.
+
+    Renders the same wording as components.render_deadline_callout (imported
+    from components so the language is single-source) using the Material
+    Symbols clock glyph that the module pages already use for callouts.
+    """
+    return render_callout({
+        "variant": "info",
+        "icon": "schedule",
+        "title": DEADLINE_CALLOUT_TITLE,
+        "body_html": f"<p>{DEADLINE_CALLOUT_BODY}</p>",
+    })
 
 
 def render_recording_button(url, label):
@@ -316,6 +333,7 @@ def render_module_page(module):
         f'{sec_client}'
         f'{sec_skills}'
         f'{sec_recordings}'
+        f'    {render_deadline_callout()}\n'
         f'    </div>\n'
         f'  </div>\n'
         '\n'

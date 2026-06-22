@@ -110,6 +110,12 @@ CALLOUT_ICONS = {
         <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
         <circle cx="15" cy="21" r="1.5" fill="#000"/>
     </svg>""",
+
+    "clock": """<svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="15" x2="15" y2="9" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="15" x2="19" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>""",
 }
 
 CALLOUT_ACCENT = {
@@ -120,7 +126,48 @@ CALLOUT_ACCENT = {
     "bookex":  "#BF40FF",
     "warning": "#FF1744",
     "strategy": "#FF6B1A",
+    "clock":   "#0055FF",
 }
+
+
+# ============================================================
+# Deadline Callout — canonical, single source of truth
+# ============================================================
+#
+# The wording below is the ONE authoritative version of the
+# due-time notice. Labs, BookEx sheets, and module overview pages
+# all render from this string so the language can never drift.
+# Always "US Central Time" spelled out (no bare "CT"); no em dashes.
+
+DEADLINE_CALLOUT_TITLE = "All Due Times Are 11:59 p.m. US Central Time"
+DEADLINE_CALLOUT_BODY = (
+    "BookEx and Lab deadlines are <strong>11:59 p.m. US Central Time</strong> "
+    "(the home time zone of UT San Antonio) on their due date, no matter where "
+    "you are located. Module exams open Sunday and close the following Tuesday "
+    "at the same 11:59 p.m. US Central Time. Canvas enforces this cutoff "
+    "automatically, so submit early to be safe."
+)
+
+
+def render_deadline_callout() -> str:
+    """Render the canonical due-time notice as an info (blue) lc-callout.
+
+    Uses the inline-SVG clock icon so it matches the lab/BookEx card system.
+    Module overview pages render their own copy of the same wording with the
+    Material Symbols clock glyph (see render_modules.render_deadline_callout).
+    """
+    return f"""    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        {CALLOUT_ICONS["clock"].strip()}
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">{DEADLINE_CALLOUT_TITLE}</div>
+        <div class="lc-callout__body">
+          <p>{DEADLINE_CALLOUT_BODY}</p>
+        </div>
+      </div>
+    </div>
+"""
 
 
 # ============================================================
@@ -780,6 +827,10 @@ def render_final_checklist(checklist: dict) -> str:
 {checklist_items}    </ul>
 """ if checklist_items else ""
 
+    # Deadline notice — canonical due-time callout, rendered on every
+    # lab and BookEx sheet directly under the submission checklist.
+    deadline_block = render_deadline_callout()
+
     # Scope reminder — plain text
     scope_block = f"""    <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
     <p>{html_lib.escape(scope_reminder)}</p>
@@ -860,7 +911,7 @@ def render_final_checklist(checklist: dict) -> str:
     return f"""{card_open("red")}
 {topper("Final Checklist", "Check It Before You Wreck It")}
 {panel_open()}
-{submit_block}{scope_block}{permitted_block}{warnings_html}{save_block}{final_check_block}{integrity_block}{panel_close()}{card_close()}"""
+{submit_block}{deadline_block}{scope_block}{permitted_block}{warnings_html}{save_block}{final_check_block}{integrity_block}{panel_close()}{card_close()}"""
 
 
 # ============================================================
