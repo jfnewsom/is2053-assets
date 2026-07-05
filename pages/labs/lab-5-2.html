@@ -139,7 +139,7 @@
       <tr>
         <td><strong>Final Check &amp; Submit</strong></td>
         <td>10 min</td>
-        <td>Run test.py end-to-end, verify all 16 tests pass, submit player.py to CodeGrade</td>
+        <td>Run test.py end-to-end, verify all 53 tests pass, submit player.py to CodeGrade</td>
       </tr>
       <tr class="lc-table__total">
         <td colspan="2"><strong>Total Estimated Time</strong></td>
@@ -919,32 +919,110 @@ STATS:
     <p>Before you submit, run your program end-to-end. Your output should match this exactly:</p>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
-      <pre>test.py output when all Player methods are correctly implemented:
+      <pre>test.py output when city.py and player.py are both correct:
 
-Running Player class tests...
+=======================================================
+  TESTING: city.py
+=======================================================
+  [PASS] city.py imported successfully
 
-[PASS] Test 1: Player __init__ sets name and starting city
-[PASS] Test 2: get_name() returns the player name
-[PASS] Test 3: get_current_city() returns the starting city after init
-[PASS] Test 4: get_total_miles() returns 0 after init
-[PASS] Test 5: travel_to() updates current city
-[PASS] Test 6: travel_to() adds distance to total_miles
-[PASS] Test 7: travel_to() appends to visited list
-[PASS] Test 8: travel_to() adds to unique_cities set
-[PASS] Test 9: record_hazard() increments counter
-[PASS] Test 10: record_hazard() tracks escaped count
-[PASS] Test 11: record_hazard() adds to unique_hazards set
-[PASS] Test 12: record_trivia() tracks asked and correct counts
-[PASS] Test 13: get_route_string() returns &#x27; -&gt; &#x27; joined cities
-[PASS] Test 14: get_trivia_accuracy() returns formatted percentage
-[PASS] Test 15: get_unique_city_count() matches set size
-[PASS] Test 16: __str__ returns a readable summary string
+  --- Creating City objects ---
+  [PASS] City(&#x27;San Antonio&#x27;, &#x27;START&#x27;, &#x27;Home of the Alamo&#x27;) created
+  [PASS] City(&#x27;Corpus Christi&#x27;, &#x27;WIN&#x27;, ...) created
+  [PASS] City(&#x27;Laredo&#x27;, &#x27;DEAD_END&#x27;, ...) created
+  [PASS] City(&#x27;El Paso&#x27;, &#x27;WRONG_WAY&#x27;, ...) created
 
-All 16 tests passed. Submit player.py to CodeGrade.
+  --- Getter methods ---
+  [PASS] get_name() returns the city name
+  [PASS] get_type() returns the city type in uppercase
+  [PASS] get_tagline() returns the city tagline
 
-(The exact test names and pass count come from test.py provided in the
-lab download. If test.py reports a different total, that file is the
-source of truth — not this block.)</pre>
+  --- __str__ method ---
+  [PASS] str(city) returns name followed by type in parentheses
+
+  --- Connection methods ---
+  [PASS] add_connection() stores the distance correctly
+  [PASS] get_distance_to() returns correct distance
+  [PASS] get_distance_to() returns -1 for unconnected city
+  [PASS] get_destination_names() contains Houston
+  [PASS] get_destination_names() returns a list
+
+  --- Status methods ---
+  [PASS] is_win_city() returns False for START city
+  [PASS] is_win_city() returns True for WIN city
+  [PASS] is_dead_end() returns False for START city
+  [PASS] is_dead_end() returns True for DEAD_END city
+  [PASS] is_dead_end() returns True for WRONG_WAY city
+
+  --- get_arrival_message() ---
+  [PASS] get_arrival_message() returns a non-empty string
+  [PASS] get_arrival_message() for WIN city mentions city name or beach
+  [PASS] get_arrival_message() for DEAD_END city returns a string
+
+  --- display_destinations() ---
+  [PASS] display_destinations() completes without raising an exception
+
+=======================================================
+  TESTING: player.py
+=======================================================
+  [PASS] player.py imported successfully
+
+  --- Creating Player object ---
+  [PASS] Player(&#x27;Maria&#x27;, &#x27;San Antonio&#x27;) created
+
+  --- Initial state (before any travel) ---
+  [PASS] get_name() returns the player name
+  [PASS] get_current_city() returns the starting city
+  [PASS] get_total_miles() returns 0 before any travel
+  [PASS] get_visited_cities() contains San Antonio at start
+  [PASS] get_visited_cities() returns a list
+  [PASS] get_unique_city_count() returns 1 at start
+  [PASS] get_hazards_faced() returns 0 before any hazards
+  [PASS] get_hazards_escaped() returns 0 before any hazards
+  [PASS] get_unique_hazard_count() returns 0 before any hazards
+  [PASS] get_trivia_asked() returns 0 before any trivia
+  [PASS] get_trivia_correct() returns 0 before any trivia
+
+  --- travel_to() method ---
+  [PASS] travel_to() runs without error
+  [PASS] get_current_city() returns Houston after traveling there
+  [PASS] get_total_miles() returns 200 after traveling 200 miles
+  [PASS] get_visited_cities() contains Houston after traveling there
+  [PASS] get_unique_city_count() returns 2 after visiting one new city
+  [PASS] get_total_miles() returns 250 after SA-&gt;Houston-&gt;Galveston
+
+  --- record_hazard() method ---
+  [PASS] get_hazards_faced() returns 1 after one hazard
+  [PASS] get_hazards_escaped() returns 1 after escaped hazard
+  [PASS] get_unique_hazard_count() returns 1 after one hazard
+  [PASS] get_hazards_faced() returns 2 after second hazard
+  [PASS] get_hazards_escaped() still returns 1 after unlucky hazard
+
+  --- record_trivia() method ---
+  [PASS] get_trivia_asked() returns 1 after one question
+  [PASS] get_trivia_correct() returns 1 after correct answer
+  [PASS] get_trivia_asked() returns 2 after second question
+  [PASS] get_trivia_correct() still returns 1 after wrong answer
+
+  --- Unique set behavior ---
+  [PASS] get_unique_city_count() stays at 3 after revisiting Houston
+  [PASS] get_visited_cities() contains Houston at least twice
+  [PASS] get_unique_hazard_count() stays at 2 after repeat hazard
+
+  --- Display methods ---
+  [PASS] get_route_string() returns a non-empty string
+  [PASS] get_route_string() contains San Antonio and Houston
+  [PASS] get_route_string() uses -&gt; between cities
+  [PASS] get_trivia_accuracy() returns a percentage string
+  [PASS] get_unique_cities() returns a set
+
+  --- __str__ method ---
+  [PASS] str(player) contains the player name
+
+=======================================================
+  Results: 53 passed, 0 failed out of 53 tests
+  All tests passed! Go submit to CodeGrade.
+=======================================================</pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">If Something Breaks</div>
     <p>Common failure patterns and where they came from:</p>
