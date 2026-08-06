@@ -43,6 +43,7 @@ def main():
 
     stripped_files = 0
     leaked = []
+    escaped = []
 
     for src_file in sorted(SRC.rglob('*')):
         rel = src_file.relative_to(SRC)
@@ -61,11 +62,21 @@ def main():
             original = text
             for pattern, _name in SENTINELS:
                 text = pattern.sub('', text)
+            # Absolute links into the pages/ tree must stay inside the 904/
+            # mirror, or one click sends a 904 student back to the main site.
+            text = text.replace('is2053-assets/pages/', 'is2053-assets/904/')
             if text != original:
                 stripped_files += 1
             # Safety net: no Panopto reference may survive in the 904 tree.
             if 'panopto' in text.lower():
                 leaked.append(str(rel))
+            # Safety net: no link may escape back into the pages/ tree.
+            # Absolute is2053-assets/pages/ URLs are rewritten above, so this
+            # catches forms the rewrite misses: relative ../pages/ climbs and
+            # any absolute form that survives a future rewrite regression.
+            # (Guards baked HTML; runtime-generated links live in nav.js.)
+            if 'is2053-assets/pages/' in text or re.search(r'\.\./+pages/', text):
+                escaped.append(str(rel))
             dst_file.write_text(text, encoding='utf-8')
         else:
             shutil.copy2(src_file, dst_file)
@@ -77,7 +88,13 @@ def main():
             print(f'  904/{f}')
         print('Wrap those embeds in VIDEO:START/END sentinels and re-run.')
         sys.exit(1)
-    print('render_904: verified zero Panopto references in 904/ tree.')
+    if escaped:
+        print('render_904: WARNING - links escaping to /pages/ found in:')
+        for f in escaped:
+            print(f'  904/{f}')
+        print('These bypass the URL rewrite; investigate the source pages.')
+        sys.exit(1)
+    print('render_904: verified zero Panopto references and zero /pages/ escape links in 904/ tree.')
 
 
 if __name__ == '__main__':

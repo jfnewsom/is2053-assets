@@ -27,10 +27,14 @@
 
   /* ── Base URLs ──────────────────────────────────────────── */
   const BASE = 'https://jfnewsom.github.io/is2053-assets';
-  const S    = BASE + '/pages/support/';
-  const SC   = BASE + '/pages/scenario/';
-  const L    = BASE + '/pages/labs/';
-  const BX   = BASE + '/pages/bookex/';
+  /* Section 904 (in-person) pages live in a parallel /904/ tree with the
+     same structure as /pages/. Detect which tree we're in so nav links
+     keep students inside their section's variant. */
+  const TREE = window.location.pathname.includes('/904/') ? '/904/' : '/pages/';
+  const S    = BASE + TREE + 'support/';
+  const SC   = BASE + TREE + 'scenario/';
+  const L    = BASE + TREE + 'labs/';
+  const BX   = BASE + TREE + 'bookex/';
 
   /* ── Fonts ──────────────────────────────────────────────── */
   if (!document.querySelector('link[href*="Roboto+Slab"]') &&
