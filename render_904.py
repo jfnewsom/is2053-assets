@@ -49,7 +49,9 @@ def main():
         rel = src_file.relative_to(SRC)
         # Source-of-truth folders (JSON authoring sources) are never mirrored.
         # 904/ contains rendered output only; the single source lives in pages/.
-        if 'json' in rel.parts:
+        # Image assets are also skipped: they are linked by absolute URL and
+        # load from the single pages/ copy in both trees.
+        if 'json' in rel.parts or 'images' in rel.parts:
             continue
         dst_file = DST / rel
         if src_file.is_dir():
@@ -62,20 +64,26 @@ def main():
             original = text
             for pattern, _name in SENTINELS:
                 text = pattern.sub('', text)
-            # Absolute links into the pages/ tree must stay inside the 904/
-            # mirror, or one click sends a 904 student back to the main site.
-            text = text.replace('is2053-assets/pages/', 'is2053-assets/904/')
+            # Absolute PAGE links into the pages/ tree must stay inside the
+            # 904/ mirror, or one click sends a 904 student back to the main
+            # site. Asset URLs (images, data files, scripts) are NOT rewritten:
+            # assets are identical across sections and load from the single
+            # pages/ copy.
+            text = re.sub(
+                r'is2053-assets/pages/([^"\')\s]*?\.html(?:[#?][^"\')\s]*)?)',
+                r'is2053-assets/904/\1',
+                text)
             if text != original:
                 stripped_files += 1
             # Safety net: no Panopto reference may survive in the 904 tree.
             if 'panopto' in text.lower():
                 leaked.append(str(rel))
-            # Safety net: no link may escape back into the pages/ tree.
-            # Absolute is2053-assets/pages/ URLs are rewritten above, so this
-            # catches forms the rewrite misses: relative ../pages/ climbs and
-            # any absolute form that survives a future rewrite regression.
+            # Safety net: no PAGE link may escape back into the pages/ tree.
+            # Asset URLs into pages/ are intentional (single asset copy);
+            # .html links and relative ../pages/ climbs are escapes.
             # (Guards baked HTML; runtime-generated links live in nav.js.)
-            if 'is2053-assets/pages/' in text or re.search(r'\.\./+pages/', text):
+            if re.search(r'is2053-assets/pages/[^"\')\s]*\.html', text) \
+                    or re.search(r'\.\./+pages/', text):
                 escaped.append(str(rel))
             dst_file.write_text(text, encoding='utf-8')
         else:
