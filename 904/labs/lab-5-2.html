@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep in the Heart — IS2053</title>
+    <link rel="icon" type="image/png" href="https://jfnewsom.github.io/is2053-assets/favicon.png">
+    <link rel="stylesheet" href="../../labs.css">
+</head>
+<body>
+<div class="lc-wrapper">
+<div class="lc-card lc-card--blue">
+  <div class="lc-topper">
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0;">
+          <div class="lc-lab-badge">
+            <div class="lc-lab-badge__word">LAB</div>
+            <div class="lc-lab-badge__num">5.2</div>
+          </div>
+        </td>
+        <td style="vertical-align: bottom; padding: 0 0 0 16px;">
+          <div class="lc-topper-title">Deep in the Heart</div>
+        </td>
+        <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">
+          <img src="../../branding/BatCity-logo-3D.png" alt="Bat City Collective" style="height: 120px; width: auto; display: block;">
+        </td>
+      </tr>
+    <tr><td colspan="3" style="padding: 10px 0 0 0;"><div class="lc-sub-banner">MODULE 5 &bull; UNIT 2 &bull; MASTER &bull; CHAPTERS 10: CLASSES AND OBJECT-ORIENTED PROGRAMMING</div></td></tr>
+    </table>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-h3 lc-h3--yellow">Overview</div>
+    <img src="../../branding/AllMyEggses3D-Full.png" alt="All My Eggses Live in Texas" style="float: right; height: 110px; margin: 0 0 12px 20px;">
+    <p>Look at the top of <code>main()</code> in your <code>lab-5-1.py</code>. You'll see ten state variables: <code>current_city</code>, <code>total_miles</code>, <code>visited</code>, <code>unique_cities</code>, <code>unique_hazards</code>, and five more. Every one of them is related — they all describe the same thing: the player's journey. This unit, you'll bundle all ten into a single <strong>Player class</strong>. The Player object tracks everything, and the main program talks to it through method calls. <code>lab-5-2.py</code> is provided — your job is to build <code>player.py</code> so it runs.</p>
+    <div style="clear: both;"></div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"You wrote the same game five different ways this semester. Each time it got better. Module 1 was raw Python. Module 3 added files. Module 4 added dictionaries. Module 5 brings it home with objects. That's not repetition -- that's how you learn to build things that last."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Lead Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Filename</div>
+    <p>Submit <code>player.py</code> only this unit. CodeGrade already has <code>lab-5-2.py</code>, <code>city.py</code>, <code>function_library.py</code>, and the four data files -- it runs your <code>player.py</code> against them automatically.</p>
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <ul class="lc-objectives">
+      <li>Define a <code>Player</code> class using the same OOP pattern as <code>City</code></li>
+      <li>Track all game state in one object: location, miles, cities visited, hazards, and trivia</li>
+      <li>Use a list and a set inside a class to track the full route and unique cities</li>
+      <li>Replace ten scattered state variables with a single <code>player</code> object</li>
+      <li>See the provided <code>lab-5-2.py</code> as a spec: every <code>player.</code> call tells you a method to build</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Key Concepts</div>
+    <p><strong>Chapter 10:</strong> <code>class</code> definition, <code>__init__</code> constructor, private attributes with double-underscore prefix, getter methods, state-updating methods, <code>__str__</code> special method, and list/set as class attributes.</p>
+    <div class="lc-h3 lc-h3--yellow">Textbook Reference</div>
+    <p>Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 10</p>
+    <div class="lc-h3 lc-h3--yellow">Program Requirements</div>
+    <ul>
+      <li><code>player.py</code> defines a class named <code>Player</code> with private attributes</li>
+      <li><code>Player.__init__(name, starting_city)</code> initializes all tracking state</li>
+      <li><code>Player</code> has twelve getter-style methods for all attributes, including <code>get_unique_city_count()</code> and <code>get_unique_hazard_count()</code> which return lengths rather than raw attributes</li>
+      <li><code>travel_to(city_name, distance)</code> updates current city, miles, visited list, and unique set</li>
+      <li><code>record_hazard(hazard_name, escaped)</code> updates hazard counters and unique hazard set</li>
+      <li><code>record_trivia(correct)</code> updates trivia counters</li>
+      <li><code>get_route_string()</code> returns the full route as a <code>' -> '</code> separated string</li>
+      <li><code>get_trivia_accuracy()</code> returns accuracy as a percentage string</li>
+      <li><code>__str__</code> method returns a single-line summary of the player</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Required Data Files</div>
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Format</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr><td><code>lab-5-2.py</code></td><td>Provided main program -- do not modify</td><td><a href="data/5-2/lab-5-2.py" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; lab-5-2.py</a></td></tr>
+      <tr><td><code>test.py</code></td><td>Local test harness -- run before submitting</td><td><a href="data/5-2/test.py" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; test.py</a></td></tr>
+      <tr><td><code>city.py</code></td><td>Reference City class -- backup only, use yours from Lab 5.1 if it works</td><td><a href="data/5-2/city.py" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city.py</a></td></tr>
+      <tr><td><code>city_distances.txt</code></td><td>Same as Module 4 (carried forward)</td><td><a href="data/5-2/city_distances.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_distances.txt</a></td></tr>
+      <tr><td><code>city_info.txt</code></td><td>Same as Module 4 (carried forward)</td><td><a href="data/5-2/city_info.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; city_info.txt</a></td></tr>
+      <tr><td><code>hazards.txt</code></td><td>Same as Module 4 (carried forward)</td><td><a href="data/5-2/hazards.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; hazards.txt</a></td></tr>
+      <tr><td><code>trivia.txt</code></td><td>Same as Module 4 (carried forward)</td><td><a href="data/5-2/trivia.txt" download style="color:#39FF14; font-family:var(--font-mono); font-size:12px;">&#11123; trivia.txt</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--orange">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Time Guide</div>
+    <div class="lc-sub-banner">Plan Your Session &nbsp;&mdash;&nbsp; 60-90 Minutes</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Time</th>
+            <th>Task</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><strong>CP1: File Setup &amp; Constructor</strong></td>
+        <td>15 min</td>
+        <td>Create &lt;code&gt;player.py&lt;/code&gt;, define &lt;code&gt;__init__&lt;/code&gt; with all attributes</td>
+      </tr>
+      <tr>
+        <td><strong>CP2: Getter Methods</strong></td>
+        <td>15 min</td>
+        <td>Add all getter methods</td>
+      </tr>
+      <tr>
+        <td><strong>CP3: State-Updating Methods</strong></td>
+        <td>20 min</td>
+        <td>Add &lt;code&gt;travel_to()&lt;/code&gt;, &lt;code&gt;record_hazard()&lt;/code&gt;, &lt;code&gt;record_trivia()&lt;/code&gt;</td>
+      </tr>
+      <tr>
+        <td><strong>CP4: Display Methods, __str__, and Final Test</strong></td>
+        <td>15 min</td>
+        <td>Add display methods and &lt;code&gt;__str__&lt;/code&gt;, run test.py</td>
+      </tr>
+      <tr>
+        <td><strong>Final Check &amp; Submit</strong></td>
+        <td>10 min</td>
+        <td>Run test.py end-to-end, verify all 53 tests pass, submit player.py to CodeGrade</td>
+      </tr>
+      <tr class="lc-table__total">
+        <td colspan="2"><strong>Total Estimated Time</strong></td>
+        <td><strong>60-90 Minutes</strong></td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-callout lc-callout--strategy">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 4 C10 4 6 8 6 13 C6 17 9 20 11 22 L11 24 L19 24 L19 22
+                 C21 20 24 17 24 13 C24 8 20 4 15 4 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="11" y1="26" x2="19" y2="26" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="8" x2="15" y2="16" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="19" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Strategy</div>
+        <div class="lc-callout__body">
+          <p>Start by reading through the provided &lt;code&gt;lab-5-2.py&lt;/code&gt; and noting every &lt;code&gt;player.&lt;/code&gt; call. That list is your build checklist. The Player class follows the exact same pattern as the City class you built in Lab 5.1 -- private attributes, getters, methods that update state, and &lt;code&gt;__str__&lt;/code&gt;. If City clicked, Player will too.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--cyan">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Before You Begin</div>
+    <div class="lc-sub-banner">Program Architecture</div>
+  </div>
+  <div class="lc-panel">
+    <p class="lc-arch-intro">The Player class replaces ten scattered variables from <code>lab-5-1.py</code>&apos;s <code>main()</code> function. Each attribute maps directly to one of those variables. Each method maps to the lines that updated them. Use this architecture as your build guide. <br><br><code>lab-5-2.py</code> and <code>test.py</code> are provided this unit &mdash; download them along with the four data files. <strong>Do not modify <code>lab-5-2.py</code></strong>. Read through it carefully: every <code>player.</code> call inside <code>lab-5-2.py</code> tells you a method your <code>Player</code> class needs to implement. A reference <code>city.py</code> is also available below as a backup. If your Lab 5.1 <code>city.py</code> works, keep using it &mdash; otherwise grab the reference.</p>
+    <div class="lc-arch">
+      <pre># ---- player.py ----
+class Player:
+
+    # --- Constructor ---   [CP1]
+    <span class="lc-arch-fn">__init__(self, name, starting_city)</span>
+        self.__name              = name
+        self.__current_city      = starting_city
+        self.__total_miles       = 0
+        self.__visited_cities    = [starting_city]   (list -- preserves order)
+        self.__unique_cities     = <span class="lc-arch-fn">set()</span>             (set -- no duplicates)
+        <span class="lc-arch-fn">self.__unique_cities.add(starting_city)</span>
+        self.__hazards_faced     = 0
+        self.__hazards_escaped   = 0
+        self.__unique_hazards    = <span class="lc-arch-fn">set()</span>
+        self.__trivia_asked      = 0
+        self.__trivia_correct    = 0
+
+    # --- Getter Methods ---   [CP2]
+    <span class="lc-arch-fn">get_name()</span>                  returns self.__name
+    <span class="lc-arch-fn">get_current_city()</span>          returns self.__current_city
+    <span class="lc-arch-fn">get_total_miles()</span>           returns self.__total_miles
+    <span class="lc-arch-fn">get_visited_cities()</span>        returns <span class="lc-arch-fn">self.__visited_cities.copy()</span>
+    <span class="lc-arch-fn">get_unique_cities()</span>         returns <span class="lc-arch-fn">self.__unique_cities.copy()</span>
+    <span class="lc-arch-fn">get_unique_city_count()</span>     returns <span class="lc-arch-fn">len(self.__unique_cities)</span>
+    <span class="lc-arch-fn">get_hazards_faced()</span>         returns self.__hazards_faced
+    <span class="lc-arch-fn">get_hazards_escaped()</span>       returns self.__hazards_escaped
+    <span class="lc-arch-fn">get_unique_hazards()</span>        returns <span class="lc-arch-fn">self.__unique_hazards.copy()</span>
+    <span class="lc-arch-fn">get_unique_hazard_count()</span>   returns <span class="lc-arch-fn">len(self.__unique_hazards)</span>
+    <span class="lc-arch-fn">get_trivia_asked()</span>          returns self.__trivia_asked
+    <span class="lc-arch-fn">get_trivia_correct()</span>        returns self.__trivia_correct
+
+    # --- Travel Methods ---   [CP3]
+    <span class="lc-arch-fn">travel_to(city_name, distance)</span>
+        updates: __current_city, __total_miles, __visited_cities, __unique_cities
+
+    # --- Hazard Methods ---   [CP3]
+    <span class="lc-arch-fn">record_hazard(hazard_name, escaped)</span>
+        updates: __hazards_faced, __unique_hazards
+        if escaped: updates __hazards_escaped
+
+    # --- Trivia Methods ---   [CP3]
+    <span class="lc-arch-fn">record_trivia(correct)</span>
+        updates: __trivia_asked
+        if correct: updates __trivia_correct
+
+    # --- Display Methods ---   [CP4]
+    <span class="lc-arch-fn">get_route_string()</span>          &#x27; -&gt; &#x27;.<span class="lc-arch-fn">join(self.__visited_cities)</span>
+    <span class="lc-arch-fn">get_trivia_accuracy()</span>       returns percentage string e.g. &#x27;75.0%&#x27;
+    __str__                     returns &#x27;Maria in Houston (450 miles)&#x27;
+
+
+# ---- lab-5-2.py ---- (PROVIDED -- do not modify)
+from city import City
+from player import Player
+import function_library
+
+  ... all load functions unchanged ...
+  <span class="lc-arch-fn">build_cities()</span>        same as lab-5-1.py
+  <span class="lc-arch-fn">trivia_gate()</span>         same as lab-5-1.py
+  <span class="lc-arch-fn">handle_hazard(hazards, player)</span>     <span class="lc-arch-replaced">[REPLACED]</span> calls <span class="lc-arch-fn">player.record_hazard()</span>
+  <span class="lc-arch-fn">execute_travel(dest, dist, ...)</span>    <span class="lc-arch-replaced">[REPLACED]</span> calls <span class="lc-arch-fn">player.travel_to()</span>
+
+<span class="lc-arch-fn">main()</span>:
+  player = <span class="lc-arch-fn">Player(name, &#x27;San Antonio&#x27;)</span>   <span class="lc-arch-new">[NEW]</span> one line replaces ten variables
+  ... game loop calls player methods ...
+
+if __name__ == &#x27;__main__&#x27;: -&gt; <span class="lc-arch-fn">main()</span></pre>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--green">
+  <div class="lc-topper">
+    <div class="lc-topper-title">Checkpoints</div>
+    <div class="lc-sub-banner">4 Checkpoints</div>
+  </div>
+  <div class="lc-panel">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">1</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">File Setup &amp; Constructor</div>
+        <div class="lc-sub-banner">Create &lt;code&gt;player.py&lt;/code&gt; and define the Player class with all ten private attributes.</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>The Player class starts with one job: hold all the state that was scattered across <code>main()</code> in <code>lab-5-1.py</code>. Ten variables become ten private attributes, all initialized in one <code>__init__</code> method.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>In <code>lab-5-1.py</code>, if you wanted to know the player's current city, you'd look at <code>current_city</code>. If you wanted their total miles, <code>total_miles</code>. Two different names, two different places. Now it's <code>player.get_current_city()</code> and <code>player.get_total_miles()</code>. Same object. Same place. Everything the player <em>is</em> lives in one place.</p>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 10-12</strong>
+            — <code>cellphone.py</code>
+            (Step 1)
+            — You built a CellPhone class with private attributes for manufacturer, model, and price. Player follows the same pattern -- more attributes, same structure. Copy your City class to player.py, rename the class, and replace the attributes using the architecture diagram above.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Tyler-Nguyen.png" alt="Tyler Nguyen">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"When I first saw ten state variables in main() I thought that was just how games worked. Then Danny showed me a Player class and I literally said 'that's it?' One object. One place. Everything the player is, right there. I wish I'd learned this sooner."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Tyler Nguyen</div>
+        <div class="lc-mentor__role">Junior Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Create a new file called <code>player.py</code></li>
+      <li>Add the module docstring at the top with your name, abc123, section, and description</li>
+      <li>Define the <code>Player</code> class with a class docstring</li>
+      <li>Write <code>__init__(self, name, starting_city)</code> and initialize all ten private attributes -- use the architecture diagram as your guide</li>
+      <li>Pay attention to the list and set: <code>self.__visited_cities = [starting_city]</code> starts with the starting city already in it, and so does <code>self.__unique_cities</code></li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1:</strong> Add this test at the bottom of player.py:</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 2</span>
+p <span class="sy-op">=</span> Player<span class="sy-op">(</span><span class="sy-str">&#x27;Maria&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">&#x27;Player created successfully!&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-bi">type</span><span class="sy-op">(</span>p<span class="sy-op">)</span><span class="sy-op">)</span></pre>
+    </div>
+    <p><strong>Step 2:</strong> Run player.py. You should see:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Player created successfully!
+&lt;class &#x27;__main__.Player&#x27;&gt;</pre>
+    </div>
+    <p><strong>Step 3:</strong> Delete the debug code before continuing.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Inheriting from City: <code>class Player(City):</code></td>
+        <td>Player does not inherit from City -- they are separate classes. Inheritance is Chapter 11 and not part of this course.</td>
+      </tr>
+      <tr>
+        <td>Not pre-loading starting_city into the list and set</td>
+        <td>The starting city counts as visited from the moment the game begins</td>
+      </tr>
+      <tr>
+        <td>Using a single underscore: <code>self._name</code></td>
+        <td>Private attributes need double underscores: <code>self.__name</code></td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>player.py</code> with module docstring</li>
+      <li><code>Player</code> class with class docstring</li>
+      <li><code>__init__</code> accepting <code>name</code> and <code>starting_city</code></li>
+      <li>All ten private attributes initialized</li>
+      <li>Starting city pre-loaded in both <code>__visited_cities</code> and <code>__unique_cities</code></li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">2</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Getter Methods</div>
+        <div class="lc-sub-banner">Add all twelve getter-style methods.</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Twelve getter methods that provide read access to the Player's private data. These are the methods <code>lab-5-2.py</code> calls to build the final report. Same pattern you used in City -- each getter just returns its attribute.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Getters enforce a contract: outside code never touches private data directly. <code>lab-5-2.py</code> doesn't reach into <code>player.__total_miles</code> — it calls <code>player.get_total_miles()</code>. That one layer of separation is what makes it safe to change how the Player stores data internally without breaking anything that uses it. Two of the getters — <code>get_unique_city_count()</code> and <code>get_unique_hazard_count()</code> — return <code>len()</code> instead of the raw attribute. The caller gets a number, not a set. That is encapsulation doing real work.</p>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 10-12</strong>
+            — <code>cellphone.py</code>
+            (Step 1)
+            — You typed <code>get_manufact()</code>, <code>get_model()</code>, and <code>get_retail_price()</code> -- each just returned <code>self.__attribute</code>. All twelve Player getters follow exactly the same pattern.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Priya-Venkatesh.png" alt="Priya Venkatesh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Twelve getters sounds like a lot of repetition. But think of it as a public API. lab-5-2.py is the client. It only talks to Player through method calls. If we ever need to change how the Player stores miles internally, the client code doesn't change at all. That contract is worth writing twelve methods for."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Priya Venkatesh</div>
+        <div class="lc-mentor__role">Project Manager, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Add a <code># --- Getter Methods ---</code> comment below <code>__init__</code></li>
+      <li>Write a getter for each of the twelve methods listed in the architecture diagram -- ten return <code>self.__attribute</code> directly, and two (<code>get_unique_city_count()</code> and <code>get_unique_hazard_count()</code>) return <code>len(self.__attribute)</code></li>
+      <li>For <code>get_visited_cities()</code> and <code>get_unique_cities()</code>, return a <strong>copy</strong> with <code>.copy()</code> to protect the originals</li>
+      <li>Add a docstring to every method</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p><strong>Step 1:</strong> Add this test:</p>
+    <div class="lc-code-block">
+      <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 3</span>
+p <span class="sy-op">=</span> Player<span class="sy-op">(</span><span class="sy-str">&#x27;Maria&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;San Antonio&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Name: <span class="sy-op">{</span>p<span class="sy-op">.</span>get_name<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;City: <span class="sy-op">{</span>p<span class="sy-op">.</span>get_current_city<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Miles: <span class="sy-op">{</span>p<span class="sy-op">.</span>get_total_miles<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Unique cities: <span class="sy-op">{</span>p<span class="sy-op">.</span>get_unique_city_count<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Hazards faced: <span class="sy-op">{</span>p<span class="sy-op">.</span>get_hazards_faced<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;Trivia asked: <span class="sy-op">{</span>p<span class="sy-op">.</span>get_trivia_asked<span class="sy-op">(</span><span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    </div>
+    <p><strong>Step 2:</strong> You should see:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>Name: Maria
+City: San Antonio
+Miles: 0
+Unique cities: 1
+Hazards faced: 0
+Trivia asked: 0</pre>
+    </div>
+    <p><strong>Step 3:</strong> Delete the debug code before continuing.</p>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Returning the raw set instead of a copy: <code>return self.__unique_cities</code></td>
+        <td>The caller could modify the set directly. Use <code>return self.__unique_cities.copy()</code> to protect the original.</td>
+      </tr>
+      <tr>
+        <td>Returning <code>self.__unique_cities</code> for the count getter</td>
+        <td><code>get_unique_city_count()</code> returns <code>len(self.__unique_cities)</code>, not the set itself.</td>
+      </tr>
+      <tr>
+        <td>Missing a docstring on any getter</td>
+        <td>CodeGrade checks documentation on every method. One missing docstring is a deduction.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li>Twelve getter methods, each with a docstring</li>
+      <li><code>get_visited_cities()</code> and <code>get_unique_cities()</code> return copies</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">3</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">State-Updating Methods</div>
+        <div class="lc-sub-banner">Add &lt;code&gt;travel_to()&lt;/code&gt;, &lt;code&gt;record_hazard()&lt;/code&gt;, and &lt;code&gt;record_trivia()&lt;/code&gt; -- the methods that update the player&#x27;s state during the game.</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>Three methods that replace the scattered update statements in <code>lab-5-1.py</code>'s main() function. Each method handles multiple related updates in one place. Instead of four lines of code to record travel, it's one method call: <code>player.travel_to(dest, distance)</code>.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>In <code>lab-5-1.py</code>, recording a hazard meant four separate lines in <code>main()</code>: increment the counter, add to the set, check a boolean, maybe increment escaped. Now it is one call: <code>player.record_hazard(name, escaped)</code>. The Player knows how to update itself. The caller just says what happened. This is what object-oriented design means in practice — behavior lives with the data it operates on.</p>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Danny-Cavanaugh.png" alt="Danny Cavanaugh">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Three methods. travel_to(), record_hazard(), record_trivia(). Together they replace about twenty lines of scattered updates in main(). And next time we want to add a stat — say, a fuel tracker — we add one attribute and one method. We don't go hunting through main() trying to remember every place it touches."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Danny Cavanaugh</div>
+        <div class="lc-mentor__role">Lead Developer, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 10-12</strong>
+            — <code>cellphone.py</code>
+            (Step 1)
+            — The CellPhone class had a <code>set_retail_price()</code> method that updated <code>self.__retail_price</code>. Your <code>travel_to()</code>, <code>record_hazard()</code>, and <code>record_trivia()</code> methods follow the exact same pattern — a method that changes one or more private attributes based on what happened.
+          </li>
+          <li>
+            <strong>Program 10-9</strong>
+            — <code>bankaccount2.py</code>
+            (Step 1)
+            — The BankAccount <code>deposit()</code> method did <code>self.__balance = self.__balance + amount</code>. Your <code>travel_to()</code> does the same thing with miles: <code>self.__total_miles = self.__total_miles + distance</code>.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Add a <code># --- Travel Methods ---</code> comment</li>
+      <li>Define <code>travel_to(self, city_name, distance)</code> -- it must update all four travel attributes:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">travel_to</span><span class="sy-op">(</span>self<span class="sy-op">,</span> city_name<span class="sy-op">,</span> distance<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;
+    Travel to a new city.
+
+    Replaces in main():
+        current_city = final_dest
+        total_miles = total_miles + miles
+        visited.append(final_dest)
+        unique_cities.add(final_dest)
+    &quot;&quot;&quot;</span>
+    self<span class="sy-op">.</span>__current_city <span class="sy-op">=</span> city_name
+    self<span class="sy-op">.</span>__total_miles <span class="sy-op">=</span> self<span class="sy-op">.</span>__total_miles <span class="sy-op">+</span> distance
+    self<span class="sy-op">.</span>__visited_cities<span class="sy-op">.</span>append<span class="sy-op">(</span>city_name<span class="sy-op">)</span>
+    self<span class="sy-op">.</span>__unique_cities<span class="sy-op">.</span>add<span class="sy-op">(</span>city_name<span class="sy-op">)</span></pre>
+    </div>
+    <ol start="3">
+      <li>Add a <code># --- Hazard Methods ---</code> comment</li>
+      <li>Define <code>record_hazard(self, hazard_name, escaped)</code> -- update <code>__hazards_faced</code>, add to <code>__unique_hazards</code>, and increment <code>__hazards_escaped</code> only if <code>escaped</code> is True</li>
+      <li>Add a <code># --- Trivia Methods ---</code> comment</li>
+      <li>Define <code>record_trivia(self, correct)</code> -- increment <code>__trivia_asked</code> always, increment <code>__trivia_correct</code> only if <code>correct</code> is True</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <p>Run <code>python test.py</code> from your project folder. All Player tests through the state-updating section should pass.</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre># After player = Player(&#x27;Maria&#x27;, &#x27;San Antonio&#x27;)
+# then player.travel_to(&#x27;Houston&#x27;, 200)
+# then player.record_hazard(&quot;Speed trap!&quot;, False)
+# then player.record_trivia(True)
+
+print(player.get_current_city())   # Houston
+print(player.get_total_miles())    # 200
+print(player.get_unique_city_count())  # 2
+print(player.get_hazards_faced())  # 1
+print(player.get_hazards_escaped())  # 0
+print(player.get_trivia_asked())   # 1
+print(player.get_trivia_correct()) # 1</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Forgetting to update all four attributes in <code>travel_to()</code></td>
+        <td>Missing any one means the final report will be wrong</td>
+      </tr>
+      <tr>
+        <td>Using <code>=</code> instead of <code>+=</code> equivalent for miles</td>
+        <td>Write it out: <code>self.__total_miles = self.__total_miles + distance</code></td>
+      </tr>
+      <tr>
+        <td>Always incrementing <code>__hazards_escaped</code></td>
+        <td>Only increment if <code>escaped</code> is True -- use <code>if escaped:</code></td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>travel_to()</code> updating four attributes, with docstring</li>
+      <li><code>record_hazard()</code> updating faced count, unique set, and conditionally escaped count, with docstring</li>
+      <li><code>record_trivia()</code> updating asked count and conditionally correct count, with docstring</li>
+    </ol>
+    </div>
+    <hr class="lc-cp-sep">
+    <div class="lc-cp-row">
+      <div class="lc-cp-badge">
+        <div class="lc-cp-badge__word">Checkpoint</div>
+        <div class="lc-cp-badge__num">4</div>
+      </div>
+      <div class="lc-cp-content">
+        <div class="lc-cp-title">Display Methods, __str__, and Final Test</div>
+        <div class="lc-sub-banner">Add the display methods, &lt;code&gt;__str__&lt;/code&gt;, run the full test suite, then submit.</div>
+      </div>
+    </div>
+    <div class="lc-cp-body">
+    <div class="lc-h3 lc-h3--yellow">What You're Building</div>
+    <p>The final methods: <code>get_route_string()</code> formats the travel history as a readable route, <code>get_trivia_accuracy()</code> calculates the accuracy percentage, and <code>__str__</code> gives a one-line summary of the player's current state.</p>
+    <div class="lc-h3 lc-h3--yellow">Why This Matters</div>
+    <p>Display methods are the Player's voice. <code>get_route_string()</code> and <code>get_trivia_accuracy()</code> transform raw stored data into something readable — the same work a report generator or dashboard does professionally. <code>__str__</code> is Python's protocol for making objects printable: implement it, and <code>print(player)</code> just works. These three methods complete the Player's public interface.</p>
+    <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
+    <div class="lc-callout lc-callout--bookex">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 5 L6 25 L22 25 C23 25 24 24 24 23 L24 7 C24 6 23 5 22 5 Z"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="6" y1="5" x2="22" y2="5" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="11" x2="20" y2="11" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="19" x2="16" y2="19" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">BookEx Patterns</div>
+        <div class="lc-callout__body">
+          <ul>
+          <li>
+            <strong>Program 10-9</strong>
+            — <code>bankaccount2.py</code>
+            (Step 1)
+            — You typed a <code>__str__</code> method that returned a formatted string. Python calls it automatically when you <code>print()</code> the object. Your Player's <code>__str__</code> should return something like <code>'Maria in Houston (450 miles)'</code>.
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="lc-mentor">
+      <div class="lc-mentor__inner">
+        <div class="lc-mentor__avatar">
+          <img src="../../headshots/Terrence-TBone-Booker.png" alt="Terrence &quot;T-Bone&quot; Booker">
+        </div>
+        <div class="lc-mentor__bubble">
+          <div class="lc-mentor__quote">"Fifty-three tests. That's what test.py runs against your Player class. Every method, every edge case, zero-trivia-asked, escaped vs. not escaped. Run it after every checkpoint — not just at the end. A test that breaks at CP2 is a five-minute fix. The same break discovered at submission is a bad night."</div>
+        </div>
+      </div>
+      <div class="lc-mentor__attribution">
+        <div class="lc-mentor__name">Terrence &quot;T-Bone&quot; Booker</div>
+        <div class="lc-mentor__role">QA Lead, Bat City Collective</div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
+    <ol>
+      <li>Add a <code># --- Display Methods ---</code> comment</li>
+      <li>Define <code>get_route_string(self)</code> that joins the visited cities list with <code>' -> '</code>:</li>
+    </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">def</span> <span class="sy-fn">get_route_string</span><span class="sy-op">(</span>self<span class="sy-op">)</span><span class="sy-op">:</span>
+    <span class="sy-str">&quot;&quot;&quot;Return the full travel route as a formatted string.&quot;&quot;&quot;</span>
+    <span class="sy-kw">return</span> <span class="sy-str">&#x27; -&gt; &#x27;</span><span class="sy-op">.</span>join<span class="sy-op">(</span>self<span class="sy-op">.</span>__visited_cities<span class="sy-op">)</span></pre>
+    </div>
+    <ol start="3">
+      <li>Define <code>get_trivia_accuracy(self)</code> that returns a percentage string. If no questions have been asked, return <code>'0.0%'</code>. Otherwise calculate: <code>(correct / asked) * 100</code> and return it formatted to one decimal place with a <code>%</code> sign.</li>
+      <li>Define <code>__str__(self)</code> that returns a single-line summary including the player name, current city, and total miles</li>
+      <li>Run <code>python test.py</code> -- all 53 tests should pass</li>
+      <li>Then run <code>python lab-5-2.py</code> and play the game end-to-end -- this is the payoff</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">Expected Output</div>
+    <p>When your Player class is complete, the final report in <code>lab-5-2.py</code> will look like this:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>=======================================================
+FINAL TRIP REPORT
+=======================================================
+Driver:              Maria
+Final City:          Corpus Christi
+
+ROUTE:
+  San Antonio -&gt; Houston -&gt; Corpus Christi
+
+UNIQUE CITIES (3):
+  - Corpus Christi
+  - Houston
+  - San Antonio
+
+TRIVIA:
+  Asked: 2
+  Correct: 2
+  Accuracy: 100.0%
+
+HAZARDS:
+  Faced: 1
+  Escaped: 1
+  Unique types: 1
+
+STATS:
+  Total Miles: 410</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
+    <ol>
+      <li>Run <code>python test.py</code> from your project folder. All 53 tests should pass. If any fail, the output tells you the method name and what it returned vs. what was expected.</li>
+      <li>Run <code>python lab-5-2.py</code> and play a complete game. Travel to at least two cities, trigger at least one hazard, and reach a beach or win city.</li>
+      <li>Verify <code>print(player)</code> inside the game loop outputs a clean one-line summary.</li>
+      <li>Verify the final report shows a correct route string with arrows, accurate trivia percentage, and correct unique city and hazard counts.</li>
+      <li>Check <code>get_trivia_accuracy()</code> with zero questions asked — quit before any trivia fires and confirm the report prints <code>0.0%</code> without crashing.</li>
+    </ol>
+    <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
+    <div class="lc-table-wrap" style="--lc-accent: #39FF14;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Common Mistake</th>
+        <th>Why It Fails</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Returning <code>self.__visited_cities</code> directly in <code>get_route_string()</code></td>
+        <td><code>' -> '.join()</code> needs the list, not the return value of a method. Write it as <code>' -> '.join(self.__visited_cities)</code> inside the method itself.</td>
+      </tr>
+      <tr>
+        <td>Dividing before checking if <code>__trivia_asked</code> is zero</td>
+        <td>If no trivia has been asked, <code>__trivia_asked</code> is 0. Guard with <code>if self.__trivia_asked == 0: return '0.0%'</code> before calculating.</td>
+      </tr>
+      <tr>
+        <td>Forgetting the <code>%</code> sign in the accuracy string</td>
+        <td>The return value should be a string like <code>'75.0%'</code> — include the percent sign.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
+    <ol>
+      <li><code>get_route_string()</code> joining visited cities with <code>' -> '</code>, with docstring</li>
+      <li><code>get_trivia_accuracy()</code> returning percentage string, handling zero-question case, with docstring</li>
+      <li><code>__str__</code> returning one-line player summary, with docstring</li>
+      <li>All 53 tests passing in <code>test.py</code></li>
+      <li>Game runs end-to-end with <code>lab-5-2.py</code></li>
+      <li><code>player.py</code> submitted to CodeGrade</li>
+    </ol>
+    </div>
+  </div>
+</div>
+<div class="lc-card lc-card--red">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Final Checklist</div>
+    <div class="lc-sub-banner">Check It Before You Wreck It</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3 lc-h3--yellow">Before You Submit</div>
+    <ul class="lc-checklist">
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>player.py</code> has module docstring with name, abc123, section, and description</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>Player</code> class has class docstring and all methods have docstrings</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All attributes use double underscore prefix: <code>self.__name</code></span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>class Player:</code> -- NOT <code>class Player(City):</code> -- no inheritance</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>travel_to()</code> updates all four attributes: city, miles, list, and set</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>record_hazard()</code> updates faced count, unique set, and conditionally escaped</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>record_trivia()</code> updates asked count and conditionally correct</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>get_trivia_accuracy()</code> handles the zero-question case without crashing</span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">All 53 tests pass in <code>python test.py</code></span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Game runs end-to-end with <code>lab-5-2.py</code></span>
+      </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label"><code>player.py</code> submitted to CodeGrade (CodeGrade has all other files)</span>
+      </li>
+    </ul>
+    <div class="lc-callout lc-callout--info">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <line x1="15" y1="15" x2="15" y2="9" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="15" y1="15" x2="19" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">All Due Times Are 11:59 p.m. US Central Time</div>
+        <div class="lc-callout__body">
+          <p>BookEx and Lab deadlines are <strong>11:59 p.m. US Central Time</strong> (the home time zone of UT San Antonio) on their due date, no matter where you are located. Module exams open Sunday and close the following Tuesday at the same 11:59 p.m. US Central Time. Canvas enforces this cutoff automatically, so submit early to be safe.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Scope Reminder</div>
+    <p>Chapter 10 only. Classes, constructors, private attributes, getter methods, and methods that update state. No inheritance -- &lt;code&gt;class Player(City):&lt;/code&gt; is wrong and will be flagged by CodeGrade.</p>
+    <div class="lc-h3 lc-h3--yellow">Permitted Techniques</div>
+    <div class="lc-permitted">
+      <p class="lc-permitted__chapters"><strong>Chapters in scope:</strong> 2-10 (all prior techniques fully permitted; Chapter 10 sections 10.1-10.3 introduced this module)</p>
+      <ul class="lc-permitted__list">
+      <li>Class definition with the <code>class</code> keyword</li>
+      <li><code>__init__</code> constructor with <code>self</code></li>
+      <li>Private attributes with <code>__</code> prefix</li>
+      <li>Getter methods returning <code>self.__attribute</code></li>
+      <li>Methods that update multiple private attributes</li>
+      <li>List (<code>self.__visited_cities</code>) and set (<code>self.__unique_cities</code>) as class attributes</li>
+      <li><code>__str__</code> special method</li>
+      <li>All techniques from Modules 1-4</li>
+      </ul>
+    <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> Inheritance, subclasses, method overriding, polymorphism (Chapter 11 -- not taught in this course)</p>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Do not use inheritance. <code>class Player(City):</code> is a Chapter 11 technique and will be flagged as out-of-scope.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Do not modify <code>lab-5-2.py</code>. It is provided. CodeGrade will test your Player class against it.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--warning">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="20" height="20" rx="3"
+              stroke="#000" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="15" y1="10" x2="15" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="15" cy="21" r="1.5" fill="#000"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__body">
+          <p>Submit only <code>player.py</code>. CodeGrade has <code>lab-5-2.py</code>, <code>city.py</code>, <code>function_library.py</code>, and the four data files already.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-callout lc-callout--success">
+      <div class="lc-callout__icon">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
+        <polyline points="9,15 13,19 21,11" stroke="#000" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+      </div>
+      <div class="lc-callout__bubble">
+        <div class="lc-callout__title">Save Your Code</div>
+        <div class="lc-callout__body">
+          <p>This is the final lab of the semester. Keep everything -- <code>city.py</code>, <code>player.py</code>, <code>lab-5-2.py</code>, and <code>function_library.py</code> -- for your portfolio. You built a full game from scratch across five modules. That's worth keeping.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Run the Full Check</div>
+    <p>Before you submit, run your program end-to-end. Your output should match this exactly:</p>
+    <div class="lc-output">
+      <div class="lc-output__label">Expected Output</div>
+      <pre>test.py output when city.py and player.py are both correct:
+
+=======================================================
+  TESTING: city.py
+=======================================================
+  [PASS] city.py imported successfully
+
+  --- Creating City objects ---
+  [PASS] City(&#x27;San Antonio&#x27;, &#x27;START&#x27;, &#x27;Home of the Alamo&#x27;) created
+  [PASS] City(&#x27;Corpus Christi&#x27;, &#x27;WIN&#x27;, ...) created
+  [PASS] City(&#x27;Laredo&#x27;, &#x27;DEAD_END&#x27;, ...) created
+  [PASS] City(&#x27;El Paso&#x27;, &#x27;WRONG_WAY&#x27;, ...) created
+
+  --- Getter methods ---
+  [PASS] get_name() returns the city name
+  [PASS] get_type() returns the city type in uppercase
+  [PASS] get_tagline() returns the city tagline
+
+  --- __str__ method ---
+  [PASS] str(city) returns name followed by type in parentheses
+
+  --- Connection methods ---
+  [PASS] add_connection() stores the distance correctly
+  [PASS] get_distance_to() returns correct distance
+  [PASS] get_distance_to() returns -1 for unconnected city
+  [PASS] get_destination_names() contains Houston
+  [PASS] get_destination_names() returns a list
+
+  --- Status methods ---
+  [PASS] is_win_city() returns False for START city
+  [PASS] is_win_city() returns True for WIN city
+  [PASS] is_dead_end() returns False for START city
+  [PASS] is_dead_end() returns True for DEAD_END city
+  [PASS] is_dead_end() returns True for WRONG_WAY city
+
+  --- get_arrival_message() ---
+  [PASS] get_arrival_message() returns a non-empty string
+  [PASS] get_arrival_message() for WIN city mentions city name or beach
+  [PASS] get_arrival_message() for DEAD_END city returns a string
+
+  --- display_destinations() ---
+  [PASS] display_destinations() completes without raising an exception
+
+=======================================================
+  TESTING: player.py
+=======================================================
+  [PASS] player.py imported successfully
+
+  --- Creating Player object ---
+  [PASS] Player(&#x27;Maria&#x27;, &#x27;San Antonio&#x27;) created
+
+  --- Initial state (before any travel) ---
+  [PASS] get_name() returns the player name
+  [PASS] get_current_city() returns the starting city
+  [PASS] get_total_miles() returns 0 before any travel
+  [PASS] get_visited_cities() contains San Antonio at start
+  [PASS] get_visited_cities() returns a list
+  [PASS] get_unique_city_count() returns 1 at start
+  [PASS] get_hazards_faced() returns 0 before any hazards
+  [PASS] get_hazards_escaped() returns 0 before any hazards
+  [PASS] get_unique_hazard_count() returns 0 before any hazards
+  [PASS] get_trivia_asked() returns 0 before any trivia
+  [PASS] get_trivia_correct() returns 0 before any trivia
+
+  --- travel_to() method ---
+  [PASS] travel_to() runs without error
+  [PASS] get_current_city() returns Houston after traveling there
+  [PASS] get_total_miles() returns 200 after traveling 200 miles
+  [PASS] get_visited_cities() contains Houston after traveling there
+  [PASS] get_unique_city_count() returns 2 after visiting one new city
+  [PASS] get_total_miles() returns 250 after SA-&gt;Houston-&gt;Galveston
+
+  --- record_hazard() method ---
+  [PASS] get_hazards_faced() returns 1 after one hazard
+  [PASS] get_hazards_escaped() returns 1 after escaped hazard
+  [PASS] get_unique_hazard_count() returns 1 after one hazard
+  [PASS] get_hazards_faced() returns 2 after second hazard
+  [PASS] get_hazards_escaped() still returns 1 after unlucky hazard
+
+  --- record_trivia() method ---
+  [PASS] get_trivia_asked() returns 1 after one question
+  [PASS] get_trivia_correct() returns 1 after correct answer
+  [PASS] get_trivia_asked() returns 2 after second question
+  [PASS] get_trivia_correct() still returns 1 after wrong answer
+
+  --- Unique set behavior ---
+  [PASS] get_unique_city_count() stays at 3 after revisiting Houston
+  [PASS] get_visited_cities() contains Houston at least twice
+  [PASS] get_unique_hazard_count() stays at 2 after repeat hazard
+
+  --- Display methods ---
+  [PASS] get_route_string() returns a non-empty string
+  [PASS] get_route_string() contains San Antonio and Houston
+  [PASS] get_route_string() uses -&gt; between cities
+  [PASS] get_trivia_accuracy() returns a percentage string
+  [PASS] get_unique_cities() returns a set
+
+  --- __str__ method ---
+  [PASS] str(player) contains the player name
+
+=======================================================
+  Results: 53 passed, 0 failed out of 53 tests
+  All tests passed! Go submit to CodeGrade.
+=======================================================</pre>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">If Something Breaks</div>
+    <p>Common failure patterns and where they came from:</p>
+    <div class="lc-table-wrap" style="--lc-accent: #FF1744;">
+      <table class="lc-table">
+        <thead>
+          <tr>
+            <th>Symptom</th>
+            <th>Where to Look</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td><code>ImportError: cannot import name 'Player' from 'player'</code> when running <code>lab-5-2.py</code></td>
+        <td>Check <strong>CP1 (File Setup &amp; Constructor)</strong> &mdash; verify <code>player.py</code> exists in the same folder as <code>lab-5-2.py</code> and that the class is spelled <code>Player</code> (capital P).</td>
+      </tr>
+      <tr>
+        <td><code>AttributeError: 'Player' object has no attribute '_Player__name'</code></td>
+        <td>Check <strong>CP1 (File Setup &amp; Constructor)</strong> &mdash; the constructor must assign <code>self.__name = name</code> with exactly two leading underscores.</td>
+      </tr>
+      <tr>
+        <td><code>AttributeError: 'Player' object has no attribute 'get_current_city'</code> (or any other getter method)</td>
+        <td>Check <strong>CP2 (Getter Methods)</strong> &mdash; the missing method name in the error message tells you which getter is missing. <code>lab-5-2.py</code> calls each one by name; if the name doesn&apos;t match, the call fails.</td>
+      </tr>
+      <tr>
+        <td><code>travel_to()</code> updates miles but route shows only the destination, not the path</td>
+        <td>Check <strong>CP3 (State-Updating Methods)</strong> &mdash; <code>travel_to</code> must <code>.append()</code> the new city to <code>self.__visited</code>. If it overwrites instead of appends, you lose history.</td>
+      </tr>
+      <tr>
+        <td><code>get_unique_city_count()</code> returns the wrong number (too high or duplicates)</td>
+        <td>Check <strong>CP3 (State-Updating Methods)</strong> &mdash; <code>travel_to</code> must <code>.add()</code> to a <code>set</code>, not <code>.append()</code> to a list. Verify <code>self.__unique_cities</code> is initialized as <code>set()</code> in <code>__init__</code>.</td>
+      </tr>
+      <tr>
+        <td><code>get_trivia_accuracy()</code> crashes with <code>ZeroDivisionError</code> on a fresh player</td>
+        <td>Check <strong>CP3 (State-Updating Methods)</strong> &mdash; when <code>trivia_asked</code> is 0, return <code>'0.0%'</code> (or whatever the spec says) without performing the division. Guard the calculation.</td>
+      </tr>
+      <tr>
+        <td><code>get_route_string()</code> returns the cities but separator is wrong (commas, dashes, no spaces, etc.)</td>
+        <td>Check <strong>CP4 (Display Methods)</strong> &mdash; the separator is exactly <code>' -&gt; '</code> (space, hyphen, greater-than, space). Use <code>' -&gt; '.join(self.__visited)</code>.</td>
+      </tr>
+      <tr>
+        <td><code>print(player)</code> shows <code>&lt;player.Player object at 0x...&gt;</code> instead of a summary</td>
+        <td>Check <strong>CP4 (Display Methods, __str__)</strong> &mdash; <code>__str__</code> must <code>return</code> a string, not <code>print</code> one. If you wrote <code>print(...)</code> instead of <code>return ...</code>, the method returns <code>None</code> and Python falls back to the default repr.</td>
+      </tr>
+      <tr>
+        <td><code>test.py</code> hangs or asks for input when run</td>
+        <td>Check that you haven&apos;t added any <code>input()</code> calls to <code>player.py</code>. <code>Player</code> methods do not prompt the user &mdash; <code>lab-5-2.py</code> handles all I/O. <code>player.py</code> is data and methods only.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Academic Integrity</div>
+    <p>All submitted code must be your own work. You may use your textbook, class notes, the BookEx reference guides, and course-provided resources. Do not share code with other students or submit AI-generated solutions as your own. If you are unsure whether a resource is permitted, ask first.</p>
+  </div>
+</div>
+<div class="lc-card lc-card--purple">
+
+  <div class="lc-topper">
+    <div class="lc-topper-title">Need Help?</div>
+    <div class="lc-sub-banner">Look No Further!</div>
+  </div>
+
+  <div class="lc-panel">
+
+    <div class="lc-h3 lc-h3--yellow">If You Get Stuck</div>
+    <ul>
+      <li>Read through <code>lab-5-2.py</code> and find every <code>player.</code> call -- each one is a method you need to write</li>
+      <li>Run <code>python test.py</code> -- it shows exactly which method is failing and what value it returned</li>
+      <li>The Player class is the City class with different attributes -- if City worked, Player will too</li>
+      <li>Check that <code>class Player:</code> does not inherit from City -- no parentheses with City inside</li>
+      <li>Come to Zoom or Discord -- this is the final lab and we want you to finish strong</li>
+    </ul>
+    <div class="lc-h3 lc-h3--yellow">Contact &amp; Resources</div>
+    <div class="lc-contact-grid">
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Course Discord</div>
+        <div class="lc-contact-card__value">Post in <strong>#module-5-help</strong> &mdash; fastest response, classmates and instructor both monitor</div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Book a 1-on-1</div>
+        <div class="lc-contact-card__value">15-minute focused session<br>
+          <a href="https://calendly.com/john-newsom-utsa/student-meeting" target="_blank">Book via Calendly</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Tuesday Office Hours</div>
+        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM &mdash; drop-in for general questions. Not 1-on-1.<br>
+          <a href="https://utsa.zoom.us/j/96542097913" target="_blank">Join Zoom</a>
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">Email</div>
+        <div class="lc-contact-card__value">
+          <a href="mailto:john.newsom@utsa.edu">john.newsom@utsa.edu</a><br>
+          Include your section number and abc123
+        </div>
+      </div>
+      <div class="lc-contact-card">
+        <div class="lc-contact-card__label">CodeGrade</div>
+        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script src="https://jfnewsom.github.io/is2053-assets/nav.js"></script>
+</body>
+</html>

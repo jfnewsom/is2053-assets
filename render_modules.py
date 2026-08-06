@@ -288,6 +288,7 @@ def render_section_recordings(module):
     rows_html = '\n'.join(render_recording_row(r) for r in rec['rows'])
     return (
         f'\n'
+        f'      <!-- RECORDINGS:START -->\n'
         f'      <div class="lc-named-section lc-named-section--orange">\n'
         f'      <div class="lc-named-section__label lc-named-section__label--orange">Recordings</div>\n'
         f'      <p style="font-size: 13px; color: var(--color-text-muted); margin-top: -4px; margin-bottom: 16px; font-style: italic;">Chapter Notes &bull; Lab Walkthroughs</p>\n'
@@ -296,6 +297,7 @@ def render_section_recordings(module):
         f'\n'
         f'{rows_html}\n'
         f'      </div>\n'
+        f'      <!-- RECORDINGS:END -->\n'
     )
 
 

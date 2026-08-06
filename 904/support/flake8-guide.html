@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="https://jfnewsom.github.io/is2053-assets/favicon.png">
+  <meta name="site-context" content="support">
+  <title>Flake8 Guide | IS2053 Programming I</title>
+  <link rel="stylesheet" href="https://jfnewsom.github.io/is2053-assets/labs.css">
+</head>
+<body>
+<div class="lc-wrapper">
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       Flake8 Guide — single card, sections within (home-page pattern)
+  ══════════════════════════════════════════════════════════ -->
+  <div class="lc-card lc-card--purple">
+    <div class="lc-topper">
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0;">
+            <div class="lc-course-badge">
+              <div class="lc-course-badge__word">Information Systems</div>
+              <div class="lc-course-badge__num">2053</div>
+            </div>
+          </td>
+          <td style="vertical-align: bottom; padding: 0 0 0 16px;">
+            <div class="lc-topper-title">Flake8 Guide</div>
+          </td>
+          <td style="width: 1%; white-space: nowrap; vertical-align: bottom; padding: 0 0 0 16px; text-align: right;">
+            <img src="https://jfnewsom.github.io/is2053-assets/branding/BatCity-logo-3D.png"
+                 alt="Bat City Collective" style="height: 84px; width: auto; display: block;">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="padding: 10px 0 0 0;">
+            <div class="lc-sub-banner">Python Code Style Checker</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="lc-panel">
+
+      <div class="lc-named-section">
+      <div class="lc-named-section__label">Overview</div>
+      <p><strong>Flake8</strong> is a code style checker that runs automatically when you submit to CodeGrade. It checks your Python code against <strong>PEP 8</strong> &mdash; the official Python style guide used by professional developers worldwide.</p>
+      <p>These aren&rsquo;t just suggestions &mdash; they&rsquo;re part of your <strong>Code Style grade</strong>. Clean code is professional code. See the <a href="grading-info.html#rubrics">Rubrics section on Grading Info</a> for how Code Style factors into your overall lab grade.</p>
+      </div>
+
+      <div class="lc-named-section lc-named-section--blue">
+      <div class="lc-named-section__label lc-named-section__label--blue">Reading Errors</div>
+      <p>Flake8 errors follow this format:</p>
+
+      <div class="lc-code-block">
+        <pre><span class="lc-syn-bi">lab-1-1.py</span>:<span class="lc-syn-str">12</span>:<span class="lc-syn-kw">5</span>: <span class="lc-syn-kw">E302</span> <span class="lc-syn-cm">expected 2 blank lines, found 1</span></pre>
+      </div>
+
+      <div class="lc-contact-grid">
+        <div class="lc-contact-card">
+          <div class="lc-contact-card__label" style="color: var(--neon-cyan);">Filename</div>
+          <div class="lc-contact-card__value">Which file the error is in</div>
+        </div>
+        <div class="lc-contact-card">
+          <div class="lc-contact-card__label" style="color: var(--neon-green);">Line Number</div>
+          <div class="lc-contact-card__value">Which line to look at</div>
+        </div>
+        <div class="lc-contact-card">
+          <div class="lc-contact-card__label" style="color: var(--neon-orange);">Column</div>
+          <div class="lc-contact-card__value">Position on that line</div>
+        </div>
+        <div class="lc-contact-card">
+          <div class="lc-contact-card__label" style="color: var(--neon-red);">Error Code</div>
+          <div class="lc-contact-card__value">The type of problem found</div>
+        </div>
+      </div>
+
+      <div class="lc-h3 lc-h3--yellow">Error Code Prefixes</div>
+      <div class="lc-table-wrap">
+        <table class="lc-table">
+          <thead>
+            <tr>
+              <th>Prefix</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>E</strong></td>
+              <td>Style errors (PEP 8 violations)</td>
+            </tr>
+            <tr>
+              <td><strong>W</strong></td>
+              <td>Style warnings (minor issues)</td>
+            </tr>
+            <tr>
+              <td><strong>F</strong></td>
+              <td><strong>PyFlakes errors (code problems) &mdash; most serious!</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+
+      <div class="lc-named-section lc-named-section--red">
+      <div class="lc-named-section__label lc-named-section__label--red">Critical Errors</div>
+      <p style="font-size: 13px; color: var(--color-text-muted); margin-top: -4px; margin-bottom: 16px; font-style: italic;">Fix these first!</p>
+
+      <div class="lc-h3 lc-h3--red">F401 &mdash; Module Imported But Unused</div>
+      <p>You imported something but never used it. Remove the import!</p>
+      <div class="lc-callout lc-callout--warning">
+        <div class="lc-callout__icon">
+          <span class="material-symbols-outlined">close</span>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">Problem</div>
+          <div class="lc-callout__body">
+            <div class="lc-code-block">
+              <pre><span class="lc-syn-kw">import</span> math
+<span class="lc-syn-cm"># math is never used!</span>
+<span class="lc-syn-fn">print</span>(<span class="lc-syn-str">"Hello"</span>)</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lc-callout lc-callout--success">
+        <div class="lc-callout__icon">
+          <span class="material-symbols-outlined">check</span>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">Fix</div>
+          <div class="lc-callout__body">
+            <div class="lc-code-block">
+              <pre><span class="lc-syn-cm"># Removed unused import</span>
+<span class="lc-syn-fn">print</span>(<span class="lc-syn-str">"Hello"</span>)</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="lc-cp-sep">
+
+      <div class="lc-h3 lc-h3--red">F841 &mdash; Variable Assigned But Never Used</div>
+      <p>You created a variable but never did anything with it.</p>
+      <div class="lc-callout lc-callout--warning">
+        <div class="lc-callout__icon">
+          <span class="material-symbols-outlined">close</span>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">Problem</div>
+          <div class="lc-callout__body">
+            <div class="lc-code-block">
+              <pre>result <span class="lc-syn-op">=</span> <span class="lc-syn-num">5</span> <span class="lc-syn-op">+</span> <span class="lc-syn-num">3</span>
+<span class="lc-syn-cm"># result is never printed or used!</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lc-callout lc-callout--success">
+        <div class="lc-callout__icon">
+          <span class="material-symbols-outlined">check</span>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">Fix</div>
+          <div class="lc-callout__body">
+            <div class="lc-code-block">
+              <pre>result <span class="lc-syn-op">=</span> <span class="lc-syn-num">5</span> <span class="lc-syn-op">+</span> <span class="lc-syn-num">3</span>
+<span class="lc-syn-fn">print</span>(result)</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="lc-named-section lc-named-section--orange">
+      <div class="lc-named-section__label lc-named-section__label--orange">Style Errors</div>
+      <p style="font-size: 13px; color: var(--color-text-muted); margin-top: -4px; margin-bottom: 16px; font-style: italic;">Common PEP 8 issues</p>
+
+      <div class="lc-table-wrap">
+        <table class="lc-table">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Problem</th>
+              <th>Fix</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>E302</code></td>
+              <td>Expected 2 blank lines before function</td>
+              <td>Put <strong>2 blank lines</strong> before every function definition</td>
+            </tr>
+            <tr>
+              <td><code>E303</code></td>
+              <td>Too many blank lines</td>
+              <td>Never have more than <strong>2 consecutive blank lines</strong></td>
+            </tr>
+            <tr>
+              <td><code>E501</code></td>
+              <td>Line too long</td>
+              <td>Keep lines under <strong>79 characters</strong>; break long strings across multiple lines</td>
+            </tr>
+            <tr>
+              <td><code>W291 / W293</code></td>
+              <td>Trailing whitespace</td>
+              <td>Remove invisible spaces at the end of lines (VS Code can do this automatically)</td>
+            </tr>
+            <tr>
+              <td><code>E111 / E117</code></td>
+              <td>Indentation errors</td>
+              <td>Use exactly <strong>4 spaces</strong> per level &mdash; never mix tabs and spaces</td>
+            </tr>
+            <tr>
+              <td><code>E225</code></td>
+              <td>Missing spaces around operator</td>
+              <td>Write <code>x = 5 + 3</code> not <code>x=5+3</code></td>
+            </tr>
+            <tr>
+              <td><code>E231</code></td>
+              <td>Missing space after comma</td>
+              <td>Write <code>func(a, b, c)</code> not <code>func(a,b,c)</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+
+      <div class="lc-named-section lc-named-section--green">
+      <div class="lc-named-section__label lc-named-section__label--green">Quick Fixes</div>
+      <p>Run through this list before every submission:</p>
+
+      <ul class="lc-checklist">
+        <li>
+          <div class="lc-checklist__box"></div>
+          <div class="lc-checklist__label"><strong>2 blank lines</strong> before each function definition</div>
+        </li>
+        <li>
+          <div class="lc-checklist__box"></div>
+          <div class="lc-checklist__label"><strong>4 spaces</strong> for each indentation level (not tabs)</div>
+        </li>
+        <li>
+          <div class="lc-checklist__box"></div>
+          <div class="lc-checklist__label">All lines under <strong>79 characters</strong></div>
+        </li>
+        <li>
+          <div class="lc-checklist__box"></div>
+          <div class="lc-checklist__label">No trailing whitespace at the end of lines</div>
+        </li>
+        <li>
+          <div class="lc-checklist__box"></div>
+          <div class="lc-checklist__label"><strong>Spaces after commas:</strong> <code>func(a, b, c)</code></div>
+        </li>
+        <li>
+          <div class="lc-checklist__box"></div>
+          <div class="lc-checklist__label"><strong>Spaces around operators:</strong> <code>x = 5 + 3</code></div>
+        </li>
+        <li>
+          <div class="lc-checklist__box"></div>
+          <div class="lc-checklist__label">All variables you created are actually used</div>
+        </li>
+        <li>
+          <div class="lc-checklist__box"></div>
+          <div class="lc-checklist__label">All imports at the top are actually needed</div>
+        </li>
+      </ul>
+      </div>
+
+    </div>
+  </div>
+
+
+</div><!-- /lc-wrapper -->
+<script src="https://jfnewsom.github.io/is2053-assets/nav.js"></script>
+</body>
+</html>
