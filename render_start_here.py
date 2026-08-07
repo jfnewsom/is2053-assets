@@ -251,6 +251,7 @@ def render_welcome_video(item):
     )
     return (
         f'      <!-- Welcome video + synopsis -->\n'
+        f'      <!-- VIDEO:START -->\n'
         f'      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; margin: 0 0 24px 0;">\n'
         f'        <div style="flex: 0 0 25%; min-width: 280px;">\n'
         f'          <div style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%;">\n'
@@ -265,7 +266,8 @@ def render_welcome_video(item):
         f'          <div class="lc-h3 lc-h3--yellow" style="margin-top: 0;">{item["heading"]}</div>\n'
         f'{paragraphs}\n'
         f'        </div>\n'
-        f'      </div>'
+        f'      </div>\n'
+        f'      <!-- VIDEO:END -->'
     )
 
 

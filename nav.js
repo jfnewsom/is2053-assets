@@ -346,6 +346,7 @@
         <div class="drop-label">Book Exercises</div>
         ${link('BookEx Overview', S + 'bookex-overview.html' + suffix, 'dd-purple')}
         <div class="drop-sub">Module 1 &mdash; Ch. 2&ndash;3</div>
+        ${link('Setup Check (BookEx 0)', BX + 'BookExCH00.html' + suffix, 'dd-purple')}
         ${link('Chapter 2',  BX + 'BookExCH02.html' + suffix, 'dd-purple')}
         ${link('Chapter 3',  BX + 'BookExCH03.html' + suffix, 'dd-purple')}
         <div class="drop-sub">Module 2 &mdash; Ch. 4&ndash;5</div>
