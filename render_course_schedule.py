@@ -119,7 +119,7 @@ def render_section_schedule(schedule):
     headers_block = '\n'.join(headers_html)
 
     # Rows
-    em_dash_cell = '<td style="color: #6c7a8c; font-style: italic;">&mdash;</td>'
+    em_dash_cell = '<td style="color: #6c7a8c; font-style: italic;">None</td>'
 
     def cell(html, css_class=None):
         if html is None:
@@ -197,13 +197,13 @@ def render_section_term_dates(td):
 
     # Holidays list
     holidays_lis = '\n'.join(
-        f'        <li><strong>{h["date_html"]}</strong> &mdash; {h["name_html"]}</li>'
+        f'        <li><strong>{h["date_html"]}:</strong> {h["name_html"]}</li>'
         for h in td['holidays']
     )
 
     # Registrar list
     reg_lis = '\n'.join(
-        f'        <li><strong>{r["date_html"]}</strong> &mdash; {r["event_html"]}</li>'
+        f'        <li><strong>{r["date_html"]}:</strong> {r["event_html"]}</li>'
         for r in td['registrarDeadlines']
     )
 

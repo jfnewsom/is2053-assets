@@ -11,7 +11,7 @@
     "additionalFiles": []
   },
   "overview": {
-    "body": "Look at the top of <code>main()</code> in your <code>lab-5-1.py</code>. You'll see ten state variables: <code>current_city</code>, <code>total_miles</code>, <code>visited</code>, <code>unique_cities</code>, <code>unique_hazards</code>, and five more. Every one of them is related — they all describe the same thing: the player's journey. This unit, you'll bundle all ten into a single <strong>Player class</strong>. The Player object tracks everything, and the main program talks to it through method calls. <code>lab-5-2.py</code> is provided — your job is to build <code>player.py</code> so it runs.",
+    "body": "Look at the top of <code>main()</code> in your <code>lab-5-1.py</code>. You'll see ten state variables: <code>current_city</code>, <code>total_miles</code>, <code>visited</code>, <code>unique_cities</code>, <code>unique_hazards</code>, and five more. Every one of them is related. They all describe the same thing: the player's journey. This unit, you'll bundle all ten into a single <strong>Player class</strong>. The Player object tracks everything, and the main program talks to it through method calls. <code>lab-5-2.py</code> is provided. Your job is to build <code>player.py</code> so it runs.",
     "mentorQuote": {
       "character": "Danny Cavanaugh",
       "role": "Lead Developer, Bat City Collective",
@@ -75,7 +75,7 @@
       }
     ],
     "keyConceptsText": "<strong>Chapter 10:</strong> <code>class</code> definition, <code>__init__</code> constructor, private attributes with double-underscore prefix, getter methods, state-updating methods, <code>__str__</code> special method, and list/set as class attributes.",
-    "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis — Chapter 10"
+    "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis, Chapter 10"
   },
   "timeGuide": {
     "totalTime": "60-90 Minutes",
@@ -109,7 +109,7 @@
     "strategy": "Start by reading through the provided <code>lab-5-2.py</code> and noting every <code>player.</code> call. That list is your build checklist. The Player class follows the exact same pattern as the City class you built in Lab 5.1 -- private attributes, getters, methods that update state, and <code>__str__</code>. If City clicked, Player will too."
   },
   "beforeYouBegin": {
-    "intro": "The Player class replaces ten scattered variables from <code>lab-5-1.py</code>&apos;s <code>main()</code> function. Each attribute maps directly to one of those variables. Each method maps to the lines that updated them. Use this architecture as your build guide. <br><br><code>lab-5-2.py</code> and <code>test.py</code> are provided this unit &mdash; download them along with the four data files. <strong>Do not modify <code>lab-5-2.py</code></strong>. Read through it carefully: every <code>player.</code> call inside <code>lab-5-2.py</code> tells you a method your <code>Player</code> class needs to implement. A reference <code>city.py</code> is also available below as a backup. If your Lab 5.1 <code>city.py</code> works, keep using it &mdash; otherwise grab the reference.",
+    "intro": "The Player class replaces ten scattered variables from <code>lab-5-1.py</code>&apos;s <code>main()</code> function. Each attribute maps directly to one of those variables. Each method maps to the lines that updated them. Use this architecture as your build guide. <br><br><code>lab-5-2.py</code> and <code>test.py</code> are provided this unit, download them along with the four data files. <strong>Do not modify <code>lab-5-2.py</code></strong>. Read through it carefully: every <code>player.</code> call inside <code>lab-5-2.py</code> tells you a method your <code>Player</code> class needs to implement. A reference <code>city.py</code> is also available below as a backup. If your Lab 5.1 <code>city.py</code> works, keep using it, otherwise grab the reference.",
     "architecture": "# ---- player.py ----\nclass Player:\n\n    # --- Constructor ---   [CP1]\n    __init__(self, name, starting_city)\n        self.__name              = name\n        self.__current_city      = starting_city\n        self.__total_miles       = 0\n        self.__visited_cities    = [starting_city]   (list -- preserves order)\n        self.__unique_cities     = set()             (set -- no duplicates)\n        self.__unique_cities.add(starting_city)\n        self.__hazards_faced     = 0\n        self.__hazards_escaped   = 0\n        self.__unique_hazards    = set()\n        self.__trivia_asked      = 0\n        self.__trivia_correct    = 0\n\n    # --- Getter Methods ---   [CP2]\n    get_name()                  returns self.__name\n    get_current_city()          returns self.__current_city\n    get_total_miles()           returns self.__total_miles\n    get_visited_cities()        returns self.__visited_cities.copy()\n    get_unique_cities()         returns self.__unique_cities.copy()\n    get_unique_city_count()     returns len(self.__unique_cities)\n    get_hazards_faced()         returns self.__hazards_faced\n    get_hazards_escaped()       returns self.__hazards_escaped\n    get_unique_hazards()        returns self.__unique_hazards.copy()\n    get_unique_hazard_count()   returns len(self.__unique_hazards)\n    get_trivia_asked()          returns self.__trivia_asked\n    get_trivia_correct()        returns self.__trivia_correct\n\n    # --- Travel Methods ---   [CP3]\n    travel_to(city_name, distance)\n        updates: __current_city, __total_miles, __visited_cities, __unique_cities\n\n    # --- Hazard Methods ---   [CP3]\n    record_hazard(hazard_name, escaped)\n        updates: __hazards_faced, __unique_hazards\n        if escaped: updates __hazards_escaped\n\n    # --- Trivia Methods ---   [CP3]\n    record_trivia(correct)\n        updates: __trivia_asked\n        if correct: updates __trivia_correct\n\n    # --- Display Methods ---   [CP4]\n    get_route_string()          ' -> '.join(self.__visited_cities)\n    get_trivia_accuracy()       returns percentage string e.g. '75.0%'\n    __str__                     returns 'Maria in Houston (450 miles)'\n\n\n# ---- lab-5-2.py ---- (PROVIDED -- do not modify)\nfrom city import City\nfrom player import Player\nimport function_library\n\n  ... all load functions unchanged ...\n  build_cities()        same as lab-5-1.py\n  trivia_gate()         same as lab-5-1.py\n  handle_hazard(hazards, player)     [REPLACED] calls player.record_hazard()\n  execute_travel(dest, dist, ...)    [REPLACED] calls player.travel_to()\n\nmain():\n  player = Player(name, 'San Antonio')   [NEW] one line replaces ten variables\n  ... game loop calls player methods ...\n\nif __name__ == '__main__': -> main()"
   },
   "checkpoints": [
@@ -256,7 +256,7 @@
         },
         {
           "type": "text",
-          "body": "Getters enforce a contract: outside code never touches private data directly. <code>lab-5-2.py</code> doesn't reach into <code>player.__total_miles</code> — it calls <code>player.get_total_miles()</code>. That one layer of separation is what makes it safe to change how the Player stores data internally without breaking anything that uses it. Two of the getters — <code>get_unique_city_count()</code> and <code>get_unique_hazard_count()</code> — return <code>len()</code> instead of the raw attribute. The caller gets a number, not a set. That is encapsulation doing real work."
+          "body": "Getters enforce a contract: outside code never touches private data directly. <code>lab-5-2.py</code> doesn't reach into <code>player.__total_miles</code>: it calls <code>player.get_total_miles()</code>. That one layer of separation is what makes it safe to change how the Player stores data internally without breaking anything that uses it. Two of the getters: <code>get_unique_city_count()</code> and <code>get_unique_hazard_count()</code>: return <code>len()</code> instead of the raw attribute. The caller gets a number, not a set. That is encapsulation doing real work."
         },
         {
           "type": "h3",
@@ -376,14 +376,14 @@
         },
         {
           "type": "text",
-          "body": "In <code>lab-5-1.py</code>, recording a hazard meant four separate lines in <code>main()</code>: increment the counter, add to the set, check a boolean, maybe increment escaped. Now it is one call: <code>player.record_hazard(name, escaped)</code>. The Player knows how to update itself. The caller just says what happened. This is what object-oriented design means in practice — behavior lives with the data it operates on."
+          "body": "In <code>lab-5-1.py</code>, recording a hazard meant four separate lines in <code>main()</code>: increment the counter, add to the set, check a boolean, maybe increment escaped. Now it is one call: <code>player.record_hazard(name, escaped)</code>. The Player knows how to update itself. The caller just says what happened. This is what object-oriented design means in practice. Behavior lives with the data it operates on."
         },
         {
           "type": "mentor_quote",
           "character": "Danny Cavanaugh",
           "role": "Lead Developer, Bat City Collective",
           "headshot": "Danny-Cavanaugh.png",
-          "quote": "Three methods. travel_to(), record_hazard(), record_trivia(). Together they replace about twenty lines of scattered updates in main(). And next time we want to add a stat — say, a fuel tracker — we add one attribute and one method. We don't go hunting through main() trying to remember every place it touches."
+          "quote": "Three methods. travel_to(), record_hazard(), record_trivia(). Together they replace about twenty lines of scattered updates in main(). And next time we want to add a stat: say, a fuel tracker. We add one attribute and one method. We don't go hunting through main() trying to remember every place it touches."
         },
         {
           "type": "h3",
@@ -397,7 +397,7 @@
               "programId": "10-12",
               "filename": "cellphone.py",
               "step": 1,
-              "description": "The CellPhone class had a <code>set_retail_price()</code> method that updated <code>self.__retail_price</code>. Your <code>travel_to()</code>, <code>record_hazard()</code>, and <code>record_trivia()</code> methods follow the exact same pattern — a method that changes one or more private attributes based on what happened."
+              "description": "The CellPhone class had a <code>set_retail_price()</code> method that updated <code>self.__retail_price</code>. Your <code>travel_to()</code>, <code>record_hazard()</code>, and <code>record_trivia()</code> methods follow the exact same pattern, a method that changes one or more private attributes based on what happened."
             },
             {
               "programId": "10-9",
@@ -503,7 +503,7 @@
         },
         {
           "type": "text",
-          "body": "Display methods are the Player's voice. <code>get_route_string()</code> and <code>get_trivia_accuracy()</code> transform raw stored data into something readable — the same work a report generator or dashboard does professionally. <code>__str__</code> is Python's protocol for making objects printable: implement it, and <code>print(player)</code> just works. These three methods complete the Player's public interface."
+          "body": "Display methods are the Player's voice. <code>get_route_string()</code> and <code>get_trivia_accuracy()</code> transform raw stored data into something readable. The same work a report generator or dashboard does professionally. <code>__str__</code> is Python's protocol for making objects printable: implement it, and <code>print(player)</code> just works. These three methods complete the Player's public interface."
         },
         {
           "type": "h3",
@@ -526,7 +526,7 @@
           "character": "Terrence \"T-Bone\" Booker",
           "role": "QA Lead, Bat City Collective",
           "headshot": "Terrence-TBone-Booker.png",
-          "quote": "Fifty-three tests. That's what test.py runs against your Player class. Every method, every edge case, zero-trivia-asked, escaped vs. not escaped. Run it after every checkpoint — not just at the end. A test that breaks at CP2 is a five-minute fix. The same break discovered at submission is a bad night."
+          "quote": "Fifty-three tests. That's what test.py runs against your Player class. Every method, every edge case, zero-trivia-asked, escaped vs. not escaped. Run it after every checkpoint. Not just at the end. A test that breaks at CP2 is a five-minute fix. The same break discovered at submission is a bad night."
         },
         {
           "type": "h3",
@@ -576,7 +576,7 @@
             "Run <code>python lab-5-2.py</code> and play a complete game. Travel to at least two cities, trigger at least one hazard, and reach a beach or win city.",
             "Verify <code>print(player)</code> inside the game loop outputs a clean one-line summary.",
             "Verify the final report shows a correct route string with arrows, accurate trivia percentage, and correct unique city and hazard counts.",
-            "Check <code>get_trivia_accuracy()</code> with zero questions asked — quit before any trivia fires and confirm the report prints <code>0.0%</code> without crashing."
+            "Check <code>get_trivia_accuracy()</code> with zero questions asked, quit before any trivia fires and confirm the report prints <code>0.0%</code> without crashing."
           ]
         },
         {
@@ -600,7 +600,7 @@
             ],
             [
               "Forgetting the <code>%</code> sign in the accuracy string",
-              "The return value should be a string like <code>'75.0%'</code> — include the percent sign."
+              "The return value should be a string like <code>'75.0%'</code>: include the percent sign."
             ]
           ],
           "accent": "green"
@@ -663,39 +663,39 @@
       "ifSomethingBreaks": [
         {
           "symptom": "<code>ImportError: cannot import name 'Player' from 'player'</code> when running <code>lab-5-2.py</code>",
-          "redirect": "Check <strong>CP1 (File Setup &amp; Constructor)</strong> &mdash; verify <code>player.py</code> exists in the same folder as <code>lab-5-2.py</code> and that the class is spelled <code>Player</code> (capital P)."
+          "redirect": "Check <strong>CP1 (File Setup &amp; Constructor)</strong>: verify <code>player.py</code> exists in the same folder as <code>lab-5-2.py</code> and that the class is spelled <code>Player</code> (capital P)."
         },
         {
           "symptom": "<code>AttributeError: 'Player' object has no attribute '_Player__name'</code>",
-          "redirect": "Check <strong>CP1 (File Setup &amp; Constructor)</strong> &mdash; the constructor must assign <code>self.__name = name</code> with exactly two leading underscores."
+          "redirect": "Check <strong>CP1 (File Setup &amp; Constructor)</strong>: the constructor must assign <code>self.__name = name</code> with exactly two leading underscores."
         },
         {
           "symptom": "<code>AttributeError: 'Player' object has no attribute 'get_current_city'</code> (or any other getter method)",
-          "redirect": "Check <strong>CP2 (Getter Methods)</strong> &mdash; the missing method name in the error message tells you which getter is missing. <code>lab-5-2.py</code> calls each one by name; if the name doesn&apos;t match, the call fails."
+          "redirect": "Check <strong>CP2 (Getter Methods)</strong>: the missing method name in the error message tells you which getter is missing. <code>lab-5-2.py</code> calls each one by name; if the name doesn&apos;t match, the call fails."
         },
         {
           "symptom": "<code>travel_to()</code> updates miles but route shows only the destination, not the path",
-          "redirect": "Check <strong>CP3 (State-Updating Methods)</strong> &mdash; <code>travel_to</code> must <code>.append()</code> the new city to <code>self.__visited</code>. If it overwrites instead of appends, you lose history."
+          "redirect": "Check <strong>CP3 (State-Updating Methods)</strong>: <code>travel_to</code> must <code>.append()</code> the new city to <code>self.__visited</code>. If it overwrites instead of appends, you lose history."
         },
         {
           "symptom": "<code>get_unique_city_count()</code> returns the wrong number (too high or duplicates)",
-          "redirect": "Check <strong>CP3 (State-Updating Methods)</strong> &mdash; <code>travel_to</code> must <code>.add()</code> to a <code>set</code>, not <code>.append()</code> to a list. Verify <code>self.__unique_cities</code> is initialized as <code>set()</code> in <code>__init__</code>."
+          "redirect": "Check <strong>CP3 (State-Updating Methods)</strong>: <code>travel_to</code> must <code>.add()</code> to a <code>set</code>, not <code>.append()</code> to a list. Verify <code>self.__unique_cities</code> is initialized as <code>set()</code> in <code>__init__</code>."
         },
         {
           "symptom": "<code>get_trivia_accuracy()</code> crashes with <code>ZeroDivisionError</code> on a fresh player",
-          "redirect": "Check <strong>CP3 (State-Updating Methods)</strong> &mdash; when <code>trivia_asked</code> is 0, return <code>'0.0%'</code> (or whatever the spec says) without performing the division. Guard the calculation."
+          "redirect": "Check <strong>CP3 (State-Updating Methods)</strong>: when <code>trivia_asked</code> is 0, return <code>'0.0%'</code> (or whatever the spec says) without performing the division. Guard the calculation."
         },
         {
           "symptom": "<code>get_route_string()</code> returns the cities but separator is wrong (commas, dashes, no spaces, etc.)",
-          "redirect": "Check <strong>CP4 (Display Methods)</strong> &mdash; the separator is exactly <code>' -&gt; '</code> (space, hyphen, greater-than, space). Use <code>' -&gt; '.join(self.__visited)</code>."
+          "redirect": "Check <strong>CP4 (Display Methods)</strong>: the separator is exactly <code>' -&gt; '</code> (space, hyphen, greater-than, space). Use <code>' -&gt; '.join(self.__visited)</code>."
         },
         {
           "symptom": "<code>print(player)</code> shows <code>&lt;player.Player object at 0x...&gt;</code> instead of a summary",
-          "redirect": "Check <strong>CP4 (Display Methods, __str__)</strong> &mdash; <code>__str__</code> must <code>return</code> a string, not <code>print</code> one. If you wrote <code>print(...)</code> instead of <code>return ...</code>, the method returns <code>None</code> and Python falls back to the default repr."
+          "redirect": "Check <strong>CP4 (Display Methods, __str__)</strong>: <code>__str__</code> must <code>return</code> a string, not <code>print</code> one. If you wrote <code>print(...)</code> instead of <code>return ...</code>, the method returns <code>None</code> and Python falls back to the default repr."
         },
         {
           "symptom": "<code>test.py</code> hangs or asks for input when run",
-          "redirect": "Check that you haven&apos;t added any <code>input()</code> calls to <code>player.py</code>. <code>Player</code> methods do not prompt the user &mdash; <code>lab-5-2.py</code> handles all I/O. <code>player.py</code> is data and methods only."
+          "redirect": "Check that you haven&apos;t added any <code>input()</code> calls to <code>player.py</code>. <code>Player</code> methods do not prompt the user: <code>lab-5-2.py</code> handles all I/O. <code>player.py</code> is data and methods only."
         }
       ]
     }

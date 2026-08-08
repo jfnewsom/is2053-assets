@@ -5,7 +5,7 @@
     "module": 4,
     "week": 1,
     "weekType": "BUILD",
-    "chapters": "8\u20139",
+    "chapters": "8–9",
     "chapterTopics": "More About Strings, Dictionaries",
     "filename": "lab-4-1.py",
     "additionalFiles": []
@@ -26,7 +26,7 @@
       "Rebuild <code>lab-4-1.py</code> so the city graph is loaded from text files at startup. Keep the three-loop architecture (main menu, play-again, in-game), keep the D20 mechanic, keep the parallel-list hazards inline for now (they move to a file in Lab 4.2)"
     ],
     "keyConceptsText": "Two new tools arrive together. <code>.strip().split(',')</code> is the standard CSV-parsing pattern from Chapter 8: <code>.strip()</code> removes the newline at the end of each line, <code>.split(',')</code> breaks the comma-separated values into a list of fields. Dictionaries (Chapter 9) replace parallel lists for any data shape where the keys are meaningful. A <em>nested</em> dictionary is just a dictionary whose values are themselves dictionaries: <code>distances['San Antonio']</code> is itself a dictionary mapping destinations to miles. The <code>in</code> operator works on dictionaries too. <code>'Houston' in distances</code> checks if Houston is a key. This is how the loader builds the nested structure: it checks <code>if city1 not in distances:</code> before creating the inner dictionary.",
-    "textbookReference": "Chapter 8 covers the string methods. Programs 8\u20131 through 8\u201314 demonstrate <code>.strip()</code>, <code>.split()</code>, and string traversal. Chapter 9 covers dictionaries. Programs 9\u20131 through 9\u20137 cover dictionary creation, access, the <code>in</code> operator with dictionaries, and looping through keys.",
+    "textbookReference": "Chapter 8 covers the string methods. Programs 8–1 through 8–14 demonstrate <code>.strip()</code>, <code>.split()</code>, and string traversal. Chapter 9 covers dictionaries. Programs 9–1 through 9–7 cover dictionary creation, access, the <code>in</code> operator with dictionaries, and looping through keys.",
     "programRequirements": [
       "Submit <code>lab-4-1.py</code> and <code>function_library.py</code>",
       "Top-of-file comment block on both files: Name, abc123, Section, Description",
@@ -83,7 +83,7 @@
     ]
   },
   "timeGuide": {
-    "totalTime": "90\u2013120 Minutes",
+    "totalTime": "90–120 Minutes",
     "rows": [
       {
         "checkpoint": "CP1: Load City Distances",
@@ -124,7 +124,7 @@
   },
   "beforeYouBegin": {
     "intro": "Here is what your finished program looks like. <code>[NEW]</code> tags show what gets added this unit. <code>[REPLACED]</code> tags show what changes shape but keeps the same function name. <code>[KEEP]</code> tags show what carries forward from Lab 3.3 untouched.",
-    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nget_valid_int(), get_yes_no()                               [KEEP from 2.3]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\nget_random_hazard(names, heads_msgs, tails_msgs)            [KEEP from 3.3]\n\nload_city_distances(filename) -> nested dict                [NEW-CP1]\nload_city_info(filename) -> dict of dicts                   [NEW-CP2]\ndisplay_destinations(city, distances)                       [REPLACED-CP3] was parallel lists\nget_destination(city, distances, choice)                    [REPLACED-CP3] was parallel lists\nget_redirect(city, distances, avoid)                        [REPLACED-CP3] was parallel lists\nis_win_city(city, city_info)                                [NEW-CP3]\nis_dead_end(city, city_info)                                [NEW-CP3]\n\n# ---- IN lab-4-1.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE = 'city_distances.txt'                       [NEW-CP4]\nINFO_FILE      = 'city_info.txt'                            [NEW-CP4]\nREPORT_FILE    = 'trip_report.txt'                          [KEEP from 3.3]\nMILES_MULTIPLIER = 10                                       [KEEP from 3.3]\nHAZARD_CHANCE    = 30                                       [KEEP from 3.3]\n\n# ---- HAZARD DATA (still inline; moves to file in Lab 4.2) ----\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [KEEP from 3.3]\n\n# ---- LAB-LOCAL HELPER ----\nsave_trip_report(filename, ...)                             [KEEP from 3.3]\n\n# ---- main() ----\nLoad data files: distances = load_city_distances(...)       [NEW-CP4]\n                 city_info = load_city_info(...)            [NEW-CP4]\n\nMAIN MENU LOOP                                              [KEEP from 3.3]\n  1. New Game  2. Load Saved Game  3. Quit\n  \u2502\n  \u2502   PLAY-AGAIN LOOP                                       [KEEP from 3.3]\n  \u2502   \u2502\n  \u2502   \u2502   IN-GAME LOOP                                       [KEEP from 3.3]\n  \u2502   \u2502   \u2502\u2500 Show current city + tagline from city_info     [NEW-CP5]\n  \u2502   \u2502   \u2502\u2500 display_destinations(current_city, distances)  [REPLACED-CP5]\n  \u2502   \u2502   \u2502\u2500 Coin-flip Destination Gate                     [KEEP from 3.3]\n  \u2502   \u2502   \u2502\u2500 D20 travel loop with hazard check              [KEEP from 3.3]\n  \u2502   \u2502   \u2502\u2500 is_win_city / is_dead_end branching            [NEW-CP5]\n  \u2502   \u2502   \u2502\u2500 Continue / Save & quit / Quit                  [KEEP from 3.3]\n  \u2502   \u2502\n  \u2502   \u2502\u2500 Trip report on screen + trip_report.txt              [KEEP-CP6 from 3.3]\n  \u2502   \u2502\u2500 Session accumulators update                          [KEEP-CP6 from 3.3]\n  \u2502   \u2502\u2500 Play again? (y/n)                                    [KEEP from 3.3]\n  \u2502\n  \u2502\u2500 Session statistics block                                  [KEEP from 3.3]\n  \u2502\u2500 Back to main menu\n"
+    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nget_valid_int(), get_yes_no()                               [KEEP from 2.3]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\nget_random_hazard(names, heads_msgs, tails_msgs)            [KEEP from 3.3]\n\nload_city_distances(filename) -> nested dict                [NEW-CP1]\nload_city_info(filename) -> dict of dicts                   [NEW-CP2]\ndisplay_destinations(city, distances)                       [REPLACED-CP3] was parallel lists\nget_destination(city, distances, choice)                    [REPLACED-CP3] was parallel lists\nget_redirect(city, distances, avoid)                        [REPLACED-CP3] was parallel lists\nis_win_city(city, city_info)                                [NEW-CP3]\nis_dead_end(city, city_info)                                [NEW-CP3]\n\n# ---- IN lab-4-1.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE = 'city_distances.txt'                       [NEW-CP4]\nINFO_FILE      = 'city_info.txt'                            [NEW-CP4]\nREPORT_FILE    = 'trip_report.txt'                          [KEEP from 3.3]\nMILES_MULTIPLIER = 10                                       [KEEP from 3.3]\nHAZARD_CHANCE    = 30                                       [KEEP from 3.3]\n\n# ---- HAZARD DATA (still inline; moves to file in Lab 4.2) ----\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [KEEP from 3.3]\n\n# ---- LAB-LOCAL HELPER ----\nsave_trip_report(filename, ...)                             [KEEP from 3.3]\n\n# ---- main() ----\nLoad data files: distances = load_city_distances(...)       [NEW-CP4]\n                 city_info = load_city_info(...)            [NEW-CP4]\n\nMAIN MENU LOOP                                              [KEEP from 3.3]\n  1. New Game  2. Load Saved Game  3. Quit\n  │\n  │   PLAY-AGAIN LOOP                                       [KEEP from 3.3]\n  │   │\n  │   │   IN-GAME LOOP                                       [KEEP from 3.3]\n  │   │   │─ Show current city + tagline from city_info     [NEW-CP5]\n  │   │   │─ display_destinations(current_city, distances)  [REPLACED-CP5]\n  │   │   │─ Coin-flip Destination Gate                     [KEEP from 3.3]\n  │   │   │─ D20 travel loop with hazard check              [KEEP from 3.3]\n  │   │   │─ is_win_city / is_dead_end branching            [NEW-CP5]\n  │   │   │─ Continue / Save & quit / Quit                  [KEEP from 3.3]\n  │   │\n  │   │─ Trip report on screen + trip_report.txt              [KEEP-CP6 from 3.3]\n  │   │─ Session accumulators update                          [KEEP-CP6 from 3.3]\n  │   │─ Play again? (y/n)                                    [KEEP from 3.3]\n  │\n  │─ Session statistics block                                  [KEEP from 3.3]\n  │─ Back to main menu\n"
   },
   "checkpoints": [
     {
@@ -157,7 +157,7 @@
           "type": "callout",
           "variant": "info",
           "title": "How the Road Network Is Modeled",
-          "body": "The 24 routes in <code>city_distances.txt</code> are the cities you can drive between on a <strong>Texas interstate</strong>. San Antonio reaches Houston (I-10), Austin (I-35), Laredo (I-35), El Paso (I-10), and Corpus Christi (I-37). Houston reaches Galveston (I-45) and Dallas (I-45). Austin reaches Dallas and Fort Worth via the I-35E and I-35W split. Dallas and Fort Worth connect via I-30; Dallas reaches Texarkana via I-30; Fort Worth reaches El Paso via I-20 and I-10. There is no interstate between Austin and Houston (US-290 is a state highway), between Laredo and El Paso, or between Corpus Christi and Laredo, so those routes do not appear in the data. To get between two cities that aren't connected directly, the player has to drive through an intermediate city &mdash; usually San Antonio. If a route feels missing, that's the constraint at work, not a bug in the data file. Adding a city means committing to the same standard: if there's a clean interstate between the two cities, the edge belongs in the file; otherwise it does not."
+          "body": "The 24 routes in <code>city_distances.txt</code> are the cities you can drive between on a <strong>Texas interstate</strong>. San Antonio reaches Houston (I-10), Austin (I-35), Laredo (I-35), El Paso (I-10), and Corpus Christi (I-37). Houston reaches Galveston (I-45) and Dallas (I-45). Austin reaches Dallas and Fort Worth via the I-35E and I-35W split. Dallas and Fort Worth connect via I-30; Dallas reaches Texarkana via I-30; Fort Worth reaches El Paso via I-20 and I-10. There is no interstate between Austin and Houston (US-290 is a state highway), between Laredo and El Paso, or between Corpus Christi and Laredo, so those routes do not appear in the data. To get between two cities that aren't connected directly, the player has to drive through an intermediate city, usually San Antonio. If a route feels missing, that's the constraint at work, not a bug in the data file. Adding a city means committing to the same standard: if there's a clean interstate between the two cities, the edge belongs in the file; otherwise it does not."
         },
         {
           "type": "h3",
@@ -171,7 +171,7 @@
             "Inside the function, create an empty dictionary called <code>distances</code>.",
             "Open the file with <code>infile = open(filename, 'r')</code>.",
             "Loop through the file with <code>for line in infile:</code>. For each line, call <code>parts = line.strip().split(',')</code> to split it into a list of three strings.",
-            "Assign <code>city1 = parts[0]</code>, <code>city2 = parts[1]</code>, and <code>miles = int(parts[2])</code>. Only the third part needs <code>int()</code> &mdash; the first two are city names.",
+            "Assign <code>city1 = parts[0]</code>, <code>city2 = parts[1]</code>, and <code>miles = int(parts[2])</code>. Only the third part needs <code>int()</code>: the first two are city names.",
             "If <code>city1</code> is not yet a key in <code>distances</code>, set <code>distances[city1] = {}</code>. Then set <code>distances[city1][city2] = miles</code>.",
             "After the loop, close the file with <code>infile.close()</code> and <code>return distances</code>."
           ]
@@ -293,7 +293,7 @@
             "Create an empty dictionary called <code>info</code>.",
             "Open the file with <code>open(filename, 'r')</code> and loop with <code>for line in infile:</code>.",
             "Inside the loop, call <code>parts = line.strip().split(',')</code> and assign <code>city = parts[0]</code>, <code>city_type = parts[1]</code>, <code>tagline = parts[2]</code>.",
-            "Assign <code>info[city] = {'type': city_type, 'tagline': tagline}</code> &mdash; one statement creates the inner dictionary inline.",
+            "Assign <code>info[city] = {'type': city_type, 'tagline': tagline}</code>: one statement creates the inner dictionary inline.",
             "Close the file and return <code>info</code>."
           ]
         },
@@ -342,7 +342,7 @@
           "rows": [
             [
               "Putting the type and tagline at the same level as the city",
-              "<code>info[city] = type</code> overwrites with a string, not a dictionary. You need <code>info[city] = {'type': city_type, 'tagline': tagline}</code> &mdash; note the curly braces inside."
+              "<code>info[city] = type</code> overwrites with a string, not a dictionary. You need <code>info[city] = {'type': city_type, 'tagline': tagline}</code>: note the curly braces inside."
             ],
             [
               "Quoting the type values as <code>'win'</code>",
@@ -377,7 +377,7 @@
         },
         {
           "type": "text",
-          "body": "The library's destination helpers from Lab 3.2 take parallel lists <code>(destinations, distances, notes)</code>. Now they take <code>(city, distances)</code> &mdash; the city name plus the loaded nested dictionary. Same function names, same return shape, smarter data. You will also add two new type-check helpers, <code>is_win_city</code> and <code>is_dead_end</code>, that read from the city info dictionary."
+          "body": "The library's destination helpers from Lab 3.2 take parallel lists <code>(destinations, distances, notes)</code>. Now they take <code>(city, distances)</code>: the city name plus the loaded nested dictionary. Same function names, same return shape, smarter data. You will also add two new type-check helpers, <code>is_win_city</code> and <code>is_dead_end</code>, that read from the city info dictionary."
         },
         {
           "type": "h3",
@@ -392,7 +392,7 @@
           "character": "Danny Cavanaugh",
           "role": "Lead Developer, Bat City Collective",
           "headshot": "Danny-Cavanaugh.png",
-          "quote": "When you refactor a function, keep the public name and shape stable if you can. The callers do not care what the function does inside &mdash; they care what they pass in and what they get back. <code>display_destinations</code> still prints a numbered menu and returns a count. The shape that gets passed in is different now. The shape that comes out is the same. That is the kind of change that does not break the rest of your code."
+          "quote": "When you refactor a function, keep the public name and shape stable if you can. The callers do not care what the function does inside. They care what they pass in and what they get back. <code>display_destinations</code> still prints a numbered menu and returns a count. The shape that gets passed in is different now. The shape that comes out is the same. That is the kind of change that does not break the rest of your code."
         },
         {
           "type": "h3",
@@ -637,7 +637,7 @@
             {
               "programId": "9-5",
               "filename": "in_phonebook.py",
-              "description": "<code>'Corpus Christi' in distances</code> works the same way as your earlier <code>in</code> checks. But you do not need to write the city names by hand &mdash; <code>is_win_city</code> and <code>is_dead_end</code> wrap the comparison."
+              "description": "<code>'Corpus Christi' in distances</code> works the same way as your earlier <code>in</code> checks. But you do not need to write the city names by hand: <code>is_win_city</code> and <code>is_dead_end</code> wrap the comparison."
             }
           ]
         },
@@ -727,7 +727,7 @@
             "Immediately after the in-game loop, check the four flags from CP5 (<code>reached_beach</code>, <code>hit_dead_end</code>, <code>saved_and_quit</code>, <code>quit_without_saving</code>) and assign a <code>status</code> string accordingly. The four allowed values are <code>'BEACH WINNER!'</code>, <code>'Dead End'</code>, <code>'Quit without saving'</code>, and <code>'Trip Incomplete'</code>.",
             "If the player saved and quit, do not write the trip report; instead break out of the play-again loop with <code>play_again = False</code>.",
             "Otherwise, build <code>sorted_hazards = hazards_list.copy()</code> then <code>sorted_hazards.sort()</code>.",
-            "Build <code>unique_cities</code> by iterating <code>visited_cities</code> and appending each city that is not already <code>in</code> <code>unique_cities</code>. This is the same pattern as Lab 3.3 &mdash; sets arrive in 4.3.",
+            "Build <code>unique_cities</code> by iterating <code>visited_cities</code> and appending each city that is not already <code>in</code> <code>unique_cities</code>. This is the same pattern as Lab 3.3. Sets arrive in 4.3.",
             "Print the trip report block from Lab 3.3: title banner, driver, final city, status, route via <code>display_numbered_list</code>, unique count, hazards (sorted) via <code>display_numbered_list</code> or a 'None' fallback, and the STATISTICS block (miles, turns, hazards faced/escaped, escape rate).",
             "Call <code>save_trip_report(REPORT_FILE, ...)</code> to write the same content to disk.",
             "Update the session accumulators: <code>games_played += 1</code>, <code>session_miles += total_miles</code>, <code>session_hazards += total_hazards</code>.",
@@ -819,7 +819,7 @@
     ],
     "scopeReminder": "Module 4.1 introduces file parsing (.strip(), .split()) and dictionaries (creation, access, nested, .keys(), 'in' operator). Sets and the .upper() input-cleaning relief are held back for Labs 4.2 and 4.3.",
     "permittedTechniques": {
-      "chapters": "Chapters 1\u20139 (Strings + Dictionaries arrive this unit)",
+      "chapters": "Chapters 1–9 (Strings + Dictionaries arrive this unit)",
       "specific": [
         "<code>.strip()</code> and <code>.split(',')</code> for file parsing",
         "Dictionary creation with <code>{}</code>",
@@ -828,7 +828,7 @@
         "<code>'in'</code> operator with dictionaries",
         "<code>.keys()</code> method",
         "Looping through dictionaries",
-        "All techniques from Modules 1\u20133 carry forward"
+        "All techniques from Modules 1–3 carry forward"
       ],
       "notPermitted": "<code>.upper()</code> and <code>.lower()</code> on user input (saved for Lab 4.2). Sets (saved for Lab 4.3). Trivia gate (saved for Lab 4.3). Dictionary comprehensions (not covered this semester)."
     },
@@ -842,7 +842,7 @@
       "ifSomethingBreaks": [
         {
           "symptom": "<code>KeyError: 'San Antonio'</code> on the first menu display",
-          "redirect": "Check CP1 (Load City Distances) \u2014 the loader is not inserting <code>'San Antonio'</code> as a top-level key. Verify the <code>if city1 not in distances:</code> guard."
+          "redirect": "Check CP1 (Load City Distances): the loader is not inserting <code>'San Antonio'</code> as a top-level key. Verify the <code>if city1 not in distances:</code> guard."
         },
         {
           "symptom": "<code>FileNotFoundError: city_distances.txt</code>",
@@ -869,12 +869,12 @@
   },
   "needHelp": {
     "ifYouGetStuck": [
-      "Re-read Programs 8\u201310 (<code>.split('/')</code>) and 9\u20131 (basic dictionaries) before you start. The CSV parsing pattern (<code>line.strip().split(',')</code>) is the lab's most common bug source",
+      "Re-read Programs 8–10 (<code>.split('/')</code>) and 9–1 (basic dictionaries) before you start. The CSV parsing pattern (<code>line.strip().split(',')</code>) is the lab's most common bug source",
       "Print the loaded dictionaries during development. After <code>distances = load_city_distances(...)</code>, add <code>print(distances)</code> to confirm the shape before you use it. Delete the print before submitting",
-      "If <code>display_destinations</code> shows nothing, you probably passed the wrong arguments. The new signature is <code>(city, distances)</code> &mdash; the city is a string, the distances is the whole nested dictionary",
+      "If <code>display_destinations</code> shows nothing, you probably passed the wrong arguments. The new signature is <code>(city, distances)</code>: the city is a string, the distances is the whole nested dictionary",
       "Save / load was working in Lab 3.3 and should still work here unchanged. If it stops working, you probably touched the library save/load functions accidentally. Roll those back to the Module 3 version",
       "Post questions in <code>#labs</code> on Discord. Include your error message and the line number, not a screenshot of the whole file"
     ],
-    "officeHours": "Zoom Tuesdays 6 PM: <a href='https://utsa.zoom.us/j/97617245124'>https://utsa.zoom.us/j/97617245124</a>. Book a 1\u20131 with Prof. Newsom: <a href='https://calendly.com/john-newsom-utsa/student-meeting'>calendly.com/john-newsom-utsa/student-meeting</a>."
+    "officeHours": "Zoom Tuesdays 6 PM: <a href='https://utsa.zoom.us/j/97617245124'>https://utsa.zoom.us/j/97617245124</a>. Book a 1–1 with Prof. Newsom: <a href='https://calendly.com/john-newsom-utsa/student-meeting'>calendly.com/john-newsom-utsa/student-meeting</a>."
   }
 }

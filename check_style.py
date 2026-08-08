@@ -29,12 +29,12 @@ import io
 import re
 import sys
 
-BASELINE_SOURCE = 709     # pages/**/json/*.json, U+2014 plus &mdash;   (2026-08-08)
+BASELINE_SOURCE = 3     # pages/**/json/*.json, U+2014 plus &mdash;   (2026-08-08)
 # 703 -> 710 when reading.json was created. That is not new debt. Those 7 already
 # existed in the hand-maintained reading pages; sourcing them made them countable
 # for the first time. Expect the same one-time bump as the remaining unsourced
 # pages (home, submission-format, exam headers) come into the pipeline.
-BASELINE_VISIBLE = 1099   # rendered pages/**/*.html, comments stripped (2026-08-08)
+BASELINE_VISIBLE = 78   # rendered pages/**/*.html, comments stripped (2026-08-08)
 # NOTE: an earlier baseline of 473 counted only the literal U+2014 character and
 # missed every &mdash; entity, undercounting the real debt by 57 percent. Both
 # forms render identically to a student, so both must be counted. If you change
@@ -61,7 +61,12 @@ def read(path):
 
 def count_source():
     total, hits = 0, []
-    for f in sorted(glob.glob('pages/**/json/*.json', recursive=True)):
+    # Both depths. 'pages/**/json/*.json' alone misses nested source dirs
+    # such as pages/support/json/study_worksheets/, which hid 110 em-dashes
+    # from the SOURCE ratchet until 2026-08-08.
+    srcs = set(glob.glob('pages/**/json/*.json', recursive=True))
+    srcs |= set(glob.glob('pages/**/json/**/*.json', recursive=True))
+    for f in sorted(srcs):
         text = read(f)
         total += text.count('—') + text.count('&mdash;')
         for pat, why in BANNED_ZERO_TOLERANCE:

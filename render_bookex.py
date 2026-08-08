@@ -64,7 +64,7 @@ def render_bookex_overview_card(overview: dict, meta: dict) -> str:
     filename         = meta.get("filename", "")
 
     badge_num        = str(chapter)
-    sub_banner_text  = f"Chapter {chapter} &nbsp;&mdash;&nbsp; {program_count} Program{'s' if program_count != 1 else ''}"
+    sub_banner_text  = f"Chapter {chapter} &nbsp;&bull;&nbsp; {program_count} Program{'s' if program_count != 1 else ''}"
 
     # Body narrative
     body_html = f"    <p>{body}</p>\n" if body else ""

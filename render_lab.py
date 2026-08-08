@@ -176,7 +176,7 @@ def render_overview_card(overview: dict, meta: dict) -> str:
                     f'&#11123; {f_name}</a></td>'
                 )
             else:
-                download_cell = '<td style="color:#555; font-size:12px;">&mdash;</td>'
+                download_cell = '<td style="color:#555; font-size:12px;">None</td>'
             rows_html += f'      <tr><td><code>{f_name}</code>{new_badge}{submit_badge}</td><td>{f_fmt}</td>{download_cell}</tr>\n'
         data_files_html = f"""    <div class="lc-h3 lc-h3--yellow">Required Data Files</div>
     <div class="lc-table-wrap">

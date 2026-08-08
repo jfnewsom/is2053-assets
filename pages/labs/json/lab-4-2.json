@@ -5,7 +5,7 @@
     "module": 4,
     "week": 2,
     "weekType": "ENHANCE",
-    "chapters": "8\u20139",
+    "chapters": "8–9",
     "chapterTopics": "More About Strings, Dictionaries",
     "filename": "lab-4-2.py",
     "additionalFiles": []
@@ -27,7 +27,7 @@
       "In <code>lab-4-2.py</code>: copy 4.1 forward, delete the inline hazard parallel lists, load <code>hazards.txt</code> at startup, replace the inline hazard block in the travel loop with a single <code>handle_hazard</code> call, and retire <code>get_random_hazard</code> entirely"
     ],
     "keyConceptsText": "<code>.upper()</code> and <code>.strip()</code> compose elegantly. <code>input(prompt).strip().upper()</code> reads from the user, removes any surrounding whitespace, and converts the result to uppercase, all in one expression. Wrapping that pattern in <code>clean_input()</code> means every input cleanup in the game looks the same. <code>.isdigit()</code> checks whether a string consists entirely of decimal digits, which is the right test for 'is this a non-negative whole number?' before calling <code>int()</code>. List of dictionaries is the third dictionary shape you've seen this module: a list whose items happen to be dicts. <code>random.choice(hazards)</code> returns one of those dicts, and <code>hazard['name']</code> retrieves a field.",
-    "textbookReference": "Chapter 8: Programs 8\u20131 through 8\u201314 cover string methods. <code>.upper()</code> and <code>.isdigit()</code> are demonstrated in Programs 8\u20136 and 8\u20137. Chapter 9 Program 9\u201310 shows a list of dictionaries.",
+    "textbookReference": "Chapter 8: Programs 8–1 through 8–14 cover string methods. <code>.upper()</code> and <code>.isdigit()</code> are demonstrated in Programs 8–6 and 8–7. Chapter 9 Program 9–10 shows a list of dictionaries.",
     "programRequirements": [
       "Submit <code>lab-4-2.py</code> and <code>function_library.py</code>",
       "Top-of-file comment block on both files: Name, abc123, Section, Description",
@@ -94,7 +94,7 @@
     ]
   },
   "timeGuide": {
-    "totalTime": "90\u2013120 Minutes",
+    "totalTime": "90–120 Minutes",
     "rows": [
       {
         "checkpoint": "CP1: Copy 4.1 + Load Hazards",
@@ -140,7 +140,7 @@
   },
   "beforeYouBegin": {
     "intro": "Lab 4.2 is mostly library work. The lab file changes in two places: the startup loads one more file, and the in-game hazard block collapses to a single function call. Everything else carries forward from 4.1. <code>[NEW]</code> tags show what's added this unit. <code>[REPLACED]</code> tags show what swaps out. <code>[RETIRED]</code> tags show what gets deleted. <code>[KEEP]</code> tags show what carries forward.",
-    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_destinations(city, distances)                       [KEEP from 4.1]\nget_destination(city, distances, choice)                    [KEEP from 4.1]\nget_redirect(city, distances, avoid)                        [KEEP from 4.1]\nis_win_city(city, city_info)                                [KEEP from 4.1]\nis_dead_end(city, city_info)                                [KEEP from 4.1]\nload_city_distances(filename), load_city_info(filename)     [KEEP from 4.1]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\n\nclean_input(prompt) -> strip + upper                        [NEW-CP2]\nget_valid_int(prompt, min_val, max_val)                     [REPLACED-CP3] now uses .isdigit()\nget_yes_no(prompt)                                          [REPLACED-CP4] now uses clean_input\nload_hazards(filename) -> list of dicts                     [NEW-CP1]\nhandle_hazard(hazards) -> (name, escaped)                   [NEW-CP5]\nget_random_hazard(...)                                      [RETIRED-CP5]\n\n# ---- IN lab-4-2.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE, INFO_FILE, REPORT_FILE                      [KEEP from 4.1]\nHAZARDS_FILE = 'hazards.txt'                                [NEW-CP6]\nMILES_MULTIPLIER = 10, HAZARD_CHANCE = 30                   [KEEP from 4.1]\n\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [RETIRED-CP6] now in hazards.txt\n\nsave_trip_report(filename, ...)                             [KEEP from 4.1]\n\n# ---- main() ----\ndistances = load_city_distances(...)                        [KEEP from 4.1]\ncity_info = load_city_info(...)                             [KEEP from 4.1]\nhazards   = load_hazards(HAZARDS_FILE)                      [NEW-CP6]\n\nMAIN MENU LOOP                                              [KEEP from 4.1]\n  PLAY-AGAIN LOOP                                           [KEEP from 4.1]\n    IN-GAME LOOP                                            [KEEP from 4.1]\n      \u2502\n      \u2502\u2500 D20 travel loop\n      \u2502     \u2502\u2500 if hazard triggers:\n      \u2502     \u2502     name, escaped = handle_hazard(hazards)   [REPLACED-CP6]\n      \u2502     \u2502     hazards_list.append(name)\n      \u2502     \u2502     if escaped: hazards_escaped += 1\n      \u2502\n      \u2502\u2500 Continue / Save & quit / Quit                     [KEEP from 4.1]\n    \n    Trip report on screen + trip_report.txt                 [KEEP from 4.1]\n    Session accumulators                                    [KEEP from 4.1]\n"
+    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_destinations(city, distances)                       [KEEP from 4.1]\nget_destination(city, distances, choice)                    [KEEP from 4.1]\nget_redirect(city, distances, avoid)                        [KEEP from 4.1]\nis_win_city(city, city_info)                                [KEEP from 4.1]\nis_dead_end(city, city_info)                                [KEEP from 4.1]\nload_city_distances(filename), load_city_info(filename)     [KEEP from 4.1]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\n\nclean_input(prompt) -> strip + upper                        [NEW-CP2]\nget_valid_int(prompt, min_val, max_val)                     [REPLACED-CP3] now uses .isdigit()\nget_yes_no(prompt)                                          [REPLACED-CP4] now uses clean_input\nload_hazards(filename) -> list of dicts                     [NEW-CP1]\nhandle_hazard(hazards) -> (name, escaped)                   [NEW-CP5]\nget_random_hazard(...)                                      [RETIRED-CP5]\n\n# ---- IN lab-4-2.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE, INFO_FILE, REPORT_FILE                      [KEEP from 4.1]\nHAZARDS_FILE = 'hazards.txt'                                [NEW-CP6]\nMILES_MULTIPLIER = 10, HAZARD_CHANCE = 30                   [KEEP from 4.1]\n\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [RETIRED-CP6] now in hazards.txt\n\nsave_trip_report(filename, ...)                             [KEEP from 4.1]\n\n# ---- main() ----\ndistances = load_city_distances(...)                        [KEEP from 4.1]\ncity_info = load_city_info(...)                             [KEEP from 4.1]\nhazards   = load_hazards(HAZARDS_FILE)                      [NEW-CP6]\n\nMAIN MENU LOOP                                              [KEEP from 4.1]\n  PLAY-AGAIN LOOP                                           [KEEP from 4.1]\n    IN-GAME LOOP                                            [KEEP from 4.1]\n      │\n      │─ D20 travel loop\n      │     │─ if hazard triggers:\n      │     │     name, escaped = handle_hazard(hazards)   [REPLACED-CP6]\n      │     │     hazards_list.append(name)\n      │     │     if escaped: hazards_escaped += 1\n      │\n      │─ Continue / Save & quit / Quit                     [KEEP from 4.1]\n    \n    Trip report on screen + trip_report.txt                 [KEEP from 4.1]\n    Session accumulators                                    [KEEP from 4.1]\n"
   },
   "checkpoints": [
     {
@@ -699,7 +699,7 @@
         },
         {
           "type": "text",
-          "body": "This is where the library work from CPs 1\u20135 lands in the game. The shortening of the lab file is dramatic: about 35 lines of hazard data and orchestration collapse to a single function call. The total program does the same thing it always did, with less of it living in the lab file."
+          "body": "This is where the library work from CPs 1–5 lands in the game. The shortening of the lab file is dramatic: about 35 lines of hazard data and orchestration collapse to a single function call. The total program does the same thing it always did, with less of it living in the lab file."
         },
         {
           "type": "h3",
@@ -895,7 +895,7 @@
     ],
     "scopeReminder": "Module 4.2 introduces <code>.upper()</code> and <code>.isdigit()</code> for input handling, plus a list-of-dictionaries data shape for hazards. Sets and the trivia gate are held back for Lab 4.3.",
     "permittedTechniques": {
-      "chapters": "Chapters 1\u20139, with full Chapter 8 string methods now in scope",
+      "chapters": "Chapters 1–9, with full Chapter 8 string methods now in scope",
       "specific": [
         "<code>.strip()</code> and <code>.split(',')</code> for file parsing",
         "<code>.upper()</code> and <code>.lower()</code> for input normalization",
@@ -904,7 +904,7 @@
         "Nested dictionaries",
         "List of dictionaries",
         "<code>random.choice()</code> on a list of dicts",
-        "All techniques from Modules 1\u20133 and Lab 4.1 carry forward"
+        "All techniques from Modules 1–3 and Lab 4.1 carry forward"
       ],
       "notPermitted": "Sets (saved for Lab 4.3). Trivia gate (saved for Lab 4.3). Dictionary comprehensions (not covered this semester). <code>get_random_hazard</code> is retired and should not appear in submitted code."
     },
@@ -945,7 +945,7 @@
   },
   "needHelp": {
     "ifYouGetStuck": [
-      "Re-read Programs 8\u20136 (<code>.upper()</code>) and 8\u20137 (<code>.isdigit()</code>) before you start CP2 and CP3. These two BookEx programs are exactly the pattern you need",
+      "Re-read Programs 8–6 (<code>.upper()</code>) and 8–7 (<code>.isdigit()</code>) before you start CP2 and CP3. These two BookEx programs are exactly the pattern you need",
       "Test the library functions in isolation before wiring them into the lab. Run <code>python3 function_library.py</code> after each library checkpoint. If <code>clean_input</code> or <code>handle_hazard</code> is broken, you want to know that before you start hooking them into 200 lines of game code",
       "If your hazards never fire, check that <code>HAZARDS_FILE</code> is in the same folder as <code>lab-4-2.py</code> and the file has 8 lines",
       "If your in-game loop crashes on the first hazard with a <code>TypeError</code>, double-check the unpacking: <code>name, escaped = function_library.handle_hazard(hazards)</code>. Forgetting the unpacking is a common slip",

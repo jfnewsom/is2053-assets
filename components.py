@@ -366,9 +366,9 @@ def render_bookex_callout(item: dict) -> str:
         description = ref.get("description", "")
         refs_html += f"""          <li>
             <strong>Program {program_id}</strong>
-            {f'— <code>{filename}</code>' if filename else ""}
+            {f', <code>{filename}</code>' if filename else ""}
             {f'(Step {step})' if step else ""}
-            {f'— {description}' if description else ""}
+            {f': {description}' if description else ""}
           </li>
 """
 
@@ -638,7 +638,7 @@ def render_time_guide(time_guide: dict) -> str:
 """ if strategy else ""
 
     return f"""{card_open("orange")}
-{topper("Time Guide", f"Plan Your Session &nbsp;&mdash;&nbsp; {html_lib.escape(total_time)}")}
+{topper("Time Guide", f"Plan Your Session &nbsp;&bull;&nbsp; {html_lib.escape(total_time)}")}
 {panel_open()}
     <div class="lc-table-wrap">
       <table class="lc-table">
@@ -982,7 +982,7 @@ def render_final_check(final_check: dict) -> str:
 CONTACT_GRID_HTML = """    <div class="lc-contact-grid">
       <div class="lc-contact-card">
         <div class="lc-contact-card__label">Course Discord</div>
-        <div class="lc-contact-card__value">Post in <strong>#help-python</strong> &mdash; fastest response, classmates and instructor both monitor</div>
+        <div class="lc-contact-card__value">Post in <strong>#help-python</strong>. Fastest response, and classmates and the instructor both monitor it</div>
       </div>
       <div class="lc-contact-card">
         <div class="lc-contact-card__label">Book a 1-on-1</div>
@@ -992,7 +992,7 @@ CONTACT_GRID_HTML = """    <div class="lc-contact-grid">
       </div>
       <div class="lc-contact-card">
         <div class="lc-contact-card__label">Tuesday Office Hours</div>
-        <div class="lc-contact-card__value">Tuesdays 6&ndash;7 PM &mdash; drop-in for general questions. Not 1-on-1.<br>
+        <div class="lc-contact-card__value">Tuesdays at 6:00 PM Central, on Zoom. Drop-in for general questions, not 1-on-1. I open it up at 6:00 and shut it down at 6:05 if nobody shows.<br>
           <a href="https://utsa.zoom.us/j/96542097913" target="_blank">Join Zoom</a>
         </div>
       </div>
@@ -1005,7 +1005,7 @@ CONTACT_GRID_HTML = """    <div class="lc-contact-grid">
       </div>
       <div class="lc-contact-card">
         <div class="lc-contact-card__label">CodeGrade</div>
-        <div class="lc-contact-card__value">Submit early and often &mdash; feedback is instant and submissions are unlimited</div>
+        <div class="lc-contact-card__value">Submit early and often. Feedback is instant and submissions are unlimited</div>
       </div>
     </div>
 """

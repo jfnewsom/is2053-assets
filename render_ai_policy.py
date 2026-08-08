@@ -91,7 +91,7 @@ def render_stage_card(label_html, label_color, subtitle, list_items_html):
     for item in list_items_html:
         if isinstance(item, dict):
             li_lines.append(
-                f'            <li><strong>{item["title"]}</strong> &mdash; {item["desc"]}</li>'
+                f'            <li><strong>{item["title"]}:</strong> {item["desc"]}</li>'
             )
         else:
             li_lines.append(f'            <li>{item}</li>')

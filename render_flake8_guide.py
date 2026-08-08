@@ -159,7 +159,7 @@ def render_section_critical_errors(s):
     for i, err in enumerate(s['errors']):
         color = err.get('color', '')
         h3_class = f' lc-h3--{color}' if color else ''
-        heading = f'{err["code"]} &mdash; {err["title"]}'
+        heading = f'{err["code"]}: {err["title"]}'
         problem_callout = render_callout('warning', 'close', 'Problem', err['problem_html'])
         fix_callout = render_callout('success', 'check', 'Fix', err['fix_html'])
 
