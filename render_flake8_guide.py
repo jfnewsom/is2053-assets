@@ -226,6 +226,36 @@ def render_section_style_errors(s):
     )
 
 
+def render_section_long_lines(s):
+    """Section 5: Breaking Long Lines — E501 techniques, one block each.
+
+    Added Aug 8, 2026 (ledger L-005). The answer was written out in Discord on
+    Jul 4 and then lived only there, which is the whole reason the ledger has a
+    "fold it into the guide" line. Shape mirrors the critical-error blocks: a
+    sub-banner heading, a sentence of why, then the code.
+    """
+    classes = section_div_classes(s.get('labelColor'))
+    label_html = render_section_label(s['label'], s.get('labelColor'))
+    subtitle_html = render_subtitle(s['subtitle_html']) if s.get('subtitle_html') else ''
+
+    blocks = []
+    for i, tech in enumerate(s['techniques'], 1):
+        blocks.append(
+            f'      <div class="lc-h3">{i}. {tech["title"]}</div>\n'
+            f'      {tech["intro_html"]}\n'
+            f'      {tech["code_html"]}'
+        )
+    body = '\n\n'.join(blocks)
+    return (
+        f'      <div class="{classes}">\n'
+        f'{label_html}\n'
+        f'{subtitle_html}\n'
+        f'\n'
+        f'{body}\n'
+        f'      </div>'
+    )
+
+
 def render_section_quick_fixes(s):
     """Section 5: Quick Fixes — intro + lc-checklist of items."""
     classes = section_div_classes(s.get('labelColor'))
@@ -295,6 +325,7 @@ def render_page(data):
         render_section_reading_errors(data['readingErrors']),
         render_section_critical_errors(data['criticalErrors']),
         render_section_style_errors(data['styleErrors']),
+        render_section_long_lines(data['breakingLongLines']),
         render_section_quick_fixes(data['quickFixes']),
     ]
 

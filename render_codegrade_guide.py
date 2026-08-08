@@ -112,6 +112,7 @@ def render_section_reading_feedback(s):
         )
     cats_block = '\n\n'.join(categories_html)
 
+    callout_html = f'\n\n{render_callout(s["callout"])}' if s.get('callout') else ''
     cross_ref = f'\n\n{s["crossRef_html"]}' if s.get('crossRef_html') else ''
 
     return (
@@ -120,7 +121,7 @@ def render_section_reading_feedback(s):
         f'      {s["intro_html"]}\n'
         f'\n'
         f'{cats_block}'
-        f'{cross_ref}\n'
+        f'{callout_html}{cross_ref}\n'
         f'      </div>'
     )
 
