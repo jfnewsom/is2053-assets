@@ -18,11 +18,17 @@ built tree must contain exactly one syllabus link, and it must be that
 modality's. A tree with two means a strip entry is missing; a tree with zero
 means the sentinel names disagree.
 
-PLACEHOLDER. A variant whose URL is still SYLLABUS_URL_PENDING fails the build,
-so a missing document cannot quietly ship as a broken link.
+PENDING. The face-to-face Simple Syllabus does not exist yet: it is created by
+CLONING the perfected online Canvas course, so its URL is unknowable until the
+clone batch, the last step before term start. A pending URL is therefore NORMAL
+for now and only a WARNING, and the renderer omits the link entirely rather than
+emitting a dead href. It becomes a hard failure from HARD_FAIL_FROM, so it
+cannot be forgotten in the last week. A permanently red build is worse than no
+build check at all, because it teaches you to skip the output.
 
     python3 check_syllabus_links.py
 """
+import datetime
 import json
 import re
 import sys
@@ -32,6 +38,9 @@ REPO = Path(__file__).resolve().parent
 SRC = REPO / 'pages' / 'support' / 'json' / 'start-here.json'
 
 TERM = 'Fall-2026'
+# Classes start Wed Aug 19, 2026. Two days of buffer: from this date a pending
+# syllabus URL stops being a warning and fails the build.
+HARD_FAIL_FROM = datetime.date(2026, 8, 17)
 PLACEHOLDER = 'SYLLABUS_URL_PENDING'
 SYLLABUS = re.compile(r'https?://[^"\'\s]*simplesyllabus[^"\'\s]*')
 # The modality trees, which are also the values the "modality" key may take.
@@ -46,7 +55,7 @@ MODALITIES = ('onl', 'f2f')
 
 def check_source():
     d = json.loads(SRC.read_text(encoding='utf-8'))
-    found, problems = {}, []
+    found, problems, warnings = {}, [], []
 
     def walk(o):
         if isinstance(o, dict):
@@ -77,20 +86,30 @@ def check_source():
         else:
             url = urls[0]
             if url == PLACEHOLDER:
-                problems.append(
-                    f'the {v} syllabus URL is still {PLACEHOLDER} (ledger L-025). '
-                    f'Paste the real Simple Syllabus doc URL into start-here.json.')
+                overdue = datetime.date.today() >= HARD_FAIL_FROM
+                msg = (f'the {v} syllabus URL is still pending (ledger L-025). It is '
+                       f'created by cloning the online course, so it is expected to '
+                       f'land with the clone batch. The link is omitted from {v}/ '
+                       f'until then, not rendered dead. Paste it into start-here.json '
+                       f'and re-render.')
+                (problems if overdue else warnings).append(
+                    msg + (f' HARD FAILURE: past {HARD_FAIL_FROM.isoformat()}.'
+                           if overdue else
+                           f' Becomes a hard failure on {HARD_FAIL_FROM.isoformat()}.'))
             elif TERM not in url:
                 problems.append(
                     f'the {v} syllabus URL does not name {TERM}: {url}')
     for v in sorted(set(found) - set(MODALITIES)):
         problems.append(f'syllabus link tagged with unknown modality "{v}"')
-    return problems
+    return problems, warnings, {v: (found.get(v) or [None])[0] for v in MODALITIES}
 
 
-def check_built():
+def check_built(source_urls):
+    """A modality with a known URL must ship exactly one link; a pending one
+    must ship ZERO, because the renderer drops it rather than emit a dead href."""
     problems = []
     for v in sorted(MODALITIES):
+        want = 0 if source_urls.get(v) in (None, PLACEHOLDER) else 1
         page = REPO / v / 'support' / 'start-here.html'
         if not page.is_file():
             problems.append(f'{v}/support/start-here.html not built; run ./render_all.sh')
@@ -102,13 +121,16 @@ def check_built():
         # Every check below is independent. An early `continue` here once made
         # the cross-modality sentinel check unreachable for any tree whose URL
         # was still pending, which is exactly the tree most likely to be wrong.
-        if len(urls) != 1:
+        if len(urls) != want:
             problems.append(
                 f'{v}/support/start-here.html has {len(urls)} syllabus link(s), '
-                f'expected exactly 1: {urls or "none"}')
-        elif urls[0] != PLACEHOLDER and TERM not in urls[0]:
-            # A pending URL is already reported once against the source.
+                f'expected {want}: {urls or "none"}')
+        elif want and TERM not in urls[0]:
             problems.append(f'{v}/ ships a syllabus link that is not {TERM}: {urls[0]}')
+        if PLACEHOLDER in html:
+            problems.append(
+                f'{v}/ contains the literal {PLACEHOLDER}; a pending link must be '
+                f'omitted, never rendered')
 
         for o in MODALITIES:
             if o != v and f'{o.upper()}_ONLY' in html:
@@ -119,13 +141,18 @@ def check_built():
 
 
 def main():
-    problems = check_source() + check_built()
+    problems, warnings, source_urls = check_source()
+    problems += check_built(source_urls)
+    for w in warnings:
+        print(f'check_syllabus_links: WARNING - {w}')
     if problems:
         print('check_syllabus_links: FAIL')
         for p in problems:
             print(f'  - {p}')
         return 1
-    print(f'check_syllabus_links: PASS ({TERM}; one correct link per modality tree)')
+    live = sum(1 for v in MODALITIES if source_urls.get(v) not in (None, PLACEHOLDER))
+    print(f'check_syllabus_links: PASS ({TERM}; {live}/{len(MODALITIES)} modality '
+          f'links live, each in exactly one tree)')
     return 0
 
 

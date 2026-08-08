@@ -26,8 +26,19 @@ def render_paragraph(item):
     return f'        <p{style_attr}>\n          {item["html"]}\n        </p>'
 
 
+# A modality's syllabus doc may not exist yet. The face-to-face Simple Syllabus
+# is created by CLONING the perfected online Canvas course, so its URL is not
+# knowable until the clone batch, which is the LAST step before term start.
+# Until then the link is omitted entirely rather than rendered with a dead href:
+# the paragraph above it already tells students to use the Canvas Syllabus
+# left-nav link, which is correct in every section and every term.
+SYLLABUS_URL_PENDING = 'SYLLABUS_URL_PENDING'
+
+
 def render_link_paragraph(item):
     """A <p> wrapping a single anchor — common pattern in start-here."""
+    if item.get('url') == SYLLABUS_URL_PENDING:
+        return None
     attrs = ''
     if item.get('external', False):
         attrs = '\n             target="_blank" rel="noopener"'
@@ -227,7 +238,10 @@ def render_cp_body_item(item):
     rtype = item['type']
     if rtype not in CP_RENDERERS:
         raise ValueError(f"Unknown CP body type: {rtype}")
-    return wrap_for_modality(CP_RENDERERS[rtype](item), item)
+    html = CP_RENDERERS[rtype](item)
+    if html is None:          # renderer declined to emit this item
+        return None
+    return wrap_for_modality(html, item)
 
 
 # Section types that go inside top-level card panels (indent: 6 spaces)
@@ -384,7 +398,8 @@ def render_checkpoint(cp):
         # CP12 used 18 dashes (one less than CP10)
         comment = f'<!-- CP 12 ────────────────────────────────────────────── -->'
 
-    body_items_html = '\n'.join(render_cp_body_item(item) for item in cp['body'])
+    body_items_html = '\n'.join(h for h in (render_cp_body_item(i) for i in cp['body'])
+                                  if h is not None)
 
     return (
         f'      {comment}\n'
@@ -575,9 +590,12 @@ def render_hero_card_with_intro_body_outro(meta, card):
 
     Layout: course-badge topper → intro paragraphs → body (shared from CP9) → outro.
     """
-    intro_html = '\n'.join(render_cp_body_item(item) for item in card['intro'])
-    body_html = '\n'.join(render_cp_body_item(item) for item in card['body'])
-    outro_html = '\n'.join(render_cp_body_item(item) for item in card['outro'])
+    intro_html = '\n'.join(h for h in (render_cp_body_item(i) for i in card['intro'])
+                            if h is not None)
+    body_html = '\n'.join(h for h in (render_cp_body_item(i) for i in card['body'])
+                            if h is not None)
+    outro_html = '\n'.join(h for h in (render_cp_body_item(i) for i in card['outro'])
+                            if h is not None)
 
     return (
         f'  <!-- ══════════════════════════════════════════════════════════\n'
