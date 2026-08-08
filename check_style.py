@@ -29,8 +29,16 @@ import io
 import re
 import sys
 
-BASELINE_SOURCE = 703    # pages/**/json/*.json, U+2014 plus &mdash;   (2026-08-08)
-BASELINE_VISIBLE = 473   # rendered pages/**/*.html, comments stripped (2026-08-08)
+BASELINE_SOURCE = 710     # pages/**/json/*.json, U+2014 plus &mdash;   (2026-08-08)
+# 703 -> 710 when reading.json was created. That is not new debt. Those 7 already
+# existed in the hand-maintained reading pages; sourcing them made them countable
+# for the first time. Expect the same one-time bump as the remaining unsourced
+# pages (home, submission-format, exam headers) come into the pipeline.
+BASELINE_VISIBLE = 1100   # rendered pages/**/*.html, comments stripped (2026-08-08)
+# NOTE: an earlier baseline of 473 counted only the literal U+2014 character and
+# missed every &mdash; entity, undercounting the real debt by 57 percent. Both
+# forms render identically to a student, so both must be counted. If you change
+# this counting logic, re-derive the baseline in the same commit.
 
 BANNED_ZERO_TOLERANCE = [
     (re.compile(r"But here's the (truth|thing)", re.I), "AI-tell transition"),
@@ -62,14 +70,34 @@ def count_source():
     return total, hits
 
 
+def live_pages():
+    """Rendered pages a student can actually reach. Excludes _to_delete, which
+    holds files parked for John to remove (the bridge cannot delete)."""
+    return [f for f in sorted(glob.glob('pages/**/*.html', recursive=True))
+            if '_to_delete' not in f]
+
+
 def count_visible():
-    total, per = 0, {}
-    for f in sorted(glob.glob('pages/**/*.html', recursive=True)):
-        n = COMMENT_RE.sub('', read(f)).count('—')
+    """Em-dashes plus zero-tolerance patterns in RENDERED output.
+
+    This pass exists because not every page has a JSON source. Hand-maintained
+    HTML (the reading-ch*.html family, ledger L-016) is invisible to the SOURCE
+    scan. On 2026-08-08 a whole orphan page, zoom-sessions.html, sat live with
+    banned wording and a false claim that office hours are recorded, precisely
+    because nothing scanned rendered HTML for anything but punctuation.
+    """
+    total, per, hits = 0, {}, []
+    for f in live_pages():
+        stripped = COMMENT_RE.sub('', read(f))
+        # Both forms render identically on the page. Count both.
+        n = stripped.count('—') + stripped.count('&mdash;')
         if n:
             per[f] = n
             total += n
-    return total, per
+        for pat, why in BANNED_ZERO_TOLERANCE:
+            for m in pat.finditer(stripped):
+                hits.append((f, m.group(0), why))
+    return total, per, hits
 
 
 def ratchet(label, actual, baseline, ok):
@@ -86,12 +114,23 @@ def ratchet(label, actual, baseline, ok):
 
 
 def main():
-    source, hits = count_source()
-    visible, per = count_visible()
+    source, src_hits = count_source()
+    visible, per, vis_hits = count_visible()
 
     ok = True
     ok = ratchet('SOURCE  em-dashes', source, BASELINE_SOURCE, ok)
     ok = ratchet('VISIBLE em-dashes', visible, BASELINE_VISIBLE, ok)
+
+    # Dedupe per file, not per pattern. Collapsing on the matched string alone
+    # hides every occurrence after the first, which turns a full report into a
+    # one-at-a-time guessing game.
+    seen, hits = set(), []
+    for f, s, why in src_hits + vis_hits:
+        key = (f, s, why)
+        if key in seen:
+            continue
+        seen.add(key)
+        hits.append((f, s, why))
 
     if hits:
         ok = False
