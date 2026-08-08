@@ -272,16 +272,18 @@
         },
         {
           "type": "text",
-          "body": "<strong>Replace your Houston branch (elif choice == 2)</strong> with nested logic. The structure is:"
+          "body": "<strong>Replace your Houston branch (elif choice == 2)</strong> with nested logic. <strong>Subtract first, then check.</strong> That way <code>miles_remaining</code> always means the miles left AFTER the drive, which is exactly what the Trip Summary reports."
         },
         {
           "type": "instructions",
           "items": [
-            "Check if made it to Houston (<code>miles_remaining &gt;= SAT_TO_HOUSTON</code>)",
-            "If yes: subtract <code>SAT_TO_HOUSTON</code> from <code>miles_remaining</code>, set <code>distance</code>, then ask <code>'Continue to Galveston? (y/n): '</code>",
-            "If they say y/Y: check if <code>miles_remaining &gt;= HOU_TO_GALVESTON</code> — set status WINNER or SHORT accordingly",
-            "If they say anything else: set status to 'STOPPED'",
-            "If didn't make Houston: set status to 'SHORT', set <code>distance</code> to <code>SAT_TO_HOUSTON</code>"
+            "Subtract the leg you just drove: <code>miles_remaining = miles_remaining - SAT_TO_HOUSTON</code>",
+            "Check <code>if miles_remaining &gt;= 0</code>. That is how you know they reached Houston",
+            "If they made it: set <code>distance</code> to <code>SAT_TO_HOUSTON</code>, print the arrival line and the miles remaining, then ask <code>'Continue to Galveston? (y/n): '</code>",
+            "If they answer y/Y: update the destination to Galveston, set <code>distance</code> to <code>SAT_TO_HOUSTON + HOU_TO_GALVESTON</code>, subtract again with <code>miles_remaining = miles_remaining - HOU_TO_GALVESTON</code>, then check <code>if miles_remaining &gt;= 0</code> and set status to WINNER or SHORT",
+            "Subtract on the Galveston leg <strong>even when they fall short</strong>. That is why the sample Trip Summary shows <code>Miles Remaining: -50</code>. If you only subtract on success, your output will not match",
+            "If they answer anything else: set status to <code>'STOPPED'</code>",
+            "If they did not reach Houston: set status to <code>'SHORT'</code> and set <code>distance</code> to <code>SAT_TO_HOUSTON</code>"
           ]
         },
         {
@@ -304,8 +306,8 @@
               "Nested code must be indented further than the outer if"
             ],
             [
-              "Not updating miles_remaining",
-              "Must subtract SAT_TO_HOUSTON before checking if you can reach Galveston"
+              "Checking before subtracting",
+              "Subtract first, then compare to 0. Checking <code>miles_remaining &gt;= SAT_TO_HOUSTON</code> gets the arrival test right but leaves <code>miles_remaining</code> wrong in the Trip Summary."
             ]
           ],
           "accent": "green"
@@ -327,10 +329,10 @@
         {
           "type": "instructions",
           "items": [
-            "<strong>Roll 5, choice 2:</strong> Didn't make Houston → SHORT",
-            "<strong>Roll 20, choice 2, 'n':</strong> Made Houston, stayed → STOPPED",
-            "<strong>Roll 20, choice 2, 'y':</strong> Made Houston, reached Galveston → WINNER",
-            "<strong>Roll 15, choice 2, 'y':</strong> Made Houston, short of Galveston → SHORT"
+            "<strong>Roll 5, choice 2:</strong> Did not reach Houston &rarr; SHORT",
+            "<strong>Roll 20, choice 2, 'n':</strong> Reached Houston, chose to stay &rarr; STOPPED",
+            "<strong>Roll 20, choice 2, 'y':</strong> Reached Houston with 0 miles left, so Galveston is out of reach &rarr; SHORT, and the summary reads <code>Miles Remaining: -50</code>",
+            "<strong>Roll 25, choice 2, 'y':</strong> Reached Houston with 50 left, exactly enough &rarr; WINNER. Roll 25 is above the prompt's stated range; enter it anyway to test this path, as the Design Note in Checkpoint 1 explains"
           ]
         },
         {
@@ -374,7 +376,7 @@
         },
         {
           "type": "text",
-          "body": "<strong>For each remaining branch, ensure you set both tracking variables:</strong>"
+          "body": "<strong>For each remaining branch, subtract first, then check, and set both tracking variables:</strong> subtract the branch's constant from <code>miles_remaining</code>, then test <code>if miles_remaining &gt;= 0</code>. Same pattern as the Houston branch in Checkpoint 2."
         },
         {
           "type": "table",
@@ -408,18 +410,14 @@
               "Invalid (else)",
               "0",
               "'ERROR'"
-            ],
-            [
-              "Invalid choice (else)",
-              "0",
-              "'ERROR'"
             ]
           ],
           "accent": "green"
         },
         {
           "type": "text",
-          "content": "<strong>About the invalid choice row:</strong> When the player types something other than 1, 2, or 3, your <code>else</code> clause needs to set both variables explicitly. Don't leave them undefined &mdash; the Trip Summary will crash with a <code>NameError</code> if <code>distance</code> or <code>status</code> isn't set."
+          "content": "<strong>About the invalid choice row:</strong> When the player types something other than 1, 2, or 3, your <code>else</code> clause needs to set both variables explicitly. Don't leave them undefined &mdash; the Trip Summary will crash with a <code>NameError</code> if <code>distance</code> or <code>status</code> isn't set.",
+          "body": "<strong>For each remaining branch, subtract first, then check, and set both tracking variables:</strong> subtract the branch's constant from <code>miles_remaining</code>, then test <code>if miles_remaining &gt;= 0</code>. Same pattern as the Houston branch in Checkpoint 2."
         },
         {
           "type": "callout",
@@ -710,7 +708,7 @@
         },
         {
           "symptom": "<code>IndentationError</code> on the inner Galveston check",
-          "redirect": "Check <strong>CP2 (Nested Houston Logic)</strong> &mdash; nested code must be indented FURTHER than the outer if. The inner <code>if miles_remaining &gt;= HOU_TO_GALVESTON</code> sits inside the outer <code>if continue_choice == 'y'</code>, so it gets two levels of indentation."
+          "redirect": "Check <strong>CP2 (Nested Houston Logic)</strong> &mdash; nested code must be indented FURTHER than the outer if. The inner <code>if miles_remaining &gt;= 0</code> (after subtracting <code>HOU_TO_GALVESTON</code>) sits inside the outer <code>if continue_choice == 'y'</code>, so it gets two levels of indentation."
         },
         {
           "symptom": "Trip Summary shows <code>Status: STOPPED</code> or other status but the closing message is wrong (or missing)",
