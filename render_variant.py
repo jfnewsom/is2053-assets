@@ -148,11 +148,16 @@ def build(name, cfg):
                 text)
             if text != original:
                 stripped_files += 1
-            # Only a variant that removes VIDEO may not contain Panopto. The
-            # online variant strips nothing, so embeds surviving there is the
-            # correct outcome, not a leak.
-            if 'VIDEO' in cfg['strip'] and 'panopto' in text.lower():
-                leaked.append(str(rel))
+            # A variant that strips VIDEO must not carry video it did not author.
+            # It MAY carry its own: as of 2026-08-08 the welcome video is per
+            # modality, so f2f gets its own recording rather than nothing, fenced
+            # in an F2F_ONLY block that survives into this tree by design. So the
+            # check is "no Panopto OUTSIDE my own ONLY block", not "no Panopto".
+            if 'VIDEO' in cfg['strip']:
+                own = re.compile(rf'<!-- {name.upper()}_ONLY:START -->.*?'
+                                 rf'<!-- {name.upper()}_ONLY:END -->', re.DOTALL)
+                if 'panopto' in own.sub('', text).lower():
+                    leaked.append(str(rel))
             if re.search(r'is2053-assets/pages/[^"\')\s]*\.html', text) \
                     or re.search(r'\.\./+pages/', text):
                 escaped.append(str(rel))
@@ -190,10 +195,11 @@ def build(name, cfg):
             print(f'  {cfg["dir"]}/{f}  <!-- {s} -->')
     if leaked:
         ok = False
-        print(f'render_variant [{name}]: FAIL - Panopto references survived stripping in:')
+        print(f'render_variant [{name}]: FAIL - unfenced Panopto references in:')
         for f in leaked:
             print(f'  {cfg["dir"]}/{f}')
-        print('Wrap those embeds in VIDEO:START/END sentinels and re-run.')
+        print(f'Fence them: VIDEO:START/END to remove them from this variant, or '
+              f'{name.upper()}_ONLY:START/END if this modality should keep its own.')
     if escaped:
         ok = False
         print(f'render_variant [{name}]: FAIL - links escaping to /pages/ found in:')
@@ -203,7 +209,8 @@ def build(name, cfg):
     if ok:
         checked = 'zero /pages/ escape links'
         if 'VIDEO' in cfg['strip']:
-            checked = 'zero Panopto references and ' + checked
+            checked = (f'no Panopto outside this modality\'s own '
+                       f'{name.upper()}_ONLY block, and ') + checked
         else:
             checked += ' (Panopto check not applicable: this variant keeps video)'
         print(f'render_variant [{name}]: verified {checked}.')

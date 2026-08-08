@@ -278,7 +278,11 @@ def main():
             total += 1
             high += (sev == 'HIGH')
     print(f'\n{total} finding(s), {high} HIGH across {len(files)} labs')
-    return 0
+    # HIGH means the sheet contradicts itself, which is a defect and must fail
+    # the build. Until 2026-08-08 this always returned 0, so the check that
+    # caught the Lab 1.3 arithmetic bug (F-021) could not have stopped a push.
+    # REVIEW findings are judgement calls and deliberately do not fail.
+    return 1 if high else 0
 
 
 if __name__ == '__main__':

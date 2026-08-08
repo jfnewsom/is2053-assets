@@ -50,6 +50,16 @@ BANNED_ZERO_TOLERANCE = [
     (re.compile(r"weekly Zoom|course Zoom|Zoom session", re.I),
      "office-hours wording: the event is office hours, Zoom is only the room"),
     (re.compile(r"[Ss]essions are\s+(?:<[^>]+>\s*)?recorded"), "office hours are not recorded"),
+    # F-019 banned exactly one phrasing of "office hours are recorded", so the
+    # claim simply came back in another: "Recordings will be posted here after
+    # each Tuesday office hours session" sat live on four module overviews.
+    # Ban the CLAIM, not the sentence. Both rules are written to allow the
+    # correct negative statement ("Office hours ... are not recorded").
+    (re.compile(r"[Rr]ecordings?[^.]{0,60}office hours", re.I),
+     "do not tie recordings to office hours: chapter notes and lab walkthroughs "
+     "are pre-recorded, and office hours are never recorded"),
+    (re.compile(r"office hours?[^.]{0,60}\b(?:are|is|will be|gets?|being)\s+recorded\b", re.I),
+     "office hours are not recorded"),
 ]
 
 COMMENT_RE = re.compile(r'<!--.*?-->', re.S)

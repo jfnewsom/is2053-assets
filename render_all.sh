@@ -56,16 +56,17 @@ done
 # otherwise. That is the exact failure this script exists to prevent.
 echo ""
 echo "Checking for unwired renderers..."
+UNWIRED=0
 for s in render_*.py; do
     case "$s" in
         render_variant.py|render_lab.py|render_bookex.py|render_study_worksheet.py) continue ;;
     esac
     if ! grep -q "$s" "$0"; then
         echo "  ✗ $s exists but is NOT in render_all.sh — add it"
-        FAILED=1
+        UNWIRED=1; FAILED=1
     fi
 done
-[ $FAILED -eq 0 ] && echo "  ✓ every renderer is wired in"
+[ $UNWIRED -eq 0 ] && echo "  ✓ every renderer is wired in"
 
 echo ""
 echo "Building modality variants (must be last)..."
@@ -78,11 +79,39 @@ if [ "$1" != "--no-guard" ]; then
 
     echo ""
     echo "Running lab consistency lint..."
-    python3 lab_lint.py | tail -n 1
+    # Capture, do not pipe: a pipeline reports the LAST command's status, so
+    # `lab_lint.py | tail` would report tail's success and swallow the failure.
+    LINT_OUT=$(python3 lab_lint.py) || FAILED=1
+    echo "$LINT_OUT" | tail -n 1
+
+    echo ""
+    echo "Checking dates..."
+    python3 check_dates.py || FAILED=1
 
     echo ""
     echo "Checking syllabus links..."
     python3 check_syllabus_links.py || FAILED=1
+
+    echo ""
+    echo "Checking pending placeholders..."
+    python3 check_pending.py || FAILED=1
+
+    # Execute each lab solution and diff it against the sheet's sample run.
+    # The solutions live outside this repo, so this is the one guard that can
+    # be unavailable. Skipping is announced loudly rather than passing quietly:
+    # a check you think ran and did not is worse than no check.
+    echo ""
+    echo "Verifying sheets against the solutions..."
+    SOLUTIONS="${IS2053_SOLUTIONS:-$HOME/Library/CloudStorage/OneDrive-UniversityofTexasatSanAntonio/UTSA-Prof-Current/2026-3-Fall/IS2053/code/Modules}"
+    if [ -d "$SOLUTIONS" ]; then
+        VERIFY_OUT=$(python3 verify_output.py --solutions "$SOLUTIONS") || FAILED=1
+        echo "$VERIFY_OUT" | grep -E '^[A-Z][A-Z-]*=[0-9]' | sed 's/^/  /'
+        # Only DIFFERS proves a disagreement; the rest are harness limits.
+        echo "$VERIFY_OUT" | grep -E '^\S+ +DIFFERS' | sed 's/^/  /' || true
+    else
+        echo "  SKIPPED: solutions tree not found at $SOLUTIONS"
+        echo "  Set IS2053_SOLUTIONS to run it. Sheets were NOT checked against the code."
+    fi
 fi
 
 echo ""

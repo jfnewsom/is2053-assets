@@ -28,7 +28,6 @@ build check at all, because it teaches you to skip the output.
 
     python3 check_syllabus_links.py
 """
-import datetime
 import json
 import re
 import sys
@@ -38,9 +37,6 @@ REPO = Path(__file__).resolve().parent
 SRC = REPO / 'pages' / 'support' / 'json' / 'start-here.json'
 
 TERM = 'Fall-2026'
-# Classes start Wed Aug 19, 2026. Two days of buffer: from this date a pending
-# syllabus URL stops being a warning and fails the build.
-HARD_FAIL_FROM = datetime.date(2026, 8, 17)
 PLACEHOLDER = 'SYLLABUS_URL_PENDING'
 SYLLABUS = re.compile(r'https?://[^"\'\s]*simplesyllabus[^"\'\s]*')
 # The modality trees, which are also the values the "modality" key may take.
@@ -86,16 +82,11 @@ def check_source():
         else:
             url = urls[0]
             if url == PLACEHOLDER:
-                overdue = datetime.date.today() >= HARD_FAIL_FROM
-                msg = (f'the {v} syllabus URL is still pending (ledger L-025). It is '
-                       f'created by cloning the online course, so it is expected to '
-                       f'land with the clone batch. The link is omitted from {v}/ '
-                       f'until then, not rendered dead. Paste it into start-here.json '
-                       f'and re-render.')
-                (problems if overdue else warnings).append(
-                    msg + (f' HARD FAILURE: past {HARD_FAIL_FROM.isoformat()}.'
-                           if overdue else
-                           f' Becomes a hard failure on {HARD_FAIL_FROM.isoformat()}.'))
+                # Deliberately not reported here. check_pending.py owns the
+                # warn-now / fail-later policy for every placeholder, so the
+                # deadline lives in exactly one place. This guard stays focused
+                # on whether the LINKS are right.
+                pass
             elif TERM not in url:
                 problems.append(
                     f'the {v} syllabus URL does not name {TERM}: {url}')
