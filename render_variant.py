@@ -60,26 +60,43 @@ SRC = REPO / 'pages'
 # 'dir'    output directory at the repo root, and the URL prefix
 # 'strip'  sentinel names removed for this variant
 # 'label'  human name, used only in output
+#
+# Keys are three letters on purpose (onl, f2f, and hyb if it ever lands). They
+# are also directory names and URL prefixes, so equal width keeps the registry,
+# the sentinel names, and every Canvas URL aligned. Match it when adding one.
 VARIANTS = {
     'onl': {
         'dir': 'onl',
         'label': 'online',
-        'strip': [],          # nothing removed; online sees the full site
+        'strip': ['F2F_ONLY'],
     },
     'f2f': {
         'dir': 'f2f',
         'label': 'face-to-face',
-        'strip': ['RECORDINGS', 'VIDEO'],
+        'strip': ['RECORDINGS', 'VIDEO', 'ONL_ONLY'],
     },
-    # 'hybrid': {'dir': 'hybrid', 'label': 'hybrid', 'strip': ['RECORDINGS']},
+    # 'hyb': {'dir': 'hyb', 'label': 'hybrid',
+    #         'strip': ['RECORDINGS', 'ONL_ONLY', 'F2F_ONLY']},
 }
 
+# Every variant must strip every other variant's ONLY block, or a page ends up
+# showing two modalities' worth of content. Deriving that here means adding a
+# variant cannot silently forget one.
+for _name, _cfg in VARIANTS.items():
+    for _other, _sentinel in (('onl', 'ONL_ONLY'), ('f2f', 'F2F_ONLY')):
+        if _name != _other and _sentinel not in _cfg['strip']:
+            _cfg['strip'].append(_sentinel)
+
+SENTINEL_NAMES = ['RECORDINGS', 'VIDEO', 'ONL_ONLY', 'F2F_ONLY']
 SENTINEL_PATTERNS = {
-    'RECORDINGS': re.compile(
-        r'\s*<!-- RECORDINGS:START -->.*?<!-- RECORDINGS:END -->', re.DOTALL),
-    'VIDEO': re.compile(
-        r'\s*<!-- VIDEO:START -->.*?<!-- VIDEO:END -->', re.DOTALL),
+    name: re.compile(rf'\s*<!-- {name}:START -->.*?<!-- {name}:END -->', re.DOTALL)
+    for name in SENTINEL_NAMES
 }
+# A sentinel this variant was told to strip must not survive into its tree; if
+# one does, the pattern and the emitted comment disagree and a student sees the
+# other modality's content. Sentinels NOT in the strip list are supposed to
+# remain: onl/ keeps RECORDINGS and VIDEO because online sees the full site.
+ANY_SENTINEL = re.compile(r'<!-- ([A-Z_]+):(?:START|END) -->')
 
 
 def build(name, cfg):
@@ -104,7 +121,7 @@ def build(name, cfg):
 
     patterns = [SENTINEL_PATTERNS[s] for s in cfg['strip']]
     stripped_files = 0
-    leaked, escaped = [], []
+    leaked, escaped, survivors = [], [], set()
     written = set()
 
     for src_file in sorted(SRC.rglob('*')):
@@ -139,6 +156,9 @@ def build(name, cfg):
             if re.search(r'is2053-assets/pages/[^"\')\s]*\.html', text) \
                     or re.search(r'\.\./+pages/', text):
                 escaped.append(str(rel))
+            for m in ANY_SENTINEL.finditer(text):
+                if m.group(1) in cfg['strip']:
+                    survivors.add((str(rel), m.group(1)))
             dst_file.write_text(text, encoding='utf-8')
         else:
             shutil.copy2(src_file, dst_file)
@@ -162,6 +182,12 @@ def build(name, cfg):
         else:
             print(f'render_variant [{name}]: no stale files; '
                   f'in-place tree matches the source.')
+    if survivors:
+        ok = False
+        print(f'render_variant [{name}]: FAIL - blocks this variant strips '
+              f'survived into the built tree:')
+        for f, s in sorted(survivors):
+            print(f'  {cfg["dir"]}/{f}  <!-- {s} -->')
     if leaked:
         ok = False
         print(f'render_variant [{name}]: FAIL - Panopto references survived stripping in:')

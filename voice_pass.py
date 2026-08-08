@@ -101,11 +101,34 @@ def classify(before, after):
 
 
 def capitalize_after(s, at):
-    """After turning a dash into a period, the next word starts a sentence."""
+    """After turning a dash into a period, the next word starts a sentence.
+
+    Two things must not be capitalized, and both were shipped before being
+    caught:
+
+      code    "readline()" became "Readline()" on a BookEx page, which is
+              simply wrong in Python. If the token is followed by '(', skip.
+      markup  "<strong>NEW this unit</strong>" became "<Strong>...". HTML is
+              case-insensitive so it still rendered, but it is a defect and it
+              defeats every tag-matching grep. Step over the whole tag and
+              capitalize the first real word inside it instead.
+    """
+    import re as _re
+    while at < len(s):
+        tag = _re.match(r'\s*<[^>]*>', s[at:])
+        if not tag:
+            break
+        # Inside <code> the next word is an identifier, not a sentence.
+        if _re.match(r'\s*<code\b', s[at:], _re.I):
+            return s
+        at += tag.end()
     for i in range(at, min(at + 12, len(s))):
         if s[i].isalpha():
+            m = _re.match(r'[A-Za-z_][A-Za-z0-9_]*', s[i:])
+            if m and s[i + m.end():i + m.end() + 1] == '(':
+                return s
             return s[:i] + s[i].upper() + s[i + 1:]
-        if s[i] not in '<>/abcdefghijklmnopqrstuvwxyz':
+        if s[i] not in 'abcdefghijklmnopqrstuvwxyz':
             break
     return s
 

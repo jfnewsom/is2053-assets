@@ -19,7 +19,7 @@
       "quote": "When you find yourself writing the same shape of code three times in a row, that's data wearing a logic costume. The structure is begging to be a list. Once you see it, you can't unsee it, and your code gets so much shorter."
     },
     "objectives": [
-      "Replace the destination <code>if/elif</code> chains with <strong>parallel lists</strong>: three per city: destinations, distances, notes",
+      "Replace the destination <code>if/elif</code> chains with <strong>parallel lists</strong>, three per city: destinations, distances, notes",
       "<strong>Promote</strong> <code>save_game()</code> and <code>load_game()</code> from <code>lab-3-1.py</code> to <code>function_library.py</code>",
       "Add three universal destination helpers to the library: <code>display_destinations()</code>, <code>get_destination()</code>, <code>get_redirect()</code>",
       "Build <strong>tracking lists</strong>: <code>visited_cities</code> (route) and <code>hazards_list</code> (war stories)",
@@ -274,7 +274,7 @@
             "<strong>Move the <code>save_game()</code> function</strong>: cut the entire definition (including docstring) from <code>lab-3-2.py</code> and paste it into <code>function_library.py</code> under your new header comment",
             "<strong>Move the <code>load_game()</code> function</strong> the same way",
             "<strong>Update the call sites in <code>lab-3-2.py</code></strong>: search for <code>save_game(</code> and prefix each call with <code>function_library.</code> so it becomes <code>function_library.save_game(</code>. Do the same for <code>load_game()</code>",
-            "<strong>Check for leftover references</strong>: search <code>lab-3-2.py</code> for any remaining <code>SAVE_FILE</code>: that constant lives only in the library now",
+            "<strong>Check for leftover references</strong>: search <code>lab-3-2.py</code> for any remaining <code>SAVE_FILE</code>. That constant lives only in the library now",
             "<strong>Run <code>lab-3-2.py</code></strong>. Play through one game, save mid-trip in Houston, quit, restart, load. The behavior should be identical to Lab 3.1 from the user's perspective. The difference is invisible from outside. That's how you know the refactor succeeded"
           ]
         },
@@ -385,7 +385,7 @@
           "type": "callout",
           "kind": "bookex",
           "title": "",
-          "body": "<strong>Program 7-1 (list_demo.py)</strong>: creating lists with initial values. <strong>Section 7.2.2</strong>: the textbook calls this 'a list with initial values' but it's the most common Python list pattern. <strong>Section 7.3</strong>: indexing: <code>my_list[0]</code> for first item, <code>my_list[len(my_list) - 1]</code> for last."
+          "body": "<strong>Program 7-1 (list_demo.py)</strong>: creating lists with initial values. <strong>Section 7.2.2</strong>: the textbook calls this 'a list with initial values' but it's the most common Python list pattern. <strong>Section 7.3</strong> (indexing): <code>my_list[0]</code> for first item, <code>my_list[len(my_list) - 1]</code> for last."
         },
         {
           "type": "h3",
@@ -690,7 +690,7 @@
         },
         {
           "type": "text",
-          "body": "The pattern from CPs 3-5 generalizes here. Each city needs three lists; one tiny dispatch function decides which set to use. Everything downstream: menu display, destination lookup, gate redirect, uses the same library code regardless of which city you're in. This is where the file shrinks dramatically: what was a 90-line <code>if/elif</code> wall in 3.1 becomes about 20 lines of data plus a few library calls."
+          "body": "The pattern from CPs 3-5 generalizes here. Each city needs three lists; one tiny dispatch function decides which set to use. Everything downstream (menu display, destination lookup, gate redirect) uses the same library code regardless of which city you're in. This is where the file shrinks dramatically: what was a 90-line <code>if/elif</code> wall in 3.1 becomes about 20 lines of data plus a few library calls."
         },
         {
           "type": "h3",
@@ -733,7 +733,7 @@
         },
         {
           "type": "text",
-          "body": "<strong>Step 2:</strong> Travel through Austin too: from SA, choose Austin. The Austin menu should show one option: <code>1. San Antonio - 80 miles (Back Home)</code>"
+          "body": "<strong>Step 2:</strong> Travel through Austin too. From SA, choose Austin. The Austin menu should show one option: <code>1. San Antonio - 80 miles (Back Home)</code>"
         },
         {
           "type": "text",
@@ -817,7 +817,7 @@
             "<strong>Find the per-game reset block</strong> inside the play-again loop in <code>main()</code>. It currently resets <code>total_miles</code>, <code>total_turns</code>, <code>total_hazards</code>, <code>total_escaped</code> when <code>not resumed_game</code>",
             "<strong>Add two new resets</strong> inside that <code>if not resumed_game:</code> block: <code>visited_cities = ['San Antonio']</code> and <code>hazards_list = []</code>",
             "<strong>Find the hazard block</strong> in the travel loop, the spot where a hazard fires and you print its name. Immediately after <code>print(hazard)</code>, add <code>hazards_list.append(hazard)</code>",
-            "<strong>Find the city-arrival code</strong> right after the travel loop ends. Where you set <code>current_city = destination</code>. Add <code>visited_cities.append(current_city)</code> on the next line",
+            "<strong>Find the city-arrival code</strong> right after the travel loop ends, where you set <code>current_city = destination</code>. Add <code>visited_cities.append(current_city)</code> on the next line",
             "<strong>Handle the Austin special case</strong>: when Austin returns to SA, you also need to append SA to <code>visited_cities</code> (otherwise the route shows 'San Antonio, Austin' and then jumps to Houston without recording the trip back to SA in between)",
             "<strong>Update <code>function_library.load_game()</code> return value handling</strong> in <code>main()</code>: when the Load branch succeeds, you'll need <code>visited_cities</code> and <code>hazards_list</code> from the loaded tuple. <strong>For now</strong>, since the library function still returns a 9-tuple, just initialize empty lists in the Load branch too: <code>visited_cities = []; hazards_list = []</code>. CP8 will extend the library to return them properly"
           ]
@@ -1152,7 +1152,7 @@
       "<code>function_library.py</code> contains: <code>flip_coin</code>, <code>roll_d20</code>, <code>check_percentage</code>, <code>get_valid_int</code>, <code>get_yes_no</code>, <code>SAVE_FILE</code>, <code>save_game</code> (11 params), <code>load_game</code> (returns 11-tuple), <code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>, <code>display_numbered_list</code>",
       "<code>lab-3-2.py</code> has the three triples of parallel lists at module level (SA, HOU, AUS)",
       "<code>lab-3-2.py</code> has <code>get_city_data()</code> dispatch function",
-      "<code>lab-3-2.py</code> has NO city-specific <code>if/elif</code> for destinations, all menus go through the library helpers",
+      "<code>lab-3-2.py</code> has NO city-specific <code>if/elif</code> for destinations. All menus go through the library helpers",
       "<code>visited_cities</code> tracks the route, including any return trips through SA",
       "<code>hazards_list</code> tracks every hazard encountered, regardless of escape",
       "Both files have updated docstrings with name, abc123, section, and description",
@@ -1176,7 +1176,7 @@
       ],
       "notPermitted": "Dictionaries, sets, list comprehensions, <code>readlines()</code>, <code>with</code> statement, or any Chapter 8+ techniques. Note: <code>with</code> is in Chapter 6 but we're staying with explicit <code>open()</code>/<code>close()</code> through Module 3 for consistency."
     },
-    "saveYourCode": "Keep both files, Lab 3.3 builds the Master capstone of Module 3 on top of this. <code>function_library.py</code> grows again next unit.",
+    "saveYourCode": "Keep both files. Lab 3.3 builds the Master capstone of Module 3 on top of this. <code>function_library.py</code> grows again next unit.",
     "warnings": [],
     "finalCheck": {
       "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, TestPlayer!\nYou are in San Antonio. Your goal: reach the beach!\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles (Gateway East)\n  3. Austin - 80 miles (Keep it Weird)\n\nChoice (1-3): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 15!\nYou travel 150 miles...\nMiles remaining: 50\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call.\n\n--- Turn 2 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nWhere would you like to go?\n  1. Galveston - 50 miles (BEACH!)\n  2. San Antonio - 200 miles (Back West)\n\nChoice (1-2): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n--------------------------------------------------\nTRIP SUMMARY\n--------------------------------------------------\nDriver: TestPlayer\nFinal City: Galveston\nTotal Miles: 450\nTotal Turns: 3\nHazards Faced: 1\nHazards Escaped: 1\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nHAZARDS ENCOUNTERED\n-------------------\n  1. Buc-ee's appears!\n\n--------------------------------------------------\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 450\nTotal Hazards: 1\n==================================================\n\nThanks for playing, TestPlayer!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!",
@@ -1216,7 +1216,7 @@
         },
         {
           "symptom": "Loaded game crashes with <code>ValueError</code> or wrong field counts",
-          "redirect": "Check <strong>CP8</strong>: if your save file is from before you finished CP8 (or from Lab 3.1 directly), it has the wrong number of lines for the new format. Delete <code>savegame.txt</code> and start fresh. The library's <code>load_game()</code> handles missing files cleanly, but a partial or old-format file may have parse errors. If a fresh save then loads cleanly, the fix is good. If it still crashes, your <code>load_game()</code> isn't catching <code>ValueError</code>: update the <code>except</code> clause to <code>except (FileNotFoundError, ValueError):</code>."
+          "redirect": "Check <strong>CP8</strong>: if your save file is from before you finished CP8 (or from Lab 3.1 directly), it has the wrong number of lines for the new format. Delete <code>savegame.txt</code> and start fresh. The library's <code>load_game()</code> handles missing files cleanly, but a partial or old-format file may have parse errors. If a fresh save then loads cleanly, the fix is good. If it still crashes, your <code>load_game()</code> isn't catching <code>ValueError</code>. Update the <code>except</code> clause to <code>except (FileNotFoundError, ValueError):</code>."
         }
       ]
     }

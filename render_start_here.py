@@ -191,11 +191,43 @@ CP_RENDERERS = {
 }
 
 
+# Modality names a content item may be scoped to. The value is the variant key
+# in render_variant.py, and the sentinel emitted is that variant's ONLY block.
+# Everything a variant does is still a REMOVAL: pages/ carries every modality's
+# copy, and each variant tree strips the blocks that are not its own. That keeps
+# the one-way authoring rule intact without an overlay directory.
+# NOTE: the key is "modality", NOT "variant". This schema already uses
+# "variant" on callouts for tip/info/warning, and reusing it here crashed every
+# callout on the page the first time (Aug 8, 2026).
+MODALITY_SENTINELS = {'onl': 'ONL_ONLY', 'f2f': 'F2F_ONLY'}
+
+
+def wrap_for_modality(html, item):
+    """Fence a content item so only its own modality keeps it.
+
+    Used for the Simple Syllabus link, where online and face-to-face point at
+    different Simple Syllabus documents (Aug 8, 2026). A sentinel pair is
+    cheaper and far more visible than a per-variant override file, and it keeps
+    both URLs side by side in one source so neither can be quietly forgotten.
+    """
+    v = item.get('modality')
+    if not v:
+        return html
+    if v not in MODALITY_SENTINELS:
+        raise ValueError(
+            f"Unknown modality {v!r}; known: {sorted(MODALITY_SENTINELS)}")
+    name = MODALITY_SENTINELS[v]
+    indent = ' ' * (len(html) - len(html.lstrip()))
+    return (f'{indent}<!-- {name}:START -->\n'
+            f'{html}\n'
+            f'{indent}<!-- {name}:END -->')
+
+
 def render_cp_body_item(item):
     rtype = item['type']
     if rtype not in CP_RENDERERS:
         raise ValueError(f"Unknown CP body type: {rtype}")
-    return CP_RENDERERS[rtype](item)
+    return wrap_for_modality(CP_RENDERERS[rtype](item), item)
 
 
 # Section types that go inside top-level card panels (indent: 6 spaces)

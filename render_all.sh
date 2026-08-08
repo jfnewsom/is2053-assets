@@ -79,6 +79,10 @@ if [ "$1" != "--no-guard" ]; then
     echo ""
     echo "Running lab consistency lint..."
     python3 lab_lint.py | tail -n 1
+
+    echo ""
+    echo "Checking syllabus links..."
+    python3 check_syllabus_links.py || FAILED=1
 fi
 
 echo ""
