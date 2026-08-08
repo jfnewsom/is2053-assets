@@ -34,7 +34,7 @@
      Named for modality, not section number: section codes churn every term,
      modalities do not. To add one, add it here and to the registry in
      render_variant.py. (Renamed from /904/ on 2026-08-08.) */
-  const VARIANTS = ['/f2f/'];
+  const VARIANTS = ['/onl/', '/f2f/'];
   const TREE = VARIANTS.find(v => window.location.pathname.includes(v)) || '/pages/';
   const S    = BASE + TREE + 'support/';
   const SC   = BASE + TREE + 'scenario/';

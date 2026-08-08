@@ -377,13 +377,13 @@ while in_program:
     <p>Add a temporary debug print right after the list declarations to verify all three lists are length 6 and the index ordering is consistent:</p>
     <div class="lc-code-block">
       <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 3</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: HAZARD_NAMES len      = <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_NAMES<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: HAZARD_HEADS_MSGS len = <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_HEADS_MSGS<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: HAZARD_TAILS_MSGS len = <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_TAILS_MSGS<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: All match length 6?   = &#x27;
-      f&#x27;<span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_NAMES<span class="sy-op">)</span> <span class="sy-op">==</span> <span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_HEADS_MSGS<span class="sy-op">)</span> <span class="sy-op">==</span> <span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_TAILS_MSGS<span class="sy-op">)</span> <span class="sy-op">==</span> <span class="sy-num">6</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;DEBUG: HAZARD_NAMES len      = {len(HAZARD_NAMES)}&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;DEBUG: HAZARD_HEADS_MSGS len = {len(HAZARD_HEADS_MSGS)}&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;DEBUG: HAZARD_TAILS_MSGS len = {len(HAZARD_TAILS_MSGS)}&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;DEBUG: All match length 6?   = &#x27;</span>
+      <span class="sy-str">f&#x27;{len(HAZARD_NAMES) == len(HAZARD_HEADS_MSGS) == len(HAZARD_TAILS_MSGS) == 6}&#x27;</span><span class="sy-op">)</span>
 <span class="sy-kw">for</span> i <span class="sy-kw">in</span> <span class="sy-bi">range</span><span class="sy-op">(</span><span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_NAMES<span class="sy-op">)</span><span class="sy-op">)</span><span class="sy-op">:</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  [<span class="sy-op">{</span>i<span class="sy-op">}</span>] <span class="sy-op">{</span>HAZARD_NAMES<span class="sy-op">[</span>i<span class="sy-op">]</span><span class="sy-op">}</span> | H: <span class="sy-op">{</span>HAZARD_HEADS_MSGS<span class="sy-op">[</span>i<span class="sy-op">]</span><span class="sy-op">}</span> | T: <span class="sy-op">{</span>HAZARD_TAILS_MSGS<span class="sy-op">[</span>i<span class="sy-op">]</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;  [{i}] {HAZARD_NAMES[i]} | H: {HAZARD_HEADS_MSGS[i]} | T: {HAZARD_TAILS_MSGS[i]}&#x27;</span><span class="sy-op">)</span></pre>
     </div>
     <p>Run the program. The DEBUG block should print all six hazards with their matching HEADS and TAILS messages, and the lengths-match line should read <code>True</code>. If the messages don't match the hazards (e.g., Armadillo paired with a Buc-ee's message), reorder the lists until each row makes sense. Delete the DEBUG block before moving to CP3.</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
@@ -487,7 +487,7 @@ test_names <span class="sy-op">=</span> <span class="sy-op">[</span><span class=
 test_heads <span class="sy-op">=</span> <span class="sy-op">[</span><span class="sy-str">&#x27;escape1&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;escape2&#x27;</span><span class="sy-op">]</span>
 test_tails <span class="sy-op">=</span> <span class="sy-op">[</span><span class="sy-str">&#x27;delay1&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;delay2&#x27;</span><span class="sy-op">]</span>
 result <span class="sy-op">=</span> get_random_hazard<span class="sy-op">(</span>test_names<span class="sy-op">,</span> test_heads<span class="sy-op">,</span> test_tails<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  get_random_hazard test =&gt; <span class="sy-op">{</span>result<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;  get_random_hazard test =&gt; {result}&#x27;</span><span class="sy-op">)</span></pre>
     </div>
     <p><strong>Step 2:</strong> Run <code>function_library.py</code> directly: <code>python3 function_library.py</code>. You should see one of <code>('hazard1', 'escape1', 'delay1')</code> or <code>('hazard2', 'escape2', 'delay2')</code>. Run it a few times &mdash; both options should appear. Delete the test block after you're confident.</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>

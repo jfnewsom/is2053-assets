@@ -8,8 +8,17 @@ Canvas iframe URL. Modality does not churn; section numbers do. Variants are now
 named for what they are, and adding one is a config entry rather than a fork of
 this script.
 
-    pages/   the single source of truth, and the online-section site as-is
-    f2f/     the face-to-face variant, generated
+    pages/   the single source of truth. AUTHORING ONLY. No Canvas shell should
+             point at it, so its layout can change without touching Canvas.
+    onl/     the online variant, generated. A full copy; nothing is stripped.
+    f2f/     the face-to-face variant, generated. Recordings and video removed.
+
+WHY onl/ EXISTS WHEN IT IS IDENTICAL TO pages/
+Until 2026-08-08 the online sections pointed straight at /pages/, which welded
+every online Canvas URL to the name of the authoring directory. Giving online
+its own build output decouples the two: the winter move to content/ plus build/
+becomes invisible to Canvas instead of requiring a URL migration across three
+shells. The duplication is the price of that decoupling, and it is cheap.
 
 WHAT A VARIANT IS TODAY
 Every difference is a REMOVAL. Regions wrapped in sentinel comments are stripped:
@@ -52,6 +61,11 @@ SRC = REPO / 'pages'
 # 'strip'  sentinel names removed for this variant
 # 'label'  human name, used only in output
 VARIANTS = {
+    'onl': {
+        'dir': 'onl',
+        'label': 'online',
+        'strip': [],          # nothing removed; online sees the full site
+    },
     'f2f': {
         'dir': 'f2f',
         'label': 'face-to-face',
@@ -117,7 +131,10 @@ def build(name, cfg):
                 text)
             if text != original:
                 stripped_files += 1
-            if 'panopto' in text.lower():
+            # Only a variant that removes VIDEO may not contain Panopto. The
+            # online variant strips nothing, so embeds surviving there is the
+            # correct outcome, not a leak.
+            if 'VIDEO' in cfg['strip'] and 'panopto' in text.lower():
                 leaked.append(str(rel))
             if re.search(r'is2053-assets/pages/[^"\')\s]*\.html', text) \
                     or re.search(r'\.\./+pages/', text):
@@ -158,8 +175,12 @@ def build(name, cfg):
             print(f'  {cfg["dir"]}/{f}')
         print('These bypass the URL rewrite; investigate the source pages.')
     if ok:
-        print(f'render_variant [{name}]: verified zero Panopto references '
-              f'and zero /pages/ escape links.')
+        checked = 'zero /pages/ escape links'
+        if 'VIDEO' in cfg['strip']:
+            checked = 'zero Panopto references and ' + checked
+        else:
+            checked += ' (Panopto check not applicable: this variant keeps video)'
+        print(f'render_variant [{name}]: verified {checked}.')
     return ok
 
 
