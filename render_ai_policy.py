@@ -269,6 +269,9 @@ def render_page(data):
         render_callout(data['openingCallout']),
         f'      {data["framing_html"]}',
         render_callout(data['decisionCallout']),
+        # Instructor AI disclosure. Generic label/subtitle/body section, so it
+        # reuses render_section_honest_test's shape.
+        render_section_honest_test(data['whereIUsedAi']),
         render_section_why_employers_care(data['whyEmployersCare']),
         render_section_use_ai_or_not(data['useAiOrNot']),
         render_section_real_examples(data['realExamples']),
