@@ -107,7 +107,7 @@ if [ "$1" != "--no-guard" ]; then
         VERIFY_OUT=$(python3 verify_output.py --solutions "$SOLUTIONS") || FAILED=1
         echo "$VERIFY_OUT" | grep -E '^[A-Z][A-Z-]*=[0-9]' | sed 's/^/  /'
         # Only DIFFERS proves a disagreement; the rest are harness limits.
-        echo "$VERIFY_OUT" | grep -E '^\S+ +DIFFERS' | sed 's/^/  /' || true
+        echo "$VERIFY_OUT" | grep -E '^lab-\S+ +DIFFERS' | sed 's/^/  /' || true
     else
         echo "  SKIPPED: solutions tree not found at $SOLUTIONS"
         echo "  Set IS2053_SOLUTIONS to run it. Sheets were NOT checked against the code."
