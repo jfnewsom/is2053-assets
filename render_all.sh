@@ -101,6 +101,16 @@ if [ "$1" != "--no-guard" ]; then
     # be unavailable. Skipping is announced loudly rather than passing quietly:
     # a check you think ran and did not is worse than no check.
     echo ""
+    echo "Checking provided files..."
+    if [ -d "${IS2053_SOLUTIONS:-$HOME/Library/CloudStorage/OneDrive-UniversityofTexasatSanAntonio/UTSA-Prof-Current/2026-3-Fall/IS2053/code/Modules}" ]; then
+        python3 check_provided_files.py --solutions "${IS2053_SOLUTIONS:-$HOME/Library/CloudStorage/OneDrive-UniversityofTexasatSanAntonio/UTSA-Prof-Current/2026-3-Fall/IS2053/code/Modules}" | tail -n 3 
+        [ ${PIPESTATUS[0]} -eq 0 ] || FAILED=1
+    else
+        python3 check_provided_files.py | tail -n 3
+        [ ${PIPESTATUS[0]} -eq 0 ] || FAILED=1
+    fi
+
+    echo ""
     echo "Verifying sheets against the solutions..."
     SOLUTIONS="${IS2053_SOLUTIONS:-$HOME/Library/CloudStorage/OneDrive-UniversityofTexasatSanAntonio/UTSA-Prof-Current/2026-3-Fall/IS2053/code/Modules}"
     if [ -d "$SOLUTIONS" ]; then

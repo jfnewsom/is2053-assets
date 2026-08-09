@@ -112,7 +112,7 @@
   },
   "beforeYouBegin": {
     "intro": "Here's how your finished program fits together. Checkpoints 1–2 expand function_library.py. Checkpoints 3–5 update lab-2-3.py. The [NEW] and [REPLACED] tags show what changes.",
-    "architecture": "# ---- function_library.py ----\n# (From Lab 2.2)\nflip_coin()               returns 'HEADS' or 'TAILS'\nroll_d20()                returns int 1-20\ncheck_percentage(chance)  returns True/False\n\n# (Added in Lab 2.3)\ndef get_valid_int(prompt, min_val, max_val):  [NEW-CP1]\n    priming read → validation while loop → return\ndef get_yes_no(prompt):                       [NEW-CP2]\n    priming read → validation while loop → return True/False\n\n# ---- lab-2-3.py ----\ndef main():\n│\n│── Welcome banner, get player_name\n│── games_played = 0                         [NEW-CP5]\n│── session_miles = 0                        [NEW-CP5]\n│── session_hazards = 0                      [NEW-CP5]\n│── play_again = True                      [NEW-CP4]\n│\n│   GAME LOOP:                               [NEW-CP4]\n│   while play_again:\n│   │\n│   │── Display destination menu\n│   │── choice = get_valid_int(...)          [REPLACED-CP3]\n│   │── Destination Gate (coin flip)\n│   │── Set miles_remaining, totals\n│   │\n│   │   TRAVEL LOOP: (unchanged from 2.2)\n│   │   while miles_remaining > 0:\n│   │   │── Roll D20, travel\n│   │   │── Hazard check\n│   │   └── (next turn)\n│   │\n│   │── Print TRIP SUMMARY\n│   │── Update session accumulators          [NEW-CP5]\n│   │── play_again = get_yes_no(...)       [NEW-CP4]\n│\n│── Print SESSION STATISTICS                 [NEW-CP5]\n│── Personalized goodbye\n\nif __name__ == '__main__':\n    main()"
+    "architecture": "# ---- function_library.py ----\n# (From Lab 2.2)\nflip_coin()               returns 'HEADS' or 'TAILS'\nroll_d20()                returns int 1-20\ncheck_percentage(chance)  returns True/False\n\n# (Added in Lab 2.3)\ndef get_valid_int(prompt, min_val, max_val):  [NEW-CP1]\n    priming read → validation while loop → return\ndef get_yes_no(prompt):                       [NEW-CP2]\n    priming read → validation while loop → return True/False\n\n# ---- lab-2-3.py ----\ndef main():\n│\n│── Welcome banner, get player_name\n│── games_played = 0                         [NEW-CP5]\n│── session_miles = 0                        [NEW-CP5]\n│── session_hazards = 0                      [NEW-CP5]\n│── play_again = True                      [NEW-CP4]\n│\n│   GAME LOOP:                               [NEW-CP4]\n│   while play_again:\n│   │\n│   │── Display destination menu\n│   │── choice = get_valid_int(...)          [REPLACED-CP3]\n│   │── Destination Gate (coin flip)\n│   │── Set miles_remaining, totals\n│   │\n│   │   TRAVEL LOOP: (unchanged from 2.2)\n│   │   while miles_remaining > 0:\n│   │   │── Roll D20, travel\n│   │   │── Hazard check\n│   │   └── (next turn)\n│   │\n│   │── Print arrival banner in ALL CAPS      [REPLACED-CP3]\n│   │── Print TRIP SUMMARY\n│   │── Update session accumulators          [NEW-CP5]\n│   │── play_again = get_yes_no(...)       [NEW-CP4]\n│\n│── Print SESSION STATISTICS                 [NEW-CP5]\n│── Personalized goodbye\n\nif __name__ == '__main__':\n    main()"
   },
   "checkpoints": [
     {
@@ -406,6 +406,12 @@
           "label": "step_by_step"
         },
         {
+          "type": "callout",
+          "variant": "warning",
+          "title": "The Arrival Banner Goes ALL CAPS This Unit",
+          "body": "Labs 2.1 and 2.2 printed <code>CONGRATULATIONS! You reached the beach!</code>. From this lab forward it is <code>CONGRATULATIONS! YOU REACHED THE BEACH!</code>, fully uppercase. Change the line you carried forward. CodeGrade compares it character for character, so the title-case version fails a test whose words all look correct, which is a miserable thing to debug. Copy the banner out of the expected output below rather than retyping it."
+        },
+        {
           "type": "instructions",
           "items": [
             "Copy your <code>lab-2-2.py</code> and rename it <code>lab-2-3.py</code>",
@@ -471,6 +477,10 @@
             [
               "Wrong min/max values",
               "Accepts invalid choices or rejects valid ones"
+            ],
+            [
+              "Arrival banner still in title case",
+              "Labs 2.1 and 2.2 used <code>You reached the beach!</code>. From 2.3 on it is <code>YOU REACHED THE BEACH!</code>. Exact-match test, so the casing alone fails it."
             ]
           ],
           "accent": "green"

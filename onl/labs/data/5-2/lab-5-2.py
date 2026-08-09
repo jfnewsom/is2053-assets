@@ -290,7 +290,7 @@ def trivia_gate(dest, trivia, all_dests, cities, current_name):
     """
     print()
     print('--- TRIVIA TIME! ---')
-    print(f'To reach {dest}, answer this question:')
+    print('To reach ' + dest + ', answer this question:')
     print()
 
     # Get a trivia question for this destination.
@@ -444,32 +444,32 @@ def execute_travel(destination, distance, hazards, player):
     print()
     print(f'--- Traveling to {destination} ---')
 
-    remaining = distance
+    miles_remaining = distance
     miles_traveled = 0
 
-    while remaining > 0:
+    while miles_remaining > 0:
         function_library.enter_to_continue(
             'Hit the gas! Press Enter to roll the D20...')
         roll = function_library.roll_d20()
         miles = roll * 10
 
         # Don't overshoot the destination
-        if miles > remaining:
-            miles = remaining
+        if miles > miles_remaining:
+            miles = miles_remaining
 
         miles_traveled = miles_traveled + miles
-        remaining = remaining - miles
+        miles_remaining = miles_remaining - miles
 
         print(f'  Rolled {roll}! That\'s {roll * 10} miles...')
         if miles < roll * 10:
             print(f'  (Only {miles} miles left -- you\'re almost there!)')
-        print(f'  {remaining} miles remaining to {destination}.')
+        print(f'  {miles_remaining} miles remaining to {destination}.')
 
         function_library.enter_to_continue(
             'Press Enter to continue down the road...')
 
         # 30% chance of a hazard on each turn, but not the last one
-        if remaining > 0 and function_library.check_percentage(30):
+        if miles_remaining > 0 and function_library.check_percentage(30):
             handle_hazard(hazards, player)
 
     print(f'Arrived at {destination}!')
@@ -530,8 +530,8 @@ def main():
     trivia = load_trivia('trivia.txt')
 
     trivia_count = sum(len(trivia[c]) for c in trivia)
-    print(f'Loaded {len(city_info)} cities, {len(hazards)} hazards,',
-          f'{trivia_count} trivia questions!')
+    print(f'Loaded {len(city_info)} cities, ' +
+          f'{len(hazards)} hazards, {trivia_count} trivia questions!')
     print()
 
     # ----------------------------------------------------------
@@ -698,9 +698,10 @@ def main():
 
     # WAS: print(f'UNIQUE CITIES ({len(unique_cities)}):')
     # WAS: for city in sorted(unique_cities): ...
-    print(f'UNIQUE CITIES ({player.get_unique_city_count()}):')
+    count = player.get_unique_city_count()
+    print('UNIQUE CITIES (' + str(count) + '):')
     for city in sorted(player.get_unique_cities()):
-        print(f'  - {city}')
+        print('  - ' + city)
     print()
 
     print('TRIVIA:')
