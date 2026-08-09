@@ -43,8 +43,17 @@ echo "Re-rendering reading pages..."
 python3 render_reading.py > /dev/null; note "all reading pages"
 
 echo ""
+echo "Re-rendering exam header pages..."
+python3 render_exam_header.py > /dev/null; note "5 exam header pages"
+
+echo ""
 echo "Re-rendering support and scenario pages..."
-for s in render_ai_policy.py render_all_my_eggses.py render_assignment_overview.py \
+# render_support_page.py is FIRST on purpose. It writes home.html whole, and
+# render_modules.py then injects the Recordings card between that page's
+# sentinels. Reverse them and the injection is overwritten, so home.html loses
+# its recordings on every build.
+for s in render_support_page.py \
+         render_ai_policy.py render_all_my_eggses.py render_assignment_overview.py \
          render_bat_city.py render_bookex_overview.py render_codegrade_guide.py \
          render_course_schedule.py render_discord.py render_flake8_guide.py \
          render_grading_info.py render_how_to_get_help.py render_modules.py \

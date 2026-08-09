@@ -34,11 +34,18 @@ BASELINE_SOURCE = 3     # pages/**/json/*.json, U+2014 plus &mdash;   (2026-08-0
 # existed in the hand-maintained reading pages; sourcing them made them countable
 # for the first time. Expect the same one-time bump as the remaining unsourced
 # pages (home, submission-format, exam headers) come into the pipeline.
-BASELINE_VISIBLE = 78   # rendered pages/**/*.html, comments stripped (2026-08-08)
+BASELINE_VISIBLE = 3    # rendered pages/**/*.html, comments stripped (2026-08-09,
+                        # was 78, then 50; exam-header renderer plus " | " page titles, L-021)
 # NOTE: an earlier baseline of 473 counted only the literal U+2014 character and
 # missed every &mdash; entity, undercounting the real debt by 57 percent. Both
 # forms render identically to a student, so both must be counted. If you change
 # this counting logic, re-derive the baseline in the same commit.
+# 2026-08-09: this is the FLOOR, not remaining debt. The last three live in
+# protected fields and must stay: two inside `# comment` lines in code blocks
+# (lab-2-3, lab-3-2) and one in the ASCII architecture diagram in lab-3-3.
+# The no-em-dash rule is about prose voice; rewriting a code comment to satisfy
+# a prose rule would change what the student is told the code says. If this
+# number moves, something in the PROSE regressed.
 
 BANNED_ZERO_TOLERANCE = [
     (re.compile(r"But here's the (truth|thing)", re.I), "AI-tell transition"),

@@ -44,7 +44,13 @@ CONTEXT = {
         '(ledger L-025). Paste the URL into pages/support/json/start-here.json.',
     'F2F_WELCOME_VIDEO_PENDING':
         'the 904 welcome video. Paste the embed into the F2F_ONLY block in '
-        'pages/support/home.html and delete the comment wrapper.',
+        'pages/support/json/home.json and delete the comment wrapper.',
+    'F2F_SYLLABUS_LINK_PENDING':
+        'the same 904 Simple Syllabus URL as SYLLABUS_URL_PENDING, needed a '
+        'second time for the home page Quick Links. Add the row to the f2f '
+        'branch of the Quick Links block in pages/support/json/home.json. '
+        'Until then f2f shows no syllabus row rather than a dead link, and '
+        'the Canvas left-nav Syllabus link still works.',
 }
 
 

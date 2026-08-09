@@ -194,7 +194,7 @@ def render_bookex(data: dict, output_path: str) -> None:
 
     chapter = meta.get("chapter", "")
     title   = meta.get("title", "")
-    page_title = f"BookEx Chapter {chapter}: {title} \u2014 IS2053"
+    page_title = f"BookEx Chapter {chapter}: {title} | IS2053"
 
     # Derive module from chapter for the Need Help card's Discord channel.
     # Chapter-to-Module map: Ch 2-3→M1, Ch 4-5→M2, Ch 6-7→M3, Ch 8-9→M4,
@@ -228,7 +228,7 @@ def main():
     json_path = sys.argv[1]
 
     if not os.path.exists(json_path):
-        print(f"Error: file not found \u2014 {json_path}")
+        print(f"Error: file not found: {json_path}")
         sys.exit(1)
 
     with open(json_path, "r", encoding="utf-8") as f:

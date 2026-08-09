@@ -287,7 +287,7 @@ def render_lab(data: dict, output_path: str) -> None:
     module        = meta.get("module", 1)
 
     title_str = meta.get("title", "Lab")
-    page_title = f"{title_str} \u2014 IS2053"
+    page_title = f"{title_str} | IS2053"
 
     html = html_head(page_title)
     html += render_overview_card(overview, meta)

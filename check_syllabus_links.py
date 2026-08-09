@@ -28,6 +28,7 @@ build check at all, because it teaches you to skip the output.
 
     python3 check_syllabus_links.py
 """
+import glob
 import json
 import re
 import sys
@@ -131,9 +132,39 @@ def check_built(source_urls):
     return problems
 
 
+def check_every_page():
+    """Any syllabus URL anywhere, not just the one on Start Here.
+
+    Added 2026-08-09 (F-047). Everything above this function reads
+    start-here.json, because that is where L-025 was found. Meanwhile the HOME
+    page linked the Summer 2026 doc for a full day of green builds, since it was
+    never in scope. A guard scoped to the file that taught you the invariant is
+    not guarding the invariant.
+
+    This sweep is deliberately dumb and total: every source and every built
+    page, one rule. A Simple Syllabus URL that does not name the current term
+    fails, wherever it lives.
+    """
+    problems = []
+    seen = set()
+    for pat in ('pages/**/*.json', 'pages/**/*.html',
+                'onl/**/*.html', 'f2f/**/*.html'):
+        seen |= set(glob.glob(pat, recursive=True))
+    for f in sorted(seen):
+        if '_to_delete' in f:
+            continue
+        for url in set(SYLLABUS.findall(Path(f).read_text(encoding='utf-8'))):
+            if TERM not in url:
+                problems.append(
+                    f'{f} links a syllabus URL that does not name {TERM}: {url}')
+    return problems, len(seen)
+
+
 def main():
     problems, warnings, source_urls = check_source()
     problems += check_built(source_urls)
+    sweep_problems, swept = check_every_page()
+    problems += sweep_problems
     for w in warnings:
         print(f'check_syllabus_links: WARNING - {w}')
     if problems:
@@ -143,7 +174,8 @@ def main():
         return 1
     live = sum(1 for v in MODALITIES if source_urls.get(v) not in (None, PLACEHOLDER))
     print(f'check_syllabus_links: PASS ({TERM}; {live}/{len(MODALITIES)} modality '
-          f'links live, each in exactly one tree)')
+          f'links live, each in exactly one tree; {swept} file(s) swept for '
+          f'stale-term syllabus URLs)')
     return 0
 
 
