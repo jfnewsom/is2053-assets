@@ -85,6 +85,37 @@
       </div>
       </div>
 
+      <div class="lc-named-section lc-named-section--cyan">
+      <div class="lc-named-section__label lc-named-section__label--cyan">How CodeGrade Runs Your Program</div>
+      <p>Almost every &ldquo;it works in VS Code but dies in CodeGrade&rdquo; report comes down to one difference, and once you see it the error messages stop being mysterious.</p>
+<p><strong>You answer your program. CodeGrade does not.</strong> When you run your code, a human is sitting there: your program asks whatever it likes, in whatever order, and you type an answer. CodeGrade instead hands your program a <strong>fixed list of answers, prepared in advance</strong>, and feeds them in order. It cannot improvise. If your program asks a different question, or asks in a different order, or asks one more time than the list expects, nobody is there to respond.</p>
+
+      <div class="lc-h3 lc-h3--red">EOFError: EOF when reading a line</div>
+      <p>Your program asked for input after the list ran out. Something made it ask <em>more</em> times than the sample run does. A leftover loop is the usual culprit: a <code>Play again?</code> prompt or a menu the lab told you to remove.</p>
+
+      <div class="lc-h3 lc-h3--orange">The test times out</div>
+      <p>Same cause, different shape. Your program is sitting at a prompt waiting for an answer that is never coming, so the run hangs until CodeGrade gives up. A timeout almost never means your code is slow. It means it is waiting.</p>
+
+      <div class="lc-h3 lc-h3--cyan">The output is right but the test still fails</div>
+      <p>Check the order. The answers are consumed in sequence, so if your program asks for the destination before the name, it receives the name as the destination and everything after that is shifted by one.</p>
+
+      <div class="lc-callout lc-callout--warning">
+        <div class="lc-callout__icon">
+          <span class="material-symbols-outlined">casino</span>
+        </div>
+        <div class="lc-callout__bubble">
+          <div class="lc-callout__title">The most common cause is a function returning the wrong thing</div>
+          <div class="lc-callout__body">
+            <p>This one generates more tickets than anything else, and the error message points nowhere near it.</p>
+<p><code>flip_coin()</code> must return the <strong>strings</strong> <code>'HEADS'</code> and <code>'TAILS'</code>, and it must map them the way the lab specifies. If it returns <code>1</code> and <code>0</code> instead, or maps them backwards, then every <code>if flip == 'HEADS':</code> in your game is false. Your program takes the branch you never intended, and <strong>that branch asks different questions</strong>. The prepared answers no longer line up, and you get an EOFError or a timeout.</p>
+<p>So the symptom is &ldquo;everything times out&rdquo; and the cause is two characters in a function you wrote three labs ago. <strong>If a whole lab suddenly fails in CodeGrade and you cannot see why, run <code>python3 function_library.py</code> and check what your helpers actually return</strong> before you touch anything else.</p>
+          </div>
+        </div>
+      </div>
+
+<p>Each lab's expected-output block lists the exact inputs its sample run uses. Match that sequence and the scripted run behaves like your own.</p>
+      </div>
+
       <div class="lc-named-section lc-named-section--orange">
       <div class="lc-named-section__label lc-named-section__label--orange">Reading Feedback</div>
       <p>After submission, you&rsquo;ll see five categories of feedback. Each category looks at a different aspect of your code:</p>

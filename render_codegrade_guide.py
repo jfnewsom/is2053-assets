@@ -201,6 +201,7 @@ def render_page(data):
     sections = [
         render_section_what_is_it(data['whatIsIt']),
         render_section_how_to_submit(data['howToSubmit']),
+        render_section_reading_feedback(data['howItRuns']),
         render_section_reading_feedback(data['readingFeedback']),
         render_section_common_issues(data['commonIssues']),
     ]
