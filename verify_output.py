@@ -144,8 +144,12 @@ def declared_inputs(doc):
     vals = []
     for part in raw.split('->'):
         part = re.sub(r'\([^)]*\)', '', part).strip().strip('.,')
-        if part:
-            vals.append(part)
+        if not part:
+            continue
+        # "Enter" is how a sheet writes a bare Return at a pause prompt. It has
+        # to survive as an empty line, not be dropped, or every later input
+        # shifts up by one and the run ends in EOFError.
+        vals.append('' if part.lower() in ('enter', 'return', '[enter]') else part)
     return vals or None
 
 
