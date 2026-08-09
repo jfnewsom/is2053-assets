@@ -147,8 +147,15 @@ def check_every_page():
     """
     problems = []
     seen = set()
+    # nav.js is in this list because leaving it out is exactly the mistake this
+    # sweep was written to stop repeating. The first cut globbed pages/ and the
+    # built trees, and nav.js is at the repo root and is neither .html nor
+    # .json, so the Summer 2026 syllabus link in the LEFT NAV OF EVERY PAGE
+    # survived a green run of this very check on 2026-08-09. Scope a guard to
+    # the invariant, not to the shape of the files you happened to think of.
     for pat in ('pages/**/*.json', 'pages/**/*.html',
-                'onl/**/*.html', 'f2f/**/*.html'):
+                'onl/**/*.html', 'f2f/**/*.html',
+                '*.js', 'pages/**/*.js'):
         seen |= set(glob.glob(pat, recursive=True))
     for f in sorted(seen):
         if '_to_delete' in f:

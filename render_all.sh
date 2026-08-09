@@ -102,6 +102,14 @@ if [ "$1" != "--no-guard" ]; then
     python3 check_syllabus_links.py || FAILED=1
 
     echo ""
+    echo "Checking nav.js modality registry..."
+    python3 check_nav_modality.py || FAILED=1
+
+    echo ""
+    echo "Checking the Zoom room..."
+    python3 check_zoom_room.py || FAILED=1
+
+    echo ""
     echo "Checking pending placeholders..."
     python3 check_pending.py || FAILED=1
 

@@ -34,8 +34,22 @@
      Named for modality, not section number: section codes churn every term,
      modalities do not. To add one, add it here and to the registry in
      render_variant.py. (Renamed from /904/ on 2026-08-08.) */
-  const VARIANTS = ['/onl/', '/f2f/'];
-  const TREE = VARIANTS.find(v => window.location.pathname.includes(v)) || '/pages/';
+  const VARIANTS = ['onl', 'f2f'];
+  const MODALITY = VARIANTS.find(v => window.location.pathname.includes('/' + v + '/')) || null;
+  const TREE = MODALITY ? '/' + MODALITY + '/' : '/pages/';
+
+  /* Per-modality Simple Syllabus documents. Keys must match VARIANTS above and
+     the registry in render_variant.py; check_nav_modality.py asserts that.
+     A modality with no URL yet renders NO Syllabus item rather than a dead
+     link, which is the same policy the pages use (ledger L-025). Students can
+     still reach it from the Canvas left nav.
+     F2F_SYLLABUS_LINK_PENDING: paste the 904 doc URL after the clone batch. */
+  const SYLLABUS = {
+    onl: 'https://utsa.simplesyllabus.com/doc/b1danxsne/Fall-2026-IS-2053-ON1-Programming-I?mode=view',
+    f2f: null
+  };
+  /* /pages/ is the authoring tree; treat it as online for link purposes. */
+  const SYLLABUS_URL = SYLLABUS[MODALITY || 'onl'];
   const S    = BASE + TREE + 'support/';
   const SC   = BASE + TREE + 'scenario/';
   const L    = BASE + TREE + 'labs/';
@@ -382,7 +396,7 @@
             <div class="drop-label">Course Info</div>
             ${link('Home',            S + 'home.html' + suffix,            'dd-yellow')}
             ${link('Start Here',      S + 'start-here.html' + suffix,      'dd-yellow')}
-            ${link('Syllabus',        'https://utsa.simplesyllabus.com/doc/tff2rb0cn/Summer-2026-IS-2053-ON1-Programming-I?mode=view', 'dd-yellow', true)}
+            ${SYLLABUS_URL ? link('Syllabus', SYLLABUS_URL, 'dd-yellow', true) : ''}
             ${link('Grading Info',    S + 'grading-info.html' + suffix,    'dd-yellow')}
             ${link('Course Schedule', S + 'course-schedule.html' + suffix, 'dd-yellow')}
             <div class="drop-label">Support Resources</div>
@@ -448,7 +462,7 @@
       const el = document.getElementById('is2053-nav-actions');
       if (el && active) {
         el.innerHTML =
-          '<a class="nav-zoom-btn" href="https://utsa.zoom.us/j/97617245124"' +
+          '<a class="nav-zoom-btn" href="https://utsa.zoom.us/j/96542097913"' +
           ' target="_blank" rel="noopener">&#9679; Join Zoom</a>';
       }
     } catch(e) {}

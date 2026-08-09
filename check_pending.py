@@ -46,11 +46,13 @@ CONTEXT = {
         'the 904 welcome video. Paste the embed into the F2F_ONLY block in '
         'pages/support/json/home.json and delete the comment wrapper.',
     'F2F_SYLLABUS_LINK_PENDING':
-        'the same 904 Simple Syllabus URL as SYLLABUS_URL_PENDING, needed a '
-        'second time for the home page Quick Links. Add the row to the f2f '
-        'branch of the Quick Links block in pages/support/json/home.json. '
-        'Until then f2f shows no syllabus row rather than a dead link, and '
-        'the Canvas left-nav Syllabus link still works.',
+        'the same 904 Simple Syllabus URL as SYLLABUS_URL_PENDING, needed in '
+        'TWO more places. (1) the f2f branch of the Quick Links block in '
+        'pages/support/json/home.json, and (2) SYLLABUS.f2f in nav.js, which '
+        'is currently null. Until then f2f shows no syllabus row and no '
+        'Syllabus nav item rather than a dead link, and the Canvas left-nav '
+        'Syllabus link still works. So the clone batch pastes one URL into '
+        'three files: start-here.json, home.json, nav.js.',
 }
 
 
