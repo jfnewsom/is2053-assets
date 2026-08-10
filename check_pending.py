@@ -45,6 +45,11 @@ CONTEXT = {
     'F2F_WELCOME_VIDEO_PENDING':
         'the 904 welcome video. Paste the embed into the F2F_ONLY block in '
         'pages/support/json/home.json and delete the comment wrapper.',
+    'PANOPTO_ID_904_PENDING':
+        'the 904 Panopto embed id. It sits inside the commented-out video block '
+        'in pages/support/json/home.json. Deliberately named _PENDING so that if '
+        'that HTML comment is ever broken, this scan sees the id in VISIBLE text '
+        'and fails, which is what stops a half-published video reaching 904.',
     'F2F_SYLLABUS_LINK_PENDING':
         'the same 904 Simple Syllabus URL as SYLLABUS_URL_PENDING, needed in '
         'TWO more places. (1) the f2f branch of the Quick Links block in '
