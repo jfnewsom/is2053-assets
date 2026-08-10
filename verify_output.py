@@ -235,11 +235,27 @@ def unverifiable(exp, doc):
         return ('PLACEHOLDER',
                 'expectedOutput describes the run in prose instead of showing it')
     rolls = ROLL_RE.findall(exp)
-    if len(set(rolls)) > 1:
+    if len(set(rolls)) > 1 and not declared_seq(doc):
         return ('REAL-RANDOM',
                 f'sample run captured with real randomness (rolls {"/".join(rolls)}), '
                 f'not the CodeGrade fixture, so it cannot be reproduced')
     return None
+
+
+SEQ_RE = re.compile(r'\b(SEQ_\d+_\d+)\s*=\s*([\d,]+)')
+
+
+def declared_seq(doc):
+    """Scripted fixture sequences the sheet declares, e.g. SEQ_1_20=1,9,8.
+
+    Added 2026-08-09 (ledger L-027). Varying rolls used to be proof a sheet was
+    captured with real randomness, because the fixture could only return one
+    constant per range for a whole run. It can now return a scripted sequence,
+    so varying rolls are no longer evidence of anything. A sheet that names its
+    sequence gets verified with it; a sheet that does not is still unverifiable
+    for the original reason.
+    """
+    return dict(SEQ_RE.findall(json.dumps(doc)))
 
 
 def uses_random(sol_path):
@@ -284,6 +300,7 @@ def verify(lab, json_path, sol_path, fixture_dir=None, show_diff=True):
 
     env = dict(os.environ)
     env.update(FIXTURE_ENV)
+    env.update(declared_seq(d))
     if fixture_dir:
         env['PYTHONPATH'] = fixture_dir + os.pathsep + env.get('PYTHONPATH', '')
 
