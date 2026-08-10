@@ -109,6 +109,12 @@ if [ "$1" != "--no-guard" ]; then
     echo "Checking the Zoom room..."
     python3 check_zoom_room.py || FAILED=1
 
+    # Runs CodeGrade's own Scope Compliance rules against the solutions, here,
+    # before anything reaches CodeGrade. Skips cleanly without a solutions tree.
+    echo ""
+    echo "Checking technique scope..."
+    python3 check_scope.py || FAILED=1
+
     echo ""
     echo "Checking pending placeholders..."
     python3 check_pending.py || FAILED=1
