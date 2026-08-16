@@ -119,6 +119,15 @@ if [ "$1" != "--no-guard" ]; then
     echo "Checking pending placeholders..."
     python3 check_pending.py || FAILED=1
 
+    # The starter zip is GENERATED, so it can silently fall behind its
+    # sources the moment a data file or a sheet's file list changes. This
+    # runs before check_provided_files.py on purpose: a stale zip should be
+    # reported as "rebuild it", not as unexplained drift between channels.
+    echo ""
+    echo "Checking starter zip is current..."
+    python3 build_starter_zip.py --check | tail -n 2
+    [ ${PIPESTATUS[0]} -eq 0 ] || FAILED=1
+
     # Execute each lab solution and diff it against the sheet's sample run.
     # The solutions live outside this repo, so this is the one guard that can
     # be unavailable. Skipping is announced loudly rather than passing quietly:
