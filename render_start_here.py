@@ -280,7 +280,10 @@ def render_card_section(item):
             f'      </div>'
         )
     elif rtype == 'welcome_video':
-        return render_welcome_video(item)
+        # The only card section that is fenced. ON1/ON2 and 904 have separate
+        # recordings, so each tree must keep its own and drop the other. Every
+        # other section above is identical in all sections and returns unfenced.
+        return wrap_for_modality(render_welcome_video(item), item)
     else:
         raise ValueError(f"Unknown card section type: {rtype}")
 
@@ -291,13 +294,24 @@ def render_welcome_video(item):
     Used at the top of the Overview card on the Start Here page and (with the
     same markup) on the home page. Flex-wrap collapses to a single column on
     narrow viewports.
+
+    NO VIDEO:START/VIDEO:END SENTINELS HERE, deliberately. The f2f tree strips
+    VIDEO wholesale, because 904 gets no Unit or Lab videos: they come to class
+    instead. The welcome video is the single exception to that rule, so fencing
+    it as VIDEO would delete the one video 904 is supposed to have. Modality
+    fencing does the job correctly, and the guard below makes it impossible to
+    forget: an unfenced welcome video would land in EVERY tree.
     """
+    if not item.get('modality'):
+        raise ValueError(
+            'A welcome_video must declare a "modality" ("onl" or "f2f"). '
+            'Without one it is emitted unfenced into every tree, so both '
+            'sections would see both recordings.')
     paragraphs = '\n'.join(
         f'          <p>{p}</p>' for p in item['paragraphs']
     )
     return (
         f'      <!-- Welcome video + synopsis -->\n'
-        f'      <!-- VIDEO:START -->\n'
         f'      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; margin: 0 0 24px 0;">\n'
         f'        <div style="flex: 0 0 25%; min-width: 280px;">\n'
         f'          <div style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%;">\n'
@@ -312,8 +326,7 @@ def render_welcome_video(item):
         f'          <div class="lc-h3 lc-h3--yellow" style="margin-top: 0;">{item["heading"]}</div>\n'
         f'{paragraphs}\n'
         f'        </div>\n'
-        f'      </div>\n'
-        f'      <!-- VIDEO:END -->'
+        f'      </div>'
     )
 
 
