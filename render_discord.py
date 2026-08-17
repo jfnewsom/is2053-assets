@@ -220,9 +220,19 @@ def render_section_join(s):
         '      </ul>'
     )
 
+    # Large yellow CTA button (lc-cta-btn), matching the Start Here CTA on the
+    # home page. Was a plain text link until 2026-08-17; students reported not
+    # finding it inside the wall of agreement text.
+    icon_html = (
+        f'          <span class="material-symbols-outlined" '
+        f'style="vertical-align: middle; margin-right: 6px;">'
+        f'{s["joinIcon"]}</span>\n'
+    ) if s.get('joinIcon') else ''
     join_link_html = (
         f'      <p>\n'
-        f'        <a href="{s["joinUrl"]}" target="_blank" rel="noopener">\n'
+        f'        <a href="{s["joinUrl"]}" target="_blank" rel="noopener"\n'
+        f'           class="lc-cta-btn">\n'
+        f'{icon_html}'
         f'          {s["joinLabel_html"]}\n'
         f'        </a>\n'
         f'      </p>'
