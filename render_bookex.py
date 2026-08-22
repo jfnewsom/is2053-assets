@@ -22,6 +22,7 @@ Key differences from render_lab.py:
 import json
 import sys
 import os
+import re
 import html as html_lib
 
 from components import (
@@ -133,6 +134,46 @@ def render_bookex_overview_card(overview: dict, meta: dict) -> str:
 # Each checkpoint = one Gaddis program
 # ============================================================
 
+PROGRAM_RE = re.compile(r"Program\s+(\d+-\d+)\s*\(6th Ed\)")
+PROGRAM_5E_RE = re.compile(r"Program\s+(\d+-\d+)\s*\(5th Ed\)")
+
+
+def derive_checkpoint_heading(cp: dict) -> dict:
+    """
+    Give a BookEx checkpoint a title/subtitle if it does not already have one.
+
+    Chapters 8, 9, and 10 author `title` directly ("Program 8-1: count_Ts.py").
+    Chapters 2 through 7 instead carry `programRef` and `filename`, which the
+    shared checkpoint renderer never reads, so they fall back to "Checkpoint N"
+    and duplicate the badge beside them. This derives the same heading format
+    from the fields already present, so no JSON authoring is needed.
+
+    Where the 5th edition program number differs from the 6th, the 5th edition
+    number moves into the sub-banner instead of being dropped.
+    """
+    if cp.get("title"):
+        return cp
+
+    filename = cp.get("filename", "")
+    ref = cp.get("programRef", "")
+    m6 = PROGRAM_RE.search(ref)
+    m5 = PROGRAM_5E_RE.search(ref)
+
+    if m6 and filename:
+        title = f"Program {m6.group(1)}: {filename}"
+    elif filename:
+        # Ch0 CP1 and any other checkpoint with no textbook program behind it.
+        title = filename
+    else:
+        return cp
+
+    out = dict(cp)
+    out["title"] = title
+    if not out.get("subtitle") and m6 and m5 and m5.group(1) != m6.group(1):
+        out["subtitle"] = f"Program {m5.group(1)} in the 5th Edition"
+    return out
+
+
 def render_bookex_checkpoints_card(checkpoints: list) -> str:
     """Render the full green Checkpoints card for a BookEx file."""
     total = len(checkpoints)
@@ -140,7 +181,7 @@ def render_bookex_checkpoints_card(checkpoints: list) -> str:
 
     checkpoints_html = ""
     for i, cp in enumerate(checkpoints):
-        checkpoints_html += render_checkpoint(cp, i, total)
+        checkpoints_html += render_checkpoint(derive_checkpoint_heading(cp), i, total)
 
     return (
         card_open("green")
