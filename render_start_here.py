@@ -3,8 +3,6 @@
 render_start_here.py — Renders pages/support/start-here.html from start-here.json.
 
 Architecture B: JSON is the single source of truth for the Start Here page.
-A future render of pages/support/hello-world.html will pull from the same CP9
-content + its own hello-world.json for the standalone-page framing.
 
 Output is byte-identical to the hand-written start-here.html as of Round 10.
 Run with:
@@ -596,63 +594,6 @@ def resolve_refs(obj, repo_root):
     return obj
 
 
-# ── hello-world.html renderer ─────────────────────────────────────────
-
-def render_hero_card_with_intro_body_outro(meta, card):
-    """Render the BookEx-style hero card for the standalone hello-world page.
-
-    Layout: course-badge topper → intro paragraphs → body (shared from CP9) → outro.
-    """
-    intro_html = '\n'.join(h for h in (render_cp_body_item(i) for i in card['intro'])
-                            if h is not None)
-    body_html = '\n'.join(h for h in (render_cp_body_item(i) for i in card['body'])
-                            if h is not None)
-    outro_html = '\n'.join(h for h in (render_cp_body_item(i) for i in card['outro'])
-                            if h is not None)
-
-    return (
-        f'  <!-- ══════════════════════════════════════════════════════════\n'
-        f'       Hello World — Standalone assignment page ({card["color"]})\n'
-        f'       Body shared via $ref from start-here.json#/checkpoints[num=9]/body\n'
-        f'  ══════════════════════════════════════════════════════════ -->\n'
-        f'  <div class="lc-card lc-card--{card["color"]}">\n'
-        f'{render_topper_with_badge(meta)}\n'
-        f'    <div class="lc-panel">\n\n'
-        f'{intro_html}\n\n'
-        f'{body_html}\n\n'
-        f'{outro_html}\n\n'
-        f'    </div>\n'
-        f'  </div>'
-    )
-
-
-def render_hello_world_page(data):
-    """Render the standalone hello-world.html from JSON data (post-ref-resolution)."""
-    meta = data['meta']
-    cards = data['cards']
-
-    html_doc = (
-        '<!DOCTYPE html>\n'
-        '<html lang="en">\n'
-        '<head>\n'
-        '  <meta charset="UTF-8">\n'
-        '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
-        '  <link rel="icon" type="image/png" href="https://jfnewsom.github.io/is2053-assets/favicon.png">\n'
-        '  <meta name="site-context" content="support">\n'
-        f'  <title>{meta["pageTitle"]}</title>\n'
-        '  <link rel="stylesheet" href="https://jfnewsom.github.io/is2053-assets/labs.css">\n'
-        '</head>\n'
-        '<body>\n'
-        '<div class="lc-wrapper">\n\n\n'
-        + render_hero_card_with_intro_body_outro(meta, cards['hero']) + '\n\n\n'
-        '</div><!-- /lc-wrapper -->\n'
-        '<script src="https://jfnewsom.github.io/is2053-assets/nav.js"></script>\n'
-        '</body>\n'
-        '</html>\n'
-    )
-    return html_doc
-
-
 # ── Entry point ───────────────────────────────────────────────────────
 
 def main():
@@ -667,18 +608,6 @@ def main():
     sh_html = render_page(sh_data)
     sh_out.write_text(sh_html, encoding='utf-8')
     print(f'  Rendered → {sh_out}  ({len(sh_html.splitlines())} lines)')
-
-    # 2. Render hello-world.html (resolves $ref against start-here.json)
-    hw_json = repo_root / 'pages' / 'support' / 'json' / 'hello-world.json'
-    hw_out = repo_root / 'pages' / 'support' / 'hello-world.html'
-    if hw_json.exists():
-        print(f'Rendering {hw_json}')
-        with open(hw_json) as f:
-            hw_data = json.load(f)
-        hw_data = resolve_refs(hw_data, repo_root)
-        hw_html = render_hello_world_page(hw_data)
-        hw_out.write_text(hw_html, encoding='utf-8')
-        print(f'  Rendered → {hw_out}  ({len(hw_html.splitlines())} lines)')
 
 
 if __name__ == '__main__':
