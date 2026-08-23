@@ -43,10 +43,10 @@
      A modality with no URL yet renders NO Syllabus item rather than a dead
      link, which is the same policy the pages use (ledger L-025). Students can
      still reach it from the Canvas left nav.
-     F2F_SYLLABUS_LINK_PENDING: paste the 904 doc URL after the clone batch. */
+     Both modality syllabus docs are live. */
   const SYLLABUS = {
     onl: 'https://utsa.simplesyllabus.com/doc/b1danxsne/Fall-2026-IS-2053-ON1-Programming-I?mode=view',
-    f2f: null
+    f2f: 'https://utsa.simplesyllabus.com/doc/zh21ht4rj/Fall-2026-IS-2053-904-Programming-I?mode=view'
   };
   /* /pages/ is the authoring tree; treat it as online for link purposes. */
   const SYLLABUS_URL = SYLLABUS[MODALITY || 'onl'];
