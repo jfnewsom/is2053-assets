@@ -35,6 +35,8 @@ H3_LABELS = {
     "save_your_code":        "Save Your Code",
     "if_you_get_stuck":      "If You Get Stuck",
     "codegrade_tip":         "CodeGrade Tip",
+    "the_code":              "The Code",
+    "submit_to_codegrade":   "Submit to CodeGrade",
     "contact_and_resources": "Contact &amp; Resources",
     "overview":              "Overview",
     "filename":              "Filename",
@@ -328,9 +330,18 @@ def render_callout(item: dict) -> str:
     icon_svg = CALLOUT_ICONS.get(variant, CALLOUT_ICONS["info"])
     title = item.get("title", "")
     body = item.get("body", "")
+    raw_body = item.get("body_html", "")
     items = item.get("items", [])
 
-    body_html = f'        <p>{body}</p>\n' if body else ""
+    # "body" is a single sentence-or-two string and gets wrapped in <p>.
+    # "body_html" is authored block-level HTML (multiple <p>, <ul>, <pre>,
+    # <details>) and is emitted raw — wrapping it in <p> would produce invalid
+    # nesting. Added 2026-08-24 so multi-paragraph Start Here callouts could
+    # move onto assignment sheets without being flattened.
+    if raw_body:
+        body_html = f'        {raw_body}\n'
+    else:
+        body_html = f'        <p>{body}</p>\n' if body else ""
 
     items_html = ""
     if items:
