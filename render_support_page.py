@@ -88,6 +88,9 @@ except Exception:                                   # pragma: no cover
 
 
 def fence(html, modality, where, what):
+    if modality == 'all':
+        # Explicitly every tree. See wrap_for_modality in render_start_here.py.
+        return html
     if modality not in KNOWN_MODALITIES:
         raise ValueError(
             f'{where}: {what} has modality "{modality}", which is not in the '

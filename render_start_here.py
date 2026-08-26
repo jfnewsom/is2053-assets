@@ -222,6 +222,10 @@ def wrap_for_modality(html, item):
     v = item.get('modality')
     if not v:
         return html
+    if v == 'all':
+        # Deliberately unfenced: the item is meant to reach every tree. Stated
+        # explicitly so it reads as a decision rather than a forgotten key.
+        return html
     if v not in MODALITY_SENTINELS:
         raise ValueError(
             f"Unknown modality {v!r}; known: {sorted(MODALITY_SENTINELS)}")
@@ -302,9 +306,9 @@ def render_welcome_video(item):
     """
     if not item.get('modality'):
         raise ValueError(
-            'A welcome_video must declare a "modality" ("onl" or "f2f"). '
-            'Without one it is emitted unfenced into every tree, so both '
-            'sections would see both recordings.')
+            'A welcome_video must declare a "modality" ("onl", "f2f", or '
+            '"all"). Without one it is emitted unfenced into every tree by '
+            'accident; "all" says you meant it.')
     paragraphs = '\n'.join(
         f'          <p>{p}</p>' for p in item['paragraphs']
     )

@@ -73,7 +73,7 @@ VARIANTS = {
     'f2f': {
         'dir': 'f2f',
         'label': 'face-to-face',
-        'strip': ['RECORDINGS', 'VIDEO', 'ONL_ONLY'],
+        'strip': ['ONL_ONLY'],
     },
     # 'hyb': {'dir': 'hyb', 'label': 'hybrid',
     #         'strip': ['RECORDINGS', 'ONL_ONLY', 'F2F_ONLY']},
@@ -95,7 +95,11 @@ SENTINEL_PATTERNS = {
 # A sentinel this variant was told to strip must not survive into its tree; if
 # one does, the pattern and the emitted comment disagree and a student sees the
 # other modality's content. Sentinels NOT in the strip list are supposed to
-# remain: onl/ keeps RECORDINGS and VIDEO because online sees the full site.
+# remain: as of Aug 26, 2026 both trees keep RECORDINGS and VIDEO, so neither
+# variant strips video any more. 904 was originally built without recordings so
+# the room would not empty out; that was reversed because the in-person students
+# are the ones who most need something to review against. The sentinels stay in
+# the source so the decision can be reversed by editing one strip list.
 ANY_SENTINEL = re.compile(r'<!-- ([A-Z_]+):(?:START|END) -->')
 
 
