@@ -268,7 +268,7 @@ def render_card_section(item):
         return render_contact_grid(item)
     elif rtype == 'callout':
         # Callouts in card sections use 6-space indent vs 8-space in CP bodies
-        return (
+        html = (
             f'      <div class="lc-callout lc-callout--{item["variant"]}">\n'
             f'        <div class="lc-callout__icon">\n'
             f'          <span class="material-symbols-outlined">{item["icon"]}</span>\n'
@@ -282,12 +282,20 @@ def render_card_section(item):
             f'      </div>'
         )
     elif rtype == 'welcome_video':
+<<<<<<< Updated upstream
         # The only card section that is fenced. ON1/ON2 and 904 have separate
         # recordings, so each tree must keep its own and drop the other. Every
         # other section above is identical in all sections and returns unfenced.
         return wrap_for_modality(render_welcome_video(item), item)
+=======
+        html = render_welcome_video(item)
+>>>>>>> Stashed changes
     else:
         raise ValueError(f"Unknown card section type: {rtype}")
+    # Card sections get the same modality fencing CP body items get. Added
+    # 2026-08-15 so the welcome video can differ per section; before this, only
+    # items inside a checkpoint could be fenced.
+    return wrap_for_modality(html, item)
 
 
 def render_welcome_video(item):
@@ -306,9 +314,16 @@ def render_welcome_video(item):
     """
     if not item.get('modality'):
         raise ValueError(
+<<<<<<< Updated upstream
             'A welcome_video must declare a "modality" ("onl", "f2f", or '
             '"all"). Without one it is emitted unfenced into every tree by '
             'accident; "all" says you meant it.')
+=======
+            'A welcome_video must declare a "modality". It used to be fenced '
+            'VIDEO, which f2f strips wholesale, so an unfenced video would now '
+            'appear in EVERY tree instead of none. Each section has its own '
+            'welcome recording; say which one this is.')
+>>>>>>> Stashed changes
     paragraphs = '\n'.join(
         f'          <p>{p}</p>' for p in item['paragraphs']
     )
