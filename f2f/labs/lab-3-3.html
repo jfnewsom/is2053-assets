@@ -377,13 +377,13 @@ while in_program:
     <p>Add a temporary debug print right after the list declarations to verify all three lists are length 6 and the index ordering is consistent:</p>
     <div class="lc-code-block">
       <pre><span class="sy-cm"># DEBUG - DELETE BEFORE CHECKPOINT 3</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: HAZARD_NAMES len      = <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_NAMES<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: HAZARD_HEADS_MSGS len = <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_HEADS_MSGS<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: HAZARD_TAILS_MSGS len = <span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_TAILS_MSGS<span class="sy-op">)</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: All match length 6?   = &#x27;
-      f&#x27;<span class="sy-op">{</span><span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_NAMES<span class="sy-op">)</span> <span class="sy-op">==</span> <span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_HEADS_MSGS<span class="sy-op">)</span> <span class="sy-op">==</span> <span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_TAILS_MSGS<span class="sy-op">)</span> <span class="sy-op">==</span> <span class="sy-num">6</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;DEBUG: HAZARD_NAMES len      = {len(HAZARD_NAMES)}&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;DEBUG: HAZARD_HEADS_MSGS len = {len(HAZARD_HEADS_MSGS)}&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;DEBUG: HAZARD_TAILS_MSGS len = {len(HAZARD_TAILS_MSGS)}&#x27;</span><span class="sy-op">)</span>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;DEBUG: All match length 6?   = &#x27;</span>
+      <span class="sy-str">f&#x27;{len(HAZARD_NAMES) == len(HAZARD_HEADS_MSGS) == len(HAZARD_TAILS_MSGS) == 6}&#x27;</span><span class="sy-op">)</span>
 <span class="sy-kw">for</span> i <span class="sy-kw">in</span> <span class="sy-bi">range</span><span class="sy-op">(</span><span class="sy-bi">len</span><span class="sy-op">(</span>HAZARD_NAMES<span class="sy-op">)</span><span class="sy-op">)</span><span class="sy-op">:</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  [<span class="sy-op">{</span>i<span class="sy-op">}</span>] <span class="sy-op">{</span>HAZARD_NAMES<span class="sy-op">[</span>i<span class="sy-op">]</span><span class="sy-op">}</span> | H: <span class="sy-op">{</span>HAZARD_HEADS_MSGS<span class="sy-op">[</span>i<span class="sy-op">]</span><span class="sy-op">}</span> | T: <span class="sy-op">{</span>HAZARD_TAILS_MSGS<span class="sy-op">[</span>i<span class="sy-op">]</span><span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;  [{i}] {HAZARD_NAMES[i]} | H: {HAZARD_HEADS_MSGS[i]} | T: {HAZARD_TAILS_MSGS[i]}&#x27;</span><span class="sy-op">)</span></pre>
     </div>
     <p>Run the program. The DEBUG block should print all six hazards with their matching HEADS and TAILS messages, and the lengths-match line should read <code>True</code>. If the messages don't match the hazards (e.g., Armadillo paired with a Buc-ee's message), reorder the lists until each row makes sense. Delete the DEBUG block before moving to CP3.</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
@@ -487,7 +487,7 @@ test_names <span class="sy-op">=</span> <span class="sy-op">[</span><span class=
 test_heads <span class="sy-op">=</span> <span class="sy-op">[</span><span class="sy-str">&#x27;escape1&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;escape2&#x27;</span><span class="sy-op">]</span>
 test_tails <span class="sy-op">=</span> <span class="sy-op">[</span><span class="sy-str">&#x27;delay1&#x27;</span><span class="sy-op">,</span> <span class="sy-str">&#x27;delay2&#x27;</span><span class="sy-op">]</span>
 result <span class="sy-op">=</span> get_random_hazard<span class="sy-op">(</span>test_names<span class="sy-op">,</span> test_heads<span class="sy-op">,</span> test_tails<span class="sy-op">)</span>
-<span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;  get_random_hazard test =&gt; <span class="sy-op">{</span>result<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+<span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;  get_random_hazard test =&gt; {result}&#x27;</span><span class="sy-op">)</span></pre>
     </div>
     <p><strong>Step 2:</strong> Run <code>function_library.py</code> directly: <code>python3 function_library.py</code>. You should see one of <code>('hazard1', 'escape1', 'delay1')</code> or <code>('hazard2', 'escape2', 'delay2')</code>. Run it a few times. Both options should appear. Delete the test block after you're confident.</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
@@ -1084,6 +1084,292 @@ HAZARDS (A-Z):
           <p>Keep both files. Module 4 starts on top of this. <code>function_library.py</code> grows again next unit when data starts loading from text files.</p>
         </div>
       </div>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Message Digest (Exact Strings)</div>
+    <p>Use these <em>exact</em> prompts and messages. Spacing, capitalization, and punctuation matter for grading. Anything in <code>{braces}</code> is a variable of yours; everything outside the braces must match character for character. The shaded box shows the full string, so a prompt that ends in a space looks like it ends in a space.</p>
+    <div class="lc-table-wrap" style="--lc-accent: #FFCC00;">
+      <table class="lc-table lc-md__table">
+        <thead>
+          <tr>
+            <th>Purpose</th>
+            <th>Exact Text</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">==================================================</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">DEEP IN THE HEART: A LONE STAR JOURNEY</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">MAIN MENU</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">--------------------</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">1. New Game</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">2. Load Saved Game</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">3. Quit</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">Choice (1-3): </code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">Thanks for playing!</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">No usable save file found. Starting new game.</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">Welcome back, {player_name}!</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">Resuming from {current_city}.</code></td>
+      </tr>
+      <tr>
+        <td>Miles so far this game line</td>
+        <td><code class="lc-md__text">Miles so far this game: {total_miles}</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">Games completed this session: {games_played}</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">What is your name, traveler? </code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">Welcome, {player_name}!</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code class="lc-md__text">You are in San Antonio. Your goal: reach the beach!</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 1</td>
+        <td><code class="lc-md__text">Choice (1-{num_choices}): </code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 2</td>
+        <td><code class="lc-md__text">{num_choices}</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 3</td>
+        <td><code class="lc-md__text">Flipping to see if Texas cooperates...</code></td>
+      </tr>
+      <tr>
+        <td>Result line</td>
+        <td><code class="lc-md__text">Result: {gate_result}!</code></td>
+      </tr>
+      <tr>
+        <td>Texas says line</td>
+        <td><code class="lc-md__text">Texas says: &quot;Y&#x27;all come on through!&quot;</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 4</td>
+        <td><code class="lc-md__text">Texas has other plans for you...</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 5</td>
+        <td><code class="lc-md__text">You&#x27;re headed to {destination}!</code></td>
+      </tr>
+      <tr>
+        <td>Distance line</td>
+        <td><code class="lc-md__text">Distance: {distance} miles</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 6</td>
+        <td><code class="lc-md__text">TRAVELING TO {destination.upper()}!</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 7</td>
+        <td><code class="lc-md__text">--- Turn {leg_turns} ---</code></td>
+      </tr>
+      <tr>
+        <td>Miles remaining line</td>
+        <td><code class="lc-md__text">Miles remaining: {miles_remaining}</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 8</td>
+        <td><code class="lc-md__text">You rolled a {roll}!</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 9</td>
+        <td><code class="lc-md__text">You travel {miles_this_turn} miles...</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 10</td>
+        <td><code class="lc-md__text">You made it to {destination}!</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 11</td>
+        <td><code class="lc-md__text">*** HAZARD! ***</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 12</td>
+        <td><code class="lc-md__text">{hazard}</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 13</td>
+        <td><code class="lc-md__text">{flip}!</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 14</td>
+        <td><code class="lc-md__text">{heads_msg}</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 15</td>
+        <td><code class="lc-md__text">{tails_msg}</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 16</td>
+        <td><code class="lc-md__text">CONGRATULATIONS! YOU REACHED THE BEACH!</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 17</td>
+        <td><code class="lc-md__text">Austin is fun, but no beach here!</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 18</td>
+        <td><code class="lc-md__text">Return to San Antonio? (y/n): </code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 19</td>
+        <td><code class="lc-md__text">OPTIONS:</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 20</td>
+        <td><code class="lc-md__text">  1. Continue journey</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 21</td>
+        <td><code class="lc-md__text">  2. Save and quit</code></td>
+      </tr>
+      <tr>
+        <td>IN-GAME LOOP - innermost 22</td>
+        <td><code class="lc-md__text">  3. Quit without saving</code></td>
+      </tr>
+      <tr>
+        <td>Print the trip report to the screen 1</td>
+        <td><code class="lc-md__text">FINAL TRIP REPORT</code></td>
+      </tr>
+      <tr>
+        <td>Driver line</td>
+        <td><code class="lc-md__text">Driver: {player_name}</code></td>
+      </tr>
+      <tr>
+        <td>Final City line</td>
+        <td><code class="lc-md__text">Final City: {current_city}</code></td>
+      </tr>
+      <tr>
+        <td>Status line</td>
+        <td><code class="lc-md__text">Status: {status}</code></td>
+      </tr>
+      <tr>
+        <td>Unique cities visited line</td>
+        <td><code class="lc-md__text">Unique cities visited: {len(unique_cities)}</code></td>
+      </tr>
+      <tr>
+        <td>Print the trip report to the screen 2</td>
+        <td><code class="lc-md__text">HAZARDS ENCOUNTERED (A-Z)</code></td>
+      </tr>
+      <tr>
+        <td>Print the trip report to the screen 3</td>
+        <td><code class="lc-md__text">  None - Lucky traveler!</code></td>
+      </tr>
+      <tr>
+        <td>Print the trip report to the screen 4</td>
+        <td><code class="lc-md__text">STATISTICS</code></td>
+      </tr>
+      <tr>
+        <td>Print the trip report to the screen 5</td>
+        <td><code class="lc-md__text">  Total Miles: {total_miles}</code></td>
+      </tr>
+      <tr>
+        <td>Print the trip report to the screen 6</td>
+        <td><code class="lc-md__text">  Total Turns: {total_turns}</code></td>
+      </tr>
+      <tr>
+        <td>Print the trip report to the screen 7</td>
+        <td><code class="lc-md__text">  Hazards Faced: {total_hazards}</code></td>
+      </tr>
+      <tr>
+        <td>Print the trip report to the screen 8</td>
+        <td><code class="lc-md__text">  Hazards Escaped: {total_escaped}</code></td>
+      </tr>
+      <tr>
+        <td>Print the trip report to the screen 9</td>
+        <td><code class="lc-md__text">  Escape Rate: {escape_rate_str}%</code></td>
+      </tr>
+      <tr>
+        <td>Write the trip report to disk (always)</td>
+        <td><code class="lc-md__text">Trip report saved to trip_report.txt.</code></td>
+      </tr>
+      <tr>
+        <td>Update session accumulators</td>
+        <td><code class="lc-md__text">Play again? (y/n): </code></td>
+      </tr>
+      <tr>
+        <td>AFTER PLAY-AGAIN LOOP 1</td>
+        <td><code class="lc-md__text">SESSION STATISTICS</code></td>
+      </tr>
+      <tr>
+        <td>Games Played line</td>
+        <td><code class="lc-md__text">Games Played: {games_played}</code></td>
+      </tr>
+      <tr>
+        <td>Total Miles line</td>
+        <td><code class="lc-md__text">Total Miles: {session_miles}</code></td>
+      </tr>
+      <tr>
+        <td>Total Hazards line</td>
+        <td><code class="lc-md__text">Total Hazards: {session_hazards}</code></td>
+      </tr>
+      <tr>
+        <td>AFTER PLAY-AGAIN LOOP 2</td>
+        <td><code class="lc-md__text">Thanks for playing, {player_name}!</code></td>
+      </tr>
+      <tr>
+        <td>AFTER PLAY-AGAIN LOOP 3</td>
+        <td><code class="lc-md__text">An All My Eggses Live in Texas Production</code></td>
+      </tr>
+      <tr>
+        <td><code>current_city</code></td>
+        <td><code class="lc-md__text">San Antonio</code></td>
+      </tr>
+      <tr>
+        <td><code>status</code>, determine status string 1</td>
+        <td><code class="lc-md__text">BEACH WINNER!</code></td>
+      </tr>
+      <tr>
+        <td><code>status</code>, determine status string 2</td>
+        <td><code class="lc-md__text">Quit without saving</code></td>
+      </tr>
+      <tr>
+        <td><code>status</code>, determine status string 3</td>
+        <td><code class="lc-md__text">Trip Incomplete</code></td>
+      </tr>
+        </tbody>
+      </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">Run the Full Check</div>
     <p>Before you submit, run your program end-to-end. Your output should match this exactly:</p>

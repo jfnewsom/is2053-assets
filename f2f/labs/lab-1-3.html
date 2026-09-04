@@ -260,7 +260,7 @@ if __name__ == &#x27;__main__&#x27;:
       <li>Update your docstring with the new lab number and description</li>
       <li>Add the Galveston constant with your other constants: <code>HOU_TO_GALVESTON = 50</code></li>
       <li>After calculating <code>miles_rolled</code>, add: <code>miles_remaining = miles_rolled</code></li>
-      <li>Before the if-elif-else chain, add: <code>distance = 0</code></li>
+      <li>Before the if-elif-else chain, initialize the defaults: <code>distance = 0</code>, <code>destination = 'Nowhere'</code>, <code>status = 'ERROR'</code>, and <code>message = 'Something went wrong!'</code></li>
     </ol>
     <div class="lc-callout lc-callout--info">
       <div class="lc-callout__icon">
@@ -346,8 +346,8 @@ if __name__ == &#x27;__main__&#x27;:
     <p><strong>Step 1:</strong> Add debug lines after your new variables:</p>
     <div class="lc-code-block">
       <pre>    <span class="sy-cm"># DEBUG - DELETE AFTER TESTING</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: miles_remaining = <span class="sy-op">{</span>miles_remaining<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: distance = <span class="sy-op">{</span>distance<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;DEBUG: miles_remaining = {miles_remaining}&#x27;</span><span class="sy-op">)</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;DEBUG: distance = {distance}&#x27;</span><span class="sy-op">)</span></pre>
     </div>
     <p><strong>Step 2:</strong> Run with roll 15. Verify:</p>
     <div class="lc-output">
@@ -530,33 +530,39 @@ DEBUG: distance = 0</pre>
         <th>Branch</th>
         <th>distance</th>
         <th>status</th>
+        <th>message</th>
           </tr>
         </thead>
         <tbody>
       <tr>
         <td>Corpus: made it</td>
         <td>SAT_TO_CORPUS</td>
-        <td>'WINNER'</td>
+        <td><code>'WINNER'</code></td>
+        <td><code>The Sparkling City by the Sea!</code></td>
       </tr>
       <tr>
         <td>Corpus: fell short</td>
         <td>SAT_TO_CORPUS</td>
-        <td>'SHORT'</td>
+        <td><code>'SHORT'</code></td>
+        <td><code>So close to the beach!</code></td>
       </tr>
       <tr>
         <td>Austin: made it</td>
         <td>SAT_TO_AUSTIN</td>
-        <td>'DETOUR'</td>
+        <td><code>'DETOUR'</code></td>
+        <td><code>Keep it weird!</code></td>
       </tr>
       <tr>
         <td>Austin: fell short</td>
         <td>SAT_TO_AUSTIN</td>
-        <td>'SHORT'</td>
+        <td><code>'SHORT'</code></td>
+        <td><code>I-35 traffic strikes again!</code></td>
       </tr>
       <tr>
         <td>Invalid (else)</td>
         <td>0</td>
-        <td>'ERROR'</td>
+        <td><code>'ERROR'</code></td>
+        <td><code>Invalid choice!</code></td>
       </tr>
         </tbody>
       </table>
@@ -638,7 +644,7 @@ DEBUG: distance = 0</pre>
     <p><strong>Step 1:</strong> Add a debug line at the END of the full if-elif-else block (right before the summary):</p>
     <div class="lc-code-block">
       <pre>    <span class="sy-cm"># DEBUG - DELETE AFTER TESTING</span>
-    <span class="sy-bi">print</span><span class="sy-op">(</span>f&#x27;DEBUG: distance = <span class="sy-op">{</span>distance<span class="sy-op">}</span>, status = <span class="sy-op">{</span>status<span class="sy-op">}</span>&#x27;<span class="sy-op">)</span></pre>
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;DEBUG: distance = {distance}, status = {status}&#x27;</span><span class="sy-op">)</span></pre>
     </div>
     <p><strong>Step 2:</strong> Test each branch and verify <code>distance</code> and <code>status</code> are set correctly for every path.</p>
     <div class="lc-callout lc-callout--pitfall">
@@ -658,8 +664,9 @@ DEBUG: distance = 0</pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
-      <li>All branches setting <code>distance</code> and <code>status</code></li>
+      <li>All branches setting <code>distance</code>, <code>status</code>, and <code>message</code></li>
       <li>Consistent status strings (all uppercase)</li>
+      <li>Every string copied from the Message Digest, not written from scratch</li>
       <li>Each branch tested and working</li>
     </ol>
     </div>
@@ -708,20 +715,24 @@ DEBUG: distance = 0</pre>
         </thead>
         <tbody>
       <tr>
-        <td>'WINNER'</td>
-        <td>Beach celebration message</td>
+        <td><code>'WINNER'</code></td>
+        <td><code>CONGRATULATIONS! You made it to the beach!</code></td>
       </tr>
       <tr>
-        <td>'SHORT'</td>
-        <td>Encouragement to try again</td>
+        <td><code>'SHORT'</code></td>
+        <td><code>Better luck next time! Roll higher!</code></td>
       </tr>
       <tr>
-        <td>'DETOUR'</td>
-        <td>Suggestion to try a beach destination next time</td>
+        <td><code>'DETOUR'</code></td>
+        <td><code>Try Corpus Christi or Houston next time!</code></td>
+      </tr>
+      <tr>
+        <td><code>'STOPPED'</code></td>
+        <td><code>The beach will be waiting for your next adventure!</code></td>
       </tr>
       <tr>
         <td>else</td>
-        <td>Generic thanks for playing</td>
+        <td><code>Thanks for playing!</code></td>
       </tr>
         </tbody>
       </table>
@@ -789,9 +800,9 @@ CONGRATULATIONS! You made it to the beach!</pre>
     </svg>
       </div>
       <div class="lc-callout__bubble">
-        <div class="lc-callout__title">CodeGrade Expects Exact Output</div>
+        <div class="lc-callout__title">Match the Output Exactly</div>
         <div class="lc-callout__body">
-        <p>CodeGrade compares your output <strong>character-by-character</strong>. Capitalization, spacing, punctuation, and exact label wording all matter. Use the Trip Summary format shown above exactly as written, including the <code>Total Distance:</code> label, the colon, the spacing, and any blank lines. If your code is logically correct but CodeGrade says it's failing, look for tiny differences first.</p>
+        <p>Output is part of the specification, not a suggestion. Capitalization, spacing, punctuation, and exact label wording all count. Every string this program prints is listed in the <strong>Message Digest</strong> at the bottom of this sheet; use the Trip Summary format shown above exactly as written, including the colons, the spacing, and the blank lines. If your code is logically correct but a test is failing, look for tiny differences first.</p>
         </div>
       </div>
     </div>
@@ -880,6 +891,10 @@ CONGRATULATIONS! You made it to the beach!</pre>
         <span class="lc-checklist__box"></span>
         <span class="lc-checklist__label">All DEBUG lines removed</span>
       </li>
+      <li class="lc-checklist-item">
+        <span class="lc-checklist__box"></span>
+        <span class="lc-checklist__label">Every printed string matches the <strong>Message Digest</strong> exactly, including the capital letters in <code>Miles Rolled</code> and <code>Miles Remaining</code></span>
+      </li>
     </ul>
     <div class="lc-callout lc-callout--info">
       <div class="lc-callout__icon">
@@ -909,6 +924,326 @@ CONGRATULATIONS! You made it to the beach!</pre>
       <li>String comparisons with ==</li>
       </ul>
     <p class="lc-permitted__not-permitted"><strong>Not permitted:</strong> loops, lists, functions you define, or any Chapter 4+ techniques. Note: The main() structure is a required template. You'll learn why in Chapter 5.</p>
+    </div>
+    <div class="lc-h3 lc-h3--yellow">Message Digest (Exact Strings)</div>
+    <p>Use these <em>exact</em> prompts and messages. Spacing, capitalization, and punctuation matter for grading. Anything in <code>{braces}</code> is a variable of yours; everything outside the braces must match character for character. The shaded box shows the full string, so a prompt that ends in a space looks like it ends in a space. <strong>Watch the Trip Summary:</strong> <code>Miles Rolled</code> and <code>Miles Remaining</code> take capital letters in this lab. If you carried your file forward from Lab 1.2, they are lowercase there and you need to change them.</p>
+    <div class="lc-table-wrap" style="--lc-accent: #FFCC00;">
+      <table class="lc-table lc-md__table">
+        <thead>
+          <tr>
+            <th>Purpose</th>
+            <th>Exact Text</th>
+            <th>Shown In</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Banner line (50 equal signs)</td>
+        <td><code class="lc-md__text">==================================================</code></td>
+        <td>CP1/All</td>
+      </tr>
+      <tr>
+        <td>Program title</td>
+        <td><code class="lc-md__text">DEEP IN THE HEART: A LONE STAR JOURNEY</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Name prompt</td>
+        <td><code class="lc-md__text">What is your name, traveler? </code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Welcome line</td>
+        <td><code class="lc-md__text">Welcome, {player_name}!</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Goal line</td>
+        <td><code class="lc-md__text">You are in San Antonio. Your goal: reach the beach!</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Roll instruction</td>
+        <td><code class="lc-md__text">Roll to see how far you can travel.</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Generator link</td>
+        <td><code class="lc-md__text">https://www.calculator.net/random-number-generator.html</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Roll prompt</td>
+        <td><code class="lc-md__text">What did you roll? (1-20): </code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Roll confirmation</td>
+        <td><code class="lc-md__text">You rolled {roll}! That gives you {miles_rolled} miles.</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Menu heading</td>
+        <td><code class="lc-md__text">Where would you like to go?</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Menu option 1 <em>(two leading spaces)</em></td>
+        <td><code class="lc-md__text">  1. Corpus Christi - 150 miles (BEACH!)</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Menu option 2 <em>(two leading spaces)</em></td>
+        <td><code class="lc-md__text">  2. Houston - 200 miles</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Menu option 3 <em>(two leading spaces)</em></td>
+        <td><code class="lc-md__text">  3. Austin - 80 miles</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Menu prompt</td>
+        <td><code class="lc-md__text">Enter your choice (1-3): </code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td><code>destination</code> default</td>
+        <td><code class="lc-md__text">Nowhere</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td><code>status</code> default</td>
+        <td><code class="lc-md__text">ERROR</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td><code>message</code> default</td>
+        <td><code class="lc-md__text">Something went wrong!</code></td>
+        <td>CP1</td>
+      </tr>
+      <tr>
+        <td>Houston arrival</td>
+        <td><code class="lc-md__text">You made it to Houston! Space City!</code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td>Houston miles left <em>(lowercase r)</em></td>
+        <td><code class="lc-md__text">Miles remaining: {miles_remaining}</code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td>Galveston offer</td>
+        <td><code class="lc-md__text">The beach is close! Do you want to continue?</code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td>Galveston distance <em>(two leading spaces)</em></td>
+        <td><code class="lc-md__text">  Galveston is only 50 more miles!</code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td>Galveston prompt</td>
+        <td><code class="lc-md__text">Continue to Galveston? (y/n): </code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td><code>destination</code>, Houston</td>
+        <td><code class="lc-md__text">Houston</code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td><code>destination</code>, Galveston</td>
+        <td><code class="lc-md__text">Galveston</code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td><code>status</code>, Galveston reached</td>
+        <td><code class="lc-md__text">WINNER</code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td><code>message</code>, Galveston reached</td>
+        <td><code class="lc-md__text">Sun, sand, and the Gulf of Mexico!</code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td><code>message</code>, Galveston missed</td>
+        <td><code class="lc-md__text">So close to Galveston!</code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td><code>status</code>, stayed in Houston</td>
+        <td><code class="lc-md__text">STOPPED</code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td><code>message</code>, stayed in Houston</td>
+        <td><code class="lc-md__text">Check out the Space Center!</code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td><code>message</code>, never reached Houston</td>
+        <td><code class="lc-md__text">Highway traffic got you!</code></td>
+        <td>CP2</td>
+      </tr>
+      <tr>
+        <td><code>destination</code>, choice 1</td>
+        <td><code class="lc-md__text">Corpus Christi</code></td>
+        <td>CP3</td>
+      </tr>
+      <tr>
+        <td><code>message</code>, Corpus reached</td>
+        <td><code class="lc-md__text">The Sparkling City by the Sea!</code></td>
+        <td>CP3</td>
+      </tr>
+      <tr>
+        <td><code>message</code>, Corpus missed</td>
+        <td><code class="lc-md__text">So close to the beach!</code></td>
+        <td>CP3</td>
+      </tr>
+      <tr>
+        <td><code>destination</code>, choice 3</td>
+        <td><code class="lc-md__text">Austin</code></td>
+        <td>CP3</td>
+      </tr>
+      <tr>
+        <td><code>status</code>, Austin reached</td>
+        <td><code class="lc-md__text">DETOUR</code></td>
+        <td>CP3</td>
+      </tr>
+      <tr>
+        <td><code>message</code>, Austin reached</td>
+        <td><code class="lc-md__text">Keep it weird!</code></td>
+        <td>CP3</td>
+      </tr>
+      <tr>
+        <td><code>message</code>, Austin missed</td>
+        <td><code class="lc-md__text">I-35 traffic strikes again!</code></td>
+        <td>CP3</td>
+      </tr>
+      <tr>
+        <td><code>status</code>, fell short on any leg</td>
+        <td><code class="lc-md__text">SHORT</code></td>
+        <td>CP2/CP3</td>
+      </tr>
+      <tr>
+        <td><code>message</code>, invalid choice</td>
+        <td><code class="lc-md__text">Invalid choice!</code></td>
+        <td>CP3</td>
+      </tr>
+      <tr>
+        <td>Heading line</td>
+        <td><code class="lc-md__text">Heading to {destination}!</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Distance line</td>
+        <td><code class="lc-md__text">Distance: {distance} miles</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Outcome flavor line</td>
+        <td><code class="lc-md__text">{message}</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Outcome, WINNER</td>
+        <td><code class="lc-md__text">You made it to {destination}!</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Outcome, WINNER banner</td>
+        <td><code class="lc-md__text">YOU REACHED THE BEACH!</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Outcome, miles left over</td>
+        <td><code class="lc-md__text">Miles to spare: {miles_remaining}</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Outcome, SHORT</td>
+        <td><code class="lc-md__text">You didn&#x27;t make it to {destination}.</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Outcome, SHORT distance</td>
+        <td><code class="lc-md__text">You were {miles_short} miles short.</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Outcome, STOPPED</td>
+        <td><code class="lc-md__text">You decided to stay in {destination}.</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Outcome, DETOUR extra line</td>
+        <td><code class="lc-md__text">Nice city, but no beach here.</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Summary heading</td>
+        <td><code class="lc-md__text">TRIP SUMMARY</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Summary line 1</td>
+        <td><code class="lc-md__text">Driver: {player_name}</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Summary line 2</td>
+        <td><code class="lc-md__text">Destination: {destination}</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Summary line 3</td>
+        <td><code class="lc-md__text">Distance: {distance} miles</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Summary line 4 <em>(capital R, lowercase in Lab 1.2)</em></td>
+        <td><code class="lc-md__text">Miles Rolled: {miles_rolled}</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Summary line 5 <em>(capital R, lowercase in Lab 1.2)</em></td>
+        <td><code class="lc-md__text">Miles Remaining: {miles_remaining}</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Summary line 6</td>
+        <td><code class="lc-md__text">Status: {status}</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Closing message, WINNER</td>
+        <td><code class="lc-md__text">CONGRATULATIONS! You made it to the beach!</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Closing message, SHORT</td>
+        <td><code class="lc-md__text">Better luck next time! Roll higher!</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Closing message, DETOUR</td>
+        <td><code class="lc-md__text">Try Corpus Christi or Houston next time!</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Closing message, STOPPED</td>
+        <td><code class="lc-md__text">The beach will be waiting for your next adventure!</code></td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Closing message, anything else</td>
+        <td><code class="lc-md__text">Thanks for playing!</code></td>
+        <td>CP4</td>
+      </tr>
+        </tbody>
+      </table>
     </div>
     <div class="lc-h3 lc-h3--yellow">Run the Full Check</div>
     <p>Before you submit, run your program end-to-end. Your output should match this exactly:</p>

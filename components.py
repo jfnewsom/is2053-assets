@@ -919,10 +919,16 @@ def render_final_checklist(checklist: dict) -> str:
     final_check = checklist.get("finalCheck", {})
     final_check_block = render_final_check(final_check) if final_check else ""
 
+    # messageDigest block (v1.2 addition) — every official string, verbatim.
+    # Renders BEFORE finalCheck so a student fixes their wording first and
+    # then runs the end-to-end check against it.
+    message_digest = checklist.get("messageDigest", {})
+    digest_block = render_message_digest(message_digest) if message_digest else ""
+
     return f"""{card_open("red")}
 {topper("Final Checklist", "Check It Before You Wreck It")}
 {panel_open()}
-{submit_block}{deadline_block}{scope_block}{permitted_block}{warnings_html}{save_block}{final_check_block}{integrity_block}{panel_close()}{card_close()}"""
+{submit_block}{deadline_block}{scope_block}{permitted_block}{warnings_html}{save_block}{digest_block}{final_check_block}{integrity_block}{panel_close()}{card_close()}"""
 
 
 # ============================================================
@@ -984,6 +990,90 @@ def render_final_check(final_check: dict) -> str:
 """
 
     return output_html + breaks_html
+
+
+# ============================================================
+# Message Digest (v1.2) — every official string, verbatim
+# ============================================================
+
+def render_message_digest(digest: dict) -> str:
+    """
+    Render the Message Digest subsection inside the Final Checklist card.
+    Restored to the sheets on 2026-09-04; the format is the one the course
+    used a few semesters back, three columns, Purpose / Exact Text / Shown In.
+
+    Every string the program prompts with or prints, in the exact form it
+    appears. CodeGrade compares output character by character, so a
+    checkpoint that says "a fun message" and a grader that demands a fixed
+    string is a trap. This block is the one authoritative place a student
+    copies wording from.
+
+    Reads:
+      - intro:  optional lead paragraph (HTML allowed)
+      - rows:   [{purpose, text, shownIn}]
+
+    `text` is the string as the student sees it, WITHOUT Python quotes, with
+    runtime values written as {placeholder}. It renders in a shaded monospace
+    span, and that shading is what makes a trailing space on an input()
+    prompt visible. Never strip trailing whitespace out of `text`.
+    """
+    intro = digest.get("intro", "")
+    rows = digest.get("rows", [])
+
+    # Defensive: a bare string here would iterate character by character and
+    # produce one row per character.
+    if isinstance(rows, str):
+        print(
+            "  \u26a0 WARNING: messageDigest.rows is a string; expected list. "
+            "Skipping the digest. Fix the JSON."
+        )
+        return ""
+
+    if not rows:
+        return ""
+
+    default_intro = (
+        "Use these <em>exact</em> prompts and messages. Spacing, "
+        "capitalization, and punctuation matter for grading."
+    )
+    intro_html = f"    <p>{intro or default_intro}</p>\n"
+
+    # Shown In is all-or-nothing. A generated digest starts with the column
+    # only partly filled, and a table of half-blank cells reads as broken
+    # rather than as work in progress. Drop the column until every row has a
+    # value, which also makes "the column is back" the completion signal.
+    has_shown = all(row.get("shownIn") for row in rows)
+
+    head_shown = "            <th>Shown In</th>\n" if has_shown else ""
+
+    rows_html = ""
+    for row in rows:
+        purpose = row.get("purpose", "")
+        text = html_lib.escape(row.get("text", ""))
+        cell_shown = (f"        <td>{row.get('shownIn', '')}</td>\n"
+                      if has_shown else "")
+        rows_html += (
+            "      <tr>\n"
+            f"        <td>{purpose}</td>\n"
+            f'        <td><code class="lc-md__text">{text}</code></td>\n'
+            f"{cell_shown}"
+            "      </tr>\n"
+        )
+
+    return f"""    <div class="lc-h3 lc-h3--yellow">Message Digest (Exact Strings)</div>
+{intro_html}    <div class="lc-table-wrap" style="--lc-accent: #FFCC00;">
+      <table class="lc-table lc-md__table">
+        <thead>
+          <tr>
+            <th>Purpose</th>
+            <th>Exact Text</th>
+{head_shown}          </tr>
+        </thead>
+        <tbody>
+{rows_html}        </tbody>
+      </table>
+    </div>
+"""
 
 
 # ============================================================
