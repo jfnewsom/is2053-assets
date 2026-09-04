@@ -77,6 +77,31 @@ for s in render_*.py; do
 done
 [ $UNWIRED -eq 0 ] && echo "  ✓ every renderer is wired in"
 
+# The same safety net for the guards themselves, which is the harder case.
+# F-013 (Aug 8, 2026) was check_style.py going missing from the repo AND from
+# git history, and it took six fixes it had been holding up with it. Nobody
+# noticed, because a guard that is not there produces no output to miss.
+#
+# So the roster is written down explicitly rather than globbed. A glob only
+# sees what still exists, which is precisely the wrong question: the point is
+# to notice something that USED to be here and is not.
+echo ""
+echo "Checking for unwired or missing guards..."
+UNGUARDED=0
+for g in check_dates.py check_nav_modality.py check_pending.py \
+         check_provided_files.py check_scope.py check_style.py \
+         check_syllabus_links.py check_zoom_room.py \
+         lab_lint.py verify_output.py message_digest.py; do
+    if [ ! -e "$g" ]; then
+        echo "  ✗ $g is MISSING from the repo. It was here before; restore it"
+        UNGUARDED=1; FAILED=1
+    elif ! grep -q "python3 $g" "$0"; then
+        echo "  ✗ $g exists but render_all.sh never runs it. Wire it in"
+        UNGUARDED=1; FAILED=1
+    fi
+done
+[ $UNGUARDED -eq 0 ] && echo "  ✓ every guard is present and wired in"
+
 echo ""
 echo "Building modality variants (must be last)..."
 python3 render_variant.py; note "variant trees"
@@ -153,6 +178,25 @@ if [ "$1" != "--no-guard" ]; then
     else
         echo "  SKIPPED: solutions tree not found at $SOLUTIONS"
         echo "  Set IS2053_SOLUTIONS to run it. Sheets were NOT checked against the code."
+    fi
+
+    # Every string the program prints has to be DEFINED on the sheet, which is
+    # a different question from whether the sample run matches. A sheet can be
+    # self-consistent and agree with the solution's output and still never tell
+    # the student what to type. On Sep 4, 2026, 147 strings across the 14 labs
+    # turned out to appear nowhere on their own sheet.
+    #
+    # Same solutions dependency as verify_output.py, same loud skip: a check
+    # you think ran and did not is worse than no check.
+    echo ""
+    echo "Checking every printed string is defined on its sheet..."
+    if [ -d "$SOLUTIONS" ]; then
+        DIGEST_OUT=$(python3 message_digest.py --solutions "$SOLUTIONS") || FAILED=1
+        echo "$DIGEST_OUT" | grep -v ": OK (" | sed 's/^/  /'
+        echo "  $(echo "$DIGEST_OUT" | grep -c ": OK (") labs clean"
+    else
+        echo "  SKIPPED: solutions tree not found at $SOLUTIONS"
+        echo "  Set IS2053_SOLUTIONS to run it. Sheet strings were NOT checked against the code."
     fi
 fi
 
