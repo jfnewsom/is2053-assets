@@ -242,7 +242,8 @@ def unverifiable(exp, doc):
     return None
 
 
-SEQ_RE = re.compile(r'\b(SEQ_\d+_\d+)\s*=\s*([\d,]+)')
+# Also accepts the fixed knobs a sheet declares, e.g. LARGENUM=20 (2026-10-16).
+SEQ_RE = re.compile(r'\b(SEQ_\d+_\d+|SMALLNUM|LARGENUM|CHOICE_IDX)\s*=\s*([\d,]+)')
 
 
 def declared_seq(doc):

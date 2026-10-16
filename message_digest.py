@@ -51,7 +51,9 @@ JSON_DIR = os.path.join(REPO, 'pages', 'labs', 'json')
 # Calls whose string arguments reach the student's screen. get_valid_int and
 # get_yes_no take the prompt as their first argument from Module 2 onward;
 # scanning input() alone goes blind at exactly the point the labs get harder.
-USER_FACING = {'print', 'input', 'get_valid_int', 'get_yes_no'}
+# clean_input joined in Lab 4.2: its prompt prints just like input()'s (2026-10-16).
+USER_FACING = {'print', 'input', 'get_valid_int', 'get_yes_no', 'clean_input',
+               'display_numbered_list'}
 
 
 def solution_for(root, lab):

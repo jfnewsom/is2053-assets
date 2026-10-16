@@ -30,7 +30,7 @@
     "textbookReference": "Chapter 8: Programs 8–1 through 8–14 cover string methods. <code>.upper()</code> and <code>.isdigit()</code> are demonstrated in Programs 8–6 and 8–7. Chapter 9 Program 9–10 shows a list of dictionaries.",
     "programRequirements": [
       "Submit <code>lab-4-2.py</code> and <code>function_library.py</code>",
-      "Top-of-file comment block on both files: Name, abc123, Section, Description",
+      "Top-of-file comment block on both files, carried forward from the previous lab, with the lab file's title and description updated",
       "Docstring on every function",
       "Load all three data files at startup: <code>city_distances.txt</code>, <code>city_info.txt</code>, <code>hazards.txt</code>",
       "Three-loop architecture preserved from 4.1: main menu, play-again, in-game",
@@ -88,7 +88,12 @@
       },
       {
         "file": "function_library.py",
-        "format": "Shared function library, extended this unit with clean_input, load_hazards, and handle_hazard",
+        "format": "Empty starter in your lab folder. In CP1 you replace it with your Lab 4.1 copy, then extend it this unit",
+        "submitted": true
+      },
+      {
+        "file": "lab-4-2.py",
+        "format": "Empty starter in your lab folder. In CP1 you replace it with a copy of your <code>lab-4-1.py</code>",
         "submitted": true
       }
     ]
@@ -97,54 +102,44 @@
     "totalTime": "90–120 Minutes",
     "rows": [
       {
-        "checkpoint": "CP1: Copy 4.1 + Load Hazards",
+        "checkpoint": "CP1: Carry Lab 4.1 Forward",
         "time": "10 min",
-        "task": "Copy lab-4-1.py forward and add load_hazards to the library"
+        "task": "Copy 4.1 forward, add hazards.txt, pin the dice and coin"
       },
       {
-        "checkpoint": "CP2: clean_input (the .upper() relief)",
-        "time": "10 min",
-        "task": "Add clean_input to the library: strip + upper"
-      },
-      {
-        "checkpoint": "CP3: Smarter get_valid_int",
+        "checkpoint": "CP2: Hazards From a File",
         "time": "15 min",
-        "task": "Rewrite get_valid_int with .isdigit() so non-numeric input no longer crashes"
+        "task": "load_hazards in the library; load and count at startup"
       },
       {
-        "checkpoint": "CP4: Smarter get_yes_no",
-        "time": "10 min",
-        "task": "Rewrite get_yes_no on top of clean_input"
+        "checkpoint": "CP3: One Function for Every Hazard",
+        "time": "25 min",
+        "task": "handle_hazard in the library; retire the hazard lists and get_random_hazard"
       },
       {
-        "checkpoint": "CP5: handle_hazard in the Library",
+        "checkpoint": "CP4: Number Input That Never Crashes",
         "time": "15 min",
-        "task": "Promote hazard handling to a library function returning (name, escaped)"
+        "task": "get_valid_int with .strip() and .isdigit()"
       },
       {
-        "checkpoint": "CP6: Wire It All Together",
-        "time": "20 min",
-        "task": "Delete inline hazard lists from lab-4-2.py, load hazards.txt, swap in handle_hazard"
+        "checkpoint": "CP5: Clean Yes/No Answers",
+        "time": "15 min",
+        "task": "clean_input and get_yes_no built on it"
       },
       {
-        "checkpoint": "CP7: Updated Trip Report",
+        "checkpoint": "Full Check",
         "time": "10 min",
-        "task": "Verify the trip report still shows hazards correctly with the new dict-shape data"
-      },
-      {
-        "checkpoint": "Final Check & Submit",
-        "time": "10 min",
-        "task": "Full play-through, then upload both files to CodeGrade"
+        "task": "Run the Final Check with your pins in place, then restore them and submit"
       }
     ]
   },
   "beforeYouBegin": {
     "intro": "Lab 4.2 is mostly library work. The lab file changes in two places: the startup loads one more file, and the in-game hazard block collapses to a single function call. Everything else carries forward from 4.1. <code>[NEW]</code> tags show what's added this unit. <code>[REPLACED]</code> tags show what swaps out. <code>[RETIRED]</code> tags show what gets deleted. <code>[KEEP]</code> tags show what carries forward.",
-    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_destinations(city, distances)                       [KEEP from 4.1]\nget_destination(city, distances, choice)                    [KEEP from 4.1]\nget_redirect(city, distances, avoid)                        [KEEP from 4.1]\nis_win_city(city, city_info)                                [KEEP from 4.1]\nis_dead_end(city, city_info)                                [KEEP from 4.1]\nload_city_distances(filename), load_city_info(filename)     [KEEP from 4.1]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\n\nclean_input(prompt) -> strip + upper                        [NEW-CP2]\nget_valid_int(prompt, min_val, max_val)                     [REPLACED-CP3] now uses .isdigit()\nget_yes_no(prompt)                                          [REPLACED-CP4] now uses clean_input\nload_hazards(filename) -> list of dicts                     [NEW-CP1]\nhandle_hazard(hazards) -> (name, escaped)                   [NEW-CP5]\nget_random_hazard(...)                                      [RETIRED-CP6]\n\n# ---- IN lab-4-2.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE, INFO_FILE, REPORT_FILE                      [KEEP from 4.1]\nHAZARDS_FILE = 'hazards.txt'                                [NEW-CP6]\nMILES_MULTIPLIER = 10, HAZARD_CHANCE = 30                   [KEEP from 4.1]\n\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [RETIRED-CP6] now in hazards.txt\n\nsave_trip_report(filename, ...)                             [KEEP from 4.1]\n\n# ---- main() ----\ndistances = load_city_distances(...)                        [KEEP from 4.1]\ncity_info = load_city_info(...)                             [KEEP from 4.1]\nhazards   = load_hazards(HAZARDS_FILE)                      [NEW-CP6]\n\nMAIN MENU LOOP                                              [KEEP from 4.1]\n  PLAY-AGAIN LOOP                                           [KEEP from 4.1]\n    IN-GAME LOOP                                            [KEEP from 4.1]\n      │\n      │─ D20 travel loop\n      │     │─ if hazard triggers:\n      │     │     name, escaped = handle_hazard(hazards)   [REPLACED-CP6]\n      │     │     hazards_list.append(name)\n      │     │     if escaped: hazards_escaped += 1\n      │\n      │─ Continue / Save & quit / Quit                     [KEEP from 4.1]\n    \n    Trip report on screen + trip_report.txt                 [KEEP from 4.1]\n    Session accumulators                                    [KEEP from 4.1]\n"
+    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\nload_city_distances(), load_city_info()                     [KEEP from 4.1]\ndisplay_destinations(), get_destination(), get_redirect()   [KEEP from 4.1]\nis_win_city(), is_dead_end()                                [KEEP from 4.1]\n\nload_hazards(filename) -> list of dicts                     [NEW-CP2]\nhandle_hazard(hazards) -> (name, escaped)                   [NEW-CP3]\nget_random_hazard(...)                                      [DELETED-CP3]\nget_valid_int(prompt, min_val, max_val)                     [REWRITTEN-CP4] .isdigit()\nclean_input(prompt)                                         [NEW-CP5]\nget_yes_no(prompt)                                          [REWRITTEN-CP5] uses clean_input\n\n# ---- IN lab-4-2.py (starts as a copy of lab-4-1.py in CP1) ----\nDISTANCES_FILE, INFO_FILE, REPORT_FILE                      [KEEP from 4.1]\nHAZARDS_FILE = 'hazards.txt'                                [NEW-CP2]\nMILES_MULTIPLIER, HAZARD_CHANCE                             [KEEP from 4.1]\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [DELETED-CP3]\nsave_trip_report(...)                                       [KEEP from 4.1]\n\n# ---- main() ----\nLoad data: distances, city_info                             [KEEP from 4.1]\n           hazards = load_hazards(HAZARDS_FILE)             [NEW-CP2]\nMAIN MENU LOOP / PLAY-AGAIN LOOP / IN-GAME LOOP             [KEEP from 4.1]\n  │─ Hazard block: one handle_hazard call                   [REPLACED-CP3]\nTrip report, session statistics                             [KEEP from 4.1]\n"
   },
   "checkpoints": [
     {
-      "title": "Copy 4.1 + Load Hazards",
+      "title": "Carry Lab 4.1 Forward",
       "content": [
         {
           "type": "h3",
@@ -152,7 +147,7 @@
         },
         {
           "type": "text",
-          "body": "A clean starting point for Lab 4.2. Copy <code>lab-4-1.py</code> to <code>lab-4-2.py</code>, update the docstring, and add one new function to <code>function_library.py</code>: <code>load_hazards(filename)</code>. It reads <code>hazards.txt</code> using the exact same <code>.strip().split(',')</code> pattern from Lab 4.1, but returns a <strong>list of dictionaries</strong> instead of a nested dict."
+          "body": "A trusted starting point. <code>lab-4-2.py</code> begins as an exact copy of your finished Lab 4.1, with your 4.1 <code>function_library.py</code> beside it and <code>hazards.txt</code> added to the folder. The game does not change in this checkpoint."
         },
         {
           "type": "h3",
@@ -160,31 +155,92 @@
         },
         {
           "type": "text",
-          "body": "This is the moment Tyler called back in Lab 2.2, CP6, when he warned that the hardcoded hazard data would not scale. He was right. Lab 4.1 still defined hazards as three parallel lists at the top of the lab file. This unit those three lists go away and the same data lives in <code>hazards.txt</code>, parsed once at startup. The Patch Note closes here."
+          "body": "Every later checkpoint changes one thing. If CP1 runs exactly like Lab 4.1, any difference you see afterward comes from that checkpoint and nothing else."
         },
         {
           "type": "h3",
           "label": "step_by_step"
         },
         {
-          "type": "callout",
-          "variant": "warning",
-          "title": "Where Your New Code Goes",
-          "body": "This lab continues the file you already wrote, and four things trip people up every term. <strong>One:</strong> your new code goes <em>inside</em> <code>main()</code>, at the same indent level as the code already in there. <strong>Two:</strong> it goes where the checkpoint says it goes, which is usually in the middle, not tacked on at the bottom. <strong>Three:</strong> there is still exactly one <code>def main():</code> and exactly one call to <code>main()</code>. Copying a previous lab often leaves you with two of each. <strong>Four:</strong> the <code>if __name__ == '__main__':</code> block stays the very last thing in the file, always. If your new code ends up below it, it never runs."
+          "type": "instructions",
+          "items": [
+            "Copy your finished <code>lab-4-1.py</code> into your <code>lab-4-2</code> folder and rename it <code>lab-4-2.py</code>, replacing the empty starter file of that name.",
+            "Copy your Lab 4.1 <code>function_library.py</code> into the same folder, replacing the empty starter file.",
+            "Put <code>city_distances.txt</code>, <code>city_info.txt</code>, and the new <code>hazards.txt</code> (from this lab's downloads) in the same folder.",
+            "Update the docstring at the top of <code>lab-4-2.py</code>: the title becomes <code>Lab 4.2: Flexible Input</code>, and rewrite the description in a sentence or two to describe this lab.",
+            "Pin just the destination coin and the dice, as shown below. CP3 adds more pins when hazards need them."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Comment out each line and add the fixed value right below it:"
+        },
+        {
+          "type": "code_block",
+          "code": "# gate_result = function_library.flip_coin()\ngate_result = 'HEADS'\n\n# roll = function_library.roll_d20()\nroll = 20"
+        },
+        {
+          "type": "text",
+          "body": "With a roll of 20, the trips in the CP1, CP2, CP4, and CP5 tests arrive in one turn, so no hazard check runs. Keep the pins through CP5; the Final Check tells you when to restore them. The expected output leaves out what you type and the Enter key after it, the same way CodeGrade sees it, so a prompt and the next line it prints share a line, like <code>Choice (1-3): ERROR: ...</code>."
+        },
+        {
+          "type": "text",
+          "body": "Run <code>lab-4-2.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>2</code>, <code>1</code>, <code>2</code>, <code>n</code>, <code>3</code>. Your output should match this exactly:"
+        },
+        {
+          "type": "output_block",
+          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nYou are in: Houston\n  \"Space City\"\n\nFrom Houston, you can travel to:\n  1. San Antonio - 200 miles\n  2. Galveston - 50 miles\n  3. Dallas - 240 miles\n\nChoice (1-3): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 400\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
         },
         {
           "type": "instructions",
           "items": [
-            "<strong>Copy</strong> <code>lab-4-1.py</code> to <code>lab-4-2.py</code> in the same folder.",
-            "<strong>Update the docstring</strong> at the top of <code>lab-4-2.py</code>: change the title to <code>Lab 4.2: Flexible Input</code> and update the description.",
-            "<strong>Do not copy</strong> <code>function_library.py</code>. It stays in place; you extend it directly.",
-            "In <code>function_library.py</code>, add a new section header comment block titled <code>HAZARD FUNCTIONS (Added in Lab 4-2)</code>. Place it after the city data loaders.",
-            "Define <code>load_hazards(filename)</code> with a docstring describing the list-of-dicts return shape.",
-            "Inside the function, create an empty list called <code>hazards</code>.",
-            "Open the file with <code>infile = open(filename, 'r')</code>. Loop with <code>for line in infile:</code>.",
-            "For each line, call <code>parts = line.strip().split(',')</code>. Build a dictionary <code>hazard = {'name': parts[0], 'heads': parts[1], 'tails': parts[2]}</code> and <code>hazards.append(hazard)</code>.",
-            "Close the file and return <code>hazards</code>.",
-            "Run <code>lab-4-2.py</code> as-is. Confirm it still plays exactly like 4.1 did."
+            "<code>lab-4-2.py</code>, <code>function_library.py</code>, and all three data files in your <code>lab-4-2</code> folder",
+            "Docstring title <code>Lab 4.2: Flexible Input</code>",
+            "Output identical to the run above"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Hazards From a File",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "A new library function, <code>load_hazards(filename)</code>, that reads <code>hazards.txt</code> with the same <code>.strip().split(',')</code> pattern from Lab 4.1 and returns a <strong>list of dictionaries</strong>, one per hazard, each with <code>'name'</code>, <code>'heads'</code>, and <code>'tails'</code> keys. Your game loads it at startup and reports the count."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "This is the moment Tyler called back in Lab 2.2, CP6, when he warned that hardcoded hazard data would not scale. The same data now lives in a file, parsed once at startup. In CP3 the game starts using it."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>function_library.py</code>, below your existing functions and above the test block at the bottom, add a section header comment block titled <code>HAZARD FUNCTIONS</code>.",
+            "Define <code>load_hazards(filename)</code> with a docstring. Create <code>hazards = []</code> and open the file.",
+            "For each line: <code>parts = line.strip().split(',')</code>, then build <code>hazard = {'name': parts[0], 'heads': parts[1], 'tails': parts[2]}</code> and <code>hazards.append(hazard)</code>.",
+            "Close the file and <code>return hazards</code>.",
+            "In <code>lab-4-2.py</code>, add <code>HAZARDS_FILE = 'hazards.txt'</code> with your other file constants.",
+            "In <code>main()</code>, right after the <code>city_info</code> load, add <code>hazards = function_library.load_hazards(HAZARDS_FILE)</code>. After the <code>Loaded ... city info records.</code> line, add <code>print(f'Loaded {len(hazards)} possible hazards.')</code>."
           ]
         },
         {
@@ -203,7 +259,7 @@
             {
               "programId": "9-10",
               "filename": "list_of_dicts.py",
-              "description": "List of dictionaries is the third dictionary shape this module. Each list item is its own dictionary with the same set of keys."
+              "description": "A list of dictionaries is the third dictionary shape this module. Each list item is its own dictionary with the same keys."
             }
           ]
         },
@@ -213,19 +269,19 @@
         },
         {
           "type": "text",
-          "body": "Add a temporary DEBUG block under the <code>if __name__ == '__main__':</code> guard in <code>function_library.py</code>. Run the library directly to confirm the hazards load. Delete the block before moving on."
+          "body": "Keep <code>gate_result = 'HEADS'</code> and <code>roll = 20</code> pinned."
         },
         {
-          "type": "code_block",
-          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\nhazards = load_hazards('hazards.txt')\nprint(f'Loaded {len(hazards)} hazards.')\nprint('First hazard:', hazards[0])\nprint('First hazard name:', hazards[0]['name'])\nprint('Last hazard tails:', hazards[-1]['tails'])"
-        },
-        {
-          "type": "h3",
-          "label": "expected_output"
+          "type": "text",
+          "body": "Run <code>lab-4-2.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>2</code>, <code>1</code>, <code>2</code>, <code>n</code>, <code>3</code>. Your output should match this exactly:"
         },
         {
           "type": "output_block",
-          "output": "Loaded 8 hazards.\nFirst hazard: {'name': \"Buc-ee's appears!\", 'heads': \"You resist the beaver's call\", 'tails': 'Lost 2 hours on snacks'}\nFirst hazard name: Buc-ee's appears!\nLast hazard tails: GPS is disappointed"
+          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nYou are in: Houston\n  \"Space City\"\n\nFrom Houston, you can travel to:\n  1. San Antonio - 200 miles\n  2. Galveston - 50 miles\n  3. Dallas - 240 miles\n\nChoice (1-3): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 400\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
+        },
+        {
+          "type": "text",
+          "body": "One new line at startup: <code>Loaded 8 possible hazards.</code> The game still uses the hazard lists from Lab 4.1 until CP3."
         },
         {
           "type": "h3",
@@ -236,16 +292,16 @@
           "caption": "",
           "rows": [
             [
-              "Returning a single dictionary instead of a list of dictionaries",
-              "Each line in the file is its own hazard. The function appends each one to the <code>hazards</code> list. The return type is <code>list</code>, not <code>dict</code>."
+              "Returning a single dictionary",
+              "Each line is its own hazard. Append each one to the list, and return the list."
             ],
             [
               "Mixing up <code>parts[1]</code> and <code>parts[2]</code>",
-              "Column order in <code>hazards.txt</code> is <code>name,heads_message,tails_message</code>. <code>heads</code> goes with <code>parts[1]</code>, <code>tails</code> with <code>parts[2]</code>."
+              "The file's column order is <code>name,heads_message,tails_message</code>."
             ],
             [
-              "Editing <code>lab-4-1.py</code> directly instead of copying first",
-              "Always preserve last unit's submission. Copy first, then edit the copy."
+              "Loading inside a loop",
+              "Load once, at startup, before the main-menu loop."
             ]
           ]
         },
@@ -256,16 +312,15 @@
         {
           "type": "instructions",
           "items": [
-            "<code>lab-4-2.py</code> exists, plays identically to <code>lab-4-1.py</code> at this point",
-            "<code>function_library.py</code> has a new <code>HAZARD FUNCTIONS</code> section with <code>load_hazards(filename)</code> defined inside",
-            "DEBUG output confirms 8 hazards load with the expected first-name and last-tails strings",
-            "DEBUG block is removed before moving on"
+            "<code>load_hazards(filename)</code> in a <code>HAZARD FUNCTIONS</code> section",
+            "<code>HAZARDS_FILE</code> constant and the load at startup",
+            "Output identical to the run above"
           ]
         }
       ]
     },
     {
-      "title": "clean_input (the .upper() relief)",
+      "title": "One Function for Every Hazard",
       "content": [
         {
           "type": "h3",
@@ -273,7 +328,7 @@
         },
         {
           "type": "text",
-          "body": "One small function in <code>function_library.py</code> that you have been waiting for since Module 1: <code>clean_input(prompt)</code>. It calls <code>input</code>, strips surrounding whitespace, uppercases the result, and returns it. One line of code; semester-changing in its impact."
+          "body": "<code>handle_hazard(hazards)</code> in the library: one function that picks a random hazard, prints the banner and the hazard's name, flips the escape coin, prints the matching message, and returns <code>(name, escaped)</code>. The game's hazard block shrinks to a single call, and the three hazard lists and <code>get_random_hazard</code> go away."
         },
         {
           "type": "h3",
@@ -281,14 +336,14 @@
         },
         {
           "type": "text",
-          "body": "Every time you wrote <code>if choice == 'y' or choice == 'Y':</code> in Modules 1, 2, and 3, you were working around the fact that <code>.upper()</code> had not arrived yet. It has now. From this checkpoint forward, every input-cleanup looks the same: <code>answer = clean_input(prompt)</code>, then compare to a single uppercase string."
+          "body": "Module 3's <code>get_random_hazard</code> only picked a hazard; the lab file still did the printing and the coin flip. With hazards stored as dictionaries, the lab no longer needs to know their shape. It only needs the name to record and whether the player escaped."
         },
         {
           "type": "mentor_quote",
-          "character": "Sasha Mireles",
-          "role": "Creative Director, Bat City Collective",
-          "headshot": "Sasha-Mireles.png",
-          "quote": "Three lines of code from a textbook can change how an entire game feels. Strip, upper, return. Players will never see this function. They will only see that the game stopped fighting them about whether to press the caps-lock key. That is the definition of a good interface: the player does not notice it."
+          "character": "Danny Cavanaugh",
+          "role": "Lead Developer, Bat City Collective",
+          "headshot": "Danny-Cavanaugh.png",
+          "quote": "When you move logic from the lab file into the library, ask what the lab actually needs back. Module 3's picker returned three strings because the lab still had to do the printing and the coin flip. This handler returns two values because the lab only needs to know what to record and whether to bump the escape counter. Smaller return shape, less knowledge required at the call site. That is a refactor."
         },
         {
           "type": "h3",
@@ -297,11 +352,19 @@
         {
           "type": "instructions",
           "items": [
-            "In <code>function_library.py</code>, add a new section header comment block titled <code>STRING UTILITIES (Added in Lab 4-2)</code>. Place it just before the <code>VALIDATION FUNCTIONS</code> section so that the validation helpers can call <code>clean_input</code> later in CP3 and CP4.",
-            "Define <code>clean_input(prompt)</code> with a one-line body: <code>return input(prompt).strip().upper()</code>.",
-            "Add a docstring describing the strip + uppercase behavior and what it returns.",
-            "Do not modify any other functions yet. CP3 and CP4 are where the existing helpers get rewritten on top of <code>clean_input</code>."
+            "In the <code>HAZARD FUNCTIONS</code> section, define <code>handle_hazard(hazards)</code> with a docstring.",
+            "Pick one: <code>hazard = random.choice(hazards)</code>.",
+            "Print the banner and the name exactly as your game already does: <code>print('*** HAZARD! ***')</code>, then <code>print(hazard['name'])</code>.",
+            "Flip the escape coin with <code>flip = flip_coin()</code> and print it the same way as before: <code>print(f'{flip}!')</code>.",
+            "If <code>flip == 'HEADS'</code>: <code>print(hazard['heads'])</code> and <code>return hazard['name'], True</code>. Otherwise: <code>print(hazard['tails'])</code> and <code>return hazard['name'], False</code>.",
+            "Delete <code>get_random_hazard</code> from the library entirely, along with its <code>HAZARD HELPER</code> section header comment. Do not leave it commented out.",
+            "In <code>lab-4-2.py</code>, delete the three hazard lists (<code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code>) and their comment block.",
+            "Replace the hazard block in the travel loop (everything under <code>if function_library.check_percentage(HAZARD_CHANCE):</code>, which may be split across two lines in your code) with the block below, indented to match. <code>handle_hazard</code> now does the printing, so those lines leave the lab file. The call is split across two lines so it stays under the 79-character style limit at that depth."
           ]
+        },
+        {
+          "type": "code_block",
+          "code": "hazards_faced = hazards_faced + 1\nprint()\nname, escaped = (\n    function_library.handle_hazard(hazards))\nhazards_list.append(name)\nif escaped:\n    hazards_escaped = hazards_escaped + 1"
         },
         {
           "type": "h3",
@@ -312,9 +375,9 @@
           "variant": "bookex",
           "references": [
             {
-              "programId": "8-6",
-              "filename": "upper_lower.py",
-              "description": "Demonstrates <code>.upper()</code> and <code>.lower()</code>. Same idea here, but chained with <code>.strip()</code> on the same line."
+              "programId": "9-10",
+              "filename": "list_of_dicts.py",
+              "description": "<code>random.choice(hazards)</code> returns one dictionary from the list. <code>hazard['name']</code> retrieves a field."
             }
           ]
         },
@@ -324,11 +387,35 @@
         },
         {
           "type": "text",
-          "body": "Quick interactive test: run <code>python3 function_library.py</code> and add a DEBUG block that calls <code>clean_input</code>. Type input with mixed case and leading/trailing whitespace; confirm the result comes back uppercase and trimmed. Delete the DEBUG block before moving on."
+          "body": "This test needs hazards to fire, so pin three more things. In <code>lab-4-2.py</code>, make the hazard check always fire:"
         },
         {
           "type": "code_block",
-          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 3\nresult = clean_input('Say something: ')\nprint(f'You typed (cleaned): {result!r}')"
+          "code": "# if function_library.check_percentage(\n#         HAZARD_CHANCE):\nif True:"
+        },
+        {
+          "type": "text",
+          "body": "In <code>handle_hazard</code>, pin the hazard and the escape flip:"
+        },
+        {
+          "type": "code_block",
+          "code": "# hazard = random.choice(hazards)\nhazard = hazards[0]\n\n# flip = flip_coin()\nflip = 'HEADS'"
+        },
+        {
+          "type": "text",
+          "body": "Keep all five pins through CP5. Restore every one before you submit."
+        },
+        {
+          "type": "text",
+          "body": "Run <code>lab-4-2.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>5</code>, <code>n</code>, <code>n</code>, <code>3</code>. The trip to El Paso takes three turns, so the hazard fires twice. Your output should match this exactly:"
+        },
+        {
+          "type": "output_block",
+          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to El Paso!\nDistance: 550 miles\n\n==================================================\nTRAVELING TO EL PASO!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 550\nYou rolled a 20!\nYou travel 200 miles...\nMiles remaining: 350\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 2 ---\nMiles remaining: 350\nYou rolled a 20!\nYou travel 200 miles...\nMiles remaining: 150\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 3 ---\nMiles remaining: 150\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to El Paso!\n\nEl Paso is a dead end!\n  \"Closer to California\"\n\nReturn to San Antonio? (y/n): \n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: El Paso\nStatus: Dead End\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. El Paso\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  1. Buc-ee's appears!\n  2. Buc-ee's appears!\n\nSTATISTICS\n----------\n  Total Miles: 600\n  Total Turns: 3\n  Hazards Faced: 2\n  Hazards Escaped: 2\n  Escape Rate: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 600\nTotal Hazards: 2\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
+        },
+        {
+          "type": "text",
+          "body": "The hazard comes from <code>hazards.txt</code> now. Try <code>flip = 'TAILS'</code> or a different index into <code>hazards</code> to see the other messages."
         },
         {
           "type": "h3",
@@ -339,16 +426,16 @@
           "caption": "",
           "rows": [
             [
-              "Forgetting the <code>return</code> keyword",
-              "Without <code>return</code>, the function does the work but hands back <code>None</code>. The caller has nothing to compare against."
+              "Forgetting to unpack the tuple",
+              "Without <code>name, escaped =</code> on the left, the return value is thrown away: the hazard prints, but <code>hazards_list</code> and the escape count never update."
             ],
             [
-              "Calling <code>.strip()</code> after <code>.upper()</code>",
-              "Order does not matter here in practice (both pure operations), but the canonical order is <code>.strip().upper()</code>: strip first, then transform."
+              "Appending the whole tuple",
+              "<code>hazards_list.append((name, escaped))</code> stores pairs, and the trip report shows them as tuples. Append just <code>name</code>."
             ],
             [
-              "Returning <code>.upper()</code> on already-uppercased data",
-              "No-op cost, no correctness cost. Do not stress about double-uppering somewhere downstream."
+              "Dropping the counter or the blank line",
+              "<code>hazards_faced = hazards_faced + 1</code> and the <code>print()</code> before the banner both stay in the lab file."
             ]
           ]
         },
@@ -359,15 +446,16 @@
         {
           "type": "instructions",
           "items": [
-            "<code>function_library.py</code> has a new <code>STRING UTILITIES</code> section with <code>clean_input(prompt)</code> defined inside",
-            "Running the library directly with a DEBUG call confirms the function strips whitespace and uppercases the result",
-            "Docstring present"
+            "<code>handle_hazard(hazards)</code> in the library; <code>get_random_hazard</code> gone",
+            "No hazard lists in <code>lab-4-2.py</code>",
+            "The hazard block matches the one above",
+            "Output identical to the run above"
           ]
         }
       ]
     },
     {
-      "title": "Smarter get_valid_int",
+      "title": "Number Input That Never Crashes",
       "content": [
         {
           "type": "h3",
@@ -375,7 +463,7 @@
         },
         {
           "type": "text",
-          "body": "A rewrite of <code>get_valid_int</code> in <code>function_library.py</code>. The old version called <code>int(input(prompt))</code> and crashed with <code>ValueError</code> the moment a player typed something non-numeric. The new version uses <code>.isdigit()</code> to check the input first and reprompts with a friendly error message if the input is not a whole number."
+          "body": "A rewrite of <code>get_valid_int</code> that checks the input with <code>.isdigit()</code> before converting it. Typing <code>abc</code>, <code>3.5</code>, or nothing at all now gets a friendly error and a second chance instead of a crash."
         },
         {
           "type": "h3",
@@ -383,14 +471,14 @@
         },
         {
           "type": "text",
-          "body": "Tyler flagged this gap back in Lab 2-3, CP3, when he noted that the original <code>get_valid_int</code> handled out-of-range numbers but not non-numeric input. That gap has been quietly waiting through Modules 2 and 3 because Chapter 8 had not happened yet. Chapter 8 happens now. The Patch Note closes."
+          "body": "Tyler flagged this gap back in Lab 2.3, CP3: the original function caught out-of-range numbers but crashed on anything that was not a number. <code>.isdigit()</code> arrives with Chapter 8, so the gap closes now."
         },
         {
           "type": "mentor_quote",
           "character": "Tyler Nguyen",
           "role": "Junior Developer, Bat City Collective",
           "headshot": "Tyler-Nguyen.png",
-          "quote": "I have been waiting on this one. Back in 2-3 we agreed the function caught out-of-range numbers but would faceplant on <code>abc</code> or an empty string. The fix is <code>.isdigit()</code> from Chapter 8. Two lines of logic and the function stops crashing. The pattern works for any 'is this a whole number?' validation you ever write."
+          "quote": "I have been waiting on this one. Back in 2-3 we agreed the function caught out-of-range numbers but would faceplant on <code>abc</code> or an empty string. The fix is <code>.isdigit()</code> from Chapter 8. Two lines of logic and the function stops crashing."
         },
         {
           "type": "h3",
@@ -399,15 +487,12 @@
         {
           "type": "instructions",
           "items": [
-            "In <code>function_library.py</code>, find <code>get_valid_int</code>. The whole body gets replaced.",
-            "New body: declare <code>valid = False</code> and <code>value = 0</code> as initial state.",
-            "Open a <code>while not valid:</code> loop.",
-            "Inside the loop, get <code>user_input = input(prompt).strip()</code>. Strip handles trailing whitespace.",
-            "Check <code>if user_input.isdigit():</code>. If yes, cast to <code>int</code> and check the range. Set <code>valid = True</code> if in range, otherwise print your existing out-of-range message, unchanged: <code>f'ERROR: Enter a number between {min_val} and {max_val}.'</code>",
-            "Add an <code>elif</code> branch for negative numbers: <code>elif user_input.startswith('-') and user_input[1:].isdigit():</code> casts and range-checks the same way. The road trip game never uses negatives, but the library function should handle them in case future labs do.",
-            "Add an <code>else</code> branch that prints <code>'ERROR: Please enter a valid whole number.'</code> with no value-set. The loop reprompts.",
-            "Outside the loop, <code>return value</code>.",
-            "Update the docstring to mention that the function now validates non-numeric input gracefully."
+            "In <code>function_library.py</code>, rewrite <code>get_valid_int(prompt, min_val, max_val)</code>. Start with <code>valid = False</code> and <code>value = 0</code>, then loop <code>while not valid:</code>.",
+            "Inside the loop, read and trim: <code>user_input = input(prompt).strip()</code>.",
+            "If <code>user_input.isdigit()</code>: convert with <code>value = int(user_input)</code>. If it is in range, set <code>valid = True</code>; otherwise print your existing out-of-range message, unchanged: <code>f'ERROR: Enter a number between {min_val} and {max_val}.'</code> At this depth it runs past 79 characters, so split it the way Python allows adjacent f-strings: <code>print(f'ERROR: Enter a number between '</code> on one line and <code>f'{min_val} and {max_val}.')</code> on the next.",
+            "<code>.isdigit()</code> is False for negative numbers. Add <code>elif user_input.startswith('-') and user_input[1:].isdigit():</code> and handle it the same way: convert, then range-check.",
+            "Otherwise, <code>print('ERROR: Please enter a valid whole number.')</code>.",
+            "After the loop, <code>return value</code>. Update the docstring to say non-numeric input is rejected."
           ]
         },
         {
@@ -421,7 +506,7 @@
             {
               "programId": "8-7",
               "filename": "string_test.py",
-              "description": "Demonstrates <code>.isdigit()</code>, <code>.isalpha()</code>, and friends. <code>.isdigit()</code> is the right tool for 'is this a non-negative whole number?'"
+              "description": "Demonstrates <code>.isdigit()</code>, <code>.isalpha()</code>, and friends. <code>.isdigit()</code> answers 'is this a whole number?'"
             }
           ]
         },
@@ -431,7 +516,15 @@
         },
         {
           "type": "text",
-          "body": "Run <code>lab-4-2.py</code> and test each kind of bad input at any numeric menu: type <code>abc</code>, <code>3.5</code>, an empty Enter, and <code>99</code> (out of range). All four should produce a friendly error and reprompt. Then enter a valid choice and confirm the game continues normally."
+          "body": "Keep all five pins: <code>gate_result</code> and <code>roll</code>, plus the three hazard pins from CP3."
+        },
+        {
+          "type": "text",
+          "body": "Run <code>lab-4-2.py</code> and enter, in order: <code>abc</code>, <code>3.5</code>, a blank line (just press Enter), <code>-3</code>, <code>9</code>, <code>1</code> with one space before and after it, <code>Tester</code>, <code>x</code>, <code>7</code>, <code>1</code>, <code>n</code>, <code>3</code>. The first five answers at the main menu are all bad on purpose; so are the first two at the destination menu. Your output should match this exactly:"
+        },
+        {
+          "type": "output_block",
+          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): ERROR: Please enter a valid whole number.\nChoice (1-3): ERROR: Please enter a valid whole number.\nChoice (1-3): ERROR: Please enter a valid whole number.\nChoice (1-3): ERROR: Enter a number between 1 and 3.\nChoice (1-3): ERROR: Enter a number between 1 and 3.\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): ERROR: Please enter a valid whole number.\nChoice (1-5): ERROR: Enter a number between 1 and 5.\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 200\n  Total Turns: 1\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 200\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
         },
         {
           "type": "h3",
@@ -442,20 +535,16 @@
           "caption": "",
           "rows": [
             [
-              "Forgetting <code>.strip()</code> on the input",
-              "<code>'3 '.isdigit()</code> is <code>False</code> because of the trailing space. <code>.strip()</code> first."
+              "Forgetting <code>.strip()</code>",
+              "<code>' 1 '.isdigit()</code> is False because of the spaces. Strip first."
             ],
             [
-              "Casting before checking <code>.isdigit()</code>",
-              "If you cast unconditionally, you reintroduce the very crash you are trying to prevent."
+              "Converting before checking",
+              "Calling <code>int()</code> before <code>.isdigit()</code> brings back the very crash you are fixing."
             ],
             [
-              "Returning the wrong scope of <code>value</code>",
-              "<code>value</code> is declared OUTSIDE the loop. If you declare it inside, you cannot return it after the loop exits."
-            ],
-            [
-              "Forgetting to reset <code>valid</code> if the range check fails",
-              "<code>valid</code> only flips to <code>True</code> when both the type check and the range check pass. If you accidentally set it to True before checking the range, the loop exits with a bad value."
+              "Skipping <code>value = 0</code> before the loop",
+              "Give <code>value</code> a starting value before the loop, so it always has one when the function returns it."
             ]
           ]
         },
@@ -466,16 +555,15 @@
         {
           "type": "instructions",
           "items": [
-            "<code>get_valid_int</code> rewritten with <code>.isdigit()</code> as the first check",
-            "Typing <code>abc</code> at a numeric menu produces 'ERROR: Please enter a valid whole number.' and reprompts: no crash, no traceback",
-            "Out-of-range numeric input still produces the existing out-of-range message",
-            "Updated docstring noting the Patch Note closure"
+            "<code>get_valid_int</code> uses <code>.strip()</code> and <code>.isdigit()</code>",
+            "Two error messages: not a whole number, and out of range",
+            "Output identical to the run above"
           ]
         }
       ]
     },
     {
-      "title": "Smarter get_yes_no",
+      "title": "Clean Yes/No Answers",
       "content": [
         {
           "type": "h3",
@@ -483,7 +571,7 @@
         },
         {
           "type": "text",
-          "body": "A rewrite of <code>get_yes_no</code> on top of <code>clean_input</code>. The Lab 3.x version compared the raw input against four possibilities: <code>'y'</code>, <code>'Y'</code>, <code>'n'</code>, <code>'N'</code>. The new version calls <code>clean_input</code>, which uppercases the result, and compares against just <code>'Y'</code> and <code>'N'</code>. Same behavior, half the comparison."
+          "body": "<code>clean_input(prompt)</code>: one line that reads the input, strips surrounding spaces, and uppercases it. Then <code>get_yes_no</code> is rewritten on top of it, so <code>y</code>, <code>Y</code>, <code> y </code>, <code>n</code>, and <code>N</code> all work."
         },
         {
           "type": "h3",
@@ -491,14 +579,14 @@
         },
         {
           "type": "text",
-          "body": "This is the visible relief moment for players. Before this CP, a stray caps-lock would crash the yes/no flow. After this CP, the player can type any of <code>y</code>, <code>Y</code>, <code> y </code>, <code>Y\\t</code> and get the same result. The fix is half a line in <code>get_yes_no</code> and one new library function from CP2."
+          "body": "Every <code>if answer == 'y' or answer == 'Y':</code> you wrote in Modules 1 through 3 was working around the fact that <code>.upper()</code> had not arrived yet. It has now."
         },
         {
           "type": "mentor_quote",
           "character": "Sasha Mireles",
           "role": "Creative Director, Bat City Collective",
           "headshot": "Sasha-Mireles.png",
-          "quote": "Read the old <code>get_yes_no</code> body and the new one back-to-back. The old one looked like it was bracing for combat: four comparisons just to figure out whether the player meant yes. The new one just asks the user, normalizes the answer, and checks two values. The shorter version is also the friendlier one. Most of the time, that correlation holds."
+          "quote": "Three lines of code from a textbook can change how an entire game feels. Strip, upper, return. Players will never see this function. They will only see that the game stopped fighting them about whether to press the caps-lock key."
         },
         {
           "type": "h3",
@@ -507,12 +595,10 @@
         {
           "type": "instructions",
           "items": [
-            "In <code>function_library.py</code>, find <code>get_yes_no</code>. The body gets rewritten.",
-            "Replace the first <code>answer = input(prompt)</code> with <code>answer = clean_input(prompt)</code>.",
-            "Replace the 4-way comparison loop condition with <code>while answer != 'Y' and answer != 'N':</code>.",
-            "Replace the loop-body re-read with <code>answer = clean_input(prompt)</code>.",
-            "Replace the code at the end that returns <code>True</code> or <code>False</code> (a single <code>return</code> or an <code>if/else</code>) with <code>return answer == 'Y'</code>: one comparison instead of two.",
-            "Update the docstring to mention that the rewrite uses <code>clean_input</code>."
+            "In <code>function_library.py</code>, below your existing functions and above the test block at the bottom, add a section header comment block titled <code>STRING UTILITIES</code>.",
+            "Define <code>clean_input(prompt)</code> with a docstring. Its body is one line: <code>return input(prompt).strip().upper()</code>.",
+            "Rewrite <code>get_yes_no(prompt)</code>: <code>answer = clean_input(prompt)</code>, then <code>while answer != 'Y' and answer != 'N':</code> print your existing message, unchanged, <code>print(\"ERROR: Please enter 'y' or 'n'.\")</code>, and ask again with <code>answer = clean_input(prompt)</code>.",
+            "After the loop, <code>return answer == 'Y'</code>: one comparison instead of two. Update the docstring."
           ]
         },
         {
@@ -526,7 +612,7 @@
             {
               "programId": "8-6",
               "filename": "upper_lower.py",
-              "description": "Same <code>.upper()</code> normalization, just wrapped in <code>clean_input</code> for reuse. <code>get_yes_no</code> becomes a thin wrapper."
+              "description": "Demonstrates <code>.upper()</code> and <code>.lower()</code>. Same idea here, chained with <code>.strip()</code> on the same line."
             }
           ]
         },
@@ -536,7 +622,19 @@
         },
         {
           "type": "text",
-          "body": "Run <code>lab-4-2.py</code>. At any yes/no prompt (Play again, Return to San Antonio), try each of: <code>y</code>, <code>Y</code>, <code>n</code>, <code>N</code>, and also <code> y </code> (with surrounding spaces). All five should behave correctly. Try <code>maybe</code> to confirm the error path still fires."
+          "body": "Keep all five pins: <code>gate_result</code> and <code>roll</code>, plus the three hazard pins from CP3."
+        },
+        {
+          "type": "text",
+          "body": "Run <code>lab-4-2.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>1</code>, <code>maybe</code>, <code>y</code> with two spaces before and after it, <code>4</code>, <code>Y</code>, <code>1</code>, <code>N</code> with one space before and after it, <code>3</code>. That plays two games: the second goes to Laredo, returns to San Antonio, then heads to Corpus Christi. Your output should match this exactly:"
+        },
+        {
+          "type": "output_block",
+          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 200\n  Total Turns: 1\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): ERROR: Please enter 'y' or 'n'.\nPlay again? (y/n): \nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Laredo!\nDistance: 160 miles\n\n==================================================\nTRAVELING TO LAREDO!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 160\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Laredo!\n\nLaredo is a dead end!\n  \"Gateway to Mexico\"\n\nReturn to San Antonio? (y/n): \nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Laredo\n  3. San Antonio\n  4. Corpus Christi\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 2\nTotal Miles: 600\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
+        },
+        {
+          "type": "text",
+          "body": "<code>maybe</code> still gets the error, but the spaced <code>y</code>, the capital <code>Y</code>, and the spaced capital <code>N</code> all work. That completes the lab. Head to the Final Checklist and Run the Full Check."
         },
         {
           "type": "h3",
@@ -546,17 +644,17 @@
           "type": "table",
           "caption": "",
           "rows": [
-            [
-              "Keeping the old 4-way OR condition",
-              "If the loop still says <code>answer != 'y' and answer != 'Y' and ...</code>, the rewrite did not land. <code>clean_input</code> already uppercased the answer; uppercase compare is enough."
-            ],
             [
               "Comparing against lowercase",
-              "<code>clean_input</code> returns uppercase. Compare to <code>'Y'</code> and <code>'N'</code>, not <code>'y'</code> and <code>'n'</code>."
+              "<code>clean_input</code> returns uppercase. Compare to <code>'Y'</code> and <code>'N'</code>."
             ],
             [
-              "Accepting <code>YES</code> as yes",
-              "The function still only accepts a single-character answer. Strings like <code>YES</code> or <code>YEAH</code> are rejected. That is intentional: the contract is unchanged from Lab 3.x; only the case-handling improved."
+              "Accepting <code>YES</code>",
+              "The answer is still a single letter. <code>YES</code> is rejected on purpose; only the case handling improved."
+            ],
+            [
+              "Forgetting <code>return</code> in <code>clean_input</code>",
+              "Without it, the function hands back <code>None</code>."
             ]
           ]
         },
@@ -567,319 +665,9 @@
         {
           "type": "instructions",
           "items": [
-            "<code>get_yes_no</code> rewritten to use <code>clean_input</code>",
-            "Loop condition collapsed from a 4-way OR to a 2-way comparison",
-            "Mixed-case y/n input behaves identically",
-            "<code>YES</code> is still rejected (single-character answers only)"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "handle_hazard in the Library",
-      "content": [
-        {
-          "type": "h3",
-          "label": "what_youre_building"
-        },
-        {
-          "type": "text",
-          "body": "<code>handle_hazard(hazards)</code> in <code>function_library.py</code>: a single function that picks a random hazard from the loaded list, prints the encounter banner, flips the escape coin, prints the matching outcome message, and returns a tuple <code>(hazard_name, escaped)</code>. This consolidates what used to be 14 lines of inline code in the lab file."
-        },
-        {
-          "type": "h3",
-          "label": "why_this_matters"
-        },
-        {
-          "type": "text",
-          "body": "Module 3 had <code>get_random_hazard</code> in the library, but it was a <em>picker</em> only: it returned three values for the lab file to print and flip on. With hazards now stored as dicts, the lab no longer needs to know the internal shape. <code>handle_hazard</code> takes the whole orchestration into the library and returns just what the lab needs: the hazard name to record and whether the player escaped. <code>get_random_hazard</code> retires this CP."
-        },
-        {
-          "type": "mentor_quote",
-          "character": "Danny Cavanaugh",
-          "role": "Lead Developer, Bat City Collective",
-          "headshot": "Danny-Cavanaugh.png",
-          "quote": "When you move logic from the lab file into the library, ask what the lab actually needs back. Module 3's picker returned three strings because the lab still had to do the printing and the coin flip. Module 4's handler returns two values because the lab only needs to know what to record and whether to bump the escape counter. Smaller return shape, less knowledge required at the call site. That is a refactor."
-        },
-        {
-          "type": "h3",
-          "label": "step_by_step"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "In <code>function_library.py</code>, in the <code>HAZARD FUNCTIONS</code> section you started in CP1, add a second function: <code>handle_hazard(hazards)</code> with a full docstring.",
-            "Inside the function, pick a random hazard with <code>hazard = random.choice(hazards)</code>.",
-            "Print <code>'*** HAZARD! ***'</code> and then <code>hazard['name']</code> on the next line.",
-            "Flip the escape coin with <code>flip = flip_coin()</code>. Print the result exactly as your game already does: <code>print(f'{flip}!')</code>.",
-            "If <code>flip == 'HEADS'</code>: print <code>hazard['heads']</code> and return <code>(hazard['name'], True)</code>.",
-            "Otherwise print <code>hazard['tails']</code> and return <code>(hazard['name'], False)</code>.",
-            "Leave <code>get_random_hazard</code> in the library for now. Your game still calls it, so deleting it here would break every game where a hazard fires. It retires in CP6, once nothing calls it."
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "bookex_patterns"
-        },
-        {
-          "type": "callout",
-          "variant": "bookex",
-          "references": [
-            {
-              "programId": "9-10",
-              "filename": "list_of_dicts.py",
-              "description": "<code>random.choice(hazards)</code> returns one dictionary from the list. <code>hazard['name']</code> retrieves a field. Same pattern you used at the BookEx."
-            }
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "test_your_code"
-        },
-        {
-          "type": "text",
-          "body": "Add a DEBUG block in <code>function_library.py</code> that loads hazards and exercises <code>handle_hazard</code> five times. Confirm you see five different hazard banners and a mix of HEADS / TAILS outcomes. Delete the block before moving on."
-        },
-        {
-          "type": "code_block",
-          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 6\nhazards = load_hazards('hazards.txt')\nfor i in range(5):\n    name, escaped = handle_hazard(hazards)\n    print(f'  -> returned: {name!r}, escaped={escaped}')\n    print()"
-        },
-        {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
-        },
-        {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "Returning the whole hazard dictionary",
-              "The lab file only needs the name to append to <code>hazards_list</code>. Return just <code>hazard['name']</code>, not the dict."
-            ],
-            [
-              "Forgetting to print the outcome message",
-              "<code>handle_hazard</code> does both the heads/tails branching AND the message-print. The lab file does not handle messages anymore."
-            ],
-            [
-              "Leaving <code>get_random_hazard</code> in the library",
-              "It needs to be deleted, not just unused. CodeGrade's scope enforcer flags retired functions."
-            ]
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "what_you_should_have"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "<code>handle_hazard</code> defined in the <code>HAZARD FUNCTIONS</code> section",
-            "Five DEBUG runs produce five different hazards (with high probability) and a mix of HEADS/TAILS",
-            "<code>get_random_hazard</code> is still in the library (it retires in CP6)",
-            "Docstring describes the return tuple"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Wire It All Together",
-      "content": [
-        {
-          "type": "h3",
-          "label": "what_youre_building"
-        },
-        {
-          "type": "text",
-          "body": "The lab-file integration step. Delete the three inline hazard parallel lists from <code>lab-4-2.py</code>. Add <code>HAZARDS_FILE = 'hazards.txt'</code> to the constants block. Add a third file-load call to <code>main()</code> at startup. Replace the entire inline hazard block in the in-game travel loop with a single <code>handle_hazard</code> call. Update the hazard count display in the load banner."
-        },
-        {
-          "type": "h3",
-          "label": "why_this_matters"
-        },
-        {
-          "type": "text",
-          "body": "This is where the library work from CPs 1–5 lands in the game. The shortening of the lab file is dramatic: about 35 lines of hazard data and orchestration collapse to a single function call. The total program does the same thing it always did, with less of it living in the lab file."
-        },
-        {
-          "type": "h3",
-          "label": "step_by_step"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "In <code>lab-4-2.py</code>, add <code>HAZARDS_FILE = 'hazards.txt'</code> to the constants block alongside <code>DISTANCES_FILE</code> and <code>INFO_FILE</code>.",
-            "Delete the three module-level lists <code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code> entirely. The accompanying comment block goes with them.",
-            "In <code>main()</code>'s data-loading block, add <code>hazards = function_library.load_hazards(HAZARDS_FILE)</code> after the two existing load calls. Add a print line: <code>print(f'Loaded {len(hazards)} possible hazards.')</code>.",
-            "Find the hazard block in the in-game loop: everything under <code>if function_library.check_percentage(HAZARD_CHANCE):</code>. Replace it with the block below so yours matches exactly. <code>handle_hazard</code> now prints the banner, the hazard name, the flip, and the message, so those lines leave the lab file. Two lines stay: <code>hazards_faced = hazards_faced + 1</code> and the <code>print()</code> before the banner. Drop either one and the trip report shows the wrong count or a missing blank line",
-            "Now that nothing calls it, delete <code>get_random_hazard</code> from <code>function_library.py</code> entirely. Do not leave it commented out.",
-            "Run the program and play a full game. Confirm hazards still fire at roughly 30% per turn, that the trip report's HAZARDS section shows the hazard names correctly, and that Hazards Faced is never smaller than Hazards Escaped."
-          ]
-        },
-        {
-          "type": "code_block",
-          "code": "if function_library.check_percentage(HAZARD_CHANCE):\n    hazards_faced = hazards_faced + 1\n    print()\n    name, escaped = function_library.handle_hazard(hazards)\n    hazards_list.append(name)\n    if escaped:\n        hazards_escaped = hazards_escaped + 1\n"
-        },
-        {
-          "type": "h3",
-          "label": "bookex_patterns"
-        },
-        {
-          "type": "callout",
-          "variant": "bookex",
-          "references": [
-            {
-              "programId": "9-10",
-              "filename": "list_of_dicts.py",
-              "description": "The lab file does not need to know that hazards are a list of dicts anymore. <code>handle_hazard</code> hides that detail. The lab file just unpacks the returned tuple."
-            }
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "test_your_code"
-        },
-        {
-          "type": "text",
-          "body": "Run a full game. Test each path: beach win, dead-end at Laredo with return-no, and save-and-quit at Austin followed by a load. Confirm hazards fire, the trip report shows them by name (not as dict literals), and the saved file still works."
-        },
-        {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
-        },
-        {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "Forgetting to unpack the tuple",
-              "Writing <code>function_library.handle_hazard(hazards)</code> without <code>name, escaped =</code> on the left throws the return value away. The hazard prints work, but <code>hazards_list</code> and the escape counter never update."
-            ],
-            [
-              "Appending the whole tuple to <code>hazards_list</code>",
-              "<code>hazards_list.append((name, escaped))</code> stores 2-tuples; the trip report then displays them as <code>('Buc-ee\\'s appears!', True)</code>. Append just <code>name</code>."
-            ],
-            [
-              "Putting <code>hazards = load_hazards(...)</code> inside the main-menu loop",
-              "Load once, before the loop. Loading inside the loop re-reads the file every time the player returns to the main menu."
-            ],
-            [
-              "Leaving the old hazard parallel-list comment block in",
-              "Delete the lists AND the explanatory comment. The whole block is gone this unit."
-            ]
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "what_you_should_have"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "<code>HAZARDS_FILE</code> constant declared alongside the other file constants",
-            "All three inline hazard lists deleted from <code>lab-4-2.py</code>",
-            "<code>main()</code> loads hazards.txt at startup and reports the count",
-            "In-game hazard block is one call plus three follow-up lines (append, escape check, counter)",
-            "Trip report's HAZARDS section shows clean hazard names, not dict literals"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Updated Trip Report",
-      "content": [
-        {
-          "type": "h3",
-          "label": "what_youre_building"
-        },
-        {
-          "type": "text",
-          "body": "Final verification step. <code>save_trip_report</code> in <code>lab-4-2.py</code> should not need any changes: you fixed the hazard plumbing in CP6 by appending just the name string to <code>hazards_list</code>, which is what the trip report has always wanted. This checkpoint runs end-to-end and confirms that the on-screen report and <code>trip_report.txt</code> both produce the right shape with the new data flow."
-        },
-        {
-          "type": "h3",
-          "label": "why_this_matters"
-        },
-        {
-          "type": "text",
-          "body": "Module 3 ended with a polished trip report file. Module 4.1 carried that report forward unchanged. The risk this unit is that the hazard data-shape switch broke the report in a subtle way (dict literals showing up instead of names, sort order scrambled, and so on). T-Bone's QA pass here catches anything CP6 missed."
-        },
-        {
-          "type": "mentor_quote",
-          "character": "Terrence \"T-Bone\" Booker",
-          "role": "QA Lead, Bat City Collective",
-          "headshot": "Terrence-Booker.png",
-          "quote": "Look at the trip report after a game with several hazards. Each line under HAZARDS ENCOUNTERED should look like <code>1. Buc-ee's appears!</code>, not <code>1. {'name': \"Buc-ee's appears!\", 'heads': ..., 'tails': ...}</code>. If the dict literal version shows up, it means CP6 appended the dict instead of just the name. Go fix that one line before submitting."
-        },
-        {
-          "type": "h3",
-          "label": "step_by_step"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "Run the program. Play a complete game to the beach via Corpus Christi (choice 1 from San Antonio). Let the D20 mechanic carry you forward; you should hit a few hazards along the way.",
-            "Read the on-screen trip report. Verify the HAZARDS ENCOUNTERED section shows hazards by name only (e.g., <code>1. Buc-ee's appears!</code>), alphabetically sorted.",
-            "Open <code>trip_report.txt</code> from the same folder. The file keeps its Lab 3.3 layout (its own header, the arrow-separated ROUTE line, and bulleted hazards), so it won't look like the screen. Verify its HAZARDS section lists the same names in the same alphabetical order.",
-            "Play a quick second game that ends in a dead end. Confirm the trip report still writes correctly with the 'Dead End' status.",
-            "Save-and-quit at a non-beach city. Confirm <code>trip_report.txt</code> is NOT overwritten on save-and-quit (the file from the previous game should still be there)."
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "bookex_patterns"
-        },
-        {
-          "type": "callout",
-          "variant": "bookex",
-          "references": [
-            {
-              "programId": "7-16",
-              "filename": "sort_grades.py",
-              "description": "<code>.copy().sort()</code> on the hazard names list, same pattern as Lab 3.3. The names are strings (because CP6 appended just the name), so sorting works correctly."
-            }
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "test_your_code"
-        },
-        {
-          "type": "text",
-          "body": "Confirm both outputs (screen + file) are clean. Mid-game inputs you can test: <code>y</code>, <code>Y</code>, <code> y </code>, <code>n</code>, <code>N</code> all behave the same; <code>abc</code> at a numeric prompt no longer crashes."
-        },
-        {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
-        },
-        {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "Trip report shows dict literals like <code>{'name': 'Buc-ee\\'s appears!', ...}</code>",
-              "CP6 appended the wrong thing. Find the <code>hazards_list.append(...)</code> call and confirm it appends <code>name</code>, not the full hazard tuple or dict."
-            ],
-            [
-              "Sort order looks wrong",
-              "Hazards are sorted alphabetically by name. Apostrophes and exclamation points sort before letters in ASCII, so <code>!</code>-laden names like <code>Buc-ee's appears!</code> may sort earlier than expected. That is correct Python behavior, not a bug."
-            ],
-            [
-              "<code>trip_report.txt</code> contains last unit's content",
-              "Make sure CP6 did not accidentally break the <code>save_trip_report</code> call. If the file write is not happening, the file will hold whatever was there from a previous lab."
-            ]
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "what_you_should_have"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "On-screen trip report shows hazards by name, alphabetically",
-            "<code>trip_report.txt</code> lists the same hazards, in the same order, as the screen",
-            "Dead-end status writes the correct status string",
-            "Save-and-quit does not overwrite the trip report from a prior completed game"
+            "<code>clean_input(prompt)</code> in a <code>STRING UTILITIES</code> section",
+            "<code>get_yes_no</code> calls <code>clean_input</code> and compares to <code>'Y'</code> and <code>'N'</code>",
+            "Output identical to the run above"
           ]
         }
       ]
@@ -887,12 +675,13 @@
   ],
   "finalChecklist": {
     "beforeYouSubmit": [
+      "<strong>After the Full Check, restore every pinned line</strong>: <code>gate_result</code> and <code>roll</code> and the hazard check in <code>lab-4-2.py</code>, and <code>hazard</code> and <code>flip</code> in <code>handle_hazard</code>. CodeGrade sets its own values and tests every outcome, so a pinned line fails most of its tests.",
       "Submitting <strong>two files</strong>: <code>lab-4-2.py</code> and <code>function_library.py</code>",
       "<code>function_library.py</code> gained <strong>three</strong> functions (<code>clean_input</code>, <code>load_hazards</code>, <code>handle_hazard</code>), rewrote <strong>two</strong> (<code>get_valid_int</code>, <code>get_yes_no</code>), and retired <strong>one</strong> (<code>get_random_hazard</code>)",
       "<code>lab-4-2.py</code> defines <strong>six</strong> module-level constants including the new <code>HAZARDS_FILE</code>",
       "The three inline hazard parallel lists from Lab 4.1 are deleted from <code>lab-4-2.py</code>, gone, not commented out",
       "<code>main()</code> loads three data files at startup; the load banner reports 10 cities, 10 info records, and 8 hazards",
-      "Hazard block in the in-game loop is one call, <code>name, escaped = function_library.handle_hazard(hazards)</code>, plus the counter, the append, and the escape check",
+      "Hazard block in the in-game loop is one call, split over two lines as in CP3: <code>name, escaped = (</code> / <code>function_library.handle_hazard(hazards))</code>, plus the counter, the append, and the escape check",
       "Mixed-case y/n input works at every yes-or-no prompt: <code>y</code> and <code>Y</code> both behave the same way, as do <code>n</code> and <code>N</code>",
       "Typing <code>abc</code> at a numeric prompt no longer crashes the program",
       "Top-of-file comment block present on both files; docstrings on every function"
@@ -916,410 +705,409 @@
       "Do not keep the old <code>HAZARD_NAMES</code> / <code>HAZARD_HEADS_MSGS</code> / <code>HAZARD_TAILS_MSGS</code> lists in <code>lab-4-2.py</code>, even commented out. They are deleted entirely this unit.",
       "Do not leave the old call <code>function_library.get_random_hazard(...)</code> anywhere in either file."
     ],
-    "saveYourCode": "Save <code>lab-4-2.py</code> as <code>lab-4-2-backup.py</code> before starting Lab 4.3. Lab 4.3 starts by copying 4.2 forward.",
+    "saveYourCode": "Save <code>lab-4-2.py</code> as <code>lab-4-2-backup.py</code>, after you restore your pins, before starting Lab 4.3. Lab 4.3 starts by copying 4.2 forward. The backup is not part of your submission: CodeGrade needs only the lab file and <code>function_library.py</code>.",
     "messageDigest": {
-      "intro": "Use these <em>exact</em> prompts and messages. Spacing, capitalization, and punctuation matter for grading. Anything in <code>{braces}</code> is a variable of yours; everything outside the braces must match character for character. The shaded box shows the full string, so a prompt that ends in a space looks like it ends in a space.",
+      "intro": "Use these <em>exact</em> prompts and messages. Spacing, capitalization, and punctuation matter for grading. Anything in <code>{braces}</code> is a variable of yours; everything outside the braces must match character for character. The shaded box shows the full string, so a prompt that ends in a space looks like it ends in a space. Lines printed from inside <code>function_library.py</code> aren't listed here: the hazard lines are given in CP3, the input-error messages in CP4 and CP5, and the destination menu is unchanged from Lab 4.1.",
       "rows": [
         {
-          "purpose": "",
+          "purpose": "Banner and report divider",
           "text": "==================================================",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Game title",
           "text": "DEEP IN THE HEART: A LONE STAR JOURNEY",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Startup: loading data",
           "text": "Loading city data...",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Startup: route count",
           "text": "Loaded {len(distances)} cities with travel routes.",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Startup: city info count",
           "text": "Loaded {len(city_info)} city info records.",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Startup: hazard count",
           "text": "Loaded {len(hazards)} possible hazards.",
-          "shownIn": "CP6"
+          "shownIn": "CP2"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu title",
           "text": "MAIN MENU",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu divider",
           "text": "--------------------",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu option",
           "text": "1. New Game",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu option",
           "text": "2. Load Saved Game",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu option",
           "text": "3. Quit",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu prompt",
           "text": "Choice (1-3): ",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Quit from the main menu",
           "text": "Thanks for playing!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Load failed (missing or damaged save)",
           "text": "No usable save file found. Starting new game.",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Load succeeded",
           "text": "Welcome back, {player_name}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Load: where the trip resumes",
           "text": "Resuming from {current_city}.",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Miles so far this game line",
+          "purpose": "Load: miles so far",
           "text": "Miles so far this game: {total_miles}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Load: games so far",
           "text": "Games completed this session: {games_played}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "New game: name prompt",
           "text": "What is your name, traveler? ",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "New game: welcome",
           "text": "Welcome, {player_name}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "New game: the goal",
           "text": "You are in San Antonio. Your goal: reach the beach!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Beach cities line",
+          "purpose": "New game: beach cities",
           "text": "Beach cities: Corpus Christi and Galveston.",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "You are in line",
+          "purpose": "Location at each stop",
           "text": "You are in: {current_city}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Show current location with tagline from city_info",
+          "purpose": "Location tagline (two spaces, in quotes)",
           "text": "  \"{info[\"tagline\"]}\"",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Display destinations using the new dict-shape helper 1",
+          "purpose": "Destination menu prompt",
           "text": "Choice (1-{num_choices}): ",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Display destinations using the new dict-shape helper 2",
-          "text": "{num_choices}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "",
+          "purpose": "Destination gate: coin flip",
           "text": "Flipping to see if Texas cooperates...",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Result line",
+          "purpose": "Destination gate: result",
           "text": "Result: {gate_result}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Texas says line",
+          "purpose": "Destination gate: HEADS",
           "text": "Texas says: \"Y'all come on through!\"",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Destination gate: TAILS",
           "text": "Texas has other plans for you...",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Destination confirmed",
           "text": "You're headed to {destination}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Distance line",
+          "purpose": "Leg distance",
           "text": "Distance: {distance} miles",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Travel banner (city in capitals)",
           "text": "TRAVELING TO {destination.upper()}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 1",
+          "purpose": "Turn header",
           "text": "--- Turn {leg_turns} ---",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Miles remaining line",
+          "purpose": "Turn: miles left",
           "text": "Miles remaining: {miles_remaining}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 2",
+          "purpose": "Turn: the roll",
           "text": "You rolled a {roll}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 3",
+          "purpose": "Turn: miles moved",
           "text": "You travel {miles_this_turn} miles...",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 4",
+          "purpose": "Arrival",
           "text": "You made it to {destination}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 1",
+          "purpose": "Beach arrival",
           "text": "CONGRATULATIONS! YOU REACHED THE BEACH!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 2",
+          "purpose": "Dead-end arrival",
           "text": "{current_city} is a dead end!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 3",
+          "purpose": "Dead-end tagline (two spaces, in quotes)",
           "text": "  \"{city_info[current_city][\"tagline\"]}\"",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 4",
+          "purpose": "Dead-end return prompt",
           "text": "Return to San Antonio? (y/n): ",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 5",
+          "purpose": "Stop options title",
           "text": "OPTIONS:",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 6",
+          "purpose": "Stop option",
           "text": "  1. Continue journey",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 7",
+          "purpose": "Stop option",
           "text": "  2. Save and quit",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 8",
+          "purpose": "Stop option",
           "text": "  3. Quit without saving",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 1",
+          "purpose": "Trip report title",
           "text": "FINAL TRIP REPORT",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Driver line",
+          "purpose": "Trip report: driver",
           "text": "Driver: {player_name}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Final City line",
+          "purpose": "Trip report: final city",
           "text": "Final City: {current_city}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Status line",
+          "purpose": "Trip report: status",
           "text": "Status: {status}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Unique cities visited line",
+          "purpose": "Trip report: route title",
+          "text": "YOUR ROUTE",
+          "shownIn": "CP1+"
+        },
+        {
+          "purpose": "Trip report: unique cities",
           "text": "Unique cities visited: {len(unique_cities)}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 2",
+          "purpose": "Trip report: hazards title",
           "text": "HAZARDS ENCOUNTERED (A-Z)",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 3",
+          "purpose": "Trip report: no hazards",
           "text": "  None - Lucky traveler!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 4",
+          "purpose": "Trip report: statistics title",
           "text": "STATISTICS",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 5",
+          "purpose": "Statistics line",
           "text": "  Total Miles: {total_miles}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 6",
+          "purpose": "Statistics line",
           "text": "  Total Turns: {total_turns}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 7",
+          "purpose": "Statistics line",
           "text": "  Hazards Faced: {total_hazards}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 8",
+          "purpose": "Statistics line",
           "text": "  Hazards Escaped: {total_escaped}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 9",
+          "purpose": "Statistics: escape rate (only when hazards were faced)",
           "text": "  Escape Rate: {escape_rate_str}%",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Write the trip report to disk (always)",
+          "purpose": "Report file written",
           "text": "Trip report saved to trip_report.txt.",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Update session accumulators",
+          "purpose": "Play-again prompt",
           "text": "Play again? (y/n): ",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "AFTER PLAY-AGAIN LOOP 1",
+          "purpose": "Session summary title",
           "text": "SESSION STATISTICS",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Games Played line",
+          "purpose": "Session summary line",
           "text": "Games Played: {games_played}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Total Miles line",
+          "purpose": "Session summary line",
           "text": "Total Miles: {session_miles}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Total Hazards line",
+          "purpose": "Session summary line",
           "text": "Total Hazards: {session_hazards}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "AFTER PLAY-AGAIN LOOP 2",
+          "purpose": "Goodbye",
           "text": "Thanks for playing, {player_name}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "AFTER PLAY-AGAIN LOOP 3",
+          "purpose": "Credits line",
           "text": "An All My Eggses Live in Texas Production",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "<code>current_city</code>",
+          "purpose": "Starting city for every new game",
           "text": "San Antonio",
-          "shownIn": "CP4+"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "<code>status</code>, determine status string 1",
+          "purpose": "Status: reached the beach",
           "text": "BEACH WINNER!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "<code>status</code>, determine status string 2",
+          "purpose": "Status: stopped at a dead end",
           "text": "Dead End",
-          "shownIn": "CP7"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "<code>status</code>, determine status string 3",
+          "purpose": "Status: quit without saving",
           "text": "Quit without saving",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "<code>status</code>, determine status string 4",
+          "purpose": "Status: any other ending",
           "text": "Trip Incomplete",
-          "shownIn": ""
+          "shownIn": "CP1+"
         }
       ]
     },
     "finalCheck": {
-      "expectedOutput": "==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 1!\nYou travel 10 miles...\nMiles remaining: 140\n\n--- Turn 2 ---\nMiles remaining: 140\nYou rolled a 9!\nYou travel 90 miles...\nMiles remaining: 50\n\n--- Turn 3 ---\nMiles remaining: 50\nYou rolled a 8!\nYou travel 80 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 180\n  Total Turns: 3\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 180\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!",
-      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>1</code> (New Game) &rarr; <code>Tester</code> &rarr; <code>1</code> (Corpus Christi) &rarr; <code>n</code> (no replay) &rarr; <code>3</code> (Quit) with the deterministic CodeGrade fixture (<code>SEQ_1_20=1,9,8</code>, <code>SEQ_1_100=99,99,99</code>). With real random, your rolls and hazard names will differ, but the structure must match: main menu &rarr; new game &rarr; travel with file-loaded hazards &rarr; sorted hazard display &rarr; trip report saved &rarr; session stats &rarr; main menu &rarr; quit. This transcript shows <strong>only what your program prints</strong>. The values typed in answer to each prompt are not shown, which is why some lines stop at the prompt with nothing after them. When you run it yourself you will see your own answers echoed on those lines. That difference is expected and is not a mismatch.",
+      "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 200\n  Total Turns: 1\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 200\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!",
+      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>1</code> (New Game) &rarr; <code>Tester</code> &rarr; <code>1</code> (Corpus Christi) &rarr; <code>n</code> (no replay) &rarr; <code>3</code> (Quit) with the CodeGrade settings <code>LARGENUM=20</code> and <code>SMALLNUM=1</code>. You don't set those: they're how CodeGrade fixes its own dice and coins, and they give the same results as your pins. Run it with every pin from the checkpoints in place and match it line for line, then restore every pinned line before you submit.",
       "ifSomethingBreaks": [
         {
           "symptom": "<code>FileNotFoundError: hazards.txt</code>",
-          "redirect": "Check CP6 (Wire It All Together). The data file must be in the same folder as <code>lab-4-2.py</code>. CodeGrade provides it as a fixture. If the files ARE in the folder and it still fails, you almost certainly opened the FILE in VS Code instead of the FOLDER. Python then looks for the data files wherever VS Code was launched from, not next to your code. Use <strong>File &rarr; Open Folder</strong> and pick the lab folder itself; you should see the <code>.txt</code> files listed in the sidebar. Also keep them as plain <code>.txt</code> data files. Do not re-save them as <code>.py</code>."
+          "redirect": "Check CP2 (Hazards From a File). The data file must be in the same folder as <code>lab-4-2.py</code>. CodeGrade provides it as a fixture. If the files ARE in the folder and it still fails, you almost certainly opened the FILE in VS Code instead of the FOLDER. Python then looks for the data files wherever VS Code was launched from, not next to your code. Use <strong>File &rarr; Open Folder</strong> and pick the lab folder itself; you should see the <code>.txt</code> files listed in the sidebar. Also keep them as plain <code>.txt</code> data files. Do not re-save them as <code>.py</code>."
         },
         {
           "symptom": "<code>AttributeError: module 'function_library' has no attribute 'get_random_hazard'</code>",
-          "redirect": "Check CP6. The hazard block in the in-game loop still calls the old function. Replace it with the new <code>handle_hazard</code> call."
+          "redirect": "Check CP3. The hazard block in the in-game loop still calls the old function. Replace it with the new <code>handle_hazard</code> call."
         },
         {
           "symptom": "<code>ValueError: invalid literal for int()</code> at a menu prompt",
-          "redirect": "Check CP3 (Smarter get_valid_int). The .isdigit() rewrite did not land in the library, or the wrong version of <code>function_library.py</code> is being used."
+          "redirect": "Check CP4 (Number Input That Never Crashes). The .isdigit() rewrite did not land in the library, or the wrong version of <code>function_library.py</code> is being used."
         },
         {
           "symptom": "Yes/no prompt accepts <code>y</code> but rejects <code>Y</code> (or vice versa)",
-          "redirect": "Check CP4 (Smarter get_yes_no). The rewrite uses <code>clean_input</code>, which uppercases its input, so the comparison should be against <code>'Y'</code> and <code>'N'</code> only."
+          "redirect": "Check CP5 (Clean Yes/No Answers). The rewrite uses <code>clean_input</code>, which uppercases its input, so the comparison should be against <code>'Y'</code> and <code>'N'</code> only."
         },
         {
-          "symptom": "Trip report's HAZARDS section shows dict-shaped strings like <code>{'name': 'Buc-ee\\'s appears!', ...}</code>",
-          "redirect": "Check CP6. The code is appending the entire hazard dictionary instead of just the <code>name</code> field. <code>handle_hazard</code> returns a tuple <code>(name, escaped)</code>; unpack it and append <code>name</code> only."
+          "symptom": "Trip report's HAZARDS section shows pairs like <code>(&quot;Buc-ee's appears!&quot;, True)</code>",
+          "redirect": "Check CP3. The code appends the whole <code>(name, escaped)</code> pair. Append just <code>name</code>."
         },
         {
           "symptom": "Hazard prints fire but the trip report shows 0 hazards faced",
-          "redirect": "Check CP6. The counter increment moved into the wrong block, or the <code>escaped</code> return value is being checked for the wrong outcome."
+          "redirect": "Check CP3. The <code>hazards_faced = hazards_faced + 1</code> line is missing from the hazard block, or it sits outside the <code>if</code> where it never runs. (If <code>Hazards Escaped</code> is the wrong number instead, check the <code>if escaped:</code> line.)"
         }
       ]
     }
   },
   "needHelp": {
     "ifYouGetStuck": [
-      "Re-read Programs 8–6 (<code>.upper()</code>) and 8–7 (<code>.isdigit()</code>) before you start CP2 and CP3. These two BookEx programs are exactly the pattern you need",
-      "Test the library functions in isolation before wiring them into the lab. Run <code>python3 function_library.py</code> after each library checkpoint. If <code>clean_input</code> or <code>handle_hazard</code> is broken, you want to know that before you start hooking them into 200 lines of game code",
-      "If your hazards never fire, check that <code>HAZARDS_FILE</code> is in the same folder as <code>lab-4-2.py</code> and the file has 8 lines",
-      "If your in-game loop crashes on the first hazard with a <code>TypeError</code>, double-check the unpacking: <code>name, escaped = function_library.handle_hazard(hazards)</code>. Forgetting the unpacking is a common slip",
-      "Post in <code>#labs</code> on Discord with your specific error message. Include the line number, not a screenshot of the whole file"
+      "Re-read Programs 8–6 (<code>.upper()</code>) and 8–7 (<code>.isdigit()</code>) before you start CP4 and CP5. These two BookEx programs are exactly the pattern you need",
+      "If you get <code>FileNotFoundError</code> for <code>hazards.txt</code> at startup, the file is not in the same folder as <code>lab-4-2.py</code>",
+      "If hazards print but the trip report shows none, check the unpacking: <code>name, escaped = (</code> / <code>function_library.handle_hazard(hazards))</code>, the two-line form from CP3. Without <code>name, escaped =</code>, the return value is thrown away",
+      "Post in <code>#module-4-help</code> on Discord with your specific error message. Include the line number, not a screenshot of the whole file"
     ],
     "officeHours": "Zoom Tuesdays 6 PM: <a href='https://utsa.zoom.us/j/96542097913'>https://utsa.zoom.us/j/96542097913</a>. Book a 1-on-1 with Prof. Newsom: <a href='https://calendly.com/john-newsom-utsa'>calendly.com/john-newsom-utsa</a>."
   }

@@ -29,7 +29,7 @@
     "textbookReference": "Chapter 8 covers the string methods. Programs 8–1 through 8–14 demonstrate <code>.strip()</code>, <code>.split()</code>, and string traversal. Chapter 9 covers dictionaries. Programs 9–1 through 9–7 cover dictionary creation, access, the <code>in</code> operator with dictionaries, and looping through keys.",
     "programRequirements": [
       "Submit <code>lab-4-1.py</code> and <code>function_library.py</code>",
-      "Top-of-file comment block on both files: Name, abc123, Section, Description",
+      "Top-of-file comment block on both files, carried forward from the previous lab, with the lab file's title and description updated",
       "Docstring on every function",
       "Load both data files at startup in <code>main()</code> using the new library functions",
       "Three-loop architecture preserved: main menu, play-again, in-game (carried forward from Lab 3.3)",
@@ -77,7 +77,12 @@
       },
       {
         "file": "function_library.py",
-        "format": "Your shared function library, carried over from Module 3 and extended this unit",
+        "format": "Empty starter in your lab folder. In CP1 you replace it with your Lab 3.3 copy, then extend it this unit",
+        "submitted": true
+      },
+      {
+        "file": "lab-4-1.py",
+        "format": "Empty starter in your lab folder. In CP1 you replace it with a copy of your <code>lab-3-3.py</code>",
         "submitted": true
       }
     ]
@@ -86,47 +91,123 @@
     "totalTime": "90–120 Minutes",
     "rows": [
       {
-        "checkpoint": "CP1: Load City Distances",
-        "time": "15 min",
-        "task": "Add load_city_distances to function_library.py"
-      },
-      {
-        "checkpoint": "CP2: Load City Info",
+        "checkpoint": "CP1: Carry Lab 3.3 Forward",
         "time": "10 min",
-        "task": "Add load_city_info using the same parsing pattern"
+        "task": "Copy 3.3 forward, pin the dice and coin, confirm an identical run"
       },
       {
-        "checkpoint": "CP3: Graph Helpers",
-        "time": "20 min",
-        "task": "Refactor display_destinations / get_destination / get_redirect to dict shape; add is_win_city and is_dead_end"
-      },
-      {
-        "checkpoint": "CP4: Lab Skeleton + Main Menu",
+        "checkpoint": "CP2: Load City Distances",
         "time": "15 min",
-        "task": "Start lab-4-1.py, load data files in main(), keep the main-menu loop"
+        "task": "load_city_distances in the library; load and count at startup"
       },
       {
-        "checkpoint": "CP5: Coin Gate + D20 Travel",
-        "time": "20 min",
-        "task": "In-game loop with coin-flip Destination Gate, D20 movement, dead-end handling"
-      },
-      {
-        "checkpoint": "CP6: Trip Report + Session Totals",
+        "checkpoint": "CP3: Load City Info",
         "time": "15 min",
-        "task": "Trip report on screen plus trip_report.txt write, session accumulators"
+        "task": "load_city_info in the library; location and tagline at every stop"
       },
       {
-        "checkpoint": "Final Check & Submit",
+        "checkpoint": "CP4: Menus From the Dictionary",
+        "time": "25 min",
+        "task": "Rewrite the three destination helpers; delete the 3.3 lists, constants, and Austin branch"
+      },
+      {
+        "checkpoint": "CP5: City Types and Dead Ends",
+        "time": "15 min",
+        "task": "is_win_city and is_dead_end; dead-end prompt"
+      },
+      {
+        "checkpoint": "CP6: Dead End Status",
         "time": "10 min",
-        "task": "Full play-through, then upload both files to CodeGrade"
+        "task": "hit_dead_end flag and the Dead End status"
+      },
+      {
+        "checkpoint": "Full Check",
+        "time": "10 min",
+        "task": "Run the Final Check with your pins in place, then restore them and submit"
       }
     ]
   },
   "beforeYouBegin": {
     "intro": "Here is what your finished program looks like. <code>[NEW]</code> tags show what gets added this unit. <code>[REPLACED]</code> tags show what changes shape but keeps the same function name. <code>[KEEP]</code> tags show what carries forward from Lab 3.3 untouched.",
-    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nget_valid_int(), get_yes_no()                               [KEEP from 2.3]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\nget_random_hazard(names, heads_msgs, tails_msgs)            [KEEP from 3.3]\n\nload_city_distances(filename) -> nested dict                [NEW-CP1]\nload_city_info(filename) -> dict of dicts                   [NEW-CP2]\ndisplay_destinations(city, distances)                       [REPLACED-CP3] was parallel lists\nget_destination(city, distances, choice)                    [REPLACED-CP3] was parallel lists\nget_redirect(city, distances, avoid)                        [REPLACED-CP3] was parallel lists\nis_win_city(city, city_info)                                [NEW-CP3]\nis_dead_end(city, city_info)                                [NEW-CP3]\n\n# ---- IN lab-4-1.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE = 'city_distances.txt'                       [NEW-CP4]\nINFO_FILE      = 'city_info.txt'                            [NEW-CP4]\nREPORT_FILE    = 'trip_report.txt'                          [KEEP from 3.3]\nMILES_MULTIPLIER = 10                                       [KEEP from 3.3]\nHAZARD_CHANCE    = 30                                       [KEEP from 3.3]\n\n# ---- HAZARD DATA (still inline; moves to file in Lab 4.2) ----\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [KEEP from 3.3]\n\n# ---- LAB-LOCAL HELPER ----\nsave_trip_report(filename, ...)                             [KEEP from 3.3]\n\n# ---- main() ----\nLoad data files: distances = load_city_distances(...)       [NEW-CP4]\n                 city_info = load_city_info(...)            [NEW-CP4]\n\nMAIN MENU LOOP                                              [KEEP from 3.3]\n  1. New Game  2. Load Saved Game  3. Quit\n  │\n  │   PLAY-AGAIN LOOP                                       [KEEP from 3.3]\n  │   │\n  │   │   IN-GAME LOOP                                       [KEEP from 3.3]\n  │   │   │─ Show current city + tagline from city_info     [NEW-CP5]\n  │   │   │─ display_destinations(current_city, distances)  [REPLACED-CP5]\n  │   │   │─ Coin-flip Destination Gate                     [KEEP from 3.3]\n  │   │   │─ D20 travel loop with hazard check              [KEEP from 3.3]\n  │   │   │─ is_win_city / is_dead_end branching            [NEW-CP5]\n  │   │   │─ Continue / Save & quit / Quit                  [KEEP from 3.3]\n  │   │\n  │   │─ Trip report on screen + trip_report.txt              [KEEP-CP6 from 3.3]\n  │   │─ Session accumulators update                          [KEEP-CP6 from 3.3]\n  │   │─ Play again? (y/n)                                    [KEEP from 3.3]\n  │\n  │─ Session statistics block                                  [KEEP from 3.3]\n  │─ Back to main menu\n"
+    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nget_valid_int(), get_yes_no()                               [KEEP from 2.3]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\nget_random_hazard(names, heads_msgs, tails_msgs)            [KEEP from 3.3]\n\nload_city_distances(filename) -> nested dict                [NEW-CP2]\nload_city_info(filename) -> dict of dicts                   [NEW-CP3]\ndisplay_destinations(city, distances)                       [REPLACED-CP4] was parallel lists\nget_destination(city, distances, choice)                    [REPLACED-CP4] was parallel lists\nget_redirect(city, distances, avoid)                        [REPLACED-CP4] was parallel lists\nis_win_city(city, city_info)                                [NEW-CP5]\nis_dead_end(city, city_info)                                [NEW-CP5]\n\n# ---- IN lab-4-1.py (starts as a copy of lab-3-3.py in CP1) ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE = 'city_distances.txt'                       [NEW-CP2]\nINFO_FILE      = 'city_info.txt'                            [NEW-CP3]\nREPORT_FILE    = 'trip_report.txt'                          [KEEP from 3.3]\nMILES_MULTIPLIER = 10                                       [KEEP from 3.3]\nHAZARD_CHANCE    = 30                                       [KEEP from 3.3]\nSAT_TO_..., HOU_TO_... route constants                      [DELETED-CP4]\nSA_, HOU_, AUS_ parallel destination lists                  [DELETED-CP4]\n\n# ---- HAZARD DATA (still inline; moves to a file in Lab 4.2) ----\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [KEEP from 3.3]\n\n# ---- LAB-LOCAL HELPERS ----\nget_city_data(city)                                         [DELETED-CP4]\nsave_trip_report(filename, ...)                             [KEEP from 3.3]\n\n# ---- main() ----\nWelcome banner                                              [KEEP from 3.3]\nLoad data: distances = load_city_distances(...)             [NEW-CP2]\n           city_info = load_city_info(...)                  [NEW-CP3]\n\nMAIN MENU LOOP                                              [KEEP from 3.3]\n  New Game welcome block + Beach cities line                [CHANGED-CP5]\n  │\n  │   PLAY-AGAIN LOOP                                       [KEEP from 3.3]\n  │   │─ hit_dead_end = False with the other flags          [NEW-CP6]\n  │   │\n  │   │   IN-GAME LOOP                                      [KEEP from 3.3]\n  │   │   │─ You are in: city + tagline                     [NEW-CP3]\n  │   │   │─ display_destinations(current_city, distances)  [REPLACED-CP4]\n  │   │   │─ Coin-flip Destination Gate                     [KEEP from 3.3]\n  │   │   │─ D20 travel loop with hazard check              [KEEP from 3.3]\n  │   │   │─ is_win_city / is_dead_end branching            [NEW-CP5]\n  │   │   │─ Continue / Save & quit / Quit                  [KEEP from 3.3]\n  │   │\n  │   │─ Status chain: Dead End                             [NEW-CP6]\n  │   │─ Trip report on screen + trip_report.txt            [KEEP from 3.3]\n  │   │─ Play again? (y/n)                                  [KEEP from 3.3]\n  │\n  │─ Session statistics block                                [KEEP from 3.3]\n"
   },
   "checkpoints": [
+    {
+      "title": "Carry Lab 3.3 Forward",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "A starting point you can trust. <code>lab-4-1.py</code> begins as an exact copy of your finished Lab 3.3 game, with your Lab 3.3 <code>function_library.py</code> beside it. Nothing about the game changes in this checkpoint. Every checkpoint after this one changes one thing and shows you exactly what that change should look like on screen."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "A refactor is only safe when you can prove the program still works after each step. If CP1 runs exactly like Lab 3.3, every difference you see later comes from that checkpoint's change and nothing else."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Copy your finished <code>lab-3-3.py</code> into your <code>lab-4-1</code> folder and rename it <code>lab-4-1.py</code>, replacing the empty starter file of that name.",
+            "Copy your Lab 3.3 <code>function_library.py</code> into the same folder, replacing the empty starter file.",
+            "Put <code>city_distances.txt</code> and <code>city_info.txt</code> (from this lab's downloads) in the same folder. Python looks for data files in the folder you run from.",
+            "Update the docstring at the top of <code>lab-4-1.py</code>: the first line becomes <code>Lab 4.1: City Data</code> (keep the game's subtitle line under it), and replace the Lab 3.3 description and its <code>Chapter 7 Concepts</code> lines with a sentence or two describing this lab. Leave your name, ID, and section lines as they are.",
+            "Pin the dice and the destination coin so your output is predictable while you test. See below."
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Your dice and coins are random, so pin them while you test. In <code>lab-4-1.py</code>, find these two lines, comment each one out, and add the fixed value right below it:"
+        },
+        {
+          "type": "code_block",
+          "code": "# gate_result = function_library.flip_coin()\ngate_result = 'HEADS'\n\n# roll = function_library.roll_d20()\nroll = 20"
+        },
+        {
+          "type": "text",
+          "body": "A roll of 20 moves you 200 miles, so every trip in this lab's checkpoint tests arrives in a single turn. No hazard check runs, and your output can match the expected output line for line. Longer trips you try on your own, like El Paso or Dallas, take more turns, so hazards can still fire at random there. Keep both pins in place through CP6, and restore the two original lines before you submit (the Final Check reminds you). Your terminal also shows what you type after each prompt. The expected output leaves out what you type and the Enter key after it, the same way CodeGrade sees it, so a prompt and the next line it prints share a line, like <code>Choice (1-3): ERROR: ...</code>."
+        },
+        {
+          "type": "text",
+          "body": "Run <code>lab-4-1.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>2</code>, <code>1</code>, <code>1</code>, <code>n</code>, <code>3</code>. Your output should match this exactly:"
+        },
+        {
+          "type": "output_block",
+          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles (Gateway East)\n  3. Austin - 80 miles (Keep it Weird)\n\nChoice (1-3): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nWhere would you like to go?\n  1. Galveston - 50 miles (BEACH!)\n  2. San Antonio - 200 miles (Back West)\n\nChoice (1-2): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 400\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
+        },
+        {
+          "type": "text",
+          "body": "This is your Lab 3.3 game, unchanged. If yours differs, fix it here before going on: every later checkpoint builds on this run."
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>lab-4-1.py</code>, <code>function_library.py</code>, <code>city_distances.txt</code>, and <code>city_info.txt</code> in your <code>lab-4-1</code> folder",
+            "Docstring title <code>Lab 4.1: City Data</code>",
+            "<code>gate_result</code> and <code>roll</code> pinned for testing",
+            "Output identical to the run above"
+          ]
+        }
+      ]
+    },
     {
       "title": "Load City Distances",
       "content": [
@@ -136,7 +217,7 @@
         },
         {
           "type": "text",
-          "body": "A new function in <code>function_library.py</code> named <code>load_city_distances(filename)</code>. It opens the named text file, reads it one line at a time, parses each line into a city pair plus a distance, and builds a <strong>nested dictionary</strong> where the outer key is the starting city, the inner key is the destination, and the inner value is the distance in miles."
+          "body": "A new function in <code>function_library.py</code> named <code>load_city_distances(filename)</code>. It reads <code>city_distances.txt</code> one line at a time and builds a <strong>nested dictionary</strong>: the outer key is the starting city, the inner key is the destination, and the inner value is the distance in miles. Your game loads it at startup and reports how many cities it found."
         },
         {
           "type": "h3",
@@ -144,7 +225,7 @@
         },
         {
           "type": "text",
-          "body": "Lab 3.3 declared one constant per route at the top of <code>lab-3-3.py</code>: <code>SAT_TO_CORPUS = 150</code>, <code>SAT_TO_HOUSTON = 200</code>, and so on. That works for three cities and ten edges. It does not work for ten cities and twenty-four edges, which is what Module 4 hands you. The fix is to keep the data in a text file and write one function that reads it. Adding a city later means adding a line to the text file, not editing code. Same data, different storage shape, dramatically less work downstream."
+          "body": "Lab 3.3 declared one constant per route: <code>SAT_TO_CORPUS = 150</code>, <code>SAT_TO_HOUSTON = 200</code>, and so on. That works for three cities. It does not work for ten cities and twenty-four routes, which is what Module 4 hands you. Keep the data in a text file and write one function that reads it, and adding a city later means adding a line to the file, not editing code."
         },
         {
           "type": "mentor_quote",
@@ -157,7 +238,7 @@
           "type": "callout",
           "variant": "info",
           "title": "How the Road Network Is Modeled",
-          "body": "The 24 routes in <code>city_distances.txt</code> are the cities you can drive between on a <strong>Texas interstate</strong>. San Antonio reaches Houston (I-10), Austin (I-35), Laredo (I-35), El Paso (I-10), and Corpus Christi (I-37). Houston reaches Galveston (I-45) and Dallas (I-45). Austin reaches Dallas and Fort Worth via the I-35E and I-35W split. Dallas and Fort Worth connect via I-30; Dallas reaches Texarkana via I-30; Fort Worth reaches El Paso via I-20 and I-10. There is no interstate between Austin and Houston (US-290 is a state highway), between Laredo and El Paso, or between Corpus Christi and Laredo, so those routes do not appear in the data. To get between two cities that aren't connected directly, the player has to drive through an intermediate city, usually San Antonio. If a route feels missing, that's the constraint at work, not a bug in the data file. Adding a city means committing to the same standard: if there's a clean interstate between the two cities, the edge belongs in the file; otherwise it does not."
+          "body": "The 24 routes in <code>city_distances.txt</code> are the cities you can drive between on a <strong>Texas interstate</strong>. San Antonio reaches Houston (I-10), Austin (I-35), Laredo (I-35), El Paso (I-10), and Corpus Christi (I-37). Houston reaches Galveston (I-45) and Dallas (I-45). Austin reaches Dallas and Fort Worth via the I-35E and I-35W split. Dallas and Fort Worth connect via I-30; Dallas reaches Texarkana via I-30; Fort Worth reaches El Paso via I-20 and I-10."
         },
         {
           "type": "h3",
@@ -166,15 +247,15 @@
         {
           "type": "instructions",
           "items": [
-            "Put <code>city_distances.txt</code> and <code>city_info.txt</code> (from this lab's downloads) in your lab folder, next to <code>function_library.py</code>. Python looks for data files in the folder you run from.",
-            "Open <code>function_library.py</code>. Below your existing functions, but ABOVE the test <code>main()</code> and the <code>if __name__ == '__main__':</code> block at the very bottom, add a new section header comment block titled <code>CITY DATA LOADERS</code>. Anything added below that block doesn't exist yet when the test code runs.",
-            "Define <code>load_city_distances(filename)</code> with a full docstring describing what it returns.",
-            "Inside the function, create an empty dictionary called <code>distances</code>.",
-            "Open the file with <code>infile = open(filename, 'r')</code>.",
-            "Loop through the file with <code>for line in infile:</code>. For each line, call <code>parts = line.strip().split(',')</code> to split it into a list of three strings.",
-            "Assign <code>city1 = parts[0]</code>, <code>city2 = parts[1]</code>, and <code>miles = int(parts[2])</code>. Only the third part needs <code>int()</code>: the first two are city names.",
-            "If <code>city1</code> is not yet a key in <code>distances</code>, set <code>distances[city1] = {}</code>. Then set <code>distances[city1][city2] = miles</code>.",
-            "After the loop, close the file with <code>infile.close()</code> and <code>return distances</code>."
+            "Open <code>function_library.py</code>. Below your existing functions, but ABOVE the test <code>main()</code> and the <code>if __name__ == '__main__':</code> block at the very bottom, add a section header comment block titled <code>CITY DATA LOADERS</code>.",
+            "Under it, define <code>load_city_distances(filename)</code> with a docstring describing what it returns.",
+            "Inside the function, create an empty dictionary: <code>distances = {}</code>. Open the file with <code>infile = open(filename, 'r')</code>.",
+            "Loop with <code>for line in infile:</code>. For each line, <code>parts = line.strip().split(',')</code>, then <code>city1 = parts[0]</code>, <code>city2 = parts[1]</code>, <code>miles = int(parts[2])</code>. Only the distance needs <code>int()</code>.",
+            "If <code>city1</code> is not yet a key, set <code>distances[city1] = {}</code>. Then set <code>distances[city1][city2] = miles</code>.",
+            "After the loop, <code>infile.close()</code> and <code>return distances</code>.",
+            "In <code>lab-4-1.py</code>, add the constant <code>DISTANCES_FILE = 'city_distances.txt'</code> with your other constants.",
+            "In <code>main()</code>, right after the welcome banner and its <code>print()</code>, add: <code>print('Loading city data...')</code>, then <code>distances = function_library.load_city_distances(DISTANCES_FILE)</code>, then <code>print(f'Loaded {len(distances)} cities with travel routes.')</code>, then <code>print()</code>.",
+            "Heads-up: your Lab 3.3 in-game loop also uses the name <code>distances</code>, for the list that <code>get_city_data()</code> returns. That is harmless for now, since nothing reads the dictionary after startup yet. CP4 removes that line."
           ]
         },
         {
@@ -188,12 +269,12 @@
             {
               "programId": "8-10",
               "filename": "split_date.py",
-              "description": "You used <code>.split('/')</code> to break a date string into parts. Same idea here, but split on <code>','</code> instead. The result is a list of strings you can index by position."
+              "description": "You used <code>.split('/')</code> to break a date string into parts. Same idea here, but split on <code>','</code> instead."
             },
             {
               "programId": "9-1",
               "filename": "phone_book.py",
-              "description": "You created a dictionary mapping names to phone numbers. Same idea, but the outer dictionary's values are themselves dictionaries: <code>distances[city1][city2] = miles</code>."
+              "description": "You created a dictionary mapping names to phone numbers. Same idea, but each value is itself a dictionary: <code>distances[city1][city2] = miles</code>."
             }
           ]
         },
@@ -203,19 +284,19 @@
         },
         {
           "type": "text",
-          "body": "Add a temporary test block at the bottom of <code>function_library.py</code> under the <code>if __name__ == '__main__':</code> guard. Run the library directly with <code>python3 function_library.py</code> and confirm the dictionary loads correctly. Delete the test block before you submit."
+          "body": "Keep <code>gate_result = 'HEADS'</code> and <code>roll = 20</code> pinned from CP1."
         },
         {
-          "type": "code_block",
-          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 2\ndistances = load_city_distances('city_distances.txt')\nprint('Cities with outgoing routes:', list(distances.keys()))\nprint('From San Antonio:', distances['San Antonio'])\nprint('SA to Houston:', distances['San Antonio']['Houston'])"
-        },
-        {
-          "type": "h3",
-          "label": "expected_output"
+          "type": "text",
+          "body": "Run <code>lab-4-1.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>2</code>, <code>1</code>, <code>1</code>, <code>n</code>, <code>3</code>. Your output should match this exactly:"
         },
         {
           "type": "output_block",
-          "output": "Cities with outgoing routes: ['San Antonio', 'Houston', 'Austin', 'Dallas', 'Fort Worth', 'El Paso', 'Laredo', 'Texarkana', 'Corpus Christi', 'Galveston']\nFrom San Antonio: {'Corpus Christi': 150, 'Houston': 200, 'Austin': 80, 'Laredo': 160, 'El Paso': 550}\nSA to Houston: 200"
+          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles (Gateway East)\n  3. Austin - 80 miles (Keep it Weird)\n\nChoice (1-3): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nWhere would you like to go?\n  1. Galveston - 50 miles (BEACH!)\n  2. San Antonio - 200 miles (Back West)\n\nChoice (1-2): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 400\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
+        },
+        {
+          "type": "text",
+          "body": "Two new lines near the top: <code>Loading city data...</code> and <code>Loaded 10 cities with travel routes.</code> Everything else is the same as CP1."
         },
         {
           "type": "h3",
@@ -227,19 +308,23 @@
           "rows": [
             [
               "Forgetting <code>.strip()</code>",
-              "Each line ends with a newline character. Without <code>.strip()</code>, your last 'destination' key has a hidden <code>\\n</code> on the end, and every lookup mysteriously fails."
+              "Each line ends with a newline character. Without <code>.strip()</code>, the last field keeps it. Here the last field is the distance, which <code>int()</code> forgives, but in CP3 the last field is the tagline, and the hidden newline breaks every line that prints it. Use <code>.strip()</code> in both loaders."
             ],
             [
               "Casting <code>parts[0]</code> or <code>parts[1]</code> to <code>int</code>",
-              "Only the distance is a number. City names are strings. Doing <code>int(parts[0])</code> throws <code>ValueError</code> the moment you hit a non-numeric city name."
+              "Only the distance is a number. City names are strings."
             ],
             [
               "Skipping the <code>if city1 not in distances:</code> guard",
-              "Without it, the very first time you see a city you also try to assign <code>distances[city1][city2]</code>, which fails because <code>distances[city1]</code> does not exist yet."
+              "The first time you see a city, <code>distances[city1]</code> does not exist yet, so <code>distances[city1][city2] = miles</code> raises <code>KeyError</code>."
             ],
             [
-              "Trying to use <code>with open(...) as ...</code>",
-              "<code>with</code> statements are not in scope for this lab. Use the plain <code>open()</code>/<code>close()</code> pattern from Chapter 6."
+              "Putting the function below the <code>if __name__</code> block",
+              "Keep every library function above the test block at the bottom, where the others live. That block is only for running the library on its own."
+            ],
+            [
+              "Using <code>with open(...)</code>",
+              "<code>with</code> is not in scope for this lab. Use <code>open()</code> and <code>close()</code>."
             ]
           ]
         },
@@ -250,9 +335,10 @@
         {
           "type": "instructions",
           "items": [
-            "<code>function_library.py</code> contains a new function <code>load_city_distances(filename)</code> with a full docstring",
-            "Running the library directly prints all ten cities and the expected San Antonio routes",
-            "The DEBUG block is removed before moving on to CP2"
+            "<code>load_city_distances(filename)</code> in <code>function_library.py</code>, above the test block",
+            "<code>DISTANCES_FILE</code> constant in <code>lab-4-1.py</code>",
+            "Startup prints the two new lines",
+            "Output identical to the run above"
           ]
         }
       ]
@@ -266,7 +352,7 @@
         },
         {
           "type": "text",
-          "body": "A second loader function, <code>load_city_info(filename)</code>, that parses <code>city_info.txt</code> into a <strong>dictionary of dictionaries</strong>: each city name maps to an inner dictionary with two keys, <code>'type'</code> (one of <code>START</code>, <code>HUB</code>, <code>GATEWAY</code>, <code>CORRIDOR</code>, <code>WRONG_WAY</code>, <code>DEAD_END</code>, <code>WIN</code>) and <code>'tagline'</code> (the city's short slogan)."
+          "body": "A second loader, <code>load_city_info(filename)</code>, that reads <code>city_info.txt</code> into a <strong>dictionary of dictionaries</strong>: each city maps to <code>{'type': ..., 'tagline': ...}</code>. Your game loads it at startup and, at every stop, tells the player where they are with the city's tagline."
         },
         {
           "type": "h3",
@@ -274,14 +360,14 @@
         },
         {
           "type": "text",
-          "body": "City info is the metadata that drives game logic. <code>'WIN'</code> cities end the trip with a beach celebration. <code>'DEAD_END'</code> and <code>'WRONG_WAY'</code> cities prompt the player to return to San Antonio. <code>'GATEWAY'</code>, <code>'HUB'</code>, <code>'CORRIDOR'</code> are all just intermediate cities for now. Bundling all of this into one dictionary keyed by city name means the lab file does not need branching logic per city; it just asks the info dictionary what to do."
+          "body": "City info is the data that will drive game logic in CP5: <code>WIN</code> cities end the trip, <code>DEAD_END</code> and <code>WRONG_WAY</code> cities send the player home. For now it gives every stop a name and a slogan, which proves the dictionary loaded correctly."
         },
         {
           "type": "mentor_quote",
           "character": "Priya Venkatesh",
           "role": "Project Manager, Bat City Collective",
           "headshot": "Priya-Venkatesh.png",
-          "quote": "Notice that the loader pattern is identical to the one you wrote ten minutes ago. Same <code>.strip().split(',')</code>. Same per-line dictionary assignment. Different data shape on the output side, same parsing pattern on the input side. That is what good design feels like. The boring part is reusable."
+          "quote": "Notice that the loader pattern is identical to the one you just wrote. Same <code>.strip().split(',')</code>. Same per-line dictionary assignment. Different data shape on the output side, same parsing pattern on the input side. That is what good design feels like. The boring part is reusable."
         },
         {
           "type": "h3",
@@ -290,12 +376,14 @@
         {
           "type": "instructions",
           "items": [
-            "Below <code>load_city_distances</code> in <code>function_library.py</code>, define <code>load_city_info(filename)</code> with a full docstring.",
-            "Create an empty dictionary called <code>info</code>.",
-            "Open the file with <code>open(filename, 'r')</code> and loop with <code>for line in infile:</code>.",
-            "Inside the loop, call <code>parts = line.strip().split(',')</code> and assign <code>city = parts[0]</code>, <code>city_type = parts[1]</code>, <code>tagline = parts[2]</code>.",
-            "Assign <code>info[city] = {'type': city_type, 'tagline': tagline}</code>: one statement creates the inner dictionary inline.",
-            "Close the file and return <code>info</code>."
+            "In <code>function_library.py</code>, below <code>load_city_distances</code>, define <code>load_city_info(filename)</code> with a docstring.",
+            "Create <code>info = {}</code>, open the file, and loop with <code>for line in infile:</code>.",
+            "Inside the loop: <code>parts = line.strip().split(',')</code>, then <code>city = parts[0]</code>, <code>city_type = parts[1]</code>, <code>tagline = parts[2]</code>.",
+            "Assign <code>info[city] = {'type': city_type, 'tagline': tagline}</code>. One statement builds the inner dictionary.",
+            "Close the file and <code>return info</code>.",
+            "In <code>lab-4-1.py</code>, add <code>INFO_FILE = 'city_info.txt'</code> with your other constants.",
+            "In <code>main()</code>, right after the <code>load_city_distances</code> line, add <code>city_info = function_library.load_city_info(INFO_FILE)</code>. After the cities line, add <code>print(f'Loaded {len(city_info)} city info records.')</code>.",
+            "At the very top of the in-game loop (the first lines inside <code>while playing:</code>), show the location: <code>info = city_info[current_city]</code>, <code>print(f'You are in: {current_city}')</code>, <code>print(f'  \"{info[\"tagline\"]}\"')</code>, <code>print()</code>."
           ]
         },
         {
@@ -309,7 +397,7 @@
             {
               "programId": "9-1",
               "filename": "phone_book.py",
-              "description": "Same dictionary-creation pattern. The only difference: the value associated with each key is itself a dictionary, not a scalar. That is what makes this a 'dictionary of dictionaries.'"
+              "description": "Same dictionary-creation pattern. The value for each key is itself a dictionary, which is what makes this a dictionary of dictionaries."
             }
           ]
         },
@@ -319,19 +407,19 @@
         },
         {
           "type": "text",
-          "body": "Add a DEBUG block under the <code>if __name__ == '__main__':</code> guard in <code>function_library.py</code> that loads <code>city_info.txt</code> and prints three lookups. Delete it before moving on."
+          "body": "Keep <code>gate_result = 'HEADS'</code> and <code>roll = 20</code> pinned from CP1."
         },
         {
-          "type": "code_block",
-          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 3\ninfo = load_city_info('city_info.txt')\nprint('San Antonio type:', info['San Antonio']['type'])\nprint('Corpus Christi tagline:', info['Corpus Christi']['tagline'])\nprint('Laredo type:', info['Laredo']['type'])"
-        },
-        {
-          "type": "h3",
-          "label": "expected_output"
+          "type": "text",
+          "body": "Run <code>lab-4-1.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>2</code>, <code>1</code>, <code>1</code>, <code>n</code>, <code>3</code>. Your output should match this exactly:"
         },
         {
           "type": "output_block",
-          "output": "San Antonio type: START\nCorpus Christi tagline: Sparkling City by the Sea\nLaredo type: DEAD_END"
+          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles (Gateway East)\n  3. Austin - 80 miles (Keep it Weird)\n\nChoice (1-3): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nYou are in: Houston\n  \"Space City\"\n\nWhere would you like to go?\n  1. Galveston - 50 miles (BEACH!)\n  2. San Antonio - 200 miles (Back West)\n\nChoice (1-2): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 400\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
+        },
+        {
+          "type": "text",
+          "body": "New this checkpoint: <code>Loaded 10 city info records.</code> at startup, and a <code>You are in:</code> line with the quoted tagline before each menu."
         },
         {
           "type": "h3",
@@ -343,15 +431,15 @@
           "rows": [
             [
               "Putting the type and tagline at the same level as the city",
-              "<code>info[city] = type</code> overwrites with a string, not a dictionary. You need <code>info[city] = {'type': city_type, 'tagline': tagline}</code>: note the curly braces inside."
+              "<code>info[city] = city_type</code> stores a string, not a dictionary. You need <code>info[city] = {'type': city_type, 'tagline': tagline}</code>."
             ],
             [
-              "Quoting the type values as <code>'win'</code>",
-              "The file uses uppercase <code>WIN</code>. String comparisons are case-sensitive. Match exactly or use <code>.upper()</code> when you compare in CP3 (preview: you will not need <code>.upper()</code> until Lab 4.2)."
+              "Quotes around the tagline",
+              "The tagline line prints two spaces, a double quote, the tagline, and a closing double quote. The f-string uses single quotes outside so the double quotes print."
             ],
             [
               "Splitting on the wrong delimiter",
-              "The file is comma-separated, not tab- or space-separated. <code>.split(',')</code> exactly."
+              "The file is comma-separated. <code>.split(',')</code> exactly."
             ]
           ]
         },
@@ -362,15 +450,16 @@
         {
           "type": "instructions",
           "items": [
-            "<code>load_city_info</code> defined in the same <code>CITY DATA LOADERS</code> section as <code>load_city_distances</code>",
-            "DEBUG print confirms all three lookups produce the expected values",
-            "DEBUG block removed before moving on"
+            "<code>load_city_info(filename)</code> in <code>function_library.py</code>",
+            "<code>INFO_FILE</code> constant and the city info load in <code>main()</code>",
+            "Location and tagline shown at every stop",
+            "Output identical to the run above"
           ]
         }
       ]
     },
     {
-      "title": "Graph Helpers + Type Checks",
+      "title": "Menus From the Dictionary",
       "content": [
         {
           "type": "h3",
@@ -378,7 +467,7 @@
         },
         {
           "type": "text",
-          "body": "The library's destination helpers from Lab 3.2 take parallel lists <code>(destinations, distances, notes)</code>. Now they take <code>(city, distances)</code>: the city name plus the loaded nested dictionary. Same function names, same return shape, smarter data. You will also add two new type-check helpers, <code>is_win_city</code> and <code>is_dead_end</code>, that read from the city info dictionary."
+          "body": "The destination menus now come from the <code>distances</code> dictionary instead of the Lab 3.3 parallel lists. You rewrite the three destination helpers in the library to take <code>(city, distances)</code>, update the calls in your game, and delete everything the dictionary replaces. Every city in the file is now reachable."
         },
         {
           "type": "h3",
@@ -386,14 +475,14 @@
         },
         {
           "type": "text",
-          "body": "Keeping the function names stable across a data-shape refactor is a real-world discipline. The rest of the lab file calls <code>display_destinations(...)</code> the same way it always has. What changes is what you pass in. That is one of the few ways a working program can absorb a new data shape without rewriting everything that uses it. The new <code>is_win_city</code> and <code>is_dead_end</code> helpers move the game's branching logic out of the lab file and into named, testable functions."
+          "body": "This is the payoff of CP2. The same three function names keep working, but they read from the data file. The hardcoded constants, the parallel lists, <code>get_city_data()</code>, and the Austin special case all go away, because the dictionary already knows every route."
         },
         {
           "type": "mentor_quote",
           "character": "Danny Cavanaugh",
           "role": "Lead Developer, Bat City Collective",
           "headshot": "Danny-Cavanaugh.png",
-          "quote": "When you refactor a function, keep the public name and shape stable if you can. The callers do not care what the function does inside. They care what they pass in and what they get back. <code>display_destinations</code> still prints a numbered menu and returns a count. The shape that gets passed in is different now. The shape that comes out is the same. That is the kind of change that does not break the rest of your code."
+          "quote": "When you refactor a function, keep the public name and shape stable if you can. The callers do not care what the function does inside. They care what they pass in and what they get back. <code>display_destinations</code> still prints a numbered menu and returns a count. The shape that gets passed in is different now. The shape that comes out is the same."
         },
         {
           "type": "h3",
@@ -403,12 +492,14 @@
           "type": "instructions",
           "items": [
             "In <code>function_library.py</code>, find the <code>DESTINATION HELPERS</code> section from Lab 3.2.",
-            "<strong>Rewrite</strong> <code>display_destinations</code>. New signature: <code>display_destinations(city, distances)</code>. First print the header <code>print('From ' + city + ', you can travel to:')</code>. It replaces the old <code>Where would you like to go?</code> line, because the menu now comes from the data file and names the city. Then loop over <code>distances[city]</code> with a 1-based counter, printing <code>f'  {option_num}. {dest} - {miles} miles'</code> (two spaces before the number, same as before). Return the number of destinations shown.",
-            "<strong>Rewrite</strong> <code>get_destination</code>. New signature: <code>get_destination(city, distances, choice)</code>. Build a list of destination names from <code>list(distances[city].keys())</code>, index it with <code>choice - 1</code>, and return a tuple <code>(dest, distances[city][dest])</code>.",
-            "<strong>Rewrite</strong> <code>get_redirect</code>. New signature: <code>get_redirect(city, distances, avoid)</code>. Build the options list the same way, remove <code>avoid</code> if present, pick a random remaining option, and return <code>(dest, distances[city][dest])</code>. Keep the fallback from Lab 3.2: if no options are left (the city has only one route), return that one route instead of picking from an empty list.",
-            "Add a new section header comment <code>CITY-INFO TYPE CHECKS</code>.",
-            "Define <code>is_win_city(city, city_info)</code>: return <code>True</code> if <code>city_info[city]['type'] == 'WIN'</code>.",
-            "Define <code>is_dead_end(city, city_info)</code>: return <code>True</code> if the city's type is <code>'DEAD_END'</code> or <code>'WRONG_WAY'</code>. Both count as dead ends for gameplay purposes."
+            "<strong>Rewrite</strong> <code>display_destinations(city, distances)</code>. First print the header <code>print('From ' + city + ', you can travel to:')</code>. It replaces the old <code>Where would you like to go?</code> line, because the menu now comes from the data file and names the city. Then set <code>option_num = 1</code> and loop <code>for dest in distances[city]:</code>. Inside the loop, <code>miles = distances[city][dest]</code>, then <code>print(f'  {option_num}. {dest} - {miles} miles')</code> (two spaces before the number, same as before), then <code>option_num = option_num + 1</code>. After the loop, <code>return len(distances[city])</code>. The data file has no notes, so the <code>(BEACH!)</code>-style tags are gone.",
+            "<strong>Rewrite</strong> <code>get_destination(city, distances, choice)</code>: <code>dests = list(distances[city].keys())</code>, <code>dest = dests[choice - 1]</code>, and return <code>(dest, distances[city][dest])</code>.",
+            "<strong>Rewrite</strong> <code>get_redirect(city, distances, avoid)</code>: <code>options = list(distances[city].keys())</code>, and remove <code>avoid</code> if it is in the list. Then handle both cases: <code>if len(options) > 0:</code> pick with <code>index = random.randint(0, len(options) - 1)</code> and <code>dest = options[index]</code>, and return <code>(dest, distances[city][dest])</code>. <code>else:</code> the city has only the one route you just removed, so return it: <code>only_option = list(distances[city].keys())[0]</code> and <code>return only_option, distances[city][only_option]</code>.",
+            "Update the docstrings of all three helpers, and the <code>DESTINATION HELPERS</code> section comment, so they describe the dictionary version instead of parallel lists.",
+            "In <code>lab-4-1.py</code>'s in-game loop, just below the <code>You are in:</code> lines from CP3, delete the <code>destinations, distances, notes = get_city_data(current_city)</code> statement (it may be split across two lines). Change the menu call to <code>num_choices = function_library.display_destinations(current_city, distances)</code>.",
+            "Change both <code>get_destination(...)</code> calls and the <code>get_redirect(...)</code> call so their first two arguments are <code>current_city, distances</code>.",
+            "Delete what the dictionary replaces: the <code>get_city_data()</code> function, the <code>SA_</code>, <code>HOU_</code>, and <code>AUS_</code> lists, and the route constants (<code>SAT_TO_CORPUS</code>, <code>SAT_TO_HOUSTON</code>, <code>SAT_TO_AUSTIN</code>, <code>HOU_TO_GALVESTON</code>, <code>HOU_TO_SAN_ANTONIO</code>). Delete the comment blocks that described them too. If the header above <code>MILES_MULTIPLIER</code> still mentions the old distance constants, change just its title line to <code># CONSTANTS</code> and keep the <code># ====</code> rule lines around it, and in the hazard lists' comment, delete the phrase <code>Same pattern as destinations:</code> and capitalize the word that now starts the comment, since destinations aren't parallel lists anymore. (The library's <code>HAZARD HELPER</code> comment goes away in Lab 4.2.) Keep <code>MILES_MULTIPLIER</code> and <code>HAZARD_CHANCE</code>.",
+            "Delete the <code>elif current_city == 'Austin':</code> branch (its message, return prompt, and both outcomes). Austin now has routes onward to Dallas and Fort Worth, so it gets the OPTIONS menu like any other stop."
           ]
         },
         {
@@ -422,12 +513,7 @@
             {
               "programId": "9-3",
               "filename": "loop_phonebook.py",
-              "description": "You looped through a dictionary with <code>for key in dict:</code>. Same pattern in <code>display_destinations</code>: iterate over the inner dictionary <code>distances[city]</code>."
-            },
-            {
-              "programId": "9-5",
-              "filename": "in_phonebook.py",
-              "description": "You used <code>in</code> to check for a key. <code>is_win_city</code> and <code>is_dead_end</code> use the same idea: ask the dictionary whether a city's type matches the expected value."
+              "description": "You looped through a dictionary with <code>for key in dict:</code>. Same pattern in <code>display_destinations</code>: loop over the inner dictionary <code>distances[city]</code>."
             }
           ]
         },
@@ -437,19 +523,19 @@
         },
         {
           "type": "text",
-          "body": "Add a DEBUG block in <code>function_library.py</code> that loads both files and exercises all five rewrites. Delete the block before moving on."
+          "body": "Keep <code>gate_result = 'HEADS'</code> and <code>roll = 20</code> pinned from CP1."
         },
         {
-          "type": "code_block",
-          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 4\ndistances = load_city_distances('city_distances.txt')\ninfo = load_city_info('city_info.txt')\n\nn = display_destinations('San Antonio', distances)\nprint(f'Total destinations from SA: {n}')\n\ndest, miles = get_destination('San Antonio', distances, 2)\nprint(f'Choice 2 from SA -> {dest} ({miles} miles)')\n\nprint('Corpus Christi is a WIN:', is_win_city('Corpus Christi', info))\nprint('Laredo is a dead end:', is_dead_end('Laredo', info))\nprint('El Paso is a dead end:', is_dead_end('El Paso', info))\nprint('San Antonio is a dead end:', is_dead_end('San Antonio', info))"
-        },
-        {
-          "type": "h3",
-          "label": "expected_output"
+          "type": "text",
+          "body": "Run <code>lab-4-1.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>2</code>, <code>1</code>, <code>2</code>, <code>n</code>, <code>3</code>. Your output should match this exactly:"
         },
         {
           "type": "output_block",
-          "output": "From San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\nTotal destinations from SA: 5\nChoice 2 from SA -> Houston (200 miles)\nCorpus Christi is a WIN: True\nLaredo is a dead end: True\nEl Paso is a dead end: True\nSan Antonio is a dead end: False"
+          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nYou are in: Houston\n  \"Space City\"\n\nFrom Houston, you can travel to:\n  1. San Antonio - 200 miles\n  2. Galveston - 50 miles\n  3. Dallas - 240 miles\n\nChoice (1-3): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 400\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
+        },
+        {
+          "type": "text",
+          "body": "For now, nothing in the game can end with <code>Trip Incomplete</code>; CP5 brings that ending back. San Antonio now lists all five destinations, and Houston lists three. Houston's menu order comes from the file, so Galveston is choice <code>2</code> now (it was <code>1</code> in CP3)."
         },
         {
           "type": "h3",
@@ -460,20 +546,20 @@
           "caption": "",
           "rows": [
             [
-              "Old-style function call from the lab file",
-              "<code>display_destinations(SA_DESTINATIONS, SA_DISTANCES, SA_NOTES)</code> is the Lab 3.2 signature. The new signature is <code>display_destinations(current_city, distances)</code>. Update every call site in CP5."
+              "Old-style call left behind",
+              "<code>display_destinations(destinations, distances, notes)</code> is the Lab 3.2 signature and now fails. Every call takes <code>current_city, distances</code>."
             ],
             [
               "Forgetting to return the count",
-              "<code>display_destinations</code> still returns the number of destinations shown. The lab uses that count in the <code>get_valid_int(f'Choice (1-{n}): ', 1, n)</code> call."
+              "<code>display_destinations</code> still returns the number of destinations. The menu prompt <code>Choice (1-{num_choices}): </code> uses it."
             ],
             [
-              "Treating <code>WRONG_WAY</code> as different from <code>DEAD_END</code>",
-              "Gameplay-wise they behave identically: prompt the player to return to San Antonio. <code>is_dead_end</code> returns True for both."
+              "Removing <code>avoid</code> from the dictionary itself",
+              "<code>get_redirect</code> removes it from a <em>list</em> of options. The dictionary stays untouched; otherwise the route disappears for the rest of the game."
             ],
             [
-              "Removing 'avoid' from the dictionary itself",
-              "<code>get_redirect</code> builds a <em>list</em> of options and removes <code>avoid</code> from that list. The original dictionary stays untouched. Otherwise you destroy the loaded game state."
+              "Leaving a constant behind",
+              "If <code>SAT_TO_CORPUS</code> or a <code>SA_</code> list is still in the file, nothing uses it. Delete it."
             ]
           ]
         },
@@ -484,16 +570,16 @@
         {
           "type": "instructions",
           "items": [
-            "Three rewritten helpers (<code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>) with new <code>(city, distances)</code> signatures",
-            "Two new type-check helpers (<code>is_win_city</code>, <code>is_dead_end</code>) in a new <code>CITY-INFO TYPE CHECKS</code> section",
-            "All five functions have docstrings",
-            "DEBUG block removed"
+            "The three helpers take <code>(city, distances)</code>",
+            "No <code>get_city_data()</code>, no parallel destination lists, no route constants, no Austin branch",
+            "Menus list every route in the file",
+            "Output identical to the run above"
           ]
         }
       ]
     },
     {
-      "title": "Lab Skeleton + Main Menu",
+      "title": "City Types and Dead Ends",
       "content": [
         {
           "type": "h3",
@@ -501,7 +587,7 @@
         },
         {
           "type": "text",
-          "body": "Start <code>lab-4-1.py</code>. The file imports <code>function_library</code>, declares the five module-level constants, declares the inline hazard parallel lists (carried forward from Lab 3.3), defines <code>save_trip_report</code> as a lab-local helper (also carried forward), and opens <code>main()</code> with the file loads and the main-menu loop from Lab 3.3."
+          "body": "Two type checks in the library, <code>is_win_city</code> and <code>is_dead_end</code>, and the game logic that uses them. Beach detection reads the city type instead of hardcoded names, and the three dead-end cities (Laredo, Texarkana, El Paso) offer the player a way home."
         },
         {
           "type": "h3",
@@ -509,7 +595,7 @@
         },
         {
           "type": "text",
-          "body": "The main-menu loop is the outermost structure that lets the player choose New Game, Load Saved Game, or Quit. It was working in Lab 3.3. The only thing that changes here is that the city graph data is loaded from text files <em>before</em> the main-menu loop starts. After that, the menu logic, save/load logic, and welcome banner all stay the same."
+          "body": "Right now the game decides Corpus Christi and Galveston are beaches only because their names are typed into its logic. After this checkpoint, the data file decides: <code>is_win_city</code> reads the type. The welcome line that names the beach cities is just text for the player."
         },
         {
           "type": "h3",
@@ -518,115 +604,13 @@
         {
           "type": "instructions",
           "items": [
-            "Create <code>lab-4-1.py</code> with a top-of-file comment block (Name, abc123, Section, Description) and a module docstring.",
-            "<code>import function_library</code> at the top.",
-            "Declare module-level constants: <code>DISTANCES_FILE = 'city_distances.txt'</code>, <code>INFO_FILE = 'city_info.txt'</code>, <code>REPORT_FILE = 'trip_report.txt'</code>, <code>MILES_MULTIPLIER = 10</code>, <code>HAZARD_CHANCE = 30</code>.",
-            "Copy the three parallel hazard lists (<code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code>) from Lab 3.3.",
-            "Copy <code>save_trip_report</code> from Lab 3.3 into the lab file unchanged.",
-            "Define <code>main()</code>. The first thing it does is print the welcome banner and load the data files: <code>distances = function_library.load_city_distances(DISTANCES_FILE)</code> and <code>city_info = function_library.load_city_info(INFO_FILE)</code>. Print the load counts so the player sees the game started cleanly.",
-            "Add the main-menu loop from Lab 3.3 unchanged: a <code>while in_program:</code> loop offering New Game (1), Load Saved Game (2), or Quit (3). Handle Quit and the load-from-file branch exactly like 3.3.",
-            "Add the <code>if __name__ == '__main__':</code> guard at the bottom calling <code>main()</code>.",
-            "Run the program. Confirm the welcome banner shows the loaded counts. Choose 3 to quit immediately and verify the program exits cleanly."
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "bookex_patterns"
-        },
-        {
-          "type": "callout",
-          "variant": "bookex",
-          "references": [
-            {
-              "programId": "9-2",
-              "filename": "phonebook_use.py",
-              "description": "Same idea: load a dictionary at program startup, then use it through the rest of the program. The loading happens once; everything downstream reads the loaded dictionary."
-            }
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "test_your_code"
-        },
-        {
-          "type": "text",
-          "body": "Run the program. Expected behavior at this checkpoint: welcome banner, load counts print (10 cities, 10 info records), main menu shows, choosing 3 exits cleanly. Choosing 1 or 2 will not work yet because the play-again loop is built in CP5."
-        },
-        {
-          "type": "output_block",
-          "output": "==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 3\n\nThanks for playing!"
-        },
-        {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
-        },
-        {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "Loading inside the main-menu loop",
-              "Load the data files ONCE, before the loop. Loading inside the loop re-reads the files every iteration."
-            ],
-            [
-              "Hardcoding file names",
-              "Use the <code>DISTANCES_FILE</code> and <code>INFO_FILE</code> constants. CodeGrade looks for those exact names."
-            ],
-            [
-              "Forgetting <code>if __name__ == '__main__':</code>",
-              "Without it, <code>main()</code> runs at import time, which breaks CodeGrade's test harness."
-            ]
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "what_you_should_have"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "<code>lab-4-1.py</code> with top-of-file comment, docstring, imports, constants, hazard lists, <code>save_trip_report</code>, <code>main()</code>",
-            "Running the program shows the welcome banner, loads 10 cities and 10 info records, displays the main menu",
-            "Choosing 3 exits cleanly with a thank-you message"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Coin Gate + D20 Travel + Dead Ends",
-      "content": [
-        {
-          "type": "h3",
-          "label": "what_youre_building"
-        },
-        {
-          "type": "text",
-          "body": "Drop the play-again loop and the in-game loop from Lab 3.3 into <code>main()</code>. Update every call site to use the new dict-shape helpers: <code>display_destinations(current_city, distances)</code>, <code>get_destination(current_city, distances, choice)</code>, and <code>get_redirect(current_city, distances, wanted)</code>. Replace the hardcoded <code>if current_city in ('Corpus Christi', 'Galveston')</code> and <code>elif current_city == 'Austin'</code> branches with calls to <code>is_win_city</code> and <code>is_dead_end</code>."
-        },
-        {
-          "type": "h3",
-          "label": "why_this_matters"
-        },
-        {
-          "type": "text",
-          "body": "The in-game loop is identical in structure to Lab 3.3: pick a destination, flip the coin gate, travel by D20, check for hazards, check arrival type, decide next action. What changes is that every reference to a hardcoded city name moves out into the <code>city_info</code> dictionary lookup. A new city in the data file does not need any code changes here. That is the win."
-        },
-        {
-          "type": "h3",
-          "label": "step_by_step"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "In the main-menu loop, right before the Load and New Game branches, set <code>resumed_game = False</code>. The Load branch sets it to <code>True</code> when a save loads.",
-            "Inside the New Game branch, after the name prompt, print the welcome block exactly: <code>print()</code>, <code>print(f'Welcome, {player_name}!')</code>, <code>print('You are in San Antonio. Your goal: reach the beach!')</code>, <code>print('Beach cities: Corpus Christi and Galveston.')</code>, <code>print()</code>. Then initialize <code>current_city = 'San Antonio'</code>, <code>games_played = 0</code>, <code>session_miles = 0</code>, <code>session_hazards = 0</code>.",
-            "Open the play-again loop with <code>play_again = True</code>; <code>while play_again:</code>. Inside, under <code>if not resumed_game:</code>, reset the per-game state: <code>current_city = 'San Antonio'</code>, <code>total_miles = 0</code>, <code>total_turns = 0</code>, <code>total_hazards = 0</code>, <code>total_escaped = 0</code>, <code>visited_cities = ['San Antonio']</code>, <code>hazards_list = []</code>. Every game starts in San Antonio.",
-            "Still inside the play-again loop, but outside that <code>if</code>, reset the four outcome flags every game: <code>reached_beach = False</code>, <code>saved_and_quit = False</code>, <code>quit_without_saving = False</code>, <code>hit_dead_end = False</code>. Then set <code>resumed_game = False</code>, so only the first game after a load resumes.",
-            "Open the in-game loop with <code>playing = True</code>; <code>while playing:</code>. The Lab 3.3 loop started with <code>get_city_data(current_city)</code>; delete that call. This lab doesn't use <code>get_city_data()</code>, the <code>SA_</code>/<code>HOU_</code>/<code>AUS_</code> lists, or the old distance constants, so don't bring them into <code>lab-4-1.py</code>. Instead, print the location: <code>info = city_info[current_city]</code>, <code>print(f'You are in: {current_city}')</code>, <code>print(f'  \"{info[\"tagline\"]}\"')</code>, <code>print()</code>. Then call <code>num_choices = function_library.display_destinations(current_city, distances)</code>.",
-            "Use <code>function_library.get_valid_int</code> to read the player's menu choice. Then flip the Destination Gate coin: on HEADS call <code>get_destination</code>, on TAILS call <code>get_destination</code> first to capture the wanted destination, then call <code>get_redirect</code> to pick a different destination instead.",
-            "Drop in the D20 travel loop from Lab 3.3 unchanged, including the <code>TRAVELING TO {destination.upper()}!</code> banner. Right before the loop, these four lines must be there: <code>miles_remaining = distance</code>, <code>leg_turns = 0</code>, <code>hazards_faced = 0</code>, <code>hazards_escaped = 0</code>. Each turn: <code>roll = function_library.roll_d20()</code>, <code>miles_this_turn = roll * MILES_MULTIPLIER</code>, decrement <code>miles_remaining</code>, add to <code>total_miles</code>, and check for hazards via <code>function_library.check_percentage(HAZARD_CHANCE)</code>.",
-            "After arrival, update <code>current_city</code>, append to <code>visited_cities</code>, and replace the Lab 3.3 beach and Austin checks with checks on the city type. If <code>is_win_city(current_city, city_info)</code>: print the CONGRATULATIONS banner from Lab 3.3 unchanged, set <code>reached_beach = True</code> and <code>playing = False</code>. If <code>is_dead_end(current_city, city_info)</code>: <code>print(f'{current_city} is a dead end!')</code>, <code>print(f'  \"{city_info[current_city][\"tagline\"]}\"')</code>, <code>print()</code>, then ask <code>function_library.get_yes_no('Return to San Antonio? (y/n): ')</code>. On y: <code>current_city = 'San Antonio'</code>, <code>visited_cities.append(current_city)</code>, <code>print()</code>. On n: <code>hit_dead_end = True</code> and <code>playing = False</code>.",
-            "Otherwise print the OPTIONS menu from Lab 3.3 unchanged (<code>OPTIONS:</code>, <code>  1. Continue journey</code>, <code>  2. Save and quit</code>, <code>  3. Quit without saving</code>) and dispatch accordingly. Save &amp; quit calls <code>function_library.save_game(...)</code> with the 11-tuple."
+            "In <code>function_library.py</code>, below the destination helpers, add a section header comment block titled <code>CITY-INFO TYPE CHECKS</code>.",
+            "Define <code>is_win_city(city, city_info)</code> with a docstring: <code>return city_info[city]['type'] == 'WIN'</code>. The comparison is already <code>True</code> or <code>False</code>.",
+            "Define <code>is_dead_end(city, city_info)</code> with a docstring: <code>city_type = city_info[city]['type']</code>, then <code>return city_type == 'DEAD_END' or city_type == 'WRONG_WAY'</code>. Both types behave the same way in the game.",
+            "In <code>lab-4-1.py</code>'s New Game branch, the welcome block gains one line. After <code>print('You are in San Antonio. Your goal: reach the beach!')</code>, add <code>print('Beach cities: Corpus Christi and Galveston.')</code>.",
+            "There are two places that check <code>current_city in ('Corpus Christi', 'Galveston')</code>: the resumed-game check at the top of the play-again loop (split across two lines in the Lab 3.3 code), and the arrival check after travel. Replace both with <code>function_library.is_win_city(current_city, city_info)</code>. The resumed-game line is too long for one line at that depth, so split it after the opening parenthesis: <code>if resumed_game and function_library.is_win_city(</code> on one line and <code>current_city, city_info):</code> on the next, indented further.",
+            "After the beach branch, add a dead-end branch: <code>elif function_library.is_dead_end(current_city, city_info):</code>. Inside it, <code>print(f'{current_city} is a dead end!')</code>, <code>print(f'  \"{city_info[current_city][\"tagline\"]}\"')</code>, <code>print()</code>, then ask <code>function_library.get_yes_no('Return to San Antonio? (y/n): ')</code>.",
+            "On <code>y</code>: <code>current_city = 'San Antonio'</code>, <code>visited_cities.append(current_city)</code>, <code>print()</code>. On <code>n</code>: <code>playing = False</code>. The OPTIONS menu stays as the final <code>else</code>."
           ]
         },
         {
@@ -640,7 +624,7 @@
             {
               "programId": "9-5",
               "filename": "in_phonebook.py",
-              "description": "<code>'Corpus Christi' in distances</code> works the same way as your earlier <code>in</code> checks. But you do not need to write the city names by hand: <code>is_win_city</code> and <code>is_dead_end</code> wrap the comparison."
+              "description": "You looked up a key and compared its value. <code>is_win_city</code> does the same: look up the city, compare its type."
             }
           ]
         },
@@ -650,7 +634,23 @@
         },
         {
           "type": "text",
-          "body": "Run a full happy-path play-through: New Game, enter your name, pick Corpus Christi (choice 1), let the coin flip however it lands, and ride the D20 mechanic to the beach. Then play a dead-end path: pick Laredo (choice 4), say no to the return-home prompt, and confirm the game ends with a 'Dead End' status."
+          "body": "Keep <code>gate_result = 'HEADS'</code> and <code>roll = 20</code> pinned from CP1."
+        },
+        {
+          "type": "text",
+          "body": "Run <code>lab-4-1.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>4</code>, <code>n</code>, <code>n</code>, <code>3</code>. Your output should match this exactly:"
+        },
+        {
+          "type": "output_block",
+          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Laredo!\nDistance: 160 miles\n\n==================================================\nTRAVELING TO LAREDO!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 160\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Laredo!\n\nLaredo is a dead end!\n  \"Gateway to Mexico\"\n\nReturn to San Antonio? (y/n): \n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Laredo\nStatus: Trip Incomplete\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Laredo\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 200\n  Total Turns: 1\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 200\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
+        },
+        {
+          "type": "text",
+          "body": "Laredo is a dead end, and the player declined to go home, so the game ends. The status still reads <code>Trip Incomplete</code>; CP6 gives dead ends their own status. Now take the road home: run it again with <code>1</code>, <code>Tester</code>, <code>4</code>, <code>y</code>, <code>1</code>, <code>n</code>, <code>3</code>. You land back in San Antonio, head to Corpus Christi, and see Laredo and San Antonio both in your route:"
+        },
+        {
+          "type": "output_block",
+          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Laredo!\nDistance: 160 miles\n\n==================================================\nTRAVELING TO LAREDO!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 160\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Laredo!\n\nLaredo is a dead end!\n  \"Gateway to Mexico\"\n\nReturn to San Antonio? (y/n): \nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Laredo\n  3. San Antonio\n  4. Corpus Christi\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 400\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
         },
         {
           "type": "h3",
@@ -661,20 +661,20 @@
           "caption": "",
           "rows": [
             [
-              "Skipping the redirect path on TAILS",
-              "When the gate is TAILS, you still need to know what the player <em>wanted</em>. Call <code>get_destination</code> first to capture the wanted dest, then call <code>get_redirect</code> to pick something else."
+              "Checking the type with the wrong case",
+              "The file uses uppercase <code>WIN</code>, <code>DEAD_END</code>, <code>WRONG_WAY</code>. String comparisons are case-sensitive."
             ],
             [
-              "Forgetting to append to <code>visited_cities</code> after a return-to-SA",
-              "If the player is at Laredo and chooses to return, <code>current_city = 'San Antonio'</code> and <code>visited_cities.append('San Antonio')</code>. Otherwise the route looks wrong."
+              "Treating <code>WRONG_WAY</code> differently",
+              "El Paso is <code>WRONG_WAY</code>, and in gameplay it behaves exactly like a dead end. <code>is_dead_end</code> returns True for both."
             ],
             [
-              "Hardcoding 'Corpus Christi' or 'Galveston' as win cities",
-              "Use <code>is_win_city(current_city, city_info)</code> instead. Same outcome, future-proof."
+              "Forgetting the route on a return home",
+              "On <code>y</code>, append San Antonio to <code>visited_cities</code>, or the route in the trip report skips the drive back."
             ],
             [
-              "Not resetting per-game state inside the play-again loop",
-              "After 'Play again? y', you need a fresh <code>total_miles</code>, <code>visited_cities</code>, etc. Only the session-level counters carry across games."
+              "Replacing only one beach check",
+              "Both the resumed-game check and the arrival check use <code>is_win_city</code> now."
             ]
           ]
         },
@@ -685,17 +685,17 @@
         {
           "type": "instructions",
           "items": [
-            "Working three-loop architecture (main menu, play-again, in-game) reading from the loaded dictionaries",
-            "Coin-flip Destination Gate working with the new dict-shape helpers",
-            "D20 travel loop working with hazards",
-            "Dead-end (Laredo, Texarkana, El Paso) and WIN (Corpus Christi, Galveston) handling via <code>is_dead_end</code> and <code>is_win_city</code>",
-            "Save & quit writes <code>savegame.txt</code>; loading from that save resumes correctly"
+            "<code>is_win_city</code> and <code>is_dead_end</code> in the library",
+            "<code>Beach cities</code> line in the welcome block",
+            "No hardcoded beach city names left in the game logic (the welcome text still names them)",
+            "Dead-end message, tagline, and return prompt",
+            "Output identical to the run above"
           ]
         }
       ]
     },
     {
-      "title": "Trip Report + Session Totals",
+      "title": "Dead End Status",
       "content": [
         {
           "type": "h3",
@@ -703,7 +703,7 @@
         },
         {
           "type": "text",
-          "body": "Drop the Lab 3.3 final trip report block in below the in-game loop. Sort the hazards alphabetically with <code>.copy().sort()</code>. Build the unique-cities list using the <code>in</code> operator (sets arrive in Lab 4.3). Call the lab-local <code>save_trip_report</code> to write <code>trip_report.txt</code>. Update the session accumulators. Then ask 'Play again?' to close the play-again loop. After the loop, print the session statistics block from 3.3 unchanged."
+          "body": "A fourth game outcome. When the player stops at a dead end, the trip report says <code>Status: Dead End</code> instead of <code>Trip Incomplete</code>."
         },
         {
           "type": "h3",
@@ -711,14 +711,14 @@
         },
         {
           "type": "text",
-          "body": "The trip report is the player's souvenir. It carries forward from Lab 3.3 because the game's identity, the shape of the data players hold on to, has not changed this unit. Module 4 is about how the game's <em>code</em> reads its data, not what the player experiences. The session statistics show that the play-again loop is doing its job: totals accumulate across multiple games in a single sitting."
+          "body": "Every way a game can end should report honestly. Dead ends are a real outcome now, so they get their own flag and their own status."
         },
         {
           "type": "mentor_quote",
           "character": "Terrence \"T-Bone\" Booker",
           "role": "QA Lead, Bat City Collective",
           "headshot": "Terrence-Booker.png",
-          "quote": "Test the trip report end-to-end. Run a quick game to the beach, run a dead-end game, run a save-and-quit, run a quit-without-saving. Each one should produce a different status string in the report. If they all say 'BEACH WINNER!' regardless of outcome, the status logic broke and you'll find it in the conditional chain right after the in-game loop. Status strings are the easiest part of this CP to test and the easiest part to get wrong."
+          "quote": "Test every ending: a beach, a dead end, and a quit without saving. Each one should produce its own status. Save and quit skips the report on purpose, so the player can come back later. If two different endings print the same status, the conditional chain right after the in-game loop is where to look."
         },
         {
           "type": "h3",
@@ -727,35 +727,10 @@
         {
           "type": "instructions",
           "items": [
-            "Immediately after the in-game loop, check the four flags from CP5 (<code>reached_beach</code>, <code>hit_dead_end</code>, <code>saved_and_quit</code>, <code>quit_without_saving</code>) and assign a <code>status</code> string accordingly. The four allowed values are <code>'BEACH WINNER!'</code>, <code>'Dead End'</code>, <code>'Quit without saving'</code>, and <code>'Trip Incomplete'</code>.",
-            "If the player saved and quit, do not write the trip report; instead break out of the play-again loop with <code>play_again = False</code>.",
-            "Otherwise, build <code>sorted_hazards = hazards_list.copy()</code> then <code>sorted_hazards.sort()</code>.",
-            "Build <code>unique_cities</code> by iterating <code>visited_cities</code> and appending each city that is not already <code>in</code> <code>unique_cities</code>. This is the same pattern as Lab 3.3. Sets arrive in 4.3.",
-            "Print the trip report block from Lab 3.3: title banner, driver, final city, status, route via <code>display_numbered_list</code>, unique count, hazards (sorted) via <code>display_numbered_list</code> or a 'None' fallback, and the STATISTICS block (miles, turns, hazards faced/escaped, escape rate).",
-            "Call <code>save_trip_report(REPORT_FILE, ...)</code> to write the same content to disk.",
-            "Update the session accumulators: <code>games_played += 1</code>, <code>session_miles += total_miles</code>, <code>session_hazards += total_hazards</code>.",
-            "Ask <code>play_again = function_library.get_yes_no('Play again? (y/n): ')</code>. The play-again loop continues while this stays True.",
-            "After the play-again loop exits, print the SESSION STATISTICS banner from 3.3 if the player did not save-and-quit."
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "bookex_patterns"
-        },
-        {
-          "type": "callout",
-          "variant": "bookex",
-          "references": [
-            {
-              "programId": "7-9",
-              "filename": "remove_duplicates.py",
-              "description": "The <code>in</code> operator on a list, the same one you used in Lab 3.3 to build unique-city lists. Carries forward unchanged here. Sets arrive in Lab 4.3 and clean this pattern up."
-            },
-            {
-              "programId": "7-16",
-              "filename": "sort_grades.py",
-              "description": "<code>.sort()</code> sorts a list in place. Pair with <code>.copy()</code> to keep the original list's order intact (you still want <code>visited_cities</code> in chronological order for the route display)."
-            }
+            "At the top of the play-again loop, with the other per-game flags (<code>reached_beach</code>, <code>saved_and_quit</code>, <code>quit_without_saving</code>), add <code>hit_dead_end = False</code>. It resets every game.",
+            "In the dead-end branch, on <code>n</code>, set <code>hit_dead_end = True</code> just before <code>playing = False</code>.",
+            "In the status chain after the in-game loop, add <code>elif hit_dead_end:</code> with <code>status = 'Dead End'</code>, right after the <code>reached_beach</code> check and before the <code>quit_without_saving</code> check.",
+            "In the <code>save_trip_report</code> docstring, add <code>'Dead End'</code> to the list of possible statuses."
           ]
         },
         {
@@ -764,33 +739,19 @@
         },
         {
           "type": "text",
-          "body": "Run all four outcome paths: (1) beach via Corpus Christi, (2) dead-end at Laredo by saying no to the return-home prompt, (3) save and quit at a non-beach city, (4) quit without saving at a non-beach city. Each should produce the correct status. Then play two consecutive games in one session (beach + dead-end) and verify the SESSION STATISTICS at the end show <code>Games Played: 2</code>."
+          "body": "Keep <code>gate_result = 'HEADS'</code> and <code>roll = 20</code> pinned from CP1."
         },
         {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
+          "type": "text",
+          "body": "Run <code>lab-4-1.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>4</code>, <code>n</code>, <code>n</code>, <code>3</code>. Your output should match this exactly:"
         },
         {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "Calling <code>hazards_list.sort()</code> directly",
-              "That mutates the original. Use <code>sorted_hazards = hazards_list.copy()</code> first, then sort the copy. The trip report wants sorted, the save format wants chronological."
-            ],
-            [
-              "Updating session accumulators inside the in-game loop",
-              "Wait until <em>after</em> the in-game loop exits. Otherwise totals get added to mid-game and the accounting drifts."
-            ],
-            [
-              "Writing the trip report on save-and-quit",
-              "On save-and-quit, the player wants to come back later. Skip the report so they do not get a partial souvenir."
-            ],
-            [
-              "Forgetting to include both screen and file output",
-              "The trip report runs twice: once to the screen (<code>print</code> statements) and once to the file (<code>save_trip_report</code>). Same content, two destinations."
-            ]
-          ]
+          "type": "output_block",
+          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Laredo!\nDistance: 160 miles\n\n==================================================\nTRAVELING TO LAREDO!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 160\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Laredo!\n\nLaredo is a dead end!\n  \"Gateway to Mexico\"\n\nReturn to San Antonio? (y/n): \n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Laredo\nStatus: Dead End\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Laredo\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 200\n  Total Turns: 1\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 200\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
+        },
+        {
+          "type": "text",
+          "body": "Same game as CP5, but the report and the saved trip report now say <code>Dead End</code>. Every ending now has its own status, so the final <code>else</code> that sets <code>Trip Incomplete</code> can no longer happen. Keep it anyway, as a safety net for endings a future lab might add. That completes the lab. Head to the Final Checklist and Run the Full Check."
         },
         {
           "type": "h3",
@@ -799,10 +760,9 @@
         {
           "type": "instructions",
           "items": [
-            "Four distinct status strings produced by the four outcome paths",
-            "<code>trip_report.txt</code> written every completed game (not on save-and-quit)",
-            "Session accumulators correctly summing across multiple plays",
-            "Play-again loop transitions cleanly back to the main menu when the player says no"
+            "<code>hit_dead_end</code> reset every game and set on a declined return",
+            "<code>Status: Dead End</code> in the on-screen report and in <code>trip_report.txt</code>",
+            "Output identical to the run above"
           ]
         }
       ]
@@ -810,14 +770,15 @@
   ],
   "finalChecklist": {
     "beforeYouSubmit": [
+      "<strong>After the Full Check, restore the two pinned lines</strong> in <code>lab-4-1.py</code>: put back <code>gate_result = function_library.flip_coin()</code> and <code>roll = function_library.roll_d20()</code>, and delete the fixed values. CodeGrade sets its own values and tests every outcome, so a pinned line fails most of its tests.",
       "Submitting <strong>two files</strong>: <code>lab-4-1.py</code> and <code>function_library.py</code>",
-      "<code>function_library.py</code> grew by <strong>seven</strong> entries this unit: two loaders (<code>load_city_distances</code>, <code>load_city_info</code>), three rewritten helpers (<code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>), and two new type checks (<code>is_win_city</code>, <code>is_dead_end</code>)",
-      "<code>lab-4-1.py</code> defines five constants at module level: <code>DISTANCES_FILE</code>, <code>INFO_FILE</code>, <code>REPORT_FILE</code>, <code>MILES_MULTIPLIER</code>, <code>HAZARD_CHANCE</code>",
+      "<code>function_library.py</code> gained <strong>four</strong> functions (<code>load_city_distances</code>, <code>load_city_info</code>, <code>is_win_city</code>, <code>is_dead_end</code>) and rewrote <strong>three</strong> (<code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>)",
+      "<code>lab-4-1.py</code> defines five constants at module level: <code>DISTANCES_FILE</code>, <code>INFO_FILE</code>, <code>REPORT_FILE</code>, <code>MILES_MULTIPLIER</code>, <code>HAZARD_CHANCE</code>. The three hazard lists stay too, until Lab 4.2",
       "<code>main()</code> loads both data files at startup using the new library functions; the loaded <code>distances</code> and <code>city_info</code> dictionaries flow through the rest of the game",
       "Three-loop architecture from Lab 3.3 is preserved: main menu, play-again, in-game",
       "D20 travel mechanic from Lab 3.3 is preserved: each turn rolls a d20 and moves <code>roll * MILES_MULTIPLIER</code> miles",
       "<code>save_trip_report</code> still lives in <code>lab-4-1.py</code> as a lab-local helper and writes <code>trip_report.txt</code> at the end of every completed game",
-      "Top-of-file comment block present on both files: Name, abc123, Section, Description",
+      "Top-of-file comment block on both files, carried forward from the previous lab, with the lab file's title and description updated",
       "Docstring on every function"
     ],
     "scopeReminder": "Module 4.1 introduces file parsing (.strip(), .split()) and dictionaries (creation, access, nested, .keys(), 'in' operator). Sets and the .upper() input-cleaning relief are held back for Labs 4.2 and 4.3.",
@@ -839,419 +800,419 @@
       "Do not paste the data files into the top of <code>lab-4-1.py</code> as Python literals. The whole point of this unit is that the data lives in text files, not in code.",
       "Do not delete the inline hazard parallel lists from <code>lab-4-1.py</code>. They stay this unit; <code>hazards.txt</code> arrives in Lab 4.2."
     ],
-    "saveYourCode": "Save a copy of <code>lab-4-1.py</code> as <code>lab-4-1-backup.py</code> before you start Lab 4.2. Lab 4.2 starts by copying 4.1 forward, so you want a clean baseline to fall back to if the 4.2 changes break something.",
+    "saveYourCode": "Save a copy of <code>lab-4-1.py</code> as <code>lab-4-1-backup.py</code>, after you restore your pins, before you start Lab 4.2. Lab 4.2 starts by copying 4.1 forward, so you want a clean baseline to fall back to if the 4.2 changes break something. The backup is not part of your submission: CodeGrade needs only the lab file and <code>function_library.py</code>.",
     "messageDigest": {
-      "intro": "Use these <em>exact</em> prompts and messages. Spacing, capitalization, and punctuation matter for grading. Anything in <code>{braces}</code> is a variable of yours; everything outside the braces must match character for character. The shaded box shows the full string, so a prompt that ends in a space looks like it ends in a space.",
+      "intro": "Use these <em>exact</em> prompts and messages. Spacing, capitalization, and punctuation matter for grading. Anything in <code>{braces}</code> is a variable of yours; everything outside the braces must match character for character. The shaded box shows the full string, so a prompt that ends in a space looks like it ends in a space. Lines printed from inside <code>function_library.py</code> aren't listed here: the destination menu is given in CP4, and the input-error messages are unchanged from Lab 2.3.",
       "rows": [
         {
-          "purpose": "",
+          "purpose": "Banner and report divider",
           "text": "==================================================",
-          "shownIn": "CP4"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Game title",
           "text": "DEEP IN THE HEART: A LONE STAR JOURNEY",
-          "shownIn": "CP4"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Startup: loading data",
           "text": "Loading city data...",
-          "shownIn": "CP4"
+          "shownIn": "CP2"
         },
         {
-          "purpose": "",
+          "purpose": "Startup: route count",
           "text": "Loaded {len(distances)} cities with travel routes.",
-          "shownIn": "CP4"
+          "shownIn": "CP2"
         },
         {
-          "purpose": "",
+          "purpose": "Startup: city info count",
           "text": "Loaded {len(city_info)} city info records.",
-          "shownIn": "CP4"
+          "shownIn": "CP3"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu title",
           "text": "MAIN MENU",
-          "shownIn": "CP4"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu divider",
           "text": "--------------------",
-          "shownIn": "CP4"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu option",
           "text": "1. New Game",
-          "shownIn": "CP4"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu option",
           "text": "2. Load Saved Game",
-          "shownIn": "CP4"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu option",
           "text": "3. Quit",
-          "shownIn": "CP4"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu prompt",
           "text": "Choice (1-3): ",
-          "shownIn": "CP4"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Quit from the main menu",
           "text": "Thanks for playing!",
-          "shownIn": "CP4"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Load failed (missing or damaged save)",
           "text": "No usable save file found. Starting new game.",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Load succeeded",
           "text": "Welcome back, {player_name}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Load: where the trip resumes",
           "text": "Resuming from {current_city}.",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Miles so far this game line",
+          "purpose": "Load: miles so far",
           "text": "Miles so far this game: {total_miles}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Load: games so far",
           "text": "Games completed this session: {games_played}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "New game: name prompt",
           "text": "What is your name, traveler? ",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "New game: welcome",
           "text": "Welcome, {player_name}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "New game: the goal",
           "text": "You are in San Antonio. Your goal: reach the beach!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Beach cities line",
+          "purpose": "New game: beach cities",
           "text": "Beach cities: Corpus Christi and Galveston.",
-          "shownIn": ""
+          "shownIn": "CP5"
         },
         {
-          "purpose": "You are in line",
+          "purpose": "Location at each stop",
           "text": "You are in: {current_city}",
-          "shownIn": ""
+          "shownIn": "CP3"
         },
         {
-          "purpose": "Show current location with tagline from city_info",
+          "purpose": "Location tagline (two spaces, in quotes)",
           "text": "  \"{info[\"tagline\"]}\"",
-          "shownIn": ""
+          "shownIn": "CP3"
         },
         {
-          "purpose": "Display destinations using the new dict-shape helper 1",
+          "purpose": "Destination menu prompt",
           "text": "Choice (1-{num_choices}): ",
-          "shownIn": "CP3+"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Display destinations using the new dict-shape helper 2",
-          "text": "{num_choices}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "",
+          "purpose": "Destination gate: coin flip",
           "text": "Flipping to see if Texas cooperates...",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Result line",
+          "purpose": "Destination gate: result",
           "text": "Result: {gate_result}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Texas says line",
+          "purpose": "Destination gate: HEADS",
           "text": "Texas says: \"Y'all come on through!\"",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Destination gate: TAILS",
           "text": "Texas has other plans for you...",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Destination confirmed",
           "text": "You're headed to {destination}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Distance line",
+          "purpose": "Leg distance",
           "text": "Distance: {distance} miles",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "",
+          "purpose": "Travel banner (city in capitals)",
           "text": "TRAVELING TO {destination.upper()}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 1",
+          "purpose": "Turn header",
           "text": "--- Turn {leg_turns} ---",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Miles remaining line",
+          "purpose": "Turn: miles left",
           "text": "Miles remaining: {miles_remaining}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 2",
+          "purpose": "Turn: the roll",
           "text": "You rolled a {roll}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 3",
+          "purpose": "Turn: miles moved",
           "text": "You travel {miles_this_turn} miles...",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 4",
+          "purpose": "Arrival",
           "text": "You made it to {destination}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 5",
+          "purpose": "Hazard banner",
           "text": "*** HAZARD! ***",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 6",
+          "purpose": "Hazard name",
           "text": "{hazard}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 7",
+          "purpose": "Escape coin flip",
           "text": "{flip}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 8",
+          "purpose": "Hazard escaped",
           "text": "{heads_msg}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "D20 travel mechanic (carried forward from 3.3) 9",
+          "purpose": "Hazard not escaped",
           "text": "{tails_msg}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 1",
+          "purpose": "Beach arrival",
           "text": "CONGRATULATIONS! YOU REACHED THE BEACH!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 2",
+          "purpose": "Dead-end arrival",
           "text": "{current_city} is a dead end!",
-          "shownIn": ""
+          "shownIn": "CP5"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 3",
+          "purpose": "Dead-end tagline (two spaces, in quotes)",
           "text": "  \"{city_info[current_city][\"tagline\"]}\"",
-          "shownIn": ""
+          "shownIn": "CP5"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 4",
+          "purpose": "Dead-end return prompt",
           "text": "Return to San Antonio? (y/n): ",
-          "shownIn": ""
+          "shownIn": "CP5"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 5",
+          "purpose": "Stop options title",
           "text": "OPTIONS:",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 6",
+          "purpose": "Stop option",
           "text": "  1. Continue journey",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 7",
+          "purpose": "Stop option",
           "text": "  2. Save and quit",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Check arrival type using new city-info helpers 8",
+          "purpose": "Stop option",
           "text": "  3. Quit without saving",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 1",
+          "purpose": "Trip report title",
           "text": "FINAL TRIP REPORT",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Driver line",
+          "purpose": "Trip report: driver",
           "text": "Driver: {player_name}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Final City line",
+          "purpose": "Trip report: final city",
           "text": "Final City: {current_city}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Status line",
+          "purpose": "Trip report: status",
           "text": "Status: {status}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Unique cities visited line",
+          "purpose": "Trip report: route title",
+          "text": "YOUR ROUTE",
+          "shownIn": "CP1+"
+        },
+        {
+          "purpose": "Trip report: unique cities",
           "text": "Unique cities visited: {len(unique_cities)}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 2",
+          "purpose": "Trip report: hazards title",
           "text": "HAZARDS ENCOUNTERED (A-Z)",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 3",
+          "purpose": "Trip report: no hazards",
           "text": "  None - Lucky traveler!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 4",
+          "purpose": "Trip report: statistics title",
           "text": "STATISTICS",
-          "shownIn": "CP6"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 5",
+          "purpose": "Statistics line",
           "text": "  Total Miles: {total_miles}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 6",
+          "purpose": "Statistics line",
           "text": "  Total Turns: {total_turns}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 7",
+          "purpose": "Statistics line",
           "text": "  Hazards Faced: {total_hazards}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 8",
+          "purpose": "Statistics line",
           "text": "  Hazards Escaped: {total_escaped}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Print the trip report to the screen 9",
+          "purpose": "Statistics: escape rate (only when hazards were faced)",
           "text": "  Escape Rate: {escape_rate_str}%",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Write the trip report to disk (always)",
+          "purpose": "Report file written",
           "text": "Trip report saved to trip_report.txt.",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Update session accumulators",
+          "purpose": "Play-again prompt",
           "text": "Play again? (y/n): ",
-          "shownIn": "CP6"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "AFTER PLAY-AGAIN LOOP 1",
+          "purpose": "Session summary title",
           "text": "SESSION STATISTICS",
-          "shownIn": "CP6"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Games Played line",
+          "purpose": "Session summary line",
           "text": "Games Played: {games_played}",
-          "shownIn": "CP6"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Total Miles line",
+          "purpose": "Session summary line",
           "text": "Total Miles: {session_miles}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "Total Hazards line",
+          "purpose": "Session summary line",
           "text": "Total Hazards: {session_hazards}",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "AFTER PLAY-AGAIN LOOP 2",
+          "purpose": "Goodbye",
           "text": "Thanks for playing, {player_name}!",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "AFTER PLAY-AGAIN LOOP 3",
+          "purpose": "Credits line",
           "text": "An All My Eggses Live in Texas Production",
-          "shownIn": ""
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "<code>current_city</code>",
+          "purpose": "Starting city for every new game",
           "text": "San Antonio",
           "shownIn": "CP1+"
         },
         {
-          "purpose": "<code>status</code>, determine status string 1",
+          "purpose": "Status: reached the beach",
           "text": "BEACH WINNER!",
-          "shownIn": "CP6"
+          "shownIn": "CP1+"
         },
         {
-          "purpose": "<code>status</code>, determine status string 2",
+          "purpose": "Status: stopped at a dead end",
           "text": "Dead End",
-          "shownIn": "CP5+"
-        },
-        {
-          "purpose": "<code>status</code>, determine status string 3",
-          "text": "Quit without saving",
-          "shownIn": "CP5+"
-        },
-        {
-          "purpose": "<code>status</code>, determine status string 4",
-          "text": "Trip Incomplete",
           "shownIn": "CP6"
+        },
+        {
+          "purpose": "Status: quit without saving",
+          "text": "Quit without saving",
+          "shownIn": "CP1+"
+        },
+        {
+          "purpose": "Status: any other ending",
+          "text": "Trip Incomplete",
+          "shownIn": "CP1+"
         }
       ]
     },
     "finalCheck": {
-      "expectedOutput": "==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 1!\nYou travel 10 miles...\nMiles remaining: 140\n\n--- Turn 2 ---\nMiles remaining: 140\nYou rolled a 9!\nYou travel 90 miles...\nMiles remaining: 50\n\n--- Turn 3 ---\nMiles remaining: 50\nYou rolled a 8!\nYou travel 80 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 180\n  Total Turns: 3\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 180\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!",
-      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>1</code> (New Game) &rarr; <code>Tester</code> &rarr; <code>1</code> (Corpus Christi) &rarr; <code>n</code> (no replay) &rarr; <code>3</code> (Quit) with the deterministic CodeGrade fixture (<code>SEQ_1_20=1,9,8</code>, <code>SEQ_1_100=99,99,99</code>). With real random, your rolls will differ and hazards may fire, but the structure must match: main menu &rarr; new game &rarr; travel to the beach &rarr; trip report saved &rarr; session stats &rarr; main menu &rarr; quit. This transcript shows <strong>only what your program prints</strong>. The values typed in answer to each prompt are not shown, which is why some lines stop at the prompt with nothing after them. When you run it yourself you will see your own answers echoed on those lines. That difference is expected and is not a mismatch.",
+      "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 200\n  Total Turns: 1\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 200\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!",
+      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>1</code> (New Game) &rarr; <code>Tester</code> &rarr; <code>1</code> (Corpus Christi) &rarr; <code>n</code> (no replay) &rarr; <code>3</code> (Quit) with the CodeGrade settings <code>LARGENUM=20</code> and <code>SMALLNUM=1</code>. You don't set those: they're how CodeGrade fixes its own dice and coins, and they give the same results as your pins. Run it with every pin from the checkpoints in place and match it line for line, then restore the two original lines before you submit.",
       "ifSomethingBreaks": [
         {
-          "symptom": "<code>KeyError: 'San Antonio'</code> on the first menu display",
-          "redirect": "Check CP1 (Load City Distances): the loader is not inserting <code>'San Antonio'</code> as a top-level key. Verify the <code>if city1 not in distances:</code> guard."
+          "symptom": "<code>KeyError</code> at startup, inside <code>load_city_distances</code>",
+          "redirect": "Check CP2 (Load City Distances): the loader is not inserting <code>'San Antonio'</code> as a top-level key. Verify the <code>if city1 not in distances:</code> guard."
         },
         {
           "symptom": "<code>FileNotFoundError: city_distances.txt</code>",
-          "redirect": "Check CP4 (Lab Skeleton). The data files must be in the same folder as <code>lab-4-1.py</code> when you run it locally. CodeGrade provides them as fixtures. If the files ARE in the folder and it still fails, you almost certainly opened the FILE in VS Code instead of the FOLDER. Python then looks for the data files wherever VS Code was launched from, not next to your code. Use <strong>File &rarr; Open Folder</strong> and pick the lab folder itself; you should see the <code>.txt</code> files listed in the sidebar. Also keep them as plain <code>.txt</code> data files. Do not re-save them as <code>.py</code>."
+          "redirect": "Check CP1.  The data files must be in the same folder as <code>lab-4-1.py</code> when you run it locally. CodeGrade provides them as fixtures. If the files ARE in the folder and it still fails, you almost certainly opened the FILE in VS Code instead of the FOLDER. Python then looks for the data files wherever VS Code was launched from, not next to your code. Use <strong>File &rarr; Open Folder</strong> and pick the lab folder itself; you should see the <code>.txt</code> files listed in the sidebar. Also keep them as plain <code>.txt</code> data files. Do not re-save them as <code>.py</code>."
         },
         {
           "symptom": "Menu shows distances but the wrong destinations (Houston instead of Corpus Christi, etc.)",
-          "redirect": "Check CP3 (Graph Helpers). Verify <code>display_destinations</code> iterates <code>distances[city]</code> in order and prints both the destination key and the value."
+          "redirect": "Check CP4 (Menus From the Dictionary). Verify <code>display_destinations</code> iterates <code>distances[city]</code> in order and prints both the destination key and the value."
         },
         {
           "symptom": "Dead-end prompt fires at the wrong cities (or never fires)",
-          "redirect": "Check CP3 (<code>is_dead_end</code>). Both <code>'DEAD_END'</code> and <code>'WRONG_WAY'</code> count as dead ends. Compare exact uppercase strings."
+          "redirect": "Check CP5 (<code>is_dead_end</code>). Both <code>'DEAD_END'</code> and <code>'WRONG_WAY'</code> count as dead ends. Compare exact uppercase strings."
         },
         {
           "symptom": "Trip report does not appear at the end of the game",
-          "redirect": "Check CP6. The trip report runs after the in-game loop exits naturally. If the player saves and quits, the report is intentionally skipped (that's the save path, not the report path)."
+          "redirect": "The trip report runs after the in-game loop exits naturally. If the player saves and quits, the report is intentionally skipped (that's the save path, not the report path)."
         },
         {
           "symptom": "<code>ValueError: invalid literal for int()</code> when loading distances",
-          "redirect": "Check CP1. After <code>parts = line.strip().split(',')</code>, only <code>parts[2]</code> gets cast to <code>int</code>. <code>parts[0]</code> and <code>parts[1]</code> stay as strings."
+          "redirect": "Check CP2. After <code>parts = line.strip().split(',')</code>, only <code>parts[2]</code> gets cast to <code>int</code>. <code>parts[0]</code> and <code>parts[1]</code> stay as strings."
         }
       ]
     }
@@ -1262,7 +1223,7 @@
       "Print the loaded dictionaries during development. After <code>distances = load_city_distances(...)</code>, add <code>print(distances)</code> to confirm the shape before you use it. Delete the print before submitting",
       "If <code>display_destinations</code> shows nothing, you probably passed the wrong arguments. The new signature is <code>(city, distances)</code>: the city is a string, and distances is the whole nested dictionary",
       "Save / load was working in Lab 3.3 and should still work here unchanged. If it stops working, you probably touched the library save/load functions accidentally. Roll those back to the Module 3 version",
-      "Post questions in <code>#labs</code> on Discord. Include your error message and the line number, not a screenshot of the whole file"
+      "Post questions in <code>#module-4-help</code> on Discord. Include your error message and the line number, not a screenshot of the whole file"
     ],
     "officeHours": "Zoom Tuesdays 6 PM: <a href='https://utsa.zoom.us/j/96542097913'>https://utsa.zoom.us/j/96542097913</a>. Book a 1–1 with Prof. Newsom: <a href='https://calendly.com/john-newsom-utsa'>calendly.com/john-newsom-utsa</a>."
   }
