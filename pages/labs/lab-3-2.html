@@ -844,6 +844,7 @@ destination<span class="sy-op">,</span> distance <span class="sy-op">=</span> fu
     <p>The pattern from CPs 3-5 generalizes here. Each city needs three lists; one tiny dispatch function decides which set to use. Everything downstream (menu display, destination lookup, gate redirect) uses the same library code regardless of which city you're in. This is where the file shrinks dramatically: what was a 90-line <code>if/elif</code> wall in 3.1 becomes about 20 lines of data plus a few library calls.</p>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
+      <li><strong>Check your distance constants first.</strong> The Houston lists use <code>HOU_TO_GALVESTON</code> and <code>HOU_TO_SAN_ANTONIO</code>. If your file doesn't have them, add <code>HOU_TO_GALVESTON = 50</code> and <code>HOU_TO_SAN_ANTONIO = 200</code> next to your other distance constants</li>
       <li><strong>Below the SA lists</strong> in <code>lab-3-2.py</code>, declare the Houston lists: <code>HOU_DESTINATIONS = ['Galveston', 'San Antonio']</code>, <code>HOU_DISTANCES = [HOU_TO_GALVESTON, HOU_TO_SAN_ANTONIO]</code>, <code>HOU_NOTES = ['BEACH!', 'Back West']</code></li>
       <li><strong>Below those</strong>, declare the Austin lists: <code>AUS_DESTINATIONS = ['San Antonio']</code>, <code>AUS_DISTANCES = [SAT_TO_AUSTIN]</code>, <code>AUS_NOTES = ['Back Home']</code> (Austin only has one option, back home)</li>
       <li><strong>Define the dispatch function</strong> <code>get_city_data(city)</code> at module level (above <code>main()</code>). It takes a city name and returns a tuple of <code>(destinations, distances, notes)</code>. Use an <code>if/elif/else</code> to pick the right triple</li>
@@ -1200,7 +1201,7 @@ Buc-ee&#x27;s appears!</pre>
       <li><strong>Inside the function</strong>: print the title, then print a divider line made of <code>'-' * len(title)</code> dashes (exactly the same length as the title), then loop with <code>for i in range(len(items))</code> printing each item as <code>'  N. ITEM'</code>, then print a blank line</li>
       <li><strong>Now switch to <code>lab-3-2.py</code></strong> and find the Trip Summary block in <code>main()</code>: after the <code>print('Status: ...')</code> lines and before the play-again prompt</li>
       <li><strong>Replace any existing YOUR ROUTE print logic</strong> with a single call: <code>function_library.display_numbered_list(visited_cities, 'YOUR ROUTE')</code></li>
-      <li><strong>For hazards</strong>, handle the empty case specially: <code>if len(hazards_list) &gt; 0:</code> call <code>display_numbered_list(hazards_list, 'HAZARDS ENCOUNTERED')</code>; else print a small 'None - Lucky traveler!' block with the same title/divider/blank-line shape</li>
+      <li><strong>For hazards</strong>, handle the empty case specially: <code>if len(hazards_list) &gt; 0:</code> call <code>display_numbered_list(hazards_list, 'HAZARDS ENCOUNTERED')</code>; else print the same title and divider, then <code>print('  None - Lucky traveler!')</code> (indented two spaces, like a list item, but no number), then <code>print()</code></li>
       <li><strong>Verify the Trip Summary order</strong>: Driver, Final City, totals, status, blank, YOUR ROUTE block, HAZARDS ENCOUNTERED block, divider, blank, then play-again prompt</li>
     </ol>
     <div class="lc-code-block">

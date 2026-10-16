@@ -356,11 +356,11 @@
         },
         {
           "type": "code_block",
-          "code": "# Add temporarily to function_library.py's main() for testing:\ntest_names = ['hazard1', 'hazard2']\ntest_heads = ['escape1', 'escape2']\ntest_tails = ['delay1', 'delay2']\nresult = get_random_hazard(test_names, test_heads, test_tails)\nprint(f'  get_random_hazard test => {result}')"
+          "code": "# Add temporarily inside the if __name__ == '__main__': block for testing:\ntest_names = ['hazard1', 'hazard2']\ntest_heads = ['escape1', 'escape2']\ntest_tails = ['delay1', 'delay2']\nresult = get_random_hazard(test_names, test_heads, test_tails)\nprint(f'  get_random_hazard test => {result}')"
         },
         {
           "type": "text",
-          "body": "<strong>Step 2:</strong> Run <code>function_library.py</code> directly: <code>python3 function_library.py</code>. You should see one of <code>('hazard1', 'escape1', 'delay1')</code> or <code>('hazard2', 'escape2', 'delay2')</code>. Run it a few times. Both options should appear. Delete the test block after you're confident."
+          "body": "<strong>Step 2:</strong> Run <code>function_library.py</code> directly. If your test block also runs earlier tests that ask for input, answer those prompts first. You should see one of <code>('hazard1', 'escape1', 'delay1')</code> or <code>('hazard2', 'escape2', 'delay2')</code>. Run it a few times. Both options should appear. Delete the test block after you're confident."
         },
         {
           "type": "h3",
@@ -429,11 +429,14 @@
         {
           "type": "instructions",
           "items": [
-            "<strong>Find the hazard block</strong> in <code>main()</code>'s in-game loop, the part inside <code>if function_library.check_percentage(HAZARD_CHANCE):</code>. There's a <code>random.randint(1, 3)</code> followed by an <code>if/elif/else</code> chain that sets <code>hazard</code>, <code>heads_msg</code>, and <code>tails_msg</code>",
-            "<strong>Delete the <code>random.randint(1, 3)</code></strong> and the entire if/elif/else block. Keep the <code>print()</code>, <code>print('*** HAZARD! ***')</code>, and the <code>hazards_faced</code> increment that come before it",
-            "<strong>Replace them with one call</strong>: <code>hazard, heads_msg, tails_msg = function_library.get_random_hazard(HAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS)</code>",
-            "<strong>Keep the rest unchanged</strong>: the <code>print(hazard)</code>, the <code>hazards_list.append(hazard)</code>, the escape coin flip, and the <code>print(heads_msg)</code>/<code>print(tails_msg)</code> branches all stay as-is"
+            "<strong>Find the hazard block</strong> in <code>main()</code>'s in-game loop: everything indented under <code>if function_library.check_percentage(HAZARD_CHANCE):</code>. Your version may pick the hazard with <code>random.randint(1, 3)</code> and an <code>if/elif/else</code>, and it may print the name, flip the coin, and print the messages inside each branch. Any of those shapes is fine as a starting point",
+            "<strong>Replace everything under that <code>if</code></strong> with the block below, so your hazard block matches it exactly. One call to <code>get_random_hazard()</code> picks the hazard and both messages; everything after it runs once, no matter which hazard fired",
+            "<strong>Check the four things the block must still do</strong>: print the hazard name, append it to <code>hazards_list</code>, flip the coin and print the matching message, and add 1 to <code>hazards_escaped</code> on HEADS. If any of those lived inside your old branches, they now live here, once"
           ]
+        },
+        {
+          "type": "code_block",
+          "code": "if function_library.check_percentage(HAZARD_CHANCE):\n    hazards_faced = hazards_faced + 1\n    print()\n    print('*** HAZARD! ***')\n\n    hazard, heads_msg, tails_msg = (\n        function_library.get_random_hazard(\n            HAZARD_NAMES,\n            HAZARD_HEADS_MSGS,\n            HAZARD_TAILS_MSGS))\n    print(hazard)\n    hazards_list.append(hazard)\n\n    flip = function_library.flip_coin()\n    print(f'{flip}!')\n    if flip == 'HEADS':\n        print(heads_msg)\n        hazards_escaped = hazards_escaped + 1\n    else:\n        print(tails_msg)\n"
         },
         {
           "type": "h3",
@@ -641,7 +644,7 @@
         {
           "type": "instructions",
           "items": [
-            "<strong>In <code>main()</code>'s trip summary block</strong>, right after the sorted_hazards lines from CP5 (or just before, doesn't matter), add the unique-cities pattern",
+            "<strong>In <code>main()</code>'s trip summary block</strong>, right after the sorted_hazards lines from CP5 and BEFORE the YOUR ROUTE display, add the unique-cities pattern. The list has to exist before the line that prints its length, or you get <code>UnboundLocalError</code>",
             "<strong>Initialize an empty list</strong>: <code>unique_cities = []</code>",
             "<strong>Loop through <code>visited_cities</code></strong>: <code>for city in visited_cities:</code>",
             "<strong>Inside the loop, check membership</strong>: <code>if city not in unique_cities:</code> then <code>unique_cities.append(city)</code>",
@@ -762,10 +765,10 @@
             "<strong>At module level in <code>lab-3-3.py</code></strong>, define a new constant near the other constants: <code>REPORT_FILE = 'trip_report.txt'</code>",
             "<strong>Define <code>save_trip_report</code></strong> as shown in the skeleton. It takes 11 parameters in this order: <code>filename</code>, <code>player_name</code>, <code>current_city</code>, <code>total_miles</code>, <code>total_turns</code>, <code>total_hazards</code>, <code>total_escaped</code>, <code>visited_cities</code>, <code>unique_cities</code>, <code>sorted_hazards</code>, <code>status</code>",
             "<strong>Inside the function</strong>, open the file in <code>'w'</code> mode and write the five sections in order: HEADER, ROUTE, STATISTICS, HAZARDS, closing divider. Use <code>' -> '.join(visited_cities)</code> for the arrow-separated route string",
-            "<strong>Add one flag</strong> at the top of the play-again loop, next to <code>reached_beach = False</code> and <code>saved_and_quit = False</code>: <code>quit_without_saving = False</code>. It must reset at the start of <strong>every</strong> game, outside the <code>if not resumed_game:</code> block. Without it, the 'Trip Incomplete' path below crashes with <code>UnboundLocalError</code>",
+            "<strong>Add one flag</strong> at the top of the play-again loop, next to <code>reached_beach = False</code> and <code>saved_and_quit = False</code>: <code>quit_without_saving = False</code>. It must reset at the start of <strong>every</strong> game, outside the <code>if not resumed_game:</code> block. Without it, the 'Trip Incomplete' path below crashes with <code>UnboundLocalError</code>. If you don't have <code>reached_beach = False</code> there, add it too, and set <code>reached_beach = True</code> in the spot where the game detects arrival at Corpus Christi or Galveston (where it prints <code>CONGRATULATIONS! YOU REACHED THE BEACH!</code>)",
             "<strong>The status string</strong>: set this in <code>main()</code> based on the game outcome. Use <code>'BEACH WINNER!'</code> if they reached the beach, <code>'Quit without saving'</code> if they chose option 3 mid-trip, or <code>'Trip Incomplete'</code> otherwise",
             "<strong>In <code>main()</code></strong>, in the trip-summary block, set the <code>status</code> variable before displaying anything. Place it right where the existing <code>print(f'Status: ...')</code> logic is (or add that print if it's not there)",
-            "<strong>Replace the on-screen TRIP SUMMARY</strong> with the FINAL TRIP REPORT shown below the skeleton. This is a new layout, not an addition: <code>=</code> dividers top and bottom; Driver, Final City, and Status first; then YOUR ROUTE, the unique-cities line, HAZARDS ENCOUNTERED (A-Z), and a STATISTICS block with each line indented two spaces. The Escape Rate line prints only when Hazards Faced is more than 0, using <code>format(escape_rate, '.1f')</code>",
+            "<strong>Replace the on-screen TRIP SUMMARY</strong> with the FINAL TRIP REPORT shown below the skeleton. This is a new layout, not an addition: <code>=</code> dividers top and bottom; Driver, Final City, and Status first; then YOUR ROUTE, the unique-cities line, HAZARDS ENCOUNTERED (A-Z), and a STATISTICS block with each line indented two spaces. The Escape Rate line prints only when Hazards Faced is more than 0, using <code>format(escape_rate, '.1f')</code>. STATISTICS isn't a numbered list, so print it line by line: <code>print('STATISTICS')</code>, <code>print('-' * len('STATISTICS'))</code>, then each stat. Nothing else prints between the closing <code>=</code> divider and the confirmation line in step 9",
             "<strong>Call <code>save_trip_report</code></strong> after all the on-screen displays but BEFORE the play-again prompt. Pass all 11 arguments including <code>REPORT_FILE</code>, <code>unique_cities</code>, and <code>sorted_hazards</code> that you computed in CP5 and CP6",
             "<strong>Print a confirmation</strong>: <code>print(f'Trip report saved to {REPORT_FILE}.')</code> followed by <code>print()</code>",
             "<strong>No y/n prompt.</strong> The report saves every game, automatically"
