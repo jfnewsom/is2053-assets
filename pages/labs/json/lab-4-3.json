@@ -152,7 +152,7 @@
   },
   "beforeYouBegin": {
     "intro": "Lab 4.3 is the MASTER unit. About half the work is in the lab file this time: the library gets one new function (<code>load_trivia</code>), but the lab file changes in five places: constants, startup, in-game gate, per-game state, and the trip report. <code>[NEW]</code> tags show what's added. <code>[REPLACED]</code> tags show what swaps out. <code>[RETIRED]</code> tags show what gets deleted entirely.",
-    "architecture": "# ---- IN function_library.py ----\nall 4.2 functions                                           [KEEP from 4.2]\nload_trivia(filename) -> dict[city] -> list of Q/A dicts    [NEW-CP1]\n\n# ---- IN lab-4-3.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE, INFO_FILE, HAZARDS_FILE, REPORT_FILE        [KEEP from 4.2]\nTRIVIA_FILE = 'trivia.txt'                                  [NEW-CP1]\nMILES_MULTIPLIER, HAZARD_CHANCE                             [KEEP from 4.2]\n\ntrivia_gate(dest, trivia, current, distances)               [NEW-CP2]\nsave_trip_report(...) +trivia_asked +trivia_correct         [REPLACED-CP7]\n\n# ---- main() ----\ndistances = load_city_distances(...)                        [KEEP from 4.2]\ncity_info = load_city_info(...)                             [KEEP from 4.2]\nhazards   = load_hazards(...)                               [KEEP from 4.2]\ntrivia    = load_trivia(TRIVIA_FILE)                        [NEW-CP1]\n\nMAIN MENU LOOP                                              [KEEP from 4.2]\n  PLAY-AGAIN LOOP                                           [KEEP from 4.2]\n    │\n    │─ Per-game init:\n    │     trivia_asked = 0, trivia_correct = 0           [NEW-CP7]\n    │     unique_cities = set(visited_cities)             [NEW-CP4]\n    │     unique_hazards = set(hazards_list)              [NEW-CP5]\n    │\n    IN-GAME LOOP                                            [KEEP from 4.2]\n      │\n      │─ Coin-flip Destination Gate                    [RETIRED-CP3]\n      │─ destination, distance, correct =\n      │     trivia_gate(wanted, trivia, ...)             [NEW-CP3]\n      │     trivia_asked += 1, trivia_correct += correct\n      │\n      │─ D20 travel loop\n      │     │─ if hazard: handle_hazard            [KEEP from 4.2]\n      │     │     hazards_list.append(name)\n      │     │     unique_hazards.add(name)            [NEW-CP5]\n      │\n      │─ Arrival:\n      │     visited_cities.append(current_city)\n      │     unique_cities.add(current_city)              [NEW-CP4]\n      │\n      │─ Continue / Save & quit / Quit               [KEEP from 4.2]\n    \n    Trip report on screen + trip_report.txt:\n      ROUTE                                                 [KEEP from 4.2]\n      Unique cities = len(unique_cities)                    [REPLACED-CP6]\n      HAZARDS = sorted(unique_hazards)                      [REPLACED-CP6]\n      STATISTICS                                            [KEEP from 4.2]\n      TRIVIA: asked / correct / accuracy                    [NEW-CP7]\n"
+    "architecture": "# ---- IN function_library.py ----\nall 4.2 functions                                           [KEEP from 4.2]\nload_trivia(filename) -> dict[city] -> list of Q/A dicts    [NEW-CP1]\n\n# ---- IN lab-4-3.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE, INFO_FILE, HAZARDS_FILE, REPORT_FILE        [KEEP from 4.2]\nTRIVIA_FILE = 'trivia.txt'                                  [NEW-CP1]\nMILES_MULTIPLIER, HAZARD_CHANCE                             [KEEP from 4.2]\n\ntrivia_gate(dest, trivia, current, distances)               [NEW-CP2]\nsave_trip_report(...) +trivia_asked +trivia_correct         [REPLACED-CP7]\n\n# ---- main() ----\ndistances = load_city_distances(...)                        [KEEP from 4.2]\ncity_info = load_city_info(...)                             [KEEP from 4.2]\nhazards   = load_hazards(...)                               [KEEP from 4.2]\ntrivia    = load_trivia(TRIVIA_FILE)                        [NEW-CP1]\n\nMAIN MENU LOOP                                              [KEEP from 4.2]\n  PLAY-AGAIN LOOP                                           [KEEP from 4.2]\n    │\n    │─ Per-game init:\n    │     trivia_asked = 0, trivia_correct = 0           [NEW-CP3]\n    │     unique_cities = set(visited_cities)             [NEW-CP4]\n    │     unique_hazards = set(hazards_list)              [NEW-CP5]\n    │\n    IN-GAME LOOP                                            [KEEP from 4.2]\n      │\n      │─ Coin-flip Destination Gate                    [RETIRED-CP3]\n      │─ destination, distance, correct =\n      │     trivia_gate(wanted, trivia, ...)             [NEW-CP3]\n      │     trivia_asked += 1, trivia_correct += correct\n      │\n      │─ D20 travel loop\n      │     │─ if hazard: handle_hazard            [KEEP from 4.2]\n      │     │     hazards_list.append(name)\n      │     │     unique_hazards.add(name)            [NEW-CP5]\n      │\n      │─ Arrival:\n      │     visited_cities.append(current_city)\n      │     unique_cities.add(current_city)              [NEW-CP4]\n      │\n      │─ Continue / Save & quit / Quit               [KEEP from 4.2]\n    \n    Trip report on screen + trip_report.txt:\n      ROUTE                                                 [KEEP from 4.2]\n      Unique cities = len(unique_cities)                    [REPLACED-CP6]\n      HAZARDS = sorted(unique_hazards)                      [REPLACED-CP6]\n      STATISTICS                                            [KEEP from 4.2]\n      TRIVIA: asked / correct / accuracy                    [NEW-CP7]\n"
   },
   "checkpoints": [
     {
@@ -198,7 +198,7 @@
             "Pull out <code>city = parts[0]</code>, <code>question = parts[1]</code>, <code>answer = parts[2]</code>.",
             "If <code>city not in trivia:</code>, initialize <code>trivia[city] = []</code>. Then <code>trivia[city].append({'question': question, 'answer': answer})</code>.",
             "Close the file and return <code>trivia</code>.",
-            "In <code>main()</code>, add <code>trivia = function_library.load_trivia(TRIVIA_FILE)</code> after the hazards load. Print a load banner: <code>print(f'Loaded {total_questions} trivia questions across {len(trivia)} cities.')</code>"
+            "In <code>main()</code>, add <code>trivia = function_library.load_trivia(TRIVIA_FILE)</code> after the hazards load. Then count the questions with an accumulator loop: <code>total_questions = 0</code>, then <code>for city in trivia:</code> add <code>len(trivia[city])</code> to <code>total_questions</code>. Then print the load banner: <code>print(f'Loaded {total_questions} trivia questions across {len(trivia)} cities.')</code>"
           ]
         },
         {
@@ -239,7 +239,7 @@
         },
         {
           "type": "output_block",
-          "output": "Cities with trivia: 10\n  Austin: 3 questions\n  Corpus Christi: 1 questions\n  Dallas: 2 questions\n  El Paso: 1 questions\n  Fort Worth: 2 questions\n  Galveston: 1 questions\n  Houston: 4 questions\n  Laredo: 1 questions\n  San Antonio: 4 questions\n  Texarkana: 1 questions\nSample Austin question: {'question': 'Austin is the capital of Texas', 'answer': 'TRUE'}"
+          "output": "Cities with trivia: 10\n  Austin: 3 questions\n  Corpus Christi: 1 questions\n  Dallas: 2 questions\n  El Paso: 1 questions\n  Fort Worth: 2 questions\n  Galveston: 1 questions\n  Houston: 4 questions\n  Laredo: 1 questions\n  San Antonio: 4 questions\n  Texarkana: 1 questions\nSample Austin question: {'question': 'Austin is the Live Music Capital of the World', 'answer': 'TRUE'}"
         },
         {
           "type": "h3",
@@ -314,11 +314,11 @@
           "items": [
             "In <code>lab-4-3.py</code>, define <code>trivia_gate</code> at the top of the file, after the constants but before <code>save_trip_report</code>. Include a full docstring describing the four parameters and the 3-tuple return.",
             "Pick a random question for the destination: <code>q = random.choice(trivia[dest])</code>. You will need <code>import random</code> at the top of the lab file (the library already imports it for itself).",
-            "Print the banner: <code>'--- TRIVIA TIME! ---'</code>, then <code>f'To reach {dest}, answer this question:'</code>, then a blank line, then <code>f'  {q[\"question\"]}'</code>.",
+            "Print the banner block exactly: <code>print()</code>, <code>print('--- TRIVIA TIME! ---')</code>, <code>print('To reach ' + dest + ', answer this question:')</code>, <code>print()</code>, <code>print(f'  {q[\"question\"]}')</code>, <code>print()</code>.",
             "Read the player's answer: <code>answer = function_library.clean_input('TRUE or FALSE? ')</code>. <code>clean_input</code> handles case and whitespace.",
             "Normalize the answer. Accept <code>'T'</code> or <code>'TRUE'</code> as TRUE, <code>'F'</code> or <code>'FALSE'</code> as FALSE. Anything else counts as wrong: print <code>'Invalid answer! Counting as wrong.'</code> and set <code>player_answer = 'INVALID'</code>.",
-            "Compare: <code>if player_answer == q['answer']:</code> print the correct-answer banner and return <code>(dest, distances[current][dest], True)</code>.",
-            "Otherwise print the wrong-answer banner including the correct answer, call <code>function_library.get_redirect(current, distances, dest)</code> to pick a detour, print the detour, and return <code>(redirect, redirect_miles, False)</code>."
+            "Compare: <code>if player_answer == q['answer']:</code> <code>print('CORRECT! You earned your destination.')</code> and return <code>(dest, distances[current][dest], True)</code>.",
+            "Otherwise <code>print(f'WRONG. The answer was {q[\"answer\"]}.')</code>, call <code>redirect, redirect_miles = function_library.get_redirect(current, distances, dest)</code> to pick a detour, <code>print(f'Detour! You ended up going to {redirect} instead.')</code>, and return <code>(redirect, redirect_miles, False)</code>."
           ]
         },
         {
@@ -430,8 +430,9 @@
           "items": [
             "In <code>lab-4-3.py</code>, find the coin-flip Destination Gate block in the in-game loop. It currently has <code>print('Flipping to see if Texas cooperates...')</code> through the <code>print(f'Distance: {distance} miles')</code> line.",
             "Delete every line from <code>print('Flipping...')</code> through the <code>else:</code> branch's <code>destination, distance = function_library.get_redirect(...)</code>. The HEADS/TAILS branching is gone entirely.",
-            "Keep the line <code>print(f'You're headed to {destination}!')</code> and <code>print(f'Distance: {distance} miles')</code>. They still display the result.",
+            "Keep the lines <code>print(f'You\\'re headed to {destination}!')</code>, <code>print(f'Distance: {distance} miles')</code>, and the <code>print()</code> after them, unchanged. They still display the result. If your gate didn't have them, add them exactly as shown.",
             "Just before the print statements, add the trivia gate call. Get the wanted destination first: <code>wanted, _ = function_library.get_destination(current_city, distances, choice)</code>. Then call <code>destination, distance, correct = trivia_gate(wanted, trivia, current_city, distances)</code>.",
+            "Create the counters first. At the top of the play-again loop, outside the <code>if not resumed_game:</code> block and next to the four outcome flags, add <code>trivia_asked = 0</code> and <code>trivia_correct = 0</code>. They reset every game, including a resumed one.",
             "Increment <code>trivia_asked = trivia_asked + 1</code> after the gate. If <code>correct:</code> then <code>trivia_correct = trivia_correct + 1</code>.",
             "Run the program and play a full game. Confirm the coin-flip banner is gone, the trivia banner appears, and the game still travels to a destination (correct answer) or a detour (wrong answer)."
           ]
@@ -536,7 +537,7 @@
           "items": [
             "In <code>lab-4-3.py</code>, find the per-game state initialization block at the top of the play-again loop. It currently sets <code>current_city</code>, <code>total_miles</code>, etc.",
             "Just after the <code>if not resumed_game:</code> block (the one that resets the per-game counters), add: <code>unique_cities = set(visited_cities)</code>. This runs every iteration, including the resume case, and is correct in both: a fresh game starts with a 1-element set, a resume starts with as many elements as the loaded visited_cities list had.",
-            "Find every site where <code>visited_cities.append(...)</code> is called. There are three: arrival at a new destination, the dead-end return-to-SA branch, and (transitively) any other spot you've added cities. Mirror each <code>append</code> with <code>unique_cities.add(...)</code> right after it.",
+            "Find every site where <code>visited_cities.append(...)</code> is called. There are two: arrival at a new destination, and the dead-end return-to-San-Antonio branch. Mirror each <code>append</code> with <code>unique_cities.add(...)</code> right after it.",
             "Run the program. Play a multi-city game that includes a dead-end retreat (pick Laredo or Texarkana, then choose to return). Confirm the post-game <code>Unique cities visited:</code> count includes the dead-end city even though the player returned."
           ]
         },
@@ -566,7 +567,7 @@
         },
         {
           "type": "text",
-          "body": "Run a game where the player visits San Antonio, then Corpus Christi (a beach win). Confirm <code>Unique cities visited:</code> reports <code>2</code>. Then play a game where the player visits SA, Laredo (a dead end), and returns to SA, then quits. Confirm the count is <code>2</code>, not <code>3</code> (SA and Laredo are the unique ones; the return-to-SA doesn't double-count)."
+          "body": "Run a game where the player visits San Antonio, then Corpus Christi (a beach win). Confirm <code>Unique cities visited:</code> reports <code>2</code>. Then play a game where the player goes from SA to Laredo (a dead end), returns to SA, then goes to Corpus Christi. The route has four entries; confirm the count is <code>3</code>, not <code>4</code> (San Antonio, Laredo, and Corpus Christi; the return to SA doesn't double-count)."
         },
         {
           "type": "h3",
@@ -632,7 +633,7 @@
           "type": "instructions",
           "items": [
             "In the per-game state init block, right next to where you added <code>unique_cities</code>, add: <code>unique_hazards = set(hazards_list)</code>.",
-            "In the D20 hazard branch (where <code>hazards_list.append(hazard_name)</code> already runs), add <code>unique_hazards.add(hazard_name)</code> right after it.",
+            "In the D20 hazard branch (where <code>hazards_list.append(name)</code> already runs from Lab 4.2), add <code>unique_hazards.add(name)</code> right after it.",
             "Run the program. Play a game with multiple turns so you're likely to face several hazards. Confirm no crashes."
           ]
         },
@@ -728,7 +729,7 @@
             "Delete the <code>sorted_hazards = hazards_list.copy(); sorted_hazards.sort()</code> two-liner.",
             "Delete the <code>unique_cities = []; for city in visited_cities: if city not in unique_cities: unique_cities.append(city)</code> loop.",
             "Add two new one-liners: <code>sorted_unique_cities = sorted(unique_cities)</code> and <code>sorted_unique_hazards = sorted(unique_hazards)</code>.",
-            "Update the on-screen HAZARDS display to use <code>sorted_unique_hazards</code> and the title <code>'HAZARDS ENCOUNTERED (Unique, A-Z)'</code>.",
+            "Update the on-screen HAZARDS display to use <code>sorted_unique_hazards</code> and the title <code>'HAZARDS ENCOUNTERED (Unique, A-Z)'</code>. Update BOTH branches: the <code>display_numbered_list</code> call, and the no-hazards <code>else</code> branch, whose title and divider (<code>'-' * len('HAZARDS ENCOUNTERED (Unique, A-Z)')</code>) change too.",
             "Update the <code>save_trip_report</code> call to pass <code>sorted_unique_cities</code> and <code>sorted_unique_hazards</code> in place of the old variables."
           ]
         },
@@ -826,10 +827,10 @@
         {
           "type": "instructions",
           "items": [
-            "In <code>lab-4-3.py</code>, in the per-game state init block, add <code>trivia_asked = 0</code> and <code>trivia_correct = 0</code> alongside the other resettable counters. Note that these are session-only and reset on resume; a comment near the init can make this explicit.",
+            "You created <code>trivia_asked</code> and <code>trivia_correct</code> in CP3. Add a comment next to them noting that they reset every game, including on resume, and aren't saved to the save file.",
             "Extend the <code>save_trip_report</code> function signature to accept <code>trivia_asked</code> and <code>trivia_correct</code> as new parameters (between <code>sorted_hazards</code> and <code>status</code>).",
-            "Inside <code>save_trip_report</code>, after the STATISTICS block, write a new TRIVIA block: <code>'TRIVIA:'</code>, then <code>f'  Questions Asked: {trivia_asked}'</code>, <code>f'  Answered Correct: {trivia_correct}'</code>, and a conditional <code>f'  Accuracy: {accuracy:.1f}%'</code> when <code>trivia_asked > 0</code>.",
-            "Mirror the same TRIVIA block in the on-screen report between the STATISTICS block and the closing <code>=====</code> banner.",
+            "Inside <code>save_trip_report</code>, after the STATISTICS block, write a new TRIVIA block: <code>'TRIVIA:'</code>, then <code>f'  Questions Asked: {trivia_asked}'</code>, <code>f'  Answered Correct: {trivia_correct}'</code>. Then, only when <code>trivia_asked > 0</code>, compute it the same way as Escape Rate: <code>accuracy = (trivia_correct / trivia_asked) * 100</code>, <code>accuracy_str = format(accuracy, '.1f')</code>, and write <code>f'  Accuracy: {accuracy_str}%'</code>. End the block with a blank line.",
+            "Add the TRIVIA block to the on-screen report between the STATISTICS block and the closing <code>=</code> divider, shaped like the on-screen STATISTICS block: <code>print('TRIVIA')</code>, <code>print('-' * len('TRIVIA'))</code>, the same three indented lines (Accuracy only when <code>trivia_asked > 0</code>), then <code>print()</code>.",
             "Update the call site to pass the two new arguments: <code>save_trip_report(..., trivia_asked, trivia_correct, status)</code>.",
             "Update the docstring on <code>save_trip_report</code> to describe the new parameters."
           ]
@@ -906,7 +907,7 @@
       "<code>unique_cities</code> and <code>unique_hazards</code> are <code>set()</code> objects, initialized at every game start (including the resume path)",
       "Trip report's HAZARDS section reads <code>HAZARDS ENCOUNTERED (Unique, A-Z)</code> and shows each hazard at most once",
       "Trip report includes a TRIVIA section with Questions Asked, Answered Correct, and (when asked > 0) Accuracy %",
-      "<code>trip_report.txt</code> matches the on-screen report line-for-line",
+      "<code>trip_report.txt</code> has the same values as the on-screen report (the file keeps its own Lab 3.3 layout)",
       "Wrong trivia answer triggers <code>get_redirect</code> and the player ends up at a different destination",
       "Top-of-file comment block present on both files; docstrings on every function"
     ],

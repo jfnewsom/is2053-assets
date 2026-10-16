@@ -140,7 +140,7 @@
   },
   "beforeYouBegin": {
     "intro": "Lab 4.2 is mostly library work. The lab file changes in two places: the startup loads one more file, and the in-game hazard block collapses to a single function call. Everything else carries forward from 4.1. <code>[NEW]</code> tags show what's added this unit. <code>[REPLACED]</code> tags show what swaps out. <code>[RETIRED]</code> tags show what gets deleted. <code>[KEEP]</code> tags show what carries forward.",
-    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_destinations(city, distances)                       [KEEP from 4.1]\nget_destination(city, distances, choice)                    [KEEP from 4.1]\nget_redirect(city, distances, avoid)                        [KEEP from 4.1]\nis_win_city(city, city_info)                                [KEEP from 4.1]\nis_dead_end(city, city_info)                                [KEEP from 4.1]\nload_city_distances(filename), load_city_info(filename)     [KEEP from 4.1]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\n\nclean_input(prompt) -> strip + upper                        [NEW-CP2]\nget_valid_int(prompt, min_val, max_val)                     [REPLACED-CP3] now uses .isdigit()\nget_yes_no(prompt)                                          [REPLACED-CP4] now uses clean_input\nload_hazards(filename) -> list of dicts                     [NEW-CP1]\nhandle_hazard(hazards) -> (name, escaped)                   [NEW-CP5]\nget_random_hazard(...)                                      [RETIRED-CP5]\n\n# ---- IN lab-4-2.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE, INFO_FILE, REPORT_FILE                      [KEEP from 4.1]\nHAZARDS_FILE = 'hazards.txt'                                [NEW-CP6]\nMILES_MULTIPLIER = 10, HAZARD_CHANCE = 30                   [KEEP from 4.1]\n\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [RETIRED-CP6] now in hazards.txt\n\nsave_trip_report(filename, ...)                             [KEEP from 4.1]\n\n# ---- main() ----\ndistances = load_city_distances(...)                        [KEEP from 4.1]\ncity_info = load_city_info(...)                             [KEEP from 4.1]\nhazards   = load_hazards(HAZARDS_FILE)                      [NEW-CP6]\n\nMAIN MENU LOOP                                              [KEEP from 4.1]\n  PLAY-AGAIN LOOP                                           [KEEP from 4.1]\n    IN-GAME LOOP                                            [KEEP from 4.1]\n      │\n      │─ D20 travel loop\n      │     │─ if hazard triggers:\n      │     │     name, escaped = handle_hazard(hazards)   [REPLACED-CP6]\n      │     │     hazards_list.append(name)\n      │     │     if escaped: hazards_escaped += 1\n      │\n      │─ Continue / Save & quit / Quit                     [KEEP from 4.1]\n    \n    Trip report on screen + trip_report.txt                 [KEEP from 4.1]\n    Session accumulators                                    [KEEP from 4.1]\n"
+    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()                 [KEEP from 2.2]\nsave_game(...), load_game()                                 [KEEP from 3.2]\ndisplay_destinations(city, distances)                       [KEEP from 4.1]\nget_destination(city, distances, choice)                    [KEEP from 4.1]\nget_redirect(city, distances, avoid)                        [KEEP from 4.1]\nis_win_city(city, city_info)                                [KEEP from 4.1]\nis_dead_end(city, city_info)                                [KEEP from 4.1]\nload_city_distances(filename), load_city_info(filename)     [KEEP from 4.1]\ndisplay_numbered_list(items, title)                         [KEEP from 3.2]\n\nclean_input(prompt) -> strip + upper                        [NEW-CP2]\nget_valid_int(prompt, min_val, max_val)                     [REPLACED-CP3] now uses .isdigit()\nget_yes_no(prompt)                                          [REPLACED-CP4] now uses clean_input\nload_hazards(filename) -> list of dicts                     [NEW-CP1]\nhandle_hazard(hazards) -> (name, escaped)                   [NEW-CP5]\nget_random_hazard(...)                                      [RETIRED-CP6]\n\n# ---- IN lab-4-2.py ----\n\n# ---- CONSTANTS ----\nDISTANCES_FILE, INFO_FILE, REPORT_FILE                      [KEEP from 4.1]\nHAZARDS_FILE = 'hazards.txt'                                [NEW-CP6]\nMILES_MULTIPLIER = 10, HAZARD_CHANCE = 30                   [KEEP from 4.1]\n\nHAZARD_NAMES, HAZARD_HEADS_MSGS, HAZARD_TAILS_MSGS          [RETIRED-CP6] now in hazards.txt\n\nsave_trip_report(filename, ...)                             [KEEP from 4.1]\n\n# ---- main() ----\ndistances = load_city_distances(...)                        [KEEP from 4.1]\ncity_info = load_city_info(...)                             [KEEP from 4.1]\nhazards   = load_hazards(HAZARDS_FILE)                      [NEW-CP6]\n\nMAIN MENU LOOP                                              [KEEP from 4.1]\n  PLAY-AGAIN LOOP                                           [KEEP from 4.1]\n    IN-GAME LOOP                                            [KEEP from 4.1]\n      │\n      │─ D20 travel loop\n      │     │─ if hazard triggers:\n      │     │     name, escaped = handle_hazard(hazards)   [REPLACED-CP6]\n      │     │     hazards_list.append(name)\n      │     │     if escaped: hazards_escaped += 1\n      │\n      │─ Continue / Save & quit / Quit                     [KEEP from 4.1]\n    \n    Trip report on screen + trip_report.txt                 [KEEP from 4.1]\n    Session accumulators                                    [KEEP from 4.1]\n"
   },
   "checkpoints": [
     {
@@ -403,7 +403,7 @@
             "New body: declare <code>valid = False</code> and <code>value = 0</code> as initial state.",
             "Open a <code>while not valid:</code> loop.",
             "Inside the loop, get <code>user_input = input(prompt).strip()</code>. Strip handles trailing whitespace.",
-            "Check <code>if user_input.isdigit():</code>. If yes, cast to <code>int</code> and check the range. Set <code>valid = True</code> if in range, otherwise print a friendly out-of-range message.",
+            "Check <code>if user_input.isdigit():</code>. If yes, cast to <code>int</code> and check the range. Set <code>valid = True</code> if in range, otherwise print your existing out-of-range message, unchanged: <code>f'ERROR: Enter a number between {min_val} and {max_val}.'</code>",
             "Add an <code>elif</code> branch for negative numbers: <code>elif user_input.startswith('-') and user_input[1:].isdigit():</code> casts and range-checks the same way. The road trip game never uses negatives, but the library function should handle them in case future labs do.",
             "Add an <code>else</code> branch that prints <code>'ERROR: Please enter a valid whole number.'</code> with no value-set. The loop reprompts.",
             "Outside the loop, <code>return value</code>.",
@@ -511,7 +511,7 @@
             "Replace the first <code>answer = input(prompt)</code> with <code>answer = clean_input(prompt)</code>.",
             "Replace the 4-way comparison loop condition with <code>while answer != 'Y' and answer != 'N':</code>.",
             "Replace the loop-body re-read with <code>answer = clean_input(prompt)</code>.",
-            "Replace the final return with <code>return answer == 'Y'</code>: one comparison instead of two.",
+            "Replace the code at the end that returns <code>True</code> or <code>False</code> (a single <code>return</code> or an <code>if/else</code>) with <code>return answer == 'Y'</code>: one comparison instead of two.",
             "Update the docstring to mention that the rewrite uses <code>clean_input</code>."
           ]
         },
@@ -611,10 +611,10 @@
             "In <code>function_library.py</code>, in the <code>HAZARD FUNCTIONS</code> section you started in CP1, add a second function: <code>handle_hazard(hazards)</code> with a full docstring.",
             "Inside the function, pick a random hazard with <code>hazard = random.choice(hazards)</code>.",
             "Print <code>'*** HAZARD! ***'</code> and then <code>hazard['name']</code> on the next line.",
-            "Flip the escape coin with <code>flip = flip_coin()</code>. Print the result.",
+            "Flip the escape coin with <code>flip = flip_coin()</code>. Print the result exactly as your game already does: <code>print(f'{flip}!')</code>.",
             "If <code>flip == 'HEADS'</code>: print <code>hazard['heads']</code> and return <code>(hazard['name'], True)</code>.",
             "Otherwise print <code>hazard['tails']</code> and return <code>(hazard['name'], False)</code>.",
-            "Delete the old <code>get_random_hazard</code> function from the library entirely. Do not leave it commented out."
+            "Leave <code>get_random_hazard</code> in the library for now. Your game still calls it, so deleting it here would break every game where a hazard fires. It retires in CP6, once nothing calls it."
           ]
         },
         {
@@ -675,7 +675,7 @@
           "items": [
             "<code>handle_hazard</code> defined in the <code>HAZARD FUNCTIONS</code> section",
             "Five DEBUG runs produce five different hazards (with high probability) and a mix of HEADS/TAILS",
-            "<code>get_random_hazard</code> is deleted from the library",
+            "<code>get_random_hazard</code> is still in the library (it retires in CP6)",
             "Docstring describes the return tuple"
           ]
         }
@@ -710,9 +710,14 @@
             "In <code>lab-4-2.py</code>, add <code>HAZARDS_FILE = 'hazards.txt'</code> to the constants block alongside <code>DISTANCES_FILE</code> and <code>INFO_FILE</code>.",
             "Delete the three module-level lists <code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code> entirely. The accompanying comment block goes with them.",
             "In <code>main()</code>'s data-loading block, add <code>hazards = function_library.load_hazards(HAZARDS_FILE)</code> after the two existing load calls. Add a print line: <code>print(f'Loaded {len(hazards)} possible hazards.')</code>.",
-            "Find the inline hazard block in the in-game loop. It currently has the <code>if check_percentage(HAZARD_CHANCE):</code> guard followed by 12 lines of orchestration. Replace those 12 lines with: <code>name, escaped = function_library.handle_hazard(hazards)</code>, then <code>hazards_list.append(name)</code>, then <code>if escaped: hazards_escaped = hazards_escaped + 1</code>.",
-            "Run the program and play a full game. Confirm hazards still fire at roughly 30% per turn, that the trip report's HAZARDS section shows the hazard names correctly, and that the escape count makes sense relative to the faced count."
+            "Find the hazard block in the in-game loop: everything under <code>if function_library.check_percentage(HAZARD_CHANCE):</code>. Replace it with the block below so yours matches exactly. <code>handle_hazard</code> now prints the banner, the hazard name, the flip, and the message, so those lines leave the lab file. Two lines stay: <code>hazards_faced = hazards_faced + 1</code> and the <code>print()</code> before the banner. Drop either one and the trip report shows the wrong count or a missing blank line",
+            "Now that nothing calls it, delete <code>get_random_hazard</code> from <code>function_library.py</code> entirely. Do not leave it commented out.",
+            "Run the program and play a full game. Confirm hazards still fire at roughly 30% per turn, that the trip report's HAZARDS section shows the hazard names correctly, and that Hazards Faced is never smaller than Hazards Escaped."
           ]
+        },
+        {
+          "type": "code_block",
+          "code": "if function_library.check_percentage(HAZARD_CHANCE):\n    hazards_faced = hazards_faced + 1\n    print()\n    name, escaped = function_library.handle_hazard(hazards)\n    hazards_list.append(name)\n    if escaped:\n        hazards_escaped = hazards_escaped + 1\n"
         },
         {
           "type": "h3",
@@ -814,7 +819,7 @@
           "items": [
             "Run the program. Play a complete game to the beach via Corpus Christi (choice 1 from San Antonio). Let the D20 mechanic carry you forward; you should hit a few hazards along the way.",
             "Read the on-screen trip report. Verify the HAZARDS ENCOUNTERED section shows hazards by name only (e.g., <code>1. Buc-ee's appears!</code>), alphabetically sorted.",
-            "Open <code>trip_report.txt</code> from the same folder. Verify the same shape and ordering. The file output should match the on-screen output line-for-line.",
+            "Open <code>trip_report.txt</code> from the same folder. The file keeps its Lab 3.3 layout (its own header, the arrow-separated ROUTE line, and bulleted hazards), so it won't look like the screen. Verify its HAZARDS section lists the same names in the same alphabetical order.",
             "Play a quick second game that ends in a dead end. Confirm the trip report still writes correctly with the 'Dead End' status.",
             "Save-and-quit at a non-beach city. Confirm <code>trip_report.txt</code> is NOT overwritten on save-and-quit (the file from the previous game should still be there)."
           ]
@@ -872,7 +877,7 @@
           "type": "instructions",
           "items": [
             "On-screen trip report shows hazards by name, alphabetically",
-            "<code>trip_report.txt</code> matches the on-screen version line-for-line",
+            "<code>trip_report.txt</code> lists the same hazards, in the same order, as the screen",
             "Dead-end status writes the correct status string",
             "Save-and-quit does not overwrite the trip report from a prior completed game"
           ]
@@ -887,7 +892,7 @@
       "<code>lab-4-2.py</code> defines <strong>six</strong> module-level constants including the new <code>HAZARDS_FILE</code>",
       "The three inline hazard parallel lists from Lab 4.1 are deleted from <code>lab-4-2.py</code>, gone, not commented out",
       "<code>main()</code> loads three data files at startup; the load banner reports 10 cities, 10 info records, and 8 hazards",
-      "Hazard block in the in-game loop is one call: <code>name, escaped = function_library.handle_hazard(hazards)</code>",
+      "Hazard block in the in-game loop is one call, <code>name, escaped = function_library.handle_hazard(hazards)</code>, plus the counter, the append, and the escape check",
       "Mixed-case y/n input works at every yes-or-no prompt: <code>y</code> and <code>Y</code> both behave the same way, as do <code>n</code> and <code>N</code>",
       "Typing <code>abc</code> at a numeric prompt no longer crashes the program",
       "Top-of-file comment block present on both files; docstrings on every function"

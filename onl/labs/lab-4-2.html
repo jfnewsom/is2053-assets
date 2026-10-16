@@ -224,7 +224,7 @@
 <span class="lc-arch-fn">get_yes_no(prompt)</span>                                          <span class="lc-arch-replaced">[REPLACED-CP4]</span> now uses clean_input
 <span class="lc-arch-fn">load_hazards(filename)</span> -&gt; list of dicts                     <span class="lc-arch-new">[NEW-CP1]</span>
 <span class="lc-arch-fn">handle_hazard(hazards)</span> -&gt; (name, escaped)                   <span class="lc-arch-new">[NEW-CP5]</span>
-<span class="lc-arch-fn">get_random_hazard(...)</span>                                      [RETIRED-CP5]
+<span class="lc-arch-fn">get_random_hazard(...)</span>                                      [RETIRED-CP6]
 
 # ---- IN lab-4-2.py ----
 
@@ -524,7 +524,7 @@ result <span class="sy-op">=</span> clean_input<span class="sy-op">(</span><span
       <li>New body: declare <code>valid = False</code> and <code>value = 0</code> as initial state.</li>
       <li>Open a <code>while not valid:</code> loop.</li>
       <li>Inside the loop, get <code>user_input = input(prompt).strip()</code>. Strip handles trailing whitespace.</li>
-      <li>Check <code>if user_input.isdigit():</code>. If yes, cast to <code>int</code> and check the range. Set <code>valid = True</code> if in range, otherwise print a friendly out-of-range message.</li>
+      <li>Check <code>if user_input.isdigit():</code>. If yes, cast to <code>int</code> and check the range. Set <code>valid = True</code> if in range, otherwise print your existing out-of-range message, unchanged: <code>f'ERROR: Enter a number between {min_val} and {max_val}.'</code></li>
       <li>Add an <code>elif</code> branch for negative numbers: <code>elif user_input.startswith('-') and user_input[1:].isdigit():</code> casts and range-checks the same way. The road trip game never uses negatives, but the library function should handle them in case future labs do.</li>
       <li>Add an <code>else</code> branch that prints <code>'ERROR: Please enter a valid whole number.'</code> with no value-set. The loop reprompts.</li>
       <li>Outside the loop, <code>return value</code>.</li>
@@ -628,7 +628,7 @@ result <span class="sy-op">=</span> clean_input<span class="sy-op">(</span><span
       <li>Replace the first <code>answer = input(prompt)</code> with <code>answer = clean_input(prompt)</code>.</li>
       <li>Replace the 4-way comparison loop condition with <code>while answer != 'Y' and answer != 'N':</code>.</li>
       <li>Replace the loop-body re-read with <code>answer = clean_input(prompt)</code>.</li>
-      <li>Replace the final return with <code>return answer == 'Y'</code>: one comparison instead of two.</li>
+      <li>Replace the code at the end that returns <code>True</code> or <code>False</code> (a single <code>return</code> or an <code>if/else</code>) with <code>return answer == 'Y'</code>: one comparison instead of two.</li>
       <li>Update the docstring to mention that the rewrite uses <code>clean_input</code>.</li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
@@ -724,10 +724,10 @@ result <span class="sy-op">=</span> clean_input<span class="sy-op">(</span><span
       <li>In <code>function_library.py</code>, in the <code>HAZARD FUNCTIONS</code> section you started in CP1, add a second function: <code>handle_hazard(hazards)</code> with a full docstring.</li>
       <li>Inside the function, pick a random hazard with <code>hazard = random.choice(hazards)</code>.</li>
       <li>Print <code>'*** HAZARD! ***'</code> and then <code>hazard['name']</code> on the next line.</li>
-      <li>Flip the escape coin with <code>flip = flip_coin()</code>. Print the result.</li>
+      <li>Flip the escape coin with <code>flip = flip_coin()</code>. Print the result exactly as your game already does: <code>print(f'{flip}!')</code>.</li>
       <li>If <code>flip == 'HEADS'</code>: print <code>hazard['heads']</code> and return <code>(hazard['name'], True)</code>.</li>
       <li>Otherwise print <code>hazard['tails']</code> and return <code>(hazard['name'], False)</code>.</li>
-      <li>Delete the old <code>get_random_hazard</code> function from the library entirely. Do not leave it commented out.</li>
+      <li>Leave <code>get_random_hazard</code> in the library for now. Your game still calls it, so deleting it here would break every game where a hazard fires. It retires in CP6, once nothing calls it.</li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
@@ -792,7 +792,7 @@ hazards <span class="sy-op">=</span> load_hazards<span class="sy-op">(</span><sp
     <ol>
       <li><code>handle_hazard</code> defined in the <code>HAZARD FUNCTIONS</code> section</li>
       <li>Five DEBUG runs produce five different hazards (with high probability) and a mix of HEADS/TAILS</li>
-      <li><code>get_random_hazard</code> is deleted from the library</li>
+      <li><code>get_random_hazard</code> is still in the library (it retires in CP6)</li>
       <li>Docstring describes the return tuple</li>
     </ol>
     </div>
@@ -816,9 +816,20 @@ hazards <span class="sy-op">=</span> load_hazards<span class="sy-op">(</span><sp
       <li>In <code>lab-4-2.py</code>, add <code>HAZARDS_FILE = 'hazards.txt'</code> to the constants block alongside <code>DISTANCES_FILE</code> and <code>INFO_FILE</code>.</li>
       <li>Delete the three module-level lists <code>HAZARD_NAMES</code>, <code>HAZARD_HEADS_MSGS</code>, <code>HAZARD_TAILS_MSGS</code> entirely. The accompanying comment block goes with them.</li>
       <li>In <code>main()</code>'s data-loading block, add <code>hazards = function_library.load_hazards(HAZARDS_FILE)</code> after the two existing load calls. Add a print line: <code>print(f'Loaded {len(hazards)} possible hazards.')</code>.</li>
-      <li>Find the inline hazard block in the in-game loop. It currently has the <code>if check_percentage(HAZARD_CHANCE):</code> guard followed by 12 lines of orchestration. Replace those 12 lines with: <code>name, escaped = function_library.handle_hazard(hazards)</code>, then <code>hazards_list.append(name)</code>, then <code>if escaped: hazards_escaped = hazards_escaped + 1</code>.</li>
-      <li>Run the program and play a full game. Confirm hazards still fire at roughly 30% per turn, that the trip report's HAZARDS section shows the hazard names correctly, and that the escape count makes sense relative to the faced count.</li>
+      <li>Find the hazard block in the in-game loop: everything under <code>if function_library.check_percentage(HAZARD_CHANCE):</code>. Replace it with the block below so yours matches exactly. <code>handle_hazard</code> now prints the banner, the hazard name, the flip, and the message, so those lines leave the lab file. Two lines stay: <code>hazards_faced = hazards_faced + 1</code> and the <code>print()</code> before the banner. Drop either one and the trip report shows the wrong count or a missing blank line</li>
+      <li>Now that nothing calls it, delete <code>get_random_hazard</code> from <code>function_library.py</code> entirely. Do not leave it commented out.</li>
+      <li>Run the program and play a full game. Confirm hazards still fire at roughly 30% per turn, that the trip report's HAZARDS section shows the hazard names correctly, and that Hazards Faced is never smaller than Hazards Escaped.</li>
     </ol>
+    <div class="lc-code-block">
+      <pre><span class="sy-kw">if</span> function_library<span class="sy-op">.</span>check_percentage<span class="sy-op">(</span>HAZARD_CHANCE<span class="sy-op">)</span><span class="sy-op">:</span>
+    hazards_faced <span class="sy-op">=</span> hazards_faced <span class="sy-op">+</span> <span class="sy-num">1</span>
+    <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span>
+    name<span class="sy-op">,</span> escaped <span class="sy-op">=</span> function_library<span class="sy-op">.</span>handle_hazard<span class="sy-op">(</span>hazards<span class="sy-op">)</span>
+    hazards_list<span class="sy-op">.</span>append<span class="sy-op">(</span>name<span class="sy-op">)</span>
+    <span class="sy-kw">if</span> escaped<span class="sy-op">:</span>
+        hazards_escaped <span class="sy-op">=</span> hazards_escaped <span class="sy-op">+</span> <span class="sy-num">1</span>
+</pre>
+    </div>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
       <div class="lc-callout__icon">
@@ -916,7 +927,7 @@ hazards <span class="sy-op">=</span> load_hazards<span class="sy-op">(</span><sp
     <ol>
       <li>Run the program. Play a complete game to the beach via Corpus Christi (choice 1 from San Antonio). Let the D20 mechanic carry you forward; you should hit a few hazards along the way.</li>
       <li>Read the on-screen trip report. Verify the HAZARDS ENCOUNTERED section shows hazards by name only (e.g., <code>1. Buc-ee's appears!</code>), alphabetically sorted.</li>
-      <li>Open <code>trip_report.txt</code> from the same folder. Verify the same shape and ordering. The file output should match the on-screen output line-for-line.</li>
+      <li>Open <code>trip_report.txt</code> from the same folder. The file keeps its Lab 3.3 layout (its own header, the arrow-separated ROUTE line, and bulleted hazards), so it won't look like the screen. Verify its HAZARDS section lists the same names in the same alphabetical order.</li>
       <li>Play a quick second game that ends in a dead end. Confirm the trip report still writes correctly with the 'Dead End' status.</li>
       <li>Save-and-quit at a non-beach city. Confirm <code>trip_report.txt</code> is NOT overwritten on save-and-quit (the file from the previous game should still be there).</li>
     </ol>
@@ -974,7 +985,7 @@ hazards <span class="sy-op">=</span> load_hazards<span class="sy-op">(</span><sp
     <div class="lc-h3 lc-h3--yellow">What You Should Have</div>
     <ol>
       <li>On-screen trip report shows hazards by name, alphabetically</li>
-      <li><code>trip_report.txt</code> matches the on-screen version line-for-line</li>
+      <li><code>trip_report.txt</code> lists the same hazards, in the same order, as the screen</li>
       <li>Dead-end status writes the correct status string</li>
       <li>Save-and-quit does not overwrite the trip report from a prior completed game</li>
     </ol>
@@ -1014,7 +1025,7 @@ hazards <span class="sy-op">=</span> load_hazards<span class="sy-op">(</span><sp
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label">Hazard block in the in-game loop is one call: <code>name, escaped = function_library.handle_hazard(hazards)</code></span>
+        <span class="lc-checklist__label">Hazard block in the in-game loop is one call, <code>name, escaped = function_library.handle_hazard(hazards)</code>, plus the counter, the append, and the escape check</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>

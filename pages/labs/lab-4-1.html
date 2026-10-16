@@ -304,7 +304,8 @@ MAIN MENU LOOP                                              [KEEP from 3.3]
     </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>Open <code>function_library.py</code>. At the bottom, add a new section header comment block titled <code>CITY DATA LOADERS</code>.</li>
+      <li>Put <code>city_distances.txt</code> and <code>city_info.txt</code> (from this lab's downloads) in your lab folder, next to <code>function_library.py</code>. Python looks for data files in the folder you run from.</li>
+      <li>Open <code>function_library.py</code>. Below your existing functions, but ABOVE the test <code>main()</code> and the <code>if __name__ == '__main__':</code> block at the very bottom, add a new section header comment block titled <code>CITY DATA LOADERS</code>. Anything added below that block doesn't exist yet when the test code runs.</li>
       <li>Define <code>load_city_distances(filename)</code> with a full docstring describing what it returns.</li>
       <li>Inside the function, create an empty dictionary called <code>distances</code>.</li>
       <li>Open the file with <code>infile = open(filename, 'r')</code>.</li>
@@ -537,9 +538,9 @@ Laredo type: DEAD_END</pre>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li>In <code>function_library.py</code>, find the <code>DESTINATION HELPERS</code> section from Lab 3.2.</li>
-      <li><strong>Rewrite</strong> <code>display_destinations</code>. New signature: <code>display_destinations(city, distances)</code>. Inside, loop over <code>distances[city]</code> with a 1-based counter, printing <code>{n}. {dest} - {miles} miles</code>. Return the number of destinations shown.</li>
+      <li><strong>Rewrite</strong> <code>display_destinations</code>. New signature: <code>display_destinations(city, distances)</code>. First print the header <code>print('From ' + city + ', you can travel to:')</code>. It replaces the old <code>Where would you like to go?</code> line, because the menu now comes from the data file and names the city. Then loop over <code>distances[city]</code> with a 1-based counter, printing <code>f'  {option_num}. {dest} - {miles} miles'</code> (two spaces before the number, same as before). Return the number of destinations shown.</li>
       <li><strong>Rewrite</strong> <code>get_destination</code>. New signature: <code>get_destination(city, distances, choice)</code>. Build a list of destination names from <code>list(distances[city].keys())</code>, index it with <code>choice - 1</code>, and return a tuple <code>(dest, distances[city][dest])</code>.</li>
-      <li><strong>Rewrite</strong> <code>get_redirect</code>. New signature: <code>get_redirect(city, distances, avoid)</code>. Build the options list the same way, remove <code>avoid</code> if present, pick a random remaining option, and return <code>(dest, distances[city][dest])</code>.</li>
+      <li><strong>Rewrite</strong> <code>get_redirect</code>. New signature: <code>get_redirect(city, distances, avoid)</code>. Build the options list the same way, remove <code>avoid</code> if present, pick a random remaining option, and return <code>(dest, distances[city][dest])</code>. Keep the fallback from Lab 3.2: if no options are left (the city has only one route), return that one route instead of picking from an empty list.</li>
       <li>Add a new section header comment <code>CITY-INFO TYPE CHECKS</code>.</li>
       <li>Define <code>is_win_city(city, city_info)</code>: return <code>True</code> if <code>city_info[city]['type'] == 'WIN'</code>.</li>
       <li>Define <code>is_dead_end(city, city_info)</code>: return <code>True</code> if the city's type is <code>'DEAD_END'</code> or <code>'WRONG_WAY'</code>. Both count as dead ends for gameplay purposes.</li>
@@ -767,13 +768,15 @@ Thanks for playing!</pre>
     <p>The in-game loop is identical in structure to Lab 3.3: pick a destination, flip the coin gate, travel by D20, check for hazards, check arrival type, decide next action. What changes is that every reference to a hardcoded city name moves out into the <code>city_info</code> dictionary lookup. A new city in the data file does not need any code changes here. That is the win.</p>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>Inside the main-menu loop's New Game branch, initialize: <code>current_city = 'San Antonio'</code>, <code>games_played = 0</code>, <code>session_miles = 0</code>, <code>session_hazards = 0</code>.</li>
-      <li>Open the play-again loop with <code>play_again = True</code>; <code>while play_again:</code>. Inside, reinitialize per-game state (<code>total_miles</code>, <code>total_turns</code>, <code>total_hazards</code>, <code>total_escaped</code>, <code>visited_cities</code>, <code>hazards_list</code>) unless this iteration is resuming a save.</li>
-      <li>Open the in-game loop with <code>playing = True</code>; <code>while playing:</code>. Inside, fetch the current city's info, print it with its tagline, then call <code>function_library.display_destinations(current_city, distances)</code>.</li>
+      <li>In the main-menu loop, right before the Load and New Game branches, set <code>resumed_game = False</code>. The Load branch sets it to <code>True</code> when a save loads.</li>
+      <li>Inside the New Game branch, after the name prompt, print the welcome block exactly: <code>print()</code>, <code>print(f'Welcome, {player_name}!')</code>, <code>print('You are in San Antonio. Your goal: reach the beach!')</code>, <code>print('Beach cities: Corpus Christi and Galveston.')</code>, <code>print()</code>. Then initialize <code>current_city = 'San Antonio'</code>, <code>games_played = 0</code>, <code>session_miles = 0</code>, <code>session_hazards = 0</code>.</li>
+      <li>Open the play-again loop with <code>play_again = True</code>; <code>while play_again:</code>. Inside, under <code>if not resumed_game:</code>, reset the per-game state: <code>current_city = 'San Antonio'</code>, <code>total_miles = 0</code>, <code>total_turns = 0</code>, <code>total_hazards = 0</code>, <code>total_escaped = 0</code>, <code>visited_cities = ['San Antonio']</code>, <code>hazards_list = []</code>. Every game starts in San Antonio.</li>
+      <li>Still inside the play-again loop, but outside that <code>if</code>, reset the four outcome flags every game: <code>reached_beach = False</code>, <code>saved_and_quit = False</code>, <code>quit_without_saving = False</code>, <code>hit_dead_end = False</code>. Then set <code>resumed_game = False</code>, so only the first game after a load resumes.</li>
+      <li>Open the in-game loop with <code>playing = True</code>; <code>while playing:</code>. The Lab 3.3 loop started with <code>get_city_data(current_city)</code>; delete that call. This lab doesn't use <code>get_city_data()</code>, the <code>SA_</code>/<code>HOU_</code>/<code>AUS_</code> lists, or the old distance constants, so don't bring them into <code>lab-4-1.py</code>. Instead, print the location: <code>info = city_info[current_city]</code>, <code>print(f'You are in: {current_city}')</code>, <code>print(f'  "{info["tagline"]}"')</code>, <code>print()</code>. Then call <code>num_choices = function_library.display_destinations(current_city, distances)</code>.</li>
       <li>Use <code>function_library.get_valid_int</code> to read the player's menu choice. Then flip the Destination Gate coin: on HEADS call <code>get_destination</code>, on TAILS call <code>get_destination</code> first to capture the wanted destination, then call <code>get_redirect</code> to pick a different destination instead.</li>
-      <li>Drop in the D20 travel loop from Lab 3.3 unchanged. Each turn: <code>roll = function_library.roll_d20()</code>, <code>miles_this_turn = roll * MILES_MULTIPLIER</code>, decrement <code>miles_remaining</code>, add to <code>total_miles</code>, and check for hazards via <code>function_library.check_percentage(HAZARD_CHANCE)</code>.</li>
-      <li>After arrival, update <code>current_city</code>, append to <code>visited_cities</code>, and check what kind of city you arrived at: if <code>is_win_city(current_city, city_info)</code> you reached the beach (set <code>reached_beach = True</code>, exit the in-game loop). If <code>is_dead_end(current_city, city_info)</code>, print the dead-end message and use <code>function_library.get_yes_no</code> to ask 'Return to San Antonio?'.</li>
-      <li>Otherwise print the 1/2/3 Continue / Save & quit / Quit without saving menu and dispatch accordingly. Save & quit calls <code>function_library.save_game(...)</code> with the 11-tuple.</li>
+      <li>Drop in the D20 travel loop from Lab 3.3 unchanged, including the <code>TRAVELING TO {destination.upper()}!</code> banner. Right before the loop, these four lines must be there: <code>miles_remaining = distance</code>, <code>leg_turns = 0</code>, <code>hazards_faced = 0</code>, <code>hazards_escaped = 0</code>. Each turn: <code>roll = function_library.roll_d20()</code>, <code>miles_this_turn = roll * MILES_MULTIPLIER</code>, decrement <code>miles_remaining</code>, add to <code>total_miles</code>, and check for hazards via <code>function_library.check_percentage(HAZARD_CHANCE)</code>.</li>
+      <li>After arrival, update <code>current_city</code>, append to <code>visited_cities</code>, and replace the Lab 3.3 beach and Austin checks with checks on the city type. If <code>is_win_city(current_city, city_info)</code>: print the CONGRATULATIONS banner from Lab 3.3 unchanged, set <code>reached_beach = True</code> and <code>playing = False</code>. If <code>is_dead_end(current_city, city_info)</code>: <code>print(f'{current_city} is a dead end!')</code>, <code>print(f'  "{city_info[current_city]["tagline"]}"')</code>, <code>print()</code>, then ask <code>function_library.get_yes_no('Return to San Antonio? (y/n): ')</code>. On y: <code>current_city = 'San Antonio'</code>, <code>visited_cities.append(current_city)</code>, <code>print()</code>. On n: <code>hit_dead_end = True</code> and <code>playing = False</code>.</li>
+      <li>Otherwise print the OPTIONS menu from Lab 3.3 unchanged (<code>OPTIONS:</code>, <code>  1. Continue journey</code>, <code>  2. Save and quit</code>, <code>  3. Quit without saving</code>) and dispatch accordingly. Save &amp; quit calls <code>function_library.save_game(...)</code> with the 11-tuple.</li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
@@ -1213,7 +1216,7 @@ Thanks for playing!</pre>
       </tr>
       <tr>
         <td></td>
-        <td><code class="lc-md__text">TRAVELING TO {destination}!</code></td>
+        <td><code class="lc-md__text">TRAVELING TO {destination.upper()}!</code></td>
       </tr>
       <tr>
         <td>D20 travel mechanic (carried forward from 3.3) 1</td>
@@ -1437,7 +1440,7 @@ You&#x27;re headed to Corpus Christi!
 Distance: 150 miles
 
 ==================================================
-TRAVELING TO Corpus Christi!
+TRAVELING TO CORPUS CHRISTI!
 ==================================================
 
 --- Turn 1 ---

@@ -23,10 +23,21 @@ complying with the scope its assignment enforces.
 WHAT THE RULES ENCODE
 Not arbitrary restriction. Deliberate staging, so each tool lands as a payoff:
 
-    .upper() / .lower()   withheld until Lab 4.2, whose docstring reads
-                          ".upper() finally arrives: clean_input() strips
-                          whitespace and uppercases user input". Lab 4.1 must
-                          feel the y/Y/n/N comparisons first.
+    .upper() / .lower()   withheld FOR INPUT CLEANING until Lab 4.2, whose
+                          docstring reads ".upper() finally arrives:
+                          clean_input() strips whitespace and uppercases user
+                          input". Lab 4.1 must feel the y/Y/n/N comparisons
+                          first.
+
+                          2026-10-16: .upper() is no longer banned in 4.1.
+                          The travel banner has used destination.upper()
+                          since Lab 2.3, and the string carry-forward rule
+                          says a printed string never changes without a strong
+                          reason, so carrying it into 4.1 must not cost points.
+                          The y/Y/n/N comparisons live in get_yes_no() in
+                          function_library.py, which 4.1's script never reads,
+                          so the ban on lab-4-1.py was protecting nothing.
+                          .lower() stays banned.
     set / set()           withheld until Lab 4.3. Lab 3.3 and Lab 4.1 build
                           unique-city lists by hand with `in`, which is the
                           work that makes a set feel like a gift later.
@@ -62,9 +73,10 @@ import sys
 #                   a guard stricter than the real one fails honest solutions.
 SCOPE = {
     'lab-4-1': {
-        'source': 'CodeGrade "Scope Check" custom-test, transcribed 2026-08-10',
+        'source': 'CodeGrade "Scope Check" custom-test, transcribed 2026-08-10; '
+                  '.upper() removed from the ban 2026-10-16',
         'files': ['lab-4-1.py'],
-        'banned_methods': ('upper', 'lower'),
+        'banned_methods': ('lower',),
         'ban_sets': True,
         'ban_classes': True,
     },

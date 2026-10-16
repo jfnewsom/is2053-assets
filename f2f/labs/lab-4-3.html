@@ -239,7 +239,7 @@ MAIN MENU LOOP                                              [KEEP from 4.2]
   PLAY-AGAIN LOOP                                           [KEEP from 4.2]
     │
     │─ Per-game init:
-    │     trivia_asked = 0, trivia_correct = 0           <span class="lc-arch-new">[NEW-CP7]</span>
+    │     trivia_asked = 0, trivia_correct = 0           <span class="lc-arch-new">[NEW-CP3]</span>
     │     unique_cities = <span class="lc-arch-fn">set(visited_cities)</span>             <span class="lc-arch-new">[NEW-CP4]</span>
     │     unique_hazards = <span class="lc-arch-fn">set(hazards_list)</span>              <span class="lc-arch-new">[NEW-CP5]</span>
     │
@@ -317,7 +317,7 @@ MAIN MENU LOOP                                              [KEEP from 4.2]
       <li>Pull out <code>city = parts[0]</code>, <code>question = parts[1]</code>, <code>answer = parts[2]</code>.</li>
       <li>If <code>city not in trivia:</code>, initialize <code>trivia[city] = []</code>. Then <code>trivia[city].append({'question': question, 'answer': answer})</code>.</li>
       <li>Close the file and return <code>trivia</code>.</li>
-      <li>In <code>main()</code>, add <code>trivia = function_library.load_trivia(TRIVIA_FILE)</code> after the hazards load. Print a load banner: <code>print(f'Loaded {total_questions} trivia questions across {len(trivia)} cities.')</code></li>
+      <li>In <code>main()</code>, add <code>trivia = function_library.load_trivia(TRIVIA_FILE)</code> after the hazards load. Then count the questions with an accumulator loop: <code>total_questions = 0</code>, then <code>for city in trivia:</code> add <code>len(trivia[city])</code> to <code>total_questions</code>. Then print the load banner: <code>print(f'Loaded {total_questions} trivia questions across {len(trivia)} cities.')</code></li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
@@ -375,7 +375,7 @@ trivia <span class="sy-op">=</span> load_trivia<span class="sy-op">(</span><span
   Laredo: 1 questions
   San Antonio: 4 questions
   Texarkana: 1 questions
-Sample Austin question: {&#x27;question&#x27;: &#x27;Austin is the capital of Texas&#x27;, &#x27;answer&#x27;: &#x27;TRUE&#x27;}</pre>
+Sample Austin question: {&#x27;question&#x27;: &#x27;Austin is the Live Music Capital of the World&#x27;, &#x27;answer&#x27;: &#x27;TRUE&#x27;}</pre>
     </div>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
     <div class="lc-table-wrap">
@@ -442,11 +442,11 @@ Sample Austin question: {&#x27;question&#x27;: &#x27;Austin is the capital of Te
     <ol>
       <li>In <code>lab-4-3.py</code>, define <code>trivia_gate</code> at the top of the file, after the constants but before <code>save_trip_report</code>. Include a full docstring describing the four parameters and the 3-tuple return.</li>
       <li>Pick a random question for the destination: <code>q = random.choice(trivia[dest])</code>. You will need <code>import random</code> at the top of the lab file (the library already imports it for itself).</li>
-      <li>Print the banner: <code>'--- TRIVIA TIME! ---'</code>, then <code>f'To reach {dest}, answer this question:'</code>, then a blank line, then <code>f'  {q["question"]}'</code>.</li>
+      <li>Print the banner block exactly: <code>print()</code>, <code>print('--- TRIVIA TIME! ---')</code>, <code>print('To reach ' + dest + ', answer this question:')</code>, <code>print()</code>, <code>print(f'  {q["question"]}')</code>, <code>print()</code>.</li>
       <li>Read the player's answer: <code>answer = function_library.clean_input('TRUE or FALSE? ')</code>. <code>clean_input</code> handles case and whitespace.</li>
       <li>Normalize the answer. Accept <code>'T'</code> or <code>'TRUE'</code> as TRUE, <code>'F'</code> or <code>'FALSE'</code> as FALSE. Anything else counts as wrong: print <code>'Invalid answer! Counting as wrong.'</code> and set <code>player_answer = 'INVALID'</code>.</li>
-      <li>Compare: <code>if player_answer == q['answer']:</code> print the correct-answer banner and return <code>(dest, distances[current][dest], True)</code>.</li>
-      <li>Otherwise print the wrong-answer banner including the correct answer, call <code>function_library.get_redirect(current, distances, dest)</code> to pick a detour, print the detour, and return <code>(redirect, redirect_miles, False)</code>.</li>
+      <li>Compare: <code>if player_answer == q['answer']:</code> <code>print('CORRECT! You earned your destination.')</code> and return <code>(dest, distances[current][dest], True)</code>.</li>
+      <li>Otherwise <code>print(f'WRONG. The answer was {q["answer"]}.')</code>, call <code>redirect, redirect_miles = function_library.get_redirect(current, distances, dest)</code> to pick a detour, <code>print(f'Detour! You ended up going to {redirect} instead.')</code>, and return <code>(redirect, redirect_miles, False)</code>.</li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
     <div class="lc-callout lc-callout--bookex">
@@ -558,8 +558,9 @@ result <span class="sy-op">=</span> trivia_gate<span class="sy-op">(</span><span
     <ol>
       <li>In <code>lab-4-3.py</code>, find the coin-flip Destination Gate block in the in-game loop. It currently has <code>print('Flipping to see if Texas cooperates...')</code> through the <code>print(f'Distance: {distance} miles')</code> line.</li>
       <li>Delete every line from <code>print('Flipping...')</code> through the <code>else:</code> branch's <code>destination, distance = function_library.get_redirect(...)</code>. The HEADS/TAILS branching is gone entirely.</li>
-      <li>Keep the line <code>print(f'You're headed to {destination}!')</code> and <code>print(f'Distance: {distance} miles')</code>. They still display the result.</li>
+      <li>Keep the lines <code>print(f'You\'re headed to {destination}!')</code>, <code>print(f'Distance: {distance} miles')</code>, and the <code>print()</code> after them, unchanged. They still display the result. If your gate didn't have them, add them exactly as shown.</li>
       <li>Just before the print statements, add the trivia gate call. Get the wanted destination first: <code>wanted, _ = function_library.get_destination(current_city, distances, choice)</code>. Then call <code>destination, distance, correct = trivia_gate(wanted, trivia, current_city, distances)</code>.</li>
+      <li>Create the counters first. At the top of the play-again loop, outside the <code>if not resumed_game:</code> block and next to the four outcome flags, add <code>trivia_asked = 0</code> and <code>trivia_correct = 0</code>. They reset every game, including a resumed one.</li>
       <li>Increment <code>trivia_asked = trivia_asked + 1</code> after the gate. If <code>correct:</code> then <code>trivia_correct = trivia_correct + 1</code>.</li>
       <li>Run the program and play a full game. Confirm the coin-flip banner is gone, the trivia banner appears, and the game still travels to a destination (correct answer) or a detour (wrong answer).</li>
     </ol>
@@ -661,7 +662,7 @@ result <span class="sy-op">=</span> trivia_gate<span class="sy-op">(</span><span
     <ol>
       <li>In <code>lab-4-3.py</code>, find the per-game state initialization block at the top of the play-again loop. It currently sets <code>current_city</code>, <code>total_miles</code>, etc.</li>
       <li>Just after the <code>if not resumed_game:</code> block (the one that resets the per-game counters), add: <code>unique_cities = set(visited_cities)</code>. This runs every iteration, including the resume case, and is correct in both: a fresh game starts with a 1-element set, a resume starts with as many elements as the loaded visited_cities list had.</li>
-      <li>Find every site where <code>visited_cities.append(...)</code> is called. There are three: arrival at a new destination, the dead-end return-to-SA branch, and (transitively) any other spot you've added cities. Mirror each <code>append</code> with <code>unique_cities.add(...)</code> right after it.</li>
+      <li>Find every site where <code>visited_cities.append(...)</code> is called. There are two: arrival at a new destination, and the dead-end return-to-San-Antonio branch. Mirror each <code>append</code> with <code>unique_cities.add(...)</code> right after it.</li>
       <li>Run the program. Play a multi-city game that includes a dead-end retreat (pick Laredo or Texarkana, then choose to return). Confirm the post-game <code>Unique cities visited:</code> count includes the dead-end city even though the player returned.</li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
@@ -697,7 +698,7 @@ result <span class="sy-op">=</span> trivia_gate<span class="sy-op">(</span><span
       </div>
     </div>
     <div class="lc-h3 lc-h3--yellow">Test Your Code</div>
-    <p>Run a game where the player visits San Antonio, then Corpus Christi (a beach win). Confirm <code>Unique cities visited:</code> reports <code>2</code>. Then play a game where the player visits SA, Laredo (a dead end), and returns to SA, then quits. Confirm the count is <code>2</code>, not <code>3</code> (SA and Laredo are the unique ones; the return-to-SA doesn't double-count).</p>
+    <p>Run a game where the player visits San Antonio, then Corpus Christi (a beach win). Confirm <code>Unique cities visited:</code> reports <code>2</code>. Then play a game where the player goes from SA to Laredo (a dead end), returns to SA, then goes to Corpus Christi. The route has four entries; confirm the count is <code>3</code>, not <code>4</code> (San Antonio, Laredo, and Corpus Christi; the return to SA doesn't double-count).</p>
     <div class="lc-h3 lc-h3--yellow">Tips &amp; Pitfalls</div>
     <div class="lc-table-wrap">
       <table class="lc-table">
@@ -747,7 +748,7 @@ result <span class="sy-op">=</span> trivia_gate<span class="sy-op">(</span><span
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li>In the per-game state init block, right next to where you added <code>unique_cities</code>, add: <code>unique_hazards = set(hazards_list)</code>.</li>
-      <li>In the D20 hazard branch (where <code>hazards_list.append(hazard_name)</code> already runs), add <code>unique_hazards.add(hazard_name)</code> right after it.</li>
+      <li>In the D20 hazard branch (where <code>hazards_list.append(name)</code> already runs from Lab 4.2), add <code>unique_hazards.add(name)</code> right after it.</li>
       <li>Run the program. Play a game with multiple turns so you're likely to face several hazards. Confirm no crashes.</li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
@@ -839,7 +840,7 @@ result <span class="sy-op">=</span> trivia_gate<span class="sy-op">(</span><span
       <li>Delete the <code>sorted_hazards = hazards_list.copy(); sorted_hazards.sort()</code> two-liner.</li>
       <li>Delete the <code>unique_cities = []; for city in visited_cities: if city not in unique_cities: unique_cities.append(city)</code> loop.</li>
       <li>Add two new one-liners: <code>sorted_unique_cities = sorted(unique_cities)</code> and <code>sorted_unique_hazards = sorted(unique_hazards)</code>.</li>
-      <li>Update the on-screen HAZARDS display to use <code>sorted_unique_hazards</code> and the title <code>'HAZARDS ENCOUNTERED (Unique, A-Z)'</code>.</li>
+      <li>Update the on-screen HAZARDS display to use <code>sorted_unique_hazards</code> and the title <code>'HAZARDS ENCOUNTERED (Unique, A-Z)'</code>. Update BOTH branches: the <code>display_numbered_list</code> call, and the no-hazards <code>else</code> branch, whose title and divider (<code>'-' * len('HAZARDS ENCOUNTERED (Unique, A-Z)')</code>) change too.</li>
       <li>Update the <code>save_trip_report</code> call to pass <code>sorted_unique_cities</code> and <code>sorted_unique_hazards</code> in place of the old variables.</li>
     </ol>
     <div class="lc-h3 lc-h3--yellow">BookEx Patterns</div>
@@ -934,10 +935,10 @@ result <span class="sy-op">=</span> trivia_gate<span class="sy-op">(</span><span
     </div>
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
-      <li>In <code>lab-4-3.py</code>, in the per-game state init block, add <code>trivia_asked = 0</code> and <code>trivia_correct = 0</code> alongside the other resettable counters. Note that these are session-only and reset on resume; a comment near the init can make this explicit.</li>
+      <li>You created <code>trivia_asked</code> and <code>trivia_correct</code> in CP3. Add a comment next to them noting that they reset every game, including on resume, and aren't saved to the save file.</li>
       <li>Extend the <code>save_trip_report</code> function signature to accept <code>trivia_asked</code> and <code>trivia_correct</code> as new parameters (between <code>sorted_hazards</code> and <code>status</code>).</li>
-      <li>Inside <code>save_trip_report</code>, after the STATISTICS block, write a new TRIVIA block: <code>'TRIVIA:'</code>, then <code>f'  Questions Asked: {trivia_asked}'</code>, <code>f'  Answered Correct: {trivia_correct}'</code>, and a conditional <code>f'  Accuracy: {accuracy:.1f}%'</code> when <code>trivia_asked > 0</code>.</li>
-      <li>Mirror the same TRIVIA block in the on-screen report between the STATISTICS block and the closing <code>=====</code> banner.</li>
+      <li>Inside <code>save_trip_report</code>, after the STATISTICS block, write a new TRIVIA block: <code>'TRIVIA:'</code>, then <code>f'  Questions Asked: {trivia_asked}'</code>, <code>f'  Answered Correct: {trivia_correct}'</code>. Then, only when <code>trivia_asked > 0</code>, compute it the same way as Escape Rate: <code>accuracy = (trivia_correct / trivia_asked) * 100</code>, <code>accuracy_str = format(accuracy, '.1f')</code>, and write <code>f'  Accuracy: {accuracy_str}%'</code>. End the block with a blank line.</li>
+      <li>Add the TRIVIA block to the on-screen report between the STATISTICS block and the closing <code>=</code> divider, shaped like the on-screen STATISTICS block: <code>print('TRIVIA')</code>, <code>print('-' * len('TRIVIA'))</code>, the same three indented lines (Accuracy only when <code>trivia_asked > 0</code>), then <code>print()</code>.</li>
       <li>Update the call site to pass the two new arguments: <code>save_trip_report(..., trivia_asked, trivia_correct, status)</code>.</li>
       <li>Update the docstring on <code>save_trip_report</code> to describe the new parameters.</li>
     </ol>
@@ -1051,7 +1052,7 @@ result <span class="sy-op">=</span> trivia_gate<span class="sy-op">(</span><span
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
-        <span class="lc-checklist__label"><code>trip_report.txt</code> matches the on-screen report line-for-line</span>
+        <span class="lc-checklist__label"><code>trip_report.txt</code> has the same values as the on-screen report (the file keeps its own Lab 3.3 layout)</span>
       </li>
       <li class="lc-checklist-item">
         <span class="lc-checklist__box"></span>
