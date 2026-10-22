@@ -89,7 +89,7 @@ echo ""
 echo "Checking for unwired or missing guards..."
 UNGUARDED=0
 for g in check_dates.py check_nav_modality.py check_pending.py \
-         check_provided_files.py check_scope.py check_style.py \
+         check_provided_files.py check_style.py \
          check_syllabus_links.py check_zoom_room.py \
          lab_lint.py verify_output.py message_digest.py; do
     if [ ! -e "$g" ]; then
@@ -134,11 +134,10 @@ if [ "$1" != "--no-guard" ]; then
     echo "Checking the Zoom room..."
     python3 check_zoom_room.py || FAILED=1
 
-    # Runs CodeGrade's own Scope Compliance rules against the solutions, here,
-    # before anything reaches CodeGrade. Skips cleanly without a solutions tree.
-    echo ""
-    echo "Checking technique scope..."
-    python3 check_scope.py || FAILED=1
+    # check_scope.py was RETIRED 2026-10-22 on purpose. It was a copy of an old
+    # CodeGrade blacklist. Scope is a whitelist (the toolbox each sheet states,
+    # enforced in CodeGrade): if it isn't on the whitelist, it doesn't fly. The
+    # repo keeps no blacklist. Do not restore it.
 
     echo ""
     echo "Checking pending placeholders..."
