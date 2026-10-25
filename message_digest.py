@@ -220,9 +220,33 @@ def digest_texts(doc):
     return [r.get('text', '') for r in rows if r.get('text')]
 
 
+def companion_sources(doc, sol_path):
+    """Source of the other .py files students write for this lab.
+
+    Module 5 splits a lab across files: Lab 5.1's strings live in lab-5-1.py
+    AND city.py (its self-test and __str__). Any .py the sheet's Required Files
+    table marks as submitted, other than function_library.py (whose strings
+    the digests deliberately leave to the lab that introduced them), is read
+    from the solution's folder alongside it. Added 2026-10-25.
+    """
+    folder = os.path.dirname(sol_path)
+    extra = []
+    for df in (doc.get('overview') or {}).get('dataFiles', []):
+        name = df.get('file', '')
+        if (df.get('submitted') and name.endswith('.py')
+                and name != 'function_library.py'
+                and name != os.path.basename(sol_path)):
+            path = os.path.join(folder, name)
+            if os.path.exists(path):
+                extra.append(open(path, encoding='utf-8').read())
+    return extra
+
+
 def check_lab(lab, doc, sol_path):
     """Diff the solution's strings against the sheet's digest, both ways."""
     src = open(sol_path, encoding='utf-8').read()
+    for extra in companion_sources(doc, sol_path):
+        src = src + '\n' + extra
     found = extract_strings(src)
     declared = digest_texts(doc)
 

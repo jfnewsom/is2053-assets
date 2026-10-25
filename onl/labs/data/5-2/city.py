@@ -1,52 +1,47 @@
 """
 city.py
-City class for the road trip game.
+Reference City class for Lab 5.2: Deep in the Heart
 
-Provided by Bat City Collective as a reference implementation.
+Provided by Bat City Collective as a backup. It is the Lab 5.1 City
+class. If your own city.py from Lab 5.1 works, keep using it. Use
+this file only if yours is broken, so you can still run lab-5-2.py
+and test your player.py. You don't submit city.py in Lab 5.2.
 
-This is a working City class that satisfies every method call made by
-lab-5-2.py and every test in test.py. If your own city.py from Lab 5.1
-is working, keep using it - you will get full Lab 5.1 credit when you
-submit player.py.
-
-Use this file only as a backup if your own city.py is broken or missing,
-so you can still complete and test Lab 5.2.
-
-Chapter 10 Concepts:
-- Class definition with class keyword
-- __init__ constructor
-- Private attributes with __ prefix
-- Getter methods
-- __str__ method
+Chapter 10 Concepts: class, __init__, self, private attributes,
+                     accessor and mutator methods, __str__
 """
+
+import random
 
 
 class City:
     """
-    Represents a city in the Texas road trip game.
+    One city in the road trip game.
 
-    Attributes (private):
-        __name (str): City name
-        __city_type (str): Type of city
-        __tagline (str): City motto
-        __connections (dict): Connected cities and distances
+    Private attributes:
+        __name (str): The city's name, like 'San Antonio'
+        __city_type (str): 'START', 'WIN', 'DEAD_END', 'WRONG_WAY', etc.
+        __tagline (str): The city's motto
+        __connections (dict): destination name -> miles
     """
 
     def __init__(self, name, city_type, tagline):
         """
-        Initialize a City object.
+        Create a City with no road connections yet.
 
         Args:
-            name (str): City name
-            city_type (str): Type ('START', 'HUB', 'WIN', 'DEAD_END')
-            tagline (str): City's motto
+            name (str): The city's name
+            city_type (str): The city's type from city_info.txt
+            tagline (str): The city's motto from city_info.txt
         """
         self.__name = name
         self.__city_type = city_type
         self.__tagline = tagline
         self.__connections = {}
 
-    # --- Getter Methods ---
+    # ========================================================
+    # ACCESSORS AND MUTATOR
+    # ========================================================
 
     def get_name(self):
         """Return the city's name."""
@@ -60,52 +55,120 @@ class City:
         """Return the city's tagline."""
         return self.__tagline
 
-    # --- Connection Methods ---
+    def add_connection(self, dest, miles):
+        """
+        Add a road from this city to another one.
 
-    def add_connection(self, city_name, distance):
-        """Add a connection to another city."""
-        self.__connections[city_name] = distance
+        Args:
+            dest (str): The destination city's name
+            miles (int): Distance to that city
+        """
+        self.__connections[dest] = miles
 
-    def get_distance_to(self, city_name):
-        """Get distance to a connected city. Returns -1 if not connected."""
-        return self.__connections.get(city_name, -1)
+    # ========================================================
+    # DESTINATION METHODS
+    # ========================================================
 
-    def get_destination_names(self):
-        """Return list of connected city names."""
-        return list(self.__connections.keys())
+    def display_destinations(self):
+        """
+        Display a numbered menu of this city's destinations.
 
-    # --- Status Methods ---
+        Returns:
+            int: The number of destinations shown
+        """
+        print(f'From {self.__name}, you can travel to:')
+        option_num = 1
+        for dest in self.__connections:
+            miles = self.__connections[dest]
+            print(f'  {option_num}. {dest} - {miles} miles')
+            option_num = option_num + 1
+        return len(self.__connections)
+
+    def get_destination(self, choice):
+        """
+        Return the destination and distance for a menu choice.
+
+        Args:
+            choice (int): 1-based menu choice
+
+        Returns:
+            tuple: (destination_name, distance_in_miles)
+        """
+        dests = list(self.__connections.keys())
+        index = choice - 1
+        dest = dests[index]
+        return dest, self.__connections[dest]
+
+    def get_distance_to(self, dest):
+        """
+        Return the miles from this city to a connected city.
+
+        Args:
+            dest (str): A destination this city connects to
+
+        Returns:
+            int: Distance in miles
+        """
+        return self.__connections[dest]
+
+    def get_redirect(self, avoid):
+        """
+        Pick a random destination other than 'avoid'.
+
+        If 'avoid' is the only destination, return it anyway.
+
+        Args:
+            avoid (str): The destination to leave out
+
+        Returns:
+            tuple: (destination_name, distance_in_miles)
+        """
+        options = list(self.__connections.keys())
+
+        if avoid in options:
+            options.remove(avoid)
+
+        if len(options) > 0:
+            index = random.randint(0, len(options) - 1)
+            dest = options[index]
+            return dest, self.__connections[dest]
+        else:
+            only_option = list(self.__connections.keys())[0]
+            return only_option, self.__connections[only_option]
+
+    # ========================================================
+    # TYPE CHECKS AND DISPLAY
+    # ========================================================
 
     def is_win_city(self):
-        """Return True if this is a winning destination (beach)."""
+        """Return True if this city is a beach (type 'WIN')."""
         return self.__city_type == 'WIN'
 
     def is_dead_end(self):
-        """Return True if this is a dead end or wrong-way city."""
-        return self.__city_type in ['DEAD_END', 'WRONG_WAY']
-
-    # --- Display Methods ---
-
-    def display_destinations(self):
-        """Display available destinations from this city."""
-        prompt = 'you can travel to:'
-        print(f'From {self.__name}, {prompt}')
-        option_num = 1
-        for dest_name, distance in self.__connections.items():
-            print(f'  {option_num}. {dest_name} - {distance} miles')
-            option_num = option_num + 1
-
-    def get_arrival_message(self):
-        """Return arrival message for this city."""
-        if self.__city_type == 'WIN':
-            return f'YOU MADE IT TO {self.__name.upper()}! THE BEACH AWAITS!'
-        elif self.__city_type == 'DEAD_END':
-            return f'{self.__name} is a dead end. No beach here!'
-        elif self.__city_type == 'WRONG_WAY':
-            return f'{self.__name}? That\'s the wrong way entirely!'
-        else:
-            return f'Welcome to {self.__name}!'
+        """Return True if this city is a 'DEAD_END' or 'WRONG_WAY'."""
+        city_type = self.__city_type
+        return city_type == 'DEAD_END' or city_type == 'WRONG_WAY'
 
     def __str__(self):
-        """Return string representation of the city."""
+        """Return the city as text, like 'San Antonio (START)'."""
         return f'{self.__name} ({self.__city_type})'
+
+
+# ============================================================
+# Quick self-test when running this file directly.
+# ============================================================
+def main():
+    """Quick checks of the City class."""
+    print('Testing city.py...')
+    home = City('San Antonio', 'START', 'Home of the Alamo')
+    beach = City('Corpus Christi', 'WIN', 'Sparkling City by the Sea')
+    print(f'  {home}')
+    print(f'  {beach}')
+    print(f'  get_name() => {beach.get_name()}')
+    print(f'  get_type() => {beach.get_type()}')
+    print(f'  is_win_city() => {beach.is_win_city()}')
+    print('  City class loaded successfully.')
+
+
+if __name__ == '__main__':
+    main()
