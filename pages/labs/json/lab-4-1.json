@@ -179,7 +179,7 @@
         },
         {
           "type": "text",
-          "body": "A roll of 20 moves you 200 miles, so every trip in this lab's checkpoint tests arrives in a single turn. No hazard check runs, and your output can match the expected output line for line. Longer trips you try on your own, like El Paso or Dallas, take more turns, so hazards can still fire at random there. Keep both pins in place through CP6, and restore the two original lines before you submit (the Final Check reminds you). Your terminal also shows what you type after each prompt. The expected output leaves out what you type and the Enter key after it, the same way CodeGrade sees it, so a prompt and the next line it prints share a line, like <code>Choice (1-3): ERROR: ...</code>."
+          "body": "A roll of 20 moves you 200 miles, so every trip in this lab's checkpoint tests arrives in a single turn. The hazard check only runs on a turn where miles remain, so no hazard fires, and your output can match the expected output line for line. (If <code>*** HAZARD! ***</code> shows up in your CP1 run, the first tip below explains why.) Longer trips you try on your own, like El Paso or Dallas, take more turns, so hazards can still fire at random there. Keep both pins in place through CP6, and restore the two original lines before you submit (the Final Check reminds you). Your terminal also shows what you type after each prompt. The expected output leaves out what you type and the Enter key after it, the same way CodeGrade sees it, so a prompt and the next line it prints share a line, like <code>Choice (1-3): ERROR: ...</code>."
         },
         {
           "type": "text",
@@ -192,6 +192,48 @@
         {
           "type": "text",
           "body": "This is your Lab 3.3 game, unchanged. If yours differs, fix it here before going on: every later checkpoint builds on this run."
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "caption": "",
+          "rows": [
+            [
+              "<code>*** HAZARD! ***</code> in your CP1 run",
+              "Your hazard check runs on every turn, including the turn you arrive. Lab 3.3 never tested where the check sat. Lab 4.1 does: CodeGrade's fixed dice make <code>check_percentage(30)</code> come back <code>True</code>, so a check on the arrival turn fires a hazard on every trip, and every line after it shifts. A hazard can only happen on a turn with miles still left. Move the check into that branch, as in the code below this table."
+            ],
+            [
+              "No blank line before <code>Trip report saved to trip_report.txt.</code>",
+              "One sentence in Lab 3.3 CP7 said nothing prints between the closing <code>=</code> divider and that line. The output block was right and the sentence was wrong. Add <code>print()</code> after the closing divider, before the <code>save_trip_report(...)</code> call."
+            ],
+            [
+              "A FINAL TRIP REPORT after <code>Save and quit</code>",
+              "Save and quit skips the report on purpose, so the player can load the game later and finish it. When the player saves, skip the on-screen report and <code>trip_report.txt</code>."
+            ],
+            [
+              "Lines under YOUR ROUTE or STATISTICS one space off",
+              "Every numbered line and every STATISTICS line starts with two spaces. The numbered lines come from <code>display_numbered_list()</code> in <code>function_library.py</code>, so check that function too."
+            ],
+            [
+              "Your coin flip isn't named <code>gate_result</code>",
+              "Pin the variable your Destination Gate's coin flip uses, whatever you called it. Leave the hazard's escape flip alone."
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "body": "The end of each turn, with the hazard check where it belongs:"
+        },
+        {
+          "type": "code_block",
+          "code": "while miles_remaining > 0:\n    # ...turn header, roll, and travel lines...\n    miles_remaining = miles_remaining - miles_this_turn\n    total_miles = total_miles + miles_this_turn\n\n    if miles_remaining <= 0:\n        print()\n        print(f'You made it to {destination}!')\n    else:\n        print(f'Miles remaining: {miles_remaining}')\n\n        if function_library.check_percentage(HAZARD_CHANCE):\n            hazards_faced = hazards_faced + 1\n            # ...the rest of your hazard block, one level deeper...\n    print()"
+        },
+        {
+          "type": "text",
+          "body": "The arrival line prints inside the loop, on the turn you arrive. If your Lab 3.3 code also prints <code>You made it to</code> after the loop, delete that second copy."
         },
         {
           "type": "h3",
@@ -1214,6 +1256,10 @@
         {
           "symptom": "<code>ValueError: invalid literal for int()</code> when loading distances",
           "redirect": "Check CP2. After <code>parts = line.strip().split(',')</code>, only <code>parts[2]</code> gets cast to <code>int</code>. <code>parts[0]</code> and <code>parts[1]</code> stay as strings."
+        },
+        {
+          "symptom": "<code>EOFError: EOF when reading a line</code> in CodeGrade's output",
+          "redirect": "Your program asked for more input than the test typed, which means the game went somewhere the test didn't plan for. Check two things first: a pin still in place (search your file for <code>= 'HEADS'</code>, <code>= 'TAILS'</code>, and <code>= 20</code>), and a hazard on the arrival turn (the first tip in CP1)."
         }
       ]
     }
