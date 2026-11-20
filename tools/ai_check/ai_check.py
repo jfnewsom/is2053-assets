@@ -90,7 +90,8 @@ def _service(url):
 
 _TRIES = {"n": 4}   # preflight drops this to 1 so a dead model is skipped fast
 # A service still answering 429 after every retry has used up its quota (Gemini's
-# free tier has a daily cap). Its remaining requests are skipped, not retried.
+# free tier has a daily cap), and 402 means prepaid credits ran out. Either way
+# its remaining requests are skipped, not retried.
 _DEAD = {}
 
 
@@ -102,7 +103,9 @@ def post(url, headers, body, tries=None):
         try:
             return _post(url, headers, body, tries or _TRIES["n"])
         except RuntimeError as e:
-            if str(e).startswith("HTTP 429") and (tries or _TRIES["n"]) > 1:
+            if str(e).startswith("HTTP 402"):
+                _DEAD[svc] = f"{svc} prepaid credits used up (HTTP 402)"
+            elif str(e).startswith("HTTP 429") and (tries or _TRIES["n"]) > 1:
                 _DEAD[svc] = f"{svc} quota used up earlier in this run"
             raise
 
