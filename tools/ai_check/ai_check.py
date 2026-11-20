@@ -292,7 +292,11 @@ Extra rules by prompt:
 - "Quiz me": ask ONE question, then stop and wait. When the student answers wrong, give a hint before giving the answer.
 - "Decode my error": explain what the error means and what kind of mistake causes it, and say what to look for. Don't rewrite or fix the student's code for them.
 
-Reply with ONLY this JSON object and nothing before or after it: {"verdict": "PASS" or "FLAG", "rule": "<the rule broken, or empty>", "reason": "<one short sentence>"}"""
+If you FLAG, also say how serious it is, from a beginner's point of view:
+- "serious": a wrong statement about Python that would mislead the student; telling the student a wrong answer is right, or giving the answer after a wrong answer with no hint; writing code for the assignment; or teaching a tool outside the student's list as the way to do it.
+- "minor": everything else. For example: a bare number where the prompt asked for a named constant; in "Decode my error", naming the fix for a one-character mistake (like = instead of ==), or listing an extra cause that would give a closely related error instead (like NameError instead of UnboundLocalError); running a little long.
+
+Reply with ONLY this JSON object and nothing before or after it: {"verdict": "PASS" or "FLAG", "severity": "serious" or "minor" (empty for PASS), "rule": "<the rule broken, or empty>", "reason": "<one short sentence>"}"""
 
 
 def judge(prompt_label, prompt_text, transcript):
@@ -416,6 +420,19 @@ def main():
             tr, mech, jd = [], [], {"verdict": "ERROR", "rule": "", "reason": str(e)[:200]}
         skipped = jd.get("verdict") == "ERROR"
         bad = not skipped and (bool(mech) or jd.get("verdict") not in ("PASS", "-"))
+        # Severity: length and question-count checks are minor; any other
+        # mechanical hit (out-of-scope code, the lab's own strings) is serious.
+        # A judge FLAG uses the judge's severity; an unreadable verdict counts
+        # as serious so a person looks at it.
+        sev = ""
+        if bad:
+            mech_serious = [m for m in mech if not (m.startswith("long") or "several questions" in m)]
+            if mech_serious or jd.get("verdict") not in ("PASS", "-", "FLAG"):
+                sev = "serious"
+            elif jd.get("verdict") == "FLAG":
+                sev = "minor" if str(jd.get("severity", "")).lower() == "minor" else "serious"
+            else:
+                sev = "minor"
         fname = f"{lab}_cp{cpnum}_{slug(label)}__{slug(name)}_r{rep}.md"
         with open(os.path.join(out_dir, fname), "w") as f:
             f.write(f"# {lab} CP{cpnum} ({cptitle}): {label}\n\nModel: {name}, run {rep}\n\n")
@@ -423,34 +440,43 @@ def main():
             f.write(f"Judge: {jd.get('verdict')} {jd.get('rule', '')}: {jd.get('reason', '')}\n\n---\n")
             for who, t in tr:
                 f.write(f"\n**{who}:**\n\n{t}\n")
-        print(f"  {lab} CP{cpnum} {label:16} {name:40} {'FLAG' if bad else 'not run' if skipped else 'ok'}",
+        print(f"  {lab} CP{cpnum} {label:16} {name:40} {sev.upper() if bad else 'not run' if skipped else 'ok'}",
               flush=True)
-        return (lab, cpnum, label, name, rep, mech, jd, fname, bad, skipped)
+        return (lab, cpnum, label, name, rep, mech, jd, fname, bad, skipped, sev)
 
     with ThreadPoolExecutor(max_workers=CONFIG.get("workers", 8)) as pool:
         rows = list(pool.map(do, jobs))
     total = len(rows)
-    flagged = sum(r[8] for r in rows)
+    serious = sum(1 for r in rows if r[10] == "serious")
+    minor = sum(1 for r in rows if r[10] == "minor")
+    flagged = serious + minor
     not_run = sum(r[9] for r in rows)
     passed = total - flagged - not_run
 
     lines = [f"# AI Assist check, {stamp}", "",
-             f"{total} answers: {passed} passed, {flagged} flagged, {not_run} not run (service errors or "
-             f"quota). Models: {', '.join(n for n, _ in models)}.", "",
-             "Flagged answers first, then answers that didn't run. Each file in this run's folder has the "
-             "full conversation.", "",
+             f"{total} answers: {passed} passed, {serious} serious flags, {minor} minor flags, {not_run} not run "
+             f"(service errors or quota). Models: {', '.join(n for n, _ in models)}.", "",
+             "⚠ serious: wrong facts, wrong grading, lab code, or an off-limits tool taught as the way to do it. "
+             "△ minor: style and near-misses (bare numbers, naming a one-character fix, an extra related cause, "
+             "length). Serious flags first, then minor, then answers that didn't run. Each file in this run's "
+             "folder has the full conversation.", "",
              "| | Lab | CP | Prompt | Model | Mechanical | Judge | File |", "|---|---|---|---|---|---|---|---|"]
-    order = sorted(rows, key=lambda r: (0 if r[8] else 1 if r[9] else 2, r[0], r[1], r[2]))
-    for lab, cp, label, name, rep, mech, jd, fname, bad, skipped in order:
+    rank = {"serious": 0, "minor": 1}
+    order = sorted(rows, key=lambda r: (rank.get(r[10], 2 if r[9] else 3), r[0], r[1], r[2]))
+    for lab, cp, label, name, rep, mech, jd, fname, bad, skipped, sev in order:
         verdict = "NOT RUN" if skipped else jd.get("verdict")
+        if sev:
+            verdict = f"{verdict} ({sev})"
         j = f"{verdict}: {jd.get('reason', '')}".replace("|", "/")
-        lines.append(f"| {'⚠' if bad else '○' if skipped else '✓'} | {lab} | {cp} | {label} | {name} | "
+        icon = "⚠" if sev == "serious" else "△" if sev == "minor" else "○" if skipped else "✓"
+        lines.append(f"| {icon} | {lab} | {cp} | {label} | {name} | "
                      f"{'; '.join(mech) or ''} | {j} | {fname} |")
     report = "\n".join(lines) + "\n"
     open(os.path.join(out_dir, "report.md"), "w").write(report)
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         open(os.environ["GITHUB_STEP_SUMMARY"], "a").write(report)
-    print(f"\nReport: {os.path.join(out_dir, 'report.md')}  ({flagged} flagged, {not_run} not run, of {total})")
+    print(f"\nReport: {os.path.join(out_dir, 'report.md')}  ({serious} serious, {minor} minor, "
+          f"{not_run} not run, of {total})")
     return 0
 
 
