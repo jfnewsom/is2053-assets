@@ -293,8 +293,17 @@ def run_prompt(ask, lab, cpnum, label, text, dry=False):
     first = ask(msgs)
     transcript = [("student", text), ("AI", first)]
     if label == "Quiz me":
-        wrong = ask_claude(CONFIG["student_model"], [{"role": "user", "content":
-                           CONFIG["wrong_answer_instruction"] + "\n\nQuestion:\n" + first}], max_tokens=100)
+        # The simulated student sometimes returns nothing (Nov 20 run: HTTP 400,
+        # "user messages must have non-empty content"). Ask again, then fall back.
+        wrong = ""
+        for _ in range(3):
+            wrong = ask_claude(CONFIG["student_model"], [{"role": "user", "content":
+                               CONFIG["wrong_answer_instruction"] + "\n\nQuestion:\n" + first}],
+                               max_tokens=100).strip()
+            if wrong:
+                break
+        if not wrong:
+            wrong = CONFIG.get("fallback_wrong_answer", "I think it prints 0.")
         msgs += [{"role": "assistant", "content": first}, {"role": "user", "content": wrong}]
         second = ask(msgs)
         transcript += [("student", wrong), ("AI", second)]
