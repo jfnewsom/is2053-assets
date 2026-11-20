@@ -200,40 +200,12 @@ CP_RENDERERS = {
 }
 
 
-# Modality names a content item may be scoped to. The value is the variant key
-# in render_variant.py, and the sentinel emitted is that variant's ONLY block.
-# Everything a variant does is still a REMOVAL: pages/ carries every modality's
-# copy, and each variant tree strips the blocks that are not its own. That keeps
-# the one-way authoring rule intact without an overlay directory.
-# NOTE: the key is "modality", NOT "variant". This schema already uses
-# "variant" on callouts for tip/info/warning, and reusing it here crashed every
-# callout on the page the first time (Aug 8, 2026).
-MODALITY_SENTINELS = {'onl': 'ONL_ONLY', 'f2f': 'F2F_ONLY'}
-
-
 def wrap_for_modality(html, item):
-    """Fence a content item so only its own modality keeps it.
-
-    Used for the Simple Syllabus link, where online and face-to-face point at
-    different Simple Syllabus documents (Aug 8, 2026). A sentinel pair is
-    cheaper and far more visible than a per-variant override file, and it keeps
-    both URLs side by side in one source so neither can be quietly forgotten.
-    """
-    v = item.get('modality')
-    if not v:
-        return html
-    if v == 'all':
-        # Deliberately unfenced: the item is meant to reach every tree. Stated
-        # explicitly so it reads as a decision rather than a forgotten key.
-        return html
-    if v not in MODALITY_SENTINELS:
-        raise ValueError(
-            f"Unknown modality {v!r}; known: {sorted(MODALITY_SENTINELS)}")
-    name = MODALITY_SENTINELS[v]
-    indent = ' ' * (len(html) - len(html.lstrip()))
-    return (f'{indent}<!-- {name}:START -->\n'
-            f'{html}\n'
-            f'{indent}<!-- {name}:END -->')
+    """Kept as a guard. Modality fencing is retired (Nov 20, 2026): one site for
+    every section, so a leftover "modality" key is an error, not a fence."""
+    if 'modality' in item:
+        raise ValueError(f'start-here.json item {item.get("type")!r}: modality keys are retired (Nov 20, 2026): there is one version of the site for every section. Show section-specific content side by side and labeled instead.')
+    return html
 
 
 def render_cp_body_item(item):
@@ -282,9 +254,8 @@ def render_card_section(item):
             f'      </div>'
         )
     elif rtype == 'welcome_video':
-        # The only card section that is fenced. ON1/ON2 and 904 have separate
-        # recordings, so each tree must keep its own and drop the other. Every
-        # other section above is identical in all sections and returns unfenced.
+        # Online and in-person sections each have their own welcome video. Both
+        # are shown, and each heading says which section it is for.
         return wrap_for_modality(render_welcome_video(item), item)
     else:
         raise ValueError(f"Unknown card section type: {rtype}")
@@ -296,19 +267,7 @@ def render_welcome_video(item):
     Used at the top of the Overview card on the Start Here page and (with the
     same markup) on the home page. Flex-wrap collapses to a single column on
     narrow viewports.
-
-    NO VIDEO:START/VIDEO:END SENTINELS HERE, deliberately. The f2f tree strips
-    VIDEO wholesale, because 904 gets no Unit or Lab videos: they come to class
-    instead. The welcome video is the single exception to that rule, so fencing
-    it as VIDEO would delete the one video 904 is supposed to have. Modality
-    fencing does the job correctly, and the guard below makes it impossible to
-    forget: an unfenced welcome video would land in EVERY tree.
     """
-    if not item.get('modality'):
-        raise ValueError(
-            'A welcome_video must declare a "modality" ("onl", "f2f", or '
-            '"all"). Without one it is emitted unfenced into every tree by '
-            'accident; "all" says you meant it.')
     paragraphs = '\n'.join(
         f'          <p>{p}</p>' for p in item['paragraphs']
     )

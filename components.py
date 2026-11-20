@@ -310,7 +310,10 @@ AI_ASSIST_INTRO = (
 AI_ASSIST_CAUTION = (
     "Like any AI, it can be wrong, even when it sounds sure. Check what it "
     "tells you against this sheet or your textbook, or try it in a few lines "
-    "of your own code, before you trust it."
+    "of your own code, before you trust it. When we tested these prompts, "
+    "AIs sometimes told a student a wrong answer was right. If a quiz answer "
+    "surprises you, type the code into a file and run it. Python has the "
+    "final say."
 )
 
 

@@ -37,8 +37,7 @@ ZOOM = re.compile(r'utsa\.zoom\.us/j/(\d+)')
 
 def sources():
     seen = set()
-    for pat in ('*.js', 'pages/**/*.json', 'pages/**/*.html', 'pages/**/*.js',
-                'onl/**/*.html', 'f2f/**/*.html'):
+    for pat in ('*.js', 'pages/**/*.json', 'pages/**/*.html', 'pages/**/*.js'):
         seen |= set(glob.glob(pat, recursive=True))
     return sorted(f for f in seen if '_to_delete' not in f)
 

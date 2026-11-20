@@ -2,10 +2,11 @@
 # render_all.sh - Render the whole IS2053 site, then guard it.
 #
 # Matches the IS3513 render_all.sh idiom so the two courses work the same way.
-# Two steps exist here that 3513 does not need:
-#   render_variant.py  builds the face-to-face mirror, and must run LAST so it
-#                      copies final pages/ output
+# One step matters for ordering:
 #   check_style.py     measures RENDERED html, so it must run after everything
+#
+# One site for every section, served from pages/ (Nov 20, 2026). The old
+# render_variant.py step that built separate onl/ and f2f/ trees is retired.
 #
 # Created 2026-08-08. Before this, 2053 had twenty renderers and no single
 # command. Three separate defects that day traced to rendered output that did
@@ -68,7 +69,7 @@ echo "Checking for unwired renderers..."
 UNWIRED=0
 for s in render_*.py; do
     case "$s" in
-        render_variant.py|render_lab.py|render_lab_tabbed.py|render_bookex.py|render_study_worksheet.py) continue ;;
+        render_lab.py|render_lab_tabbed.py|render_bookex.py|render_study_worksheet.py) continue ;;
     esac
     if ! grep -q "$s" "$0"; then
         echo "  ✗ $s exists but is NOT in render_all.sh — add it"
@@ -88,7 +89,7 @@ done
 echo ""
 echo "Checking for unwired or missing guards..."
 UNGUARDED=0
-for g in check_dates.py check_nav_modality.py check_pending.py \
+for g in check_dates.py check_pending.py \
          check_provided_files.py check_style.py \
          check_syllabus_links.py check_zoom_room.py \
          lab_lint.py verify_output.py message_digest.py; do
@@ -101,10 +102,6 @@ for g in check_dates.py check_nav_modality.py check_pending.py \
     fi
 done
 [ $UNGUARDED -eq 0 ] && echo "  ✓ every guard is present and wired in"
-
-echo ""
-echo "Building modality variants (must be last)..."
-python3 render_variant.py; note "variant trees"
 
 if [ "$1" != "--no-guard" ]; then
     echo ""
@@ -125,10 +122,6 @@ if [ "$1" != "--no-guard" ]; then
     echo ""
     echo "Checking syllabus links..."
     python3 check_syllabus_links.py || FAILED=1
-
-    echo ""
-    echo "Checking nav.js modality registry..."
-    python3 check_nav_modality.py || FAILED=1
 
     echo ""
     echo "Checking the Zoom room..."

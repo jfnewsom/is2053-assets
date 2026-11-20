@@ -17,8 +17,9 @@ Mark a placeholder by putting a NAME_PENDING token in the source. Nothing needs
 registering here; the token is the registration. Two rules only:
 
   1. The token must never reach a student. Either the renderer omits the item
-     (the syllabus link) or the whole block is an HTML comment (the 904 welcome
-     video). This checks the BUILT trees to prove it.
+     (the syllabus link) or the whole block is an HTML comment. This checks
+     the built pages in pages/ to prove it (one site for every section since
+     Nov 20, 2026; the old onl/ and f2f/ trees are retired).
   2. Every token is listed on every run, so the set of unfinished things is
      visible rather than remembered.
 
@@ -34,30 +35,21 @@ import sys
 HARD_FAIL_FROM = datetime.date(2026, 8, 17)
 
 TOKEN = re.compile(r'\b([A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*_PENDING)\b')
-BUILT_TREES = ('onl', 'f2f')
+BUILT = 'pages'
 
 # What each token is waiting on, so the warning is actionable rather than a
 # bare identifier. A token with no entry still works; it just reads worse.
 CONTEXT = {
     'SYLLABUS_URL_PENDING':
-        'the 904 Simple Syllabus doc, created by cloning the online course '
-        '(ledger L-025). Paste the URL into pages/support/json/start-here.json.',
-    'F2F_WELCOME_VIDEO_PENDING':
-        'the 904 welcome video. Paste the embed into the F2F_ONLY block in '
-        'pages/support/json/home.json and delete the comment wrapper.',
+        'a Simple Syllabus doc for the new term (ledger L-025). Paste the URL into '
+        'all three places that list the syllabi: pages/support/json/start-here.json, '
+        'pages/support/json/home.json, and nav.js. check_syllabus_links.py checks '
+        'that they agree.',
     'PANOPTO_ID_904_PENDING':
         'the 904 Panopto embed id. It sits inside the commented-out video block '
         'in pages/support/json/home.json. Deliberately named _PENDING so that if '
         'that HTML comment is ever broken, this scan sees the id in VISIBLE text '
         'and fails, which is what stops a half-published video reaching 904.',
-    'F2F_SYLLABUS_LINK_PENDING':
-        'the same 904 Simple Syllabus URL as SYLLABUS_URL_PENDING, needed in '
-        'TWO more places. (1) the f2f branch of the Quick Links block in '
-        'pages/support/json/home.json, and (2) SYLLABUS.f2f in nav.js, which '
-        'is currently null. Until then f2f shows no syllabus row and no '
-        'Syllabus nav item rather than a dead link, and the Canvas left-nav '
-        'Syllabus link still works. So the clone batch pastes one URL into '
-        'three files: start-here.json, home.json, nav.js.',
 }
 
 
@@ -78,8 +70,8 @@ def main():
             found.setdefault(m.group(1), set()).add(path)
 
     problems = []
-    # Rule 1: a placeholder must never be visible in a built tree.
-    for tree in BUILT_TREES:
+    # Rule 1: a placeholder must never be visible on a built page.
+    for tree in (BUILT,):
         for path in sorted(glob.glob(f'{tree}/**/*.html', recursive=True)):
             text = visible_text(io.open(path, encoding='utf-8').read())
             for m in TOKEN.finditer(text):
@@ -91,7 +83,7 @@ def main():
     overdue = datetime.date.today() >= HARD_FAIL_FROM
     lines = []
     for tok in sorted(found):
-        where = ', '.join(sorted(p for p in found[tok] if not p.startswith(BUILT_TREES)))
+        where = ', '.join(sorted(p for p in found[tok] if not p.endswith('.html')))
         lines.append(f'{tok} - waiting on {CONTEXT.get(tok, "(no context recorded)")} '
                      f'[{where}]')
 

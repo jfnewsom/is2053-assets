@@ -1,30 +1,22 @@
 #!/usr/bin/env python3
 """
-check_syllabus_links.py - The syllabus link is per-modality and per-term.
-
-Two failure modes have both already happened, so both are checked here.
+check_syllabus_links.py - Every syllabus link names the current term, and every
+place that lists the syllabi lists the same ones.
 
 STALE TERM. On 2026-08-08 the Start Here page was still sending every student
 to the Summer 2026 Simple Syllabus doc (ledger L-025). It is the first external
-link a student clicks and nothing verified it, because check_style.py counts
-em-dashes and lab_lint.py reads labs. A syllabus URL naming a term other than
-the current one fails.
+link a student clicks and nothing verified it. A syllabus URL naming a term
+other than the current one fails, wherever it appears.
 
-WRONG MODALITY. Online and face-to-face are different Simple Syllabus documents
-(2026-08-08 decision). The two links live side by side in start-here.json,
-fenced by ONL_ONLY / F2F_ONLY sentinels, and render_variant.py strips the one
-that does not belong. This asserts the outcome rather than trusting it: each
-built tree must contain exactly one syllabus link, and it must be that
-modality's. A tree with two means a strip entry is missing; a tree with zero
-means the sentinel names disagree.
-
-PENDING. The face-to-face Simple Syllabus does not exist yet: it is created by
-CLONING the perfected online Canvas course, so its URL is unknowable until the
-clone batch, the last step before term start. A pending URL is therefore NORMAL
-for now and only a WARNING, and the renderer omits the link entirely rather than
-emitting a dead href. It becomes a hard failure from HARD_FAIL_FROM, so it
-cannot be forgotten in the last week. A permanently red build is worse than no
-build check at all, because it teaches you to skip the output.
+ONE SITE, BOTH SYLLABI (Nov 20, 2026). From Spring 2027 there is one version of
+the site for every section, served from pages/. Online and in-person sections
+still have separate Simple Syllabus documents, so Start Here, the Home page's
+Quick Links, and the nav menu each list BOTH, labeled. This checks that the
+three agree: the same set of URLs in each, so a term update that reaches one
+file and misses another fails here instead of on the first day of class. The
+old per-modality trees and their ONL_ONLY / F2F_ONLY sentinels are retired; a
+sentinel that reappears in a built page fails too, because nothing strips it
+anymore and the page would show both copies.
 
     python3 check_syllabus_links.py
 """
@@ -39,96 +31,54 @@ SRC = REPO / 'pages' / 'support' / 'json' / 'start-here.json'
 
 TERM = 'Fall-2026'
 PLACEHOLDER = 'SYLLABUS_URL_PENDING'
-SYLLABUS = re.compile(r'https?://[^"\'\s]*simplesyllabus[^"\'\s]*')
-# The modality trees, which are also the values the "modality" key may take.
-#
-# Deliberately NOT asserting anything about the doc slug. The first cut required
-# 'ON1' in the online URL, which is the slug UTSA happened to mint for the Fall
-# online doc; the section is ONL. Pinning a guard to a vendor's slug spelling
-# buys nothing here (each tree already holds exactly one link and the term is
-# checked) and would fail the build on a cosmetic rename.
-MODALITIES = ('onl', 'f2f')
+SYLLABUS = re.compile(r'https?://[^"\'\s\\]*simplesyllabus[^"\'\s\\]*')  # \\ stops at a JSON-escaped quote
+# The places that list the syllabi. Each must hold the same set of URLs.
+LISTS = {
+    'start-here.json': REPO / 'pages' / 'support' / 'json' / 'start-here.json',
+    'home.json': REPO / 'pages' / 'support' / 'json' / 'home.json',
+    'nav.js': REPO / 'nav.js',
+}
+EXPECTED = 2   # one online, one in person
 
 
-def check_source():
-    d = json.loads(SRC.read_text(encoding='utf-8'))
-    found, problems, warnings = {}, [], []
-
-    def walk(o):
-        if isinstance(o, dict):
-            url = o.get('url', '')
-            if isinstance(url, str) and ('simplesyllabus' in url
-                                         or url == PLACEHOLDER):
-                v = o.get('modality')
-                if not v:
-                    problems.append(
-                        'a syllabus link in start-here.json has no "modality" key, '
-                        'so it would render into BOTH modality trees')
-                else:
-                    found.setdefault(v, []).append(url)
-            for x in o.values():
-                walk(x)
-        elif isinstance(o, list):
-            for x in o:
-                walk(x)
-
-    walk(d)
-
-    for v in sorted(MODALITIES):
-        urls = found.get(v, [])
-        if not urls:
-            problems.append(f'no syllabus link tagged "modality": "{v}" in start-here.json')
-        elif len(urls) > 1:
-            problems.append(f'{len(urls)} syllabus links tagged "{v}"; expected exactly 1')
-        else:
-            url = urls[0]
-            if url == PLACEHOLDER:
-                # Deliberately not reported here. check_pending.py owns the
-                # warn-now / fail-later policy for every placeholder, so the
-                # deadline lives in exactly one place. This guard stays focused
-                # on whether the LINKS are right.
-                pass
-            elif TERM not in url:
-                problems.append(
-                    f'the {v} syllabus URL does not name {TERM}: {url}')
-    for v in sorted(set(found) - set(MODALITIES)):
-        problems.append(f'syllabus link tagged with unknown modality "{v}"')
-    return problems, warnings, {v: (found.get(v) or [None])[0] for v in MODALITIES}
+def check_lists():
+    problems, sets = [], {}
+    for name, path in LISTS.items():
+        text = path.read_text(encoding='utf-8')
+        sets[name] = set(SYLLABUS.findall(text))
+        if PLACEHOLDER in text:
+            sets[name].add(PLACEHOLDER)
+    first = sets['start-here.json']
+    if len(first) != EXPECTED:
+        problems.append(f'start-here.json lists {len(first)} syllabus link(s), '
+                        f'expected {EXPECTED} (online and in person): {sorted(first)}')
+    for name, urls in sets.items():
+        if urls != first:
+            problems.append(f'{name} lists different syllabus links than start-here.json: '
+                            f'missing {sorted(first - urls)}, extra {sorted(urls - first)}')
+    return problems, first
 
 
 def check_built(source_urls):
-    """A modality with a known URL must ship exactly one link; a pending one
-    must ship ZERO, because the renderer drops it rather than emit a dead href."""
+    """The built Start Here shows every syllabus link, and no retired sentinel
+    survives anywhere in the built site."""
     problems = []
-    for v in sorted(MODALITIES):
-        want = 0 if source_urls.get(v) in (None, PLACEHOLDER) else 1
-        page = REPO / v / 'support' / 'start-here.html'
-        if not page.is_file():
-            problems.append(f'{v}/support/start-here.html not built; run ./render_all.sh')
+    page = REPO / 'pages' / 'support' / 'start-here.html'
+    if not page.is_file():
+        return ['pages/support/start-here.html not built; run ./render_all.sh']
+    html = page.read_text(encoding='utf-8')
+    for url in sorted(source_urls - {PLACEHOLDER}):
+        if url not in html:
+            problems.append(f'pages/support/start-here.html is missing the syllabus link {url}')
+    if PLACEHOLDER in html:
+        problems.append(f'pages/support/start-here.html contains the literal {PLACEHOLDER}; '
+                        f'a pending link must be omitted, never rendered')
+    for f in sorted(glob.glob(str(REPO / 'pages' / '**' / '*.html'), recursive=True)):
+        if '_to_delete' in f:
             continue
-        html = page.read_text(encoding='utf-8')
-        urls = sorted(set(SYLLABUS.findall(html)) | set(
-            [PLACEHOLDER] if PLACEHOLDER in html else []))
-
-        # Every check below is independent. An early `continue` here once made
-        # the cross-modality sentinel check unreachable for any tree whose URL
-        # was still pending, which is exactly the tree most likely to be wrong.
-        if len(urls) != want:
-            problems.append(
-                f'{v}/support/start-here.html has {len(urls)} syllabus link(s), '
-                f'expected {want}: {urls or "none"}')
-        elif want and TERM not in urls[0]:
-            problems.append(f'{v}/ ships a syllabus link that is not {TERM}: {urls[0]}')
-        if PLACEHOLDER in html:
-            problems.append(
-                f'{v}/ contains the literal {PLACEHOLDER}; a pending link must be '
-                f'omitted, never rendered')
-
-        for o in MODALITIES:
-            if o != v and f'{o.upper()}_ONLY' in html:
-                problems.append(
-                    f'{v}/ still contains a {o.upper()}_ONLY sentinel, so it is '
-                    f'carrying the {o} modality\'s content')
+        if re.search(r'(ONL|F2F)_ONLY:START', Path(f).read_text(encoding='utf-8')):
+            problems.append(f'{Path(f).relative_to(REPO)} still has a retired ONL_ONLY/F2F_ONLY '
+                            f'block; nothing strips it now, so students would see both copies')
     return problems
 
 
@@ -154,7 +104,6 @@ def check_every_page():
     # survived a green run of this very check on 2026-08-09. Scope a guard to
     # the invariant, not to the shape of the files you happened to think of.
     for pat in ('pages/**/*.json', 'pages/**/*.html',
-                'onl/**/*.html', 'f2f/**/*.html',
                 '*.js', 'pages/**/*.js'):
         seen |= set(glob.glob(pat, recursive=True))
     for f in sorted(seen):
@@ -168,21 +117,19 @@ def check_every_page():
 
 
 def main():
-    problems, warnings, source_urls = check_source()
+    problems, source_urls = check_lists()
     problems += check_built(source_urls)
     sweep_problems, swept = check_every_page()
     problems += sweep_problems
-    for w in warnings:
-        print(f'check_syllabus_links: WARNING - {w}')
     if problems:
         print('check_syllabus_links: FAIL')
         for p in problems:
             print(f'  - {p}')
         return 1
-    live = sum(1 for v in MODALITIES if source_urls.get(v) not in (None, PLACEHOLDER))
-    print(f'check_syllabus_links: PASS ({TERM}; {live}/{len(MODALITIES)} modality '
-          f'links live, each in exactly one tree; {swept} file(s) swept for '
-          f'stale-term syllabus URLs)')
+    live = len(source_urls - {PLACEHOLDER})
+    print(f'check_syllabus_links: PASS ({TERM}; {live} syllabus links, the same in '
+          f'Start Here, Home, and the nav; {swept} file(s) swept for stale-term '
+          f'syllabus URLs)')
     return 0
 
 

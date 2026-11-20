@@ -50,17 +50,11 @@ sectionStyle plus labelStyle (a one-off color not in the palette). labelColor
 tints the label and the section border; "sectionColor": false tints the label
 only.
 
-MODALITY
-Any block, or any row column, may carry either:
-
-    "modality": "f2f"        emit once, fenced in that modality's sentinel
-    "byModality": {...}      emit one fenced copy per key, each holding the
-                             keys that differ. Everything not restated is
-                             inherited from the block, so a per-modality
-                             difference costs one line, not a second copy.
-
-The fencing is what render_variant.py already understands, so adding a third
-modality is a registry entry there plus one key here. No page is forked.
+MODALITY (retired Nov 20, 2026)
+There used to be "modality" and "byModality" keys that fenced content for
+separate online and face-to-face trees. From Spring 2027 there is one site for
+every section, served from pages/, so those keys are an error now: anything
+that differs by section is shown side by side and labeled.
 
     python3 render_support_page.py                       every support_page JSON
     python3 render_support_page.py pages/support/json/home.json
@@ -77,43 +71,11 @@ import sys
 REPO = os.path.dirname(os.path.abspath(__file__))
 RENDERER = 'support_page'
 
-# Imported rather than restated. A modality key that render_variant.py does not
-# know is content that survives into every tree, which is the failure mode you
-# cannot see by looking at one page.
-try:
-    from render_variant import VARIANTS
-    KNOWN_MODALITIES = set(VARIANTS)
-except Exception:                                   # pragma: no cover
-    KNOWN_MODALITIES = {'onl', 'f2f'}
-
-
-def fence(html, modality, where, what):
-    if modality == 'all':
-        # Explicitly every tree. See wrap_for_modality in render_start_here.py.
-        return html
-    if modality not in KNOWN_MODALITIES:
-        raise ValueError(
-            f'{where}: {what} has modality "{modality}", which is not in the '
-            f'render_variant.py registry {sorted(KNOWN_MODALITIES)}. An unknown '
-            f'sentinel is never stripped, so this would appear in every tree.')
-    name = f'{modality.upper()}_ONLY'
-    pad = ' ' * (len(html) - len(html.lstrip(' ')))
-    return f'{pad}<!-- {name}:START -->\n{html}\n{pad}<!-- {name}:END -->'
-
-
 def expand(item, where, what):
-    """Resolve byModality into a list of (modality_or_None, item) pairs."""
-    by = item.get('byModality')
-    if not by:
-        return [(item.get('modality'), item)]
-    if item.get('modality'):
-        raise ValueError(f'{where}: {what} sets both modality and byModality.')
-    out = []
-    for mod, override in by.items():
-        merged = {k: v for k, v in item.items() if k != 'byModality'}
-        merged.update(override)
-        out.append((mod, merged))
-    return out
+    """One item, one copy. Modality keys are an error since Nov 20, 2026."""
+    if 'modality' in item or 'byModality' in item:
+        raise ValueError(f'{where}: {what}: modality keys are retired (Nov 20, 2026): there is one version of the site for every section. Show section-specific content side by side and labeled instead.')
+    return [(None, item)]
 
 
 def label_and_classes(item):
@@ -147,7 +109,7 @@ def render_column(col, where):
         html = (f'        <div>\n{lbl}'
                 f'{c["body_html"].rstrip()}\n'
                 f'        </div>')
-        parts.append(fence(html, mod, where, 'row column') if mod else html)
+        parts.append(html)
     return '\n'.join(parts)
 
 
@@ -169,8 +131,6 @@ def render_block(block, where):
             raise ValueError(
                 f'{where}: a block must have raw_html, row, or label. Got keys '
                 f'{sorted(b)}.')
-        if mod:
-            html = fence(html, mod, where, 'block')
         if b.get('comment'):
             html = f'      <!-- {b["comment"]} -->\n' + html
         parts.append(html)
