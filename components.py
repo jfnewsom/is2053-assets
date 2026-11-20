@@ -43,6 +43,7 @@ H3_LABELS = {
     "key_concepts":          "Key Concepts",
     "textbook_reference":    "Textbook Reference",
     "program_requirements":  "Program Requirements",
+    "ai_assist":             "AI Assist",
 }
 
 # H3 background color per card context
@@ -289,9 +290,52 @@ def render_content_item(item: dict, card_color: str = "green",
         return render_table(item)
     elif t == "mentor_quote":
         return render_mentor_quote(item, headshot_path)
+    elif t == "ai_assist":
+        return render_ai_assist(item)
     else:
         # Unknown type — emit a comment so it's visible during audit
         return f'<!-- UNKNOWN CONTENT TYPE: {html_lib.escape(t)} -->\n'
+
+
+# AI Assist (2026-11-20, Spring 2027 rebuild): ready-made prompts a student
+# can paste into their own AI. They ask for explanations and questions, never
+# for the checkpoint code, and they name the chapter's toolbox so the answer
+# stays in scope. The Copy button needs no page script, so it works on both
+# the scrolling and the tabbed layouts.
+AI_ASSIST_INTRO = (
+    "Copy a prompt into the AI you use (ChatGPT, Gemini, Copilot, or another). "
+    "They ask for explanations, not code. This sheet is still the spec: if the "
+    "AI's wording or approach differs from it, follow the sheet."
+)
+AI_ASSIST_CAUTION = (
+    "Like any AI, it can be wrong, even when it sounds sure. Check what it "
+    "tells you against this sheet or your textbook, or try it in a few lines "
+    "of your own code, before you trust it."
+)
+
+
+def render_ai_assist(item: dict) -> str:
+    """Render the AI Assist prompts, each with a Copy button."""
+    intro = item.get("intro", AI_ASSIST_INTRO)
+    rows = ""
+    for pr in item.get("prompts", []):
+        label = html_lib.escape(pr.get("label", "Prompt"))
+        text = html_lib.escape(pr.get("text", ""))
+        rows += (
+            '      <div class="lc-ai-prompt">\n'
+            '        <div class="lc-ai-prompt__head">'
+            f'<span class="lc-ai-prompt__label">{label}</span>'
+            '<button type="button" class="lc-ai-copy" onclick="'
+            "var b=this;navigator.clipboard.writeText("
+            "b.parentNode.nextElementSibling.innerText).then(function(){"
+            "b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)})"
+            '">Copy</button></div>\n'
+            f'        <pre class="lc-ai-prompt__text">{text}</pre>\n'
+            '      </div>\n'
+        )
+    caution = item.get("caution", AI_ASSIST_CAUTION)
+    return (f'    <div class="lc-ai-assist">\n      <p class="lc-ai-assist__intro">{intro}</p>\n'
+            f'{rows}      <p class="lc-ai-assist__caution">{caution}</p>\n    </div>\n')
 
 
 def render_instructions(item: dict) -> str:

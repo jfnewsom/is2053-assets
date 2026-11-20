@@ -104,13 +104,13 @@ def checkpoint_body(cp):
             s += h3(label) + render_blocks(sec.pop(label), cards)
             if label == "step_by_step":
                 s += C.AI_FOOTNOTE_HTML
-    for label in ("bookex_patterns", "tips_and_pitfalls"):
+    for pos, (label, var) in enumerate((("bookex_patterns", "bookex"), ("tips_and_pitfalls", "pitfall"),
+                                         ("ai_assist", "tip"))):
         if label in sec:
             blocks = sec.pop(label)
-            ic = icon("bookex" if label == "bookex_patterns" else "pitfall")
             title = C.H3_LABELS.get(label, label.replace("_", " ").title())
             body = "".join(C.render_content_item(b, card_color="green") for b in blocks)
-            cards.insert(0 if label == "bookex_patterns" else 1, (ic, title, body))
+            cards.insert(min(pos, len(cards)), (icon(var), title, body))
     for label, blocks in sec.items():  # anything unexpected stays visible
         s += h3(label) + render_blocks(blocks, cards)
     return s + cards_row(cards)
