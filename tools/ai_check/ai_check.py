@@ -10,8 +10,11 @@ never looks at student work. See IS2053_2026-11-20_AI_Assist_Prompts.md.
 
 Services (keys come from environment variables; a missing key skips that one):
   Claude         ANTHROPIC_API_KEY   (Claude Ultra plan's monthly API credits)
-  Gemini         GEMINI_API_KEY      (free key from Google AI Studio)
-  GitHub Models  GITHUB_TOKEN        (OpenAI, Meta and others; free in Actions)
+  Gemini         GEMINI_API_KEY      (free key from Google AI Studio; tries each
+                                      Flash model, newest first, until one answers)
+  OpenAI         OPENAI_API_KEY      (optional; pay-as-you-go API key, separate
+                                      from a ChatGPT subscription)
+  GitHub Models was retired on July 30, 2026, and was removed from this script.
 
 For each prompt and model:
   Explain it       one turn
@@ -74,17 +77,21 @@ FORBIDDEN = {
 # ---------------------------------------------------------------- HTTP
 # Requests run in parallel, but each service gets a small cap so free-tier
 # rate limits aren't hit all at once (config "concurrency").
-_CAPS = {k: threading.Semaphore(v) for k, v in CONFIG.get(
-    "concurrency", {"anthropic": 4, "google": 2, "github": 2}).items()}
+_CAPS = {k: threading.Semaphore(v) for k, v in {
+    "anthropic": 4, "google": 2, "openai": 2, **CONFIG.get("concurrency", {})}.items()}
 
 
 def _service(url):
-    return ("anthropic" if "anthropic" in url else "google" if "googleapis" in url else "github")
+    return ("anthropic" if "anthropic" in url else "google" if "googleapis" in url
+            else "openai")
 
 
-def post(url, headers, body, tries=4):
+_TRIES = {"n": 4}   # preflight drops this to 1 so a dead model is skipped fast
+
+
+def post(url, headers, body, tries=None):
     with _CAPS[_service(url)]:
-        return _post(url, headers, body, tries)
+        return _post(url, headers, body, tries or _TRIES["n"])
 
 
 def _post(url, headers, body, tries=4):
@@ -99,7 +106,7 @@ def _post(url, headers, body, tries=4):
                 except ValueError:
                     raise RuntimeError(f"HTTP {r.status} but not JSON: {raw[:200]!r}")
         except urllib.error.HTTPError as e:
-            msg = e.read().decode(errors="replace")[:300]
+            msg = " ".join(e.read().decode(errors="replace").split())[:900]
             if e.code in (429, 500, 502, 503, 529) and attempt < tries - 1:
                 time.sleep(30 * (attempt + 1))
                 continue
@@ -131,12 +138,16 @@ def ask_claude(model, messages, max_tokens=4000, system=None):
     return "".join(b.get("text", "") for b in r.get("content", []))
 
 
-def ask_github(model, messages):
-    r = post("https://models.github.ai/inference/chat/completions",
-             {"Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}", "Accept": "application/vnd.github+json",
-              "X-GitHub-Api-Version": "2022-11-28"},
+def ask_openai(model, messages):
+    r = post("https://api.openai.com/v1/chat/completions",
+             {"Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}"},
              {"model": model, "messages": messages})
     return r["choices"][0]["message"]["content"]
+
+
+def openai_models():
+    r = get("https://api.openai.com/v1/models", {"Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}"})
+    return sorted(m["id"] for m in r.get("data", []))
 
 
 def ask_gemini(model, messages):
@@ -155,7 +166,7 @@ def gemini_models():
             if "generateContent" in m.get("supportedGenerationMethods", [])]
 
 
-def pick_gemini_flash():
+def gemini_flash_candidates():
     skip = ("tts", "image", "live", "lite", "transcribe", "embed", "preview", "exp", "banana", "omni")
     names = [n for n in gemini_models() if "flash" in n and not any(s in n for s in skip)]
 
@@ -165,33 +176,28 @@ def pick_gemini_flash():
     names.sort(key=ver, reverse=True)
     if not names:
         raise RuntimeError("no Gemini flash model found; set gemini_models in config.json")
-    return names[0]
-
-
-def github_catalog():
-    r = get("https://models.github.ai/catalog/models",
-            {"Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}", "Accept": "application/vnd.github+json"})
-    return [m.get("id") for m in r] if isinstance(r, list) else r
+    return names
 
 
 def roster():
-    """[(display name, ask function)] for every service with a key."""
-    out = []
+    """Groups of [(display name, ask function)]. Preflight keeps the first model
+    in each group that answers, so a group is one model slot with fallbacks."""
+    groups = []
     if os.environ.get("ANTHROPIC_API_KEY"):
         for m in CONFIG["claude_models"]:
-            out.append((m, lambda msgs, m=m: ask_claude(m, msgs)))
+            groups.append([(m, lambda msgs, m=m: ask_claude(m, msgs))])
     if os.environ.get("GEMINI_API_KEY"):
         for m in CONFIG["gemini_models"]:
             try:
-                m = pick_gemini_flash() if m == "auto-flash" else m
+                names = gemini_flash_candidates() if m == "auto-flash" else [m]
             except Exception as e:  # noqa: BLE001
                 print(f"  ! Gemini model lookup failed: {e}")
                 continue
-            out.append((m, lambda msgs, m=m: ask_gemini(m, msgs)))
-    if os.environ.get("GITHUB_TOKEN"):
-        for m in CONFIG["github_models"]:
-            out.append((m, lambda msgs, m=m: ask_github(m, msgs)))
-    return out
+            groups.append([(n, lambda msgs, n=n: ask_gemini(n, msgs)) for n in names])
+    if os.environ.get("OPENAI_API_KEY"):
+        for m in CONFIG.get("openai_models", []):
+            groups.append([(m, lambda msgs, m=m: ask_openai(m, msgs))])
+    return groups
 
 
 # ---------------------------------------------------------------- lab data
@@ -310,16 +316,21 @@ def run_prompt(ask, lab, cpnum, label, text, dry=False):
     return transcript
 
 
-def preflight(models):
-    """Send one short message to each model; skip any that fail, saying why."""
+def preflight(groups):
+    """Send one short message per model; skip any that fail, saying why.
+    In a group of fallbacks (Gemini's Flash models), stop at the first that works."""
     ok = []
-    for name, ask in models:
-        try:
-            ask([{"role": "user", "content": "Reply with the word ready."}])
-            ok.append((name, ask))
-            print(f"  model ready: {name}")
-        except Exception as e:  # noqa: BLE001
-            print(f"  ! skipping {name}: {str(e)[:300]}")
+    _TRIES["n"] = 1
+    for group in groups:
+        for name, ask in group:
+            try:
+                ask([{"role": "user", "content": "Reply with the word ready."}])
+                ok.append((name, ask))
+                print(f"  model ready: {name}")
+                break
+            except Exception as e:  # noqa: BLE001
+                print(f"  ! skipping {name}: {str(e)[:600]}")
+    _TRIES["n"] = 4
     return ok
 
 
@@ -337,8 +348,8 @@ def main():
     if a.list_models:
         if os.environ.get("GEMINI_API_KEY"):
             print("Gemini:", ", ".join(gemini_models()))
-        if os.environ.get("GITHUB_TOKEN"):
-            print("GitHub Models:", github_catalog())
+        if os.environ.get("OPENAI_API_KEY"):
+            print("OpenAI:", ", ".join(openai_models()))
         print("Claude: see https://docs.claude.com (models in config.json)")
         return 0
 
@@ -346,7 +357,7 @@ def main():
                       if ln.strip() and not ln.startswith("#")]
     models = [("dry-model", None)] if a.dry_run else preflight(roster())
     if not models:
-        print("No API keys found (ANTHROPIC_API_KEY, GEMINI_API_KEY, GITHUB_TOKEN). Nothing to run.")
+        print("No model answered (keys: ANTHROPIC_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY). Nothing to run.")
         return 1
     stamp = datetime.datetime.now().strftime("%Y-%m-%d_%H%M")
     out_dir = os.path.join(REPO, "ai_check_results", stamp)

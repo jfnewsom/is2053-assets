@@ -1,16 +1,17 @@
-# Runs every AI Assist prompt through Claude, Gemini, and GitHub Models and
-# flags answers that break the prompt's rules. See tools/ai_check/ai_check.py.
+# Runs every AI Assist prompt through Claude and Gemini (and OpenAI, if that
+# secret is set) and flags answers that break the prompt's rules.
+# See tools/ai_check/ai_check.py.
 #
-# Starts when a push to spring-2027 changes anything in tools/ai_check/
-# (to test a lab, add or touch its line in tools/ai_check/labs.txt), or by
-# hand from the Actions tab once this file is also on the default branch.
+# Starts when a push to spring-2027 changes anything in tools/ai_check/ or a
+# lab sheet's JSON (where the prompts live), or by hand from the Actions tab
+# once this file is also on the default branch. Labs tested: tools/ai_check/labs.txt.
 # Results: the run's Summary page, plus a downloadable "ai-check-results" zip.
 name: AI Assist check
 
 on:
   push:
     branches: [spring-2027]
-    paths: ["tools/ai_check/**"]
+    paths: ["tools/ai_check/**", "pages/labs/json/**"]
   workflow_dispatch:
     inputs:
       labs:
@@ -20,7 +21,6 @@ on:
 
 permissions:
   contents: read
-  models: read
 
 jobs:
   check:
@@ -36,7 +36,7 @@ jobs:
           PYTHONUNBUFFERED: "1"
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: python3 tools/ai_check/ai_check.py ${{ github.event.inputs.labs }}
       - uses: actions/upload-artifact@v7
         if: always()
