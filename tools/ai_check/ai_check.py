@@ -73,6 +73,13 @@ FORBIDDEN = {
         (r"^\s*def\s+(?!main\b)\w+", "a function other than main() (Chapter 5)"),
         (r"=\s*\[", "a list (Chapter 7)"),
     ],
+    # Chapter 5 (Lab 2.2 on): functions and import are allowed now.
+    "5": [
+        (r"\.(lower|strip|title|capitalize|split|isdigit)\(", "a string method other than .upper() (Chapter 8)"),
+        (r"=\s*\[", "a list (Chapter 7)"),
+        (r"^\s*(try|except)\b", "try/except (Chapter 6)"),
+        (r"\bopen\(", "a file (Chapter 6)"),
+    ],
     "3": [
         (r"\.(lower|upper|strip|title|capitalize)\(", "a string method (Chapter 8)"),
         (r"^\s*(for|while)\b", "loops (Chapter 4)"),

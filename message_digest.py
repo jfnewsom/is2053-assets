@@ -202,10 +202,13 @@ def assigned_strings(src):
     inside a print() call, but they reach the screen through the variable that
     prints them, and CodeGrade sees them. They belong in the digest, so the
     check has to be able to find them.
+
+    A string a function returns counts too: flip_coin() returns 'HEADS' and
+    'TAILS', and the game prints them. Added 2026-11-20 for Lab 2.2.
     """
     out = set()
     for node in ast.walk(ast.parse(src)):
-        if isinstance(node, ast.Assign) and isinstance(node.value, ast.Constant) \
+        if isinstance(node, (ast.Assign, ast.Return)) and isinstance(node.value, ast.Constant) \
                 and isinstance(node.value.value, str):
             out.add(node.value.value)
     return out
@@ -228,13 +231,17 @@ def companion_sources(doc, sol_path):
     table marks as submitted, other than function_library.py (whose strings
     the digests deliberately leave to the lab that introduced them), is read
     from the solution's folder alongside it. Added 2026-10-25.
+
+    The lab that introduces the library marks it "new" in that table, and its
+    digest owns the library's strings, so it is read there. Added 2026-11-20
+    for Lab 2.2.
     """
     folder = os.path.dirname(sol_path)
     extra = []
     for df in (doc.get('overview') or {}).get('dataFiles', []):
         name = df.get('file', '')
         if (df.get('submitted') and name.endswith('.py')
-                and name != 'function_library.py'
+                and (name != 'function_library.py' or df.get('new'))
                 and name != os.path.basename(sol_path)):
             path = os.path.join(folder, name)
             if os.path.exists(path):
