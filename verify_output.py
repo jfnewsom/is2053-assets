@@ -82,7 +82,11 @@ def find_fixture(root):
             src = open(hit, encoding='utf-8').read()
         except OSError:
             continue
-        if all(k in src for k in FIXTURE_ENV) and 'def randint' in src:
+        # CHOICE_IDX is optional (2026-11-19). The CodeGrade fixture's choice()
+        # always returns the first item, which is what CHOICE_IDX=0 means, so
+        # requiring the knob locked out the course's own fixture.
+        if (all(k in src for k in ('SMALLNUM', 'LARGENUM'))
+                and 'def randint' in src):
             return hit
     return None
 

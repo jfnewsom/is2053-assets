@@ -299,6 +299,11 @@ def render_lab(data: dict, output_path: str) -> None:
         6. Need Help    (purple)
     """
     meta          = data.get("meta", {})
+    if meta.get("layout") == "tabs":
+        # Spring 2027 tabbed layout (render_lab_tabbed.py). Same JSON.
+        from render_lab_tabbed import render_tabbed
+        render_tabbed(data, output_path)
+        return
     overview      = data.get("overview", {})
     time_guide    = data.get("timeGuide", {})
     before_begin  = data.get("beforeYouBegin", {})

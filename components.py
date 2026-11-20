@@ -601,9 +601,13 @@ def render_checkpoint(cp: dict, index: int, total: int,
 
     content_html = ""
     in_steps = False
-    for item in content:
+    split_steps = False
+    for pos, item in enumerate(content):
         # The footnote closes the step-by-step section: right after its
         # numbered list, or before the next heading if the steps are prose.
+        # A step section split into several lists (by code blocks or "Run it
+        # now" callouts) gets it once, before the next heading
+        # (2026-11-20, Lab 1.1 rebuild).
         if in_steps and item.get("type") == "h3":
             content_html += AI_FOOTNOTE_HTML
             in_steps = False
@@ -611,7 +615,16 @@ def render_checkpoint(cp: dict, index: int, total: int,
                                             headshot_path=headshot_path)
         if item.get("type") == "h3":
             in_steps = item.get("label") == "step_by_step"
-        elif item.get("type") == "instructions" and in_steps:
+            if in_steps:
+                lists = 0
+                for nxt in content[pos + 1:]:
+                    if nxt.get("type") == "h3":
+                        break
+                    if nxt.get("type") == "instructions":
+                        lists += 1
+                split_steps = lists > 1
+        elif (item.get("type") == "instructions" and in_steps
+              and not split_steps):
             content_html += AI_FOOTNOTE_HTML
             in_steps = False
     if in_steps:

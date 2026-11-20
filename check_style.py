@@ -53,7 +53,9 @@ BANNED_ZERO_TOLERANCE = [
     (re.compile(r"(?:it'?s|is|are|was|you'?re)\s+not\s+just\b", re.I), "AI-tell: 'not just X, it's Y'"),
     (re.compile(r"that'?s\s+not\s+[^.,;]{2,40}[,.]\s*that'?s\b", re.I), "AI-tell: 'that's not X, that's Y'"),
     (re.compile(r"\bCalendy\b"), "product name typo (Calendly)"),
-    (re.compile(r"\bUTSA\b"), "use 'UT San Antonio' (the credential 'myUTSA ID' is fine)"),
+    # The header label "UTSA ID:" is the one every solution and the Lab
+    # Submission Format image use, so the label is allowed (2026-11-20).
+    (re.compile(r"\bUTSA\b(?! ID)"), "use 'UT San Antonio' (the credential 'myUTSA ID' and the header label 'UTSA ID:' are fine)"),
     (re.compile(r"weekly Zoom|course Zoom|Zoom session", re.I),
      "office-hours wording: the event is office hours, Zoom is only the room"),
     (re.compile(r"[Ss]essions are\s+(?:<[^>]+>\s*)?recorded"), "office hours are not recorded"),

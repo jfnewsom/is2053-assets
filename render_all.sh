@@ -68,7 +68,7 @@ echo "Checking for unwired renderers..."
 UNWIRED=0
 for s in render_*.py; do
     case "$s" in
-        render_variant.py|render_lab.py|render_bookex.py|render_study_worksheet.py) continue ;;
+        render_variant.py|render_lab.py|render_lab_tabbed.py|render_bookex.py|render_study_worksheet.py) continue ;;
     esac
     if ! grep -q "$s" "$0"; then
         echo "  ✗ $s exists but is NOT in render_all.sh — add it"
@@ -153,13 +153,15 @@ if [ "$1" != "--no-guard" ]; then
     [ ${PIPESTATUS[0]} -eq 0 ] || FAILED=1
 
     # Execute each lab solution and diff it against the sheet's sample run.
-    # The solutions live outside this repo, so this is the one guard that can
+    # The solutions live in the private is2053-code repo (default changed from the
+    # Fall OneDrive code folder on 2026-11-19; IS2053_SOLUTIONS still overrides it).
+    # They live outside this repo, so this is the one guard that can
     # be unavailable. Skipping is announced loudly rather than passing quietly:
     # a check you think ran and did not is worse than no check.
     echo ""
     echo "Checking provided files..."
-    if [ -d "${IS2053_SOLUTIONS:-$HOME/Library/CloudStorage/OneDrive-UniversityofTexasatSanAntonio/UTSA-Prof-Current/2026-3-Fall/IS2053/code/Modules}" ]; then
-        python3 check_provided_files.py --solutions "${IS2053_SOLUTIONS:-$HOME/Library/CloudStorage/OneDrive-UniversityofTexasatSanAntonio/UTSA-Prof-Current/2026-3-Fall/IS2053/code/Modules}" | tail -n 3 
+    if [ -d "${IS2053_SOLUTIONS:-$HOME/Documents/GitHub/is2053-code/Modules}" ]; then
+        python3 check_provided_files.py --solutions "${IS2053_SOLUTIONS:-$HOME/Documents/GitHub/is2053-code/Modules}" | tail -n 3 
         [ ${PIPESTATUS[0]} -eq 0 ] || FAILED=1
     else
         python3 check_provided_files.py | tail -n 3
@@ -168,7 +170,7 @@ if [ "$1" != "--no-guard" ]; then
 
     echo ""
     echo "Verifying sheets against the solutions..."
-    SOLUTIONS="${IS2053_SOLUTIONS:-$HOME/Library/CloudStorage/OneDrive-UniversityofTexasatSanAntonio/UTSA-Prof-Current/2026-3-Fall/IS2053/code/Modules}"
+    SOLUTIONS="${IS2053_SOLUTIONS:-$HOME/Documents/GitHub/is2053-code/Modules}"
     if [ -d "$SOLUTIONS" ]; then
         VERIFY_OUT=$(python3 verify_output.py --solutions "$SOLUTIONS") || FAILED=1
         echo "$VERIFY_OUT" | grep -E '^[A-Z][A-Z-]*=[0-9]' | sed 's/^/  /'
