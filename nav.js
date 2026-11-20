@@ -399,6 +399,7 @@
             ${SYLLABUS_URL ? link('Syllabus', SYLLABUS_URL, 'dd-yellow', true) : ''}
             ${link('Grading Info',    S + 'grading-info.html' + suffix,    'dd-yellow')}
             ${link('Course Schedule', S + 'course-schedule.html' + suffix, 'dd-yellow')}
+            ${link('Textbook',        S + 'textbook.html' + suffix,        'dd-yellow')}
             <div class="drop-label">Support Resources</div>
             ${link('Assignment Overview', S + 'assignment-overview.html' + suffix, 'dd-green')}
             ${link('CodeGrade Guide',     S + 'codegrade-guide.html' + suffix,     'dd-green')}
