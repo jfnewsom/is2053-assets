@@ -29,12 +29,12 @@ import io
 import re
 import sys
 
-BASELINE_SOURCE = 3     # pages/**/json/*.json, U+2014 plus &mdash;   (2026-08-08)
+BASELINE_SOURCE = 2     # pages/**/json/*.json, U+2014 plus &mdash;   (2026-08-08; 3 -> 2 on 2026-11-20, Lab 2.3 rebuild)
 # 703 -> 710 when reading.json was created. That is not new debt. Those 7 already
 # existed in the hand-maintained reading pages; sourcing them made them countable
 # for the first time. Expect the same one-time bump as the remaining unsourced
 # pages (home, submission-format, exam headers) come into the pipeline.
-BASELINE_VISIBLE = 3    # rendered pages/**/*.html, comments stripped (2026-08-09,
+BASELINE_VISIBLE = 2    # rendered pages/**/*.html, comments stripped (2026-08-09; 3 -> 2 on 2026-11-20,
                         # was 78, then 50; exam-header renderer plus " | " page titles, L-021)
 # NOTE: an earlier baseline of 473 counted only the literal U+2014 character and
 # missed every &mdash; entity, undercounting the real debt by 57 percent. Both

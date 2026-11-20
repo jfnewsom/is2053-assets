@@ -234,14 +234,16 @@ def companion_sources(doc, sol_path):
 
     The lab that introduces the library marks it "new" in that table, and its
     digest owns the library's strings, so it is read there. Added 2026-11-20
-    for Lab 2.2.
+    for Lab 2.2. A lab that adds printed strings to the library marks it
+    "changed" (Lab 2.3's validation functions), and its digest lists every
+    string in the library, old and new. Added 2026-11-20 for Lab 2.3.
     """
     folder = os.path.dirname(sol_path)
     extra = []
     for df in (doc.get('overview') or {}).get('dataFiles', []):
         name = df.get('file', '')
         if (df.get('submitted') and name.endswith('.py')
-                and (name != 'function_library.py' or df.get('new'))
+                and (name != 'function_library.py' or df.get('new') or df.get('changed'))
                 and name != os.path.basename(sol_path)):
             path = os.path.join(folder, name)
             if os.path.exists(path):

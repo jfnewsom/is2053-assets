@@ -73,6 +73,15 @@ FORBIDDEN = {
         (r"^\s*def\s+(?!main\b)\w+", "a function other than main() (Chapter 5)"),
         (r"=\s*\[", "a list (Chapter 7)"),
     ],
+    # Chapters 4-5 (Lab 2.3): .strip() and .isdigit() join .upper(), each used
+    # in one place in the lab, so the AI may use them too. Key matches the
+    # sheet's meta.chapters, which uses an en dash.
+    "4\u20135": [
+        (r"\.(lower|title|capitalize|split|startswith|endswith|replace)\(", "a string method other than .upper(), .strip(), .isdigit() (Chapter 8)"),
+        (r"=\s*\[", "a list (Chapter 7)"),
+        (r"^\s*(try|except)\b", "try/except (Chapter 6)"),
+        (r"\bopen\(", "a file (Chapter 6)"),
+    ],
     # Chapter 5 (Lab 2.2 on): functions and import are allowed now.
     "5": [
         (r"\.(lower|strip|title|capitalize|split|isdigit)\(", "a string method other than .upper() (Chapter 8)"),
