@@ -225,7 +225,7 @@ NOT_STDOUT_RE = re.compile(r'^\s*\w+\.py output\b', re.I)
 PLACEHOLDER_RE = re.compile(r'^\s*\(.*(?:continue as in|depends on|captured in)', re.M | re.S)
 
 
-def unverifiable(exp, doc):
+def unverifiable(exp, doc, random_lab=True):
     """Why this sheet can never be reproduced, if it cannot.
 
     Distinguishing these from a real failure matters. A harness that cries
@@ -239,7 +239,8 @@ def unverifiable(exp, doc):
         return ('PLACEHOLDER',
                 'expectedOutput describes the run in prose instead of showing it')
     rolls = ROLL_RE.findall(exp)
-    if len(set(rolls)) > 1 and not declared_seq(doc):
+    # Typed rolls (Module 1, Lab 2.1) are inputs, not randomness.
+    if random_lab and len(set(rolls)) > 1 and not declared_seq(doc):
         return ('REAL-RANDOM',
                 f'sample run captured with real randomness (rolls {"/".join(rolls)}), '
                 f'not the CodeGrade fixture, so it cannot be reproduced')
@@ -271,7 +272,19 @@ def uses_random(sol_path):
     run without the fixture for exactly that reason.
     """
     d = os.path.dirname(sol_path)
-    for f in [sol_path] + sorted(glob.glob(os.path.join(d, '*.py'))):
+    try:
+        src = open(sol_path, encoding='utf-8').read()
+    except OSError:
+        return False
+    if RANDOM_RE.search(src):
+        return True
+    # Only local modules the lab actually imports count (2026-11-20): Lab 2.1
+    # shares mod2/ with the 2.2 library but never imports it, and types its
+    # rolls, so it must not be treated as a random lab.
+    for f in sorted(glob.glob(os.path.join(d, '*.py'))):
+        name = os.path.splitext(os.path.basename(f))[0]
+        if f == sol_path or not re.search(rf'^\s*(import|from)\s+{re.escape(name)}\b', src, re.M):
+            continue
         try:
             if RANDOM_RE.search(open(f, encoding='utf-8').read()):
                 return True
@@ -285,11 +298,11 @@ def verify(lab, json_path, sol_path, fixture_dir=None, show_diff=True):
     exp = (d.get('finalChecklist') or {}).get('finalCheck', {}).get('expectedOutput', '')
     if not exp:
         return 'NO-EXPECTED', None
-    why = unverifiable(exp, d)
+    random_lab = uses_random(sol_path)
+    why = unverifiable(exp, d, random_lab)
     if why:
         return why
     src = open(sol_path, encoding='utf-8').read()
-    random_lab = uses_random(sol_path)
     if random_lab and not fixture_dir:
         return 'NONDETERMINISTIC', 'no random.py fixture found in the solutions tree'
 

@@ -66,6 +66,13 @@ FORBIDDEN = {
         (r"^\s*def\s+(?!main\b)\w+", "a function other than main() (Chapter 5)"),
         (r"=\s*\[", "a list (Chapter 7)"),
     ],
+    # Chapter 4 (Lab 2.1 on): .upper() is allowed, in the travel banner only.
+    "4": [
+        (r"\.(lower|strip|title|capitalize|split|isdigit)\(", "a string method other than .upper() (Chapter 8)"),
+        (r"^\s*(import|from)\s+\w", "import"),
+        (r"^\s*def\s+(?!main\b)\w+", "a function other than main() (Chapter 5)"),
+        (r"=\s*\[", "a list (Chapter 7)"),
+    ],
     "3": [
         (r"\.(lower|upper|strip|title|capitalize)\(", "a string method (Chapter 8)"),
         (r"^\s*(for|while)\b", "loops (Chapter 4)"),
