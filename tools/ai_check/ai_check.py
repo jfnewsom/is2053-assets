@@ -40,7 +40,9 @@ import json
 import os
 import re
 import sys
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 import urllib.error
 import urllib.request
 
@@ -54,7 +56,7 @@ PLACEHOLDER = "[paste the whole error message here]"
 # Keyed by the lab's meta.chapters. Extend as later labs get AI Assist.
 FORBIDDEN = {
     "2": [
-        (r"^\s*(if|elif|else)\b", "if/elif/else (Chapter 3)"),
+        (r"^\s*(if|elif|else)\b(?!\s+__name__)", "if/elif/else (Chapter 3)"),
         (r"^\s*(for|while)\b", "loops (Chapter 4)"),
         (r"^\s*(import|from)\s+\w", "import"),
         (r"^\s*def\s+(?!main\b)\w+", "a function other than main() (Chapter 5)"),
@@ -70,19 +72,42 @@ FORBIDDEN = {
 
 
 # ---------------------------------------------------------------- HTTP
-def post(url, headers, body, tries=3):
+# Requests run in parallel, but each service gets a small cap so free-tier
+# rate limits aren't hit all at once (config "concurrency").
+_CAPS = {k: threading.Semaphore(v) for k, v in CONFIG.get(
+    "concurrency", {"anthropic": 4, "google": 2, "github": 2}).items()}
+
+
+def _service(url):
+    return ("anthropic" if "anthropic" in url else "google" if "googleapis" in url else "github")
+
+
+def post(url, headers, body, tries=4):
+    with _CAPS[_service(url)]:
+        return _post(url, headers, body, tries)
+
+
+def _post(url, headers, body, tries=4):
     data = json.dumps(body).encode()
     for attempt in range(tries):
         req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json", **headers})
         try:
-            with urllib.request.urlopen(req, timeout=120) as r:
-                return json.load(r)
+            with urllib.request.urlopen(req, timeout=240) as r:
+                raw = r.read().decode(errors="replace")
+                try:
+                    return json.loads(raw)
+                except ValueError:
+                    raise RuntimeError(f"HTTP {r.status} but not JSON: {raw[:200]!r}")
         except urllib.error.HTTPError as e:
             msg = e.read().decode(errors="replace")[:300]
             if e.code in (429, 500, 502, 503, 529) and attempt < tries - 1:
-                time.sleep(25 * (attempt + 1))
+                time.sleep(30 * (attempt + 1))
                 continue
             raise RuntimeError(f"HTTP {e.code}: {msg}")
+        except TimeoutError:
+            if attempt < tries - 1:
+                continue
+            raise RuntimeError("timed out")
         except urllib.error.URLError as e:
             if attempt < tries - 1:
                 time.sleep(10)
@@ -97,7 +122,7 @@ def get(url, headers):
 
 
 # ---------------------------------------------------------------- services
-def ask_claude(model, messages, max_tokens=1200, system=None):
+def ask_claude(model, messages, max_tokens=4000, system=None):
     body = {"model": model, "max_tokens": max_tokens, "messages": messages}
     if system:
         body["system"] = system
@@ -108,7 +133,8 @@ def ask_claude(model, messages, max_tokens=1200, system=None):
 
 def ask_github(model, messages):
     r = post("https://models.github.ai/inference/chat/completions",
-             {"Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}", "Accept": "application/vnd.github+json"},
+             {"Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}", "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28"},
              {"model": model, "messages": messages})
     return r["choices"][0]["message"]["content"]
 
@@ -200,14 +226,14 @@ def code_blocks(text):
     return "\n".join(blocks)
 
 
-def mechanical(text, chapter, frags, label, turns):
+def mechanical(text, chapter, frags, label, turns, sent=""):
     flags = []
     code = code_blocks(text)
     for pat, name in FORBIDDEN.get(chapter, []):
         if re.search(pat, code, flags=re.M):
             flags.append(f"uses {name}")
     for f in frags:
-        if f in text:
+        if f in text and f not in sent:
             flags.append(f'contains the lab\'s own line "{f}"')
             break
     words = len(text.split())
@@ -231,7 +257,7 @@ Extra rules by prompt:
 - "Quiz me": ask ONE question, then stop and wait. When the student answers wrong, give a hint before giving the answer.
 - "Decode my error": explain what the error means and what kind of mistake causes it, and say what to look for. Don't rewrite or fix the student's code for them.
 
-Reply with JSON only: {"verdict": "PASS" or "FLAG", "rule": "<the rule broken, or empty>", "reason": "<one short sentence>"}"""
+Reply with ONLY this JSON object and nothing before or after it: {"verdict": "PASS" or "FLAG", "rule": "<the rule broken, or empty>", "reason": "<one short sentence>"}"""
 
 
 def judge(prompt_label, prompt_text, transcript):
@@ -240,13 +266,19 @@ def judge(prompt_label, prompt_text, transcript):
     convo = "\n\n".join(f"[{who}]\n{text}" for who, text in transcript)
     msg = (f'Prompt type: "{prompt_label}"\n\nPrompt the student sent:\n{prompt_text}\n\n'
            f"Conversation:\n{convo}")
-    raw = ask_claude(CONFIG["judge_model"], [{"role": "user", "content": msg}], max_tokens=300,
+    raw = ask_claude(CONFIG["judge_model"], [{"role": "user", "content": msg}], max_tokens=1500,
                      system=JUDGE_SYSTEM)
-    m = re.search(r"\{.*\}", raw, flags=re.S)
-    try:
-        return json.loads(m.group(0))
-    except Exception:  # noqa: BLE001
-        return {"verdict": "?", "rule": "", "reason": f"judge reply not JSON: {raw[:120]}"}
+    for m in reversed(list(re.finditer(r"\{[^{}]*\}", raw, flags=re.S))):
+        try:
+            d = json.loads(m.group(0))
+            if "verdict" in d:
+                return d
+        except ValueError:
+            continue
+    v = re.search(r'"verdict"\s*:\s*"(PASS|FLAG)"', raw)
+    if v:
+        return {"verdict": v.group(1), "rule": "", "reason": "(judge reply was cut short)"}
+    return {"verdict": "?", "rule": "", "reason": f"judge reply not JSON: {raw[:120]}"}
 
 
 # ---------------------------------------------------------------- one run
@@ -267,6 +299,19 @@ def run_prompt(ask, lab, cpnum, label, text, dry=False):
         second = ask(msgs)
         transcript += [("student", wrong), ("AI", second)]
     return transcript
+
+
+def preflight(models):
+    """Send one short message to each model; skip any that fail, saying why."""
+    ok = []
+    for name, ask in models:
+        try:
+            ask([{"role": "user", "content": "Reply with the word ready."}])
+            ok.append((name, ask))
+            print(f"  model ready: {name}")
+        except Exception as e:  # noqa: BLE001
+            print(f"  ! skipping {name}: {str(e)[:300]}")
+    return ok
 
 
 def slug(s):
@@ -290,7 +335,7 @@ def main():
 
     labs = a.labs or [ln.strip() for ln in open(os.path.join(HERE, "labs.txt"))
                       if ln.strip() and not ln.startswith("#")]
-    models = [("dry-model", None)] if a.dry_run else roster()
+    models = [("dry-model", None)] if a.dry_run else preflight(roster())
     if not models:
         print("No API keys found (ANTHROPIC_API_KEY, GEMINI_API_KEY, GITHUB_TOKEN). Nothing to run.")
         return 1
@@ -298,7 +343,7 @@ def main():
     out_dir = os.path.join(REPO, "ai_check_results", stamp)
     os.makedirs(out_dir, exist_ok=True)
 
-    rows, flagged, total = [], 0, 0
+    jobs = []
     for lab in labs:
         chapter, strings, scope, prompts = load_lab(lab)
         frags = lab_fragments(strings)
@@ -306,26 +351,32 @@ def main():
         for cpnum, cptitle, label, text in prompts:
             for name, ask in models:
                 for rep in range(1, CONFIG["repeats"] + 1):
-                    total += 1
-                    try:
-                        tr = run_prompt(ask, lab, cpnum, label, text, dry=a.dry_run)
-                        ai_turns = [t for who, t in tr if who == "AI"]
-                        mech = mechanical("\n".join(ai_turns), chapter, frags, label, ai_turns)
-                        jd = ({"verdict": "-", "rule": "", "reason": "dry run"} if a.dry_run
-                              else judge(label, text, tr))
-                    except Exception as e:  # noqa: BLE001
-                        tr, mech, jd = [], [], {"verdict": "ERROR", "rule": "", "reason": str(e)[:200]}
-                    bad = bool(mech) or jd.get("verdict") not in ("PASS", "-")
-                    flagged += bad
-                    fname = f"{lab}_cp{cpnum}_{slug(label)}__{slug(name)}_r{rep}.md"
-                    with open(os.path.join(out_dir, fname), "w") as f:
-                        f.write(f"# {lab} CP{cpnum} ({cptitle}): {label}\n\nModel: {name}, run {rep}\n\n")
-                        f.write(f"Mechanical flags: {', '.join(mech) or 'none'}\n\n")
-                        f.write(f"Judge: {jd.get('verdict')} {jd.get('rule', '')}: {jd.get('reason', '')}\n\n---\n")
-                        for who, t in tr:
-                            f.write(f"\n**{who}:**\n\n{t}\n")
-                    rows.append((lab, cpnum, label, name, rep, mech, jd, fname, bad))
-                    print(f"  CP{cpnum} {label:16} {name:40} {'FLAG' if bad else 'ok'}")
+                    jobs.append((lab, chapter, frags, cpnum, cptitle, label, text, name, ask, rep))
+
+    def do(job):
+        lab, chapter, frags, cpnum, cptitle, label, text, name, ask, rep = job
+        try:
+            tr = run_prompt(ask, lab, cpnum, label, text, dry=a.dry_run)
+            ai_turns = [t for who, t in tr if who == "AI"]
+            mech = mechanical("\n".join(ai_turns), chapter, frags, label, ai_turns, sent=tr[0][1] if tr else "")
+            jd = ({"verdict": "-", "rule": "", "reason": "dry run"} if a.dry_run
+                  else judge(label, text, tr))
+        except Exception as e:  # noqa: BLE001
+            tr, mech, jd = [], [], {"verdict": "ERROR", "rule": "", "reason": str(e)[:200]}
+        bad = bool(mech) or jd.get("verdict") not in ("PASS", "-")
+        fname = f"{lab}_cp{cpnum}_{slug(label)}__{slug(name)}_r{rep}.md"
+        with open(os.path.join(out_dir, fname), "w") as f:
+            f.write(f"# {lab} CP{cpnum} ({cptitle}): {label}\n\nModel: {name}, run {rep}\n\n")
+            f.write(f"Mechanical flags: {', '.join(mech) or 'none'}\n\n")
+            f.write(f"Judge: {jd.get('verdict')} {jd.get('rule', '')}: {jd.get('reason', '')}\n\n---\n")
+            for who, t in tr:
+                f.write(f"\n**{who}:**\n\n{t}\n")
+        print(f"  {lab} CP{cpnum} {label:16} {name:40} {'FLAG' if bad else 'ok'}", flush=True)
+        return (lab, cpnum, label, name, rep, mech, jd, fname, bad)
+
+    with ThreadPoolExecutor(max_workers=CONFIG.get("workers", 8)) as pool:
+        rows = list(pool.map(do, jobs))
+    total, flagged = len(rows), sum(r[8] for r in rows)
 
     lines = [f"# AI Assist check, {stamp}", "",
              f"{total} answers, {flagged} flagged. Models: {', '.join(n for n, _ in models)}.", "",
