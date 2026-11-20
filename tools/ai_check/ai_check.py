@@ -46,6 +46,7 @@ import sys
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
+import http.client
 import urllib.error
 import urllib.request
 
@@ -88,11 +89,22 @@ def _service(url):
 
 
 _TRIES = {"n": 4}   # preflight drops this to 1 so a dead model is skipped fast
+# A service still answering 429 after every retry has used up its quota (Gemini's
+# free tier has a daily cap). Its remaining requests are skipped, not retried.
+_DEAD = {}
 
 
 def post(url, headers, body, tries=None):
-    with _CAPS[_service(url)]:
-        return _post(url, headers, body, tries or _TRIES["n"])
+    svc = _service(url)
+    if svc in _DEAD:
+        raise RuntimeError(f"not run: {_DEAD[svc]}")
+    with _CAPS[svc]:
+        try:
+            return _post(url, headers, body, tries or _TRIES["n"])
+        except RuntimeError as e:
+            if str(e).startswith("HTTP 429") and (tries or _TRIES["n"]) > 1:
+                _DEAD[svc] = f"{svc} quota used up earlier in this run"
+            raise
 
 
 def _post(url, headers, body, tries=4):
@@ -116,6 +128,12 @@ def _post(url, headers, body, tries=4):
             if attempt < tries - 1:
                 continue
             raise RuntimeError("timed out")
+        except (ConnectionError, http.client.HTTPException) as e:
+            # e.g. "Remote end closed connection without response"
+            if attempt < tries - 1:
+                time.sleep(10)
+                continue
+            raise RuntimeError(f"connection dropped: {e}")
         except urllib.error.URLError as e:
             if attempt < tries - 1:
                 time.sleep(10)
@@ -365,7 +383,9 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
 
     jobs = []
-    for lab in labs:
+    # Newest lab first: if a service runs out of quota partway through, the
+    # labs it misses are the older ones, already tested in earlier runs.
+    for lab in reversed(labs):
         chapter, strings, scope, prompts = load_lab(lab)
         frags = lab_fragments(strings)
         print(f"{lab}: {len(prompts)} prompts x {len(models)} models x {CONFIG['repeats']} repeats")
@@ -384,7 +404,8 @@ def main():
                   else judge(label, text, tr))
         except Exception as e:  # noqa: BLE001
             tr, mech, jd = [], [], {"verdict": "ERROR", "rule": "", "reason": str(e)[:200]}
-        bad = bool(mech) or jd.get("verdict") not in ("PASS", "-")
+        skipped = jd.get("verdict") == "ERROR"
+        bad = not skipped and (bool(mech) or jd.get("verdict") not in ("PASS", "-"))
         fname = f"{lab}_cp{cpnum}_{slug(label)}__{slug(name)}_r{rep}.md"
         with open(os.path.join(out_dir, fname), "w") as f:
             f.write(f"# {lab} CP{cpnum} ({cptitle}): {label}\n\nModel: {name}, run {rep}\n\n")
@@ -392,26 +413,34 @@ def main():
             f.write(f"Judge: {jd.get('verdict')} {jd.get('rule', '')}: {jd.get('reason', '')}\n\n---\n")
             for who, t in tr:
                 f.write(f"\n**{who}:**\n\n{t}\n")
-        print(f"  {lab} CP{cpnum} {label:16} {name:40} {'FLAG' if bad else 'ok'}", flush=True)
-        return (lab, cpnum, label, name, rep, mech, jd, fname, bad)
+        print(f"  {lab} CP{cpnum} {label:16} {name:40} {'FLAG' if bad else 'not run' if skipped else 'ok'}",
+              flush=True)
+        return (lab, cpnum, label, name, rep, mech, jd, fname, bad, skipped)
 
     with ThreadPoolExecutor(max_workers=CONFIG.get("workers", 8)) as pool:
         rows = list(pool.map(do, jobs))
-    total, flagged = len(rows), sum(r[8] for r in rows)
+    total = len(rows)
+    flagged = sum(r[8] for r in rows)
+    not_run = sum(r[9] for r in rows)
+    passed = total - flagged - not_run
 
     lines = [f"# AI Assist check, {stamp}", "",
-             f"{total} answers, {flagged} flagged. Models: {', '.join(n for n, _ in models)}.", "",
-             "Flagged answers first. Each file in this run's folder has the full conversation.", "",
+             f"{total} answers: {passed} passed, {flagged} flagged, {not_run} not run (service errors or "
+             f"quota). Models: {', '.join(n for n, _ in models)}.", "",
+             "Flagged answers first, then answers that didn't run. Each file in this run's folder has the "
+             "full conversation.", "",
              "| | Lab | CP | Prompt | Model | Mechanical | Judge | File |", "|---|---|---|---|---|---|---|---|"]
-    for lab, cp, label, name, rep, mech, jd, fname, bad in sorted(rows, key=lambda r: (not r[8], r[0], r[1], r[2])):
-        j = f"{jd.get('verdict')}: {jd.get('reason', '')}".replace("|", "/")
-        lines.append(f"| {'⚠' if bad else '✓'} | {lab} | {cp} | {label} | {name} | "
+    order = sorted(rows, key=lambda r: (0 if r[8] else 1 if r[9] else 2, r[0], r[1], r[2]))
+    for lab, cp, label, name, rep, mech, jd, fname, bad, skipped in order:
+        verdict = "NOT RUN" if skipped else jd.get("verdict")
+        j = f"{verdict}: {jd.get('reason', '')}".replace("|", "/")
+        lines.append(f"| {'⚠' if bad else '○' if skipped else '✓'} | {lab} | {cp} | {label} | {name} | "
                      f"{'; '.join(mech) or ''} | {j} | {fname} |")
     report = "\n".join(lines) + "\n"
     open(os.path.join(out_dir, "report.md"), "w").write(report)
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         open(os.environ["GITHUB_STEP_SUMMARY"], "a").write(report)
-    print(f"\nReport: {os.path.join(out_dir, 'report.md')}  ({flagged} of {total} flagged)")
+    print(f"\nReport: {os.path.join(out_dir, 'report.md')}  ({flagged} flagged, {not_run} not run, of {total})")
     return 0
 
 
