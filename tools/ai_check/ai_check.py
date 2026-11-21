@@ -100,6 +100,11 @@ FORBIDDEN = {
         (r"\.(lower|title|capitalize|split|startswith|endswith|replace|find|join|readlines)\(", "a string method other than .upper(), .strip(), .rstrip(), .isdigit() (Chapter 8)"),
         (r"=\s*\[", "a list (Chapter 7)"),
     ],
+    # Chapters 8-9 (Module 4): everything from Chapters 2 to 9 is allowed;
+    # classes wait for Module 5. Key matches meta.chapters (en dash).
+    "8\u20139": [
+        (r"^\s*class\b", "a class (Chapter 10)"),
+    ],
     "3": [
         (r"\.(lower|upper|strip|title|capitalize)\(", "a string method (Chapter 8)"),
         (r"^\s*(for|while)\b", "loops (Chapter 4)"),
