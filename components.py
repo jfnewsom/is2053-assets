@@ -7,6 +7,7 @@ Source of truth: IS2053_JSON_Schema_Spec_v1.md
 """
 
 import html as html_lib
+import os
 import io
 import keyword
 import re
@@ -44,6 +45,7 @@ H3_LABELS = {
     "textbook_reference":    "Textbook Reference",
     "program_requirements":  "Program Requirements",
     "ai_assist":             "AI Assist",
+    "vscode_tip":            "VS Code Tip",
 }
 
 # H3 background color per card context
@@ -130,7 +132,14 @@ CALLOUT_ACCENT = {
     "warning": "#FF1744",
     "strategy": "#FF6B1A",
     "clock":   "#0055FF",
+    "vscode":  "#FFFFFF",
 }
+
+# VS Code tips (John, Nov 20, 2026): the editor's logo on the tip card. The
+# file is the one already kept in third-party/.
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                       'third-party', 'vscode-logo.svg')) as _f:
+    CALLOUT_ICONS["vscode"] = _f.read().strip()
 
 
 # ============================================================
@@ -292,6 +301,8 @@ def render_content_item(item: dict, card_color: str = "green",
         return render_mentor_quote(item, headshot_path)
     elif t == "ai_assist":
         return render_ai_assist(item)
+    elif t == "vscode_tip":
+        return render_vscode_tip(item)
     else:
         # Unknown type — emit a comment so it's visible during audit
         return f'<!-- UNKNOWN CONTENT TYPE: {html_lib.escape(t)} -->\n'
@@ -336,6 +347,23 @@ def render_ai_assist(item: dict) -> str:
     caution = item.get("caution", AI_ASSIST_CAUTION)
     return (f'    <div class="lc-ai-assist">\n      <p class="lc-ai-assist__intro">{intro}</p>\n'
             f'{rows}      <p class="lc-ai-assist__caution">{caution}</p>\n    </div>\n')
+
+
+# VS Code tips (John, Nov 20, 2026): an editor shortcut on the step where it
+# first pays off, ending with a link to the page that lists every shortcut.
+VSCODE_TIPS_PAGE = "../support/vscode-tips.html"
+
+
+def render_vscode_tip(item: dict) -> str:
+    """Render one VS Code tip: title, body, and the 'for more shortcuts' link."""
+    anchor = item.get("anchor", "")
+    href = VSCODE_TIPS_PAGE + (f"#{anchor}" if anchor else "")
+    return ('    <div class="lc-vscode-tip">\n'
+            f'      <p class="lc-vscode-tip__title"><strong>{item.get("title", "")}</strong></p>\n'
+            f'      {item.get("body", "")}\n'
+            f'      <p class="lc-vscode-tip__more"><a href="{href}">For more shortcuts, '
+            'see the VS Code Tips page &rarr;</a></p>\n'
+            '    </div>\n')
 
 
 def render_instructions(item: dict) -> str:

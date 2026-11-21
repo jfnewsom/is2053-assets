@@ -41,7 +41,9 @@ A page is a list of CARDS. Each card has:
 A BLOCK is exactly one of:
 
     {"raw_html": ...}                    verbatim, for bespoke layout
-    {"label": ..., "body_html": ...}     an lc-named-section
+    {"label": ..., "body_html": ...}     an lc-named-section (optional "id"
+                                         gives it an anchor, for links like
+                                         vscode-tips.html#autocomplete)
     {"row": [col, col]}                  an lc-home-row; each col is a bare
                                          label plus body, no section wrapper
 
@@ -123,7 +125,8 @@ def render_block(block, where):
             html = f'      <div class="lc-home-row">\n{cols}\n      </div>'
         elif 'label' in b:
             div_cls, lbl_cls, div_sty, lbl_sty = label_and_classes(b)
-            html = (f'      <div class="{div_cls}"{div_sty}>\n'
+            id_attr = f' id="{b["id"]}"' if b.get('id') else ''
+            html = (f'      <div class="{div_cls}"{id_attr}{div_sty}>\n'
                     f'      <div class="{lbl_cls}"{lbl_sty}>{b["label"]}</div>\n'
                     f'      {b["body_html"].rstrip()}\n'
                     f'      </div>')

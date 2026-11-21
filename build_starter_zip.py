@@ -64,7 +64,8 @@ VSCODE = """{
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
   "files.eol": "\\n",
-  "python.REPL.enableREPLSmartSend": false
+  "python.REPL.enableREPLSmartSend": false,
+  "editor.stickyScroll.enabled": true
 }
 """
 

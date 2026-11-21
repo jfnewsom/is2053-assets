@@ -393,6 +393,7 @@
             ${link('Assignment Overview', S + 'assignment-overview.html' + suffix, 'dd-green')}
             ${link('CodeGrade Guide',     S + 'codegrade-guide.html' + suffix,     'dd-green')}
             ${link('Flake8 Guide',        S + 'flake8-guide.html' + suffix,        'dd-green')}
+            ${link('VS Code Tips',        S + 'vscode-tips.html' + suffix,         'dd-green')}
             ${link('Submission Format',   S + 'submission-format.html' + suffix,   'dd-green')}
             ${link('How To Get Help',     S + 'how-to-get-help.html' + suffix,     'dd-green')}
             ${link('Discord',             S + 'discord.html' + suffix,             'dd-green')}

@@ -105,10 +105,12 @@ def checkpoint_body(cp):
             if label == "step_by_step":
                 s += C.AI_FOOTNOTE_HTML
     for pos, (label, var) in enumerate((("bookex_patterns", "bookex"), ("tips_and_pitfalls", "pitfall"),
-                                         ("ai_assist", "tip"))):
+                                         ("vscode_tip", "vscode"), ("ai_assist", "tip"))):
         if label in sec:
             blocks = sec.pop(label)
             title = C.H3_LABELS.get(label, label.replace("_", " ").title())
+            if label == "vscode_tip" and len(blocks) > 1:
+                title = "VS Code Tips"
             body = "".join(C.render_content_item(b, card_color="green") for b in blocks)
             cards.insert(min(pos, len(cards)), (icon(var), title, body))
     for label, blocks in sec.items():  # anything unexpected stays visible
