@@ -322,6 +322,7 @@ Extra rules by prompt:
 - "Explain it": explain the concept and end with one question that checks understanding.
 - "Quiz me": ask ONE question, then stop and wait. When the student answers wrong, give a hint before giving the answer.
 - "Decode my error": explain what the error means and what kind of mistake causes it, and say what to look for. Don't rewrite or fix the student's code for them.
+A count or total that starts at 0, or a comparison with 0, doesn't need a named constant: the course's own code writes those as 0.
 
 If you FLAG, also say how serious it is, from a beginner's point of view:
 - "serious": a wrong statement about Python that would mislead the student; telling the student a wrong answer is right, or giving the answer after a wrong answer with no hint; writing code for the assignment; or teaching a tool outside the student's list as the way to do it.
