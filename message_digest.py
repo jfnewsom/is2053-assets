@@ -205,12 +205,20 @@ def assigned_strings(src):
 
     A string a function returns counts too: flip_coin() returns 'HEADS' and
     'TAILS', and the game prints them. Added 2026-11-20 for Lab 2.2.
+
+    So does a string stored in a list: Lab 3.3's hazards and their messages
+    live in parallel lists, and the game prints whichever one it picks.
+    Added 2026-11-20 for Lab 3.3.
     """
     out = set()
     for node in ast.walk(ast.parse(src)):
         if isinstance(node, (ast.Assign, ast.Return)) and isinstance(node.value, ast.Constant) \
                 and isinstance(node.value.value, str):
             out.add(node.value.value)
+        if isinstance(node, ast.Assign) and isinstance(node.value, ast.List):
+            for elt in node.value.elts:
+                if isinstance(elt, ast.Constant) and isinstance(elt.value, str):
+                    out.add(elt.value)
     return out
 
 
