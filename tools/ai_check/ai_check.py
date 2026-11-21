@@ -89,6 +89,11 @@ FORBIDDEN = {
         (r"^\s*(try|except)\b", "try/except (Chapter 6)"),
         (r"\bopen\(", "a file (Chapter 6)"),
     ],
+    # Chapter 7 (Lab 3.2 on): lists, for loops, append(), sort() are allowed now.
+    "7": [
+        (r"\.(lower|title|capitalize|split|startswith|endswith|replace|find|join)\(", "a string method other than .upper(), .strip(), .rstrip(), .isdigit() (Chapter 8)"),
+        (r"=\s*\{", "a dictionary or set (Chapter 9)"),
+    ],
     # Chapter 6 (Lab 3.1): files and try/except are allowed now, and .rstrip()
     # joins the string methods the labs use. Lists still wait for Chapter 7.
     "6": [

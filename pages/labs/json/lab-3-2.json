@@ -6,150 +6,124 @@
     "week": 2,
     "weekType": "ENHANCE",
     "chapters": "7",
-    "chapterTopics": "Lists and Tuples",
+    "chapterTopics": "Lists",
     "filename": "lab-3-2.py",
-    "additionalFiles": []
+    "additionalFiles": [],
+    "layout": "tabs"
   },
   "overview": {
-    "body": "Last unit you bolted file I/O onto your road trip game and made progress persist between sessions. That was the BUILD unit. This is the ENHANCE unit. The destination menus you carried forward from Lab 1.3 are still a wall of <code>if/elif</code> chains. Three menus, dozens of lines, all of them doing the same job in slightly different ways. <strong>Parallel lists</strong>: the central pattern of Chapter 7, collapse that wall into a few lines of data and one universal display function. You'll also add tracking lists so the trip report can show the player's actual route and the hazards they faced, and extend save/load so those lists persist across sessions.",
+    "body": "This is an <strong>ENHANCE</strong> unit: lists take over! Your menus and the gate run from parallel lists instead of long <code>if</code> chains, and the game keeps a list of every city and hazard on the trip, shows them in the report, and saves them with the game.",
     "mentorQuote": {
       "character": "Danny Cavanaugh",
       "role": "Lead Developer, Bat City Collective",
       "headshot": "Danny-Cavanaugh.png",
-      "quote": "When you find yourself writing the same shape of code three times in a row, that's data wearing a logic costume. The structure is begging to be a list. Once you see it, you can't unsee it, and your code gets so much shorter."
+      "quote": "Every time you copy a block and change one word, you're writing data as code. Lists let you write the data once and the code once. This week the game gets shorter and does more."
     },
     "objectives": [
-      "Replace the destination <code>if/elif</code> chains with <strong>parallel lists</strong>, three per city: destinations, distances, notes",
-      "<strong>Promote</strong> <code>save_game()</code> and <code>load_game()</code> from <code>lab-3-1.py</code> to <code>function_library.py</code>",
-      "Add three universal destination helpers to the library: <code>display_destinations()</code>, <code>get_destination()</code>, <code>get_redirect()</code>",
-      "Build <strong>tracking lists</strong>: <code>visited_cities</code> (route) and <code>hazards_list</code> (war stories)",
-      "<strong>Extend</strong> <code>save_game()</code> and <code>load_game()</code> to persist both tracking lists using a <code>---LISTS_END---</code> separator",
-      "Add <code>display_numbered_list()</code> to the library and use it in the Trip Summary"
+      "Move save and load into your library",
+      "Store each city's destinations in <strong>parallel lists</strong>, and show any menu with one function",
+      "Look up the gate's destination by <strong>index</strong>, from 1-based choices to 0-based positions",
+      "Build lists with <code>append()</code>, and sort a <code>copy()</code> for the report",
+      "Save lists of any length to a file, with a marker line, and read them back"
     ],
-    "keyConceptsText": "Parallel lists with initial values (same index links related items). Indexing with <code>[choice - 1]</code>. Building lists with <code>.append()</code>. Iterating with <code>for i in range(len(lst))</code>. Using <code>in</code> to check membership, <code>.index()</code> to find positions, <code>.remove()</code> and <code>.pop()</code> to remove items, <code>.copy()</code> to avoid mutating originals. Writing lists to files line by line. Reading lists with a separator marker. Refactoring functions from a lab file into the library.",
-    "textbookReference": "Chapter 7: Lists and Tuples (Sections 7.1, 7.2, 7.4, 7.5, 7.7)",
-    "programRequirements": [
-      "Your program <strong>MUST</strong> use parallel lists (<code>destinations</code>, <code>distances</code>, <code>notes</code>) for each city",
-      "Your program <strong>MUST</strong> use <code>[choice - 1]</code> indexing to look up destinations and distances",
-      "Your program <strong>MUST</strong> use <code>.append()</code> to build <code>visited_cities</code> and <code>hazards_list</code>",
-      "Your library <strong>MUST</strong> contain <code>save_game()</code>, <code>load_game()</code>, <code>display_destinations()</code>, <code>get_destination()</code>, <code>get_redirect()</code>, and <code>display_numbered_list()</code>",
-      "Your saved file <strong>MUST</strong> use the <code>---LISTS_END---</code> marker to separate <code>visited_cities</code> from <code>hazards_list</code>",
-      "Your <code>function_library.py</code> destination helpers <strong>MUST</strong> accept the parallel lists as parameters (no module-level globals from the lab file)"
-    ],
-    "filenameNote": "Save your main game file as <code>lab-3-2.py</code>. Your <code>function_library.py</code> from Lab 3.1 grows this unit. Six functions get added or extended. The save file <code>savegame.txt</code> is generated at runtime; you do not submit it.",
-    "dataFiles": [
-      {
-        "file": "function_library.py",
-        "format": "Your reusable function module. Carries forward from Lab 3.1 with significant growth this unit: <code>save_game()</code> and <code>load_game()</code> migrate here from <code>lab-3-1.py</code>, then get extended; four new destination/display helpers are added.",
-        "new": false,
-        "submitted": true
-      }
-    ],
+    "keyConceptsText": "<strong>Chapter 7:</strong> lists, indexing, <code>for</code> loops over lists, <code>append()</code>, <code>len()</code>, <code>sort()</code>, copying lists, and reading and writing lists in files",
+    "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis, Chapter 7. The <code>for</code> loop is from Chapter 4; this lab is the first to use it.",
     "namedConstants": [
       {
-        "name": "SAT_TO_CORPUS",
-        "description": "Distance SA to Corpus Christi (150 miles), <strong>still used</strong> inside the parallel lists"
-      },
-      {
-        "name": "SAT_TO_HOUSTON",
-        "description": "Distance SA to Houston (200 miles): used inside the parallel lists"
-      },
-      {
-        "name": "SAT_TO_AUSTIN",
-        "description": "Distance SA to Austin (80 miles): used inside the parallel lists"
-      },
-      {
-        "name": "HOU_TO_GALVESTON",
-        "description": "Distance Houston to Galveston (50 miles): used inside the parallel lists"
-      },
-      {
-        "name": "HOU_TO_SAN_ANTONIO",
-        "description": "Distance Houston to SA (200 miles): used inside the parallel lists"
-      },
-      {
         "name": "MILES_MULTIPLIER",
-        "description": "Multiplier for D20 rolls (10)"
+        "description": "Miles one point on a roll is worth (10)"
+      },
+      {
+        "name": "SAT_TO_CORPUS, SAT_TO_HOUSTON, SAT_TO_AUSTIN",
+        "description": "San Antonio to Corpus Christi (150), Houston (200), and Austin (80)"
+      },
+      {
+        "name": "HOU_TO_GALVESTON, HOU_TO_SAN_ANTONIO",
+        "description": "Houston to Galveston (50) and back to San Antonio (200)"
       },
       {
         "name": "HAZARD_CHANCE",
-        "description": "Percentage chance of a hazard per turn (30)"
+        "description": "Percent chance of a hazard on each turn you haven't arrived (30)"
       },
       {
-        "name": "SA_DESTINATIONS, SA_DISTANCES, SA_NOTES",
-        "description": "<strong>NEW</strong>: parallel lists for San Antonio (three destinations)"
+        "name": "SA_DESTINATIONS, SA_DISTANCES, HOU_DESTINATIONS, HOU_DISTANCES",
+        "description": "Each city's destinations and distances, as parallel lists. New in CP2"
       },
       {
-        "name": "HOU_DESTINATIONS, HOU_DISTANCES, HOU_NOTES",
-        "description": "<strong>NEW</strong>: parallel lists for Houston (two destinations)"
+        "name": "SAVE_FILE",
+        "description": "In function_library.py from CP1: the save file's name, 'savegame.txt'"
       },
       {
-        "name": "AUS_DESTINATIONS, AUS_DISTANCES, AUS_NOTES",
-        "description": "<strong>NEW</strong>: parallel lists for Austin (one destination)"
+        "name": "D20_MIN, D20_MAX",
+        "description": "In function_library.py: the die's lowest and highest roll (1 and 20)"
       }
-    ]
+    ],
+    "dataFiles": [
+      {
+        "file": "function_library.py",
+        "format": "Your library from Lab 3.1. Save and load move in (CP1), then four list functions (CP2 to CP4)",
+        "changed": true,
+        "submitted": true
+      },
+      {
+        "file": "lab-3-2.py",
+        "format": "Your Lab 3.1 game, carried forward",
+        "submitted": true
+      }
+    ],
+    "programRequirements": [
+      "Both files <strong>MUST</strong> keep the header labels <code>Student Name:</code>, <code>UTSA ID:</code>, and <code>Section:</code>",
+      "<code>function_library.py</code> <strong>MUST</strong> have <code>save_game()</code>, <code>load_game()</code>, <code>display_destinations()</code>, <code>get_destination()</code>, <code>get_redirect()</code>, and <code>display_numbered_list()</code>, each with a docstring",
+      "<code>lab-3-2.py</code> <strong>MUST</strong> have the four parallel lists and <code>get_city_data()</code>, with a docstring, and no destination <code>if</code> chains in <code>main()</code>",
+      "<code>load_game()</code> <strong>MUST</strong> return <code>None</code> for a missing or damaged save file",
+      "Every pin <strong>MUST</strong> be restored before you submit, the one in the library too"
+    ],
+    "filenameNote": "Submit <strong>two files</strong> this unit: <code>lab-3-2.py</code> and <code>function_library.py</code>. Your program makes <code>savegame.txt</code> when it runs; don't submit it."
   },
   "timeGuide": {
-    "totalTime": "120–150 Minutes",
+    "totalTime": "120\u2013140 Minutes",
     "rows": [
       {
-        "checkpoint": "CP1: Cleanup",
-        "time": "10 min",
-        "task": "Copy lab-3-1.py to lab-3-2.py and confirm carryover"
-      },
-      {
-        "checkpoint": "CP2: Promote to Library",
+        "checkpoint": "CP1: Carry 3.1 Forward, Move Save and Load (10%)",
         "time": "15 min",
-        "task": "Move save_game/load_game from lab-3-1.py to function_library.py"
+        "task": "Copy both files, move two functions and a constant, pin. One run, then submit"
       },
       {
-        "checkpoint": "CP3: Build the SA Parallel Lists",
-        "time": "10 min",
-        "task": "Replace SA if/elif with three parallel lists"
+        "checkpoint": "CP2: Destinations as Parallel Lists (25%)",
+        "time": "25 min",
+        "task": "Four lists, get_city_data(), display_destinations(), one menu. Two runs, then submit"
       },
       {
-        "checkpoint": "CP4: display_destinations()",
-        "time": "15 min",
-        "task": "Build the library's universal menu printer"
-      },
-      {
-        "checkpoint": "CP5: get_destination() and get_redirect()",
+        "checkpoint": "CP3: The Gate Uses the Lists (15%)",
         "time": "20 min",
-        "task": "Build the library's destination accessor and tails-redirect"
+        "task": "get_destination(), get_redirect(), a shorter gate. Three runs, then submit"
       },
       {
-        "checkpoint": "CP6: Extend to Houston and Austin",
-        "time": "15 min",
-        "task": "Add parallel lists for the other two cities, add get_city_data() dispatch"
+        "checkpoint": "CP4: Track Your Route and Hazards (25%)",
+        "time": "25 min",
+        "task": "Two lists, display_numbered_list(), the report. Three runs, then submit"
       },
       {
-        "checkpoint": "CP7: Tracking Lists",
-        "time": "15 min",
-        "task": "Add visited_cities and hazards_list, append on travel and hazards"
-      },
-      {
-        "checkpoint": "CP8: Extend save/load",
-        "time": "20 min",
-        "task": "Library save_game and load_game grow to persist the two lists"
-      },
-      {
-        "checkpoint": "CP9: display_numbered_list and Trip Summary",
-        "time": "10 min",
-        "task": "Add the display helper to the library, use it in the Trip Summary"
+        "checkpoint": "CP5: Save and Load the Lists (25%)",
+        "time": "30 min",
+        "task": "Eleven values, a marker line, a damaged file. Five runs, then submit"
       },
       {
         "checkpoint": "Final Check & Submit",
         "time": "10 min",
-        "task": "Run end-to-end test, verify expected output, submit to CodeGrade"
+        "task": "Full run with pins, restore every pin, clear style errors in both files, final submit"
       }
-    ]
+    ],
+    "strategy": "CodeGrade checks the checkpoints in order, and it starts on the next one only when the current one passes. It uses its own fixed dice and coins, so your pins don't change what it sees, but a pin left in either file fails its tests. When something fails, fix one thing, run it, and resubmit."
   },
   "beforeYouBegin": {
-    "intro": "Here's how your finished program fits together this unit. The big move is splitting your code across <em>two</em> files: lab-specific game flow stays in <code>lab-3-2.py</code>; reusable mechanics (save/load, destination helpers, display helpers) move into <code>function_library.py</code>. The <strong>[NEW]</strong>, <strong>[MOVED]</strong>, <strong>[REPLACED]</strong>, and <strong>[EXTENDED]</strong> tags show what changes and at which checkpoint.",
-    "architecture": "# ---- IN function_library.py ----\nflip_coin(), roll_d20(), check_percentage()     (keep from 2.2)\nget_valid_int(), get_yes_no()                   (keep from 2.3)\nsave_game(...)                                  [MOVED-CP2, EXTENDED-CP8]\nload_game()                                     [MOVED-CP2, EXTENDED-CP8]\nSAVE_FILE = 'savegame.txt'                      [MOVED-CP2]\ndisplay_destinations(destinations, distances, notes)   [NEW-CP4]\nget_destination(destinations, distances, choice)       [NEW-CP5]\nget_redirect(destinations, distances, avoid)           [NEW-CP5]\ndisplay_numbered_list(items, title)                    [NEW-CP9]\n\n# ---- IN lab-3-2.py ----\n\n# ---- DISTANCE CONSTANTS ----\nSAT_TO_CORPUS = 150, SAT_TO_HOUSTON = 200, ...   (keep from 2.3)\nMILES_MULTIPLIER = 10, HAZARD_CHANCE = 30        (keep from 2.3)\n\n# ---- PARALLEL LISTS ----\nSA_DESTINATIONS = ['Corpus Christi', 'Houston', 'Austin']  [NEW-CP3]\nSA_DISTANCES    = [SAT_TO_CORPUS, SAT_TO_HOUSTON, SAT_TO_AUSTIN]  [NEW-CP3]\nSA_NOTES        = ['BEACH!', 'Gateway East', 'Keep it Weird']  [NEW-CP3]\nHOU_*, AUS_*  (same shape, three lists each)     [NEW-CP6]\n\ndef get_city_data(city):                         [NEW-CP6]\n│── if city == 'San Antonio': return SA_*\n│── elif city == 'Houston':   return HOU_*\n│── else (Austin):           return AUS_*\n\n# ---- MAIN MENU LOOP ----   (keep from 3.1)\nwhile in_program:\n│── New / Load / Quit menu\n│── if Load: function_library.load_game() returns 11-tuple   [EXTENDED-CP8]\n│── if New: initialize session accumulators\n│\n│── # ---- PLAY-AGAIN LOOP ----   (keep from 3.1)\n│   while play_again:\n│   │── Reset per-game state (unless resumed)\n│   │── visited_cities = ['San Antonio']      [NEW-CP7]\n│   │── hazards_list = []                     [NEW-CP7]\n│   │\n│   │── # ---- IN-GAME LOOP ----   (keep from 3.1, with refactors)\n│   │   while playing:\n│   │   │── destinations, distances, notes = get_city_data(current_city)  [REPLACED-CP6]\n│   │   │── num = function_library.display_destinations(...)   [REPLACED-CP4]\n│   │   │── choice = get_valid_int(...)\n│   │   │── gate = flip_coin()\n│   │   │   if HEADS: dest, dist = function_library.get_destination(...)  [REPLACED-CP5]\n│   │   │   if TAILS: dest, dist = function_library.get_redirect(...)     [REPLACED-CP5]\n│   │   │── Travel loop with hazards\n│   │   │   on hazard: hazards_list.append(hazard)    [NEW-CP7]\n│   │   │── After leg: current_city = destination\n│   │   │   visited_cities.append(current_city)        [NEW-CP7]\n│   │   │── If beach: playing = False\n│   │   │── If Houston/SA: 3-way Continue/Save/Quit-no-save\n│   │   │   on Save: function_library.save_game(..., visited_cities, hazards_list)  [EXTENDED-CP8]\n│   │\n│   │── After in-game loop:\n│   │   ├── if saved_and_quit: skip everything, back to main menu\n│   │   ├── Print TRIP SUMMARY\n│   │   ├── function_library.display_numbered_list(visited_cities, 'YOUR ROUTE')  [NEW-CP9]\n│   │   ├── function_library.display_numbered_list(hazards_list, 'HAZARDS ENCOUNTERED')  [NEW-CP9]\n│   │   ├── Update session accumulators\n│   │   └── play_again = get_yes_no('Play again? (y/n): ')\n│   │\n│   └── After play-again loop:\n│       └── if not saved_and_quit: print SESSION STATISTICS\n│\n└── Back to main menu loop\n"
+    "intro": "Here's what Lab 3.2 does to your Lab 3.1 game: save and load move to the library, the menus and the gate run from lists, and two new lists tell the story of the trip.",
+    "architecture": "function_library.py  (from Lab 3.1)\n\u2502\u2500\u2500 SAVE_FILE, save_game(), load_game()                      [MOVED-CP1, CHANGED-CP5]\n\u2502\u2500\u2500 display_destinations(city, destinations, distances)      [NEW-CP2]\n\u2502\u2500\u2500 get_destination(), get_redirect()                        [NEW-CP3]\n\u2502\u2500\u2500 display_numbered_list(items, title)                      [NEW-CP4]\n\nlab-3-2.py  (your Lab 3.1, carried forward)\n\u2502\u2500\u2500 SA_ and HOU_ parallel lists, get_city_data(city)         [NEW-CP2]\n\u2502\u2500\u2500 main()\n\u2502     \u2502\u2500\u2500 Main menu, Load, New Game  (Lab 3.1)               [CHANGED-CP1, CP5]\n\u2502     \u2502\u2500\u2500 while play_again:\n\u2502     \u2502     \u2502\u2500\u2500 Start the game, with the two lists           [CHANGED-CP4]\n\u2502     \u2502     \u2502\u2500\u2500 while playing:\n\u2502     \u2502     \u2502     \u2502\u2500\u2500 One menu, from the lists               [CHANGED-CP2]\n\u2502     \u2502     \u2502     \u2502\u2500\u2500 Gate, from the lists                   [CHANGED-CP3]\n\u2502     \u2502     \u2502     \u2514\u2500\u2500 Arrivals and hazards go in the lists   [CHANGED-CP4]\n\u2502     \u2502     \u2514\u2500\u2500 Report: YOUR ROUTE, HAZARDS (A-Z)            [NEW-CP4]\n\u2502     \u2514\u2500\u2500 SESSION STATISTICS  (Lab 3.1)"
   },
   "checkpoints": [
     {
-      "title": "Cleanup",
+      "number": 1,
+      "title": "Carry 3.1 Forward, Move Save and Load",
       "content": [
         {
           "type": "h3",
@@ -157,7 +131,7 @@
         },
         {
           "type": "text",
-          "body": "A clean starting point for Lab 3.2. You'll copy <code>lab-3-1.py</code> to <code>lab-3-2.py</code>, update the docstring, and confirm everything still runs before refactoring anything. <code>function_library.py</code> carries forward unchanged this checkpoint. You'll start growing it in CP2."
+          "body": "Lab 3.2 starts by tidying up. <code>SAVE_FILE</code>, <code>save_game()</code>, and <code>load_game()</code> move out of your game and into <code>function_library.py</code>, next to your other reusable functions. The game plays exactly as before."
         },
         {
           "type": "h3",
@@ -165,106 +139,14 @@
         },
         {
           "type": "text",
-          "body": "Mixing 'fix the old code' with 'add new code' is the fastest way to break a working program. This unit has a lot of refactoring; you can't tell whether a bug is in the refactor or in the copy unless you start from a known-good state. Confirm Lab 3.1 still works in its new filename before touching anything."
+          "body": "Your game file should hold the game. Saving and loading are tools the game uses, like rolling the die or checking a menu choice, and tools live in the library. Moving them doesn't change what they do. It changes how the game reaches them: <code>save_game()</code> becomes <code>function_library.save_game()</code>. This lab adds four more library functions, all built on lists, so the library is where the work is."
         },
-        {
-          "type": "h3",
-          "label": "step_by_step"
-        },
-        {
-          "type": "callout",
-          "variant": "warning",
-          "title": "Where Your New Code Goes",
-          "body": "This lab continues the file you already wrote, and four things trip people up every term. <strong>One:</strong> your new code goes <em>inside</em> <code>main()</code>, at the same indent level as the code already in there. <strong>Two:</strong> it goes where the checkpoint says it goes, which is usually in the middle, not tacked on at the bottom. <strong>Three:</strong> there is still exactly one <code>def main():</code> and exactly one call to <code>main()</code>. Copying a previous lab often leaves you with two of each. <strong>Four:</strong> the <code>if __name__ == '__main__':</code> block stays the very last thing in the file, always. If your new code ends up below it, it never runs."
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "<strong>Copy</strong> <code>lab-3-1.py</code> to a new file named <code>lab-3-2.py</code> in the same folder",
-            "<strong>Do NOT copy</strong> <code>function_library.py</code>: it stays the same file, in the same place. You'll just edit it during CP2",
-            "<strong>Update the docstring</strong> at the top of <code>lab-3-2.py</code>: change the title to <code>Lab 3.2: Lists to the Rescue</code>, update the description, and change the chapter list to <code>Chapter 7 Concepts:</code>",
-            "<strong>Run <code>lab-3-2.py</code></strong> exactly as-is. It should behave identically to Lab 3.1. Play one game, verify the trip summary appears, verify session stats run. If anything has changed, find and fix the copy problem before moving on"
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "bookex_patterns"
-        },
-        {
-          "type": "callout",
-          "kind": "bookex",
-          "title": "",
-          "body": "No new BookEx patterns yet. This checkpoint is pure cleanup. CP2 introduces the refactoring lesson; CP3 introduces Program 7-1 (list with initial values)."
-        },
-        {
-          "type": "h3",
-          "label": "test_your_code"
-        },
-        {
-          "type": "text",
-          "body": "Run <code>lab-3-2.py</code> end-to-end. Play one full game to the beach. Verify the main menu appears, the trip summary prints with status BEACH WINNER!, and session statistics appear before you return to the main menu. Choose <code>3</code> to quit."
-        },
-        {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
-        },
-        {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "Editing <code>lab-3-1.py</code> directly",
-              "Always preserve your previous submission. Copy first, then edit the copy."
-            ],
-            [
-              "Touching <code>function_library.py</code> in this CP",
-              "Library changes happen in CP2. This CP only renames a file and updates a docstring."
-            ],
-            [
-              "Different output between 3.1 and 3.2 starting state",
-              "If your menus look different, your trip summary text differs, or session stats are missing, your copy is incomplete. Diff the two files until they match."
-            ]
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "what_you_should_have"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "A file named <code>lab-3-2.py</code> with an updated docstring",
-            "<code>function_library.py</code> unchanged from Lab 3.1",
-            "Running <code>lab-3-2.py</code> plays a complete game identical to Lab 3.1"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Promote save_game and load_game to the Library",
-      "content": [
         {
           "type": "mentor_quote",
           "character": "Priya Venkatesh",
           "role": "Project Manager, Bat City Collective",
           "headshot": "Priya-Venkatesh.png",
-          "quote": "Last unit your <code>save_game</code> and <code>load_game</code> functions did exactly one job in exactly one file. This unit we are going to use them from a different file, and next unit we will probably use them again. That moves them across an invisible line: from 'helper for this lab' to 'piece of your permanent toolkit.' When code crosses that line, it gets promoted. Not just copied: promoted. We move it, we remove it from where it used to live, and we update every place that called it. That last part is the refactoring lesson."
-        },
-        {
-          "type": "h3",
-          "label": "what_youre_building"
-        },
-        {
-          "type": "text",
-          "body": "A clean refactoring of two functions out of <code>lab-3-1.py</code> and into <code>function_library.py</code>, along with the constant they depend on. You'll touch four things: the function definitions, the constant declaration, the call sites, and any leftover references."
-        },
-        {
-          "type": "h3",
-          "label": "why_this_matters"
-        },
-        {
-          "type": "text",
-          "body": "Moving a function is more than copy-paste. Every function has dependencies: constants it reads, modules it imports, functions it calls. When the function moves, those dependencies have to travel with it OR be passed in as parameters. <code>save_game()</code> depends on <code>SAVE_FILE</code>; they move together. Then every call site (in <code>lab-3-2.py</code>) has to be updated to use the new path: <code>function_library.save_game(...)</code> instead of just <code>save_game(...)</code>. Miss one call site and you get <code>NameError</code> at runtime. This is the refactoring practice you'll do hundreds of times in your career."
+          "quote": "Before we add a single list, we move two functions and prove nothing broke. That's the habit: refactor, run, then build. If the game misbehaves after this checkpoint, you know it's the move, not something new."
         },
         {
           "type": "h3",
@@ -273,27 +155,73 @@
         {
           "type": "instructions",
           "items": [
-            "<strong>Open both files</strong>: <code>lab-3-1.py</code> (which you copied as <code>lab-3-2.py</code> in CP1) and <code>function_library.py</code> side by side",
-            "<strong>In <code>lab-3-2.py</code></strong>, locate the <code>SAVE_FILE = 'savegame.txt'</code> line, the entire <code>def save_game(...):</code> function block (including its docstring), and the entire <code>def load_game():</code> function block",
-            "<strong>In <code>function_library.py</code></strong>, find a good spot for them. Right after the existing validation functions is fine. Add a header comment: <code># SAVE/LOAD FUNCTIONS (Promoted from lab-3-1.py in Lab 3-2)</code>",
-            "<strong>Move <code>SAVE_FILE</code></strong> to <code>function_library.py</code> (place it near the top of the file with the other constants), then delete it from <code>lab-3-2.py</code>",
-            "<strong>Move the <code>save_game()</code> function</strong>: cut the entire definition (including docstring) from <code>lab-3-2.py</code> and paste it into <code>function_library.py</code> under your new header comment",
-            "<strong>Move the <code>load_game()</code> function</strong> the same way",
-            "<strong>Update the call sites in <code>lab-3-2.py</code></strong>: search for <code>save_game(</code> and prefix each call with <code>function_library.</code> so it becomes <code>function_library.save_game(</code>. Do the same for <code>load_game()</code>",
-            "<strong>Check for leftover references</strong>: search <code>lab-3-2.py</code> for any remaining <code>SAVE_FILE</code>. That constant lives only in the library now",
-            "<strong>Update the load-failure message</strong> in <code>lab-3-2.py</code>: find <code>print('No saved game found. Starting new game.')</code> and change it to <code>print('No usable save file found. Starting new game.')</code>. <code>load_game()</code> returns <code>None</code> for a missing file or a damaged one, so 'no saved game' isn't always true anymore. This is the only line players will see change in this checkpoint",
-            "<strong>Run <code>lab-3-2.py</code></strong>. Play through one game, save mid-trip in Houston, quit, restart, load. The behavior should be identical to Lab 3.1 from the user's perspective. The difference is invisible from outside. That's how you know the refactor succeeded"
+            "In VS Code, open your finished <code>lab-3-1.py</code>, with every pin restored. Choose <strong>File &rarr; Save As</strong> and save it in your <code>lab-3-2</code> folder as <code>lab-3-2.py</code>. Copy your <code>function_library.py</code> into the same folder too. It changes in this lab.",
+            "In <code>lab-3-2.py</code>'s header, change the first line to <code>Lab 3.2: Lists to the Rescue</code>, and replace the <code>Description:</code> and <code>Chapter 6 Concepts:</code> lines with these:"
           ]
         },
         {
-          "type": "h3",
-          "label": "bookex_patterns"
+          "type": "code_block",
+          "code": "Description: Move save and load into the library, run the menus and\nthe gate from parallel lists, and keep a list of every city and\nhazard on the trip, saved with the game.\n\nChapter 7 Concepts: lists, parallel lists, indexing, for loops,\nappend(), len(), sort(), reading and writing lists in a file"
         },
         {
-          "type": "callout",
-          "kind": "bookex",
-          "title": "",
-          "body": "<strong>Program 5-1 (function_demo.py)</strong>: shows the module.function syntax for calling functions from another file. <strong>Program 5-4 (sum_numbers.py)</strong>: passing parameters to functions. The refactoring <em>practice</em> isn't a BookEx pattern. It's a real-world skill that comes from doing it. Don't worry if it feels like work; it always feels like work."
+          "type": "instructions",
+          "items": [
+            "In <code>function_library.py</code>, add the save file's name under <code>D20_MAX</code>:"
+          ],
+          "start": 3
+        },
+        {
+          "type": "code_block",
+          "code": "D20_MAX = 20\nSAVE_FILE = 'savegame.txt'"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>function_library.py</code>, between <code>get_yes_no()</code> and the self-test <code>main()</code>, add a section banner, with two empty lines above it and one below. Then cut <code>save_game()</code> and <code>load_game()</code> out of <code>lab-3-2.py</code> and paste them under the banner, unchanged, with two empty lines between them and two below. Delete the <code>SAVE_FILE</code> line from <code>lab-3-2.py</code> too:"
+          ],
+          "start": 4
+        },
+        {
+          "type": "code_block",
+          "code": "# ============================================================\n# SAVE AND LOAD (Moved here in Lab 3-2)\n# ============================================================"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>lab-3-2.py</code>, the two calls now go through the library. The Load branch's call:"
+          ],
+          "start": 5
+        },
+        {
+          "type": "code_block",
+          "code": "            saved = function_library.load_game()"
+        },
+        {
+          "type": "text",
+          "body": "...and the save in the OPTIONS block, wrapped a new way so it fits:"
+        },
+        {
+          "type": "code_block",
+          "code": "                        function_library.save_game(\n                            player_name, current_city, total_miles,\n                            total_turns, total_hazards, total_escaped,\n                            games_played, session_miles, session_hazards)"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Pin for testing, the way you did in Lab 3.1:"
+          ],
+          "start": 6
+        },
+        {
+          "type": "code_block",
+          "code": "                    # roll = function_library.roll_d20()\n                    roll = 20"
+        },
+        {
+          "type": "code_block",
+          "code": "                # gate_result = function_library.flip_coin()\n                gate_result = 'HEADS'"
+        },
+        {
+          "type": "text",
+          "body": "Keep these pins through CP5. The Final Check tells you when to restore them."
         },
         {
           "type": "h3",
@@ -301,7 +229,26 @@
         },
         {
           "type": "text",
-          "body": "Run <code>lab-3-2.py</code>. Choose New Game, travel to Houston, choose Save and quit. Verify <code>savegame.txt</code> is created in your folder. Quit the program (choose 3 at main menu). Run again, choose Load Saved Game. Verify you resume from Houston with your saved miles. Finish the trip. Verify the trip summary and session statistics look identical to Lab 3.1's output."
+          "body": "Every run uses the testing pins: the roll pinned to <code>20</code> and the gate to <code>'HEADS'</code>, unless a table says otherwise. With a roll of 20, every leg takes one turn, so no hazard comes up and you can watch the new code work. Type <code>1</code>, <code>Maria</code>, <code>2</code>, <code>2</code>, <code>2</code>, <code>2</code>, <code>n</code>, <code>3</code>: a new game, Houston, save and quit, load, Galveston, no more games, quit. Everything prints exactly as it did in Lab 3.1; only the code behind it changed. From the save to the gate:"
+        },
+        {
+          "type": "output_block",
+          "output": "You made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): 2\n\nGame saved!\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 2\n\nWelcome back, Maria!\nResuming from Houston.\nMiles so far this game: 200\nGames completed this session: 0\n\nFrom Houston, you can travel to:\n  1. San Antonio - 200 miles\n  2. Galveston - 50 miles\n\nChoice (1-2): 2\n\n"
+        },
+        {
+          "type": "text",
+          "body": "...and <code>savegame.txt</code>, the same nine lines as Lab 3.1:"
+        },
+        {
+          "type": "output_block",
+          "output": "Maria\nHouston\n200\n1\n0\n0\n0\n0\n0"
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "Submit now",
+          "body": "Save (Ctrl+S, or Cmd+S on a Mac) and submit to CodeGrade. Its results list the checkpoints in order, and it checks CP2 once CP1 passes. If CP1 isn't green yet, fix the first problem it names, run your program again, and resubmit. One fix at a time. Submissions are unlimited, and only your last one counts. Submit both files, <code>lab-3-2.py</code> and <code>function_library.py</code>, every time.",
+          "inline": true
         },
         {
           "type": "h3",
@@ -309,24 +256,59 @@
         },
         {
           "type": "table",
-          "caption": "",
+          "headers": [
+            "What you see",
+            "What to do"
+          ],
           "rows": [
             [
-              "<code>NameError: name 'SAVE_FILE' is not defined</code>",
-              "Reference to <code>SAVE_FILE</code> in <code>lab-3-2.py</code> wasn't removed. The constant lives only in the library now."
-            ],
-            [
-              "<code>NameError: name 'save_game' is not defined</code>",
-              "Call site still says <code>save_game(...)</code> instead of <code>function_library.save_game(...)</code>. Search the whole file."
+              "<code>NameError: name 'load_game' is not defined</code>",
+              "The call still says <code>load_game()</code>. It's <code>function_library.load_game()</code> now; the same goes for <code>save_game()</code>."
             ],
             [
               "<code>AttributeError: module 'function_library' has no attribute 'save_game'</code>",
-              "The function definition didn't actually land in <code>function_library.py</code>. Open it and check. It might have ended up nested inside another function by accident."
+              "The function isn't in <code>function_library.py</code> yet, or the library wasn't saved after the paste."
             ],
             [
-              "Function works once, then crashes",
-              "You may have copied the function instead of moving it: both files have a definition, but the wrong one is being called. Delete the old definition from <code>lab-3-2.py</code>."
+              "<code>NameError: name 'SAVE_FILE' is not defined</code>",
+              "The constant has to be in <code>function_library.py</code>, where the functions that use it are."
+            ],
+            [
+              "The functions are in both files",
+              "Cut, don't copy. They belong in <code>function_library.py</code> only."
+            ],
+            [
+              "Style error E302 or E305 in the library",
+              "Two empty lines above every <code>def</code> and above the guard. The banner counts as part of the function below it."
             ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "vscode_tip"
+        },
+        {
+          "type": "vscode_tip",
+          "title": "Both files side by side",
+          "body": "<p>Moving functions between files is easier when you can see both. With <code>lab-3-2.py</code> open, press <kbd>Ctrl</kbd>+<kbd>\\</kbd> (Mac: <kbd>Cmd</kbd>+<kbd>\\</kbd>) to split the editor, then open <code>function_library.py</code> on the other side. Cut from one, paste into the other, and save both.</p>",
+          "anchor": "split-editor"
+        },
+        {
+          "type": "h3",
+          "label": "ai_assist"
+        },
+        {
+          "type": "ai_assist",
+          "prompts": [
+            {
+              "label": "Explain it",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 7 of Starting Out with Python by Tony Gaddis. So far I can use variables, input(), int(), str(), print(), math operators, named constants, f-strings, if/elif/else, and, or, not, Boolean variables, while loops (including nested loops and sentinel loops), and functions I write myself with parameters and return values, including returning more than one value and returning None (checked with is None), functions in a separate file I import, and random.randint(). For files I can use open() with 'w' or 'r', write(), readline(), close(), and try/except. For lists I can use [] to make a list, indexing with [], len(), append(), copy(), sort(), the in operator, and for loops over a list or over range(len(a_list)). The only modules I've imported are random and .py files I wrote myself. The only string methods I know are .upper(), .strip(), .isdigit(), and .rstrip('\\n'). No dictionaries, sets, list comprehensions, other string methods, or the with statement. Keep it short and simple, and give any fixed number in an example a named constant. Explain why a program might keep its helper functions in a separate file that it imports, and what changes in the code that calls a function after the function moves into that file. Use a tiny example that has nothing to do with games. Don't write code for my assignment. When you're done, ask me one question to check that I understood."
+            },
+            {
+              "label": "Decode my error",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 7 of Starting Out with Python by Tony Gaddis. So far I can use variables, input(), int(), str(), print(), math operators, named constants, f-strings, if/elif/else, and, or, not, Boolean variables, while loops (including nested loops and sentinel loops), and functions I write myself with parameters and return values, including returning more than one value and returning None (checked with is None), functions in a separate file I import, and random.randint(). For files I can use open() with 'w' or 'r', write(), readline(), close(), and try/except. For lists I can use [] to make a list, indexing with [], len(), append(), copy(), sort(), the in operator, and for loops over a list or over range(len(a_list)). The only modules I've imported are random and .py files I wrote myself. The only string methods I know are .upper(), .strip(), .isdigit(), and .rstrip('\\n'). No dictionaries, sets, list comprehensions, other string methods, or the with statement. Keep it short and simple, and give any fixed number in an example a named constant. Here is an error message from my Python program:\n\n[paste the whole error message here]\n\nExplain in plain words what it means, which line it points to, and the mistake that most often causes it. Only name causes that give this exact error. Don't rewrite my code. If you show an example, make it about something else, not my line with the fix in it. Tell me what to look for, and I'll fix it myself."
+            }
           ]
         },
         {
@@ -336,39 +318,40 @@
         {
           "type": "instructions",
           "items": [
-            "<code>function_library.py</code> contains <code>SAVE_FILE</code>, <code>save_game()</code>, and <code>load_game()</code>",
-            "<code>lab-3-2.py</code> no longer contains these definitions",
-            "All call sites use <code>function_library.save_game(...)</code> and <code>function_library.load_game()</code>",
-            "Saving and loading still work end-to-end"
+            "<code>lab-3-2.py</code> and <code>function_library.py</code> in your <code>lab-3-2</code> folder, with the Lab 3.2 header",
+            "<code>SAVE_FILE</code>, <code>save_game()</code>, and <code>load_game()</code> in <code>function_library.py</code> only",
+            "Both calls going through <code>function_library.</code>",
+            "A run that matches the output above"
           ]
         }
       ]
     },
     {
-      "title": "Build the SA Parallel Lists",
+      "number": 2,
+      "title": "Destinations as Parallel Lists",
       "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "One menu instead of two. Each city's destinations become two <strong>parallel lists</strong>, one of names and one of distances, and a single library function shows the menu for whichever city you're in."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "Right now the game has a block of <code>print()</code> lines for San Antonio and another for Houston. A list holds many values under one name, and <code>destinations[0]</code> is the first one. Parallel lists keep related values at the same position: <code>SA_DESTINATIONS[1]</code> is Houston, and <code>SA_DISTANCES[1]</code> is the 200 miles to it. A <code>for</code> loop over <code>range(len(destinations))</code> visits every position once, so <code>display_destinations()</code> prints any city's menu, however many choices it has. It returns that number, so the prompt can say <code>Choice (1-3): </code> or <code>Choice (1-2): </code> by itself."
+        },
         {
           "type": "mentor_quote",
           "character": "Danny Cavanaugh",
           "role": "Lead Developer, Bat City Collective",
           "headshot": "Danny-Cavanaugh.png",
-          "quote": "Open lab-3-2.py and look at your San Antonio menu. Three <code>print()</code> statements for the three options. Three <code>if/elif</code> branches to figure out which destination they picked. Three more <code>if/elif</code> branches to redirect on TAILS. That is twelve lines of logic doing what should be <em>three lines of data</em>. This unit we cut that down to three lists of three items, and the code that drives the menu becomes a single loop. Magic moment."
-        },
-        {
-          "type": "h3",
-          "label": "what_youre_building"
-        },
-        {
-          "type": "text",
-          "body": "Three parallel lists for San Antonio's destinations: <code>SA_DESTINATIONS</code>, <code>SA_DISTANCES</code>, and <code>SA_NOTES</code>. Each list has three items, and items at the same index describe the same destination. You'll declare them at the top of <code>lab-3-2.py</code> in CP3; you'll <em>use</em> them in CP4 and CP5."
-        },
-        {
-          "type": "h3",
-          "label": "why_this_matters"
-        },
-        {
-          "type": "text",
-          "body": "Parallel lists are the simplest way to associate related pieces of data. Same index across all three lists = same destination. <code>SA_DESTINATIONS[0]</code> is <code>'Corpus Christi'</code>, <code>SA_DISTANCES[0]</code> is <code>150</code>, <code>SA_NOTES[0]</code> is <code>'BEACH!'</code>: together they describe the first destination. Adding a new destination becomes a one-line change to each list. Compare that to the current pattern where you'd add an <code>elif</code> branch, an <code>if</code> branch in the redirect logic, and a menu <code>print</code> statement. Parallel lists scale; <code>if/elif</code> chains don't."
+          "quote": "Two menus that print the same way is one menu waiting to happen. Put the data in lists, write the printing once, and adding a city later means adding two lines of data, not another copy of the menu. That's the whole reason lists exist."
         },
         {
           "type": "h3",
@@ -377,22 +360,49 @@
         {
           "type": "instructions",
           "items": [
-            "<strong>Find a spot near the top of <code>lab-3-2.py</code></strong>, after your distance constants and before <code>def main()</code>. Add a comment header: <code># DESTINATION DATA AS PARALLEL LISTS (NEW in 3.2)</code>",
-            "<strong>Declare <code>SA_DESTINATIONS</code></strong> as a list with the three destination names in order: <code>['Corpus Christi', 'Houston', 'Austin']</code>",
-            "<strong>Declare <code>SA_DISTANCES</code></strong> as a list with the three matching distances. Use the named constants you already have: <code>[SAT_TO_CORPUS, SAT_TO_HOUSTON, SAT_TO_AUSTIN]</code>",
-            "<strong>Declare <code>SA_NOTES</code></strong> as a list with three short note strings, one per destination: <code>['BEACH!', 'Gateway East', 'Keep it Weird']</code>",
-            "<strong>Do NOT remove the <code>if/elif</code> chain yet.</strong> The lists exist but nothing uses them until CP4. Your code still works exactly like Lab 3.1 right now"
+            "Under the constants, add the lists. Each pair lines up: the first name goes with the first distance, and so on:"
           ]
         },
         {
-          "type": "h3",
-          "label": "bookex_patterns"
+          "type": "code_block",
+          "code": "# ---- DESTINATIONS: parallel lists ----\nSA_DESTINATIONS = ['Corpus Christi', 'Houston', 'Austin']\nSA_DISTANCES = [SAT_TO_CORPUS, SAT_TO_HOUSTON, SAT_TO_AUSTIN]\nHOU_DESTINATIONS = ['San Antonio', 'Galveston']\nHOU_DISTANCES = [HOU_TO_SAN_ANTONIO, HOU_TO_GALVESTON]"
         },
         {
-          "type": "callout",
-          "kind": "bookex",
-          "title": "",
-          "body": "<strong>Program 7-1 (list_demo.py)</strong>: creating lists with initial values. <strong>Section 7.2.2</strong>: the textbook calls this 'a list with initial values' but it's the most common Python list pattern. <strong>Section 7.3</strong> (indexing): <code>my_list[0]</code> for first item, <code>my_list[len(my_list) - 1]</code> for last."
+          "type": "instructions",
+          "items": [
+            "Above <code>def main():</code>, with two empty lines above and below, add the function that picks a city's lists. It returns both at once:"
+          ],
+          "start": 2
+        },
+        {
+          "type": "code_block",
+          "code": "def get_city_data(city):\n    \"\"\"\n    Return the destination lists for a city.\n\n    Args:\n        city (str): 'San Antonio' or 'Houston'\n\n    Returns:\n        tuple: The city's destinations and distances, as two lists\n    \"\"\"\n    if city == 'San Antonio':\n        return SA_DESTINATIONS, SA_DISTANCES\n    else:\n        return HOU_DESTINATIONS, HOU_DISTANCES"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>function_library.py</code>, below <code>load_game()</code>, add a new section with the menu function:"
+          ],
+          "start": 3
+        },
+        {
+          "type": "code_block",
+          "code": "# ============================================================\n# DESTINATION HELPERS (Added in Lab 3-2)\n# ============================================================\n\ndef display_destinations(city, destinations, distances):\n    \"\"\"\n    Show the numbered destination menu for a city.\n\n    Args:\n        city (str): The city the player is in\n        destinations (list): The cities you can travel to\n        distances (list): The miles to each one, in the same order\n\n    Returns:\n        int: How many destinations the menu shows\n    \"\"\"\n    print(f'From {city}, you can travel to:')\n    for i in range(len(destinations)):\n        print(f'  {i + 1}. {destinations[i]} - {distances[i]} miles')\n    return len(destinations)"
+        },
+        {
+          "type": "text",
+          "body": "<code>i</code> counts from 0, so the menu shows <code>i + 1</code>. The two leading spaces stay inside the quotes."
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In the <code>playing</code> loop, replace everything from <code># Show where you can go</code> down to <code># The Destination Gate</code> (both menus and the <code>print()</code> after them) with this:"
+          ],
+          "start": 4
+        },
+        {
+          "type": "code_block",
+          "code": "                # Show where you can go\n                destinations, distances = get_city_data(current_city)\n                num_choices = function_library.display_destinations(\n                    current_city, destinations, distances)\n                print()\n                choice = function_library.get_valid_int(\n                    f'Choice (1-{num_choices}): ', 1, num_choices)\n                print()"
         },
         {
           "type": "h3",
@@ -400,129 +410,48 @@
         },
         {
           "type": "text",
-          "body": "Add a temporary debug print right before <code>def main():</code> to confirm the lists are defined:"
+          "body": "Every run uses the testing pins: the roll pinned to <code>20</code> and the gate to <code>'HEADS'</code>, unless a table says otherwise. With a roll of 20, every leg takes one turn, so no hazard comes up and you can watch the new code work. Everything prints exactly as it did in Lab 3.1; only the code behind it changed. Two runs:"
         },
         {
-          "type": "code_block",
-          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 4\nprint(f'DEBUG: SA destinations = {SA_DESTINATIONS}')\nprint(f'DEBUG: SA distances    = {SA_DISTANCES}')\nprint(f'DEBUG: SA notes        = {SA_NOTES}')\nprint(f'DEBUG: lengths match? '\n      f'{len(SA_DESTINATIONS) == len(SA_DISTANCES) == len(SA_NOTES)}')"
+          "type": "table",
+          "headers": [
+            "You type",
+            "What it checks"
+          ],
+          "rows": [
+            [
+              "<code>1</code>, <code>Maria</code>, <code>2</code>, <code>1</code>, <code>2</code>, <code>n</code>, <code>3</code>",
+              "Houston's menu, from the lists: San Antonio first, then Galveston"
+            ],
+            [
+              "<code>1</code>, <code>Maria</code>, <code>2</code>, <code>1</code>, <code>3</code>, <code>2</code>, <code>n</code>, <code>3</code>",
+              "A 3 at Houston's menu: <code>num_choices</code> sets the range"
+            ]
+          ],
+          "accent": "green"
         },
         {
           "type": "text",
-          "body": "<strong>Step 2:</strong> Run the program. You should see the three lists print out, and the lengths-match line should print <code>True</code>. If you see <code>False</code>, your lists have different lengths and that will cause <code>IndexError</code> in CP4."
+          "body": "<strong>Houston's menu</strong>, from the OPTIONS choice to the gate:"
         },
         {
           "type": "output_block",
-          "output": "DEBUG: SA destinations = ['Corpus Christi', 'Houston', 'Austin']\nDEBUG: SA distances    = [150, 200, 80]\nDEBUG: SA notes        = ['BEACH!', 'Gateway East', 'Keep it Weird']\nDEBUG: lengths match? True"
+          "output": "Choice (1-3): 1\n\nFrom Houston, you can travel to:\n  1. San Antonio - 200 miles\n  2. Galveston - 50 miles\n\nChoice (1-2): 2\n\n"
         },
         {
           "type": "text",
-          "body": "<strong>Step 3:</strong> Delete the DEBUG print lines before moving to CP4."
-        },
-        {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
-        },
-        {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "Lists are different lengths",
-              "Every parallel list MUST have the same length. If <code>SA_DESTINATIONS</code> has 3 items but <code>SA_NOTES</code> has 2, code that loops to <code>len(SA_DESTINATIONS)</code> will crash when it tries to read <code>SA_NOTES[2]</code>."
-            ],
-            [
-              "Wrong order across the lists",
-              "If your destination order doesn't match your distance order, you get '150 miles to Houston' on the screen. Read the lists vertically: 'Corpus Christi, 150 miles, BEACH!'. That's index 0 across all three. Each row of indices = one destination."
-            ],
-            [
-              "Hardcoded distances instead of named constants",
-              "Writing <code>SA_DISTANCES = [150, 200, 80]</code> works, but writing <code>SA_DISTANCES = [SAT_TO_CORPUS, SAT_TO_HOUSTON, SAT_TO_AUSTIN]</code> is cleaner: if you ever update a distance, you only change one place."
-            ]
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "what_you_should_have"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "Three lists declared at module level in <code>lab-3-2.py</code>: <code>SA_DESTINATIONS</code>, <code>SA_DISTANCES</code>, <code>SA_NOTES</code>",
-            "All three lists are length 3 in the same order",
-            "Game still plays identically to Lab 3.1 (lists are declared but nothing uses them yet)"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Build display_destinations() in the Library",
-      "content": [
-        {
-          "type": "h3",
-          "label": "what_youre_building"
-        },
-        {
-          "type": "text",
-          "body": "A new library function, <code>display_destinations(destinations, distances, notes)</code>, that takes three parallel lists and prints a numbered menu. Then you'll replace the SA <code>if</code>-branch menu printing in <code>lab-3-2.py</code> with a single call to this function."
-        },
-        {
-          "type": "h3",
-          "label": "why_this_matters"
-        },
-        {
-          "type": "text",
-          "body": "This is the first time a function in your library <strong>takes lists as parameters</strong>. The destination lists live in <code>lab-3-2.py</code>, but the function that displays them lives in <code>function_library.py</code>. They communicate through the parameter list: the lab file passes the lists in, the library function does the display work, and neither file needs to know about the other's internal structure. That's exactly the pattern Module 4 will scale up: data in one place, logic in another, parameters as the bridge."
-        },
-        {
-          "type": "h3",
-          "label": "step_by_step"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "<strong>Open <code>function_library.py</code></strong>. After the SAVE/LOAD section, add a new section header: <code># DESTINATION HELPERS (Added in Lab 3-2)</code>",
-            "<strong>Define <code>display_destinations(destinations, distances, notes)</code></strong> with the signature shown in the skeleton below",
-            "<strong>Inside the function</strong>: print <code>'Where would you like to go?'</code>, then loop with <code>for i in range(len(destinations)):</code> and print each menu line in the format <code>'  N. CITY - DISTANCE miles (NOTE)'</code> using f-string formatting",
-            "<strong>Return <code>len(destinations)</code></strong> so the caller knows how many options were shown",
-            "<strong>Now switch to <code>lab-3-2.py</code></strong>. Find the San Antonio menu block in <code>main()</code>: the four <code>print()</code> calls that show <code>'Where would you like to go?'</code> and the three destination lines",
-            "<strong>Replace all four prints</strong> with a single call: <code>num_choices = function_library.display_destinations(SA_DESTINATIONS, SA_DISTANCES, SA_NOTES)</code>",
-            "<strong>Use <code>num_choices</code></strong> in the <code>get_valid_int</code> call below: <code>function_library.get_valid_int(f'Choice (1-{num_choices}): ', 1, num_choices)</code>",
-            "<strong>Leave the Houston and Austin menus alone for now.</strong> CP6 extends to them. Right now you'll have a hybrid file: SA uses the new library function, Houston and Austin still use <code>print()</code> chains"
-          ]
-        },
-        {
-          "type": "code_block",
-          "code": "def display_destinations(destinations, distances, notes):\n    \"\"\"\n    Display a numbered destination menu using parallel lists.\n\n    Args:\n        destinations (list of str): City names to display\n        distances (list of int): Miles to each city (same index)\n        notes (list of str): Short tag per city (same index)\n\n    Returns:\n        int: The number of destinations shown\n    \"\"\"\n    # 1. Print the menu prompt: 'Where would you like to go?'\n    # 2. Loop with for i in range(len(destinations)):\n    #    - Build the line: f'  {i + 1}. {destinations[i]} - {distances[i]} miles ({notes[i]})'\n    #    - Print it\n    # 3. Return the length of the destinations list\n    pass\n"
-        },
-        {
-          "type": "h3",
-          "label": "bookex_patterns"
-        },
-        {
-          "type": "callout",
-          "kind": "bookex",
-          "title": "",
-          "body": "<strong>Program 7-3 (list_loop.py)</strong>: looping through a list with <code>for i in range(len(lst))</code>. <strong>Section 7.3</strong>: indexing with <code>lst[i]</code>. <strong>Section 5.3</strong>: functions with parameters, returning a value."
-        },
-        {
-          "type": "h3",
-          "label": "test_your_code"
-        },
-        {
-          "type": "text",
-          "body": "<strong>Step 1:</strong> Save both files. Run <code>lab-3-2.py</code>. Choose New Game. The SA menu should appear with the new format including the notes column:"
+          "body": "<strong>A 3 at Houston's menu</strong>:"
         },
         {
           "type": "output_block",
-          "output": "Where would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles (Gateway East)\n  3. Austin - 80 miles (Keep it Weird)\n\nChoice (1-3): "
+          "output": "From Houston, you can travel to:\n  1. San Antonio - 200 miles\n  2. Galveston - 50 miles\n\nChoice (1-2): 3\nERROR: Enter a number between 1 and 2.\nChoice (1-2): 2\n\n"
         },
         {
-          "type": "text",
-          "body": "<strong>Step 2:</strong> Choose any destination. Verify the rest of the game still works (gate, travel, hazards, trip summary). The Houston menu (if you reach it) will still use the OLD format. That's expected."
-        },
-        {
-          "type": "text",
-          "body": "<strong>Step 3:</strong> Save your work. Both files should be runnable as-is."
+          "type": "callout",
+          "variant": "tip",
+          "title": "Submit now",
+          "body": "Save (Ctrl+S, or Cmd+S on a Mac) and submit to CodeGrade. Its results list the checkpoints in order, and it checks CP3 once CP2 passes. If CP2 isn't green yet, fix the first problem it names, run your program again, and resubmit. One fix at a time. Submissions are unlimited, and only your last one counts.",
+          "inline": true
         },
         {
           "type": "h3",
@@ -530,80 +459,33 @@
         },
         {
           "type": "table",
-          "caption": "",
+          "headers": [
+            "What you see",
+            "What to do"
+          ],
           "rows": [
             [
-              "<code>num_choices</code> is the wrong value (e.g. 0)",
-              "The function isn't returning <code>len(destinations)</code>. Check the last line of <code>display_destinations</code>."
+              "<code>TypeError: display_destinations() missing 1 required positional argument: 'distances'</code>",
+              "<code>get_city_data()</code> returns two lists. Take both: <code>destinations, distances = get_city_data(current_city)</code>."
             ],
             [
-              "Menu prints but <code>get_valid_int</code> errors with bad upper bound",
-              "You forgot to capture the return value: <code>num_choices = function_library.display_destinations(...)</code>. Without the <code>num_choices =</code>, the return is discarded."
+              "The menu starts at 0",
+              "Print <code>i + 1</code>, not <code>i</code>."
             ],
             [
-              "<code>IndexError</code> mid-loop",
-              "Your parallel lists have different lengths. Run the DEBUG check from CP3 again to verify they're all length 3."
+              "The menu lines print flush left",
+              "Each one starts with two spaces inside the quotes."
             ],
             [
-              "Different output format than expected",
-              "The format string is precise: <code>f'  {i + 1}. {destinations[i]} - {distances[i]} miles ({notes[i]})'</code>. Two spaces of indent. <code>i + 1</code> for 1-based numbering. <code>miles</code> spelled exactly. CodeGrade compares byte-for-byte."
+              "The prompt says <code>Choice (1-3): </code> in Houston",
+              "The prompt needs the f-string, <code>f'Choice (1-{num_choices}): '</code>, and the range needs <code>1, num_choices</code>."
+            ],
+            [
+              "Houston's menu shows San Antonio's cities",
+              "<code>get_city_data()</code> is called with the wrong city, or before <code>current_city</code> changes. It's <code>get_city_data(current_city)</code>, inside the loop."
             ]
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "what_you_should_have"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "<code>display_destinations()</code> function defined in <code>function_library.py</code>",
-            "Function takes three list parameters, prints the menu, returns the count",
-            "SA menu in <code>lab-3-2.py</code> uses the library call",
-            "Houston and Austin menus still use the old <code>print()</code> chains (will be updated in CP6)"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Build get_destination() and get_redirect() in the Library",
-      "content": [
-        {
-          "type": "h3",
-          "label": "what_youre_building"
-        },
-        {
-          "type": "text",
-          "body": "Two more library functions: <code>get_destination(destinations, distances, choice)</code> returns the destination and distance for a 1-based menu choice. <code>get_redirect(destinations, distances, avoid)</code> returns a random different destination for TAILS. Then you'll refactor the SA HEADS and TAILS branches to call them."
-        },
-        {
-          "type": "h3",
-          "label": "why_this_matters"
-        },
-        {
-          "type": "text",
-          "body": "<code>get_destination()</code> is one line of real work (<code>return lst1[idx], lst2[idx]</code>) but it eliminates an entire <code>if/elif</code> chain at the call site. <code>get_redirect()</code> shows off the list methods from Section 7.5: <code>.copy()</code>, <code>.index()</code>, <code>.remove()</code>, <code>.pop()</code>: in a real use case. Both functions accept lists as parameters and don't reach into module-level globals; that's what makes them reusable for Houston and Austin in CP6."
-        },
-        {
-          "type": "h3",
-          "label": "step_by_step"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "<strong>In <code>function_library.py</code></strong>, under the DESTINATION HELPERS section, add <code>get_destination(destinations, distances, choice)</code>",
-            "<strong>Inside <code>get_destination</code></strong>: compute <code>index = choice - 1</code>, then return <code>(destinations[index], distances[index])</code> as a tuple",
-            "<strong>Right after</strong>, add <code>get_redirect(destinations, distances, avoid)</code>",
-            "<strong>Inside <code>get_redirect</code></strong>: copy both lists with <code>.copy()</code> so you don't mutate the caller's data, then use <code>.index()</code> and <code>.remove()</code>/<code>.pop()</code> to drop the 'avoid' destination, then <code>random.randint(0, len(dest_copy) - 1)</code> to pick from what's left. If nothing is left (the list only had the one destination you removed), return <code>destinations[0]</code> and <code>distances[0]</code> from the original lists instead. Austin has only one destination, so a TAILS flip in Austin needs this in CP6",
-            "<strong>Now switch to <code>lab-3-2.py</code></strong>. Find your gate-result <code>if/else</code> block (the part that picks a destination based on HEADS or TAILS)",
-            "<strong>For HEADS</strong>: replace the entire SA <code>if/elif</code> chain with <code>destination, distance = function_library.get_destination(SA_DESTINATIONS, SA_DISTANCES, choice)</code>",
-            "<strong>For TAILS</strong>: first call <code>wanted, _ = function_library.get_destination(SA_DESTINATIONS, SA_DISTANCES, choice)</code> to figure out what they wanted, then call <code>destination, distance = function_library.get_redirect(SA_DESTINATIONS, SA_DISTANCES, wanted)</code> to get the redirect. (The <code>_</code> is the standard way to say 'I don't need this value')",
-            "<strong>Leave Houston and Austin alone for now.</strong> Hybrid file again, SA uses the new helpers, HOU/AUS still use <code>if/elif</code> chains"
-          ]
-        },
-        {
-          "type": "code_block",
-          "code": "def get_destination(destinations, distances, choice):\n    \"\"\"\n    Return the destination and distance for a 1-based menu choice.\n\n    Args:\n        destinations (list of str): City names\n        distances (list of int): Miles to each city (same index)\n        choice (int): 1-based menu choice\n\n    Returns:\n        tuple: (destination_name, distance)\n    \"\"\"\n    # 1. Convert 1-based choice to 0-based index: index = choice - 1\n    # 2. Return (destinations[index], distances[index]) as a tuple\n    pass\n\n\ndef get_redirect(destinations, distances, avoid):\n    \"\"\"\n    Pick a random destination from the lists, excluding 'avoid'.\n\n    Args:\n        destinations (list of str): City names\n        distances (list of int): Miles to each city (same index)\n        avoid (str): The destination to exclude\n\n    Returns:\n        tuple: (destination_name, distance) for some city != avoid\n    \"\"\"\n    # 1. Make a copy of each list (use .copy()) so you don't mutate the\n    #    caller's lists\n    # 2. If avoid is in the destinations copy:\n    #    - Find its index with .index()\n    #    - Remove it from destinations copy with .remove(avoid)\n    #    - Remove the matching distance with dist_copy.pop(idx)\n    # 3. If the copy still has items:\n    #    - Pick a random index: random.randint(0, len(dest_copy) - 1)\n    #    - Return (dest_copy[idx], dist_copy[idx])\n    # 4. Otherwise (avoid was the only option):\n    #    - Return (destinations[0], distances[0]) as a fallback\n    pass\n"
+          ],
+          "accent": "green"
         },
         {
           "type": "h3",
@@ -611,58 +493,30 @@
         },
         {
           "type": "callout",
-          "kind": "bookex",
-          "title": "",
-          "body": "<strong>Section 7.5.2</strong>: <code>.index(item)</code> returns the position of an item. <strong>Section 7.5.3</strong>: <code>.remove(item)</code> deletes the first matching item. <strong>Section 7.5.6</strong>: <code>.copy()</code> makes an independent copy of a list. <strong>Section 5.6</strong>: functions returning multiple values via tuples; the caller unpacks them with <code>a, b = func()</code>."
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "7-1",
+              "filename": "sales_list.py",
+              "description": "A list, filled and printed with a for loop over its positions."
+            }
+          ]
         },
         {
           "type": "h3",
-          "label": "test_your_code"
+          "label": "ai_assist"
         },
         {
-          "type": "text",
-          "body": "<strong>Step 1:</strong> Run <code>lab-3-2.py</code>. Start a New Game and pick Houston (option 2). Depending on the gate flip you'll either head to Houston (HEADS) or get redirected to Corpus Christi or Austin (TAILS). Either way the game should continue normally."
-        },
-        {
-          "type": "text",
-          "body": "<strong>Step 2:</strong> Run several games to exercise both branches. The new behavior should be functionally identical to Lab 3.1: same destinations, same distances, same gate-redirect logic. The difference is entirely under the hood."
-        },
-        {
-          "type": "text",
-          "body": "<strong>Step 3:</strong> If you'd like to verify <code>get_redirect</code> isn't mutating the originals, add a debug print before/after the call:"
-        },
-        {
-          "type": "code_block",
-          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 6\nprint(f'DEBUG before: SA_DESTINATIONS = {SA_DESTINATIONS}')\ndestination, distance = function_library.get_redirect(\n    SA_DESTINATIONS, SA_DISTANCES, wanted)\nprint(f'DEBUG after:  SA_DESTINATIONS = {SA_DESTINATIONS}')"
-        },
-        {
-          "type": "text",
-          "body": "Both lines should print the original list. If they don't match, you forgot to <code>.copy()</code> inside <code>get_redirect</code> and you're mutating the caller's data."
-        },
-        {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
-        },
-        {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "TAILS always redirects to the same destination",
-              "You forgot <code>random.randint</code>, OR you copied the wrong list and got stuck with one option. Walk through <code>get_redirect</code> with <code>destinations = ['Corpus', 'Houston', 'Austin']</code> and <code>avoid = 'Houston'</code> on paper."
-            ],
-            [
-              "After a few games, the SA menu only shows 1 option",
-              "<code>get_redirect</code> is mutating <code>SA_DESTINATIONS</code> directly. Add <code>.copy()</code> on the first two lines."
-            ],
-            [
-              "<code>ValueError: 'X' is not in list</code>",
-              "You're calling <code>.remove(avoid)</code> without checking <code>if avoid in dest_copy</code> first. Or you passed the wrong city name string."
-            ],
-            [
-              "TAILS crashes in Austin (<code>ValueError</code> or <code>IndexError</code>)",
-              "Austin has only one destination, so after you remove it there's nothing left to pick from. When the copy is empty, <code>get_redirect()</code> must return <code>destinations[0]</code> and <code>distances[0]</code> from the original lists (comment #4 in the skeleton)."
-            ]
+          "type": "ai_assist",
+          "prompts": [
+            {
+              "label": "Explain it",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 7 of Starting Out with Python by Tony Gaddis. So far I can use variables, input(), int(), str(), print(), math operators, named constants, f-strings, if/elif/else, and, or, not, Boolean variables, while loops (including nested loops and sentinel loops), and functions I write myself with parameters and return values, including returning more than one value and returning None (checked with is None), functions in a separate file I import, and random.randint(). For files I can use open() with 'w' or 'r', write(), readline(), close(), and try/except. For lists I can use [] to make a list, indexing with [], len(), append(), copy(), sort(), the in operator, and for loops over a list or over range(len(a_list)). The only modules I've imported are random and .py files I wrote myself. The only string methods I know are .upper(), .strip(), .isdigit(), and .rstrip('\\n'). No dictionaries, sets, list comprehensions, other string methods, or the with statement. Keep it short and simple, and give any fixed number in an example a named constant. Explain what parallel lists are, and how a for loop over range(len(a_list)) can print two parallel lists side by side with a number in front of each line. Use a tiny example that has nothing to do with travel or games. Don't write code for my assignment. When you're done, ask me one question to check that I understood."
+            },
+            {
+              "label": "Decode my error",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 7 of Starting Out with Python by Tony Gaddis. So far I can use variables, input(), int(), str(), print(), math operators, named constants, f-strings, if/elif/else, and, or, not, Boolean variables, while loops (including nested loops and sentinel loops), and functions I write myself with parameters and return values, including returning more than one value and returning None (checked with is None), functions in a separate file I import, and random.randint(). For files I can use open() with 'w' or 'r', write(), readline(), close(), and try/except. For lists I can use [] to make a list, indexing with [], len(), append(), copy(), sort(), the in operator, and for loops over a list or over range(len(a_list)). The only modules I've imported are random and .py files I wrote myself. The only string methods I know are .upper(), .strip(), .isdigit(), and .rstrip('\\n'). No dictionaries, sets, list comprehensions, other string methods, or the with statement. Keep it short and simple, and give any fixed number in an example a named constant. Here is an error message from my Python program:\n\n[paste the whole error message here]\n\nExplain in plain words what it means, which line it points to, and the mistake that most often causes it. Only name causes that give this exact error. Don't rewrite my code. If you show an example, make it about something else, not my line with the fix in it. Tell me what to look for, and I'll fix it myself."
+            }
           ]
         },
         {
@@ -672,16 +526,17 @@
         {
           "type": "instructions",
           "items": [
-            "<code>get_destination()</code> and <code>get_redirect()</code> defined in <code>function_library.py</code>",
-            "Both functions accept lists as parameters; neither references module-level globals",
-            "<code>get_redirect()</code> uses <code>.copy()</code> so it doesn't mutate caller data",
-            "SA branch in <code>lab-3-2.py</code> uses both helpers; Houston and Austin still use old if/elif chains"
+            "Two pairs of parallel lists and <code>get_city_data()</code>",
+            "<code>display_destinations()</code> in <code>function_library.py</code>, with a docstring",
+            "One menu in the loop, for every city",
+            "Two runs that match the outputs above"
           ]
         }
       ]
     },
     {
-      "title": "Extend Parallel Lists to Houston and Austin",
+      "number": 3,
+      "title": "The Gate Uses the Lists",
       "content": [
         {
           "type": "h3",
@@ -689,7 +544,7 @@
         },
         {
           "type": "text",
-          "body": "Two more triples of parallel lists: one for Houston, one for Austin, plus a small dispatch function <code>get_city_data(city)</code> that returns the right triple for whatever city you're in. Then you'll replace the remaining <code>if</code>-branch menus and destination/redirect logic for HOU and AUS so all three cities use the same library helpers."
+          "body": "The gate without its long <code>if</code>/<code>elif</code> chains. Two library functions look up where you're going: one for HEADS, the choice you made, and one for TAILS, any other city on the menu."
         },
         {
           "type": "h3",
@@ -697,250 +552,14 @@
         },
         {
           "type": "text",
-          "body": "The pattern from CPs 3-5 generalizes here. Each city needs three lists; one tiny dispatch function decides which set to use. Everything downstream (menu display, destination lookup, gate redirect) uses the same library code regardless of which city you're in. This is where the file shrinks dramatically: what was a 90-line <code>if/elif</code> wall in 3.1 becomes about 20 lines of data plus a few library calls."
+          "body": "The menu number is a position in the list, counting from 1, and list positions count from 0, so choice 1 is <code>destinations[0]</code>. <code>get_destination()</code> does that subtraction once. For TAILS, <code>get_redirect()</code> builds two new lists without the city you wanted, then picks a random position in them. That replaces Lab 3.1's <code>redirect</code> and every branch under it, for San Antonio and Houston alike. The cities TAILS sends you to are the same as before."
         },
-        {
-          "type": "h3",
-          "label": "step_by_step"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "<strong>Check your distance constants first.</strong> The Houston lists use <code>HOU_TO_GALVESTON</code> and <code>HOU_TO_SAN_ANTONIO</code>. If your file doesn't have them, add <code>HOU_TO_GALVESTON = 50</code> and <code>HOU_TO_SAN_ANTONIO = 200</code> next to your other distance constants",
-            "<strong>Below the SA lists</strong> in <code>lab-3-2.py</code>, declare the Houston lists: <code>HOU_DESTINATIONS = ['Galveston', 'San Antonio']</code>, <code>HOU_DISTANCES = [HOU_TO_GALVESTON, HOU_TO_SAN_ANTONIO]</code>, <code>HOU_NOTES = ['BEACH!', 'Back West']</code>",
-            "<strong>Below those</strong>, declare the Austin lists: <code>AUS_DESTINATIONS = ['San Antonio']</code>, <code>AUS_DISTANCES = [SAT_TO_AUSTIN]</code>, <code>AUS_NOTES = ['Back Home']</code> (Austin only has one option, back home)",
-            "<strong>Define the dispatch function</strong> <code>get_city_data(city)</code> at module level (above <code>main()</code>). It takes a city name and returns a tuple of <code>(destinations, distances, notes)</code>. Use an <code>if/elif/else</code> to pick the right triple",
-            "<strong>Why does this stay in <code>lab-3-2.py</code></strong>? Because the city names and the constants <code>SA_*</code>, <code>HOU_*</code>, <code>AUS_*</code> are lab-specific data, not universal logic. The library doesn't know about San Antonio or Houston; it knows about lists",
-            "<strong>Now refactor the in-game loop's menu logic.</strong> Replace the entire <code>if current_city == 'San Antonio': ... elif current_city == 'Houston': ... else (Austin): ...</code> menu-printing block with one block of code that calls <code>get_city_data</code> first, then <code>display_destinations</code> on the result",
-            "<strong>Same for the HEADS branch</strong>: one call to <code>function_library.get_destination(destinations, distances, choice)</code>",
-            "<strong>Same for the TAILS branch</strong>: <code>wanted, _ = function_library.get_destination(...)</code> followed by <code>function_library.get_redirect(destinations, distances, wanted)</code>",
-            "<strong>After this CP your in-game loop should have NO city-specific <code>if/elif</code> for destinations.</strong> The only city-name comparisons left should be checking for beach cities (Corpus Christi, Galveston) and for Austin (which still triggers a 'return to San Antonio?' prompt)"
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "bookex_patterns"
-        },
-        {
-          "type": "callout",
-          "kind": "bookex",
-          "title": "",
-          "body": "No new BookEx patterns. This CP applies the patterns from CPs 3-5 to additional data. The mental shift is recognizing that 'add another city' now means 'add another triple of parallel lists and one <code>elif</code> in <code>get_city_data</code>' rather than 'add another full menu printing block, another destination lookup, and another redirect block.'"
-        },
-        {
-          "type": "h3",
-          "label": "test_your_code"
-        },
-        {
-          "type": "text",
-          "body": "<strong>Step 1:</strong> Run a New Game. Travel to Houston (option 2 from SA). When you arrive, verify the Houston menu now shows the notes column:"
-        },
-        {
-          "type": "output_block",
-          "output": "Where would you like to go?\n  1. Galveston - 50 miles (BEACH!)\n  2. San Antonio - 200 miles (Back West)\n\nChoice (1-2): "
-        },
-        {
-          "type": "text",
-          "body": "<strong>Step 2:</strong> Travel through Austin too. From SA, choose Austin. The Austin menu should show one option: <code>1. San Antonio - 80 miles (Back Home)</code>"
-        },
-        {
-          "type": "text",
-          "body": "<strong>Step 3:</strong> Play one full game through to the beach. The trip summary should still appear and look the same as before."
-        },
-        {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
-        },
-        {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "Houston menu still shows old format",
-              "You didn't refactor the Houston branch: the old <code>elif current_city == 'Houston':</code> menu print is still there. Delete it; all three cities now use the same code via <code>get_city_data</code>."
-            ],
-            [
-              "<code>NameError: name 'HOU_DESTINATIONS' is not defined</code>",
-              "<code>get_city_data</code> references the lists before they're declared. Check that all the list declarations appear at the top of the file, before <code>get_city_data</code>."
-            ],
-            [
-              "Austin menu shows 0 options",
-              "Your <code>AUS_DESTINATIONS</code> declaration is empty <code>[]</code> instead of <code>['San Antonio']</code>. Austin still has one option (back home)."
-            ],
-            [
-              "Reaching Austin loops forever",
-              "After arriving in Austin, the game asks 'Return to San Antonio? (y/n):'. That logic is separate from the menu and should still work. If the menu shows but the question doesn't, check that you didn't accidentally delete the Austin special-case block."
-            ]
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "what_you_should_have"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "All three triples of parallel lists declared at module level",
-            "<code>get_city_data(city)</code> dispatch function returns the right triple",
-            "In-game loop has no city-specific <code>if/elif</code> for destinations, gates, or redirects",
-            "All three cities' menus now show the notes column",
-            "Full game play-through still works"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Add Tracking Lists: visited_cities and hazards_list",
-      "content": [
-        {
-          "type": "mentor_quote",
-          "character": "Sasha Mireles",
-          "role": "Creative Director, Bat City Collective",
-          "headshot": "Sasha-Mireles.png",
-          "quote": "The route is the story. The hazards are the war stories. When the player finishes their trip, what they want to see isn't <em>'You traveled 450 miles'</em>: they want to see <em>'San Antonio, then Houston, then Galveston, and Buc-ee's tried to get me but I escaped.'</em> We are not tracking statistics this checkpoint. We are tracking <strong>memories</strong>. Two lists, appended to as the game runs, become the trip report your players actually care about."
-        },
-        {
-          "type": "h3",
-          "label": "what_youre_building"
-        },
-        {
-          "type": "text",
-          "body": "Two empty lists, initialized once per game: <code>visited_cities</code> starts with <code>['San Antonio']</code> (where you begin) and <code>hazards_list</code> starts empty. Each time you arrive somewhere new, append the destination to <code>visited_cities</code>. Each time a hazard fires, append the hazard string to <code>hazards_list</code>. By end of game, both lists tell the story of the trip."
-        },
-        {
-          "type": "h3",
-          "label": "why_this_matters"
-        },
-        {
-          "type": "text",
-          "body": "<code>.append()</code> is the fundamental list-building operation. You start with an empty (or near-empty) list, and grow it one item at a time as new things happen. The trick is initializing in the right scope: these lists belong to a single game, so they live inside the play-again loop and reset on each new game. If you initialize them outside, they accumulate across games (and that's a fun feature but not what we want today)."
-        },
-        {
-          "type": "h3",
-          "label": "step_by_step"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "<strong>Find the per-game reset block</strong> inside the play-again loop in <code>main()</code>. It currently resets <code>total_miles</code>, <code>total_turns</code>, <code>total_hazards</code>, <code>total_escaped</code> when <code>not resumed_game</code>",
-            "<strong>Add two new resets</strong> inside that <code>if not resumed_game:</code> block: <code>visited_cities = ['San Antonio']</code> and <code>hazards_list = []</code>",
-            "<strong>Find the hazard block</strong> in the travel loop: the <code>if/elif/else</code> that picks which hazard fires. If each branch prints the hazard name directly, for example <code>print(\"Buc-ee's appears!\")</code>, change every branch to store the name in a variable called <code>hazard</code> instead: <code>hazard = \"Buc-ee's appears!\"</code>. Then add one <code>print(hazard)</code> after the whole <code>if/elif/else</code>, so the name still prints exactly as before. If your branches already store the name in <code>hazard</code>, skip this step",
-            "<strong>Right after <code>print(hazard)</code></strong>, add <code>hazards_list.append(hazard)</code>. It has to come after the <code>if/elif/else</code>, because that is where <code>hazard</code> gets its value. Put it above the chain and you get <code>NameError: name 'hazard' is not defined</code>",
-            "<strong>Find the city-arrival code</strong> right after the travel loop ends, where you set <code>current_city = destination</code>. Add <code>visited_cities.append(current_city)</code> on the next line",
-            "<strong>Handle the Austin special case</strong>: when Austin returns to SA, you also need to append SA to <code>visited_cities</code> (otherwise the route shows 'San Antonio, Austin' and then jumps to Houston without recording the trip back to SA in between)",
-            "<strong>Update <code>function_library.load_game()</code> return value handling</strong> in <code>main()</code>: when the Load branch succeeds, you'll need <code>visited_cities</code> and <code>hazards_list</code> from the loaded tuple. <strong>For now</strong>, since the library function still returns a 9-tuple, just initialize empty lists in the Load branch too: <code>visited_cities = []; hazards_list = []</code>. CP8 will extend the library to return them properly"
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "bookex_patterns"
-        },
-        {
-          "type": "callout",
-          "kind": "bookex",
-          "title": "",
-          "body": "<strong>Program 7-2 (list_demo2.py)</strong>: empty list plus <code>.append()</code>. <strong>Section 7.2.1</strong>: the pattern of starting with <code>[]</code> and growing as you go. <strong>Section 7.7</strong>: lists are frequently used as accumulators, same pattern as your numeric accumulators (<code>total_miles += ...</code>), but you're accumulating strings instead of numbers."
-        },
-        {
-          "type": "h3",
-          "label": "test_your_code"
-        },
-        {
-          "type": "text",
-          "body": "<strong>Step 1:</strong> Add a DEBUG print at the end of main()'s game logic to see what was tracked:"
-        },
-        {
-          "type": "code_block",
-          "code": "# DEBUG - DELETE BEFORE CHECKPOINT 8\nprint(f'DEBUG: visited_cities = {visited_cities}')\nprint(f'DEBUG: hazards_list = {hazards_list}')"
-        },
-        {
-          "type": "text",
-          "body": "<strong>Step 2:</strong> Play a full game through to Galveston. Verify <code>visited_cities</code> shows the route in order, and <code>hazards_list</code> shows every hazard that fired (regardless of whether you escaped). Example:"
-        },
-        {
-          "type": "output_block",
-          "output": "DEBUG: visited_cities = ['San Antonio', 'Houston', 'Galveston']\nDEBUG: hazards_list = [\"Buc-ee's appears!\"]"
-        },
-        {
-          "type": "text",
-          "body": "<strong>Step 3:</strong> Try a game where you visit Austin and return to SA. Verify <code>visited_cities</code> shows the return: <code>['San Antonio', 'Austin', 'San Antonio', ...]</code>"
-        },
-        {
-          "type": "text",
-          "body": "<strong>Step 4 (Austin return check):</strong> Play a game that visits Austin and returns. From San Antonio choose Austin (option 3); when prompted, choose <code>y</code> to return to San Antonio; then choose Houston (option 2); then finish the trip. Verify that the DEBUG line for <code>visited_cities</code> starts with <code>['San Antonio', 'Austin', 'San Antonio', 'Houston']</code> in that order. Lab 3.3 will calculate unique-city counts from this list, so the duplicates AND the order matter. (Saving and loading these lists comes in CP8.)"
-        },
-        {
-          "type": "text",
-          "body": "<strong>Step 5:</strong> Delete the DEBUG print before CP8. The Trip Summary in CP9 will display these lists properly."
-        },
-        {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
-        },
-        {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "<code>visited_cities</code> is empty at end of game",
-              "You initialized it outside the play-again loop, OR you forgot to <code>.append(current_city)</code> after the travel loop ends. Trace the code."
-            ],
-            [
-              "<code>visited_cities</code> persists across replays",
-              "You initialized it OUTSIDE the play-again loop. It needs to be inside, in the per-game reset block, so each new game starts fresh."
-            ],
-            [
-              "Hazards appear in the list even when escaped",
-              "That's correct: <code>hazards_list</code> records every hazard <em>encountered</em>, not just the ones you got delayed by. Escape status is tracked separately via <code>hazards_escaped</code>."
-            ],
-            [
-              "Route shows Austin once but skips the return to SA",
-              "You appended <code>destination</code> in the travel loop, but the Austin special-case sets <code>current_city = 'San Antonio'</code> separately without appending. Add an explicit <code>visited_cities.append('San Antonio')</code> in the Austin branch."
-            ]
-          ]
-        },
-        {
-          "type": "h3",
-          "label": "what_you_should_have"
-        },
-        {
-          "type": "instructions",
-          "items": [
-            "<code>visited_cities</code> initialized with <code>['San Antonio']</code> in the per-game reset",
-            "<code>hazards_list</code> initialized empty in the per-game reset",
-            "<code>.append()</code> calls when arriving at any city",
-            "<code>.append()</code> call when a hazard fires (before the escape coin flip)",
-            "Austin branch appends SA back to <code>visited_cities</code> on return",
-            "Lists persist correctly during one game and reset for new games"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Extend save_game and load_game to Persist the Lists",
-      "content": [
         {
           "type": "mentor_quote",
           "character": "Terrence \"T-Bone\" Booker",
           "role": "QA Lead, Bat City Collective",
           "headshot": "Terrence-Booker.png",
-          "quote": "Every new piece of state you save is another thing that has to survive load. The number-one bug in save systems is fields that work in isolation but break under round-trip. Save with 3 hazards, load, save again, load again. Do you still have 3 hazards? Do you have 6 because they doubled? Do you have 0 because they vanished? Test the round trip after every extension. I have seen save systems ship to production where the first load worked perfectly and the second load wiped the player's inventory. Round trip, every time."
-        },
-        {
-          "type": "h3",
-          "label": "what_youre_building"
-        },
-        {
-          "type": "text",
-          "body": "Extended versions of <code>save_game()</code> and <code>load_game()</code> in <code>function_library.py</code>. <code>save_game</code> grows from 9 parameters to 11 (adding <code>visited_cities</code> and <code>hazards_list</code>). The save file grows by however many cities and hazards exist, plus a <code>---LISTS_END---</code> marker between them. <code>load_game</code> reads back the 9 base fields, then loops to collect cities until it hits the marker, then loops to collect hazards until end-of-file. Returns an 11-tuple."
-        },
-        {
-          "type": "h3",
-          "label": "why_this_matters"
-        },
-        {
-          "type": "text",
-          "body": "Variable-length data in files is harder than fixed-length data. You can't say 'read line 10' because you don't know how many cities there are. The solution is the <strong>separator pattern</strong>: write a marker the data would never accidentally contain, and read until you see it. <code>---LISTS_END---</code> can't be a city name (the city list ends when you hit the marker) and can't be a hazard name (the hazard list ends at end-of-file). This pattern scales: Module 4's data files use a similar idea with comma delimiters and end-of-file."
+          "quote": "TAILS used to be twenty lines I had to test one branch at a time. Now it's one function, and I can test it by pinning one number. index 0 is the first city that's left after yours comes out; index 1 is the second. Pin it, run it, check the city. Done."
         },
         {
           "type": "h3",
@@ -949,33 +568,38 @@
         {
           "type": "instructions",
           "items": [
-            "<strong>Open <code>function_library.py</code></strong> and find your <code>save_game()</code> function",
-            "<strong>Change the signature</strong>: add <code>visited_cities</code> and <code>hazards_list</code> as the last two parameters (after <code>session_hazards</code>). Update the docstring to describe them",
-            "<strong>After writing the 9 base fields</strong>, add a <code>for</code> loop: <code>for city in visited_cities: outfile.write(city + '\\n')</code>",
-            "<strong>Write the marker line</strong>: <code>outfile.write('---LISTS_END---\\n')</code>",
-            "<strong>After the marker</strong>, write another loop for hazards: <code>for hazard in hazards_list: outfile.write(hazard + '\\n')</code>",
-            "<strong>Now find <code>load_game()</code></strong> in the library and extend it",
-            "<strong>After reading the 9 base fields</strong>, add the visited_cities loop: <code>visited_cities = []</code>, then read first line with <code>rstrip('\\n')</code>, then <code>while line != '---LISTS_END---' and line != '':</code> append and read next",
-            "<strong>Then add the hazards loop</strong>: <code>hazards_list = []</code>, read next line with <code>rstrip('\\n')</code>, then <code>while line != '':</code> append and read next",
-            "<strong>Update the return statement</strong> to include both lists: <code>return (..., visited_cities, hazards_list)</code> (11 values)",
-            "<strong>Now switch to <code>lab-3-2.py</code></strong>. Find the call to <code>function_library.save_game</code> in your mid-trip Save & quit branch. Add <code>visited_cities, hazards_list</code> as the last two arguments",
-            "<strong>Find the call to <code>function_library.load_game()</code></strong> in the Load main-menu branch. Update the tuple unpack to expect 11 values, ending with <code>..., visited_cities, hazards_list = saved</code>",
-            "<strong>Remove the placeholder empty-list initialization</strong> you added in CP7 for the Load branch. The loaded values now come from the file"
+            "In <code>function_library.py</code>, under <code>display_destinations()</code>, add the two functions, with two empty lines between each:"
           ]
         },
         {
           "type": "code_block",
-          "code": "# In function_library.py — UPDATED SIGNATURE\ndef save_game(player_name, current_city, total_miles, total_turns,\n              total_hazards, total_escaped, games_played,\n              session_miles, session_hazards,\n              visited_cities, hazards_list):\n    \"\"\"Save full session state to a file.\"\"\"\n    # 1. Open SAVE_FILE in 'w' mode (use 'outfile = open(...)')\n    # 2. Write the 9 base fields as before (with str() and '\\n')\n    # 3. Loop through visited_cities, writing each city + '\\n'\n    # 4. Write the marker line: '---LISTS_END---\\n'\n    # 5. Loop through hazards_list, writing each hazard + '\\n'\n    # 6. Close the file\n    # 7. Print 'Game saved!'\n    pass\n\n\ndef load_game():\n    \"\"\"Load full session state. Returns 11-tuple, or None.\"\"\"\n    try:\n        # 1. Open SAVE_FILE in 'r' mode\n        # 2. Read the 9 base fields as before\n        # 3. Loop to read visited_cities:\n        #    - visited_cities = []\n        #    - Read first line, rstrip('\\n')\n        #    - while line != '---LISTS_END---' and line != '':\n        #        - append, read next line\n        # 4. Loop to read hazards_list:\n        #    - hazards_list = []\n        #    - Read next line, rstrip('\\n')\n        #    - while line != '':\n        #        - append, read next line\n        # 5. Close the file\n        # 6. Return 11-tuple: 9 base fields + 2 lists\n        pass\n    except (FileNotFoundError, ValueError):\n        return None\n"
+          "code": "def get_destination(destinations, distances, choice):\n    \"\"\"\n    Look up the destination for a menu choice.\n\n    Args:\n        destinations (list): The cities on the menu\n        distances (list): The miles to each one, in the same order\n        choice (int): The menu number the player chose, from 1\n\n    Returns:\n        tuple: The destination and its distance\n    \"\"\"\n    index = choice - 1\n    return destinations[index], distances[index]\n\n\ndef get_redirect(destinations, distances, avoid):\n    \"\"\"\n    Pick a random destination other than the one the player wanted.\n\n    Args:\n        destinations (list): The cities on the menu\n        distances (list): The miles to each one, in the same order\n        avoid (str): The destination the player wanted\n\n    Returns:\n        tuple: Another destination and its distance\n    \"\"\"\n    cities = []\n    miles = []\n    for i in range(len(destinations)):\n        if destinations[i] != avoid:\n            cities.append(destinations[i])\n            miles.append(distances[i])\n    index = random.randint(0, len(cities) - 1)\n    return cities[index], miles[index]"
         },
         {
-          "type": "h3",
-          "label": "bookex_patterns"
+          "type": "instructions",
+          "items": [
+            "In the gate, replace everything under <code>if gate_result == 'HEADS':</code> and under <code>else:</code>, the two <code>print()</code> lines included, with this. The <code>random</code> import stays: the hazards still use it:"
+          ],
+          "start": 2
         },
         {
-          "type": "callout",
-          "kind": "bookex",
-          "title": "",
-          "body": "<strong>Program 7-13 (write_list.py)</strong>: writing a list to a file with a loop. <strong>Program 7-14 (read_list.py)</strong>: reading a list from a file with <code>readline()</code> in a loop until empty string. <strong>Section 6.4 (sentinel reading)</strong>: using a known marker string to signal end of one section, which is exactly what <code>---LISTS_END---</code> does."
+          "type": "code_block",
+          "code": "                if gate_result == 'HEADS':\n                    print('Texas says: \"Y\\'all come on through!\"')\n                    destination, distance = function_library.get_destination(\n                        destinations, distances, choice)\n                else:\n                    print('Texas has other plans for you...')\n                    wanted = destinations[choice - 1]\n                    destination, distance = function_library.get_redirect(\n                        destinations, distances, wanted)"
+        },
+        {
+          "type": "text",
+          "body": "<code>wanted</code> is the city you chose, so <code>get_redirect()</code> knows which one to leave out."
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "To test TAILS, pin the random line in <code>get_redirect()</code>, in <code>function_library.py</code>. Use <code>0</code> or <code>1</code>, as the table below says:"
+          ],
+          "start": 3
+        },
+        {
+          "type": "code_block",
+          "code": "    # index = random.randint(0, len(cities) - 1)\n    index = 0"
         },
         {
           "type": "h3",
@@ -983,23 +607,99 @@
         },
         {
           "type": "text",
-          "body": "<strong>Step 1: Save round-trip.</strong> Start a New Game, travel to Houston, save and quit. Open <code>savegame.txt</code> in Notepad. Verify the format:"
+          "body": "Every run uses the testing pins: the roll pinned to <code>20</code> and the gate to <code>'HEADS'</code>, unless a table says otherwise. With a roll of 20, every leg takes one turn, so no hazard comes up and you can watch the new code work. TAILS from San Antonio, by choice and index:"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "You choose",
+            "index 0",
+            "index 1"
+          ],
+          "rows": [
+            [
+              "1 (Corpus Christi)",
+              "Houston",
+              "Austin"
+            ],
+            [
+              "2 (Houston)",
+              "Corpus Christi",
+              "Austin"
+            ],
+            [
+              "3 (Austin)",
+              "Corpus Christi",
+              "Houston"
+            ],
+            [
+              "Houston, either choice",
+              "the other one",
+              "(only index 0)"
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "You type",
+            "Pins",
+            "What it checks"
+          ],
+          "rows": [
+            [
+              "<code>1</code>, <code>Maria</code>, <code>3</code>, <code>y</code>, <code>1</code>, <code>n</code>, <code>3</code>",
+              "HEADS",
+              "Austin, back home, then Corpus Christi"
+            ],
+            [
+              "<code>1</code>, <code>Maria</code>, <code>1</code>, <code>1</code>, <code>2</code>, <code>1</code>, <code>3</code>, <code>n</code>, <code>3</code>",
+              "<code>'TAILS'</code>, <code>index = 0</code>",
+              "TAILS three times: Houston, San Antonio, Corpus Christi"
+            ],
+            [
+              "<code>1</code>, <code>Maria</code>, <code>2</code>, <code>n</code>, <code>n</code>, <code>3</code>",
+              "<code>'TAILS'</code>, <code>index = 1</code>",
+              "Houston wanted, Austin instead"
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "text",
+          "body": "<strong>HEADS</strong>, from Austin to the beach:"
         },
         {
           "type": "output_block",
-          "output": "TestPlayer\nHouston\n300\n2\n1\n1\n0\n0\n0\nSan Antonio\nHouston\n---LISTS_END---\nBuc-ee's appears!"
+          "output": "You made it to Austin!\n\nAustin is fun, but no beach here!\nReturn to San Antonio? (y/n): y\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n\nChoice (1-3): 1\n\nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\n"
         },
         {
           "type": "text",
-          "body": "<strong>Step 2: Load round-trip.</strong> Quit the program, restart, choose Load Saved Game. Verify you resume from Houston AND that <code>visited_cities</code> and <code>hazards_list</code> retain their saved values (use a temporary DEBUG print to inspect them if needed)."
+          "body": "<strong>TAILS, index 0</strong>: each destination choice, and where the gate sent you:"
+        },
+        {
+          "type": "output_block",
+          "output": "Choice (1-3): 1\nYou're headed to Houston!\n\nChoice (1-2): 2\nYou're headed to San Antonio!\n\nChoice (1-3): 3\nYou're headed to Corpus Christi!"
         },
         {
           "type": "text",
-          "body": "<strong>Step 3: Double-save round-trip.</strong> T-Bone's actual test: load, travel a bit more, save again, quit, restart, load. The lists should have grown but not duplicated. If your cities show up twice, your load is appending to existing lists instead of replacing them."
+          "body": "<strong>TAILS, index 1</strong>, from the menu choice to the trip:"
+        },
+        {
+          "type": "output_block",
+          "output": "Choice (1-3): 2\n\nFlipping to see if Texas cooperates...\nResult: TAILS!\n\nTexas has other plans for you...\nYou're headed to Austin!\nDistance: 80 miles\n\n"
         },
         {
           "type": "text",
-          "body": "<strong>Step 4:</strong> Delete <code>savegame.txt</code> from your lab folder. Run <code>lab-3-2.py</code> and choose Load Saved Game. Verify the fallback message <code>No usable save file found. Starting new game.</code> and that a new game starts."
+          "body": "When you're done, pin the gate back to <code>'HEADS'</code>. The <code>index</code> pin can stay until the Final Check."
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "Submit now",
+          "body": "Save (Ctrl+S, or Cmd+S on a Mac) and submit to CodeGrade. Its results list the checkpoints in order, and it checks CP4 once CP3 passes. If CP3 isn't green yet, fix the first problem it names, run your program again, and resubmit. One fix at a time. Submissions are unlimited, and only your last one counts.",
+          "inline": true
         },
         {
           "type": "h3",
@@ -1007,24 +707,64 @@
         },
         {
           "type": "table",
-          "caption": "",
+          "headers": [
+            "What you see",
+            "What to do"
+          ],
           "rows": [
             [
-              "Loaded game has empty <code>visited_cities</code>",
-              "The load loop is exiting immediately. Either you forgot the first <code>readline()</code> before the <code>while</code> check, or the marker is being mistaken for a city name. Print the line at top of loop to debug."
+              "<code>IndexError: list index out of range</code> when you choose the last city",
+              "The index is off by one. Choice 1 is position 0: <code>index = choice - 1</code>."
             ],
             [
-              "Loaded game has the marker AS a city",
-              "Your <code>while</code> condition is just <code>line != ''</code>. It needs to ALSO check <code>line != '---LISTS_END---'</code>."
+              "HEADS sends you to the city after the one you chose",
+              "Same cause: subtract 1 from the choice."
             ],
             [
-              "Extra blank line between cities in saved file",
-              "You're writing <code>'\\n'</code> twice per city, or your city strings already had a trailing newline when appended. <code>.rstrip('\\n')</code> on load handles incoming newlines."
+              "TAILS sends you where you wanted to go",
+              "<code>get_redirect()</code> needs <code>wanted</code>, the city name, as its third argument, and the comparison is <code>!=</code>."
             ],
             [
-              "Tuple unpack fails with 'too many values to unpack' on load",
-              "<code>load_game</code> now returns 11 values but the caller is unpacking 9. Update the unpack site in <code>main()</code>."
+              "<code>NameError: name 'redirect' is not defined</code>",
+              "Part of the old TAILS branch is still there. Everything under <code>else:</code> is replaced."
+            ],
+            [
+              "CodeGrade fails a TAILS test your runs pass",
+              "An <code>index</code> pin is still in the library. Restore it before the final submit."
             ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "7-1",
+              "filename": "sales_list.py",
+              "description": "Each list item reached by its position, counting from 0."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "ai_assist"
+        },
+        {
+          "type": "ai_assist",
+          "prompts": [
+            {
+              "label": "Explain it",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 7 of Starting Out with Python by Tony Gaddis. So far I can use variables, input(), int(), str(), print(), math operators, named constants, f-strings, if/elif/else, and, or, not, Boolean variables, while loops (including nested loops and sentinel loops), and functions I write myself with parameters and return values, including returning more than one value and returning None (checked with is None), functions in a separate file I import, and random.randint(). For files I can use open() with 'w' or 'r', write(), readline(), close(), and try/except. For lists I can use [] to make a list, indexing with [], len(), append(), copy(), sort(), the in operator, and for loops over a list or over range(len(a_list)). The only modules I've imported are random and .py files I wrote myself. The only string methods I know are .upper(), .strip(), .isdigit(), and .rstrip('\\n'). No dictionaries, sets, list comprehensions, other string methods, or the with statement. Keep it short and simple, and give any fixed number in an example a named constant. Explain why a menu numbered from 1 needs choice - 1 to find the matching item in a list, and how to build a new list that leaves out one item with a for loop and append(). Use a tiny example that has nothing to do with travel or games. Don't write code for my assignment. When you're done, ask me one question to check that I understood."
+            },
+            {
+              "label": "Decode my error",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 7 of Starting Out with Python by Tony Gaddis. So far I can use variables, input(), int(), str(), print(), math operators, named constants, f-strings, if/elif/else, and, or, not, Boolean variables, while loops (including nested loops and sentinel loops), and functions I write myself with parameters and return values, including returning more than one value and returning None (checked with is None), functions in a separate file I import, and random.randint(). For files I can use open() with 'w' or 'r', write(), readline(), close(), and try/except. For lists I can use [] to make a list, indexing with [], len(), append(), copy(), sort(), the in operator, and for loops over a list or over range(len(a_list)). The only modules I've imported are random and .py files I wrote myself. The only string methods I know are .upper(), .strip(), .isdigit(), and .rstrip('\\n'). No dictionaries, sets, list comprehensions, other string methods, or the with statement. Keep it short and simple, and give any fixed number in an example a named constant. Here is an error message from my Python program:\n\n[paste the whole error message here]\n\nExplain in plain words what it means, which line it points to, and the mistake that most often causes it. Only name causes that give this exact error. Don't rewrite my code. If you show an example, make it about something else, not my line with the fix in it. Tell me what to look for, and I'll fix it myself."
+            }
           ]
         },
         {
@@ -1034,17 +774,16 @@
         {
           "type": "instructions",
           "items": [
-            "<code>save_game()</code> in library: 11 parameters; writes 9 base lines + cities + marker + hazards",
-            "<code>load_game()</code> in library: returns 11-tuple; uses marker to separate the two list reads",
-            "Save round-trip preserves both lists",
-            "Load fallback (no file) still returns <code>None</code>",
-            "Call sites in <code>lab-3-2.py</code> pass and unpack 11 values"
+            "<code>get_destination()</code> and <code>get_redirect()</code> in <code>function_library.py</code>, each with a docstring",
+            "The gate calling them, with no city chains left",
+            "Three runs that match the outputs above, and the gate back on <code>'HEADS'</code>"
           ]
         }
       ]
     },
     {
-      "title": "Add display_numbered_list and Use It in the Trip Summary",
+      "number": 4,
+      "title": "Track Your Route and Hazards",
       "content": [
         {
           "type": "h3",
@@ -1052,7 +791,7 @@
         },
         {
           "type": "text",
-          "body": "One more library function: <code>display_numbered_list(items, title)</code>. Then you'll use it twice in the Trip Summary, once for <code>visited_cities</code> (route) and once for <code>hazards_list</code> (hazards encountered). The Trip Summary becomes the player's story of their trip."
+          "body": "Two lists that grow as you play: every city you reach, and every hazard you meet. The FINAL TRIP REPORT shows both, the route in order and the hazards sorted A to Z."
         },
         {
           "type": "h3",
@@ -1060,7 +799,14 @@
         },
         {
           "type": "text",
-          "body": "Numbered lists with a title and a divider are a common output pattern. You wrote one manually in CP7 to debug; now you write it once in the library and call it everywhere. The Trip Summary will use it for two lists this lab, and Lab 3.3 will use it for at least one more (sorted hazards). Three uses across two labs. That's the bar for promoting a function to the library."
+          "body": "<code>append()</code> adds an item to the end of a list, so a list that starts as <code>['San Antonio']</code> becomes the whole route, one arrival at a time. <code>[]</code> is an empty list, ready for hazards. To show the hazards A to Z without scrambling the order they happened in, the report sorts a <code>copy()</code>; <code>sort()</code> changes the list it's called on and returns <code>None</code>. <code>display_numbered_list()</code> prints any list with a title, so the route and the hazards share it."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Sasha Mireles",
+          "role": "Creative Director, Bat City Collective",
+          "headshot": "Sasha-Mireles.png",
+          "quote": "The report used to say where you ended up. Now it tells the story of the trip: every stop, every armadillo. Players screenshot that. Give them a trip worth sharing."
         },
         {
           "type": "h3",
@@ -1069,28 +815,78 @@
         {
           "type": "instructions",
           "items": [
-            "<strong>Open <code>function_library.py</code></strong>. After the destination helpers section, add a new header: <code># DISPLAY HELPERS (Added in Lab 3-2)</code>",
-            "<strong>Define <code>display_numbered_list(items, title)</code></strong>",
-            "<strong>Inside the function</strong>: print the title, then print a divider line made of <code>'-' * len(title)</code> dashes (exactly the same length as the title), then loop with <code>for i in range(len(items))</code> printing each item as <code>'  N. ITEM'</code>, then print a blank line",
-            "<strong>Now switch to <code>lab-3-2.py</code></strong> and find the Trip Summary block in <code>main()</code>: after the <code>print('Status: ...')</code> lines and before the play-again prompt",
-            "<strong>Replace any existing YOUR ROUTE print logic</strong> with a single call: <code>function_library.display_numbered_list(visited_cities, 'YOUR ROUTE')</code>",
-            "<strong>For hazards</strong>, handle the empty case specially: <code>if len(hazards_list) &gt; 0:</code> call <code>display_numbered_list(hazards_list, 'HAZARDS ENCOUNTERED')</code>; else print the same title and divider, then <code>print('  None - Lucky traveler!')</code> (indented two spaces, like a list item, but no number), then <code>print()</code>",
-            "<strong>Verify the Trip Summary order</strong>: Driver, Final City, totals, status, blank, YOUR ROUTE block, HAZARDS ENCOUNTERED block, divider, blank, then play-again prompt"
+            "In the start-of-game block, under <code>total_escaped = 0</code> and inside <code>if not resumed_game:</code>, start both lists:"
           ]
         },
         {
           "type": "code_block",
-          "code": "def display_numbered_list(items, title):\n    \"\"\"\n    Display a list with a title, an underline, and 1-based numbering.\n\n    Args:\n        items (list): Items to display\n        title (str): Title to show above the list\n    \"\"\"\n    # 1. Print the title\n    # 2. Print a divider line: '-' multiplied by len(title)\n    # 3. Loop with for i in range(len(items)):\n    #    - Print f'  {i + 1}. {items[i]}'\n    # 4. Print a blank line at the end\n    pass\n"
+          "code": "                visited_cities = ['San Antonio']\n                hazards_list = []"
         },
         {
-          "type": "h3",
-          "label": "bookex_patterns"
+          "type": "instructions",
+          "items": [
+            "A loaded game doesn't have lists yet; CP5 saves them. For now, in the Load branch, right under the parentheses that unpack <code>saved</code>, start the route at the city you loaded:"
+          ],
+          "start": 2
         },
         {
-          "type": "callout",
-          "kind": "bookex",
-          "title": "",
-          "body": "<strong>Program 7-3</strong> again, this time as a library function. <strong>Section 5.2</strong>: functions that have side effects (printing) but don't return anything. They're called for the work they do, not the value they produce. <code>display_numbered_list</code> is a side-effect-only function, like Python's built-in <code>print()</code>."
+          "type": "code_block",
+          "code": "                visited_cities = [current_city]\n                hazards_list = []"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "After the travel loop, right under <code>current_city = destination</code>, add the arrival to the route:"
+          ],
+          "start": 3
+        },
+        {
+          "type": "code_block",
+          "code": "                current_city = destination\n                visited_cities.append(current_city)"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In the Austin branch, going home counts too. Under <code>current_city = 'San Antonio'</code>:"
+          ],
+          "start": 4
+        },
+        {
+          "type": "code_block",
+          "code": "                        visited_cities.append(current_city)"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In the hazard block, right under <code>print(hazard)</code>:"
+          ],
+          "start": 5
+        },
+        {
+          "type": "code_block",
+          "code": "                            hazards_list.append(hazard)"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>function_library.py</code>, after the destination functions, add a new section:"
+          ],
+          "start": 6
+        },
+        {
+          "type": "code_block",
+          "code": "# ============================================================\n# DISPLAY HELPERS (Added in Lab 3-2)\n# ============================================================\n\ndef display_numbered_list(items, title):\n    \"\"\"\n    Show a title, an underline, and the items numbered from 1.\n\n    Args:\n        items (list): The items to show\n        title (str): The title above them\n    \"\"\"\n    print(title)\n    print('-' * len(title))\n    for i in range(len(items)):\n        print(f'  {i + 1}. {items[i]}')\n    print()"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In the report, after the <code>Status</code> line and the <code>print()</code> under it, add the two lists, before <code>STATISTICS</code>:"
+          ],
+          "start": 7
+        },
+        {
+          "type": "code_block",
+          "code": "            # Where you went, and what got in your way\n            function_library.display_numbered_list(\n                visited_cities, 'YOUR ROUTE')\n            if len(hazards_list) > 0:\n                sorted_hazards = hazards_list.copy()\n                sorted_hazards.sort()\n                function_library.display_numbered_list(\n                    sorted_hazards, 'HAZARDS ENCOUNTERED (A-Z)')\n            else:\n                print('HAZARDS ENCOUNTERED (A-Z)')\n                print('-' * len('HAZARDS ENCOUNTERED (A-Z)'))\n                print('  None - Lucky traveler!')\n                print()"
         },
         {
           "type": "h3",
@@ -1098,19 +894,72 @@
         },
         {
           "type": "text",
-          "body": "<strong>Step 1:</strong> Run a full game to the beach. When the trip summary prints, you should see two numbered lists like this:"
+          "body": "Every run uses the testing pins: the roll pinned to <code>20</code> and the gate to <code>'HEADS'</code>, unless a table says otherwise. With a roll of 20, every leg takes one turn, so no hazard comes up and you can watch the new code work. Three runs:"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "You type",
+            "Pins",
+            "What it checks"
+          ],
+          "rows": [
+            [
+              "<code>1</code>, <code>Maria</code>, <code>3</code>, <code>y</code>, <code>2</code>, <code>1</code>, <code>2</code>, <code>n</code>, <code>3</code>",
+              "roll 20, HEADS",
+              "Austin, home, Houston, Galveston: five cities, no hazards"
+            ],
+            [
+              "<code>1</code>, <code>Maria</code>, <code>1</code>, <code>n</code>, <code>3</code>",
+              "roll <code>5</code>, hazard <code>if True:</code>, <code>hazard_type = 3</code>, flip <code>'HEADS'</code>",
+              "Corpus Christi in three turns, a hazard on each of the first two"
+            ],
+            [
+              "<code>2</code>, <code>2</code>, <code>n</code>, <code>3</code>, with Lab 3.1's save at Houston in <code>savegame.txt</code>",
+              "roll 20, HEADS",
+              "A loaded game's route starts where it was saved"
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "text",
+          "body": "For the last run, put these nine lines in your save file, as in Lab 3.1:"
         },
         {
           "type": "output_block",
-          "output": "YOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nHAZARDS ENCOUNTERED\n-------------------\n  1. Buc-ee's appears!"
+          "output": "Maria\nHouston\n200\n1\n0\n0\n0\n0\n0"
         },
         {
           "type": "text",
-          "body": "<strong>Step 2:</strong> Run a game with no hazards (you'll need RNG luck). Verify the HAZARDS ENCOUNTERED block shows the 'None - Lucky traveler!' message instead of an empty numbered list."
+          "body": "<strong>Austin, home, Houston, Galveston</strong>, the report down to STATISTICS:"
+        },
+        {
+          "type": "output_block",
+          "output": "==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Maria\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Austin\n  3. San Antonio\n  4. Houston\n  5. Galveston\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  None - Lucky traveler!\n\n"
         },
         {
           "type": "text",
-          "body": "<strong>Step 3:</strong> Visit Austin and return to SA before reaching the beach. Verify <code>visited_cities</code> shows all five entries: <code>['San Antonio', 'Austin', 'San Antonio', 'Houston', 'Galveston']</code>."
+          "body": "<strong>Two hazards</strong>, the report down to STATISTICS:"
+        },
+        {
+          "type": "output_block",
+          "output": "==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Maria\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  1. Speed trap!\n  2. Speed trap!\n\n"
+        },
+        {
+          "type": "text",
+          "body": "<strong>A loaded game</strong>, its route:"
+        },
+        {
+          "type": "output_block",
+          "output": "YOUR ROUTE\n----------\n  1. Houston\n  2. Galveston\n\n"
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "Submit now",
+          "body": "Save (Ctrl+S, or Cmd+S on a Mac) and submit to CodeGrade. Its results list the checkpoints in order, and it checks CP5 once CP4 passes. If CP4 isn't green yet, fix the first problem it names, run your program again, and resubmit. One fix at a time. Submissions are unlimited, and only your last one counts.",
+          "inline": true
         },
         {
           "type": "h3",
@@ -1118,24 +967,73 @@
         },
         {
           "type": "table",
-          "caption": "",
+          "headers": [
+            "What you see",
+            "What to do"
+          ],
           "rows": [
             [
-              "Divider is wrong length",
-              "<code>'-' * len(title)</code> matches the title length exactly. If your divider is too short, you probably hardcoded a number; if too long, you might be doing <code>'-' * 50</code>."
+              "<code>TypeError: object of type 'NoneType' has no len()</code>",
+              "<code>sorted_hazards = hazards_list.sort()</code> stores <code>None</code>. Copy first, then sort the copy on its own line."
             ],
             [
-              "Empty hazard list shows '0. ' or no list at all",
-              "Check the <code>if len(hazards_list) &gt; 0:</code> guard. The else branch should still print SOMETHING that tells the player there were no hazards."
+              "<code>UnboundLocalError: cannot access local variable 'visited_cities'</code> after a load",
+              "The Load branch doesn't start the lists. Add step 2's two lines under the unpack."
             ],
             [
-              "Trip summary order looks different from expected output",
-              "The order is fixed: header divider, summary fields, blank, ROUTE block, HAZARDS block, closing divider. Check your existing print statements haven't drifted."
+              "The second game's route starts with the first game's cities",
+              "The two list lines belong inside <code>if not resumed_game:</code>, with the other start-of-game values."
             ],
             [
-              "Numbered list prints right after the previous line with no space",
-              "<code>display_numbered_list</code> should print a trailing blank line for separation. Add a <code>print()</code> at the end."
+              "San Antonio is missing after a trip home from Austin",
+              "Step 4's <code>append()</code> is missing from the Austin branch."
+            ],
+            [
+              "Hazards show in the order they happened",
+              "The report shows <code>hazards_list</code> instead of the sorted copy."
+            ],
+            [
+              "The <code>None</code> line prints flush left",
+              "It's <code>'  None - Lucky traveler!'</code>, with two spaces inside the quotes."
             ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "7-3",
+              "filename": "list_append.py",
+              "description": "Building a list with append(), one item at a time."
+            },
+            {
+              "programId": "7-12",
+              "filename": "drop_lowest_score.py",
+              "description": "A function that builds a list with append() and returns it."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "ai_assist"
+        },
+        {
+          "type": "ai_assist",
+          "prompts": [
+            {
+              "label": "Explain it",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 7 of Starting Out with Python by Tony Gaddis. So far I can use variables, input(), int(), str(), print(), math operators, named constants, f-strings, if/elif/else, and, or, not, Boolean variables, while loops (including nested loops and sentinel loops), and functions I write myself with parameters and return values, including returning more than one value and returning None (checked with is None), functions in a separate file I import, and random.randint(). For files I can use open() with 'w' or 'r', write(), readline(), close(), and try/except. For lists I can use [] to make a list, indexing with [], len(), append(), copy(), sort(), the in operator, and for loops over a list or over range(len(a_list)). The only modules I've imported are random and .py files I wrote myself. The only string methods I know are .upper(), .strip(), .isdigit(), and .rstrip('\\n'). No dictionaries, sets, list comprehensions, other string methods, or the with statement. Keep it short and simple, and give any fixed number in an example a named constant. Explain how append() builds a list one item at a time inside a loop, and why sorting a copy of a list keeps the original order. What does sort() return? Use a tiny example that has nothing to do with travel or games. Don't write code for my assignment. When you're done, ask me one question to check that I understood."
+            },
+            {
+              "label": "Decode my error",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 7 of Starting Out with Python by Tony Gaddis. So far I can use variables, input(), int(), str(), print(), math operators, named constants, f-strings, if/elif/else, and, or, not, Boolean variables, while loops (including nested loops and sentinel loops), and functions I write myself with parameters and return values, including returning more than one value and returning None (checked with is None), functions in a separate file I import, and random.randint(). For files I can use open() with 'w' or 'r', write(), readline(), close(), and try/except. For lists I can use [] to make a list, indexing with [], len(), append(), copy(), sort(), the in operator, and for loops over a list or over range(len(a_list)). The only modules I've imported are random and .py files I wrote myself. The only string methods I know are .upper(), .strip(), .isdigit(), and .rstrip('\\n'). No dictionaries, sets, list comprehensions, other string methods, or the with statement. Keep it short and simple, and give any fixed number in an example a named constant. Here is an error message from my Python program:\n\n[paste the whole error message here]\n\nExplain in plain words what it means, which line it points to, and the mistake that most often causes it. Only name causes that give this exact error. Don't rewrite my code. If you show an example, make it about something else, not my line with the fix in it. Tell me what to look for, and I'll fix it myself."
+            }
           ]
         },
         {
@@ -1145,11 +1043,269 @@
         {
           "type": "instructions",
           "items": [
-            "<code>display_numbered_list(items, title)</code> in <code>function_library.py</code>",
-            "Function prints title, divider, numbered items, trailing blank line",
-            "Trip Summary in <code>lab-3-2.py</code> uses the helper for visited_cities",
-            "Trip Summary uses the helper for hazards_list (with empty-case fallback)",
-            "Output matches the canonical Trip Summary block in the final check"
+            "<code>visited_cities</code> and <code>hazards_list</code>, started each game and growing as you play",
+            "<code>display_numbered_list()</code> in <code>function_library.py</code>, with a docstring",
+            "YOUR ROUTE and HAZARDS ENCOUNTERED (A-Z) in the report",
+            "Three runs that match the outputs above"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Save and Load the Lists",
+      "content": [
+        {
+          "type": "h3",
+          "label": "what_youre_building"
+        },
+        {
+          "type": "text",
+          "body": "A save file that remembers the whole trip. After the nine values, <code>savegame.txt</code> lists the route, then a marker line, then the hazards. Loading reads them all back, and a damaged save file can't crash the game."
+        },
+        {
+          "type": "h3",
+          "label": "why_this_matters"
+        },
+        {
+          "type": "text",
+          "body": "A list can be any length, so the file can't say \"line 10 is the route.\" A <code>for</code> loop writes one city per line, then a <strong>marker line</strong>, <code>---LISTS_END---</code>, says where the route stops and the hazards start. Reading is the same in reverse: a <code>while</code> loop reads cities until it reaches the marker, and another reads hazards until <code>readline()</code> returns <code>''</code>, the end of the file. If a number line holds something <code>int()</code> can't read, Python raises <code>ValueError</code>; catching it with <code>FileNotFoundError</code> gives the player the same friendly message as a missing file."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Terrence \"T-Bone\" Booker",
+          "role": "QA Lead, Bat City Collective",
+          "headshot": "Terrence-Booker.png",
+          "quote": "My test plan, round two. A file I typed with the hazards out of order: the report had better sort them. A file with garbage where a number goes: no crash, just a new game. Then load, finish, play again: the second trip starts with one city on the route, not twelve."
+        },
+        {
+          "type": "h3",
+          "label": "step_by_step"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>function_library.py</code>, replace <code>save_game()</code> with this version. It takes the two lists as well, and writes them after the nine values:"
+          ]
+        },
+        {
+          "type": "code_block",
+          "code": "def save_game(player_name, current_city, total_miles, total_turns,\n              total_hazards, total_escaped, games_played,\n              session_miles, session_hazards, visited_cities,\n              hazards_list):\n    \"\"\"\n    Save the game to SAVE_FILE: nine values, one on each line, then\n    the route, a marker line, and the hazards.\n\n    Args:\n        player_name (str): The player's name\n        current_city (str): Where the player is now\n        total_miles (int): Miles so far this game\n        total_turns (int): Turns so far this game\n        total_hazards (int): Hazards faced so far this game\n        total_escaped (int): Hazards escaped so far this game\n        games_played (int): Games finished this session\n        session_miles (int): Miles in the finished games\n        session_hazards (int): Hazards in the finished games\n        visited_cities (list): Every city this game, in order\n        hazards_list (list): Every hazard this game, in order\n    \"\"\"\n    outfile = open(SAVE_FILE, 'w')\n    outfile.write(player_name + '\\n')\n    outfile.write(current_city + '\\n')\n    outfile.write(str(total_miles) + '\\n')\n    outfile.write(str(total_turns) + '\\n')\n    outfile.write(str(total_hazards) + '\\n')\n    outfile.write(str(total_escaped) + '\\n')\n    outfile.write(str(games_played) + '\\n')\n    outfile.write(str(session_miles) + '\\n')\n    outfile.write(str(session_hazards) + '\\n')\n    for city in visited_cities:\n        outfile.write(city + '\\n')\n    outfile.write('---LISTS_END---\\n')\n    for hazard in hazards_list:\n        outfile.write(hazard + '\\n')\n    outfile.close()\n    print('Game saved!')"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Replace <code>load_game()</code> with this version. It reads the lists back, and catches a damaged file too:"
+          ],
+          "start": 2
+        },
+        {
+          "type": "code_block",
+          "code": "def load_game():\n    \"\"\"\n    Load the game from SAVE_FILE.\n\n    Returns:\n        tuple: The nine saved values, then the route and the hazards,\n        in the order save_game() writes them, or None if there is no\n        save file or it can't be read\n    \"\"\"\n    try:\n        infile = open(SAVE_FILE, 'r')\n        player_name = infile.readline().rstrip('\\n')\n        current_city = infile.readline().rstrip('\\n')\n        total_miles = int(infile.readline().rstrip('\\n'))\n        total_turns = int(infile.readline().rstrip('\\n'))\n        total_hazards = int(infile.readline().rstrip('\\n'))\n        total_escaped = int(infile.readline().rstrip('\\n'))\n        games_played = int(infile.readline().rstrip('\\n'))\n        session_miles = int(infile.readline().rstrip('\\n'))\n        session_hazards = int(infile.readline().rstrip('\\n'))\n\n        # The route, up to the marker line\n        visited_cities = []\n        line = infile.readline().rstrip('\\n')\n        while line != '---LISTS_END---' and line != '':\n            visited_cities.append(line)\n            line = infile.readline().rstrip('\\n')\n\n        # The hazards, up to the end of the file\n        hazards_list = []\n        line = infile.readline().rstrip('\\n')\n        while line != '':\n            hazards_list.append(line)\n            line = infile.readline().rstrip('\\n')\n\n        infile.close()\n        return (player_name, current_city, total_miles, total_turns,\n                total_hazards, total_escaped, games_played,\n                session_miles, session_hazards, visited_cities,\n                hazards_list)\n    except (FileNotFoundError, ValueError):\n        return None"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>lab-3-2.py</code>'s Load branch, unpack all eleven values, and delete the two lines from CP4 step 2 that started the lists:"
+          ],
+          "start": 3
+        },
+        {
+          "type": "code_block",
+          "code": "                (player_name, current_city, total_miles, total_turns,\n                 total_hazards, total_escaped, games_played,\n                 session_miles, session_hazards, visited_cities,\n                 hazards_list) = saved"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In the OPTIONS block, pass the lists to the save:"
+          ],
+          "start": 4
+        },
+        {
+          "type": "code_block",
+          "code": "                        function_library.save_game(\n                            player_name, current_city, total_miles,\n                            total_turns, total_hazards, total_escaped,\n                            games_played, session_miles, session_hazards,\n                            visited_cities, hazards_list)"
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Every run uses the testing pins: the roll pinned to <code>20</code> and the gate to <code>'HEADS'</code>, unless a table says otherwise. With a roll of 20, every leg takes one turn, so no hazard comes up and you can watch the new code work. Five runs. For the second, type this into <code>savegame.txt</code>; its hazards are out of order on purpose:"
+        },
+        {
+          "type": "output_block",
+          "output": "Rosa\nHouston\n360\n4\n2\n1\n2\n900\n3\nSan Antonio\nAustin\nSan Antonio\nHouston\n---LISTS_END---\nSpeed trap!\nArmadillo crossing!"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Save file",
+            "You type",
+            "What it checks"
+          ],
+          "rows": [
+            [
+              "Any, or none",
+              "<code>1</code>, <code>Maria</code>, <code>3</code>, <code>y</code>, <code>2</code>, <code>2</code>, <code>3</code>",
+              "Save at Houston after a trip home from Austin: the route goes in the file"
+            ],
+            [
+              "Rosa's, above",
+              "<code>2</code>, <code>2</code>, <code>n</code>, <code>3</code>",
+              "Load a typed file: the route carries on, and the hazards come out sorted"
+            ],
+            [
+              "Three lines: <code>Maria</code>, <code>Houston</code>, <code>lots</code>",
+              "<code>2</code>, <code>Maria</code>, <code>1</code>, <code>n</code>, <code>3</code>",
+              "A damaged file: a new game, no crash"
+            ],
+            [
+              "Rosa's",
+              "<code>2</code>, <code>2</code>, <code>y</code>, <code>1</code>, <code>n</code>, <code>3</code>",
+              "Load, finish, play again: the second game's route starts over"
+            ],
+            [
+              "Any, or none",
+              "<code>1</code>, <code>Maria</code>, <code>3</code>, <code>y</code>, <code>2</code>, <code>2</code>, <code>2</code>, <code>2</code>, <code>n</code>, <code>3</code>",
+              "Save and load in one run"
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Save after Austin</strong>, <code>savegame.txt</code>. No hazards, so nothing follows the marker:"
+        },
+        {
+          "type": "output_block",
+          "output": "Maria\nHouston\n400\n2\n0\n0\n0\n0\n0\nSan Antonio\nAustin\nSan Antonio\nHouston\n---LISTS_END---"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Rosa's file</strong>, the report down to STATISTICS:"
+        },
+        {
+          "type": "output_block",
+          "output": "==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Rosa\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Austin\n  3. San Antonio\n  4. Houston\n  5. Galveston\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  1. Armadillo crossing!\n  2. Speed trap!\n\n"
+        },
+        {
+          "type": "text",
+          "body": "<strong>A damaged file</strong>:"
+        },
+        {
+          "type": "output_block",
+          "output": "Choice (1-3): 2\n\nNo usable save file found. Starting new game.\n\nWhat is your name, traveler? Maria\n\nWelcome, Maria!\nYou are in San Antonio. Your goal: reach the beach!\n\n"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Load, then play again</strong>, the second game's route:"
+        },
+        {
+          "type": "output_block",
+          "output": "YOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\n"
+        },
+        {
+          "type": "text",
+          "body": "<strong>Save and load in one run</strong>, the route after the load:"
+        },
+        {
+          "type": "output_block",
+          "output": "YOUR ROUTE\n----------\n  1. San Antonio\n  2. Austin\n  3. San Antonio\n  4. Houston\n  5. Galveston\n\n"
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "Submit now",
+          "body": "Save (Ctrl+S, or Cmd+S on a Mac) and submit to CodeGrade. Its results list the checkpoints in order, and CP5 is the last one. If CP5 isn't green yet, fix the first problem it names, run your program again, and resubmit. One fix at a time. Submissions are unlimited, and only your last one counts. When CP5 passes, go to the Finish tab for the Final Check, and then restore your pins.",
+          "inline": true
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "What you see",
+            "What to do"
+          ],
+          "rows": [
+            [
+              "<code>ValueError: too many values to unpack (expected 9)</code>",
+              "<code>load_game()</code> returns eleven values now. The Load branch unpacks all eleven."
+            ],
+            [
+              "<code>TypeError: save_game() takes 9 positional arguments but 11 were given</code>",
+              "The <code>save_game()</code> in <code>function_library.py</code> is still the old one. Replace it with step 1's."
+            ],
+            [
+              "A load never finishes",
+              "A reading loop doesn't read the next line inside the loop, so <code>line</code> never changes."
+            ],
+            [
+              "The route comes back with <code>---LISTS_END---</code> in it",
+              "The first reading loop has to stop at the marker: <code>line != '---LISTS_END---'</code>."
+            ],
+            [
+              "A damaged file crashes with <code>ValueError</code>",
+              "The <code>except</code> line catches both: <code>except (FileNotFoundError, ValueError):</code>."
+            ],
+            [
+              "The route repeats cities after a load and a second save",
+              "The Load branch still has CP4's <code>visited_cities = [current_city]</code>. Delete it."
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "bookex_patterns"
+        },
+        {
+          "type": "callout",
+          "variant": "bookex",
+          "references": [
+            {
+              "programId": "7-16",
+              "filename": "write_number_list.py",
+              "description": "Writing a list to a file, one item per line, with a for loop."
+            },
+            {
+              "programId": "7-17",
+              "filename": "read_number_list.py",
+              "description": "Reading a file's lines back into a list."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "ai_assist"
+        },
+        {
+          "type": "ai_assist",
+          "prompts": [
+            {
+              "label": "Explain it",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 7 of Starting Out with Python by Tony Gaddis. So far I can use variables, input(), int(), str(), print(), math operators, named constants, f-strings, if/elif/else, and, or, not, Boolean variables, while loops (including nested loops and sentinel loops), and functions I write myself with parameters and return values, including returning more than one value and returning None (checked with is None), functions in a separate file I import, and random.randint(). For files I can use open() with 'w' or 'r', write(), readline(), close(), and try/except. For lists I can use [] to make a list, indexing with [], len(), append(), copy(), sort(), the in operator, and for loops over a list or over range(len(a_list)). The only modules I've imported are random and .py files I wrote myself. The only string methods I know are .upper(), .strip(), .isdigit(), and .rstrip('\\n'). No dictionaries, sets, list comprehensions, other string methods, or the with statement. Keep it short and simple, and give any fixed number in an example a named constant. Explain how to save a list of any length to a text file and read it back, and why a marker line helps when one file holds two lists. How does a while loop know it has reached the end of the file? Use a tiny example that has nothing to do with games. Don't write code for my assignment. When you're done, ask me one question to check that I understood."
+            },
+            {
+              "label": "Decode my error",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 7 of Starting Out with Python by Tony Gaddis. So far I can use variables, input(), int(), str(), print(), math operators, named constants, f-strings, if/elif/else, and, or, not, Boolean variables, while loops (including nested loops and sentinel loops), and functions I write myself with parameters and return values, including returning more than one value and returning None (checked with is None), functions in a separate file I import, and random.randint(). For files I can use open() with 'w' or 'r', write(), readline(), close(), and try/except. For lists I can use [] to make a list, indexing with [], len(), append(), copy(), sort(), the in operator, and for loops over a list or over range(len(a_list)). The only modules I've imported are random and .py files I wrote myself. The only string methods I know are .upper(), .strip(), .isdigit(), and .rstrip('\\n'). No dictionaries, sets, list comprehensions, other string methods, or the with statement. Keep it short and simple, and give any fixed number in an example a named constant. Here is an error message from my Python program:\n\n[paste the whole error message here]\n\nExplain in plain words what it means, which line it points to, and the mistake that most often causes it. Only name causes that give this exact error. Don't rewrite my code. If you show an example, make it about something else, not my line with the fix in it. Tell me what to look for, and I'll fix it myself."
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "label": "what_you_should_have"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "<code>save_game()</code> and <code>load_game()</code> handling eleven values, with the marker line",
+            "<code>except (FileNotFoundError, ValueError):</code>",
+            "The Load branch unpacking eleven values, and the save passing eleven",
+            "Five runs that match the outputs above"
           ]
         }
       ]
@@ -1157,462 +1313,502 @@
   ],
   "finalChecklist": {
     "beforeYouSubmit": [
-      "Submitting <strong>two files</strong>: <code>lab-3-2.py</code> and <code>function_library.py</code>",
-      "<code>function_library.py</code> contains: <code>flip_coin</code>, <code>roll_d20</code>, <code>check_percentage</code>, <code>get_valid_int</code>, <code>get_yes_no</code>, <code>SAVE_FILE</code>, <code>save_game</code> (11 params), <code>load_game</code> (returns 11-tuple), <code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>, <code>display_numbered_list</code>",
-      "<code>lab-3-2.py</code> has the three triples of parallel lists at module level (SA, HOU, AUS)",
-      "<code>lab-3-2.py</code> has <code>get_city_data()</code> dispatch function",
-      "<code>lab-3-2.py</code> has NO city-specific <code>if/elif</code> for destinations. All menus go through the library helpers",
-      "<code>visited_cities</code> tracks the route, including any return trips through SA",
-      "<code>hazards_list</code> tracks every hazard encountered, regardless of escape",
-      "Both files have updated docstrings with name, abc123, section, and description",
-      "Save/load round trip preserves all 11 fields including both lists",
-      "<code>function_library.py</code> destination helpers accept lists as parameters (no module-level globals from <code>lab-3-2.py</code>)"
+      "<strong>Every pin is restored:</strong> <code>roll</code> and <code>gate_result</code>, the <code>index</code> pin in the library, and any other pin you used are back to their original lines, and the fixed values are deleted",
+      "Both files are named exactly <code>lab-3-2.py</code> and <code>function_library.py</code>",
+      "Both headers have <code>Student Name:</code>, <code>UTSA ID:</code>, and <code>Section:</code>",
+      "Every function in both files has a docstring",
+      "A missing save file and a damaged one both start a new game",
+      "You ran every run from CP1 through CP5, and each one matched this sheet",
+      "Every printed line matches the Strings tab, spaces and punctuation included",
+      "VS Code's Problems panel shows no style errors in either file"
     ],
-    "scopeReminder": "Chapters 2–7 only. CodeGrade will flag code using techniques from later chapters.",
+    "scopeReminder": "Chapters 2 to 7: everything from Lab 3.1, plus lists, parallel lists, indexing, for loops over a list or range(len(...)), append(), len(), copy(), sort(), and reading and writing lists in a file. Not permitted: dictionaries or sets (Chapter 9), or string methods other than .upper(), .strip(), .isdigit(), and .rstrip() (Chapter 8). The main() structure is a required template in both files.",
     "permittedTechniques": {
-      "chapters": "Chapters 2–7",
+      "chapters": "Chapters 2 to 7",
       "specific": [
-        "All previous techniques (variables, if/else, loops, functions, function_library, file I/O, try-except)",
-        "Lists with initial values: <code>[item1, item2, ...]</code>",
-        "List indexing with <code>lst[i]</code> and <code>lst[choice - 1]</code>",
-        "<code>.append()</code> to grow lists",
-        "<code>len()</code> for list length",
-        "<code>for i in range(len(lst))</code> iteration",
-        "<code>in</code> operator for membership check",
-        "<code>.index()</code>, <code>.remove()</code>, <code>.pop()</code> for list manipulation",
-        "<code>.copy()</code> to avoid mutating originals",
-        "Multiple return values via tuples; unpacking at call site"
+        "Everything from Lab 3.1",
+        "Lists, parallel lists, and indexing",
+        "for loops over a list or range(len(...))",
+        "append(), len(), copy(), sort(), and the in operator",
+        "Reading and writing lists in a file, with try/except"
       ],
-      "notPermitted": "Dictionaries, sets, list comprehensions, or any Chapter 8+ techniques."
+      "notPermitted": "Dictionaries or sets (Chapter 9), list comprehensions, or string methods other than .upper(), .strip(), .isdigit(), and .rstrip() (Chapter 8)."
     },
-    "saveYourCode": "Keep both files. Lab 3.3 builds the Master capstone of Module 3 on top of this. <code>function_library.py</code> grows again next unit.",
     "warnings": [],
+    "saveYourCode": "Lab 3.3 starts from your finished <code>lab-3-2.py</code> and <code>function_library.py</code>, with the pins restored. Keep both.",
     "messageDigest": {
-      "intro": "Use these <em>exact</em> prompts and messages. Spacing, capitalization, and punctuation matter for grading. Anything in <code>{braces}</code> is a variable of yours; everything outside the braces must match character for character. The shaded box shows the full string, so a prompt that ends in a space looks like it ends in a space.",
+      "intro": "Every prompt and message in this lab, exactly. Spacing, capitalization, and punctuation all count. Anything in <code>{braces}</code> is a value your program fills in; everything outside the braces must match character for character. A lab number means the line comes from that lab unchanged.",
       "rows": [
         {
-          "purpose": "Austin 1",
+          "purpose": "Library self-test start",
+          "text": "Testing function_library.py...",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Library: flip",
+          "text": "  flip_coin() => {flip_coin()}",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Library: roll",
+          "text": "  roll_d20() => {roll_d20()}",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Library: check",
+          "text": "  check_percentage(50) => {check_percentage(50)}",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Library self-test end",
+          "text": "  Library loaded successfully.",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Coin: 1",
+          "text": "HEADS",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Coin: 2",
+          "text": "TAILS",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Not a number",
+          "text": "ERROR: Please enter a valid whole number.",
+          "shownIn": "2.3"
+        },
+        {
+          "purpose": "Out of range",
+          "text": "ERROR: Enter a number between {min_val} and {max_val}.",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Not y or n",
+          "text": "ERROR: Please enter 'y' or 'n'.",
+          "shownIn": "2.3"
+        },
+        {
+          "purpose": "Banner line",
           "text": "==================================================",
-          "shownIn": ""
+          "shownIn": "1.1"
         },
         {
-          "purpose": "Austin 2",
+          "purpose": "Banner title",
           "text": "DEEP IN THE HEART: A LONE STAR JOURNEY",
-          "shownIn": ""
+          "shownIn": "1.1"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu title",
           "text": "MAIN MENU",
-          "shownIn": ""
+          "shownIn": "3.1"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu underline",
           "text": "--------------------",
-          "shownIn": ""
+          "shownIn": "3.1"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu 1",
           "text": "1. New Game",
-          "shownIn": ""
+          "shownIn": "3.1"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu 2",
           "text": "2. Load Saved Game",
-          "shownIn": ""
+          "shownIn": "3.1"
         },
         {
-          "purpose": "",
+          "purpose": "Main menu 3",
           "text": "3. Quit",
-          "shownIn": ""
+          "shownIn": "3.1"
         },
         {
-          "purpose": "",
+          "purpose": "Quit",
+          "text": "Thanks for playing!",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "No save file",
+          "text": "No usable save file found. Starting new game.",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Welcome back",
+          "text": "Welcome back, {player_name}!",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Resuming",
+          "text": "Resuming from {current_city}.",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Miles so far",
+          "text": "Miles so far this game: {total_miles}",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Games so far",
+          "text": "Games completed this session: {games_played}",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Name prompt",
+          "text": "What is your name, traveler? ",
+          "shownIn": "1.1"
+        },
+        {
+          "purpose": "Welcome",
+          "text": "Welcome, {player_name}!",
+          "shownIn": "1.1"
+        },
+        {
+          "purpose": "Goal",
+          "text": "You are in San Antonio. Your goal: reach the beach!",
+          "shownIn": "1.1"
+        },
+        {
+          "purpose": "Menu header",
+          "text": "From {city}, you can travel to:",
+          "shownIn": "CP2"
+        },
+        {
+          "purpose": "Menu line",
+          "text": "  {i + 1}. {destinations[i]} - {distances[i]} miles",
+          "shownIn": "CP2"
+        },
+        {
+          "purpose": "Destination prompt",
+          "text": "Choice (1-{num_choices}): ",
+          "shownIn": "CP2"
+        },
+        {
+          "purpose": "Menu prompt",
           "text": "Choice (1-3): ",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Gate",
+          "text": "Flipping to see if Texas cooperates...",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Gate result",
+          "text": "Result: {gate_result}!",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Gate: HEADS",
+          "text": "Texas says: \"Y'all come on through!\"",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Gate: TAILS",
+          "text": "Texas has other plans for you...",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Headed",
+          "text": "You're headed to {destination}!",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Distance",
+          "text": "Distance: {distance} miles",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Travel banner",
+          "text": "TRAVELING TO {destination.upper()}!",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Turn header",
+          "text": "--- Turn {leg_turns} ---",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Miles left",
+          "text": "Miles remaining: {miles_remaining}",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Roll result",
+          "text": "You rolled a {roll}!",
+          "shownIn": "1.1"
+        },
+        {
+          "purpose": "Miles result",
+          "text": "You travel {miles_this_turn} miles...",
+          "shownIn": "1.1"
+        },
+        {
+          "purpose": "Hazard banner",
+          "text": "*** HAZARD! ***",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Hazard 1",
+          "text": "Buc-ee's appears!",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Hazard 1: HEADS",
+          "text": "You resist the beaver's call",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Hazard 1: TAILS",
+          "text": "Lost 2 hours on snacks",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Hazard 2",
+          "text": "Armadillo crossing!",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Hazard 2: HEADS",
+          "text": "It scurries away safely",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Hazard 2: TAILS",
+          "text": "You swerved into a ditch",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Hazard 3",
+          "text": "Speed trap!",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Hazard 3: HEADS",
+          "text": "Saw the cop in time",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Hazard 3: TAILS",
+          "text": "Small town ticket",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Escape flip",
+          "text": "{flip}!",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Made it",
+          "text": "You made it to {destination}!",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Beach banner",
+          "text": "CONGRATULATIONS! YOU REACHED THE BEACH!",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Austin",
+          "text": "Austin is fun, but no beach here!",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Austin question",
+          "text": "Return to San Antonio? (y/n): ",
+          "shownIn": "2.3"
+        },
+        {
+          "purpose": "Options title",
+          "text": "OPTIONS:",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Option 1",
+          "text": "  1. Continue journey",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Option 2",
+          "text": "  2. Save and quit",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Option 3",
+          "text": "  3. Quit without saving",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Saved",
+          "text": "Game saved!",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Report title",
+          "text": "FINAL TRIP REPORT",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Driver",
+          "text": "Driver: {player_name}",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Final city",
+          "text": "Final City: {current_city}",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Status line",
+          "text": "Status: {status}",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Status: beach",
+          "text": "BEACH WINNER!",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Status: quit",
+          "text": "Quit without saving",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Status: otherwise",
+          "text": "Trip Incomplete",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "List title",
+          "text": "{title}",
           "shownIn": "CP4"
         },
         {
-          "purpose": "",
-          "text": "Thanks for playing!",
-          "shownIn": ""
+          "purpose": "List line",
+          "text": "  {i + 1}. {items[i]}",
+          "shownIn": "CP4"
         },
         {
-          "purpose": "",
-          "text": "No usable save file found. Starting new game.",
-          "shownIn": ""
-        },
-        {
-          "purpose": "",
-          "text": "Welcome back, {player_name}!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "",
-          "text": "Resuming from {current_city}.",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Miles so far this game line",
-          "text": "Miles so far this game: {total_miles}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "",
-          "text": "Games completed this session: {games_played}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "",
-          "text": "What is your name, traveler? ",
-          "shownIn": ""
-        },
-        {
-          "purpose": "",
-          "text": "Welcome, {player_name}!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "",
-          "text": "You are in San Antonio. Your goal: reach the beach!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "",
-          "text": "Choice (1-{num_choices}): ",
-          "shownIn": "CP4+"
-        },
-        {
-          "purpose": "",
-          "text": "{num_choices}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "DESTINATION GATE",
-          "text": "Flipping to see if Texas cooperates...",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Result line",
-          "text": "Result: {gate_result}!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Texas says line",
-          "text": "Texas says: \"Y'all come on through!\"",
-          "shownIn": ""
-        },
-        {
-          "purpose": "TAILS - redirect to a different destination 1",
-          "text": "Texas has other plans for you...",
-          "shownIn": ""
-        },
-        {
-          "purpose": "TAILS - redirect to a different destination 2",
-          "text": "You're headed to {destination}!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Distance line",
-          "text": "Distance: {distance} miles",
-          "shownIn": ""
-        },
-        {
-          "purpose": "TRAVEL LOOP 1",
-          "text": "TRAVELING TO {destination.upper()}!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "TRAVEL LOOP 2",
-          "text": "--- Turn {leg_turns} ---",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Miles remaining line",
-          "text": "Miles remaining: {miles_remaining}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "TRAVEL LOOP 3",
-          "text": "You rolled a {roll}!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "TRAVEL LOOP 4",
-          "text": "You travel {miles_this_turn} miles...",
-          "shownIn": "CP7"
-        },
-        {
-          "purpose": "TRAVEL LOOP 5",
-          "text": "You made it to {destination}!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "TRAVEL LOOP 6",
-          "text": "*** HAZARD! ***",
-          "shownIn": ""
-        },
-        {
-          "purpose": "TRAVEL LOOP 7",
-          "text": "{hazard}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "TRAVEL LOOP 8",
-          "text": "{flip}!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "TRAVEL LOOP 9",
-          "text": "{heads_msg}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "TRAVEL LOOP 10",
-          "text": "{tails_msg}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Check outcome 1",
-          "text": "CONGRATULATIONS! YOU REACHED THE BEACH!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Check outcome 2",
-          "text": "Austin is fun, but no beach here!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Check outcome 3",
-          "text": "Return to San Antonio? (y/n): ",
-          "shownIn": "CP6"
-        },
-        {
-          "purpose": "Houston or San Antonio - 3-way mid-trip option 1",
-          "text": "OPTIONS:",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Houston or San Antonio - 3-way mid-trip option 2",
-          "text": "  1. Continue journey",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Houston or San Antonio - 3-way mid-trip option 3",
-          "text": "  2. Save and quit",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Houston or San Antonio - 3-way mid-trip option 4",
-          "text": "  3. Quit without saving",
-          "shownIn": ""
-        },
-        {
-          "purpose": "PER-GAME TRIP SUMMARY 1",
-          "text": "--------------------------------------------------",
-          "shownIn": ""
-        },
-        {
-          "purpose": "PER-GAME TRIP SUMMARY 2",
-          "text": "TRIP SUMMARY",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Driver line",
-          "text": "Driver: {player_name}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Final City line",
-          "text": "Final City: {current_city}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Total Miles line 1",
-          "text": "Total Miles: {total_miles}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Total Turns line",
-          "text": "Total Turns: {total_turns}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Hazards Faced line",
-          "text": "Hazards Faced: {total_hazards}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Hazards Escaped line",
-          "text": "Hazards Escaped: {total_escaped}",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Status line 1",
-          "text": "Status: BEACH WINNER!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Status line 2",
-          "text": "Status: Quit without saving",
-          "shownIn": ""
-        },
-        {
-          "purpose": "Status line 3",
-          "text": "Status: Trip Incomplete",
-          "shownIn": ""
-        },
-        {
-          "purpose": "",
+          "purpose": "Route title",
           "text": "YOUR ROUTE",
-          "shownIn": "CP9"
+          "shownIn": "CP4"
         },
         {
-          "purpose": "Use the library helper for both lists 1",
-          "text": "HAZARDS ENCOUNTERED",
-          "shownIn": "CP9"
+          "purpose": "Hazards title",
+          "text": "HAZARDS ENCOUNTERED (A-Z)",
+          "shownIn": "CP4"
         },
         {
-          "purpose": "Use the library helper for both lists 2",
+          "purpose": "No hazards",
           "text": "  None - Lucky traveler!",
-          "shownIn": "CP9"
+          "shownIn": "CP4"
         },
         {
-          "purpose": "Update session accumulators",
+          "purpose": "Statistics header",
+          "text": "STATISTICS",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Statistics underline",
+          "text": "----------",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Total miles",
+          "text": "  Total Miles: {total_miles}",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Total turns",
+          "text": "  Total Turns: {total_turns}",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Hazards faced",
+          "text": "  Hazards Faced: {total_hazards}",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Hazards escaped",
+          "text": "  Hazards Escaped: {total_escaped}",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Play again question",
           "text": "Play again? (y/n): ",
-          "shownIn": ""
+          "shownIn": "2.3"
         },
         {
-          "purpose": "",
+          "purpose": "Session header",
           "text": "SESSION STATISTICS",
-          "shownIn": ""
+          "shownIn": "2.3"
         },
         {
-          "purpose": "Games Played line",
+          "purpose": "Games played",
           "text": "Games Played: {games_played}",
-          "shownIn": ""
+          "shownIn": "2.3"
         },
         {
-          "purpose": "Total Miles line 2",
+          "purpose": "Session miles",
           "text": "Total Miles: {session_miles}",
-          "shownIn": ""
+          "shownIn": "2.3"
         },
         {
-          "purpose": "Total Hazards line",
+          "purpose": "Session hazards",
           "text": "Total Hazards: {session_hazards}",
-          "shownIn": ""
+          "shownIn": "2.3"
         },
         {
-          "purpose": "",
+          "purpose": "Closing line",
           "text": "Thanks for playing, {player_name}!",
-          "shownIn": ""
+          "shownIn": "1.3"
         },
         {
-          "purpose": "",
+          "purpose": "Credit",
           "text": "An All My Eggses Live in Texas Production",
-          "shownIn": ""
-        },
-        {
-          "purpose": "<code>current_city</code>",
-          "text": "San Antonio",
-          "shownIn": "CP3+"
-        },
-        {
-          "purpose": "<code>hazard</code>, tRAVEL LOOP 1",
-          "text": "Buc-ee's appears!",
-          "shownIn": "CP7+"
-        },
-        {
-          "purpose": "<code>heads_msg</code>, tRAVEL LOOP 1",
-          "text": "You resist the beaver's call.",
-          "shownIn": ""
-        },
-        {
-          "purpose": "<code>tails_msg</code>, tRAVEL LOOP 1",
-          "text": "Lost 2 hours on beef jerky.",
-          "shownIn": ""
-        },
-        {
-          "purpose": "<code>hazard</code>, tRAVEL LOOP 2",
-          "text": "Armadillo crossing!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "<code>heads_msg</code>, tRAVEL LOOP 2",
-          "text": "It scurries across safely.",
-          "shownIn": ""
-        },
-        {
-          "purpose": "<code>tails_msg</code>, tRAVEL LOOP 2",
-          "text": "You swerved. Armadillo unfazed.",
-          "shownIn": ""
-        },
-        {
-          "purpose": "<code>hazard</code>, tRAVEL LOOP 3",
-          "text": "Speed trap!",
-          "shownIn": ""
-        },
-        {
-          "purpose": "<code>heads_msg</code>, tRAVEL LOOP 3",
-          "text": "You saw the cop in time.",
-          "shownIn": ""
-        },
-        {
-          "purpose": "<code>tails_msg</code>, tRAVEL LOOP 3",
-          "text": "Small town officer says howdy.",
-          "shownIn": ""
+          "shownIn": "2.3"
         }
       ]
     },
     "finalCheck": {
-      "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, TestPlayer!\nYou are in San Antonio. Your goal: reach the beach!\n\nWhere would you like to go?\n  1. Corpus Christi - 150 miles (BEACH!)\n  2. Houston - 200 miles (Gateway East)\n  3. Austin - 80 miles (Keep it Weird)\n\nChoice (1-3): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 15!\nYou travel 150 miles...\nMiles remaining: 50\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call.\n\n--- Turn 2 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nWhere would you like to go?\n  1. Galveston - 50 miles (BEACH!)\n  2. San Antonio - 200 miles (Back West)\n\nChoice (1-2): \nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 15!\nYou travel 150 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n--------------------------------------------------\nTRIP SUMMARY\n--------------------------------------------------\nDriver: TestPlayer\nFinal City: Galveston\nTotal Miles: 450\nTotal Turns: 3\nHazards Faced: 1\nHazards Escaped: 1\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nHAZARDS ENCOUNTERED\n-------------------\n  1. Buc-ee's appears!\n\n--------------------------------------------------\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 450\nTotal Hazards: 1\n==================================================\n\nThanks for playing, TestPlayer!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!",
-      "expectedOutputNote": "This run uses inputs <code>1</code> (New Game) &rarr; <code>TestPlayer</code> &rarr; <code>2</code> (Houston) &rarr; <code>1</code> (Continue journey) &rarr; <code>1</code> (Galveston) &rarr; <code>n</code> (no replay) &rarr; <code>3</code> (Quit) with the deterministic CodeGrade fixture. With real random, your specific rolls and hazards will differ, but the structure must match: main menu &rarr; new game &rarr; play one game (with the new parallel-list menus and Trip Summary numbered lists) &rarr; session stats &rarr; main menu &rarr; quit.",
+      "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 1\n\nWhat is your name, traveler? Maria\n\nWelcome, Maria!\nYou are in San Antonio. Your goal: reach the beach!\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n\nChoice (1-3): 2\n\nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 150\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 2 ---\nMiles remaining: 150\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 100\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 3 ---\nMiles remaining: 100\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 50\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 4 ---\nMiles remaining: 50\nYou rolled a 5!\nYou travel 50 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): 2\n\nGame saved!\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 2\n\nWelcome back, Maria!\nResuming from Houston.\nMiles so far this game: 200\nGames completed this session: 0\n\nFrom Houston, you can travel to:\n  1. San Antonio - 200 miles\n  2. Galveston - 50 miles\n\nChoice (1-2): 2\n\nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 5!\nYou travel 50 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Maria\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  1. Buc-ee's appears!\n  2. Buc-ee's appears!\n  3. Buc-ee's appears!\n\nSTATISTICS\n----------\n  Total Miles: 250\n  Total Turns: 5\n  Hazards Faced: 3\n  Hazards Escaped: 3\n\n==================================================\n\nPlay again? (y/n): n\n\n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 250\nTotal Hazards: 3\n==================================================\n\nThanks for playing, Maria!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 3\n\nThanks for playing!\n",
+      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>1</code> &rarr; <code>Maria</code> &rarr; <code>2</code> &rarr; <code>2</code> &rarr; <code>2</code> &rarr; <code>2</code> &rarr; <code>n</code> &rarr; <code>3</code>: a new game, Houston, save and quit, load, Galveston, no more games, and quit. The pins are <code>roll = 5</code>, <code>gate_result = 'HEADS'</code>, <code>if True:</code> for the hazard check, <code>hazard_type = 1</code>, and <code>flip = 'HEADS'</code>. That gives the same results as CodeGrade's own settings <code>LARGENUM=5</code> and <code>SMALLNUM=1</code>, which you don't set. Match it line for line, then <strong>restore every pin</strong>, the library's <code>index</code> pin too, before you submit.",
       "ifSomethingBreaks": [
         {
-          "symptom": "<code>NameError: 'save_game' is not defined</code> or similar after CP2",
-          "redirect": "Check <strong>CP2</strong>: one or more call sites still say <code>save_game(...)</code> instead of <code>function_library.save_game(...)</code>. Search <code>lab-3-2.py</code> for any bare <code>save_game</code> or <code>load_game</code> references."
+          "symptom": "<code>NameError</code> on <code>load_game</code> or <code>save_game</code>",
+          "redirect": "Check <strong>CP1</strong>: both calls start with <code>function_library.</code>"
         },
         {
-          "symptom": "Menu still shows old format without the notes column at one or more cities",
-          "redirect": "Check <strong>CP4 and CP6</strong>: you may have refactored SA but not the Houston or Austin menu. After CP6, all three cities should go through <code>function_library.display_destinations(...)</code>."
+          "symptom": "A menu is missing a city or starts at 0",
+          "redirect": "Check <strong>CP2</strong>: the lists line up, and the loop prints <code>i + 1</code>."
         },
         {
-          "symptom": "TAILS gate always sends the player to the same destination",
-          "redirect": "Check <strong>CP5</strong>: <code>get_redirect</code> needs <code>random.randint</code> AND needs <code>.copy()</code> on both lists. Without copy, you mutate the originals and eventually only one option remains."
+          "symptom": "The gate sends you one city off",
+          "redirect": "Check <strong>CP3</strong>: <code>index = choice - 1</code>."
         },
         {
-          "symptom": "<code>visited_cities</code> empty at end of game",
-          "redirect": "Check <strong>CP7</strong>: you forgot the <code>.append(current_city)</code> after the travel loop ends. The list is initialized but nothing's adding to it."
+          "symptom": "The route or hazards are wrong after a second game",
+          "redirect": "Check <strong>CP4</strong>: the lists start inside <code>if not resumed_game:</code>."
         },
         {
-          "symptom": "<code>too many values to unpack</code> error after loading a saved game",
-          "redirect": "Check <strong>CP8</strong>: you extended <code>load_game</code> to return 11 values, but the unpack site in <code>main()</code> still expects 9. Update the unpack to include <code>visited_cities</code> and <code>hazards_list</code>."
+          "symptom": "A load crashes or never finishes",
+          "redirect": "Check <strong>CP5</strong>: eleven values unpacked, and each reading loop reads its next line."
         },
         {
-          "symptom": "Save file shows the <code>---LISTS_END---</code> marker but loading doesn't find it",
-          "redirect": "Check <strong>CP8</strong>: your <code>while</code> condition in <code>load_game</code> probably just checks <code>line != ''</code>. It also needs <code>line != '---LISTS_END---'</code>."
-        },
-        {
-          "symptom": "Trip Summary lists are missing the divider line or trailing space",
-          "redirect": "Check <strong>CP9</strong>: <code>display_numbered_list</code> needs to print: title, then <code>'-' * len(title)</code>, then the numbered items, then a blank <code>print()</code> at the end."
-        },
-        {
-          "symptom": "Lists persist across games (e.g., game 2 shows game 1's hazards too)",
-          "redirect": "Check <strong>CP7</strong>: the list initializations need to be INSIDE the play-again loop's per-game reset block, not before the loop."
-        },
-        {
-          "symptom": "Loaded game crashes with <code>ValueError</code> or wrong field counts",
-          "redirect": "Check <strong>CP8</strong>: if your save file is from before you finished CP8 (or from Lab 3.1 directly), it has the wrong number of lines for the new format. Delete <code>savegame.txt</code> and start fresh. The library's <code>load_game()</code> handles missing files cleanly, but a partial or old-format file may have parse errors. If a fresh save then loads cleanly, the fix is good. If it still crashes, your <code>load_game()</code> isn't catching <code>ValueError</code>. Update the <code>except</code> clause to <code>except (FileNotFoundError, ValueError):</code>."
+          "symptom": "CodeGrade fails tests your pinned runs pass",
+          "redirect": "A pin is still in, maybe the one in the library. Restore every random line before you submit."
         }
       ]
     }
   },
   "needHelp": {
     "ifYouGetStuck": [
-      "Re-read Programs 7-1 (lists with initial values), 7-3 (list iteration), and 7-7/7-8 (in operator, index method, remove method). These four show every list operation you need this unit",
-      "When refactoring (especially CP2 and CP6), make ONE change at a time and re-run after each. Don't refactor SA, Houston, and Austin all at once. Do them one at a time",
-      "If a library function isn't working, test it in isolation. Open <code>function_library.py</code>, add temporary code at the bottom under <code>if __name__ == '__main__':</code> that calls the function with known inputs",
-      "For CP8 (extending save/load), do the SAVE side first and inspect <code>savegame.txt</code> in Notepad before touching the LOAD side. Half the load bugs are actually save bugs from the previous step",
-      "Submit to CodeGrade early: the grader tests <code>function_library.py</code> in isolation, so you'll know immediately if a library function is broken without playing through a full game",
-      "Come to Tuesday office hours: debugging across two files is much easier with someone watching the screen"
+      "Re-read the checkpoint you're on, and run the program again with that checkpoint's pins and inputs",
+      "Submit to CodeGrade and read the first problem it names. Fix that one, then resubmit",
+      "Check Programs 7-1 (sales_list.py) and 7-3 (list_append.py) for lists, and 7-16 and 7-17 for lists in files",
+      "Post in <code>#module-3-help</code> on Discord with your checkpoint number, what you expected, and what happened. Screenshots of CodeGrade results are welcome; full code is not",
+      "Come to open office hours on Tuesday evenings"
     ],
     "bookexResourceNote": "Chapter 7 BookEx Reference Guide, step-by-step breakdowns of every textbook example, your primary reference"
   }
