@@ -1,14 +1,17 @@
 """
 city.py
-Reference City class for Lab 5.2: Deep in the Heart
+Lab 5.1: Meet the Cities
+Deep in the Heart: A Lone Star Journey
 
-Provided by Bat City Collective as a backup. It is the Lab 5.1 City
-class. If your own city.py from Lab 5.1 works, keep using it. Use
-this file only if yours is broken, so you can still run lab-5-2.py
-and test your player.py. You don't submit city.py in Lab 5.2.
+Student Name: SOLUTION
+UTSA ID: SOLUTION
+Section: SOLUTION
 
-Chapter 10 Concepts: class, __init__, self, private attributes,
-                     accessor and mutator methods, __str__
+Description: The City class. Each City object holds one city's name,
+type, tagline, and roads, and answers questions about that city.
+
+Chapter 10 Concepts: a class, __init__, self, private attributes,
+getters and setters, __str__
 """
 
 import random
@@ -20,61 +23,65 @@ class City:
 
     Private attributes:
         __name (str): The city's name, like 'San Antonio'
-        __city_type (str): 'START', 'WIN', 'DEAD_END', 'WRONG_WAY', etc.
-        __tagline (str): The city's motto
-        __connections (dict): destination name -> miles
+        __city_type (str): Its type from city_info.txt, like 'WIN'
+        __tagline (str): Its tagline from city_info.txt
+        __connections (dict): Each road: destination name -> miles
     """
 
     def __init__(self, name, city_type, tagline):
         """
-        Create a City with no road connections yet.
+        Make a City with no roads yet.
 
         Args:
             name (str): The city's name
-            city_type (str): The city's type from city_info.txt
-            tagline (str): The city's motto from city_info.txt
+            city_type (str): The city's type
+            tagline (str): The city's tagline
         """
         self.__name = name
         self.__city_type = city_type
         self.__tagline = tagline
         self.__connections = {}
 
-    # ========================================================
-    # ACCESSORS AND MUTATOR
-    # ========================================================
-
     def get_name(self):
         """Return the city's name."""
         return self.__name
+
+    def set_name(self, name):
+        """Change the city's name."""
+        self.__name = name
 
     def get_type(self):
         """Return the city's type."""
         return self.__city_type
 
+    def set_type(self, city_type):
+        """Change the city's type."""
+        self.__city_type = city_type
+
     def get_tagline(self):
         """Return the city's tagline."""
         return self.__tagline
+
+    def set_tagline(self, tagline):
+        """Change the city's tagline."""
+        self.__tagline = tagline
 
     def add_connection(self, dest, miles):
         """
         Add a road from this city to another one.
 
         Args:
-            dest (str): The destination city's name
-            miles (int): Distance to that city
+            dest (str): The destination's name
+            miles (int): The miles to it
         """
         self.__connections[dest] = miles
 
-    # ========================================================
-    # DESTINATION METHODS
-    # ========================================================
-
     def display_destinations(self):
         """
-        Display a numbered menu of this city's destinations.
+        Show the numbered menu of this city's destinations.
 
         Returns:
-            int: The number of destinations shown
+            int: How many destinations the menu shows
         """
         print(f'From {self.__name}, you can travel to:')
         option_num = 1
@@ -86,48 +93,44 @@ class City:
 
     def get_destination(self, choice):
         """
-        Return the destination and distance for a menu choice.
+        Look up the destination for a menu choice.
 
         Args:
-            choice (int): 1-based menu choice
+            choice (int): The menu number the player chose, from 1
 
         Returns:
-            tuple: (destination_name, distance_in_miles)
+            tuple: The destination and its distance
         """
         dests = list(self.__connections.keys())
-        index = choice - 1
-        dest = dests[index]
+        dest = dests[choice - 1]
         return dest, self.__connections[dest]
 
     def get_distance_to(self, dest):
         """
-        Return the miles from this city to a connected city.
+        Return the miles from this city to one it connects to.
 
         Args:
-            dest (str): A destination this city connects to
+            dest (str): The destination's name
 
         Returns:
-            int: Distance in miles
+            int: The miles to it
         """
         return self.__connections[dest]
 
     def get_redirect(self, avoid):
         """
-        Pick a random destination other than 'avoid'.
-
-        If 'avoid' is the only destination, return it anyway.
+        Pick a random destination other than the one the player wanted.
 
         Args:
-            avoid (str): The destination to leave out
+            avoid (str): The destination the player wanted
 
         Returns:
-            tuple: (destination_name, distance_in_miles)
+            tuple: Another destination and its distance, or the only one
+            there is when the city has a single road
         """
         options = list(self.__connections.keys())
-
         if avoid in options:
             options.remove(avoid)
-
         if len(options) > 0:
             index = random.randint(0, len(options) - 1)
             dest = options[index]
@@ -136,16 +139,12 @@ class City:
             only_option = list(self.__connections.keys())[0]
             return only_option, self.__connections[only_option]
 
-    # ========================================================
-    # TYPE CHECKS AND DISPLAY
-    # ========================================================
-
     def is_win_city(self):
-        """Return True if this city is a beach (type 'WIN')."""
+        """Return True if this city is a beach that wins the game."""
         return self.__city_type == 'WIN'
 
     def is_dead_end(self):
-        """Return True if this city is a 'DEAD_END' or 'WRONG_WAY'."""
+        """Return True if this city is a dead end: nowhere to go but home."""
         city_type = self.__city_type
         return city_type == 'DEAD_END' or city_type == 'WRONG_WAY'
 
@@ -166,7 +165,15 @@ def main():
     print(f'  {beach}')
     print(f'  get_name() => {beach.get_name()}')
     print(f'  get_type() => {beach.get_type()}')
+    print(f'  get_tagline() => {beach.get_tagline()}')
     print(f'  is_win_city() => {beach.is_win_city()}')
+    spot = City('Nowhere', 'HUB', 'Nothing to see')
+    spot.set_name('Test Town')
+    spot.set_type('DEAD_END')
+    spot.set_tagline('Population: one tester')
+    print(f'  set_name() => {spot.get_name()}')
+    print(f'  set_type() => {spot.get_type()}')
+    print(f'  set_tagline() => {spot.get_tagline()}')
     print('  City class loaded successfully.')
 
 
