@@ -430,6 +430,11 @@ def main():
 
     labs = a.labs or [ln.strip() for ln in open(os.path.join(HERE, "labs.txt"))
                       if ln.strip() and not ln.startswith("#")]
+    if not labs:
+        # Every lab commented out (Nov 21): exit before preflight, so a push
+        # makes no API calls.
+        print("No labs listed in labs.txt. Nothing to run.")
+        return 0
     models = [("dry-model", None)] if a.dry_run else preflight(roster())
     if not models:
         print("No model answered (keys: ANTHROPIC_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY). Nothing to run.")
