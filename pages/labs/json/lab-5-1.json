@@ -8,10 +8,11 @@
     "chapters": "10",
     "chapterTopics": "Classes and Object-Oriented Programming",
     "filename": "lab-5-1.py",
-    "additionalFiles": []
+    "additionalFiles": [],
+    "layout": "tabs"
   },
   "overview": {
-    "body": "BUILD unit. Module 5 is one idea: <strong>classes</strong>. A class bundles data with the functions that work on it. In Module 4, each city lived in two dictionaries, and five library functions existed only to dig through them: <code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>, <code>is_win_city</code>, and <code>is_dead_end</code>. This lab you build a <code>City</code> class in a new file, <code>city.py</code>, turn the two dictionaries into one <code>City</code> object per city, and move those five functions into the class as methods. The game itself does not change: every run in this lab prints exactly what your Lab 4.3 printed. That is how you know the refactor worked.",
+    "body": "This is a <strong>BUILD</strong> unit. Module 5 is one idea: <strong>classes</strong>. A class keeps data together with the code that works on it. In Module 4, each city lived in two dictionaries, and five library functions existed only to dig through them. This lab you build a <code>City</code> class in a new file, <code>city.py</code>, with a getter and a setter for each thing it stores, turn the two dictionaries into one <code>City</code> object per city, and move those five functions into the class as methods. The game itself doesn't change: every run in this lab prints exactly what your Lab 4.3 printed. That's how you know the refactor worked.",
     "mentorQuote": {
       "character": "Sasha Mireles",
       "role": "Creative Director, Bat City Collective",
@@ -19,145 +20,133 @@
       "quote": "Players will never see this lab, and that's the point. Same menus, same trivia, same beach. What changes is how the game is put together, so the next feature is easier to build. Next week the player gets the same treatment."
     },
     "objectives": [
-      "Copy <code>lab-4-3.py</code> forward to <code>lab-5-1.py</code>, with your library and the four data files",
-      "Define a <code>City</code> class in <code>city.py</code>: a constructor, four private attributes, accessors, and a mutator",
-      "Write <code>build_cities(distances, city_info)</code> to make one <code>City</code> object per city",
-      "Move <code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>, <code>is_win_city</code>, and <code>is_dead_end</code> into the class as methods, and call them on <code>City</code> objects",
-      "Give <code>City</code> a <code>__str__</code> method and <code>city.py</code> a self-test",
+      "Write a <code>City</code> class with <code>__init__</code> and four <strong>private attributes</strong>",
+      "Give each attribute a <strong>getter and a setter</strong>, and check them with a self-test",
+      "Make one <code>City</code> object per city with <code>build_cities()</code>",
+      "Move five library functions into the class as methods, and call them on objects",
+      "Give <code>City</code> a <code>__str__</code> method",
       "Prove the refactor: every run matches Lab 4.3, line for line"
     ],
-    "keyConceptsText": "A <strong>class</strong> is a blueprint; an <strong>object</strong> (an instance) is one thing built from it. <code>City('Houston', 'GATEWAY', 'Space City')</code> runs the class's <code>__init__</code> method, which stores those values in the new object's attributes. An attribute whose name starts with two underscores, like <code>self.__name</code>, is <strong>private</strong>: code outside the class can't reach it, so it asks through methods. An <strong>accessor</strong> returns an attribute's value; a <strong>mutator</strong> changes it. Every method's first parameter is <code>self</code>, the object the method was called on: in <code>houston.get_tagline()</code>, <code>self</code> is <code>houston</code>. <code>__str__</code> returns the text Python uses when you print an object or put it in an f-string. A <strong>refactor</strong> changes how code is organized without changing what it does.",
-    "textbookReference": "Chapter 10: Section 10.2 (Classes) covers <code>class</code>, <code>__init__</code>, <code>self</code>, hiding attributes, and <code>__str__</code>. Section 10.3 (Working with Instances) covers accessor and mutator methods and passing objects as arguments. Your BookEx programs: 10-9 and 10-10 (<code>BankAccount</code>), 10-12 and 10-13 (<code>CellPhone</code>).",
-    "programRequirements": [
-      "Submit <code>lab-5-1.py</code>, <code>city.py</code>, and <code>function_library.py</code>",
-      "Top-of-file docstring on all three files",
-      "Docstring on every function and every method",
-      "<code>city.py</code> defines the <code>City</code> class with private attributes and the methods the checkpoints list, plus a self-test behind <code>if __name__ == '__main__':</code>",
-      "<code>lab-5-1.py</code> makes one <code>City</code> object per city with <code>build_cities()</code> and calls City methods in place of <code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>, <code>is_win_city</code>, and <code>is_dead_end</code>",
-      "<code>function_library.py</code> no longer contains <code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>, <code>is_win_city</code>, and <code>is_dead_end</code>",
-      "Every run prints exactly what Lab 4.3 printed: the same strings, the same blank lines, and the same <code>trip_report.txt</code>",
-      "Save format, three-loop architecture, trivia gate, D20 travel, and sets all unchanged from Lab 4.3"
-    ],
+    "keyConceptsText": "<strong>Chapter 10:</strong> a class is a blueprint; an object is one thing built from it. <code>City('Houston', 'GATEWAY', 'Space City')</code> runs <code>__init__</code>, which stores those values in the new object's attributes. An attribute whose name starts with two underscores is <strong>private</strong>: code outside the class asks through methods. A <strong>getter</strong> (accessor) returns one attribute; a <strong>setter</strong> (mutator) changes one. <code>self</code> is the object a method was called on. <code>__str__</code> returns the text <code>print()</code> shows for an object.",
+    "textbookReference": "Starting Out with Python, 6th Edition by Tony Gaddis, Chapter 10.",
     "namedConstants": [
       {
-        "name": "DISTANCES_FILE",
-        "description": "City distances text file"
-      },
-      {
-        "name": "INFO_FILE",
-        "description": "City info text file"
-      },
-      {
-        "name": "HAZARDS_FILE",
-        "description": "Hazards text file"
-      },
-      {
-        "name": "TRIVIA_FILE",
-        "description": "Trivia text file"
+        "name": "MILES_MULTIPLIER, HAZARD_CHANCE",
+        "description": "Miles per point on a roll (10), and the percent chance of a hazard (30)"
       },
       {
         "name": "REPORT_FILE",
-        "description": "Trip report output file"
+        "description": "The trip report's file name, 'trip_report.txt' (Lab 3.3)"
       },
       {
-        "name": "MILES_MULTIPLIER",
-        "description": "Multiplier applied to each D20 roll"
+        "name": "DISTANCES_FILE, INFO_FILE, HAZARDS_FILE, TRIVIA_FILE",
+        "description": "The four data files from Module 4"
       },
       {
-        "name": "HAZARD_CHANCE",
-        "description": "Percent chance per turn of a hazard event"
+        "name": "SAVE_FILE, D20_MIN, D20_MAX",
+        "description": "In function_library.py: the save file's name, and the die's lowest and highest roll"
       }
     ],
-    "filenameNote": "Submit <code>lab-5-1.py</code>, <code>city.py</code>, and <code>function_library.py</code>. CodeGrade provides all four data files as fixtures.",
     "dataFiles": [
       {
         "file": "city_distances.txt",
         "path": "5-1/city_distances.txt",
-        "format": "city1,city2,distance (same as Lab 4.3)",
+        "format": "From Lab 4.1, unchanged",
         "submitted": false
       },
       {
         "file": "city_info.txt",
         "path": "5-1/city_info.txt",
-        "format": "city,type,tagline (same as Lab 4.3)",
+        "format": "From Lab 4.1, unchanged",
         "submitted": false
       },
       {
         "file": "hazards.txt",
         "path": "5-1/hazards.txt",
-        "format": "name,heads_message,tails_message (same as Lab 4.3)",
+        "format": "From Lab 4.2, unchanged",
         "submitted": false
       },
       {
         "file": "trivia.txt",
         "path": "5-1/trivia.txt",
-        "format": "city,question,answer (same as Lab 4.3)",
+        "format": "From Lab 4.3, unchanged",
         "submitted": false
-      },
-      {
-        "file": "lab-5-1.py",
-        "format": "A copy of your <code>lab-4-3.py</code>, made in CP1",
-        "submitted": true
-      },
-      {
-        "file": "function_library.py",
-        "format": "Your Lab 4.3 library, copied forward in CP1. CP6 removes five functions from it",
-        "submitted": true
       },
       {
         "file": "city.py",
         "format": "Your new <code>City</code> class, written from CP2 on",
         "new": true,
         "submitted": true
+      },
+      {
+        "file": "function_library.py",
+        "format": "Your library from Lab 4.3. CP6 removes five functions from it",
+        "changed": true,
+        "submitted": true
+      },
+      {
+        "file": "lab-5-1.py",
+        "format": "Your Lab 4.3 game, carried forward",
+        "submitted": true
       }
-    ]
+    ],
+    "programRequirements": [
+      "All three files <strong>MUST</strong> keep the header labels <code>Student Name:</code>, <code>UTSA ID:</code>, and <code>Section:</code>",
+      "<code>city.py</code> <strong>MUST</strong> have the <code>City</code> class with four private attributes, a getter and a setter for name, type, and tagline, <code>add_connection()</code>, the seven methods from CP3 to CP5, and the self-test, each function and method with a docstring",
+      "<code>function_library.py</code> <strong>MUST NOT</strong> have the five functions that moved into the class",
+      "<code>lab-5-1.py</code> <strong>MUST</strong> make the cities with <code>build_cities()</code>, and ask them, not the dictionaries, about each city",
+      "Every pin <strong>MUST</strong> be restored before you submit, in all three files"
+    ],
+    "filenameNote": "Submit <strong>three files</strong> this unit: <code>lab-5-1.py</code>, <code>city.py</code>, and <code>function_library.py</code>. CodeGrade has its own copies of the four data files, so don't upload them. Your program makes <code>savegame.txt</code> and <code>trip_report.txt</code> when it runs; don't submit those either."
   },
   "timeGuide": {
-    "totalTime": "90–120 Minutes",
+    "totalTime": "100\u2013120 Minutes",
     "rows": [
       {
-        "checkpoint": "CP1: Carry Lab 4.3 Forward",
+        "checkpoint": "CP1: Carry Lab 4.3 Forward (10%)",
         "time": "10 min",
-        "task": "Copy 4.3 forward, pin the dice and the question"
+        "task": "Copy both files and the data files, update the header, pin. One run, then submit"
       },
       {
-        "checkpoint": "CP2: The City Class",
-        "time": "25 min",
-        "task": "city.py with the constructor, accessors, and mutator; build_cities"
+        "checkpoint": "CP2: The City Class (25%)",
+        "time": "30 min",
+        "task": "city.py: the class, getters and setters, the self-test; build_cities() and the tagline lines. Two runs, then submit"
       },
       {
-        "checkpoint": "CP3: Menus From the City",
-        "time": "20 min",
-        "task": "display_destinations and get_destination become methods"
-      },
-      {
-        "checkpoint": "CP4: The Gate Asks the City",
+        "checkpoint": "CP3: Menus From the City (15%)",
         "time": "15 min",
-        "task": "get_distance_to, get_redirect; trivia_gate takes a City"
+        "task": "Two methods move in, two calls change. One run, then submit"
       },
       {
-        "checkpoint": "CP5: City Types and __str__",
+        "checkpoint": "CP4: The Gate Asks the City (20%)",
         "time": "20 min",
-        "task": "is_win_city, is_dead_end, __str__, and the self-test"
+        "task": "get_distance_to(), get_redirect(), trivia_gate() takes the City. One run, then submit"
       },
       {
-        "checkpoint": "CP6: Five Functions Leave the Library",
-        "time": "10 min",
-        "task": "Delete the library's old copies; format() calls become f-strings"
+        "checkpoint": "CP5: City Types and __str__ (15%)",
+        "time": "15 min",
+        "task": "Two checks and __str__ move in, three calls change, a longer self-test. Two runs, then submit"
       },
       {
-        "checkpoint": "Full Check",
+        "checkpoint": "CP6: Five Functions Leave the Library (15%)",
         "time": "10 min",
-        "task": "Run the Full Check with your pins in place, then restore them and submit"
+        "task": "Search, then delete two library sections. One run, then submit"
+      },
+      {
+        "checkpoint": "Final Check & Submit",
+        "time": "10 min",
+        "task": "Full run with pins, restore every pin, clear style errors in all three files, final submit"
       }
-    ]
+    ],
+    "strategy": "CodeGrade checks the checkpoints in order, and it starts on the next one only when the current one passes. It uses its own fixed dice, coins, and picks, so your pins don't change what it sees, but a pin left in any file fails its tests. When something fails, fix one thing, run it, and resubmit."
   },
   "beforeYouBegin": {
-    "intro": "Lab 5.1 is a refactor: the game's behavior stays exactly the same while its city data moves into objects. <code>city.py</code> is new, five functions move from the library into the class, and the lab file changes in only a handful of lines. <code>[NEW]</code> tags show what's added. <code>[MOVED]</code> tags show what moves into the class. <code>[CHANGED]</code> tags show what changes shape. <code>[DELETED]</code> tags show what comes out. <code>[KEEP]</code> tags show what carries forward unchanged.",
-    "architecture": "# ---- IN city.py (new this lab) ----\nclass City:\n  __init__(self, name, city_type, tagline)                [NEW-CP2]\n  get_name(), get_type(), get_tagline()                   [NEW-CP2]\n  add_connection(dest, miles)                             [NEW-CP2]\n  display_destinations(), get_destination(choice)         [MOVED-CP3]\n  get_distance_to(dest)                                   [NEW-CP4]\n  get_redirect(avoid)                                     [MOVED-CP4]\n  is_win_city(), is_dead_end()                            [MOVED-CP5]\n  __str__()                                               [NEW-CP5]\nmain() self-test + if __name__ == '__main__': guard      [NEW-CP5]\n\n# ---- IN function_library.py ----\nEverything from Lab 4.3                                   [KEEP from 4.3]\ndisplay_destinations, get_destination, get_redirect,\nis_win_city, is_dead_end                                  [DELETED-CP6]\n\n# ---- IN lab-5-1.py (starts as a copy of lab-4-3.py in CP1) ----\nfrom city import City                                     [NEW-CP2]\nbuild_cities(distances, city_info) -> dict of City        [NEW-CP2]\ntrivia_gate(dest, trivia, city)                           [CHANGED-CP4]\nsave_trip_report(...), decimals shown with f-strings      [CHANGED-CP6]\n\n# ---- main() ----\nLoad data + startup lines                                 [KEEP from 4.3]\ncities = build_cities(distances, city_info)               [NEW-CP2]\nMAIN MENU LOOP / PLAY-AGAIN LOOP / IN-GAME LOOP            [KEEP from 4.3]\n  │─ cities[current_city].get_tagline()                   [CHANGED-CP2]\n  │─ cities[current_city].display_destinations()          [CHANGED-CP3]\n  │─ cities[current_city].get_destination(choice)         [CHANGED-CP3]\n  │─ trivia_gate(wanted, trivia, cities[current_city])    [CHANGED-CP4]\n  │─ cities[current_city].is_win_city() / is_dead_end()   [CHANGED-CP5]\nTrip report, session statistics                           [KEEP from 4.3]\n  │─ end-of-game summary, decimals shown with f-strings   [CHANGED-CP6]"
+    "intro": "Here's what Lab 5.1 does to your Lab 4.3 game: a new file holds the City class, the game builds one object per city, and five library functions become methods.",
+    "architecture": "city.py  (new)                                                      [NEW-CP2]\n\u2502\u2500\u2500 class City:  __init__, name, type, tagline, roads               [NEW-CP2]\n\u2502     \u2502\u2500\u2500 get_ and set_ for name, type, tagline; add_connection()   [NEW-CP2]\n\u2502     \u2502\u2500\u2500 display_destinations(), get_destination()                 [MOVED-CP3]\n\u2502     \u2502\u2500\u2500 get_distance_to(), get_redirect()                         [NEW-CP4, MOVED-CP4]\n\u2502     \u2514\u2500\u2500 is_win_city(), is_dead_end(), __str__                     [MOVED-CP5, NEW-CP5]\n\u2514\u2500\u2500 main(): the self-test                                           [NEW-CP2]\n\nfunction_library.py  (from Lab 4.3)\n\u2502\u2500\u2500 DESTINATION HELPERS, CITY TYPE CHECKS                           [DELETED-CP6]\n\nlab-5-1.py  (your Lab 4.3, carried forward)\n\u2502\u2500\u2500 from city import City                                           [NEW-CP2]\n\u2502\u2500\u2500 build_cities(distances, city_info)                              [NEW-CP2]\n\u2502\u2500\u2500 trivia_gate(dest, trivia, city)                                 [CHANGED-CP4]\n\u2502\u2500\u2500 main()\n\u2502     \u2502\u2500\u2500 cities = build_cities(...)                                [NEW-CP2]\n\u2502     \u2514\u2500\u2500 while playing:  asks cities[current_city]                 [CHANGED-CP2 to CP5]\n\u2514\u2500\u2500 (everything else from Lab 4.3)"
   },
   "checkpoints": [
     {
+      "number": 1,
       "title": "Carry Lab 4.3 Forward",
       "content": [
         {
@@ -166,7 +155,7 @@
         },
         {
           "type": "text",
-          "body": "A trusted starting point. <code>lab-5-1.py</code> begins as an exact copy of your finished Lab 4.3, with your 4.3 <code>function_library.py</code> beside it and the same four data files. No new code this checkpoint."
+          "body": "A starting point you can trust. Your finished Lab 4.3 game and library become Lab 5.1, the four data files go in the same folder, and you check that the game still plays exactly as before."
         },
         {
           "type": "h3",
@@ -174,7 +163,14 @@
         },
         {
           "type": "text",
-          "body": "This whole lab is a <strong>refactor</strong>: you change how the code is organized, and the game does not change at all. Every test in this lab prints exactly what your Lab 4.3 printed. This run is the baseline. If CP1 matches, any difference after it comes from that checkpoint."
+          "body": "This whole lab is a <strong>refactor</strong>: you change how the code is organized, and the game doesn't change at all. Every run in this lab prints exactly what your Lab 4.3 printed. This run is the baseline: if CP1 matches, any difference after it comes from the checkpoint that made it."
+        },
+        {
+          "type": "mentor_quote",
+          "character": "Sasha Mireles",
+          "role": "Creative Director, Bat City Collective",
+          "headshot": "Sasha-Mireles.png",
+          "quote": "Players will never see this lab, and that's the point. Same menus, same trivia, same beach. What changes is how the game is put together, so the next feature is easier to build. Next week the player gets the same treatment."
         },
         {
           "type": "h3",
@@ -183,13 +179,32 @@
         {
           "type": "instructions",
           "items": [
-            "Make a <code>lab-5-1</code> folder. If you set up your folders from the starter zip at the start of the semester, you already have one, with empty copies of <code>lab-5-1.py</code>, <code>city.py</code>, and <code>function_library.py</code> that the next steps replace.",
-            "Copy your finished <code>lab-4-3.py</code> into your <code>lab-5-1</code> folder and rename the copy <code>lab-5-1.py</code>, replacing the empty file if there is one.",
-            "Copy your Lab 4.3 <code>function_library.py</code> into the same folder, replacing any empty file of that name.",
-            "Put the four data files in the same folder: <code>city_distances.txt</code>, <code>city_info.txt</code>, <code>hazards.txt</code>, and <code>trivia.txt</code>. Use the copies linked in Required Data Files above. They are the same files Lab 4.3 used.",
-            "Update the docstring at the top of <code>lab-5-1.py</code>. Change the first line to <code>Lab 5.1: Meet the Cities</code> and keep the line under it, <code>Deep in the Heart: A Lone Star Journey</code>. Keep your name, ID, and section lines exactly as they are. Replace the description, and any concept lines under it, with a sentence or two about this lab. Keep the data files list if your docstring has one.",
-            "Pin the dice and the trivia question, as shown below. These are the same two pins you used in Lab 4.3."
+            "In VS Code, open your finished <code>lab-4-3.py</code>, with every pin restored. Choose <strong>File &rarr; Save As</strong> and save it in your <code>lab-5-1</code> folder as <code>lab-5-1.py</code>. Copy your <code>function_library.py</code> and the four data files, <code>city_distances.txt</code>, <code>city_info.txt</code>, <code>hazards.txt</code>, and <code>trivia.txt</code>, into the same folder too.",
+            "In <code>lab-5-1.py</code>'s header, change the first line to <code>Lab 5.1: Meet the Cities</code>, and replace the <code>Description:</code> and <code>Chapter</code> lines with these:"
           ]
+        },
+        {
+          "type": "code_block",
+          "code": "Description: The game plays exactly like Lab 4.3, but each city's\ndata lives in a City object from city.py, and the game asks each City\nabout itself.\n\nChapter 10 Concepts: creating objects from your own class, calling\ntheir methods, passing an object to a function"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Pin for testing, the way you did in Lab 4.3:"
+          ],
+          "start": 3
+        },
+        {
+          "type": "code_block",
+          "code": "                    # roll = function_library.roll_d20()\n                    roll = 20"
+        },
+        {
+          "type": "code_block",
+          "code": "    # q = random.choice(trivia[dest])\n    q = trivia[dest][0]"
+        },
+        {
+          "type": "text",
+          "body": "Keep these pins through CP6. The Final Check tells you when to restore them."
         },
         {
           "type": "h3",
@@ -197,31 +212,61 @@
         },
         {
           "type": "text",
-          "body": "Comment out each line and add the fixed value right below it. The <code>roll</code> line is in the travel loop in <code>main()</code>; the <code>q</code> line is in <code>trivia_gate</code>:"
-        },
-        {
-          "type": "code_block",
-          "code": "# roll = function_library.roll_d20()\nroll = 20\n\n# q = random.choice(trivia[dest])\nq = trivia[dest][0]"
-        },
-        {
-          "type": "text",
-          "body": "A 20 moves you 200 miles, so every trip in this lab's tests arrives in one turn and no hazard check runs. The first question for every city is TRUE. The expected output leaves out what you type and the Enter key after it, the same way CodeGrade sees it, so a prompt and the next line it prints share a line. For example, <code>TRUE or FALSE? </code> and <code>CORRECT! You earned your destination.</code> show up on one line."
-        },
-        {
-          "type": "text",
-          "body": "While the <code>q</code> pin is in, the style checker in VS Code flags <code>import random</code> as unused. That's expected: the warning clears when you restore the pin before submitting. If it also flags a long <code>if resumed_game and ...</code> line at the top of the play-again loop, leave it for now. CP5 replaces that line with a shorter one."
-        },
-        {
-          "type": "text",
-          "body": "Run <code>lab-5-1.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>2</code>, <code>TRUE</code>, <code>1</code>, <code>2</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>. Your output should match this exactly:"
+          "body": "Every run uses the testing pins: the roll pinned to <code>20</code>, so every leg takes one turn and no hazard comes up, and the question pinned to each city's first one, which is always TRUE. Type <code>1</code>, <code>Tester</code>, <code>2</code>, <code>TRUE</code>, <code>1</code>, <code>2</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>: a new game, Houston, a right answer, continue, Galveston, a right answer, no more games, quit. Your report should match this:"
         },
         {
           "type": "output_block",
-          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\nLoaded 20 trivia questions across 10 cities.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \n\n--- TRIVIA TIME! ---\nTo reach Houston, answer this question:\n\n  NASA Mission Control is in Houston\n\nTRUE or FALSE? CORRECT! You earned your destination.\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nYou are in: Houston\n  \"Space City\"\n\nFrom Houston, you can travel to:\n  1. San Antonio - 200 miles\n  2. Galveston - 50 miles\n  3. Dallas - 240 miles\n\nChoice (1-3): \n\n--- TRIVIA TIME! ---\nTo reach Galveston, answer this question:\n\n  Galveston was hit by a major hurricane in 1900\n\nTRUE or FALSE? CORRECT! You earned your destination.\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (Unique, A-Z)\n---------------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\nTRIVIA\n------\n  Questions Asked: 2\n  Answered Correct: 2\n  Accuracy: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 400\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
+          "output": "==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (Unique, A-Z)\n---------------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\nTRIVIA\n------\n  Questions Asked: 2\n  Answered Correct: 2\n  Accuracy: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\n"
         },
         {
-          "type": "text",
-          "body": "Houston, then Galveston, with one stop at the OPTIONS menu in between. Keep this run handy: CP2 and CP3 must print it again, character for character."
+          "type": "callout",
+          "variant": "tip",
+          "title": "Submit now",
+          "body": "Save (Ctrl+S, or Cmd+S on a Mac) and submit to CodeGrade. Its results list the checkpoints in order, and it checks CP2 once CP1 passes. If CP1 isn't green yet, fix the first problem it names, run your program again, and resubmit. One fix at a time. Submissions are unlimited, and only your last one counts. Submit <code>lab-5-1.py</code> and <code>function_library.py</code> now, and <code>city.py</code> too from CP2 on. CodeGrade has its own copies of the data files.",
+          "inline": true
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "What you see",
+            "What to do"
+          ],
+          "rows": [
+            [
+              "<code>AttributeError: module 'function_library' has no attribute 'load_trivia'</code>",
+              "That's an older library. Copy the <code>function_library.py</code> from your <code>lab-4-3</code> folder."
+            ],
+            [
+              "<code>FileNotFoundError</code> for one of the data files",
+              "All four data files from Lab 4.3 go in this folder."
+            ],
+            [
+              "You edited <code>lab-4-3.py</code> instead of a copy",
+              "Save As first, then edit the copy."
+            ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "ai_assist"
+        },
+        {
+          "type": "ai_assist",
+          "prompts": [
+            {
+              "label": "Explain it",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 10 of Starting Out with Python by Tony Gaddis. I can use anything from Chapters 2 to 9: variables, input(), print(), named constants, f-strings, if/elif/else, loops, functions (including ones in a separate file I import), random.randint(), files, try/except, lists, string methods, dictionaries, and sets. From Chapter 10 I can write a class with __init__ and self, private attributes with two underscores, getter and setter methods, and __str__, and make objects from it in another file. The only modules I've imported are random and .py files I wrote myself. No inheritance yet. Keep it short and simple, and give any fixed number in an example a named constant. Explain what a refactor is: changing how a program is organized without changing what it does, and why you run the program after every small change to prove nothing changed. Use a tiny example that has nothing to do with games. Don't write code for my assignment. When you're done, ask me one question to check that I understood."
+            },
+            {
+              "label": "Decode my error",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 10 of Starting Out with Python by Tony Gaddis. I can use anything from Chapters 2 to 9: variables, input(), print(), named constants, f-strings, if/elif/else, loops, functions (including ones in a separate file I import), random.randint(), files, try/except, lists, string methods, dictionaries, and sets. From Chapter 10 I can write a class with __init__ and self, private attributes with two underscores, getter and setter methods, and __str__, and make objects from it in another file. The only modules I've imported are random and .py files I wrote myself. No inheritance yet. Keep it short and simple, and give any fixed number in an example a named constant. Here is an error message from my Python program:\n\n[paste the whole error message here]\n\nExplain in plain words what it means, which line it points to, and the mistake that most often causes it. Only name causes that give this exact error. Don't rewrite my code. If you show an example, make it about something else, not my line with the fix in it. Tell me what to look for, and I'll fix it myself."
+            }
+          ]
         },
         {
           "type": "h3",
@@ -231,13 +276,15 @@
           "type": "instructions",
           "items": [
             "<code>lab-5-1.py</code>, <code>function_library.py</code>, and all four data files in your <code>lab-5-1</code> folder",
-            "Docstring title <code>Lab 5.1: Meet the Cities</code>",
-            "Output identical to the run above"
+            "The Lab 5.1 header",
+            "The roll and question pinned",
+            "A run whose report matches the output above"
           ]
         }
       ]
     },
     {
+      "number": 2,
       "title": "The City Class",
       "content": [
         {
@@ -246,7 +293,7 @@
         },
         {
           "type": "text",
-          "body": "A new file, <code>city.py</code>, holding a <code>City</code> class: a constructor that stores four private attributes, three accessors, and one mutator. Then <code>build_cities()</code> in <code>lab-5-1.py</code> turns your two dictionaries into one <code>City</code> object per city, and every stop asks its <code>City</code> for the tagline."
+          "body": "A new file, <code>city.py</code>, holding a <code>City</code> class: a constructor that stores four private attributes, a <strong>getter</strong> and a <strong>setter</strong> for the name, the type, and the tagline, and <code>add_connection()</code> for the roads. A self-test at the bottom checks every one. Then <code>build_cities()</code> in <code>lab-5-1.py</code> turns your two dictionaries into one <code>City</code> object per city, and every stop asks its <code>City</code> for the tagline."
         },
         {
           "type": "h3",
@@ -254,7 +301,7 @@
         },
         {
           "type": "text",
-          "body": "Right now one city's data is split across two dictionaries: its roads are in <code>distances</code>, and its type and tagline are in <code>city_info</code>. A <code>City</code> object holds all of it in one place. Its attributes are private, so code outside the class can't reach them directly; it asks through methods instead. That is <strong>encapsulation</strong>, and it is the main idea of Chapter 10."
+          "body": "Right now one city's data is split across two dictionaries: its roads are in <code>distances</code>, and its type and tagline are in <code>city_info</code>. A <code>City</code> object holds all of it in one place. Its attributes are private, so code outside the class can't reach them directly; it asks through methods instead. A getter (Gaddis calls it an <strong>accessor</strong>) returns one attribute; a setter (a <strong>mutator</strong>) changes one. That's <strong>encapsulation</strong>, the main idea of Chapter 10."
         },
         {
           "type": "mentor_quote",
@@ -269,28 +316,39 @@
         },
         {
           "type": "text",
-          "body": "<strong>In <code>city.py</code></strong> (new file):"
+          "body": "<strong>In <code>city.py</code></strong> (a new file in your <code>lab-5-1</code> folder):"
         },
         {
           "type": "instructions",
           "items": [
-            "Create a new file named <code>city.py</code> in your <code>lab-5-1</code> folder, replacing any empty file of that name.",
-            "Start it with a docstring set up like the one at the top of <code>lab-5-1.py</code>: the file name first, then the two title lines, your name, ID, and section lines copied exactly from <code>lab-5-1.py</code>, and a description:"
+            "Start it with a header like the one at the top of your lab file:"
           ]
         },
         {
           "type": "code_block",
-          "code": "\"\"\"\ncity.py\nLab 5.1: Meet the Cities\nDeep in the Heart: A Lone Star Journey\n\n(your name, ID, and section lines, copied from lab-5-1.py)\n\nDescription: The City class. Each City object holds one city's\nname, type, tagline, and road connections.\n\"\"\""
+          "code": "\"\"\"\ncity.py\nLab 5.1: Meet the Cities\nDeep in the Heart: A Lone Star Journey\n\n(your name, ID, and section lines, copied from lab-5-1.py)\n\nDescription: The City class. Each City object holds one city's name,\ntype, tagline, and roads, and answers questions about that city.\n\nChapter 10 Concepts: a class, __init__, self, private attributes,\ngetters and setters, __str__\n\"\"\""
         },
         {
           "type": "instructions",
           "items": [
-            "Two blank lines below the docstring, define the class with <code>class City:</code> and give it a docstring that lists its four private attributes.",
-            "Inside the class, write <code>__init__(self, name, city_type, tagline)</code> with a docstring. Store each parameter in a private attribute, two underscores in front: <code>self.__name = name</code>, <code>self.__city_type = city_type</code>, and <code>self.__tagline = tagline</code>. Then start the roads empty: <code>self.__connections = {}</code>.",
-            "Write three accessors, each with a one-line docstring: <code>get_name(self)</code> returns <code>self.__name</code>, <code>get_type(self)</code> returns <code>self.__city_type</code>, and <code>get_tagline(self)</code> returns <code>self.__tagline</code>.",
-            "Write the mutator <code>add_connection(self, dest, miles)</code> with a docstring. It stores one road: <code>self.__connections[dest] = miles</code>."
+            "Two empty lines below it, write the class. Each attribute gets a getter and a setter, side by side; the roads get <code>add_connection()</code>, one road at a time:"
+          ],
+          "start": 2
+        },
+        {
+          "type": "code_block",
+          "code": "class City:\n    \"\"\"\n    One city in the road trip game.\n\n    Private attributes:\n        __name (str): The city's name, like 'San Antonio'\n        __city_type (str): Its type from city_info.txt, like 'WIN'\n        __tagline (str): Its tagline from city_info.txt\n        __connections (dict): Each road: destination name -> miles\n    \"\"\"\n\n    def __init__(self, name, city_type, tagline):\n        \"\"\"\n        Make a City with no roads yet.\n\n        Args:\n            name (str): The city's name\n            city_type (str): The city's type\n            tagline (str): The city's tagline\n        \"\"\"\n        self.__name = name\n        self.__city_type = city_type\n        self.__tagline = tagline\n        self.__connections = {}\n\n    def get_name(self):\n        \"\"\"Return the city's name.\"\"\"\n        return self.__name\n\n    def set_name(self, name):\n        \"\"\"Change the city's name.\"\"\"\n        self.__name = name\n\n    def get_type(self):\n        \"\"\"Return the city's type.\"\"\"\n        return self.__city_type\n\n    def set_type(self, city_type):\n        \"\"\"Change the city's type.\"\"\"\n        self.__city_type = city_type\n\n    def get_tagline(self):\n        \"\"\"Return the city's tagline.\"\"\"\n        return self.__tagline\n\n    def set_tagline(self, tagline):\n        \"\"\"Change the city's tagline.\"\"\"\n        self.__tagline = tagline\n\n    def add_connection(self, dest, miles):\n        \"\"\"\n        Add a road from this city to another one.\n\n        Args:\n            dest (str): The destination's name\n            miles (int): The miles to it\n        \"\"\"\n        self.__connections[dest] = miles"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Below the class, at the left edge, add a self-test. The game never calls the setters, so this is where you check them: set each one, then read it back with its getter. The guard on the last two lines runs the test only when you run <code>city.py</code> itself, never when the game imports the class:"
           ],
           "start": 3
+        },
+        {
+          "type": "code_block",
+          "code": "# ============================================================\n# Quick self-test when running this file directly.\n# ============================================================\ndef main():\n    \"\"\"Quick checks of the City class.\"\"\"\n    print('Testing city.py...')\n    beach = City('Corpus Christi', 'WIN', 'Sparkling City by the Sea')\n    print(f'  get_name() => {beach.get_name()}')\n    print(f'  get_type() => {beach.get_type()}')\n    print(f'  get_tagline() => {beach.get_tagline()}')\n    spot = City('Nowhere', 'HUB', 'Nothing to see')\n    spot.set_name('Test Town')\n    spot.set_type('DEAD_END')\n    spot.set_tagline('Population: one tester')\n    print(f'  set_name() => {spot.get_name()}')\n    print(f'  set_type() => {spot.get_type()}')\n    print(f'  set_tagline() => {spot.get_tagline()}')\n    print('  City class loaded successfully.')\n\n\nif __name__ == '__main__':\n    main()"
         },
         {
           "type": "text",
@@ -300,15 +358,107 @@
           "type": "instructions",
           "items": [
             "Right below <code>import function_library</code>, add <code>from city import City</code>.",
-            "Below the constants and above <code>trivia_gate</code>, define <code>build_cities(distances, city_info)</code> with a docstring. Start with <code>cities = {}</code>.",
-            "Make the objects: <code>for name in city_info:</code> set <code>info = city_info[name]</code>, then <code>cities[name] = City(name, info['type'], info['tagline'])</code>.",
-            "Add the roads: <code>for name in distances:</code> and, inside it, <code>for dest in distances[name]:</code> call <code>cities[name].add_connection(dest, distances[name][dest])</code>.",
-            "After both loops, <code>return cities</code>.",
-            "In <code>main()</code>, after the startup lines (the <code>Loaded ... trivia questions</code> print and the <code>print()</code> after it) and before the main menu loop, add <code>cities = build_cities(distances, city_info)</code>.",
-            "In the in-game loop, find the two lines that show the tagline at each stop: <code>info = city_info[current_city]</code> and <code>print(f'  \"{info[\"tagline\"]}\"')</code>. Delete the <code>info</code> line, and change the print to <code>print(f'  \"{cities[current_city].get_tagline()}\"')</code>. Leave the <code>You are in:</code> line as it is.",
-            "In the dead-end branch, change <code>print(f'  \"{city_info[current_city][\"tagline\"]}\"')</code> to <code>print(f'  \"{cities[current_city].get_tagline()}\"')</code>."
+            "Below the constants and above <code>trivia_gate()</code>, add the function that makes the objects. The first loop makes one <code>City</code> per city; the second gives each one its roads:"
+          ],
+          "start": 4
+        },
+        {
+          "type": "code_block",
+          "code": "def build_cities(distances, city_info):\n    \"\"\"\n    Make one City object for every city in the data files.\n\n    Args:\n        distances (dict): The nested dictionary from load_city_distances()\n        city_info (dict): The dictionary from load_city_info()\n\n    Returns:\n        dict: cities[name] is that city's City object\n    \"\"\"\n    cities = {}\n    for name in city_info:\n        info = city_info[name]\n        cities[name] = City(name, info['type'], info['tagline'])\n    for name in distances:\n        for dest in distances[name]:\n            cities[name].add_connection(dest, distances[name][dest])\n    return cities"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>main()</code>, right after the startup lines and their <code>print()</code>, before the main menu, make the cities:"
+          ],
+          "start": 6
+        },
+        {
+          "type": "code_block",
+          "code": "cities = build_cities(distances, city_info)"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "At the top of the game loop, delete the <code>info = city_info[current_city]</code> line and ask the city for its tagline:"
           ],
           "start": 7
+        },
+        {
+          "type": "code_block",
+          "code": "print(f'You are in: {current_city}')\nprint(f'  \"{cities[current_city].get_tagline()}\"')"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In the dead-end branch, change the tagline line the same way:"
+          ],
+          "start": 8
+        },
+        {
+          "type": "code_block",
+          "code": "print(f'  \"{cities[current_city].get_tagline()}\"')"
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "First run <code>city.py</code> by itself. Your output should match this:"
+        },
+        {
+          "type": "output_block",
+          "output": "Testing city.py...\n  get_name() => Corpus Christi\n  get_type() => WIN\n  get_tagline() => Sparkling City by the Sea\n  set_name() => Test Town\n  set_type() => DEAD_END\n  set_tagline() => Population: one tester\n  City class loaded successfully."
+        },
+        {
+          "type": "text",
+          "body": "Then run <code>lab-5-1.py</code> with the pins, and type <code>1</code>, <code>Tester</code>, <code>2</code>, <code>TRUE</code>, <code>1</code>, <code>2</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>. Every line matches CP1's run: this lab changes how the game is built, not what it prints. The report:"
+        },
+        {
+          "type": "output_block",
+          "output": "==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (Unique, A-Z)\n---------------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\nTRIVIA\n------\n  Questions Asked: 2\n  Answered Correct: 2\n  Accuracy: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\n"
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "Submit now",
+          "body": "Save (Ctrl+S, or Cmd+S on a Mac) and submit to CodeGrade. Its results list the checkpoints in order, and it checks CP3 once CP2 passes. If CP2 isn't green yet, fix the first problem it names, run your program again, and resubmit. One fix at a time. Submissions are unlimited, and only your last one counts. From now on, submit all three files: <code>lab-5-1.py</code>, <code>city.py</code>, and <code>function_library.py</code>.",
+          "inline": true
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "What you see",
+            "What to do"
+          ],
+          "rows": [
+            [
+              "<code>AttributeError: 'City' object has no attribute '_City__tagline'</code>",
+              "One underscore, or none, somewhere. <code>self._tagline</code> and <code>self.__tagline</code> are different attributes, and Python stores the two-underscore one as <code>_City__tagline</code>. Use two underscores everywhere."
+            ],
+            [
+              "<code>TypeError: City.get_name() takes 0 positional arguments but 1 was given</code>",
+              "<code>self</code> is missing. Every method's first parameter is <code>self</code>."
+            ],
+            [
+              "A setter changes the value, but the getter still shows the old one",
+              "The setter stored into a different name. Both use the same private attribute, like <code>self.__tagline</code>."
+            ],
+            [
+              "Seven lines from the self-test print before the game's banner",
+              "The <code>if __name__ == '__main__':</code> guard is missing, so the self-test runs when the game imports the class."
+            ],
+            [
+              "<code>ModuleNotFoundError: No module named 'city'</code>",
+              "The file is named exactly <code>city.py</code> and sits in the same folder as <code>lab-5-1.py</code>. Open the folder in VS Code, not the file."
+            ]
+          ],
+          "accent": "green"
         },
         {
           "type": "h3",
@@ -321,51 +471,30 @@
             {
               "programId": "10-12",
               "filename": "cellphone.py",
-              "description": "<code>CellPhone</code> stores its three constructor arguments in private attributes and gives each one an accessor. <code>City</code> does the same with name, type, and tagline."
+              "description": "<code>CellPhone</code> stores its three constructor arguments in private attributes, with a setter and a getter for each. <code>City</code> does the same with name, type, and tagline."
             },
             {
               "programId": "10-13",
               "filename": "cell_phone_test.py",
-              "description": "<code>phone = cellphone.CellPhone(man, mod, retail)</code> creates an object by calling the class like a function. <code>build_cities</code> does that once for every city."
+              "description": "<code>phone = cellphone.CellPhone(man, mod, retail)</code> makes an object by calling the class like a function. <code>build_cities()</code> does that once for every city."
             }
           ]
         },
         {
           "type": "h3",
-          "label": "test_your_code"
+          "label": "ai_assist"
         },
         {
-          "type": "text",
-          "body": "Keep both pins. Run <code>lab-5-1.py</code> and enter the same inputs as CP1: <code>1</code>, <code>Tester</code>, <code>2</code>, <code>TRUE</code>, <code>1</code>, <code>2</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>. Your output should be identical to the CP1 run, every line."
-        },
-        {
-          "type": "text",
-          "body": "Running <code>city.py</code> by itself prints nothing yet: it only defines a class. CP5 gives it a self-test."
-        },
-        {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
-        },
-        {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "One underscore, or none",
-              "<code>self.name</code> and <code>self.__name</code> are different attributes. Use two underscores everywhere, or a method reads an attribute that was never set and you get an <code>AttributeError</code>."
-            ],
-            [
-              "Forgetting <code>self</code>",
-              "Every method's first parameter is <code>self</code>. Without it, calling <code>houston.get_tagline()</code> raises a <code>TypeError</code>."
-            ],
-            [
-              "<code>build_cities</code> inside <code>main()</code>",
-              "Define it at the top level of the file, like <code>trivia_gate</code>, and only call it from <code>main()</code>."
-            ],
-            [
-              "<code>ModuleNotFoundError: No module named 'city'</code>",
-              "The file must be named exactly <code>city.py</code> and sit in the same folder as <code>lab-5-1.py</code>. Open the folder in VS Code, not the file."
-            ]
+          "type": "ai_assist",
+          "prompts": [
+            {
+              "label": "Explain it",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 10 of Starting Out with Python by Tony Gaddis. I can use anything from Chapters 2 to 9: variables, input(), print(), named constants, f-strings, if/elif/else, loops, functions (including ones in a separate file I import), random.randint(), files, try/except, lists, string methods, dictionaries, and sets. From Chapter 10 I can write a class with __init__ and self, private attributes with two underscores, getter and setter methods, and __str__, and make objects from it in another file. The only modules I've imported are random and .py files I wrote myself. No inheritance yet. Keep it short and simple, and give any fixed number in an example a named constant. Explain what a class is, why an attribute with two underscores in front is private, and how a getter and a setter let code outside the class read and change one attribute. Use a tiny example that has nothing to do with games or travel. Don't write code for my assignment. When you're done, ask me one question to check that I understood."
+            },
+            {
+              "label": "Decode my error",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 10 of Starting Out with Python by Tony Gaddis. I can use anything from Chapters 2 to 9: variables, input(), print(), named constants, f-strings, if/elif/else, loops, functions (including ones in a separate file I import), random.randint(), files, try/except, lists, string methods, dictionaries, and sets. From Chapter 10 I can write a class with __init__ and self, private attributes with two underscores, getter and setter methods, and __str__, and make objects from it in another file. The only modules I've imported are random and .py files I wrote myself. No inheritance yet. Keep it short and simple, and give any fixed number in an example a named constant. Here is an error message from my Python program:\n\n[paste the whole error message here]\n\nExplain in plain words what it means, which line it points to, and the mistake that most often causes it. Only name causes that give this exact error. Don't rewrite my code. If you show an example, make it about something else, not my line with the fix in it. Tell me what to look for, and I'll fix it myself."
+            }
           ]
         },
         {
@@ -375,15 +504,17 @@
         {
           "type": "instructions",
           "items": [
-            "<code>city.py</code> with a docstring and a <code>City</code> class: <code>__init__</code>, four private attributes, three accessors, and <code>add_connection</code>, each with a docstring",
-            "<code>from city import City</code>, <code>build_cities</code>, and <code>cities = build_cities(distances, city_info)</code> in <code>lab-5-1.py</code>",
+            "<code>city.py</code> with a header and a <code>City</code> class: <code>__init__</code>, a getter and a setter for name, type, and tagline, and <code>add_connection()</code>, each with a docstring",
+            "The self-test and its guard",
+            "<code>from city import City</code>, <code>build_cities()</code>, and <code>cities</code> in <code>lab-5-1.py</code>",
             "No <code>city_info[current_city]</code> tagline lookups left",
-            "Output identical to the CP1 run"
+            "Two runs that match the outputs above"
           ]
         }
       ]
     },
     {
+      "number": 3,
       "title": "Menus From the City",
       "content": [
         {
@@ -392,7 +523,7 @@
         },
         {
           "type": "text",
-          "body": "Two library functions move into the class: <code>display_destinations</code> and <code>get_destination</code>. As methods, they read the city's own roads, so the game calls <code>cities[current_city].display_destinations()</code> instead of passing the city's name and the whole <code>distances</code> dictionary."
+          "body": "Two library functions move into the class: <code>display_destinations()</code> and <code>get_destination()</code>. As methods, they read the city's own roads, so the game calls <code>cities[current_city].display_destinations()</code> instead of passing the city's name and the whole <code>distances</code> dictionary."
         },
         {
           "type": "h3",
@@ -414,30 +545,78 @@
           "label": "step_by_step"
         },
         {
-          "type": "text",
-          "body": "<strong>In <code>city.py</code></strong>:"
-        },
-        {
           "type": "instructions",
           "items": [
-            "Copy <code>display_destinations</code> from <code>function_library.py</code> and paste it into the class, below <code>add_connection</code>. Indent it one level (four spaces) so its <code>def</code> lines up with your other methods.",
-            "Change its first line to <code>def display_destinations(self):</code>. In the code below the docstring, change every <code>distances[city]</code> to <code>self.__connections</code>, and change the name <code>city</code> in the <code>From ... you can travel to:</code> line to <code>self.__name</code>. It still returns the count: <code>return len(self.__connections)</code>.",
-            "Rewrite its docstring for the method: one line saying it displays a numbered menu of this city's destinations, and the whole <code>Returns:</code> section. Delete the whole <code>Args:</code> section, heading and all, since the method takes nothing but <code>self</code>.",
-            "Do the same with <code>get_destination</code>: paste it below <code>display_destinations</code>, change its first line to <code>def get_destination(self, choice):</code>, and change every <code>distances[city]</code> in its code to <code>self.__connections</code>. In its docstring, delete the <code>city</code> and <code>distances</code> argument lines and keep <code>choice</code>. It still returns the destination and its miles."
+            "In <code>city.py</code>, below <code>add_connection()</code>, add the two methods. Copy them from your library, select them, and press <kbd>Tab</kbd> once to move them into the class. Then change the first lines, replace <code>distances[city]</code> with <code>self.__connections</code> and <code>city</code> with <code>self.__name</code>, and drop the <code>Args:</code> lines for the city and the dictionary:"
           ]
         },
         {
-          "type": "text",
-          "body": "<strong>In <code>lab-5-1.py</code></strong> (in the in-game loop):"
+          "type": "code_block",
+          "code": "    def display_destinations(self):\n        \"\"\"\n        Show the numbered menu of this city's destinations.\n\n        Returns:\n            int: How many destinations the menu shows\n        \"\"\"\n        print(f'From {self.__name}, you can travel to:')\n        option_num = 1\n        for dest in self.__connections:\n            miles = self.__connections[dest]\n            print(f'  {option_num}. {dest} - {miles} miles')\n            option_num = option_num + 1\n        return len(self.__connections)\n\n    def get_destination(self, choice):\n        \"\"\"\n        Look up the destination for a menu choice.\n\n        Args:\n            choice (int): The menu number the player chose, from 1\n\n        Returns:\n            tuple: The destination and its distance\n        \"\"\"\n        dests = list(self.__connections.keys())\n        dest = dests[choice - 1]\n        return dest, self.__connections[dest]"
         },
         {
           "type": "instructions",
           "items": [
-            "Change <code>num_choices = function_library.display_destinations(current_city, distances)</code> to <code>num_choices = cities[current_city].display_destinations()</code>. In your file the old call may be split across two lines; replace both.",
-            "Change <code>wanted, _ = function_library.get_destination(current_city, distances, choice)</code> to <code>wanted, _ = cities[current_city].get_destination(choice)</code>. This one may be split across two lines too.",
-            "Leave the library's copies of both functions alone for now. CP6 removes them."
+            "In <code>lab-5-1.py</code>'s game loop, call them on the current city's object:"
           ],
-          "start": 5
+          "start": 2
+        },
+        {
+          "type": "code_block",
+          "code": "num_choices = cities[current_city].display_destinations()\nwanted, _ = cities[current_city].get_destination(choice)"
+        },
+        {
+          "type": "text",
+          "body": "Leave the library's copies alone for now. CP6 removes them."
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Every run uses the testing pins: the roll pinned to <code>20</code>, so every leg takes one turn and no hazard comes up, and the question pinned to each city's first one, which is always TRUE. Type <code>1</code>, <code>Tester</code>, <code>2</code>, <code>TRUE</code>, <code>1</code>, <code>2</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>. Every line matches CP1's run: this lab changes how the game is built, not what it prints. The two menus:"
+        },
+        {
+          "type": "output_block",
+          "output": "From San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\n"
+        },
+        {
+          "type": "output_block",
+          "output": "From Houston, you can travel to:\n  1. San Antonio - 200 miles\n  2. Galveston - 50 miles\n  3. Dallas - 240 miles\n\n"
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "Submit now",
+          "body": "Save (Ctrl+S, or Cmd+S on a Mac) and submit to CodeGrade. Its results list the checkpoints in order, and it checks CP4 once CP3 passes. If CP3 isn't green yet, fix the first problem it names, run your program again, and resubmit. One fix at a time. Submissions are unlimited, and only your last one counts.",
+          "inline": true
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "What you see",
+            "What to do"
+          ],
+          "rows": [
+            [
+              "<code>AttributeError: 'str' object has no attribute 'display_destinations'</code>",
+              "<code>current_city</code> is a string. Look the object up first: <code>cities[current_city]</code>."
+            ],
+            [
+              "<code>TypeError: City.display_destinations() missing 2 required positional arguments: 'city' and 'distances'</code>",
+              "The method still says <code>(self, city, distances)</code>. The city is <code>self</code> now."
+            ],
+            [
+              "<code>IndentationError</code> in <code>city.py</code>",
+              "Only the <code>def</code> line moved in. Select the whole method and press <kbd>Tab</kbd>, so the body moves with it."
+            ]
+          ],
+          "accent": "green"
         },
         {
           "type": "h3",
@@ -450,38 +629,35 @@
             {
               "programId": "10-9",
               "filename": "bankaccount2.py",
-              "description": "<code>deposit</code> and <code>withdraw</code> change <code>self.__balance</code> from inside the class, and nothing outside touches it. Your methods read <code>self.__connections</code> the same way."
+              "description": "<code>deposit</code> and <code>withdraw</code> work on <code>self.__balance</code> from inside the class, and nothing outside touches it. Your methods read <code>self.__connections</code> the same way."
             }
           ]
         },
         {
           "type": "h3",
-          "label": "test_your_code"
+          "label": "vscode_tip"
         },
         {
-          "type": "text",
-          "body": "Keep both pins. Run <code>lab-5-1.py</code> and enter the same inputs as CP1: <code>1</code>, <code>Tester</code>, <code>2</code>, <code>TRUE</code>, <code>1</code>, <code>2</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>. Your output should be identical to the CP1 run, every line."
+          "type": "vscode_tip",
+          "title": "Move a pasted function into the class",
+          "body": "<p>Paste <code>display_destinations</code> below <code>add_connection()</code>. It lands at the left edge, outside the class. Select every line of it, from <code>def</code> to <code>return</code>, and press <kbd>Tab</kbd> once: the whole function moves in one level and becomes a method. <kbd>Shift</kbd>+<kbd>Tab</kbd> moves it back if you go too far.</p>",
+          "anchor": "indent-block"
         },
         {
           "type": "h3",
-          "label": "tips_and_pitfalls"
+          "label": "ai_assist"
         },
         {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "Calling the method on the name",
-              "<code>current_city</code> is a string. <code>current_city.display_destinations()</code> raises <code>AttributeError: 'str' object has no attribute ...</code>. Look the object up first: <code>cities[current_city]</code>."
-            ],
-            [
-              "Keeping the old parameters",
-              "If the method still says <code>(self, city, distances)</code>, the new call raises <code>TypeError: ... missing 2 required positional arguments</code>. The city is <code>self</code> now."
-            ],
-            [
-              "Indenting only the <code>def</code> line",
-              "The whole function moves one level right. If the body stays where it was, Python reports an <code>IndentationError</code>."
-            ]
+          "type": "ai_assist",
+          "prompts": [
+            {
+              "label": "Explain it",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 10 of Starting Out with Python by Tony Gaddis. I can use anything from Chapters 2 to 9: variables, input(), print(), named constants, f-strings, if/elif/else, loops, functions (including ones in a separate file I import), random.randint(), files, try/except, lists, string methods, dictionaries, and sets. From Chapter 10 I can write a class with __init__ and self, private attributes with two underscores, getter and setter methods, and __str__, and make objects from it in another file. The only modules I've imported are random and .py files I wrote myself. No inheritance yet. Keep it short and simple, and give any fixed number in an example a named constant. Explain why a function that only ever works on one object's data can become a method of that object's class, and how self takes the place of the argument the function used to need. Use a tiny example that has nothing to do with games or travel. Don't write code for my assignment. When you're done, ask me one question to check that I understood."
+            },
+            {
+              "label": "Decode my error",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 10 of Starting Out with Python by Tony Gaddis. I can use anything from Chapters 2 to 9: variables, input(), print(), named constants, f-strings, if/elif/else, loops, functions (including ones in a separate file I import), random.randint(), files, try/except, lists, string methods, dictionaries, and sets. From Chapter 10 I can write a class with __init__ and self, private attributes with two underscores, getter and setter methods, and __str__, and make objects from it in another file. The only modules I've imported are random and .py files I wrote myself. No inheritance yet. Keep it short and simple, and give any fixed number in an example a named constant. Here is an error message from my Python program:\n\n[paste the whole error message here]\n\nExplain in plain words what it means, which line it points to, and the mistake that most often causes it. Only name causes that give this exact error. Don't rewrite my code. If you show an example, make it about something else, not my line with the fix in it. Tell me what to look for, and I'll fix it myself."
+            }
           ]
         },
         {
@@ -491,14 +667,15 @@
         {
           "type": "instructions",
           "items": [
-            "<code>display_destinations(self)</code> and <code>get_destination(self, choice)</code> in the <code>City</code> class",
-            "Both calls in the in-game loop made on <code>cities[current_city]</code>",
-            "Output identical to the CP1 run"
+            "<code>display_destinations(self)</code> and <code>get_destination(self, choice)</code> in the <code>City</code> class, with docstrings",
+            "Both calls in the game loop made on <code>cities[current_city]</code>",
+            "A run that matches the outputs above"
           ]
         }
       ]
     },
     {
+      "number": 4,
       "title": "The Gate Asks the City",
       "content": [
         {
@@ -507,7 +684,7 @@
         },
         {
           "type": "text",
-          "body": "<code>get_redirect</code> moves into the class, and a new method, <code>get_distance_to</code>, answers \"how far is it to there?\" Then <code>trivia_gate</code> takes the current <code>City</code> object instead of the city's name and the <code>distances</code> dictionary."
+          "body": "<code>get_redirect()</code> moves into the class, and a new method, <code>get_distance_to()</code>, answers \"how far is it to there?\" Then <code>trivia_gate()</code> takes the current <code>City</code> object instead of the city's name and the <code>distances</code> dictionary."
         },
         {
           "type": "h3",
@@ -515,48 +692,137 @@
         },
         {
           "type": "text",
-          "body": "A function can take an object as an argument and call its methods. <code>trivia_gate</code> used to need two things to find a distance: the current city's name and the whole <code>distances</code> dictionary. Now it needs one: the <code>City</code>. That is the payoff of bundling data with behavior."
+          "body": "A function can take an object as an argument and call its methods. <code>trivia_gate()</code> used to need two things to find a distance: the current city's name and the whole <code>distances</code> dictionary. Now it needs one: the <code>City</code>. That's the payoff of keeping data and the code that uses it together."
         },
         {
           "type": "mentor_quote",
           "character": "Terrence \"T-Bone\" Booker",
           "role": "QA Lead, Bat City Collective",
           "headshot": "Terrence-Booker.png",
-          "quote": "The detour is random, so test it with a pin. Pin the pick in your <em>new</em> <code>get_redirect</code>, answer wrong on purpose on this checkpoint's test, and you land in Austin every time. Pin the old one in the library instead and nothing happens, because the game doesn't call it anymore. That mix-up will cost you twenty minutes if you let it."
+          "quote": "The detour is random, so test it with a pin. Pin the pick in your <em>new</em> <code>get_redirect</code>, answer wrong on purpose, and you land in Austin every time. Pin the old one in the library instead and nothing happens, because the game doesn't call it anymore. That mix-up will cost you twenty minutes if you let it."
         },
         {
           "type": "h3",
           "label": "step_by_step"
         },
         {
-          "type": "text",
-          "body": "<strong>In <code>city.py</code></strong>:"
-        },
-        {
           "type": "instructions",
           "items": [
-            "Below the docstring at the top of <code>city.py</code>, leave one blank line, add <code>import random</code>, then leave two blank lines before <code>class City:</code>, the same layout as the top of <code>lab-5-1.py</code>. <code>get_redirect</code> picks a random road.",
-            "Below <code>get_destination</code>, add <code>get_distance_to(self, dest)</code> with a docstring. It returns the miles to one connected city: <code>return self.__connections[dest]</code>.",
-            "Copy <code>get_redirect</code> from the library into the class, below <code>get_distance_to</code>, indented one level. Change its first line to <code>def get_redirect(self, avoid):</code>. In its docstring, delete the <code>city</code> and <code>distances</code> argument lines and keep <code>avoid</code>. In its code, change every <code>distances[city]</code> in the body to <code>self.__connections</code>. Keep the random pick and the fallback for a city with only one road."
+            "<code>get_redirect()</code> picks a random road, so <code>city.py</code> needs <code>random</code>. One empty line below the header, add <code>import random</code>, with two empty lines between it and <code>class City:</code>.",
+            "In <code>city.py</code>, below <code>get_destination()</code>, add <code>get_distance_to()</code>, then copy <code>get_redirect()</code> in from the library and change it the same way as in CP3:"
           ]
         },
         {
-          "type": "text",
-          "body": "<strong>In <code>lab-5-1.py</code></strong>:"
+          "type": "code_block",
+          "code": "    def get_distance_to(self, dest):\n        \"\"\"\n        Return the miles from this city to one it connects to.\n\n        Args:\n            dest (str): The destination's name\n\n        Returns:\n            int: The miles to it\n        \"\"\"\n        return self.__connections[dest]\n\n    def get_redirect(self, avoid):\n        \"\"\"\n        Pick a random destination other than the one the player wanted.\n\n        Args:\n            avoid (str): The destination the player wanted\n\n        Returns:\n            tuple: Another destination and its distance, or the only one\n            there is when the city has a single road\n        \"\"\"\n        options = list(self.__connections.keys())\n        if avoid in options:\n            options.remove(avoid)\n        if len(options) > 0:\n            index = random.randint(0, len(options) - 1)\n            dest = options[index]\n            return dest, self.__connections[dest]\n        else:\n            only_option = list(self.__connections.keys())[0]\n            return only_option, self.__connections[only_option]"
         },
         {
           "type": "instructions",
           "items": [
-            "Change the first line of <code>trivia_gate</code> to <code>def trivia_gate(dest, trivia, city):</code>. Here <code>city</code> is the <code>City</code> object for the player's current city. In its docstring, replace the <code>current</code> and <code>distances</code> arguments with <code>city</code>.",
-            "In the right-answer branch, change <code>return dest, distances[current][dest], True</code> to <code>return dest, city.get_distance_to(dest), True</code>.",
-            "In the wrong-answer branch, replace the two-line <code>function_library.get_redirect(...)</code> call with one line: <code>redirect, redirect_miles = city.get_redirect(dest)</code>.",
-            "In <code>main()</code>, change the arguments of the <code>trivia_gate</code> call from <code>wanted, trivia, current_city, distances</code> to <code>wanted, trivia, cities[current_city]</code>. Keep the call split across two lines:"
+            "In <code>lab-5-1.py</code>, <code>trivia_gate()</code> takes the <code>City</code> now. Change its first line and its docstring:"
+          ],
+          "start": 3
+        },
+        {
+          "type": "code_block",
+          "code": "def trivia_gate(dest, trivia, city):\n        city (City): The City object for the city the player is in"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In the right-answer branch, ask the city for the miles:"
           ],
           "start": 4
         },
         {
           "type": "code_block",
+          "code": "return dest, city.get_distance_to(dest), True"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In the wrong-answer branch, the two-line library call becomes one line:"
+          ],
+          "start": 5
+        },
+        {
+          "type": "code_block",
+          "code": "redirect, redirect_miles = city.get_redirect(dest)"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>main()</code>, pass the current city's object:"
+          ],
+          "start": 6
+        },
+        {
+          "type": "code_block",
           "code": "destination, distance, correct = trivia_gate(\n    wanted, trivia, cities[current_city])"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Pin the detour in the new <code>get_redirect()</code>, in <code>city.py</code>. From San Antonio, without Corpus Christi, position 1 is Austin:"
+          ],
+          "start": 7
+        },
+        {
+          "type": "code_block",
+          "code": "            # index = random.randint(0, len(options) - 1)\n            index = 1"
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "Every run uses the testing pins: the roll pinned to <code>20</code>, so every leg takes one turn and no hazard comes up, and the question pinned to each city's first one, which is always TRUE. Type <code>1</code>, <code>Tester</code>, <code>1</code>, <code>FALSE</code>, <code>1</code>, <code>1</code>, <code>TRUE</code>, <code>1</code>, <code>1</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>. The first answer is wrong on purpose: the detour lands in Austin, and the trip goes back through San Antonio to Corpus Christi. It's Lab 4.3's CP4 run, and it prints the same thing. The gate:"
+        },
+        {
+          "type": "output_block",
+          "output": "--- TRIVIA TIME! ---\nTo reach Corpus Christi, answer this question:\n\n  Selena was from Corpus Christi\n\nTRUE or FALSE? FALSE\nWRONG. The answer was TRUE.\nDetour! You ended up going to Austin instead.\nYou're headed to Austin!\n"
+        },
+        {
+          "type": "text",
+          "body": "The report:"
+        },
+        {
+          "type": "output_block",
+          "output": "==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Austin\n  3. San Antonio\n  4. Corpus Christi\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (Unique, A-Z)\n---------------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 600\n  Total Turns: 3\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\nTRIVIA\n------\n  Questions Asked: 3\n  Answered Correct: 2\n  Accuracy: 66.7%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\n"
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "Submit now",
+          "body": "Save (Ctrl+S, or Cmd+S on a Mac) and submit to CodeGrade. Its results list the checkpoints in order, and it checks CP5 once CP4 passes. If CP4 isn't green yet, fix the first problem it names, run your program again, and resubmit. One fix at a time. Submissions are unlimited, and only your last one counts.",
+          "inline": true
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "What you see",
+            "What to do"
+          ],
+          "rows": [
+            [
+              "The detour isn't Austin",
+              "The pin is in the library's old copy. The game calls the method in <code>city.py</code> now."
+            ],
+            [
+              "<code>NameError: name 'random' is not defined</code>, after you restore the pin",
+              "<code>city.py</code> needs its own <code>import random</code>. The pinned test still passes without it, because the pin skips the only <code>random</code> call."
+            ],
+            [
+              "<code>AttributeError: 'str' object has no attribute 'get_distance_to'</code>",
+              "<code>trivia_gate()</code> got the city's name. Pass <code>cities[current_city]</code>."
+            ]
+          ],
+          "accent": "green"
         },
         {
           "type": "h3",
@@ -575,52 +841,19 @@
         },
         {
           "type": "h3",
-          "label": "test_your_code"
+          "label": "ai_assist"
         },
         {
-          "type": "text",
-          "body": "Keep both pins. A wrong answer takes a random detour, so pin the pick inside the <code>get_redirect</code> method in <code>city.py</code>:"
-        },
-        {
-          "type": "code_block",
-          "code": "# index = random.randint(0, len(options) - 1)\nindex = 1"
-        },
-        {
-          "type": "text",
-          "body": "Now <code>import random</code> in <code>city.py</code> shows as unused in VS Code, the same as the one in <code>lab-5-1.py</code>. Both warnings clear when you restore the pins."
-        },
-        {
-          "type": "text",
-          "body": "Run <code>lab-5-1.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>1</code>, <code>FALSE</code>, <code>1</code>, <code>1</code>, <code>TRUE</code>, <code>1</code>, <code>1</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>. The first answer is wrong on purpose: the detour lands in Austin, and the trip goes back through San Antonio to Corpus Christi. Your output should match this exactly:"
-        },
-        {
-          "type": "output_block",
-          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\nLoaded 20 trivia questions across 10 cities.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \n\n--- TRIVIA TIME! ---\nTo reach Corpus Christi, answer this question:\n\n  Selena was from Corpus Christi\n\nTRUE or FALSE? WRONG. The answer was TRUE.\nDetour! You ended up going to Austin instead.\nYou're headed to Austin!\nDistance: 80 miles\n\n==================================================\nTRAVELING TO AUSTIN!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 80\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Austin!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nYou are in: Austin\n  \"Keep it weird\"\n\nFrom Austin, you can travel to:\n  1. San Antonio - 80 miles\n  2. Dallas - 200 miles\n  3. Fort Worth - 190 miles\n\nChoice (1-3): \n\n--- TRIVIA TIME! ---\nTo reach San Antonio, answer this question:\n\n  The Alamo was originally a Spanish mission\n\nTRUE or FALSE? CORRECT! You earned your destination.\nYou're headed to San Antonio!\nDistance: 80 miles\n\n==================================================\nTRAVELING TO SAN ANTONIO!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 80\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to San Antonio!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \n\n--- TRIVIA TIME! ---\nTo reach Corpus Christi, answer this question:\n\n  Selena was from Corpus Christi\n\nTRUE or FALSE? CORRECT! You earned your destination.\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Austin\n  3. San Antonio\n  4. Corpus Christi\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (Unique, A-Z)\n---------------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 600\n  Total Turns: 3\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\nTRIVIA\n------\n  Questions Asked: 3\n  Answered Correct: 2\n  Accuracy: 66.7%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 600\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
-        },
-        {
-          "type": "text",
-          "body": "It's the same run as Lab 4.3 CP5, and it prints the same thing."
-        },
-        {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
-        },
-        {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "Pinning the wrong <code>get_redirect</code>",
-              "The game calls the method in <code>city.py</code> now. A pin in the library's old copy does nothing, and the detour stays random."
-            ],
-            [
-              "Forgetting <code>import random</code> in <code>city.py</code>",
-              "The pinned test still passes, because the pin skips the only <code>random</code> call. Once you restore the pin, the first wrong answer stops the game with <code>NameError: name 'random' is not defined</code>. Check that the import is there before you submit."
-            ],
-            [
-              "Passing the name to <code>trivia_gate</code>",
-              "<code>trivia_gate(wanted, trivia, current_city)</code> hands it a string, so <code>city.get_distance_to(dest)</code> raises <code>AttributeError</code>. Pass <code>cities[current_city]</code>."
-            ]
+          "type": "ai_assist",
+          "prompts": [
+            {
+              "label": "Explain it",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 10 of Starting Out with Python by Tony Gaddis. I can use anything from Chapters 2 to 9: variables, input(), print(), named constants, f-strings, if/elif/else, loops, functions (including ones in a separate file I import), random.randint(), files, try/except, lists, string methods, dictionaries, and sets. From Chapter 10 I can write a class with __init__ and self, private attributes with two underscores, getter and setter methods, and __str__, and make objects from it in another file. The only modules I've imported are random and .py files I wrote myself. No inheritance yet. Keep it short and simple, and give any fixed number in an example a named constant. Explain how a function can take an object as an argument and call that object's methods, instead of taking several separate pieces of data. Use a tiny example that has nothing to do with games or travel. Don't write code for my assignment. When you're done, ask me one question to check that I understood."
+            },
+            {
+              "label": "Decode my error",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 10 of Starting Out with Python by Tony Gaddis. I can use anything from Chapters 2 to 9: variables, input(), print(), named constants, f-strings, if/elif/else, loops, functions (including ones in a separate file I import), random.randint(), files, try/except, lists, string methods, dictionaries, and sets. From Chapter 10 I can write a class with __init__ and self, private attributes with two underscores, getter and setter methods, and __str__, and make objects from it in another file. The only modules I've imported are random and .py files I wrote myself. No inheritance yet. Keep it short and simple, and give any fixed number in an example a named constant. Here is an error message from my Python program:\n\n[paste the whole error message here]\n\nExplain in plain words what it means, which line it points to, and the mistake that most often causes it. Only name causes that give this exact error. Don't rewrite my code. If you show an example, make it about something else, not my line with the fix in it. Tell me what to look for, and I'll fix it myself."
+            }
           ]
         },
         {
@@ -630,14 +863,15 @@
         {
           "type": "instructions",
           "items": [
-            "<code>import random</code>, <code>get_distance_to</code>, and <code>get_redirect</code> in <code>city.py</code>",
-            "<code>trivia_gate(dest, trivia, city)</code> calling <code>city.get_distance_to</code> and <code>city.get_redirect</code>",
-            "Output identical to the run above"
+            "<code>import random</code>, <code>get_distance_to()</code>, and <code>get_redirect()</code> in <code>city.py</code>, with docstrings",
+            "<code>trivia_gate(dest, trivia, city)</code> asking the city for distances and detours",
+            "A run that matches the outputs above"
           ]
         }
       ]
     },
     {
+      "number": 5,
       "title": "City Types and __str__",
       "content": [
         {
@@ -646,7 +880,7 @@
         },
         {
           "type": "text",
-          "body": "The last two library functions that read city data, <code>is_win_city</code> and <code>is_dead_end</code>, move into the class. Then <code>__str__</code> gives a <code>City</code> a readable form, and a self-test at the bottom of <code>city.py</code> checks it, the same way the self-test at the bottom of your library does."
+          "body": "The last two library functions that read city data, <code>is_win_city()</code> and <code>is_dead_end()</code>, move into the class. Then <code>__str__</code> gives a <code>City</code> a readable form, and the self-test checks both."
         },
         {
           "type": "h3",
@@ -661,41 +895,111 @@
           "character": "Danny Cavanaugh",
           "role": "Lead Developer, Bat City Collective",
           "headshot": "Danny-Cavanaugh.png",
-          "quote": "Objects are nouns. Methods are verbs. Don't make a noun do a verb's job. A city doesn't go anywhere; the player does. But a city can tell you whether it's the beach, and it can tell you where its roads lead. Those questions belong on the class."
+          "quote": "Objects are nouns. Methods are verbs. A city doesn't go anywhere; the player does. But a city can tell you whether it's the beach, and it can tell you where its roads lead. Those questions belong on the class."
         },
         {
           "type": "h3",
           "label": "step_by_step"
         },
         {
-          "type": "text",
-          "body": "<strong>In <code>city.py</code></strong>:"
-        },
-        {
           "type": "instructions",
           "items": [
-            "Copy <code>is_win_city</code> and <code>is_dead_end</code> from the library into the class, below <code>get_redirect</code>, indented one level. Change their first lines to <code>def is_win_city(self):</code> and <code>def is_dead_end(self):</code>, and change <code>city_info[city]['type']</code> to <code>self.__city_type</code> in both bodies. In both docstrings, delete the whole <code>Args:</code> section, heading and all, and keep the summary and <code>Returns:</code> lines.",
-            "Below <code>is_dead_end</code>, at the end of the class, add <code>__str__(self)</code> with a docstring. It returns the city as text, the name and then the type in parentheses: <code>return f'{self.__name} ({self.__city_type})'</code>.",
-            "Below the class, with two blank lines between it and the end of the class, add this self-test at the left edge, not indented. The guard on the last two lines runs it only when you run <code>city.py</code> itself, never when <code>lab-5-1.py</code> imports the class:"
+            "In <code>city.py</code>, below <code>get_redirect()</code>, add the two checks and <code>__str__</code>. <code>__str__</code> <em>returns</em> the text; it never prints:"
           ]
         },
         {
           "type": "code_block",
-          "code": "# ============================================================\n# Quick self-test when running this file directly.\n# ============================================================\ndef main():\n    \"\"\"Quick checks of the City class.\"\"\"\n    print('Testing city.py...')\n    home = City('San Antonio', 'START', 'Home of the Alamo')\n    beach = City('Corpus Christi', 'WIN', 'Sparkling City by the Sea')\n    print(f'  {home}')\n    print(f'  {beach}')\n    print(f'  get_name() => {beach.get_name()}')\n    print(f'  get_type() => {beach.get_type()}')\n    print(f'  is_win_city() => {beach.is_win_city()}')\n    print('  City class loaded successfully.')\n\n\nif __name__ == '__main__':\n    main()"
-        },
-        {
-          "type": "text",
-          "body": "<strong>In <code>lab-5-1.py</code></strong> (three calls):"
+          "code": "    def is_win_city(self):\n        \"\"\"Return True if this city is a beach that wins the game.\"\"\"\n        return self.__city_type == 'WIN'\n\n    def is_dead_end(self):\n        \"\"\"Return True if this city is a dead end: nowhere to go but home.\"\"\"\n        city_type = self.__city_type\n        return city_type == 'DEAD_END' or city_type == 'WRONG_WAY'\n\n    def __str__(self):\n        \"\"\"Return the city as text, like 'San Antonio (START)'.\"\"\"\n        return f'{self.__name} ({self.__city_type})'"
         },
         {
           "type": "instructions",
           "items": [
-            "At the top of the play-again loop, change <code>if resumed_game and function_library.is_win_city(current_city, city_info):</code> to <code>if resumed_game and cities[current_city].is_win_city():</code>. The old line may be split across two lines; the new one fits on one.",
-            "Where the player arrives, change <code>if function_library.is_win_city(current_city, city_info):</code> to <code>if cities[current_city].is_win_city():</code>.",
-            "Change <code>elif function_library.is_dead_end(current_city, city_info):</code> to <code>elif cities[current_city].is_dead_end():</code>.",
-            "Search <code>lab-5-1.py</code> for <code>city_info[</code> and <code>distances[</code>, square bracket included. Every hit should be inside <code>build_cities</code>: the game itself no longer looks anything up in the two dictionaries."
+            "Update the self-test: a second city, both cities printed through <code>__str__</code>, and an <code>is_win_city()</code> check after the getters. The whole test now reads:"
+          ],
+          "start": 2
+        },
+        {
+          "type": "code_block",
+          "code": "# ============================================================\n# Quick self-test when running this file directly.\n# ============================================================\ndef main():\n    \"\"\"Quick checks of the City class.\"\"\"\n    print('Testing city.py...')\n    home = City('San Antonio', 'START', 'Home of the Alamo')\n    beach = City('Corpus Christi', 'WIN', 'Sparkling City by the Sea')\n    print(f'  {home}')\n    print(f'  {beach}')\n    print(f'  get_name() => {beach.get_name()}')\n    print(f'  get_type() => {beach.get_type()}')\n    print(f'  get_tagline() => {beach.get_tagline()}')\n    print(f'  is_win_city() => {beach.is_win_city()}')\n    spot = City('Nowhere', 'HUB', 'Nothing to see')\n    spot.set_name('Test Town')\n    spot.set_type('DEAD_END')\n    spot.set_tagline('Population: one tester')\n    print(f'  set_name() => {spot.get_name()}')\n    print(f'  set_type() => {spot.get_type()}')\n    print(f'  set_tagline() => {spot.get_tagline()}')\n    print('  City class loaded successfully.')\n\n\nif __name__ == '__main__':\n    main()"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "In <code>lab-5-1.py</code>, three calls change. The resumed-game check fits on one line now:"
+          ],
+          "start": 3
+        },
+        {
+          "type": "code_block",
+          "code": "if resumed_game and cities[current_city].is_win_city():\n    if cities[current_city].is_win_city():\n    elif cities[current_city].is_dead_end():"
+        },
+        {
+          "type": "instructions",
+          "items": [
+            "Search <code>lab-5-1.py</code> for <code>city_info[</code> and <code>distances[</code>, bracket included. Every hit should be inside <code>build_cities()</code>: the game itself doesn't look anything up in the two dictionaries anymore."
           ],
           "start": 4
+        },
+        {
+          "type": "h3",
+          "label": "test_your_code"
+        },
+        {
+          "type": "text",
+          "body": "First run <code>city.py</code> by itself:"
+        },
+        {
+          "type": "output_block",
+          "output": "Testing city.py...\n  San Antonio (START)\n  Corpus Christi (WIN)\n  get_name() => Corpus Christi\n  get_type() => WIN\n  get_tagline() => Sparkling City by the Sea\n  is_win_city() => True\n  set_name() => Test Town\n  set_type() => DEAD_END\n  set_tagline() => Population: one tester\n  City class loaded successfully."
+        },
+        {
+          "type": "text",
+          "body": "Every run uses the testing pins: the roll pinned to <code>20</code>, so every leg takes one turn and no hazard comes up, and the question pinned to each city's first one, which is always TRUE. Keep the detour pin too. Type <code>1</code>, <code>Tester</code>, <code>4</code>, <code>TRUE</code>, <code>y</code>, <code>1</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>: Laredo is a dead end, so you turn back to San Antonio and head for Corpus Christi. From Laredo:"
+        },
+        {
+          "type": "output_block",
+          "output": "You made it to Laredo!\n\nLaredo is a dead end!\n  \"Gateway to Mexico\"\n\nReturn to San Antonio? (y/n): y\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\n"
+        },
+        {
+          "type": "text",
+          "body": "The route:"
+        },
+        {
+          "type": "output_block",
+          "output": "YOUR ROUTE\n----------\n  1. San Antonio\n  2. Laredo\n  3. San Antonio\n  4. Corpus Christi\n\nUnique cities visited: 3\n\n"
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "Submit now",
+          "body": "Save (Ctrl+S, or Cmd+S on a Mac) and submit to CodeGrade. Its results list the checkpoints in order, and it checks CP6 once CP5 passes. If CP5 isn't green yet, fix the first problem it names, run your program again, and resubmit. One fix at a time. Submissions are unlimited, and only your last one counts.",
+          "inline": true
+        },
+        {
+          "type": "h3",
+          "label": "tips_and_pitfalls"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "What you see",
+            "What to do"
+          ],
+          "rows": [
+            [
+              "<code>TypeError: __str__ returned non-string (type NoneType)</code>",
+              "<code>__str__</code> prints instead of returning. It must <code>return</code> the f-string."
+            ],
+            [
+              "<code>NameError</code> when you run <code>city.py</code>",
+              "The self-test is indented inside the class. <code>def main():</code> and the guard both start at the left edge."
+            ],
+            [
+              "Laredo shows the OPTIONS menu",
+              "The dead-end check still calls the library with the old arguments, or <code>is_dead_end()</code> reads the wrong attribute."
+            ]
+          ],
+          "accent": "green"
         },
         {
           "type": "h3",
@@ -719,44 +1023,19 @@
         },
         {
           "type": "h3",
-          "label": "test_your_code"
+          "label": "ai_assist"
         },
         {
-          "type": "text",
-          "body": "First run <code>city.py</code> by itself. Your output should match this exactly:"
-        },
-        {
-          "type": "output_block",
-          "output": "Testing city.py...\n  San Antonio (START)\n  Corpus Christi (WIN)\n  get_name() => Corpus Christi\n  get_type() => WIN\n  is_win_city() => True\n  City class loaded successfully."
-        },
-        {
-          "type": "text",
-          "body": "Then keep all three pins (<code>roll</code>, <code>q</code>, and <code>index</code>), run <code>lab-5-1.py</code>, and enter, in order: <code>1</code>, <code>Tester</code>, <code>4</code>, <code>TRUE</code>, <code>y</code>, <code>1</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>. Laredo is a dead end, so you turn back to San Antonio and head for Corpus Christi. Your output should match this exactly:"
-        },
-        {
-          "type": "output_block",
-          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\nLoaded 20 trivia questions across 10 cities.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \n\n--- TRIVIA TIME! ---\nTo reach Laredo, answer this question:\n\n  Laredo is on the Mexican border\n\nTRUE or FALSE? CORRECT! You earned your destination.\nYou're headed to Laredo!\nDistance: 160 miles\n\n==================================================\nTRAVELING TO LAREDO!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 160\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Laredo!\n\nLaredo is a dead end!\n  \"Gateway to Mexico\"\n\nReturn to San Antonio? (y/n): \nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \n\n--- TRIVIA TIME! ---\nTo reach Corpus Christi, answer this question:\n\n  Selena was from Corpus Christi\n\nTRUE or FALSE? CORRECT! You earned your destination.\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Laredo\n  3. San Antonio\n  4. Corpus Christi\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (Unique, A-Z)\n---------------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\nTRIVIA\n------\n  Questions Asked: 2\n  Answered Correct: 2\n  Accuracy: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 400\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
-        },
-        {
-          "type": "h3",
-          "label": "tips_and_pitfalls"
-        },
-        {
-          "type": "table",
-          "caption": "",
-          "rows": [
-            [
-              "<code>print</code> inside <code>__str__</code>",
-              "<code>__str__</code> must <em>return</em> the string. If it prints instead, the f-string gets <code>None</code> and Python raises <code>TypeError: __str__ returned non-string</code>."
-            ],
-            [
-              "The self-test indented inside the class",
-              "Then running <code>city.py</code> stops with a <code>NameError</code> (for <code>City</code> or for <code>main</code>). <code>def main():</code> and the guard both start at the left edge."
-            ],
-            [
-              "Seven extra lines before the game's banner",
-              "The <code>if __name__ == '__main__':</code> guard is missing, so the self-test runs when <code>lab-5-1.py</code> imports the class."
-            ]
+          "type": "ai_assist",
+          "prompts": [
+            {
+              "label": "Explain it",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 10 of Starting Out with Python by Tony Gaddis. I can use anything from Chapters 2 to 9: variables, input(), print(), named constants, f-strings, if/elif/else, loops, functions (including ones in a separate file I import), random.randint(), files, try/except, lists, string methods, dictionaries, and sets. From Chapter 10 I can write a class with __init__ and self, private attributes with two underscores, getter and setter methods, and __str__, and make objects from it in another file. The only modules I've imported are random and .py files I wrote myself. No inheritance yet. Keep it short and simple, and give any fixed number in an example a named constant. Explain what the __str__ method does, why it returns a string instead of printing one, and how print() and f-strings use it. Use a tiny example that has nothing to do with games or travel. Don't write code for my assignment. When you're done, ask me one question to check that I understood."
+            },
+            {
+              "label": "Decode my error",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 10 of Starting Out with Python by Tony Gaddis. I can use anything from Chapters 2 to 9: variables, input(), print(), named constants, f-strings, if/elif/else, loops, functions (including ones in a separate file I import), random.randint(), files, try/except, lists, string methods, dictionaries, and sets. From Chapter 10 I can write a class with __init__ and self, private attributes with two underscores, getter and setter methods, and __str__, and make objects from it in another file. The only modules I've imported are random and .py files I wrote myself. No inheritance yet. Keep it short and simple, and give any fixed number in an example a named constant. Here is an error message from my Python program:\n\n[paste the whole error message here]\n\nExplain in plain words what it means, which line it points to, and the mistake that most often causes it. Only name causes that give this exact error. Don't rewrite my code. If you show an example, make it about something else, not my line with the fix in it. Tell me what to look for, and I'll fix it myself."
+            }
           ]
         },
         {
@@ -766,15 +1045,16 @@
         {
           "type": "instructions",
           "items": [
-            "<code>is_win_city</code>, <code>is_dead_end</code>, and <code>__str__</code> in the <code>City</code> class",
-            "The self-test and its guard at the bottom of <code>city.py</code>",
+            "<code>is_win_city()</code>, <code>is_dead_end()</code>, and <code>__str__</code> in the class, with docstrings",
+            "The longer self-test",
             "All three calls in <code>lab-5-1.py</code> made on <code>cities[current_city]</code>",
-            "Both outputs identical to the runs above"
+            "Two runs that match the outputs above"
           ]
         }
       ]
     },
     {
+      "number": 6,
       "title": "Five Functions Leave the Library",
       "content": [
         {
@@ -783,7 +1063,7 @@
         },
         {
           "type": "text",
-          "body": "A smaller library. <code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>, <code>is_win_city</code>, and <code>is_dead_end</code> live in the <code>City</code> class now, and the game no longer calls the library's copies, so they come out of <code>function_library.py</code>. One more cleanup in <code>lab-5-1.py</code>: its four <code>format()</code> calls become f-strings, the way this course displays decimal places."
+          "body": "A smaller library. <code>display_destinations()</code>, <code>get_destination()</code>, <code>get_redirect()</code>, <code>is_win_city()</code>, and <code>is_dead_end()</code> live in the <code>City</code> class now, and the game no longer calls the library's copies, so they come out of <code>function_library.py</code>."
         },
         {
           "type": "h3",
@@ -798,7 +1078,7 @@
           "character": "Terrence \"T-Bone\" Booker",
           "role": "QA Lead, Bat City Collective",
           "headshot": "Terrence-Booker.png",
-          "quote": "Search before you delete. If anything still calls <code>function_library.get_redirect</code>, the game runs fine until the first wrong trivia answer and then crashes, maybe twenty minutes into a test. Every call left to those five names should be a method call on a <code>City</code>, like <code>cities[current_city].is_win_city()</code>."
+          "quote": "Search before you delete. If anything still calls <code>function_library.get_redirect</code>, the game runs fine until the first wrong trivia answer and then crashes, maybe twenty minutes into a test. Every call left to those five names should be a method call on a <code>City</code>."
         },
         {
           "type": "h3",
@@ -807,13 +1087,9 @@
         {
           "type": "instructions",
           "items": [
-            "In <code>lab-5-1.py</code>, search for <code>function_library.</code> followed by each of the five names: <code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>, <code>is_win_city</code>, and <code>is_dead_end</code>. There should be no hits. If one turns up, go back to the checkpoint that changes it (CP3, CP4, or CP5).",
-            "In <code>function_library.py</code>, delete those five functions, docstrings and all.",
-            "Delete the two section comment blocks that introduced them: the <code>DESTINATION HELPERS</code> block above where <code>display_destinations</code> was, and the <code>CITY-INFO TYPE CHECKS</code> block above where <code>is_win_city</code> was.",
-            "Close the gap the deletions leave: exactly two blank lines between the function above it and the next section's comment block. Too many blank lines is a style error.",
-            "Optional: if the docstring at the very top of <code>function_library.py</code> keeps a list of what each lab added, add a line for Lab 5.1 saying five functions moved into the <code>City</code> class.",
-            "Keep everything else in the library: the loaders, <code>handle_hazard</code>, the save and load functions, <code>clean_input</code>, and the rest.",
-            "In <code>lab-5-1.py</code>, change each <code>format()</code> call to an f-string. There are four: <code>rate_str</code> and <code>accuracy_str</code> in <code>save_trip_report</code>, and <code>escape_rate_str</code> and <code>accuracy_str</code> in the end-of-game summary. For example, <code>escape_rate_str = format(escape_rate, '.1f')</code> becomes <code>escape_rate_str = f'{escape_rate:.1f}'</code>. The output doesn't change."
+            "In <code>lab-5-1.py</code>, search for <code>function_library.</code> followed by each of the five names. There should be no hits. If one turns up, go back to the checkpoint that moves it.",
+            "In <code>function_library.py</code>, delete the two sections that held them, banners and all: <code>DESTINATION HELPERS (Added in Lab 3-2, rewritten in Lab 4-1)</code> and <code>CITY TYPE CHECKS (Added in Lab 4-1)</code>. Leave two empty lines before the next section's banner.",
+            "Keep everything else: the loaders, <code>handle_hazard()</code>, save and load, <code>clean_input()</code>, <code>display_numbered_list()</code>, and the rest."
           ]
         },
         {
@@ -822,15 +1098,23 @@
         },
         {
           "type": "text",
-          "body": "Keep all three pins. This run saves at Houston, quits, loads the save, and finishes the trip, so it tests the save and load path too. Run <code>lab-5-1.py</code> and enter, in order: <code>1</code>, <code>Tester</code>, <code>2</code>, <code>TRUE</code>, <code>2</code>, <code>2</code>, <code>2</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>. Your output should match this exactly:"
+          "body": "Every run uses the testing pins: the roll pinned to <code>20</code>, so every leg takes one turn and no hazard comes up, and the question pinned to each city's first one, which is always TRUE. Keep the detour pin too. This run saves at Houston, quits, loads the save, and finishes the trip, so it tests save and load too. Type <code>1</code>, <code>Tester</code>, <code>2</code>, <code>TRUE</code>, <code>2</code>, <code>2</code>, <code>2</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>. From the save to the reload:"
         },
         {
           "type": "output_block",
-          "output": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\nLoaded 20 trivia questions across 10 cities.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \n\n--- TRIVIA TIME! ---\nTo reach Houston, answer this question:\n\n  NASA Mission Control is in Houston\n\nTRUE or FALSE? CORRECT! You earned your destination.\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): \nGame saved!\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWelcome back, Tester!\nResuming from Houston.\nMiles so far this game: 200\nGames completed this session: 0\n\nYou are in: Houston\n  \"Space City\"\n\nFrom Houston, you can travel to:\n  1. San Antonio - 200 miles\n  2. Galveston - 50 miles\n  3. Dallas - 240 miles\n\nChoice (1-3): \n\n--- TRIVIA TIME! ---\nTo reach Galveston, answer this question:\n\n  Galveston was hit by a major hurricane in 1900\n\nTRUE or FALSE? CORRECT! You earned your destination.\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (Unique, A-Z)\n---------------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\nTRIVIA\n------\n  Questions Asked: 1\n  Answered Correct: 1\n  Accuracy: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 400\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!"
+          "output": "OPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): 2\n\nGame saved!\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 2\n\nWelcome back, Tester!\nResuming from Houston.\nMiles so far this game: 200\nGames completed this session: 0\n\n"
         },
         {
           "type": "text",
-          "body": "Then open <code>trip_report.txt</code>. It should match this exactly, the same file Lab 4.3 wrote:"
+          "body": "The report:"
+        },
+        {
+          "type": "output_block",
+          "output": "==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nUnique cities visited: 3\n\nHAZARDS ENCOUNTERED (Unique, A-Z)\n---------------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 400\n  Total Turns: 2\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\nTRIVIA\n------\n  Questions Asked: 1\n  Answered Correct: 1\n  Accuracy: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\n"
+        },
+        {
+          "type": "text",
+          "body": "<code>trip_report.txt</code>:"
         },
         {
           "type": "output_block",
@@ -838,11 +1122,14 @@
         },
         {
           "type": "text",
-          "body": "<code>Questions Asked: 1</code>, even though the trip had two legs: trivia counts aren't saved, so they start over when a game loads, the same as Lab 4.3."
+          "body": "<code>Questions Asked: 1</code>, though the trip had two legs: trivia counts aren't saved, so they start over when a game loads, the same as Lab 4.3. Then run <code>function_library.py</code> by itself: its self-test still ends with <code>Library loaded successfully.</code>"
         },
         {
-          "type": "text",
-          "body": "Then run <code>function_library.py</code> by itself. Its self-test should still end with <code>Library loaded successfully.</code> The three values above that line are random, so they change every run."
+          "type": "callout",
+          "variant": "tip",
+          "title": "Submit now",
+          "body": "Save (Ctrl+S, or Cmd+S on a Mac) and submit to CodeGrade. Its results list the checkpoints in order, and CP6 is the last one. If CP6 isn't green yet, fix the first problem it names, run your program again, and resubmit. One fix at a time. Submissions are unlimited, and only your last one counts.",
+          "inline": true
         },
         {
           "type": "h3",
@@ -850,20 +1137,41 @@
         },
         {
           "type": "table",
-          "caption": "",
+          "headers": [
+            "What you see",
+            "What to do"
+          ],
           "rows": [
             [
               "<code>AttributeError: module 'function_library' has no attribute ...</code>",
               "The lab file still calls one of the deleted functions. The error names it. Go back to the checkpoint that moves it."
             ],
             [
-              "Deleting a neighbor",
-              "<code>display_numbered_list</code>, <code>load_city_distances</code>, and <code>load_city_info</code> sit near the deleted functions, and the game still uses all three."
+              "The loaders or <code>display_numbered_list()</code> went missing",
+              "They sit near the deleted sections, and the game still uses them. Put them back from your Lab 4.3 library."
             ],
             [
-              "Braces in the output, like <code>Escape Rate: {escape_rate:.1f}%</code>",
-              "The <code>f</code> before the opening quote is missing, so Python prints the braces as plain text."
+              "Style error E303, too many blank lines",
+              "Exactly two empty lines between the function above the gap and the next section's banner."
             ]
+          ],
+          "accent": "green"
+        },
+        {
+          "type": "h3",
+          "label": "ai_assist"
+        },
+        {
+          "type": "ai_assist",
+          "prompts": [
+            {
+              "label": "Explain it",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 10 of Starting Out with Python by Tony Gaddis. I can use anything from Chapters 2 to 9: variables, input(), print(), named constants, f-strings, if/elif/else, loops, functions (including ones in a separate file I import), random.randint(), files, try/except, lists, string methods, dictionaries, and sets. From Chapter 10 I can write a class with __init__ and self, private attributes with two underscores, getter and setter methods, and __str__, and make objects from it in another file. The only modules I've imported are random and .py files I wrote myself. No inheritance yet. Keep it short and simple, and give any fixed number in an example a named constant. Explain why leaving an old copy of a function behind after moving it somewhere else causes bugs, and how searching for every call before deleting helps. Use a tiny example that has nothing to do with games or travel. Don't write code for my assignment. When you're done, ask me one question to check that I understood."
+            },
+            {
+              "label": "Decode my error",
+              "text": "I'm a beginner in an intro Python course, working in Chapter 10 of Starting Out with Python by Tony Gaddis. I can use anything from Chapters 2 to 9: variables, input(), print(), named constants, f-strings, if/elif/else, loops, functions (including ones in a separate file I import), random.randint(), files, try/except, lists, string methods, dictionaries, and sets. From Chapter 10 I can write a class with __init__ and self, private attributes with two underscores, getter and setter methods, and __str__, and make objects from it in another file. The only modules I've imported are random and .py files I wrote myself. No inheritance yet. Keep it short and simple, and give any fixed number in an example a named constant. Here is an error message from my Python program:\n\n[paste the whole error message here]\n\nExplain in plain words what it means, which line it points to, and the mistake that most often causes it. Only name causes that give this exact error. Don't rewrite my code. If you show an example, make it about something else, not my line with the fix in it. Tell me what to look for, and I'll fix it myself."
+            }
           ]
         },
         {
@@ -873,10 +1181,8 @@
         {
           "type": "instructions",
           "items": [
-            "None of <code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>, <code>is_win_city</code>, and <code>is_dead_end</code> left in <code>function_library.py</code>",
-            "No calls to them through <code>function_library</code> in <code>lab-5-1.py</code>",
-            "No <code>format()</code> calls left in <code>lab-5-1.py</code>: all four decimal displays use f-strings",
-            "Output identical to the run above"
+            "None of the five functions left in <code>function_library.py</code>, and no calls to them through <code>function_library</code>",
+            "A run and a file that match the outputs above"
           ]
         }
       ]
@@ -884,538 +1190,619 @@
   ],
   "finalChecklist": {
     "beforeYouSubmit": [
-      "<strong>After the Full Check, restore every pinned line</strong>: <code>roll</code> in <code>main()</code> and <code>q</code> in <code>trivia_gate</code> in <code>lab-5-1.py</code>, and <code>index</code> in the <code>get_redirect</code> method in <code>city.py</code>. CodeGrade sets its own values and tests every outcome, so a pinned line fails most of its tests.",
-      "Submitting <strong>three files</strong>: <code>lab-5-1.py</code>, <code>city.py</code>, and <code>function_library.py</code>",
-      "<code>city.py</code>: the <code>City</code> class with <code>__init__</code>, four private attributes, <code>get_name</code>, <code>get_type</code>, <code>get_tagline</code>, <code>add_connection</code>, <code>display_destinations</code>, <code>get_destination</code>, <code>get_distance_to</code>, <code>get_redirect</code>, <code>is_win_city</code>, <code>is_dead_end</code>, and <code>__str__</code>, plus the self-test and its guard",
-      "<code>lab-5-1.py</code>: <code>from city import City</code>, <code>build_cities</code>, and no <code>city_info[</code> or <code>distances[</code> lookups outside <code>build_cities</code>",
-      "<code>function_library.py</code>: <code>display_destinations</code>, <code>get_destination</code>, <code>get_redirect</code>, <code>is_win_city</code>, and <code>is_dead_end</code> removed, with no extra blank lines left behind; no new functions",
-      "With your pins restored, VS Code shows no style errors in any of the three files",
-      "Your Full Check output is word for word the Lab 4.3 Full Check",
-      "Top-of-file docstring on all three files; docstrings on every function and method"
+      "<strong>Every pin is restored:</strong> <code>roll</code>, the question pin in <code>trivia_gate()</code>, the detour pin in <code>city.py</code>'s <code>get_redirect()</code>, the two pins in <code>handle_hazard()</code>, and any other pin you used are back to their original lines, and the fixed values are deleted",
+      "All three files are named exactly <code>lab-5-1.py</code>, <code>city.py</code>, and <code>function_library.py</code>",
+      "All three headers have <code>Student Name:</code>, <code>UTSA ID:</code>, and <code>Section:</code>",
+      "Every function and method has a docstring",
+      "Running <code>city.py</code> by itself prints the self-test on this sheet",
+      "You ran every run from CP1 through CP6, and each one matched this sheet",
+      "Every printed line matches the Strings tab, spaces and punctuation included",
+      "VS Code's Problems panel shows no style errors in any file"
     ],
-    "scopeReminder": "Your toolbox for every Module 5 lab is everything Chapters 2–10 cover, plus anything the course has already used. This lab’s new tools are its Required Techniques: a class with <code>__init__</code>, private attributes, methods with <code>self</code>, and <code>__str__</code>. If you use something outside the toolbox, CodeGrade’s Scope Check names it and the line it’s on.",
+    "scopeReminder": "Your toolbox for every Module 5 lab is everything Chapters 2 to 10 cover, plus anything the course has already used. This lab's new tools: a class with <code>__init__</code> and <code>self</code>, private attributes, getters and setters, <code>__str__</code>, and importing your own class. Not permitted: inheritance (Chapter 11). The main() structure is a required template in every file.",
     "permittedTechniques": {
-      "chapters": "Chapters 2–10 (all of Module 5), plus everything the course has already used",
+      "chapters": "Chapters 2 to 10",
       "specific": [
-        "Class definitions with <code>class</code>",
-        "<code>__init__</code> and <code>self</code>",
+        "Everything from Lab 4.3",
+        "A class with <code>__init__</code> and <code>self</code>",
         "Private attributes (two leading underscores)",
-        "Accessor and mutator methods",
-        "The <code>__str__</code> method",
-        "Creating objects and calling their methods",
-        "Passing objects to functions",
+        "Getters and setters",
+        "<code>__str__</code>",
+        "Making objects and calling their methods, and passing an object to a function",
         "Importing your own class with <code>from city import City</code>",
-        "Required this lab: a class with <code>__init__</code>, private attributes, and <code>__str__</code>",
-        "Everything from earlier labs carries forward"
+        "Required this lab: a class with <code>__init__</code>, private attributes, getters and setters, and <code>__str__</code>"
       ],
-      "notPermitted": "Anything outside the toolbox above."
+      "notPermitted": "Inheritance (Chapter 11)."
     },
     "warnings": [
-      "Do not change any printed string. Every run in this lab matches Lab 4.3. If your output changes, the refactor changed the game's behavior, and that is a bug.",
-      "Keep <code>city.py</code> to the class and its self-test. No file loading and no game code: <code>lab-5-1.py</code> loads the data and builds the cities."
+      "Don't open the data files inside <code>city.py</code>. The game loads them and hands each city its data."
     ],
-    "saveYourCode": "After you restore your pins, save a backup of all three files: <code>lab-5-1-backup.py</code>, <code>city-backup.py</code>, and <code>function_library-backup.py</code>. Lab 5.2's game imports your <code>City</code> class and your library, so you'll copy <code>city.py</code> and <code>function_library.py</code> forward. Keep the backups in your <code>lab-5-1</code> folder: Lab 5.2 copies only <code>city.py</code> and <code>function_library.py</code>. The backups are not part of your submission.",
+    "saveYourCode": "Lab 5.2 uses your finished <code>city.py</code> and <code>function_library.py</code>, with the pins restored. Keep all three files.",
     "messageDigest": {
-      "intro": "Use these <em>exact</em> prompts and messages. Spacing, capitalization, and punctuation matter for grading. Anything in <code>{braces}</code> is a variable of yours; everything outside the braces must match character for character. The shaded box shows the full string, so a prompt that ends in a space looks like it ends in a space. Every game string is unchanged from Lab 4.3; the only new strings are the <code>city.py</code> self-test and <code>__str__</code>. Lines printed from inside <code>function_library.py</code> aren't listed here: they're unchanged from Module 4.",
+      "intro": "Every prompt and message in this lab, exactly. Spacing, capitalization, and punctuation all count. Anything in <code>{braces}</code> is a value your program fills in; everything outside the braces must match character for character. A lab number means the line comes from that lab unchanged. The hazards come from <code>hazards.txt</code> and the questions from <code>trivia.txt</code>.",
       "rows": [
         {
-          "purpose": "Trivia gate banner",
-          "text": "--- TRIVIA TIME! ---",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trivia gate: the destination",
-          "text": "To reach {dest}, answer this question:",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trivia question (two spaces)",
-          "text": "  {q[\"question\"]}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trivia answer prompt",
-          "text": "TRUE or FALSE? ",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trivia: invalid answer",
-          "text": "Invalid answer! Counting as wrong.",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trivia: right answer",
-          "text": "CORRECT! You earned your destination.",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trivia: wrong answer",
-          "text": "WRONG. The answer was {q[\"answer\"]}.",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trivia: the detour",
-          "text": "Detour! You ended up going to {redirect} instead.",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Banner and report divider",
-          "text": "==================================================",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Game title",
-          "text": "DEEP IN THE HEART: A LONE STAR JOURNEY",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Startup: loading data",
-          "text": "Loading city data...",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Startup: route count",
-          "text": "Loaded {len(distances)} cities with travel routes.",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Startup: city info count",
-          "text": "Loaded {len(city_info)} city info records.",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Startup: hazard count",
-          "text": "Loaded {len(hazards)} possible hazards.",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Startup: trivia count",
-          "text": "Loaded {total_questions} trivia questions across {len(trivia)} cities.",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Main menu title",
-          "text": "MAIN MENU",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Main menu divider",
-          "text": "--------------------",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Main menu option",
-          "text": "1. New Game",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Main menu option",
-          "text": "2. Load Saved Game",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Main menu option",
-          "text": "3. Quit",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Main menu prompt",
-          "text": "Choice (1-3): ",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Quit from the main menu",
-          "text": "Thanks for playing!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Load failed (missing or damaged save)",
-          "text": "No usable save file found. Starting new game.",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Load succeeded",
-          "text": "Welcome back, {player_name}!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Load: where the trip resumes",
-          "text": "Resuming from {current_city}.",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Load: miles so far",
-          "text": "Miles so far this game: {total_miles}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Load: games so far",
-          "text": "Games completed this session: {games_played}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "New game: name prompt",
-          "text": "What is your name, traveler? ",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "New game: welcome",
-          "text": "Welcome, {player_name}!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "New game: the goal",
-          "text": "You are in San Antonio. Your goal: reach the beach!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "New game: beach cities",
-          "text": "Beach cities: Corpus Christi and Galveston.",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Location at each stop",
-          "text": "You are in: {current_city}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Location tagline (two spaces, in quotes)",
-          "text": "  \"{cities[current_city].get_tagline()}\"",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Destination menu title (display_destinations)",
-          "text": "From {self.__name}, you can travel to:",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Destination menu line (two spaces)",
-          "text": "  {option_num}. {dest} - {miles} miles",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Destination menu prompt",
-          "text": "Choice (1-{num_choices}): ",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Destination confirmed",
-          "text": "You're headed to {destination}!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Leg distance",
-          "text": "Distance: {distance} miles",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Travel banner (city in capitals)",
-          "text": "TRAVELING TO {destination.upper()}!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Turn header",
-          "text": "--- Turn {leg_turns} ---",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Turn: miles left",
-          "text": "Miles remaining: {miles_remaining}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Turn: the roll",
-          "text": "You rolled a {roll}!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Turn: miles moved",
-          "text": "You travel {miles_this_turn} miles...",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Arrival",
-          "text": "You made it to {destination}!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Beach arrival",
-          "text": "CONGRATULATIONS! YOU REACHED THE BEACH!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Dead-end arrival",
-          "text": "{current_city} is a dead end!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Dead-end tagline (two spaces, in quotes)",
-          "text": "  \"{cities[current_city].get_tagline()}\"",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Dead-end return prompt",
-          "text": "Return to San Antonio? (y/n): ",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Stop options title",
-          "text": "OPTIONS:",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Stop option",
-          "text": "  1. Continue journey",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Stop option",
-          "text": "  2. Save and quit",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Stop option",
-          "text": "  3. Quit without saving",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trip report title",
-          "text": "FINAL TRIP REPORT",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trip report: driver",
-          "text": "Driver: {player_name}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trip report: final city",
-          "text": "Final City: {current_city}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trip report: status",
-          "text": "Status: {status}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trip report: route title",
-          "text": "YOUR ROUTE",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trip report: unique cities",
-          "text": "Unique cities visited: {len(unique_cities)}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trip report: hazards title",
-          "text": "HAZARDS ENCOUNTERED (Unique, A-Z)",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trip report: no hazards",
-          "text": "  None - Lucky traveler!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trip report: statistics title",
-          "text": "STATISTICS",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Statistics line",
-          "text": "  Total Miles: {total_miles}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Statistics line",
-          "text": "  Total Turns: {total_turns}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Statistics line",
-          "text": "  Hazards Faced: {total_hazards}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Statistics line",
-          "text": "  Hazards Escaped: {total_escaped}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Statistics: escape rate (only when hazards were faced)",
-          "text": "  Escape Rate: {escape_rate_str}%",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trip report: trivia title",
-          "text": "TRIVIA",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trivia statistics line",
-          "text": "  Questions Asked: {trivia_asked}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trivia statistics line",
-          "text": "  Answered Correct: {trivia_correct}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Trivia statistics: accuracy (only when questions were asked)",
-          "text": "  Accuracy: {accuracy_str}%",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Report file written",
-          "text": "Trip report saved to trip_report.txt.",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Play-again prompt",
-          "text": "Play again? (y/n): ",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Session summary title",
-          "text": "SESSION STATISTICS",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Session summary line",
-          "text": "Games Played: {games_played}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Session summary line",
-          "text": "Total Miles: {session_miles}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Session summary line",
-          "text": "Total Hazards: {session_hazards}",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Goodbye",
-          "text": "Thanks for playing, {player_name}!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Credits line",
-          "text": "An All My Eggses Live in Texas Production",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Starting city for every new game",
-          "text": "San Antonio",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Status: reached the beach",
-          "text": "BEACH WINNER!",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Status: stopped at a dead end",
-          "text": "Dead End",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Status: quit without saving",
-          "text": "Quit without saving",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "Status: any other ending",
-          "text": "Trip Incomplete",
-          "shownIn": "CP1+"
-        },
-        {
-          "purpose": "city.py self-test: title",
+          "purpose": "City self-test start",
           "text": "Testing city.py...",
-          "shownIn": "CP5"
+          "shownIn": "CP2"
         },
         {
-          "purpose": "city.py self-test: __str__ gives the name, then the type in parentheses (two spaces)",
+          "purpose": "Self-test: a city",
           "text": "  {home}",
           "shownIn": "CP5"
         },
         {
-          "purpose": "city.py self-test: the same for the beach (two spaces)",
+          "purpose": "Self-test: another",
           "text": "  {beach}",
           "shownIn": "CP5"
         },
         {
-          "purpose": "city.py self-test: accessor",
+          "purpose": "Self-test: name",
           "text": "  get_name() => {beach.get_name()}",
-          "shownIn": "CP5"
+          "shownIn": "CP2"
         },
         {
-          "purpose": "city.py self-test: accessor",
+          "purpose": "Self-test: type",
           "text": "  get_type() => {beach.get_type()}",
-          "shownIn": "CP5"
+          "shownIn": "CP2"
         },
         {
-          "purpose": "city.py self-test: type check",
+          "purpose": "Self-test: tagline",
+          "text": "  get_tagline() => {beach.get_tagline()}",
+          "shownIn": "CP2"
+        },
+        {
+          "purpose": "Self-test: beach",
           "text": "  is_win_city() => {beach.is_win_city()}",
           "shownIn": "CP5"
         },
         {
-          "purpose": "city.py self-test: last line",
+          "purpose": "Self-test: set name",
+          "text": "  set_name() => {spot.get_name()}",
+          "shownIn": "CP2"
+        },
+        {
+          "purpose": "Self-test: set type",
+          "text": "  set_type() => {spot.get_type()}",
+          "shownIn": "CP2"
+        },
+        {
+          "purpose": "Self-test: set tagline",
+          "text": "  set_tagline() => {spot.get_tagline()}",
+          "shownIn": "CP2"
+        },
+        {
+          "purpose": "City self-test end",
           "text": "  City class loaded successfully.",
-          "shownIn": "CP5"
+          "shownIn": "CP2"
+        },
+        {
+          "purpose": "Library self-test start",
+          "text": "Testing function_library.py...",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Library: flip",
+          "text": "  flip_coin() => {flip_coin()}",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Library: roll",
+          "text": "  roll_d20() => {roll_d20()}",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Library: check",
+          "text": "  check_percentage(50) => {check_percentage(50)}",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Library self-test end",
+          "text": "  Library loaded successfully.",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Coin: 1",
+          "text": "HEADS",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Coin: 2",
+          "text": "TAILS",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Not a number",
+          "text": "ERROR: Please enter a valid whole number.",
+          "shownIn": "2.3"
+        },
+        {
+          "purpose": "Out of range",
+          "text": "ERROR: Enter a number between {min_val} and {max_val}.",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Not y or n",
+          "text": "ERROR: Please enter 'y' or 'n'.",
+          "shownIn": "2.3"
+        },
+        {
+          "purpose": "Banner line",
+          "text": "==================================================",
+          "shownIn": "1.1"
+        },
+        {
+          "purpose": "Banner title",
+          "text": "DEEP IN THE HEART: A LONE STAR JOURNEY",
+          "shownIn": "1.1"
+        },
+        {
+          "purpose": "Loading",
+          "text": "Loading city data...",
+          "shownIn": "4.1"
+        },
+        {
+          "purpose": "Cities loaded",
+          "text": "Loaded {len(distances)} cities with travel routes.",
+          "shownIn": "4.1"
+        },
+        {
+          "purpose": "City info loaded",
+          "text": "Loaded {len(city_info)} city info records.",
+          "shownIn": "4.1"
+        },
+        {
+          "purpose": "Hazards loaded",
+          "text": "Loaded {len(hazards)} possible hazards.",
+          "shownIn": "4.2"
+        },
+        {
+          "purpose": "Trivia loaded",
+          "text": "Loaded {total_questions} trivia questions across {len(trivia)} cities.",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Main menu title",
+          "text": "MAIN MENU",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Main menu underline",
+          "text": "--------------------",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Main menu 1",
+          "text": "1. New Game",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Main menu 2",
+          "text": "2. Load Saved Game",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Main menu 3",
+          "text": "3. Quit",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Quit",
+          "text": "Thanks for playing!",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "No save file",
+          "text": "No usable save file found. Starting new game.",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Welcome back",
+          "text": "Welcome back, {player_name}!",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Resuming",
+          "text": "Resuming from {current_city}.",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Miles so far",
+          "text": "Miles so far this game: {total_miles}",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Games so far",
+          "text": "Games completed this session: {games_played}",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Name prompt",
+          "text": "What is your name, traveler? ",
+          "shownIn": "1.1"
+        },
+        {
+          "purpose": "Welcome",
+          "text": "Welcome, {player_name}!",
+          "shownIn": "1.1"
+        },
+        {
+          "purpose": "Goal",
+          "text": "You are in San Antonio. Your goal: reach the beach!",
+          "shownIn": "1.1"
+        },
+        {
+          "purpose": "Beach cities",
+          "text": "Beach cities: Corpus Christi and Galveston.",
+          "shownIn": "4.1"
+        },
+        {
+          "purpose": "Location",
+          "text": "You are in: {current_city}",
+          "shownIn": "4.1"
+        },
+        {
+          "purpose": "Tagline",
+          "text": "  \"{cities[current_city].get_tagline()}\"",
+          "shownIn": "4.1"
+        },
+        {
+          "purpose": "Menu header",
+          "text": "From {self.__name}, you can travel to:",
+          "shownIn": "3.2"
+        },
+        {
+          "purpose": "Menu line",
+          "text": "  {option_num}. {dest} - {miles} miles",
+          "shownIn": "3.2"
+        },
+        {
+          "purpose": "Destination prompt",
+          "text": "Choice (1-{num_choices}): ",
+          "shownIn": "3.2"
+        },
+        {
+          "purpose": "Menu prompt",
+          "text": "Choice (1-3): ",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Trivia banner",
+          "text": "--- TRIVIA TIME! ---",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Trivia destination",
+          "text": "To reach {dest}, answer this question:",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Trivia question",
+          "text": "  {q[\"question\"]}",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Trivia prompt",
+          "text": "TRUE or FALSE? ",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Trivia: neither",
+          "text": "Invalid answer! Counting as wrong.",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Trivia: right",
+          "text": "CORRECT! You earned your destination.",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Trivia: wrong",
+          "text": "WRONG. The answer was {q[\"answer\"]}.",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Trivia: detour",
+          "text": "Detour! You ended up going to {redirect} instead.",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Headed",
+          "text": "You're headed to {destination}!",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Distance",
+          "text": "Distance: {distance} miles",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Travel banner",
+          "text": "TRAVELING TO {destination.upper()}!",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Turn header",
+          "text": "--- Turn {leg_turns} ---",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Miles left",
+          "text": "Miles remaining: {miles_remaining}",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Roll result",
+          "text": "You rolled a {roll}!",
+          "shownIn": "1.1"
+        },
+        {
+          "purpose": "Miles result",
+          "text": "You travel {miles_this_turn} miles...",
+          "shownIn": "1.1"
+        },
+        {
+          "purpose": "Hazard banner",
+          "text": "*** HAZARD! ***",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Escape flip",
+          "text": "{flip}!",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Made it",
+          "text": "You made it to {destination}!",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Beach banner",
+          "text": "CONGRATULATIONS! YOU REACHED THE BEACH!",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Dead end",
+          "text": "{current_city} is a dead end!",
+          "shownIn": "4.1"
+        },
+        {
+          "purpose": "Dead end tagline",
+          "text": "  \"{cities[current_city].get_tagline()}\"",
+          "shownIn": "4.1"
+        },
+        {
+          "purpose": "Dead end question",
+          "text": "Return to San Antonio? (y/n): ",
+          "shownIn": "2.3"
+        },
+        {
+          "purpose": "Options title",
+          "text": "OPTIONS:",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Option 1",
+          "text": "  1. Continue journey",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Option 2",
+          "text": "  2. Save and quit",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Option 3",
+          "text": "  3. Quit without saving",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Saved",
+          "text": "Game saved!",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Report title",
+          "text": "FINAL TRIP REPORT",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Driver",
+          "text": "Driver: {player_name}",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Final city",
+          "text": "Final City: {current_city}",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Status line",
+          "text": "Status: {status}",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Status: beach",
+          "text": "BEACH WINNER!",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "Status: quit",
+          "text": "Quit without saving",
+          "shownIn": "3.1"
+        },
+        {
+          "purpose": "Status: dead end",
+          "text": "Dead End",
+          "shownIn": "4.1"
+        },
+        {
+          "purpose": "Status: otherwise",
+          "text": "Trip Incomplete",
+          "shownIn": "1.2"
+        },
+        {
+          "purpose": "List title",
+          "text": "{title}",
+          "shownIn": "3.2"
+        },
+        {
+          "purpose": "List line",
+          "text": "  {i + 1}. {items[i]}",
+          "shownIn": "3.2"
+        },
+        {
+          "purpose": "Route title",
+          "text": "YOUR ROUTE",
+          "shownIn": "3.2"
+        },
+        {
+          "purpose": "Hazards title",
+          "text": "HAZARDS ENCOUNTERED (Unique, A-Z)",
+          "shownIn": "4.2"
+        },
+        {
+          "purpose": "No hazards",
+          "text": "  None - Lucky traveler!",
+          "shownIn": "3.2"
+        },
+        {
+          "purpose": "Unique cities",
+          "text": "Unique cities visited: {len(unique_cities)}",
+          "shownIn": "3.3"
+        },
+        {
+          "purpose": "Statistics header",
+          "text": "STATISTICS",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Statistics underline",
+          "text": "----------",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Total miles",
+          "text": "  Total Miles: {total_miles}",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Total turns",
+          "text": "  Total Turns: {total_turns}",
+          "shownIn": "2.1"
+        },
+        {
+          "purpose": "Hazards faced",
+          "text": "  Hazards Faced: {total_hazards}",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Hazards escaped",
+          "text": "  Hazards Escaped: {total_escaped}",
+          "shownIn": "2.2"
+        },
+        {
+          "purpose": "Escape rate",
+          "text": "  Escape Rate: {escape_rate_str}%",
+          "shownIn": "3.3"
+        },
+        {
+          "purpose": "Trivia header",
+          "text": "TRIVIA",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Questions asked",
+          "text": "  Questions Asked: {trivia_asked}",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Answered right",
+          "text": "  Answered Correct: {trivia_correct}",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Accuracy",
+          "text": "  Accuracy: {accuracy_str}%",
+          "shownIn": "4.3"
+        },
+        {
+          "purpose": "Report saved",
+          "text": "Trip report saved to trip_report.txt.",
+          "shownIn": "3.3"
+        },
+        {
+          "purpose": "Play again question",
+          "text": "Play again? (y/n): ",
+          "shownIn": "2.3"
+        },
+        {
+          "purpose": "Session header",
+          "text": "SESSION STATISTICS",
+          "shownIn": "2.3"
+        },
+        {
+          "purpose": "Games played",
+          "text": "Games Played: {games_played}",
+          "shownIn": "2.3"
+        },
+        {
+          "purpose": "Session miles",
+          "text": "Total Miles: {session_miles}",
+          "shownIn": "2.3"
+        },
+        {
+          "purpose": "Session hazards",
+          "text": "Total Hazards: {session_hazards}",
+          "shownIn": "2.3"
+        },
+        {
+          "purpose": "Closing line",
+          "text": "Thanks for playing, {player_name}!",
+          "shownIn": "1.3"
+        },
+        {
+          "purpose": "Credit",
+          "text": "An All My Eggses Live in Texas Production",
+          "shownIn": "2.3"
         }
       ]
     },
     "finalCheck": {
-      "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\nLoaded 20 trivia questions across 10 cities.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nWhat is your name, traveler? \nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): \n\n--- TRIVIA TIME! ---\nTo reach Corpus Christi, answer this question:\n\n  Selena was from Corpus Christi\n\nTRUE or FALSE? CORRECT! You earned your destination.\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 20!\nYou travel 200 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (Unique, A-Z)\n---------------------------------\n  None - Lucky traveler!\n\nSTATISTICS\n----------\n  Total Miles: 200\n  Total Turns: 1\n  Hazards Faced: 0\n  Hazards Escaped: 0\n\nTRIVIA\n------\n  Questions Asked: 1\n  Answered Correct: 1\n  Accuracy: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): \n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 200\nTotal Hazards: 0\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): \nThanks for playing!",
-      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>1</code> (New Game) &rarr; <code>Tester</code> &rarr; <code>1</code> (Corpus Christi) &rarr; <code>TRUE</code> &rarr; <code>n</code> (no replay) &rarr; <code>3</code> (Quit) with the CodeGrade settings <code>LARGENUM=20</code> and <code>SMALLNUM=1</code>. You don't set those: they're how CodeGrade fixes its own dice and coins, and they give the same results as your pins. Run it with every pin from the checkpoints in place and match it line for line, then restore every pinned line before you submit. It is word for word the Lab 4.3 Full Check.",
+      "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\nLoaded 20 trivia questions across 10 cities.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 1\n\nWhat is your name, traveler? Tester\n\nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): 1\n\n\n--- TRIVIA TIME! ---\nTo reach Corpus Christi, answer this question:\n\n  Selena was from Corpus Christi\n\nTRUE or FALSE? TRUE\nCORRECT! You earned your destination.\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 100\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 2 ---\nMiles remaining: 100\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 50\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 3 ---\nMiles remaining: 50\nYou rolled a 5!\nYou travel 50 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (Unique, A-Z)\n---------------------------------\n  1. Buc-ee's appears!\n\nSTATISTICS\n----------\n  Total Miles: 150\n  Total Turns: 3\n  Hazards Faced: 2\n  Hazards Escaped: 2\n  Escape Rate: 100.0%\n\nTRIVIA\n------\n  Questions Asked: 1\n  Answered Correct: 1\n  Accuracy: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): n\n\n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 150\nTotal Hazards: 2\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 3\n\nThanks for playing!\n",
+      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>1</code> &rarr; <code>Tester</code> &rarr; <code>1</code> &rarr; <code>TRUE</code> &rarr; <code>n</code> &rarr; <code>3</code>: a new game, Corpus Christi, a right answer, no more games, and quit. The pins are <code>roll = 5</code>, <code>q = trivia[dest][0]</code> in <code>trivia_gate()</code>, <code>if True:</code> for the hazard check, and in <code>handle_hazard()</code>, <code>hazard = hazards[0]</code> and <code>flip = 'HEADS'</code>. That gives the same results as CodeGrade's own settings <code>LARGENUM=5</code>, <code>SMALLNUM=1</code>, and <code>CHOICE_IDX=0</code>, which you don't set. It's word for word Lab 4.3's Final Check. Match it line for line, then <strong>restore every pin</strong>, in all three files, before you submit.",
       "ifSomethingBreaks": [
         {
           "symptom": "<code>ModuleNotFoundError: No module named 'city'</code>",
-          "redirect": "Check CP2. The file must be named exactly <code>city.py</code> and sit in the same folder as <code>lab-5-1.py</code>. If it is there and this still happens, you opened the FILE in VS Code instead of the FOLDER: use <strong>File &rarr; Open Folder</strong> and pick the lab folder."
+          "redirect": "Check <strong>CP2</strong>: <code>city.py</code> is in the same folder, named exactly."
         },
         {
-          "symptom": "<code>ImportError: cannot import name 'City' from 'city'</code>",
-          "redirect": "Check CP2. The class name is <code>City</code>, with a capital C, in both <code>class City:</code> and <code>from city import City</code>."
+          "symptom": "A menu is empty or missing a road",
+          "redirect": "Check <strong>CP2</strong> and <strong>CP3</strong>: <code>build_cities()</code> adds every road, and the method reads <code>self.__connections</code>."
         },
         {
-          "symptom": "<code>AttributeError: 'City' object has no attribute '_City__connections'</code> (or another <code>_City__</code> name)",
-          "redirect": "Check CP2. <code>__init__</code> sets each private attribute, and every method must spell it the same way, two underscores and all."
-        },
-        {
-          "symptom": "<code>AttributeError: 'str' object has no attribute 'display_destinations'</code> (or <code>get_destination</code>, <code>is_win_city</code>, ...)",
-          "redirect": "A method is being called on the city's name. Look the object up first: <code>cities[current_city]</code>. For <code>trivia_gate</code>, check CP4's call."
-        },
-        {
-          "symptom": "<code>TypeError: ... takes 1 positional argument but 3 were given</code>",
-          "redirect": "The call still passes <code>current_city</code> and <code>distances</code> to a method that only takes <code>self</code>. Check CP3."
-        },
-        {
-          "symptom": "<code>NameError: name 'random' is not defined</code> after a wrong trivia answer",
-          "redirect": "Check CP4. <code>city.py</code> needs <code>import random</code> at the top."
-        },
-        {
-          "symptom": "The seven self-test lines, starting with <code>Testing city.py...</code>, print before the game's banner",
-          "redirect": "Check CP5. The self-test needs the <code>if __name__ == '__main__':</code> guard."
+          "symptom": "A wrong answer crashes the game",
+          "redirect": "Check <strong>CP4</strong>: <code>import random</code> in <code>city.py</code>, and <code>trivia_gate()</code> gets the City."
         },
         {
           "symptom": "<code>AttributeError: module 'function_library' has no attribute ...</code>",
-          "redirect": "CP6 removed a function the lab file still calls. The error names it: go back to the checkpoint that moves it into the class."
+          "redirect": "Check <strong>CP6</strong>: a call to a deleted function is still in the game."
+        },
+        {
+          "symptom": "CodeGrade fails tests your pinned runs pass",
+          "redirect": "A pin is still in, maybe in <code>city.py</code> or the library. Restore every random line before you submit."
         }
       ]
     }
   },
   "needHelp": {
     "ifYouGetStuck": [
-      "Compare against Lab 4.3. In your <code>lab-4-3</code> folder, pin <code>roll</code> and <code>q</code> in <code>lab-4-3.py</code> and run the same inputs: the two outputs should be identical. For CP4's detour run, also pin <code>index</code> in <code>get_redirect</code>, which in Lab 4.3 is still in <code>function_library.py</code>. The first line that differs points at the change that broke it",
-      "Read the error's last line first. <code>'str' object has no attribute</code> means a name where an object belongs; <code>_City__</code> in the message means a private attribute is misspelled somewhere",
-      "Change one call at a time and run after each. A refactor done all at once fails all at once",
-      "Post in <code>#module-5-help</code> on Discord with your specific error message. Include the line number. Anjali monitors the channel and surfaces patterns to the instructor"
+      "Re-read the checkpoint you're on, and run the program again with that checkpoint's pins and inputs",
+      "Submit to CodeGrade and read the first problem it names. Fix that one, then resubmit",
+      "Check Programs 10-12 and 10-13 (cellphone.py and cell_phone_test.py) for getters, setters, and making objects, and 10-9 and 10-10 (bankaccount2.py and account_test2.py) for methods and <code>__str__</code>",
+      "Post in <code>#module-5-help</code> on Discord with your checkpoint number, what you expected, and what happened. Screenshots of CodeGrade results are welcome; full code is not",
+      "Come to open office hours on Tuesday evenings"
     ],
-    "officeHours": "Zoom Tuesdays 6 PM: <a href='https://utsa.zoom.us/j/96542097913'>https://utsa.zoom.us/j/96542097913</a>. Book a 1-on-1 with Prof. Newsom: <a href='https://calendly.com/john-newsom-utsa'>calendly.com/john-newsom-utsa</a>."
+    "bookexResourceNote": "Chapter 10 BookEx Reference Guide, step-by-step breakdowns of every textbook example, your primary reference"
   }
 }

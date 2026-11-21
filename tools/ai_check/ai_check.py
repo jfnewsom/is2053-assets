@@ -105,6 +105,11 @@ FORBIDDEN = {
     "8\u20139": [
         (r"^\s*class\b", "a class (Chapter 10)"),
     ],
+    # Chapter 10 (Module 5): classes are allowed now; inheritance waits
+    # for Chapter 11, which the course doesn't cover.
+    "10": [
+        (r"^\s*class\s+\w+\s*\(\s*\w", "inheritance (Chapter 11)"),
+    ],
     "3": [
         (r"\.(lower|upper|strip|title|capitalize)\(", "a string method (Chapter 8)"),
         (r"^\s*(for|while)\b", "loops (Chapter 4)"),
