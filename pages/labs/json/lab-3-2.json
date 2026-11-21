@@ -78,7 +78,62 @@
       "<code>load_game()</code> <strong>MUST</strong> return <code>None</code> for a missing or damaged save file",
       "Every pin <strong>MUST</strong> be restored before you submit, the one in the library too"
     ],
-    "filenameNote": "Submit <strong>two files</strong> this unit: <code>lab-3-2.py</code> and <code>function_library.py</code>. Your program makes <code>savegame.txt</code> when it runs; don't submit it."
+    "filenameNote": "Submit <strong>two files</strong> this unit: <code>lab-3-2.py</code> and <code>function_library.py</code>. Your program makes <code>savegame.txt</code> when it runs; don't submit it.",
+    "testingPins": {
+      "intro": "A pin swaps a random line for a fixed value, so a test comes out the same every time. Comment out the line in the second column and put the line from the third column right under it, at the same indent. When a test needs a different value (like <code>roll = 5</code>), it says so. To restore a pin, delete the fixed line and take the <code>#</code> off the original.",
+      "restore": "Every pin <strong>MUST</strong> be restored before you submit: CodeGrade runs the random lines itself, with its own fixed numbers.",
+      "headers": [
+        "Pin",
+        "Comment out this line",
+        "Put this right under it",
+        "Where",
+        "Used in"
+      ],
+      "rows": [
+        [
+          "Dice roll",
+          "<code>roll = function_library.roll_d20()</code>",
+          "<code>roll = 20</code>",
+          "<code>lab-3-2.py</code>, the turn loop",
+          "CP1 on, Final Check"
+        ],
+        [
+          "Destination Gate",
+          "<code>gate_result = function_library.flip_coin()</code>",
+          "<code>gate_result = 'HEADS'</code>",
+          "<code>lab-3-2.py</code>, the gate",
+          "CP1 on, Final Check"
+        ],
+        [
+          "Detour pick",
+          "<code>index = random.randint(0, len(cities) - 1)</code>",
+          "<code>index = 0</code>",
+          "<code>function_library.py</code>, <code>get_redirect()</code>",
+          "CP3 on"
+        ],
+        [
+          "Hazard check",
+          "<code>if function_library.check_percentage(HAZARD_CHANCE):</code>",
+          "<code>if True:</code>",
+          "<code>lab-3-2.py</code>, the hazard block in the turn loop",
+          "CP4, Final Check"
+        ],
+        [
+          "Hazard type",
+          "<code>hazard_type = random.randint(1, 3)</code>",
+          "<code>hazard_type = 1</code>",
+          "<code>lab-3-2.py</code>, the hazard block",
+          "Final Check"
+        ],
+        [
+          "Escape flip",
+          "<code>flip = function_library.flip_coin()</code>",
+          "<code>flip = 'HEADS'</code>",
+          "<code>lab-3-2.py</code>, the hazard block",
+          "CP4, Final Check"
+        ]
+      ]
+    }
   },
   "timeGuide": {
     "totalTime": "120\u2013140 Minutes",
@@ -156,7 +211,7 @@
           "type": "instructions",
           "items": [
             "In VS Code, open your finished <code>lab-3-1.py</code>, with every pin restored. Choose <strong>File &rarr; Save As</strong> and save it in your <code>lab-3-2</code> folder as <code>lab-3-2.py</code>. Copy your <code>function_library.py</code> into the same folder too. It changes in this lab.",
-            "In <code>lab-3-2.py</code>'s header, change the first line to <code>Lab 3.2: Lists to the Rescue</code>, and replace the <code>Description:</code> and <code>Chapter 6 Concepts:</code> lines with these:"
+            "In <code>lab-3-2.py</code>'s header, change the title line (the first line after the opening quotes) to <code>Lab 3.2: Lists to the Rescue</code>, and replace everything from <code>Description:</code> down to the closing quotes with these:"
           ]
         },
         {
@@ -420,11 +475,11 @@
           ],
           "rows": [
             [
-              "<code>1</code>, <code>Maria</code>, <code>2</code>, <code>1</code>, <code>2</code>, <code>n</code>, <code>3</code>",
+              "<code>1</code> (New Game), <code>Maria</code> (name), <code>2</code> (Houston), <code>1</code> (Continue journey), <code>2</code> (Galveston), <code>n</code> (no more games), <code>3</code> (Quit)",
               "Houston's menu, from the lists: San Antonio first, then Galveston"
             ],
             [
-              "<code>1</code>, <code>Maria</code>, <code>2</code>, <code>1</code>, <code>3</code>, <code>2</code>, <code>n</code>, <code>3</code>",
+              "<code>1</code> (New Game), <code>Maria</code> (name), <code>2</code> (Houston), <code>1</code> (Continue journey), <code>3</code> (not a choice, so it asks again), <code>2</code> (Galveston), <code>n</code> (no more games), <code>3</code> (Quit)",
               "A 3 at Houston's menu: <code>num_choices</code> sets the range"
             ]
           ],
@@ -649,17 +704,17 @@
           ],
           "rows": [
             [
-              "<code>1</code>, <code>Maria</code>, <code>3</code>, <code>y</code>, <code>1</code>, <code>n</code>, <code>3</code>",
+              "<code>1</code> (New Game), <code>Maria</code> (name), <code>3</code> (Austin), <code>y</code> (back to San Antonio), <code>1</code> (Corpus Christi), <code>n</code> (no more games), <code>3</code> (Quit)",
               "HEADS",
               "Austin, back home, then Corpus Christi"
             ],
             [
-              "<code>1</code>, <code>Maria</code>, <code>1</code>, <code>1</code>, <code>2</code>, <code>1</code>, <code>3</code>, <code>n</code>, <code>3</code>",
+              "<code>1</code> (New Game), <code>Maria</code> (name), <code>1</code> (Corpus Christi), <code>1</code> (Continue journey), <code>2</code> (Galveston), <code>1</code> (Continue journey), <code>3</code> (Austin), <code>n</code> (no more games), <code>3</code> (Quit)",
               "<code>'TAILS'</code>, <code>index = 0</code>",
               "TAILS three times: Houston, San Antonio, Corpus Christi"
             ],
             [
-              "<code>1</code>, <code>Maria</code>, <code>2</code>, <code>n</code>, <code>n</code>, <code>3</code>",
+              "<code>1</code> (New Game), <code>Maria</code> (name), <code>2</code> (Houston), <code>n</code> (stay), <code>n</code> (no more games), <code>3</code> (Quit)",
               "<code>'TAILS'</code>, <code>index = 1</code>",
               "Houston wanted, Austin instead"
             ]
@@ -676,11 +731,33 @@
         },
         {
           "type": "text",
-          "body": "<strong>TAILS, index 0</strong>: each destination choice, and where the gate sent you:"
+          "body": "<strong>TAILS, index 0</strong>: on each leg the gate prints <code>Texas has other plans for you...</code> and sends you somewhere else. The whole run is long, so here's each leg:"
         },
         {
-          "type": "output_block",
-          "output": "Choice (1-3): 1\nYou're headed to Houston!\n\nChoice (1-2): 2\nYou're headed to San Antonio!\n\nChoice (1-3): 3\nYou're headed to Corpus Christi!"
+          "type": "table",
+          "headers": [
+            "Leg",
+            "You choose",
+            "You're headed to"
+          ],
+          "rows": [
+            [
+              "From San Antonio",
+              "<code>1</code> (Corpus Christi)",
+              "Houston"
+            ],
+            [
+              "From Houston",
+              "<code>2</code> (Galveston)",
+              "San Antonio"
+            ],
+            [
+              "From San Antonio",
+              "<code>3</code> (Austin)",
+              "Corpus Christi"
+            ]
+          ],
+          "accent": "green"
         },
         {
           "type": "text",
@@ -905,17 +982,17 @@
           ],
           "rows": [
             [
-              "<code>1</code>, <code>Maria</code>, <code>3</code>, <code>y</code>, <code>2</code>, <code>1</code>, <code>2</code>, <code>n</code>, <code>3</code>",
+              "<code>1</code> (New Game), <code>Maria</code> (name), <code>3</code> (Austin), <code>y</code> (back to San Antonio), <code>2</code> (Houston), <code>1</code> (Continue journey), <code>2</code> (Galveston), <code>n</code> (no more games), <code>3</code> (Quit)",
               "roll 20, HEADS",
               "Austin, home, Houston, Galveston: five cities, no hazards"
             ],
             [
-              "<code>1</code>, <code>Maria</code>, <code>1</code>, <code>n</code>, <code>3</code>",
+              "<code>1</code> (New Game), <code>Maria</code> (name), <code>1</code> (Corpus Christi), <code>n</code> (no more games), <code>3</code> (Quit)",
               "roll <code>5</code>, hazard <code>if True:</code>, <code>hazard_type = 3</code>, flip <code>'HEADS'</code>",
               "Corpus Christi in three turns, a hazard on each of the first two"
             ],
             [
-              "<code>2</code>, <code>2</code>, <code>n</code>, <code>3</code>, with Lab 3.1's save at Houston in <code>savegame.txt</code>",
+              "<code>2</code> (Load Saved Game), <code>2</code> (Galveston), <code>n</code> (no more games), <code>3</code> (Quit), with Lab 3.1's save at Houston in <code>savegame.txt</code>",
               "roll 20, HEADS",
               "A loaded game's route starts where it was saved"
             ]
@@ -928,7 +1005,8 @@
         },
         {
           "type": "output_block",
-          "output": "Maria\nHouston\n200\n1\n0\n0\n0\n0\n0"
+          "output": "Maria\nHouston\n200\n1\n0\n0\n0\n0\n0",
+          "label": "Type this into savegame.txt"
         },
         {
           "type": "text",
@@ -1135,7 +1213,8 @@
         },
         {
           "type": "output_block",
-          "output": "Rosa\nHouston\n360\n4\n2\n1\n2\n900\n3\nSan Antonio\nAustin\nSan Antonio\nHouston\n---LISTS_END---\nSpeed trap!\nArmadillo crossing!"
+          "output": "Rosa\nHouston\n360\n4\n2\n1\n2\n900\n3\nSan Antonio\nAustin\nSan Antonio\nHouston\n---LISTS_END---\nSpeed trap!\nArmadillo crossing!",
+          "label": "Type this into savegame.txt"
         },
         {
           "type": "table",
@@ -1147,27 +1226,27 @@
           "rows": [
             [
               "Any, or none",
-              "<code>1</code>, <code>Maria</code>, <code>3</code>, <code>y</code>, <code>2</code>, <code>2</code>, <code>3</code>",
+              "<code>1</code> (New Game), <code>Maria</code> (name), <code>3</code> (Austin), <code>y</code> (back to San Antonio), <code>2</code> (Houston), <code>2</code> (Save and quit), <code>3</code> (Quit)",
               "Save at Houston after a trip home from Austin: the route goes in the file"
             ],
             [
               "Rosa's, above",
-              "<code>2</code>, <code>2</code>, <code>n</code>, <code>3</code>",
+              "<code>2</code> (Load Saved Game), <code>2</code> (Galveston), <code>n</code> (no more games), <code>3</code> (Quit)",
               "Load a typed file: the route carries on, and the hazards come out sorted"
             ],
             [
               "Three lines: <code>Maria</code>, <code>Houston</code>, <code>lots</code>",
-              "<code>2</code>, <code>Maria</code>, <code>1</code>, <code>n</code>, <code>3</code>",
+              "<code>2</code> (Load Saved Game), <code>Maria</code> (name), <code>1</code> (Corpus Christi), <code>n</code> (no more games), <code>3</code> (Quit)",
               "A damaged file: a new game, no crash"
             ],
             [
               "Rosa's",
-              "<code>2</code>, <code>2</code>, <code>y</code>, <code>1</code>, <code>n</code>, <code>3</code>",
+              "<code>2</code> (Load Saved Game), <code>2</code> (Galveston), <code>y</code> (play again), <code>1</code> (Corpus Christi), <code>n</code> (no more games), <code>3</code> (Quit)",
               "Load, finish, play again: the second game's route starts over"
             ],
             [
               "Any, or none",
-              "<code>1</code>, <code>Maria</code>, <code>3</code>, <code>y</code>, <code>2</code>, <code>2</code>, <code>2</code>, <code>2</code>, <code>n</code>, <code>3</code>",
+              "<code>1</code> (New Game), <code>Maria</code> (name), <code>3</code> (Austin), <code>y</code> (back to San Antonio), <code>2</code> (Houston), <code>2</code> (Save and quit), <code>2</code> (Load Saved Game), <code>2</code> (Galveston), <code>n</code> (no more games), <code>3</code> (Quit)",
               "Save and load in one run"
             ]
           ],
@@ -1773,7 +1852,7 @@
     },
     "finalCheck": {
       "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 1\n\nWhat is your name, traveler? Maria\n\nWelcome, Maria!\nYou are in San Antonio. Your goal: reach the beach!\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n\nChoice (1-3): 2\n\nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 150\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 2 ---\nMiles remaining: 150\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 100\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 3 ---\nMiles remaining: 100\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 50\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 4 ---\nMiles remaining: 50\nYou rolled a 5!\nYou travel 50 miles...\n\nYou made it to Houston!\n\nOPTIONS:\n  1. Continue journey\n  2. Save and quit\n  3. Quit without saving\n\nChoice (1-3): 2\n\nGame saved!\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 2\n\nWelcome back, Maria!\nResuming from Houston.\nMiles so far this game: 200\nGames completed this session: 0\n\nFrom Houston, you can travel to:\n  1. San Antonio - 200 miles\n  2. Galveston - 50 miles\n\nChoice (1-2): 2\n\nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 5!\nYou travel 50 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Maria\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Houston\n  3. Galveston\n\nHAZARDS ENCOUNTERED (A-Z)\n-------------------------\n  1. Buc-ee's appears!\n  2. Buc-ee's appears!\n  3. Buc-ee's appears!\n\nSTATISTICS\n----------\n  Total Miles: 250\n  Total Turns: 5\n  Hazards Faced: 3\n  Hazards Escaped: 3\n\n==================================================\n\nPlay again? (y/n): n\n\n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 250\nTotal Hazards: 3\n==================================================\n\nThanks for playing, Maria!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 3\n\nThanks for playing!\n",
-      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>1</code> &rarr; <code>Maria</code> &rarr; <code>2</code> &rarr; <code>2</code> &rarr; <code>2</code> &rarr; <code>2</code> &rarr; <code>n</code> &rarr; <code>3</code>: a new game, Houston, save and quit, load, Galveston, no more games, and quit. The pins are <code>roll = 5</code>, <code>gate_result = 'HEADS'</code>, <code>if True:</code> for the hazard check, <code>hazard_type = 1</code>, and <code>flip = 'HEADS'</code>. That gives the same results as CodeGrade's own settings <code>LARGENUM=5</code> and <code>SMALLNUM=1</code>, which you don't set. Match it line for line, then <strong>restore every pin</strong>, the library's <code>index</code> pin too, before you submit.",
+      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>1</code> &rarr; <code>Maria</code> &rarr; <code>2</code> &rarr; <code>2</code> &rarr; <code>2</code> &rarr; <code>2</code> &rarr; <code>n</code> &rarr; <code>3</code>: a new game, Houston, save and quit, load, Galveston, no more games, and quit. The pins are <code>roll = 5</code>, <code>gate_result = 'HEADS'</code>, <code>if True:</code> for the hazard check, <code>hazard_type = 1</code>, and <code>flip = 'HEADS'</code>. That gives the same results as CodeGrade's own settings <code>LARGENUM=5</code> and <code>SMALLNUM=1</code>, which you don't set. The Testing Pins table on the Start tab shows the line each pin replaces. Match it line for line, then <strong>restore every pin</strong>, the library's <code>index</code> pin too, before you submit.",
       "ifSomethingBreaks": [
         {
           "symptom": "<code>NameError</code> on <code>load_game</code> or <code>save_game</code>",

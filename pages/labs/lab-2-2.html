@@ -96,7 +96,65 @@ body{margin:0}
       <li>Add the <strong>Destination Gate</strong> and <strong>hazards</strong> with random numbers</li>
       <li><strong>Pin</strong> random values and <strong>test every outcome</strong> on purpose</li>
     </ul>
-<p class="sx-hint">Where does your new code go? The <a href="#outline" data-tab="outline">Outline</a> tab shows the whole program. Work with this sheet on one half of your screen and VS Code on the other.</p><div class="sx-cards"><div class="sx-cards__row"><button class="sx-card" data-i="0" aria-expanded="false"><span class="sx-card__icon" style="background:#0055FF"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div class="lc-h3 lc-h3--yellow">Testing Pins</div>
+<p>A pin swaps a random line for a fixed value, so a test comes out the same every time. Comment out the line in the second column and put the line from the third column right under it, at the same indent. When a test needs a different value (like <code>roll = 5</code>), it says so. To restore a pin, delete the fixed line and take the <code>#</code> off the original.</p>    <div class="lc-table-wrap">
+      <table class="lc-table">
+        <thead>
+          <tr>
+        <th>Pin</th>
+        <th>Comment out this line</th>
+        <th>Put this right under it</th>
+        <th>Where</th>
+        <th>Used in</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>Dice roll</td>
+        <td><code>roll = function_library.roll_d20()</code></td>
+        <td><code>roll = 20</code></td>
+        <td><code>lab-2-2.py</code>, the turn loop</td>
+        <td>CP3 (at 5), CP4 on, Final Check</td>
+      </tr>
+      <tr>
+        <td>Destination Gate</td>
+        <td><code>gate_result = function_library.flip_coin()</code></td>
+        <td><code>gate_result = 'HEADS'</code></td>
+        <td><code>lab-2-2.py</code>, the gate</td>
+        <td>CP4 on, Final Check</td>
+      </tr>
+      <tr>
+        <td>Gate detour (TAILS)</td>
+        <td><code>redirect = random.randint(1, 2)</code></td>
+        <td><code>redirect = 1</code></td>
+        <td><code>lab-2-2.py</code>, the gate's TAILS branch</td>
+        <td>CP4</td>
+      </tr>
+      <tr>
+        <td>Hazard check</td>
+        <td><code>if function_library.check_percentage(HAZARD_CHANCE):</code></td>
+        <td><code>if True:</code></td>
+        <td><code>lab-2-2.py</code>, the hazard block in the turn loop</td>
+        <td>CP5, Final Check</td>
+      </tr>
+      <tr>
+        <td>Hazard type</td>
+        <td><code>hazard_type = random.randint(1, 3)</code></td>
+        <td><code>hazard_type = 1</code></td>
+        <td><code>lab-2-2.py</code>, the hazard block</td>
+        <td>CP5, Final Check</td>
+      </tr>
+      <tr>
+        <td>Escape flip</td>
+        <td><code>flip = function_library.flip_coin()</code></td>
+        <td><code>flip = 'HEADS'</code></td>
+        <td><code>lab-2-2.py</code>, the hazard block</td>
+        <td>CP5, Final Check</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+<p>Every pin <strong>MUST</strong> be restored before you submit: CodeGrade runs the random lines itself, with its own fixed numbers.</p><p class="sx-hint">Where does your new code go? The <a href="#outline" data-tab="outline">Outline</a> tab shows the whole program. Work with this sheet on one half of your screen and VS Code on the other.</p><div class="sx-cards"><div class="sx-cards__row"><button class="sx-card" data-i="0" aria-expanded="false"><span class="sx-card__icon" style="background:#0055FF"><svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="15" cy="15" r="11" stroke="#000" stroke-width="2.5"/>
         <line x1="15" y1="15" x2="15" y2="9" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
         <line x1="15" y1="15" x2="19" y2="17" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
@@ -197,7 +255,7 @@ body{margin:0}
     <div class="lc-h3 lc-h3--yellow">Step-by-Step Instructions</div>
     <ol>
       <li>In VS Code, open your finished <code>lab-2-1.py</code>. Choose <strong>File &rarr; Save As</strong> and save it in your <code>lab-2-2</code> folder as <code>lab-2-2.py</code>, replacing the empty starter file.</li>
-      <li>In its header, change the first line to <code>Lab 2.2: Texas Has Other Plans</code>. Replace the <code>Description:</code> and <code>Chapter 4 Concepts:</code> lines with these:</li>
+      <li>In its header, change the title line (the first line after the opening quotes) to <code>Lab 2.2: Texas Has Other Plans</code>. Replace everything from <code>Description:</code> down to the closing quotes with these:</li>
     </ol>
     <div class="lc-code-block">
       <pre>
@@ -1123,7 +1181,6 @@ Explain in plain words what it means, which line it points to, and the mistake t
     <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-str">f&#x27;Result: {gate_result}!&#x27;</span><span class="sy-op">)</span>
     <span class="sy-bi">print</span><span class="sy-op">(</span><span class="sy-op">)</span></pre>
     </div>
-    <p><code>\'</code> is an escape character (Chapter 2): it puts an apostrophe inside a string that uses single quotes.</p>
     <ol start="3">
       <li>Your chain becomes the HEADS branch. Add the <code>if</code> line and the <code>Texas says</code> line above it, and indent the whole chain four more spaces:</li>
     </ol>
@@ -1141,6 +1198,7 @@ Explain in plain words what it means, which line it points to, and the mistake t
             destination <span class="sy-op">=</span> <span class="sy-str">&#x27;Austin&#x27;</span>
             distance <span class="sy-op">=</span> SAT_TO_AUSTIN</pre>
     </div>
+    <p><code>\'</code> in the <code>Texas says</code> line is an escape character (Chapter 2): it puts an apostrophe inside a string that uses single quotes.</p>
     <ol start="4">
       <li>Right below it, add the TAILS branch, then one empty line before <code># Travel toward the destination</code>:</li>
     </ol>
@@ -2188,7 +2246,7 @@ Explain in plain words what it means, which line it points to, and the mistake t
 
 
     <div class="lc-h3 lc-h3--yellow">Run the Full Check</div>
-    <p><strong>Note:</strong> This run uses inputs <code>Maria</code> &rarr; <code>2</code> &rarr; <code>y</code> with these pins: roll = 5, <code>gate_result = 'HEADS'</code>, <code>if True:</code> for the hazard check, <code>hazard_type = 1</code>, and <code>flip = 'HEADS'</code>. That gives the same results as CodeGrade's own settings <code>LARGENUM=5</code> and <code>SMALLNUM=1</code>, which you don't set. Match it line for line, then <strong>restore every pin</strong> before you submit.</p>
+    <p><strong>Note:</strong> This run uses inputs <code>Maria</code> &rarr; <code>2</code> &rarr; <code>y</code> with these pins: roll = 5, <code>gate_result = 'HEADS'</code>, <code>if True:</code> for the hazard check, <code>hazard_type = 1</code>, and <code>flip = 'HEADS'</code>. That gives the same results as CodeGrade's own settings <code>LARGENUM=5</code> and <code>SMALLNUM=1</code>, which you don't set. The Testing Pins table on the Start tab shows the line each pin replaces. Match it line for line, then <strong>restore every pin</strong> before you submit.</p>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
       <pre>

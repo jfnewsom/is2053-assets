@@ -78,7 +78,62 @@
       "The TAILS branch <strong>MUST</strong> always send the player to one of the other two cities",
       "Every pin <strong>MUST</strong> be restored before you submit"
     ],
-    "filenameNote": "Submit <strong>two files</strong> this unit: <code>lab-2-2.py</code> and <code>function_library.py</code>."
+    "filenameNote": "Submit <strong>two files</strong> this unit: <code>lab-2-2.py</code> and <code>function_library.py</code>.",
+    "testingPins": {
+      "intro": "A pin swaps a random line for a fixed value, so a test comes out the same every time. Comment out the line in the second column and put the line from the third column right under it, at the same indent. When a test needs a different value (like <code>roll = 5</code>), it says so. To restore a pin, delete the fixed line and take the <code>#</code> off the original.",
+      "restore": "Every pin <strong>MUST</strong> be restored before you submit: CodeGrade runs the random lines itself, with its own fixed numbers.",
+      "headers": [
+        "Pin",
+        "Comment out this line",
+        "Put this right under it",
+        "Where",
+        "Used in"
+      ],
+      "rows": [
+        [
+          "Dice roll",
+          "<code>roll = function_library.roll_d20()</code>",
+          "<code>roll = 20</code>",
+          "<code>lab-2-2.py</code>, the turn loop",
+          "CP3 (at 5), CP4 on, Final Check"
+        ],
+        [
+          "Destination Gate",
+          "<code>gate_result = function_library.flip_coin()</code>",
+          "<code>gate_result = 'HEADS'</code>",
+          "<code>lab-2-2.py</code>, the gate",
+          "CP4 on, Final Check"
+        ],
+        [
+          "Gate detour (TAILS)",
+          "<code>redirect = random.randint(1, 2)</code>",
+          "<code>redirect = 1</code>",
+          "<code>lab-2-2.py</code>, the gate's TAILS branch",
+          "CP4"
+        ],
+        [
+          "Hazard check",
+          "<code>if function_library.check_percentage(HAZARD_CHANCE):</code>",
+          "<code>if True:</code>",
+          "<code>lab-2-2.py</code>, the hazard block in the turn loop",
+          "CP5, Final Check"
+        ],
+        [
+          "Hazard type",
+          "<code>hazard_type = random.randint(1, 3)</code>",
+          "<code>hazard_type = 1</code>",
+          "<code>lab-2-2.py</code>, the hazard block",
+          "CP5, Final Check"
+        ],
+        [
+          "Escape flip",
+          "<code>flip = function_library.flip_coin()</code>",
+          "<code>flip = 'HEADS'</code>",
+          "<code>lab-2-2.py</code>, the hazard block",
+          "CP5, Final Check"
+        ]
+      ]
+    }
   },
   "timeGuide": {
     "totalTime": "90\u2013100 Minutes",
@@ -156,7 +211,7 @@
           "type": "instructions",
           "items": [
             "In VS Code, open your finished <code>lab-2-1.py</code>. Choose <strong>File &rarr; Save As</strong> and save it in your <code>lab-2-2</code> folder as <code>lab-2-2.py</code>, replacing the empty starter file.",
-            "In its header, change the first line to <code>Lab 2.2: Texas Has Other Plans</code>. Replace the <code>Description:</code> and <code>Chapter 4 Concepts:</code> lines with these:"
+            "In its header, change the title line (the first line after the opening quotes) to <code>Lab 2.2: Texas Has Other Plans</code>. Replace everything from <code>Description:</code> down to the closing quotes with these:"
           ]
         },
         {
@@ -766,10 +821,6 @@
           "code": "    # The Destination Gate: does Texas let you go?\n    print('Flipping to see if Texas cooperates...')\n    gate_result = function_library.flip_coin()\n    print(f'Result: {gate_result}!')\n    print()"
         },
         {
-          "type": "text",
-          "body": "<code>\\'</code> is an escape character (Chapter 2): it puts an apostrophe inside a string that uses single quotes."
-        },
-        {
           "type": "instructions",
           "items": [
             "Your chain becomes the HEADS branch. Add the <code>if</code> line and the <code>Texas says</code> line above it, and indent the whole chain four more spaces:"
@@ -779,6 +830,10 @@
         {
           "type": "code_block",
           "code": "    if gate_result == 'HEADS':\n        print('Texas says: \"Y\\'all come on through!\"')\n        if choice == 1:\n            destination = 'Corpus Christi'\n            distance = SAT_TO_CORPUS\n        elif choice == 2:\n            destination = 'Houston'\n            distance = SAT_TO_HOUSTON\n        else:\n            destination = 'Austin'\n            distance = SAT_TO_AUSTIN"
+        },
+        {
+          "type": "text",
+          "body": "<code>\\'</code> in the <code>Texas says</code> line is an escape character (Chapter 2): it puts an apostrophe inside a string that uses single quotes."
         },
         {
           "type": "instructions",
@@ -1695,7 +1750,7 @@
     },
     "finalCheck": {
       "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nWhat is your name, traveler? Maria\n\nWelcome, Maria!\nYou are in San Antonio. Your goal: reach the beach!\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n\nChoice (1-3): 2\n\nFlipping to see if Texas cooperates...\nResult: HEADS!\n\nTexas says: \"Y'all come on through!\"\nYou're headed to Houston!\nDistance: 200 miles\n\n==================================================\nTRAVELING TO HOUSTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 200\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 150\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 2 ---\nMiles remaining: 150\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 100\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 3 ---\nMiles remaining: 100\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 50\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 4 ---\nMiles remaining: 50\nYou rolled a 5!\nYou travel 50 miles...\n\nYou made it to Houston!\n\nContinue to Galveston? (y/n): y\n\nYou're headed to Galveston!\nDistance: 50 miles\n\n==================================================\nTRAVELING TO GALVESTON!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 50\nYou rolled a 5!\nYou travel 50 miles...\n\nYou made it to Galveston!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Maria\nFinal City: Galveston\nStatus: BEACH WINNER!\n\nSTATISTICS\n----------\n  Total Miles: 250\n  Total Turns: 5\n  Hazards Faced: 3\n  Hazards Escaped: 3\n\n==================================================\n\nThanks for playing, Maria!\n\n",
-      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>Maria</code> &rarr; <code>2</code> &rarr; <code>y</code> with these pins: roll = 5, <code>gate_result = 'HEADS'</code>, <code>if True:</code> for the hazard check, <code>hazard_type = 1</code>, and <code>flip = 'HEADS'</code>. That gives the same results as CodeGrade's own settings <code>LARGENUM=5</code> and <code>SMALLNUM=1</code>, which you don't set. Match it line for line, then <strong>restore every pin</strong> before you submit.",
+      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>Maria</code> &rarr; <code>2</code> &rarr; <code>y</code> with these pins: roll = 5, <code>gate_result = 'HEADS'</code>, <code>if True:</code> for the hazard check, <code>hazard_type = 1</code>, and <code>flip = 'HEADS'</code>. That gives the same results as CodeGrade's own settings <code>LARGENUM=5</code> and <code>SMALLNUM=1</code>, which you don't set. The Testing Pins table on the Start tab shows the line each pin replaces. Match it line for line, then <strong>restore every pin</strong> before you submit.",
       "ifSomethingBreaks": [
         {
           "symptom": "<code>ModuleNotFoundError: No module named 'function_library'</code>",

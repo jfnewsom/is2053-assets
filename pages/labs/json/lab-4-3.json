@@ -98,7 +98,69 @@
       "Both trip reports <strong>MUST</strong> have the TRIVIA section in the layout on this sheet",
       "Every pin <strong>MUST</strong> be restored before you submit, the three in the library too"
     ],
-    "filenameNote": "Submit <strong>two files</strong> this unit: <code>lab-4-3.py</code> and <code>function_library.py</code>. CodeGrade has its own copies of the four data files, so don't upload them. Your program makes <code>savegame.txt</code> and <code>trip_report.txt</code> when it runs; don't submit those either."
+    "filenameNote": "Submit <strong>two files</strong> this unit: <code>lab-4-3.py</code> and <code>function_library.py</code>. CodeGrade has its own copies of the four data files, so don't upload them. Your program makes <code>savegame.txt</code> and <code>trip_report.txt</code> when it runs; don't submit those either.",
+    "testingPins": {
+      "intro": "A pin swaps a random line for a fixed value, so a test comes out the same every time. Comment out the line in the second column and put the line from the third column right under it, at the same indent. When a test needs a different value (like <code>roll = 5</code>), it says so. To restore a pin, delete the fixed line and take the <code>#</code> off the original.",
+      "restore": "Every pin <strong>MUST</strong> be restored before you submit: CodeGrade runs the random lines itself, with its own fixed numbers.",
+      "headers": [
+        "Pin",
+        "Comment out this line",
+        "Put this right under it",
+        "Where",
+        "Used in"
+      ],
+      "rows": [
+        [
+          "Dice roll",
+          "<code>roll = function_library.roll_d20()</code>",
+          "<code>roll = 20</code>",
+          "<code>lab-4-3.py</code>, the turn loop",
+          "CP1 on, Final Check"
+        ],
+        [
+          "Destination Gate",
+          "<code>gate_result = function_library.flip_coin()</code>",
+          "<code>gate_result = 'HEADS'</code>",
+          "<code>lab-4-3.py</code>, the gate",
+          "CP1 and CP2 (the Trivia Gate replaces it in CP3)"
+        ],
+        [
+          "Trivia question",
+          "<code>q = random.choice(trivia[dest])</code>",
+          "<code>q = trivia[dest][0]</code>",
+          "<code>lab-4-3.py</code>, <code>trivia_gate()</code>",
+          "CP3 on, Final Check"
+        ],
+        [
+          "Detour pick",
+          "<code>index = random.randint(0, len(options) - 1)</code>",
+          "<code>index = 1</code>",
+          "<code>function_library.py</code>, <code>get_redirect()</code>",
+          "CP3 on"
+        ],
+        [
+          "Hazard check",
+          "<code>if function_library.check_percentage(HAZARD_CHANCE):</code>",
+          "<code>if True:</code>",
+          "<code>lab-4-3.py</code>, the hazard block in the turn loop",
+          "Final Check"
+        ],
+        [
+          "Hazard pick",
+          "<code>hazard = random.choice(hazards)</code>",
+          "<code>hazard = hazards[0]</code>",
+          "<code>function_library.py</code>, <code>handle_hazard()</code>",
+          "Final Check"
+        ],
+        [
+          "Escape flip",
+          "<code>flip = flip_coin()</code>",
+          "<code>flip = 'HEADS'</code>",
+          "<code>function_library.py</code>, <code>handle_hazard()</code>",
+          "Final Check"
+        ]
+      ]
+    }
   },
   "timeGuide": {
     "totalTime": "90\u2013110 Minutes",
@@ -172,7 +234,7 @@
           "items": [
             "In VS Code, open your finished <code>lab-4-2.py</code>, with every pin restored. Choose <strong>File &rarr; Save As</strong> and save it in your <code>lab-4-3</code> folder as <code>lab-4-3.py</code>. Copy your <code>function_library.py</code>, <code>city_distances.txt</code>, <code>city_info.txt</code>, and <code>hazards.txt</code> into the same folder too.",
             "Download <code>trivia.txt</code> from this page into the same folder.",
-            "In <code>lab-4-3.py</code>'s header, change the first line to <code>Lab 4.3: Trivia Challenge</code>, and replace the <code>Description:</code> and <code>Chapter</code> lines with these:"
+            "In <code>lab-4-3.py</code>'s header, change the title line (the first line after the opening quotes) to <code>Lab 4.3: Trivia Challenge</code>, and replace everything from <code>Description:</code> down to the closing quotes with these:"
           ]
         },
         {
@@ -320,7 +382,7 @@
           "type": "instructions",
           "items": [
             "In <code>lab-4-3.py</code>, under <code>HAZARDS_FILE</code>, add <code>TRIVIA_FILE = 'trivia.txt'</code>.",
-            "In <code>main()</code>, load the trivia right after the hazards:"
+            "In <code>main()</code>, load the trivia on the line right after <code>hazards = ...</code>:"
           ],
           "start": 2
         },
@@ -331,7 +393,7 @@
         {
           "type": "instructions",
           "items": [
-            "Right after the hazards line, count the questions with an accumulator loop, then print the count. The line is long, so it's two f-strings side by side inside one <code>print()</code>:"
+            "Right after the <code>print()</code> that reports the hazards, count the questions with an accumulator loop, then print the count. The line is long, so it's two f-strings side by side inside one <code>print()</code>:"
           ],
           "start": 4
         },
@@ -345,7 +407,7 @@
         },
         {
           "type": "text",
-          "body": "Every run uses the testing pins: the roll pinned to <code>20</code> and the gate to <code>'HEADS'</code>. With a roll of 20, every leg takes one turn, so no hazard comes up and you can watch the new code work. Type <code>1</code>, <code>Tester</code>, <code>2</code>, <code>1</code>, <code>2</code>, <code>n</code>, <code>3</code> again. One new startup line; the coin still decides each trip until CP3:"
+          "body": "Every run uses the testing pins: the roll pinned to <code>20</code> and the gate to <code>'HEADS'</code>. With a roll of 20, every leg takes one turn, so no hazard comes up and you can watch the new code work. Type <code>1</code>, <code>Tester</code>, <code>2</code>, <code>1</code>, <code>2</code>, <code>n</code>, <code>3</code> again: a new game, Houston, continue, Galveston, no more games, quit. One new startup line; the coin still decides each trip until CP3:"
         },
         {
           "type": "output_block",
@@ -547,15 +609,15 @@
           ],
           "rows": [
             [
-              "<code>1</code>, <code>Tester</code>, <code>2</code>, <code>TRUE</code>, <code>1</code>, <code>2</code>, <code>TRUE</code>, <code>n</code>, <code>3</code>",
+              "<code>1</code> (New Game), <code>Tester</code> (name), <code>2</code> (Houston), <code>TRUE</code> (trivia answer), <code>1</code> (Continue journey), <code>2</code> (Galveston), <code>TRUE</code> (trivia answer), <code>n</code> (no more games), <code>3</code> (Quit)",
               "Two right answers: Houston, then Galveston"
             ],
             [
-              "<code>1</code>, <code>Tester</code>, <code>1</code>, <code>FALSE</code>, <code>3</code>, <code>n</code>, <code>3</code>",
+              "<code>1</code> (New Game), <code>Tester</code> (name), <code>1</code> (Corpus Christi), <code>FALSE</code> (trivia answer), <code>3</code> (Quit without saving), <code>n</code> (no more games), <code>3</code> (Quit)",
               "A wrong answer: a detour to Austin, then quit without saving"
             ],
             [
-              "<code>1</code>, <code>Tester</code>, <code>1</code>, <code>maybe</code>, <code>3</code>, <code>n</code>, <code>3</code>",
+              "<code>1</code> (New Game), <code>Tester</code> (name), <code>1</code> (Corpus Christi), <code>maybe</code> (trivia answer), <code>3</code> (Quit without saving), <code>n</code> (no more games), <code>3</code> (Quit)",
               "An answer that's neither: wrong, and the same detour"
             ]
           ],
@@ -1397,7 +1459,7 @@
     },
     "finalCheck": {
       "expectedOutput": "\n==================================================\nDEEP IN THE HEART: A LONE STAR JOURNEY\n==================================================\n\nLoading city data...\nLoaded 10 cities with travel routes.\nLoaded 10 city info records.\nLoaded 8 possible hazards.\nLoaded 20 trivia questions across 10 cities.\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 1\n\nWhat is your name, traveler? Tester\n\nWelcome, Tester!\nYou are in San Antonio. Your goal: reach the beach!\nBeach cities: Corpus Christi and Galveston.\n\nYou are in: San Antonio\n  \"Home of the Alamo\"\n\nFrom San Antonio, you can travel to:\n  1. Corpus Christi - 150 miles\n  2. Houston - 200 miles\n  3. Austin - 80 miles\n  4. Laredo - 160 miles\n  5. El Paso - 550 miles\n\nChoice (1-5): 1\n\n\n--- TRIVIA TIME! ---\nTo reach Corpus Christi, answer this question:\n\n  Selena was from Corpus Christi\n\nTRUE or FALSE? TRUE\nCORRECT! You earned your destination.\nYou're headed to Corpus Christi!\nDistance: 150 miles\n\n==================================================\nTRAVELING TO CORPUS CHRISTI!\n==================================================\n\n--- Turn 1 ---\nMiles remaining: 150\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 100\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 2 ---\nMiles remaining: 100\nYou rolled a 5!\nYou travel 50 miles...\nMiles remaining: 50\n\n*** HAZARD! ***\nBuc-ee's appears!\nHEADS!\nYou resist the beaver's call\n\n--- Turn 3 ---\nMiles remaining: 50\nYou rolled a 5!\nYou travel 50 miles...\n\nYou made it to Corpus Christi!\n\n==================================================\nCONGRATULATIONS! YOU REACHED THE BEACH!\n==================================================\n\n\n==================================================\nFINAL TRIP REPORT\n==================================================\nDriver: Tester\nFinal City: Corpus Christi\nStatus: BEACH WINNER!\n\nYOUR ROUTE\n----------\n  1. San Antonio\n  2. Corpus Christi\n\nUnique cities visited: 2\n\nHAZARDS ENCOUNTERED (Unique, A-Z)\n---------------------------------\n  1. Buc-ee's appears!\n\nSTATISTICS\n----------\n  Total Miles: 150\n  Total Turns: 3\n  Hazards Faced: 2\n  Hazards Escaped: 2\n  Escape Rate: 100.0%\n\nTRIVIA\n------\n  Questions Asked: 1\n  Answered Correct: 1\n  Accuracy: 100.0%\n\n==================================================\n\nTrip report saved to trip_report.txt.\n\nPlay again? (y/n): n\n\n==================================================\nSESSION STATISTICS\n==================================================\nGames Played: 1\nTotal Miles: 150\nTotal Hazards: 2\n==================================================\n\nThanks for playing, Tester!\nAn All My Eggses Live in Texas Production\n\nMAIN MENU\n--------------------\n1. New Game\n2. Load Saved Game\n3. Quit\n\nChoice (1-3): 3\n\nThanks for playing!\n",
-      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>1</code> &rarr; <code>Tester</code> &rarr; <code>1</code> &rarr; <code>TRUE</code> &rarr; <code>n</code> &rarr; <code>3</code>: a new game, Corpus Christi, a right answer, no more games, and quit. The pins are <code>roll = 5</code>, <code>q = trivia[dest][0]</code> in <code>trivia_gate()</code>, <code>if True:</code> for the hazard check, and in <code>handle_hazard()</code>, <code>hazard = hazards[0]</code> and <code>flip = 'HEADS'</code>. That gives the same results as CodeGrade's own settings <code>LARGENUM=5</code>, <code>SMALLNUM=1</code>, and <code>CHOICE_IDX=0</code>, which you don't set. Match it line for line, then <strong>restore every pin</strong>, the ones in the library too, before you submit.",
+      "expectedOutputNote": "<strong>Note:</strong> This run uses inputs <code>1</code> &rarr; <code>Tester</code> &rarr; <code>1</code> &rarr; <code>TRUE</code> &rarr; <code>n</code> &rarr; <code>3</code>: a new game, Corpus Christi, a right answer, no more games, and quit. The pins are <code>roll = 5</code>, <code>q = trivia[dest][0]</code> in <code>trivia_gate()</code>, <code>if True:</code> for the hazard check, and in <code>handle_hazard()</code>, <code>hazard = hazards[0]</code> and <code>flip = 'HEADS'</code>. That gives the same results as CodeGrade's own settings <code>LARGENUM=5</code>, <code>SMALLNUM=1</code>, and <code>CHOICE_IDX=0</code>, which you don't set. The Testing Pins table on the Start tab shows the line each pin replaces. Match it line for line, then <strong>restore every pin</strong>, the ones in the library too, before you submit.",
       "ifSomethingBreaks": [
         {
           "symptom": "<code>FileNotFoundError: ... 'trivia.txt'</code>",

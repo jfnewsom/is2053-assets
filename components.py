@@ -565,10 +565,18 @@ def render_code_block(item: dict) -> str:
 
 
 def render_output_block(item: dict) -> str:
-    """Render an expected terminal output block."""
+    """Render an expected terminal output block.
+
+    An optional "label" replaces "Expected Output" for a box that isn't
+    program output, such as a save file the student types in (Nov 21, 2026:
+    the blind audit found students' save files in Expected Output boxes).
+    """
     output = html_lib.escape(item.get("output", ""))
-    return f"""    <div class="lc-output">
-      <div class="lc-output__label">Expected Output</div>
+    label = item.get("label")
+    cls = "lc-output lc-output--file" if label else "lc-output"
+    label = html_lib.escape(label) if label else "Expected Output"
+    return f"""    <div class="{cls}">
+      <div class="lc-output__label">{label}</div>
       <pre>
 {output}</pre>
     </div>

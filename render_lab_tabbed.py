@@ -146,6 +146,12 @@ def build(d):
         body += C.render_mentor_quote(ov["mentorQuote"])
     body += C.render_h3({"label": "Filename"}, "blue") + f'<p>{ov.get("filenameNote", "")}</p>'
     body += C.render_h3({"label": "What You'll Learn"}, "blue") + C.render_objectives(ov.get("objectives", []))
+    if ov.get("testingPins"):
+        # One table of every pin in the lab (Nov 21, 2026): which line it
+        # replaces, where, and when it's used. Labs 2.2 to 5.2.
+        tp = ov["testingPins"]
+        body += (C.render_h3({"label": "Testing Pins"}, "blue") + f'<p>{tp["intro"]}</p>'
+                 + C.render_table({"headers": tp["headers"], "rows": tp["rows"]}) + f'<p>{tp["restore"]}</p>')
     body += ('<p class="sx-hint">Where does your new code go? The <a href="#outline" data-tab="outline">Outline</a> '
              'tab shows the whole program. Work with this sheet on one half of your screen and VS Code on the other.</p>')
     body += cards_row(cards)
