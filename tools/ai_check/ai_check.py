@@ -261,12 +261,16 @@ def load_lab(lab):
 
 
 def lab_fragments(strings):
-    """Distinctive literal pieces of the lab's printed strings (12+ chars)."""
+    """Distinctive literal pieces of the lab's printed strings (15+ chars).
+
+    15, not 12, since run 15 (Nov 20): short pieces like "You rolled a" and
+    "Total Miles:" turn up in ordinary examples and flagged a passing answer.
+    """
     frags = set()
     for s in strings:
         for piece in re.split(r"\{[^}]*\}", s):
             piece = piece.strip()
-            if len(piece) >= 12 and not set(piece) <= set("=-"):
+            if len(piece) >= 15 and not set(piece) <= set("=-"):
                 frags.add(piece)
     return sorted(frags)
 
