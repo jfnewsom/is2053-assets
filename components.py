@@ -1076,7 +1076,7 @@ def render_final_check(final_check: dict) -> str:
     output_html = ""
     if expected_output:
         escaped = html_lib.escape(expected_output)
-        output_html = f"""    <div class="lc-h3 lc-h3--yellow">Run the Full Check</div>
+        output_html = f"""    <div class="lc-h3 lc-h3--yellow">Run the Final Check</div>
     <p>{note_html}</p>
     <div class="lc-output">
       <div class="lc-output__label">Expected Output</div>
