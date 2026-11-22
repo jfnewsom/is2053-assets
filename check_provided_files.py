@@ -11,7 +11,17 @@ different from the one in the zip and in the solution tree. The differences
 happened to be output-identical refactors, so nobody would ever have noticed
 from behaviour, which is exactly why it needed a guard rather than a reader.
 
-Three things are checked:
+Since Nov 22, 2026 (John: "the starter zip needs to be the folder structure
+and the files need to be downloaded from each assignment sheet"), the zip's
+lab folders hold only their VS Code settings, so there is one copy of each
+provided file, the sheet's. What's checked now:
+
+  FOLDERS    no lab folder in the zip holds anything but .vscode/settings.json,
+             so a second copy of a provided file can't creep back in.
+  TRUTH      provided .py files match the solution tree, when it is
+             reachable. The solution is the source of truth.
+
+Before Nov 22, three things were checked:
 
   SYNC       every file under pages/labs/data/ is byte-identical to its
              counterpart in the starter zip, unless allowlisted below.
@@ -44,10 +54,9 @@ DATA = os.path.join(REPO, 'pages', 'labs', 'data')
 # somebody once decided not to look at.
 ALLOWED = {
     '5-2/city.py':
-        'The zip ships an EMPTY city.py because Lab 5.2 students supply their '
-        'own from Lab 5.1. The page serves a working reference implementation '
-        'as a fallback for anyone whose 5.1 class does not work. Different on '
-        'purpose.',
+        'Lab 5.2 students bring their own City class from Lab 5.1. The page '
+        'serves a reference copy as a fallback for anyone whose 5.1 class '
+        'does not work, so it is not held to the solution tree.',
 }
 
 
@@ -94,38 +103,14 @@ def main():
 
     z = zipfile.ZipFile(ZIP)
     zdata = {n: z.read(n) for n in z.namelist() if not n.endswith('/')}
-    problems, checked, waived = [], 0, 0
+    problems = []
 
-    # SYNC
-    for path in sorted(glob.glob(os.path.join(DATA, '*', '*'))):
-        lab = os.path.basename(os.path.dirname(path))
-        name = os.path.basename(path)
-        rel = f'{lab}/{name}'
-        key = zip_key(lab, name)
-        if key not in zdata:
-            problems.append(f'{rel} is served from the sheet but is NOT in the starter zip')
-            continue
-        if rel in ALLOWED:
-            waived += 1
-            continue
-        checked += 1
-        if sha(open(path, 'rb').read()) != sha(zdata[key]):
-            problems.append(
-                f'{rel} DIFFERS between the assignment page and the starter zip. '
-                f'Students get different files depending on where they downloaded it.')
-
-    # SCAFFOLD: a file the sheet calls provided must not be an empty scaffold.
-    for lab, names in provided_names().items():
-        for name in sorted(names):
-            key = zip_key(lab, name)
-            if key in zdata and len(zdata[key]) == 0:
-                problems.append(
-                    f'{lab}/{name} is described as PROVIDED but is a zero-byte scaffold '
-                    f'in the starter zip. A student who uses the zip gets an empty file.')
-            if key not in zdata:
-                problems.append(
-                    f'{lab}/{name} is described as PROVIDED but is missing from the '
-                    f'starter zip at {key}')
+    # FOLDERS: lab folders ship empty but for their VS Code settings.
+    for name in sorted(zdata):
+        if '/code/modules/' in name and not name.endswith('/.vscode/settings.json'):
+            problems.append(f'{name} is in the starter zip, but lab folders ship empty: '
+                            f'students download every file from the sheet')
+    checked = len(glob.glob(os.path.join(DATA, '*', '*')))
 
     # TRUTH
     if a.solutions:
@@ -140,18 +125,15 @@ def main():
             if len(hits) == 1 and sha(open(path, 'rb').read()) != sha(open(hits[0], 'rb').read()):
                 problems.append(
                     f'{rel} does not match the solution tree copy. The solution is the '
-                    f'source of truth; sync the page and the zip to it.')
+                    f'source of truth; sync the page to it.')
 
-    print(f'check_provided_files: {checked} provided file(s) compared across the '
-          f'assignment pages and the starter zip'
-          + (f', {waived} waived' if waived else ''))
+    print(f'check_provided_files: {checked} provided file(s) served from the sheets; '
+          f'the starter zip\'s lab folders hold none of them')
     if problems:
         print('check_provided_files: FAIL')
         for p in problems:
             print(f'  - {p}')
         return 1
-    for rel, why in sorted(ALLOWED.items()):
-        print(f'  waived {rel}: {why.split(".")[0]}.')
     print('check_provided_files: PASS')
     return 0
 

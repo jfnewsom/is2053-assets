@@ -7,7 +7,17 @@ test.py went missing from lab-5-1/ (ledger F-043) and how the Lab 5.1 data
 files stayed on their Module 4 versions for a term after the solution moved on.
 Both were found by reading the zip, not by building it. This builds it.
 
-The zip is a WORKSPACE, not a code drop. Two kinds of file live in it:
+LAB FOLDERS ARE FOLDERS ONLY (John, Nov 22, 2026): "the starter zip needs to
+be the folder structure and the files need to be downloaded from each
+assignment sheet." Each lab folder ships with its VS Code settings and nothing
+else: no data files, no provided code, no empty scaffolds. Students download
+every file from the sheet's links and create their own .py files, named
+exactly as each CP1 says. One copy of every provided file (the sheet's) means
+nothing can drift between two copies. The BookEx and Start Here folders still
+ship as described below.
+
+Before Nov 22, the zip was a WORKSPACE, not a code drop. Two kinds of file
+lived in it:
 
   REAL       data files and provided code, copied byte-for-byte out of
              pages/labs/data/. check_provided_files.py enforces that these
@@ -69,23 +79,6 @@ VSCODE = """{
 }
 """
 
-# Files served from pages/labs/data/ that must ship EMPTY in the zip instead.
-# Mirrors ALLOWED in check_provided_files.py; keep the two in step.
-FORCE_EMPTY = {
-    '5-2/city.py':
-        'Lab 5.2 students bring their own City class forward from Lab 5.1. '
-        'The page serves a working reference implementation as a fallback; '
-        'the zip must not hand them a finished answer.',
-}
-
-# Scaffolds a sheet needs but does not declare in dataFiles.
-EXTRA_SCAFFOLDS = {
-    '5-2': {'function_library.py':
-            'lab-5-2.py imports it, but 5.2 submits player.py alone so the '
-            'sheet never lists it. Without the scaffold the provided main '
-            'will not run in a fresh folder.'},
-}
-
 
 def lab_dir(lab):
     return f'{ROOT}/code/modules/mod{lab.split("-")[0]}/lab-{lab}'
@@ -130,29 +123,10 @@ def collect():
             put(f'{folder}/{name}', None)
         workspace(folder)
 
-    # Labs.
+    # Labs: the folder and its VS Code settings, nothing else (Nov 22, 2026).
     for src in sorted(glob.glob(os.path.join(REPO, 'pages/labs/json/lab-*.json'))):
         lab = os.path.basename(src)[4:-5]
-        doc = json.load(open(src, encoding='utf-8'))
-        folder = lab_dir(lab)
-
-        # Real files: everything the assignment page serves for this lab.
-        for path in sorted(glob.glob(os.path.join(DATA, lab, '*'))):
-            name = os.path.basename(path)
-            rel = f'{lab}/{name}'
-            put(f'{folder}/{name}',
-                None if rel in FORCE_EMPTY else open(path, 'rb').read())
-
-        # The submitted file, and anything the student supplies themselves.
-        put(f'{folder}/{doc["meta"]["filename"]}', None)
-        for entry in doc.get('overview', {}).get('dataFiles', []) or []:
-            name = re.sub(r'<[^>]+>', '', str(entry.get('file', ''))).strip()
-            if name and not entry.get('path'):
-                put(f'{folder}/{name}', None)
-        for name in EXTRA_SCAFFOLDS.get(lab, {}):
-            put(f'{folder}/{name}', None)
-
-        workspace(folder)
+        workspace(lab_dir(lab))
 
     # Somewhere to try things out that is not a graded folder.
     put(f'{ROOT}/scratch/.keep', b'')
