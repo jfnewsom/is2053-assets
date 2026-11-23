@@ -11,13 +11,11 @@ different from the one in the zip and in the solution tree. The differences
 happened to be output-identical refactors, so nobody would ever have noticed
 from behaviour, which is exactly why it needed a guard rather than a reader.
 
-Since Nov 22, 2026 (John: "the starter zip needs to be the folder structure
-and the files need to be downloaded from each assignment sheet"), the zip's
-lab folders hold only their VS Code settings, so there is one copy of each
-provided file, the sheet's. What's checked now:
+Since Nov 22, 2026 the starter zip is retired (John: students make their
+folders from Start Here, and VS Code's settings come from the IS2053
+profile), so there is one copy of each provided file, the sheet's. What's
+checked now:
 
-  FOLDERS    no lab folder in the zip holds anything but .vscode/settings.json,
-             so a second copy of a provided file can't creep back in.
   TRUTH      provided .py files match the solution tree, when it is
              reachable. The solution is the source of truth.
 
@@ -43,10 +41,8 @@ import json
 import os
 import re
 import sys
-import zipfile
 
 REPO = os.path.dirname(os.path.abspath(__file__))
-ZIP = os.path.join(REPO, 'downloads', 'is2053-starter.zip')
 DATA = os.path.join(REPO, 'pages', 'labs', 'data')
 
 # Deliberate differences between the two channels. Each needs a reason, and the
@@ -97,19 +93,7 @@ def main():
     ap.add_argument('--solutions', help='root of the solution tree (optional)')
     a = ap.parse_args()
 
-    if not os.path.isfile(ZIP):
-        print(f'check_provided_files: starter zip not found at {ZIP}')
-        return 1
-
-    z = zipfile.ZipFile(ZIP)
-    zdata = {n: z.read(n) for n in z.namelist() if not n.endswith('/')}
     problems = []
-
-    # FOLDERS: lab folders ship empty but for their VS Code settings.
-    for name in sorted(zdata):
-        if '/code/modules/' in name and not name.endswith('/.vscode/settings.json'):
-            problems.append(f'{name} is in the starter zip, but lab folders ship empty: '
-                            f'students download every file from the sheet')
     checked = len(glob.glob(os.path.join(DATA, '*', '*')))
 
     # TRUTH
@@ -127,8 +111,8 @@ def main():
                     f'{rel} does not match the solution tree copy. The solution is the '
                     f'source of truth; sync the page to it.')
 
-    print(f'check_provided_files: {checked} provided file(s) served from the sheets; '
-          f'the starter zip\'s lab folders hold none of them')
+    print(f'check_provided_files: {checked} provided file(s) served from the sheets'
+          + (', checked against the solutions' if a.solutions else ''))
     if problems:
         print('check_provided_files: FAIL')
         for p in problems:

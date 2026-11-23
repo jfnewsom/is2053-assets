@@ -78,14 +78,14 @@
       "preContent": [
         {
           "type": "paragraph",
-          "html": "Twelve checkpoints. Plan on <strong>80&ndash;110 minutes</strong> total. Each checkpoint shows its time estimate so you can split this across multiple sittings if you need to."
+          "html": "Ten checkpoints. Plan on <strong>80&ndash;110 minutes</strong> total. Each checkpoint shows its time estimate so you can split this across multiple sittings if you need to."
         },
         {
           "type": "callout",
           "variant": "tip",
           "icon": "lightbulb",
           "title": "Don&rsquo;t Rush the Installs",
-          "body_html": "<p>Checkpoints 3&ndash;9 set up your entire development environment. If something goes wrong here, every future assignment gets harder. Take your time and verify each step works before moving on.</p>"
+          "body_html": "<p>Checkpoints 3&ndash;7 set up your entire development environment. If something goes wrong here, every future assignment gets harder. Take your time and verify each step works before moving on.</p>"
         }
       ]
     },
@@ -235,8 +235,8 @@
     },
     {
       "num": 5,
-      "title": "Disable AI Autocomplete in VS Code",
-      "subBanner": "3 minutes: Critical for new programmers",
+      "title": "Set Up VS Code with the IS2053 Profile",
+      "subBanner": "5 minutes: AI off, Python and Flake8 on, the course&rsquo;s settings in",
       "body": [
         {
           "type": "paragraph",
@@ -244,38 +244,38 @@
         },
         {
           "type": "paragraph",
-          "html": "You&rsquo;ll work in <strong>two different panels</strong> in VS Code for this checkpoint: first <strong>Settings</strong>, then <strong>Extensions</strong>. The keyboard shortcuts and search bars are different in each, so the steps below tell you which panel to switch to before each search."
+          "html": "One file sets all of that up. The <strong>IS2053 profile</strong> is a VS Code profile I built for this course. Importing it turns the AI suggestions off, installs the <strong>Python</strong> extension (syntax highlighting, error detection, and the Run button) and the <strong>Flake8</strong> extension (the style checker CodeGrade uses), and sets up the editor the way this course needs. It works in every folder you open, so you only do this once."
+        },
+        {
+          "type": "cta_button",
+          "url": "https://jfnewsom.github.io/is2053-assets/downloads/IS2053.code-profile",
+          "text": "Download IS2053.code-profile",
+          "icon": "download"
         },
         {
           "type": "h3",
           "color": "green",
-          "text": "Step 1: In the Settings panel"
-        },
-        {
-          "type": "paragraph",
-          "html": "Open Settings with <code>Cmd + ,</code> (Mac) or <code>Ctrl + ,</code> (Windows). Use the search bar at the top of the Settings page:"
+          "text": "Step 1: Import the profile"
         },
         {
           "type": "ordered_list",
           "items": [
-            "Search <code>editor.inlineSuggest.enabled</code> and <strong>uncheck the box</strong>. This kills the gray ghost-text predictions that appear inline as you type."
+            "Open the Command Palette with <strong>Cmd + Shift + P</strong> (Mac) or <strong>Ctrl + Shift + P</strong> (Windows), type <strong>Profiles: Import Profile</strong>, and choose it.",
+            "Choose <strong>Select File</strong>, and pick the <code>IS2053.code-profile</code> you just downloaded.",
+            "VS Code shows what&rsquo;s in the profile. Click <strong>Import</strong>, and <strong>Create</strong> if it asks. Give it a minute to install the two extensions."
           ]
         },
         {
           "type": "h3",
           "color": "green",
-          "text": "Step 2: In the Extensions panel"
-        },
-        {
-          "type": "paragraph",
-          "html": "Now switch to Extensions with <code>Cmd + Shift + X</code> (Mac) or <code>Ctrl + Shift + X</code> (Windows). The search bar at the top of the Extensions sidebar is a different search bar from the one in Settings. It searches installed and available extensions, not settings keys."
+          "text": "Step 2: Make it the profile VS Code always uses"
         },
         {
           "type": "ordered_list",
           "items": [
-            "Search <code>GitHub Copilot</code>. If you see it in your installed list, click the gear icon and choose <strong>Uninstall</strong>. (If it&rsquo;s not installed, skip this one. Nothing to do.)",
-            "Search <code>GitHub Copilot Chat</code>. <strong>This is the tricky one.</strong> New VS Code installs ship Copilot Chat as a <em>built-in</em> extension, which means there&rsquo;s no Uninstall button, only a dropdown labeled <strong>&ldquo;Disable AI Features&rdquo;</strong>. Click the dropdown and choose <strong>Disable AI Features</strong>. This is the step that turns off the right-side <strong>CHAT</strong> panel and the <strong>&ldquo;Generate code&rdquo;</strong> inline prompt. Both of those come from Copilot Chat, not from the inline suggestion setting in Step 1.",
-            "Search <code>IntelliCode</code>. <strong>Disable</strong> (or uninstall) both <strong>IntelliCode</strong> and <strong>IntelliCode API Usage Examples</strong> using the gear icon on each."
+            "Open the Command Palette again, type <strong>Profiles: Open Profiles (UI)</strong>, and choose it.",
+            "Select <strong>IS2053</strong> in the list, and check <strong>Use for New Windows</strong>.",
+            "Close VS Code completely and open it again."
           ]
         },
         {
@@ -283,39 +283,7 @@
           "variant": "tip",
           "icon": "check_circle",
           "title": "How to Verify It Worked",
-          "body_html": "<p>After making all the changes above, you should see <strong>no AI surfaces anywhere</strong> in VS Code. Specifically, all three of these things should be gone:</p>\n              <ul>\n                <li><strong>No gray ghost-text</strong> appearing inline as you type. Basic autocomplete is fine and expected. Python keywords like <code>if</code>, <code>while</code>, <code>print</code> and variable names you&rsquo;ve already typed will still pop up in a suggestion dropdown. What should be gone is <em>entire lines</em> of suggested code appearing in gray ahead of your cursor. If those are still there, the <code>editor.inlineSuggest.enabled</code> setting did not take. Go back and re-check Step 1.</li>\n                <li><strong>No &ldquo;Generate code&rdquo; inline prompt</strong> floating in the editor near your cursor. That prompt comes from Copilot Chat, not from the inline suggestion setting. If you still see it, Copilot Chat&rsquo;s AI features are still enabled.</li>\n                <li><strong>No CHAT panel on the right side</strong> of the VS Code window. Same source: the right-side CHAT panel disappears once Copilot Chat&rsquo;s AI features are disabled.</li>\n              </ul>\n              <p>If any of these are still showing up, go back to the Extensions panel and confirm GitHub Copilot Chat reads <strong>&ldquo;AI Features Disabled&rdquo;</strong> next to its name.</p>"
-        },
-        {
-          "type": "paragraph",
-          "html": "I can&rsquo;t enforce this from my end. But students who lean on AI suggestions in the early modules consistently struggle harder later, because they never built the foundation. See the <a href=\"https://jfnewsom.github.io/is2053-assets/pages/support/ai-policy.html\">full AI Policy</a> for the longer version of why."
-        }
-      ]
-    },
-    {
-      "num": 6,
-      "title": "Install the Python Extension",
-      "subBanner": "2 minutes: Syntax highlighting and run button",
-      "body": [
-        {
-          "type": "paragraph",
-          "html": "In VS Code, click the Extensions icon (or press <code>Ctrl+Shift+X</code>). Search for <strong>&ldquo;Python&rdquo;</strong> and install the one by <strong>Microsoft</strong>. This gives you syntax highlighting, error detection, and the run button."
-        },
-        {
-          "type": "link_paragraph",
-          "url": "https://marketplace.visualstudio.com/items?itemName=ms-python.python",
-          "text": "Open in VS Code Marketplace &rarr;",
-          "external": true
-        }
-      ]
-    },
-    {
-      "num": 7,
-      "title": "Install the Flake8 Extension",
-      "subBanner": "3 minutes: Code style checker (graded!)",
-      "body": [
-        {
-          "type": "paragraph",
-          "html": "Still in Extensions, search for <strong>&ldquo;Flake8&rdquo;</strong> and install the one by <strong>Microsoft</strong>. Flake8 checks your code style: things like consistent spacing, proper indentation, and unused variables."
+          "body_html": "<p>The title bar of VS Code should say <strong>IS2053</strong>. If it doesn&rsquo;t, you&rsquo;re in another profile: go back to Step 2. Then check that <strong>Python</strong> and <strong>Flake8</strong> are in your installed extensions (Cmd + Shift + X on a Mac, Ctrl + Shift + X on Windows), and that a <code>.py</code> file shows three faint vertical lines. Last, you should see <strong>no AI surfaces anywhere</strong> in VS Code. All three of these should be gone:</p>\n              <ul>\n                <li><strong>No gray ghost-text</strong> appearing inline as you type. Basic autocomplete is fine and expected. Python keywords like <code>if</code>, <code>while</code>, <code>print</code> and variable names you&rsquo;ve already typed will still pop up in a suggestion dropdown. What should be gone is <em>entire lines</em> of suggested code appearing in gray ahead of your cursor. If those are still there, check the title bar: you may be in another profile.</li>\n                <li><strong>No &ldquo;Generate code&rdquo; inline prompt</strong> floating in the editor near your cursor. That prompt comes from Copilot Chat, not from the inline suggestion setting. If you still see it, Copilot Chat&rsquo;s AI features are still enabled.</li>\n                <li><strong>No CHAT panel on the right side</strong> of the VS Code window. Same source: the right-side CHAT panel disappears once Copilot Chat&rsquo;s AI features are disabled.</li>\n              </ul>\n              <p>If the Generate code prompt or the CHAT panel is still showing up, open Extensions, search <strong>GitHub Copilot Chat</strong>, and choose <strong>Disable AI Features</strong> from its dropdown. It should then read <strong>&ldquo;AI Features Disabled&rdquo;</strong> next to its name.</p>"
         },
         {
           "type": "callout",
@@ -332,15 +300,13 @@
           "body_html": "<p>After installing, you&rsquo;ll see yellow/red squiggly lines under style issues in your code. Hover over them to see what&rsquo;s wrong and how to fix it. We have a full <strong>Flake8 Guide</strong> in Canvas that explains every error code.</p>"
         },
         {
-          "type": "link_paragraph",
-          "url": "https://marketplace.visualstudio.com/items?itemName=ms-python.flake8",
-          "text": "Open in VS Code Marketplace &rarr;",
-          "external": true
+          "type": "paragraph",
+          "html": "I can&rsquo;t enforce this from my end. But students who lean on AI suggestions in the early modules consistently struggle harder later, because they never built the foundation. See the <a href=\"https://jfnewsom.github.io/is2053-assets/pages/support/ai-policy.html\">full AI Policy</a> for the longer version of why."
         }
       ]
     },
     {
-      "num": 8,
+      "num": 6,
       "title": "Set Up Your Workspace Folder",
       "subBanner": "5 minutes: The folder structure that keeps you sane",
       "body": [
@@ -350,32 +316,15 @@
         },
         {
           "type": "paragraph",
-          "html": "Keeping a code base organized is a real skill. It is one of the unglamorous habits that separates developers who ship clean work from ones who lose half a day every week to &ldquo;where did I put that?&rdquo; <strong>Never organized a code base before? Don&rsquo;t worry about it.</strong> I&rsquo;ve set up the folder structure for you in the starter zip below: a folder for every lab, each with its VS Code settings. Just download it, drop it in your Documents folder, and open the assignment folder when it&rsquo;s time to work. Each lab sheet links the files that lab needs and gives the exact name for every file you make, so download those into the lab&rsquo;s folder. The organization is handled."
+          "html": "Keeping a code base organized is a real skill. It is one of the unglamorous habits that separates developers who ship clean work from ones who lose half a day every week to &ldquo;where did I put that?&rdquo; <strong>Never organized a code base before? Don&rsquo;t worry about it.</strong> The tree below is the one to make. Make the <code>is2053</code> folder and its <code>code</code>, <code>bookex</code>, and <code>modules</code> folders now. Then make each assignment&rsquo;s folder when its sheet tells you to: the sheet gives the folder&rsquo;s exact name, links the files it needs, and names every file you make."
         },
         {
           "type": "paragraph",
-          "html": "<strong>Download and unzip the starter folder:</strong>"
-        },
-        {
-          "type": "cta_button",
-          "url": "https://jfnewsom.github.io/is2053-assets/downloads/is2053-starter.zip",
-          "text": "Download is2053-starter.zip",
-          "icon": "download"
-        },
-        {
-          "type": "callout",
-          "variant": "warning",
-          "icon": "folder_zip",
-          "title": "Extract the Zip First. Do Not Work Inside It.",
-          "body_html": "<p>Double-clicking a <code>.zip</code> does not unpack it. Windows opens a preview window and quietly copies the contents into a temporary folder, and VS Code then runs your file from there. Windows deletes that folder whenever it feels like it, so code you write and save can simply vanish.</p>\n<p><strong>The tell:</strong> a path with the name doubled in it, like <code>...\\Temp\\is2053-starter.zip.is2053-starter.zip\\is2053\\...</code>. If you see that, you are working inside the zip.</p>\n<p><strong>Do this instead:</strong> find <code>is2053-starter.zip</code> in your Downloads folder, right-click it, choose <strong>Extract All</strong>, and extract to somewhere permanent such as Documents. Not Downloads, not Desktop, not Temp. Then open that extracted <code>is2053</code> folder in VS Code with <strong>File &rarr; Open Folder</strong>. That folder is your home base for the semester.</p>"
+          "html": "Make the <code>is2053</code> folder in your <strong>Documents</strong> folder, or anywhere easy to find. <em>One small note:</em> cloud-synced folders (OneDrive, Dropbox, iCloud Drive) can occasionally cause file-locking issues when VS Code, Python, and the cloud syncer all try to touch the same file at once. Most students never see this. I sync my own course code through OneDrive without issue. If you ever get a mysterious &ldquo;file is locked&rdquo; or &ldquo;permission denied&rdquo; error mid-edit, cloud sync is the first thing to check."
         },
         {
           "type": "paragraph",
-          "html": "Unzip it into your <strong>Documents</strong> folder, or anywhere easy to find. <em>One small note:</em> cloud-synced folders (OneDrive, Dropbox, iCloud Drive) can occasionally cause file-locking issues when VS Code, Python, and the cloud syncer all try to touch the same file at once. Most students never see this. I sync my own course code through OneDrive without issue. If you ever get a mysterious &ldquo;file is locked&rdquo; or &ldquo;permission denied&rdquo; error mid-edit, cloud sync is the first thing to check."
-        },
-        {
-          "type": "paragraph",
-          "html": "You&rsquo;ll end up with this folder tree:"
+          "html": "The folder tree:"
         },
         {
           "type": "code_block",
@@ -386,22 +335,8 @@
           "type": "callout",
           "variant": "tip",
           "icon": "tune",
-          "title": "Each Folder Is Pre-Configured for Python",
-          "body_html": "<p>Every assignment folder in the zip ships with a hidden <code>.vscode/</code> sub-folder containing workspace settings tuned for this course. When you open one of these folders in VS Code, you&rsquo;ll automatically see:</p>\n              <ul>\n                <li><strong>Three faint vertical lines</strong> in the editor, at columns 4, 8, and 79. The first two are visual guides for your first and second indent levels. The third is the <strong>PEP 8 line-length limit</strong>, and Flake8 will flag any line that crosses it.</li>\n                <li><strong>Tab key inserts 4 spaces</strong>, not a tab character. Python style requires spaces, and CodeGrade will reject mixed indentation.</li>\n                <li><strong>Sticky Scroll is on</strong>: as you scroll through nested code, the <code>def</code> and <code>while</code> lines you&rsquo;re inside stay pinned at the top of the editor. See <a href=\"https://jfnewsom.github.io/is2053-assets/pages/support/vscode-tips.html\">VS Code Tips</a> for this and other shortcuts.</li>\n                <li><strong>Files save with LF line endings</strong>, not Windows-style CRLF. CodeGrade runs on Linux and expects LF. Using the zip means you never have to think about this.</li>\n                <li><strong>The Play button always runs your file</strong>, instead of dumping you into a <code>&gt;&gt;&gt;</code> prompt. (Newer versions of the Python extension have a bug where the Play button opens an interactive shell instead of executing the script. The starter workspace disables the setting that causes this.)</li>\n              </ul>\n              <p>You don&rsquo;t need to do anything to enable any of this. It just works once you open the folder. If you&rsquo;re curious, peek inside any <code>.vscode/settings.json</code> to see what&rsquo;s configured.</p>"
-        },
-        {
-          "type": "collapsible_callout",
-          "variant": "info",
-          "icon": "build",
-          "title": "Building your own folder? Click for line endings note",
-          "body_html": "<p>If you opted out of the starter zip and built your own folder structure, you&rsquo;ll want to know about <strong>line endings</strong>, one of the silent ways CodeGrade can reject code that runs fine on your machine.</p>\n              <p><strong>The problem:</strong> Windows saves files with CRLF line endings (carriage return + line feed). CodeGrade runs on Linux, which expects LF only. That extra carriage return character can garble your output to the autograder even though it looks fine in VS Code.</p>\n              <p><strong>The symptom:</strong> Your code prints the expected output locally, but CodeGrade says the output is wrong, especially when the expected output spans multiple lines and the autograder reports it as one mashed-up line.</p>\n              <p><strong>The 5-second fix:</strong></p>\n              <ol>\n                <li>Open your <code>.py</code> file in VS Code</li>\n                <li>Look at the bottom-right corner of the window. You will see <code>CRLF</code></li>\n                <li>Click on <code>CRLF</code></li>\n                <li>Select <strong>LF</strong> from the dropdown</li>\n                <li>Save the file</li>\n                <li>Resubmit to CodeGrade</li>\n              </ol>\n              <p><strong>The permanent fix:</strong> Open VS Code Settings (<code>Cmd + ,</code> on Mac, <code>Ctrl + ,</code> on Windows), search for <code>eol</code>, and change <strong>Files: Eol</strong> to <code>\\n</code> (LF). Every new file you create will use LF from now on. <em>(This is exactly what the starter zip&rsquo;s <code>.vscode/settings.json</code> does. If you used the zip, you already have this and can ignore this entire section.)</em></p>\n              <p>If your code runs correctly on your machine but CodeGrade gives you weird output errors, <strong>check your line endings before you panic.</strong></p>"
-        },
-        {
-          "type": "collapsible_callout",
-          "variant": "info",
-          "icon": "build",
-          "title": "Building your own folder? Click for Play-button-shows-&gt;&gt;&gt; note",
-          "body_html": "<p>Recent versions of VS Code&rsquo;s Python extension have a bug where clicking the Play button on a <code>.py</code> file opens an interactive Python shell (a <code>&gt;&gt;&gt;</code> prompt) instead of running your script. Frustrating because it looks like the Play button is doing nothing useful.</p>\n              <p><strong>The fix:</strong> In VS Code Settings (<code>Cmd + ,</code> on Mac, <code>Ctrl + ,</code> on Windows), search for <code>REPL Smart Send</code>, and uncheck <strong>Python &rsaquo; REPL: Enable REPL Smart Send</strong>. Restart VS Code. The Play button will now run your file like normal.</p>\n              <p><em>If you used the starter zip, the workspace already disables this setting and you&rsquo;ll never see the bug.</em></p>"
+          "title": "Your Profile Sets Up Every Folder",
+          "body_html": "<p>The IS2053 profile from the last checkpoint holds settings tuned for this course, so every folder you open in VS Code gets them. You&rsquo;ll see:</p>\n              <ul>\n                <li><strong>Three faint vertical lines</strong> in the editor, at columns 4, 8, and 79. The first two are visual guides for your first and second indent levels. The third is the <strong>PEP 8 line-length limit</strong>, and Flake8 will flag any line that crosses it.</li>\n                <li><strong>Tab key inserts 4 spaces</strong>, not a tab character. Python style requires spaces, and CodeGrade will reject mixed indentation.</li>\n                <li><strong>Sticky Scroll is on</strong>: as you scroll through nested code, the <code>def</code> and <code>while</code> lines you&rsquo;re inside stay pinned at the top of the editor. See <a href=\"https://jfnewsom.github.io/is2053-assets/pages/support/vscode-tips.html\">VS Code Tips</a> for this and other shortcuts.</li>\n                <li><strong>Files save with LF line endings</strong>, not Windows-style CRLF. CodeGrade runs on Linux and expects LF. The profile takes care of it.</li>\n                <li><strong>The Play button always runs your file</strong>, instead of dumping you into a <code>&gt;&gt;&gt;</code> prompt. (Newer versions of the Python extension have a bug where the Play button opens an interactive shell instead of executing the script. The profile turns off the setting that causes this.)</li>\n              </ul>\n              <p>You don&rsquo;t need to do anything to enable any of this. It just works once you open the folder. If you&rsquo;re curious, peek inside any <code>.vscode/settings.json</code> to see what&rsquo;s configured.</p>"
         },
         {
           "type": "callout",
@@ -420,7 +355,7 @@
       ]
     },
     {
-      "num": 9,
+      "num": 7,
       "title": "Submit BookEx 0: Your Setup Check",
       "subBanner": "20&ndash;30 minutes: Prove the whole toolchain works and bank your first 100 points",
       "body": [
@@ -442,7 +377,7 @@
       ]
     },
     {
-      "num": 10,
+      "num": 8,
       "title": "Join the Class Discord",
       "subBanner": "5 minutes: Optional but recommended",
       "body": [
@@ -459,7 +394,7 @@
       ]
     },
     {
-      "num": 11,
+      "num": 9,
       "title": "Introduce Yourself",
       "subBanner": "5 minutes: Discord introduction",
       "body": [
@@ -470,7 +405,7 @@
       ]
     },
     {
-      "num": 12,
+      "num": 10,
       "title": "Start Your First Lab Assignment!",
       "subBanner": "45&ndash;60 minutes: Your first real assignment!",
       "body": [
