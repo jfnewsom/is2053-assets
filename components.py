@@ -572,6 +572,15 @@ def render_output_block(item: dict) -> str:
     the blind audit found students' save files in Expected Output boxes).
     """
     output = html_lib.escape(item.get("output", ""))
+    # Nov 25, 2026 (Lab 5.1 grading notes, F-14): every blank line shows a
+    # faint "blank line" marker, so students can see and count them. The
+    # marker is CSS ::before content, so copying the box copies an empty line.
+    # A final newline ends the last line; it isn't another line.
+    lines = output.split("\n")
+    end = lines.pop() if len(lines) > 1 and lines[-1] == "" else None
+    output = "\n".join(
+        '<span class="lc-blank"></span>' if not ln.strip() else ln
+        for ln in lines) + ("\n" if end is not None else "")
     label = item.get("label")
     cls = "lc-output lc-output--file" if label else "lc-output"
     label = html_lib.escape(label) if label else "Expected Output"
